@@ -1,0 +1,13 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="well"
+  = link_to t("actions.edit"), [:edit, :admin, @reply_template], class: "btn btn-default"
+
+table class="table table-bordered"
+  tr
+    th = Support::ReplyTemplate.human_attribute_name(:subject)
+    td = @reply_template.subject
+  tr
+    th = Support::ReplyTemplate.human_attribute_name(:message)
+    td = @reply_template.message

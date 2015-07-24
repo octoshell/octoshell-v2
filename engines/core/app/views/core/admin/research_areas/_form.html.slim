@@ -1,0 +1,5 @@
+= bootstrap_form_for [:admin, @research_area] do |f|
+  = f.select :group, Core::ResearchArea.pluck(:group).uniq
+  = f.text_field :name
+  = f.form_group do
+    = f.submit t("actions.save")

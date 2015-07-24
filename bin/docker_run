@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# daemons
+/etc/init.d/postgresql start
+/etc/init.d/redis-server start
+nginx
+
+# application
+cd /var/www/octoshell-basic
+
+cp /root/puma.rb /var/www/octoshell-basic/config/puma.rb
+mkdir /var/www/octoshell-basic/config/puma
+cp /root/puma.rb /var/www/octoshell-basic/config/puma/production.rb
+
+# bundle
+rbenv global jruby-1.7.13
+bundle install --without development test
+
+bin/rake db:create db:schema:load
+
+bin/rake assets:precompile
+
+psql -q -U octo -d new_octoshell < dump_for_new_base.sql
+psql -q -U octo -d new_octoshell < dump_for_new_base_2.sql
+
+bundle exec foreman start

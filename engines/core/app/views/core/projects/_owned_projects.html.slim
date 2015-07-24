@@ -1,0 +1,13 @@
+table class="table table-hover"
+  tr
+    th №
+    th = Core::Project.human_attribute_name("title")
+    th = Core::Project.human_attribute_name("state")
+    - projects.each do |project|
+      tr
+        td class="col-xs-1"
+          = project.id
+        td class="col-xs-8"
+          = link_to project.title, project
+          span class="badge pull-right" = mark_ownership(project)
+        td class="col-xs-2" = mark_project_state(project)

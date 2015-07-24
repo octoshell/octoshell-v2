@@ -1,0 +1,5 @@
+- if error.present?
+  div class="alert alert-danger"
+    = error
+div class="col-xs-2"
+  input name="fields[#{field.id}]" type="number" value="#{value || 0}" class="form-control"

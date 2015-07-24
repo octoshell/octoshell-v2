@@ -1,0 +1,14 @@
+- if reply_templates.any?
+  table class="table table-bordered"
+    tr
+      th class="col-xs-1" #
+      th = Support::ReplyTemplate.human_attribute_name(:subject)
+    - reply_templates.each do |reply_template|
+      tr
+        td = reply_template.id
+        td
+          = link_to reply_template, [:edit, :admin, reply_template]
+          = link_to [:admin, reply_template], method: :delete do
+            i class="fa fa-times text-danger pull-right"
+- else
+  p = t(".no_templates")

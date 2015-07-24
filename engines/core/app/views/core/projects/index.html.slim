@@ -1,0 +1,34 @@
+div class="page-header"
+  h1 = t(".title", default: "Projects")
+
+- if current_user.prepared_to_join_projects?
+
+  - if @projects_with_invitation.any?
+    div class="panel panel-info"
+      div class="panel-heading"
+        h4 = t(".projects_with_invitation")
+      = render "projects_with_invitation", projects: @projects_with_invitation
+
+  div class="panel panel-default"
+    div class="panel-heading"
+      h4 = t(".owned_projects")
+      = link_to t(".new_project"), new_project_path, class: "btn btn-success"
+    - if @owned_projects.any?
+      = render "owned_projects", projects: @owned_projects
+
+  - if @projects_with_participation.any?
+    div class="panel panel-default"
+      div class="panel-heading"
+        h4 = t(".projects_with_participation")
+      = render "projects_with_participation", projects: @projects_with_participation
+- else
+  div class="panel panel-danger"
+    div class="panel-heading"
+      - if current_user.closed?
+        p
+          = t(".your_access_is_closed.html")
+      - else
+        p
+          = t(".user_has_not_access_to_projects.html")
+        p
+          = link_to t(".goto_profile"), main_app.profile_path

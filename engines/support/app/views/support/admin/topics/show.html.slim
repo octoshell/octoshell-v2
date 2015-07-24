@@ -1,0 +1,25 @@
+div class="page-header"
+  h1 = @topic.name
+
+= render "list", topics: Support::Topic.root, highlight: @topic.id
+
+div class="well btn-toolbar"
+  = link_to t("actions.edit"), edit_admin_topic_path(@topic), class: "btn btn-default"
+  = link_to t(".new_subtopic"), new_admin_topic_path(topic: { parent_id: @topic.id }), class: "btn btn-default"
+
+h3 = Support::Topic.human_attribute_name(:tags)
+ul class="list-unstyled"
+  - @topic.tags.each do |tag|
+    li = tag
+
+h3 = Support::Topic.human_attribute_name(:fields)
+
+- if @topic.fields.any?
+  table class="table table-bordered"
+    tr
+      th = Support::Field.human_attribute_name(:name)
+      th = Support::Field.human_attribute_name(:required)
+    - @topic.fields.each do |field|
+      tr
+        td = link_to field, [:admin, field]
+        td = field.required

@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# Usage: $0 username
+#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#   Attention! Only mode for authorized_keys{,2} is checked!
+#   No checks for homedir ownership/rights etc is performed!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+source /usr/octo/defaults.sh
+
+log "check_user $1"
+
+#HOST="-p 2222 -c 3des -o StrictHostKeyChecking=no cli"
+#HOME_BASE='/home/users'
+NEWUSER=`echo "$1" | tr -cd a-zA-Z0-9_.-`
+
+homedir=`getent passwd "$NEWUSER" | cut -d: -f 6 2>/dev/null`
+if [ "x$homedir" = "x" ]; then
+  echo "closed" >>$LOG_FILE
+  echo closed
+  exit 0
+fi
+
+if [ -f "$homedir/.bashrc" ]; then
+  true
+else
+  echo "closed" >>$LOG_FILE
+  echo closed
+  exit 0
+fi
+
+mode1=`stat -c '%A' ${homedir}/.ssh/authorized_keys 2>/dev/null |cut -c 2`
+mode2=`stat -c '%A' ${homedir}/.ssh/authorized_keys2 2>/dev/null |cut -c 2`
+
+
+if [ "x$mode1" = 'xr' -o "x$mode2" = 'xr' ]; then
+  echo "active" >>$LOG_FILE
+  echo 'active'
+  exit 0
+fi
+
+echo "blocked" >>$LOG_FILE
+echo 'blocked'
+exit 0
+

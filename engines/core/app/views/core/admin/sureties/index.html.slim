@@ -1,0 +1,12 @@
+div class="page-header"
+  h1 = t(".title")
+
+= bootstrap_form_for @search, method: :get, url: admin_sureties_path, layout: :horizontal, role: "autosubmit" do |f|
+  = f.text_field :id_eq, label: "#", autofocus: true
+  = f.select :state_in, Core::Surety.human_state_names, label: Core::Surety.human_attribute_name(:state), class: "multiple"
+  = f.form_group
+    = f.submit t("actions.find"), class: "btn btn-primary"
+
+= safe_paginate @sureties
+= render "table", sureties: @sureties
+= safe_paginate @sureties

@@ -1,0 +1,141 @@
+div class="page-header"
+  h1 = t(".title", id: @ticket.id)
+  h2 = @ticket.subject
+  h4 class="text-muted" = @ticket.topic.name_with_parents
+  h3
+    - state = { pending: "danger", answered_by_support: "warning", answered_by_reporter: "danger", resolved: "success", closed: "default" }[@ticket.state_name]
+    span class="label label-#{state}" = @ticket.human_state_name
+
+div class="well btn-toolbar"
+  - if @ticket.closed?
+    = link_to Support::Ticket.human_state_event_name(:reopen), admin_ticket_reopen_path(@ticket), method: :put, class: "btn btn-warning", data: { confirm: t("actions.confirm") }
+  - elsif !@ticket.resolved?
+    = link_to t("actions.edit"), [:edit, :admin, @ticket], class: "btn btn-default"
+    - if @ticket.pending?
+      = link_to t(".accept"), [:admin, @ticket, :accept], class: "btn btn-warning", method: :post
+    = link_to Support::Ticket.human_state_event_name(:close), admin_ticket_close_path(@ticket), method: :put, class: "btn btn-danger", data: { confirm: t("actions.confirm")}
+
+table class="table table-stripped"
+  tr
+    th class="col-xs-4" = Support::Ticket.human_attribute_name(:reporter)
+    td = link_to @ticket.reporter.full_name, main_app.admin_user_path(@ticket.reporter)
+  tr
+    th class="col-xs-4" = Support::Ticket.human_attribute_name(:responsible)
+    td
+      - if @ticket.responsible
+        = @ticket.responsible
+      - else
+        span class="label label-danger" N/A
+  tr
+    th = Support::Ticket.human_attribute_name(:reporter_logins)
+    td = @ticket.reporter_logins
+
+  - if @ticket.url.present?
+    tr
+      th = Support::Ticket.human_attribute_name(:url)
+      td = link_to @ticket.url, @ticket.url
+  - else
+    tr class="hidden"
+      th = Support::Ticket.human_attribute_name(:url)
+      td
+  - if @ticket.attachment.present?
+    tr
+      th = Support::Ticket.human_attribute_name(:attachment)
+      td = link_to_attachment @ticket
+  - else
+    tr class="hidden"
+      th = Support::Ticket.human_attribute_name(:attachment)
+      td
+
+  - if @ticket.project.present?
+    tr
+      th = Support::Ticket.human_attribute_name(:project)
+      td = link_to @ticket.project, core.admin_project_path(@ticket.project)
+    tr
+      th = Support::Ticket.human_attribute_name(:project_id)
+      td = @ticket.project.id
+  - else
+    tr class="hidden"
+      th = Support::Ticket.human_attribute_name(:project)
+      td
+
+  - if @ticket.cluster.present?
+    tr
+      th = Support::Ticket.human_attribute_name(:cluster)
+      td = link_to @ticket.cluster, core.admin_cluster_path(@ticket.cluster)
+  - else
+    tr class="hidden"
+      th = Support::Ticket.human_attribute_name(:cluster)
+      td
+
+  - @ticket.field_values.each do |field_value|
+    - if field_value.value.present?
+      tr
+        th = field_value.field.present? ? field_value.field.name : "N/A"
+        td = markdown field_value.value
+    - else
+      tr class="hidden"
+        th = field_value.field.present? ? field_value.field.name : "N/A"
+        td
+  - if @ticket.has_blank_fields?
+    tr class="link"
+      td colspan="2"
+        small = link_to t("actions.show_empty_fields"), "#", id: "empty-fields-opener"
+
+h3 = Support::Ticket.human_attribute_name(:tags)
+div id="related-tags"
+  = render "tags_form", ticket: @ticket
+hr
+div id="new-tag"
+  = render "support/admin/tags/remote_form"
+
+h3 = Support::Ticket.human_attribute_name(:subscribers)
+
+div id="ticket-subscribers"
+  = render "subscribers_form", ticket: @ticket
+
+div class="panel panel-default"
+  div class="panel-heading"
+    h4 = Support::Ticket.human_attribute_name(:message)
+    h5 class="text-muted" #{l @ticket.created_at} / #{l @ticket.updated_at}
+  div class="panel-body"
+    = markdown @ticket.message
+    div class="raw-ticket-message" = @ticket.message
+    = link_to t("actions.show_as_text"), "#", class: "raw-text-opener"
+
+h3 = Support::Ticket.human_attribute_name(:replies)
+
+- if @ticket.replies.any?
+  - @ticket.replies.order(created_at: :asc).each do |reply|
+    div class="row"
+      div class="col-xs-8"
+        p
+          strong = link_to reply.author, main_app.admin_user_path(reply.author)
+        p
+          em = l reply.created_at
+    div class="row"
+      div class="col-xs-10"
+        blockquote class="#{reply.author_id == reply.ticket.reporter_id ? "admin" : "user"}"
+          = markdown reply.message
+          div class="raw-reply" = reply.message
+          = link_to t("actions.show_as_text"), "#", class: "raw-text-opener"
+          - if reply.attachment?
+            small = Support::Reply.human_attribute_name(:attachment)
+            p = link_to_attachment reply
+- else
+  p = t(".no_replies")
+
+- unless @ticket.resolved? || @ticket.closed?
+  legend = t(".new_reply")
+  = bootstrap_form_for [:admin, @ticket.replies.build], layout: :horizontal, multipart: true do |f|
+    = f.form_group do
+      = select_tag :reply_template, options_from_collection_for_select(Support::ReplyTemplate.all, :message, :subject), prompt: Support::ReplyTemplate.model_name.human, style: "width: 100%"
+    = f.hidden_field :ticket_id
+    = f.text_area :message, rows: 5, help: link_to(t(".create_reply_template"), new_admin_reply_template_path, id: "reply-template-maker")
+    = f.file_field :attachment
+    = f.form_group do
+      div class="btn-toolbar"
+        = f.primary t(".send")
+        = f.primary t(".send_and_show_result"), name: :show_self
+        - if @next_ticket.present?
+          = f.primary t(".send_and_show_next"), name: :show_next

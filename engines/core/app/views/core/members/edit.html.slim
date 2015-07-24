@@ -1,0 +1,19 @@
+div class="page-header"
+  h1 = t(".title", project_title: @project.title)
+
+div class="panel panel-info"
+  div class="panel-heading"
+    h4 = t(".choose_organization")
+  div class="panel-body"
+    - if current_user.employments.any?
+      = bootstrap_form_for [@project, @member] do |f|
+        = f.collection_select :organization_id, current_user.organizations, :id, :name, hide_label: true
+        = f.form_group do
+          = f.submit t(".accept_invitation")
+    - else
+      div class="alert alert-warning"
+        strong = t(".no_employments")
+        p
+          = link_to t(".add_employment"), new_employment_path
+
+= render "/core/projects/card", project: @project

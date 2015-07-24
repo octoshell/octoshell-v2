@@ -1,0 +1,16 @@
+- if fields.any?
+  table class="table table-bordered"
+    tr
+      th class="col-xs-1" #
+      th = Support::Field.human_attribute_name(:name)
+      th = Support::Field.human_attribute_name(:hint)
+      th
+    - fields.each do |field|
+      tr
+        td = field.id
+        td = link_to field, [:edit, :admin, field]
+        td = field.hint
+        td
+          = link_to t("actions.delete"), [:admin, field], method: :delete
+- else
+  p = t(".no_records")

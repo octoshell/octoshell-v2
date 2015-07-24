@@ -1,0 +1,9 @@
+div class="page-header"
+  h1 = t(".title", default: "Employment")
+
+= render "form"
+
+legend
+  = link_to @employment, class: "text-danger", method: :delete, data: { confirm: t("actions.confirm") } do
+    i class="fa fa-times"
+    = t("actions.delete")

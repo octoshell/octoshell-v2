@@ -1,0 +1,7 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="well"
+  = link_to t(".new_reply_template"), new_admin_reply_template_path, class: "btn btn-default"
+
+= render "table", reply_templates: @reply_templates

@@ -1,0 +1,17 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: new_octoshell_development
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: new_octoshell_test
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: new_octoshell
+  username: evrone
+  pool: 10
+  min_messages: warning

@@ -1,0 +1,7 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="well"
+  = link_to t(".new_topic"), new_admin_topic_path, class: "btn btn-default"
+
+= render "list", topics: @topics.root, highlight: false

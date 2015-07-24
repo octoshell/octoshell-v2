@@ -1,0 +1,14 @@
+div class="page-header"
+  h1 = t(".title", default: "Reset password")
+
+div class="row"
+  div class="col-xs-4"
+    / TODO
+    / См. коммит https://github.com/bootstrap-ruby/rails-bootstrap-forms/commit/1482f1e0417f3fab51075007f7a5aed41414e2e5
+    / когда будет релиз новой версии гема, убрать отсюда form_tag
+    / текущая верся гема: 2.0.1
+    = form_tag password_path do
+      .form-group
+        = label_tag :email
+        = text_field_tag :email, nil, class: "form-control"
+      = submit_tag t(".send", default: "Send"), class: "btn btn-default"

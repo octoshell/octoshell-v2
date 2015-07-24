@@ -1,0 +1,9 @@
+//= require jquery
+//= require jquery_ujs
+//= require bootstrap
+//= require select2
+//= require select2_locale_ru
+//= require underscore
+//= require bootstrap-datepicker/core
+//= require bootstrap-datepicker/locales/bootstrap-datepicker.ru.js
+//= require_tree .

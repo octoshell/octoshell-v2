@@ -1,0 +1,6 @@
+div class="form-group"
+  - field.collection_values.each do |value|
+    div class="radio"
+      label
+        input type="radio" name="field_#{field.id}"
+        = value

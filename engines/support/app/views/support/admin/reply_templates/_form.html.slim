@@ -1,0 +1,6 @@
+= bootstrap_form_for [:admin, @reply_template], layout: :horizontal do |f|
+  = f.text_field :subject
+  = f.text_area :message, rows: 5
+
+  = f.form_group do
+    = f.submit t("actions.save")

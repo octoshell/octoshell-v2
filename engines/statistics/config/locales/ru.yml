@@ -1,0 +1,31 @@
+ru:
+  engine_submenu:
+    projects: Проекты
+    organizations: Организации
+    users: Пользователи
+    sessions: Перерегистрации
+
+  statistics:
+    by_kind: По типу
+    by_organization_kind: По типу организаций
+    by_organization_city: По городу организации
+    by_msu_subdivisions: По подразделениям МГУ
+    by_organization_kind: По типу организаций
+    by_directions_of_science: По направлениям науки
+    by_critical_technologies: По критическим технологиям
+    by_research_areas: По областям исследований
+    by_city: По городам
+    by_state: По статусу
+
+    projects:
+      index:
+        title: Статистика по проектам
+    organizations:
+      index:
+        title: Статистика по организациям
+    users:
+      index:
+        title: Статистика по пользователям
+    sessions:
+      index:
+        title: Статистика по перерегистрациям

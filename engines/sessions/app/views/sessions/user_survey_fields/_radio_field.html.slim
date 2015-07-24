@@ -1,0 +1,9 @@
+div class="form-group"
+  - field.collection_values.each do |var|
+    div class="radio"
+      label
+        - if var == value
+          input type="radio" name="fields[#{field.id}]" value="#{var}" checked="checked"
+        - else
+          input type="radio" name="fields[#{field.id}]" value="#{var}"
+        = var

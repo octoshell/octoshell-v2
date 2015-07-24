@@ -1,0 +1,40 @@
+h4= page_entries_info users
+table class="table table-bordered table-striped"
+  tr
+    th class="col-xs-1" #
+    th
+      - if @search
+        = sort_link @search, :last_name, User.human_attribute_name(:full_name), :default_order => :asc
+      - else
+        = User.human_attribute_name(:full_name)
+    th = User.human_attribute_name(:access_state)
+    th = Core::Organization.model_name.human
+    th
+      - if @search
+        = sort_link @search, :id, User.human_attribute_name(:created_at), :default_order => :asc
+      - else
+        = User.human_attribute_name(:created_at)
+    th
+      - if @search
+        = sort_link @search, :id, User.human_attribute_name(:last_login_at), :default_order => :asc
+      - else
+        = User.human_attribute_name(:last_login_at)
+  - users.each do |user|
+    tr
+      td = user.id
+      td
+        ul class="list-unstyled"
+          li = link_to user, [:admin, user]
+          li = user.email
+      td
+        - state = { active: "success", closed: "danger" }[user.access_state_name]
+        span class="label label-#{state}" = user.human_access_state_name
+      td
+        - if user.employments.any?
+          ul class="list-unstyled"
+            - user.employments.each do |employment|
+              li = link_to employment.full_name, core.admin_organization_path(employment.organization) if employment.organization
+        - else
+          = t(".no_employment.html")
+      td = l user.created_at.to_date
+      td = l user.last_login_at if user.last_login_at

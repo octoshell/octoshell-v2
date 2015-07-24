@@ -1,0 +1,13 @@
+rvm:
+  - "2.1"
+
+before_script:
+  - export CI_RUN=1
+  - export CODECLIMATE_REPO_TOKEN=03cc3a915984f86343fce7a9c04324f01fe5d5b025ebf7fd4c8a0e760633f48d
+  - export RAILS_ENV=test
+  - cp config/database.travis.yml config/database.yml
+  - bin/rake db:create
+  - bin/rake db:schema:load
+
+script:
+  - bin/rspec .

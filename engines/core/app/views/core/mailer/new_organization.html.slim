@@ -1,0 +1,7 @@
+= render "header"
+p
+  | Создана новая организация 
+  = link_to @organization.name, core.admin_organization_url(@organization)
+  |.
+
+= render "footer"

@@ -1,0 +1,6 @@
+experts:
+  reports:
+    - manage
+    - access
+  admin:
+    - access

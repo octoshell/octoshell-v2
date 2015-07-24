@@ -1,0 +1,6 @@
+= bootstrap_form_for [:admin, @quota_kind], layout: :horizontal do |f|
+  = f.text_field :name
+  = f.text_field :measurement
+
+  = f.form_group do
+    = f.submit t("actions.save")

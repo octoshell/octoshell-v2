@@ -1,0 +1,20 @@
+div class="page-header"
+  h1 = t(".title", default: "Users")
+
+= bootstrap_form_for @search, method: :get, url: admin_users_path, layout: :horizontal do |f|
+  = autocomplete f, name: :id_in, label: User.model_name.human, source: main_app.users_path
+  = autocomplete f, name: :employments_organization_id_eq, label: Core::Employment.model_name.human, source: core.organizations_path
+  = f.select :user_groups_group_name_in, Group.pluck(:name), {label: User.human_attribute_name(:groups), include_blank: true}, {multiselect: true}
+  = f.select :owned_projects_state_in, Core::Project.human_state_names, { label: "Руководит проектами со статусами", include_blank: true }, { multiple: true }
+  = f.select :projects_state_in, Core::Project.human_state_names, { label: "Участвует в проектах со статусами", include_blank: true }, { multiple: true }
+  = f.collection_select :available_projects_avaliable_clusters_id_eq, Core::Cluster.all, :id, :name, label: "Есть аккаунт на кластере", include_blank: true
+  = f.collection_select :sessions_id_in, Sessions::Session.all, :id, :description, { label: "Участвовал в перерегистрации", include_blank: true }, { multiple: true }
+  = f.select :reports_state_in, Sessions::Report.human_state_names, { label: "Имеет отчёты в состоянии", include_blank: true }, { multiple: true }
+  = f.select :surveys_state_in, Sessions::UserSurvey.human_state_names, { label: "Имеет опросы в состоянии", include_blank: true }, { multiple: true }
+  = f.select :access_state_in, User.human_access_state_names, { label: "Статус", include_blank: true }, { multiple: true }
+  = f.form_group do
+    = f.submit t("actions.find"), class: "btn btn-primary"
+
+= safe_paginate @users
+= render "table", users: @users
+= safe_paginate @users

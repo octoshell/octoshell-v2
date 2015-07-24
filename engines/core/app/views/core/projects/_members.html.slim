@@ -1,0 +1,50 @@
+div class="row" id="members"
+  div class="panel panel-default"
+    div class="panel-heading"
+      h4 class="pull-left" = t(".title")
+      | #{link_to " добавить участника", "#", id: "member_adder", class: "fa fa-plus btn btn-primary pull-right" if @user_can_manage_project}
+      div class="clearfix"
+    table class="table table-hover"
+      tr id="new_member_row" class="hidden"
+        td colspan="5" = render "new_member_form", project: @project
+      tr
+        th = t(".email")
+        th = t(".login")
+        th = t(".project_access_state")
+        th = t(".cluster_access_state")
+      - @project.members.preload(user: :profile).each do |member|
+        tr
+          td
+            ul class="list-unstyled"
+              li
+                = member.full_name
+                - if member.user_id == @project.owner.id
+                  |  
+                  i class="fa fa-flag"
+              li
+                = mail_to member.email do
+                  i class="fa fa-envelope"
+                  |  
+                  = t(".send_email_to_member")
+          td = member.login
+          td
+            - if member.allowed? || member.denied?
+              - if @user_can_manage_project
+                = check_box_tag :project_access,
+                                 member.id,
+                                 member.allowed?,
+                                 url: toggle_member_access_state_projects_path(member_id: member.id),
+                                 class: "project_access_toggle"
+              - else
+                - fa_class = (member.allowed?) ? "check" : "times"
+                i class="fa fa-#{fa_class}"
+
+            - else
+              = mark_member_state(@project, member)
+          td
+            - fa_class = (member.has_access_to_clusters?) ? "check" : "times"
+            i class="fa fa-#{fa_class}"
+          td
+            = link_to "", core.drop_member_project_path(@project, user_id: member.user_id),
+              method: :put, confirm: t("actions.confirm"), title: t(".drop_member"),
+              class: "fa fa-times text-danger" if @user_can_manage_project && (member != @project.member_owner)

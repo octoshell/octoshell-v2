@@ -1,0 +1,33 @@
+ru:
+  activerecord:
+    models:
+      announcement: Рассылка
+      announcement_recipient: Получатель рассылки
+    attributes:
+      announcement:
+        title: Наименование
+        body: Текст письма
+        attachment: Вложение
+        is_special: Специальная (рабочая) рассылка?
+
+    state_machines:
+      announcement:
+        state:
+          states:
+            pending: создана
+            delivered: разослана
+
+  announcements:
+    admin:
+      announcements:
+        index:
+          title: Список рассылок
+        form:
+          markdown_help: 'В качестве разметки используется Markdown. Описание синтаксиса <a href="http://vstarkov.ru/markdown-basics/", target="_blank">здесь</a>.'
+        new:
+          title: Добавление рассылки
+        edit:
+          title: Редактирование рассылки
+        show_users:
+          title: Выбор получателей рассылки
+

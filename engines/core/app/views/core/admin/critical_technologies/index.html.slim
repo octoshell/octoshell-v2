@@ -1,0 +1,28 @@
+div class="page-header"
+  h1 = t(".title", default: "Critical Technologies")
+
+div class="panel panel-default"
+  div class="panel-heading"
+    = link_to t(".new_critical_technology"), new_admin_critical_technology_path, class: "btn btn-default"
+  div class="panel-body"
+    - if @critical_technologies.any?
+      table class="table table-hover"
+        tr
+          th class="col-xs-6" = Core::CriticalTechnology.human_attribute_name(:name)
+          th
+        - @critical_technologies.each do |critical_technology|
+          tr
+            td class="col-xs-10" = critical_technology.name
+            td
+              div class="btn-group pull-right"
+                = link_to t("actions.edit"), edit_admin_critical_technology_path(critical_technology), class: "btn btn-default btn-sm"
+                button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                  span class="caret"
+                ul class="dropdown-menu" role="menu"
+                  - name = t("actions.delete")
+                  - confirm = t("actions.confirm", default: "Are You shure?")
+                  - data = { method: :delete, confirm: confirm }
+                  li class="text-left"
+                    = link_to name, admin_critical_technology_path(critical_technology), data: data
+    - else
+      p = t(".no_critical_technologies_found")

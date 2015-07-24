@@ -1,0 +1,18 @@
+div class="row" id="accesses"
+  div class="panel panel-default"
+    div class="panel-heading"
+      h4 = t(".title")
+    table class="table"
+      tr
+        th = Core::Cluster.human_attribute_name(:name)
+        th = Core::Cluster.human_attribute_name(:host)
+        th = t(".quota_resources_info")
+        th = Core::Access.human_attribute_name(:created_at)
+        th = Core::Access.human_attribute_name(:updated_at)
+      - accesses.each do |access|
+        tr class=(access.opened? ? "success" : "danger")
+          td = access.cluster.name
+          td = access.cluster.host
+          td = access.quota_resources_info
+          td = l access.created_at.to_date
+          td = l access.updated_at.to_date

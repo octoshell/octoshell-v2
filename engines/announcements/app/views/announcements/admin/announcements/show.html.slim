@@ -1,0 +1,42 @@
+div class="page-header"
+  h3 №#{@announcement.id}
+  h5 class="text-muted" = @announcement.is_special? ? "Специальная" : "Информационная"
+  h5 = l @announcement.created_at.to_date
+  h3
+    - state = { pending: "info", delivered: "success" }[@announcement.state_name]
+    span class="label label-#{state}" = @announcement.human_state_name
+  h1 = @announcement.title
+
+div class="well"
+  - unless @announcement.delivered?
+    p class="text-right"
+      strong
+        = link_to [:edit, :admin, @announcement] do
+          i class="fa fa-pencil-square"
+          |  Редактировать
+  p = markdown @announcement.body
+
+  - if @announcement.attachment.present?
+    h5 Вложение: #{link_to @announcement.attachment.file.filename, @announcement.attachment.url}
+
+div class="well"
+  = form_tag [:admin, @announcement, :test], method: :put do
+    div class="input-group"
+      span class="form-control uneditable-input" = current_user.email
+      span class="input-group-btn"
+        = submit_tag "Протестировать", class: "btn btn-default"
+
+- if @announcement.pending?
+  p = link_to "Изменить список адресатов", [:admin, @announcement, :show_recipients], class: "btn btn-primary"
+  p = link_to "Отправить письмо #{@announcement.recipients.size} пользователям", [:admin, @announcement, :deliver], class: "btn btn-primary", method: :put
+- else
+  legend Получатели
+  div class="row"
+    - email_groups = @announcement.recipients.pluck(:email).in_groups(3, false)
+    - email_groups.each do |group|
+      div class="col-xs-4"
+        ul class="list-unstyled"
+          - group.each do |email|
+            li = email
+
+

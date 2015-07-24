@@ -1,0 +1,6 @@
+.git/
+tmp
+public/uploads
+public/system
+public/system_archive.tar.gz
+engines/*/gems/gems

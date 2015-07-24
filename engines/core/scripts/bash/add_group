@@ -1,0 +1,22 @@
+#!/bin/sh
+
+echo "ADD GROUP $1" >> /tmp/octo.log
+
+if [ $(getent group $1) ]; then
+  #echo "Group $1 already exists. Ok!"
+  echo ok
+  exit 0
+fi
+echo "ADD GROUP2 $1" >> /tmp/octo.log
+
+if groupadd "$1"; then
+  touch /var/syncall >> /tmp/octo.log 2>&1
+  echo ok
+  exit 0
+fi
+
+err="$?"
+echo "ADD GROUP3 $1 ($err)" >> /tmp/octo.log
+echo "fail" #: $err"
+exit 1
+

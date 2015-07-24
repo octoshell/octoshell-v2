@@ -1,0 +1,8 @@
+- values = value ? value.value : []
+- values = values.select(&:present?)
+- if values.any?
+  ul
+    - values.each do |v|
+      li = v
+- else
+  p Нет данных

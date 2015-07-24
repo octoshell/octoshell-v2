@@ -1,0 +1,4 @@
+= bootstrap_form_for [:admin, @critical_technology] do |f|
+  = f.text_field :name
+  = f.form_group do
+    = f.submit t("actions.save")

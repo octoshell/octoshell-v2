@@ -1,0 +1,29 @@
+div class="page-header"
+  h1 = t(".title", default: "Research Areas")
+
+div class="panel panel-default"
+  div class="panel-heading"
+    = link_to t(".new_research_area"), new_admin_research_area_path, class: "btn btn-default"
+  div class="panel-body"
+    - if @research_areas.any?
+      table class="table table-bordered table-striped"
+        - @research_areas.group_by(&:group).sort_by(&:first).each do |group, areas|
+          tr
+            th colspan="3" = group
+          - areas.each do |area|
+            tr
+              td = "##{area.id}"
+              td class="col-xs-9" = area.name
+              td
+                div class="btn-group pull-right"
+                  = link_to t("actions.edit"), [:edit, :admin, area], class: "btn btn-default btn-sm"
+                  button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                    span class="caret"
+                  ul class="dropdown-menu" role="menu"
+                    - name = t("actions.delete")
+                    - confirm = t("actions.confirm", default: "Are You shure?")
+                    - data = { method: :delete, confirm: confirm }
+                    li class="text-left"
+                      = link_to name, admin_research_area_path(area), data: data
+    - else
+      p = t(".no_research_area_found")

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+source /usr/octo/defaults.sh
+
+NEWUSER=`echo "$1" | tr -cd a-zA-Z0-9_.-`
+
+if [ $(getent passwd $NEWUSER) ]; then
+  true
+else
+  #echo "User $NEWUSER don't exists. Ignore..."
+  echo ok
+  exit 0
+fi
+
+[ -f "$HOME_BASE/$NEWUSER/.ssh/authorized_keys" ] && chmod 600 "$HOME_BASE/$NEWUSER/.ssh/authorized_keys"  &>/dev/null
+[ -f "$HOME_BASE/$NEWUSER/.ssh/authorized_keys2" ] && chmod 600 "$HOME_BASE/$NEWUSER/.ssh/authorized_keys2" &>/dev/null
+
+echo ok
+exit 0

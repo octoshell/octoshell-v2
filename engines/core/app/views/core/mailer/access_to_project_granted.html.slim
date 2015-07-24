@@ -1,0 +1,8 @@
+= render "header"
+
+p
+  | Вам предоставили доступ к проекту «#{@user.project.title}».
+p
+  | Руководитель проекта: #{@user.project.owner.full_name}
+
+= render "footer"

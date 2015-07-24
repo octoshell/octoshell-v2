@@ -1,0 +1,52 @@
+div class="page-header"
+  h1 = t(".title", name: @session.description)
+  h3
+    span class="label label-#{session_state_label(@session)}" = @session.human_state_name
+
+div class="well"
+  div class="btn-group"
+    = link_to "Начать", [:admin, @session, :start],
+      class: "btn btn-large btn-success",
+      method: :put, data: { confirm: t("actions.confirm") },
+      disabled: !@session.can_start?
+    = link_to t(".edit_projects"), [:admin, @session, :show_projects],
+      class: "btn btn-large btn-warning",
+      disabled: @session.ended?
+    = link_to "Закончить", [:admin, @session, :stop],
+      class: "btn btn-large btn-danger",
+      method: :put, data: { confirm: t("actions.confirm") },
+      disabled: !@session.can_stop?
+
+blockquote class="lead"
+  h4 = t(".started_at", date: @session.started_at || "--")
+  h4 = t(".ended_at", date: @session.ended_at || "--")
+
+/* h3 Архив данных перерегистрации */
+
+/* span class="text-muted" Ссылка на загрузку придёт по email. */
+/* div class="input-group" */
+/*   span class="form-control uneditable-input" = current_user.email */
+/*   span class="input-group-btn" */
+/*     = link_to "Создать архив", [:admin, @session, :download], class: "btn btn-info", method: :put */
+
+
+h3 = Sessions::Session.human_attribute_name(:surveys)
+
+- if @session.can_start?
+  div class="well"
+    = link_to t(".new_survey"), new_admin_session_survey_path(@session), class: "btn btn-default"
+ul class="list-unstyled"
+  - @session.surveys.each do |survey|
+    li
+      strong = link_to survey.name, [:admin, survey]
+
+
+h3 = Sessions::Session.human_attribute_name(:stats)
+
+div class="alert alert-info" id="graphs-alert"
+  = t(".graphs_alert.html")
+
+= link_to t(".show_graphs"), [:admin, @session, :stats],
+  class: "btn btn-large btn-primary pull-right", id: "graphs-button",
+  disabled: @session.can_stop?
+

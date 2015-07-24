@@ -1,0 +1,6 @@
+= bootstrap_form_for [:admin, @organization_kind] do |f|
+  = f.text_field :name
+  = f.check_box :departments_required
+
+  = f.form_group do
+    = f.submit t("actions.save")

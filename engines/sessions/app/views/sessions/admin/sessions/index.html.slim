@@ -1,0 +1,22 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="well"
+  = link_to t(".new_session"), new_admin_session_path, class: "btn btn-default"
+
+table class="table table-striped"
+  tr
+    th class="col-xs-1" #
+    th = Sessions::Session.human_attribute_name(:description)
+    th = Sessions::Session.human_attribute_name(:state)
+    th = Sessions::Session.human_attribute_name(:started_at)
+    th = Sessions::Session.human_attribute_name(:ended_at)
+    th
+  - @sessions.each do |session|
+    tr
+      td = session.id
+      td = link_to session.description, [:admin, session]
+      td
+        span class="label label-#{session_state_label(session)}" = session.human_state_name
+      td = session.started_at || "--"
+      td = session.ended_at || "--"

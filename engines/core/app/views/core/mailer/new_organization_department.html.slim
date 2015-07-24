@@ -1,0 +1,7 @@
+= render "header"
+p
+  | Создано новое подразделение организации 
+  = link_to @department.organization.name, core.admin_organization_url(@department.organization)
+  |  «#{@department.name}».
+
+= render "footer"

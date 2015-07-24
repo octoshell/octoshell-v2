@@ -1,0 +1,11 @@
+div class="page-header"
+  h1 = t(".title", default: "Project Kinds")
+
+div class="panel panel-default"
+  div class="panel-heading"
+    = link_to t(".new_project_kind"), new_admin_project_kind_path, class: "btn btn-default"
+
+  div class="panel-body"
+    = safe_paginate @project_kinds
+    = render "table", project_kinds: @project_kinds
+    = safe_paginate @project_kinds

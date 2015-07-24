@@ -1,0 +1,4 @@
+- link_plain = activate_user_url(token: @activation_token)
+= t("authentication.mailer.activation_needed.text",
+  activate_user_link: link_to("активировать", link_plain),
+  activate_user_link_plain: link_plain).html_safe

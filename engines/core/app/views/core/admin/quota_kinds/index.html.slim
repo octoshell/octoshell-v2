@@ -1,0 +1,11 @@
+div class="page-header"
+  h1 = t(".title", default: "Quota Kinds")
+
+div class="panel panel-default"
+  div class="panel-heading"
+    = link_to t(".new_quota_kind"), new_admin_quota_kind_path, class: "btn btn-default"
+
+  div class="panel-body"
+    = safe_paginate @quota_kinds
+    = render "table", quota_kinds: @quota_kinds
+    = safe_paginate @quota_kinds

@@ -1,0 +1,9 @@
+= bootstrap_nested_form_for [:admin, @group], layout: :horizontal do |f|
+  = f.text_field :name, disabled: @group.system
+  - if f.object.persisted?
+    = f.form_group do
+      legend = t(".abilities")
+      = f.fields_for :abilities do |f|
+        = f.check_box :available, label: f.object.description
+  = f.form_group do
+    = f.submit t("actions.save")

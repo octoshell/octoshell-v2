@@ -1,0 +1,6 @@
+table class="table table-striped summable"
+  - field.collection_values.each_with_index do |title, i|
+    tr
+      th class="col-xs-4" = title
+      td
+        input name="fields[#{field.id}][]" type="number" class="input-sm" value="#{(value && value[i].present?) ? value[i] : 0}"

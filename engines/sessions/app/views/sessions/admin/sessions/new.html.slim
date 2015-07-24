@@ -1,0 +1,9 @@
+div class="page-header"
+  h1 = t(".title")
+
+= bootstrap_form_for [:admin, @session], layout: :horizontal do |f|
+  = f.text_field :description
+  = f.text_field :motivation
+  = f.text_field :receiving_to, as: :string, class: "datepicker"
+  = f.form_group do
+    = f.submit t("actions.next")

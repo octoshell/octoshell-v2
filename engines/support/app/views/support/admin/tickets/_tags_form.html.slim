@@ -1,0 +1,2 @@
+= bootstrap_form_for [:admin, ticket], layout: :inline, html: { remote: true, id: "ticket_tags_form" } do |f|
+  = f.collection_check_boxes :tag_ids, Support::Tag.all, :id, :name, hide_label: true, onclick: "$('form#ticket_tags_form').submit()"

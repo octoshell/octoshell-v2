@@ -1,0 +1,54 @@
+- if @reports.any?
+  h4= page_entries_info @reports
+
+  table class="table table-striped"
+    tr
+      th class="col-xs-1"
+        - if @search
+          = sort_link @search, :id, "#", default_order: :desc
+        - else
+          | #
+      th Отчет
+      th = Core::Project.human_attribute_name(:research_areas)
+      th Статус
+      th class="col-xs-2"
+        - if @search
+          = sort_link @search, :updated_at, 'Обновлён', default_order: :desc
+        - else
+          | Обновлён
+      th class="col-xs-2" Эксперт
+      th class="col-xs-1"
+
+    - @reports.each do |report|
+      tr
+        td = report.id
+        td
+          ul class="list-unstyled"
+            li
+              strong = link_to_if (may?(:review, :reports) || report.expert), "Отчет ##{report.id}", [:admin, report]
+            li = link_to_if may?(:review, :projects), report.project.title, core.admin_project_path(report.project)
+            li = link_to report.author.full_name, main_app.admin_user_path(report.author), class: "text-muted"
+        td
+          ul class="list-unstyled"
+            - report.project.research_areas.each do |area|
+              li = area.name
+        td
+          label class="label label-#{report_status_label(report)}" = report.human_state_name
+        td
+          = l report.updated_at, format: :long if report.updated_at
+        td
+          - if report.expert
+            = link_to_if may?(:manage, :users), report.expert.full_name, main_app.admin_user_path(report.expert), class: "muted"
+          - elsif may?(:manage, :reports) && report.can_pick?
+            = link_to "Взять на оценку", [:admin, report, :pick], method: :patch, class: "btn btn-info"
+
+          - if report.assessed?
+            hr
+            ul class="list-unstyled"
+              li #{Sessions::Report.human_attribute_name(:illustration_points)}: #{report.illustration_points || "Не оценивалось"}
+              li #{Sessions::Report.human_attribute_name(:statement_points)}: #{report.statement_points || "Не оценивалось"}
+              li #{Sessions::Report.human_attribute_name(:summary_points)}: #{report.summary_points || "Не оценивалось"}
+        td
+          = report.session.description
+- else
+  p Нет отчетов

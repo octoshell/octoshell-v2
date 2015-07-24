@@ -1,0 +1,20 @@
+div class="page-header"
+  h1 = t(".title")
+
+= bootstrap_form_for @surety do |f|
+  = f.hidden_field :project_id, value: @project.id
+  = f.text_field :full_organization_name, readonly: true
+  = f.text_field :boss_full_name
+  = f.text_field :boss_position
+  = f.form_group do
+    h5 = Core::Surety.human_attribute_name(:members)
+    table class="table"
+      tr
+        th = Core::SuretyMember.human_attribute_name(:full_name)
+        th = Core::SuretyMember.human_attribute_name(:organization)
+      - @unsured_members.each do |member|
+        tr
+          td = member.full_name
+          td = member.organization
+  = f.form_group do
+    = f.submit t("actions.generate")

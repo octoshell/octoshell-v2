@@ -1,0 +1,33 @@
+div class="row"
+  div class="panel panel-default"
+    div class="panel-heading"
+      h4 Отправить приглашения новым участникам
+      p
+        | Если некоторые пользователи не зарегистрированы в octoshell, вы можете выслать им приграшения. 
+      p
+        | Для этого вам надо сформировать .csv документ с колонками: 
+        code email, Фамилия Имя Отчество
+        | . Пример:
+      pre style="margin-top: 10px;"
+        code
+          | gav@abyrvalg.com,Шариков Полиграф Полиграфович
+          br
+          | filipp@mail.ru,Преображенский Филипп Филиппович
+      = form_for :invitation, url: invite_users_from_csv_project_path(@project), class: "form-inline" do |f|
+        = f.file_field :csv_file, help: "Файл формата .csv в кодировке UTF-8."
+        = f.submit "Загрузить", class: "btn btn-default btn-sm"
+    - if @project.invitations.exists?
+      div class="panel-heading"
+        h4 Приглашённые пользователи
+      table class="table table-hover"
+        tr
+          th = Core::ProjectInvitation.human_attribute_name(:user_email)
+          th = Core::ProjectInvitation.human_attribute_name(:user_fio)
+          th = Core::ProjectInvitation.human_attribute_name(:updated_at)
+        - @project.invitations.each do |invitation|
+          tr
+            td = invitation.user_email
+            td = invitation.user_fio
+            td = l invitation.updated_at, format: :short
+      = link_to "Выслать приглашения ещё раз", resend_invitations_project_path(@project), class: "btn btn-warning btn-sm pull-right", method: :post
+      div class="clearfix"

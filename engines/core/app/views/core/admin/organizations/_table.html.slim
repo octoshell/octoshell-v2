@@ -1,0 +1,40 @@
+- if organizations.any?
+  h4= page_entries_info organizations
+
+  table class="table table-hover"
+    tr
+      th class="col-xs-1"
+        - if @search
+          = sort_link @search, :id, '#', default_order: :desc
+        - else
+          | #
+      th = Core::Organization.human_attribute_name(:abbreviation)
+      th
+        - if @search
+          = sort_link @search, :name, Core::Organization.human_attribute_name(:name), default_order: :asc
+        - else
+          = Core::Organization.human_attribute_name(:name)
+      th = Core::Organization.human_attribute_name(:kind)
+      th = Core::Organization.human_attribute_name(:country)
+      th = Core::Organization.human_attribute_name(:city)
+      th = Core::Organization.human_attribute_name(:users_count)
+      th = Core::Organization.human_attribute_name(:projects_count)
+      th
+    tr class="info"
+      td colspan=6 class="text-right"
+      td class="text-center"
+        = User.joins(:organizations).where(core_employments: {organization_id: organizations.map(&:id)}).where(activation_state: :active).distinct.count
+      td class="text-center"
+        = Core::Project.joins(:organization).where(organization_id: organizations.map(&:id)).where(state: :active).distinct.count
+
+    - organizations.each do |organization|
+      tr
+        td = organization.id
+        td = link_to organization.short_name, [:admin, organization]
+        td = organization.name
+        td = organization.kind
+        td = organization.country
+        td = organization.city
+        / TODO: заменить сбор статистики на rake задачу. Обсудить.
+        td class="text-center" = organization.users.where(users: { :activation_state => "active" }).count
+        td class="text-center" = organization.projects.where(core_projects: { :state => "active" }).count

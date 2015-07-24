@@ -1,0 +1,91 @@
+#!/usr/bin/env perl
+
+my $user=$ARGV[0];
+my $key_file=$ARGV[1];
+
+my ($login,$pass,$uid,$gid);
+
+open(LOG,">>/tmp/octo.log") || open(LOG,">/dev/null");
+print LOG "Add open_key $user $key_file\n";
+
+sub add_to_file($$$$){
+  my ($file,$uid,$gid,$key)=@_;
+  my @keys;
+  
+  if(open(F, "<$file")){
+    while(<F>){
+      chomp;
+      push @keys, $_ unless $_ eq '';
+    }
+    close F;
+  }
+  else{
+    return 1;
+  }
+
+  unless(open(F, ">$file")){
+    print LOG "Fail: Cannot write to $file. ($?)\n";
+    print "fail\n";
+    exit 1;
+  }
+  
+  chown $uid, $gid, $file;
+  chmod 0600, $file;
+
+  foreach my $i (@keys){
+    print F "$i\n";
+  }
+  print F "$key\n";
+  close F;
+  return 0;
+}
+
+
+$user =~ y/ |;|\||<|>|&/_/;
+
+unless(open(K,"<$key_file")){
+  print LOG "Fail: Cannot open keyfile $key_file\n";
+  print "fail\n";
+  exit 1;
+}
+my $key='';
+
+while(<K>){
+  $key.="$_";
+}
+close K;
+unlink $key_file;
+
+if($key =~ /BEGIN/){
+  #print "Converting to openssh format...\n";
+  my $tmpname="/tmp/$$-delkey";
+  unless(open(F,">$tmpname")){
+    print LOG "Fail: Cannot create $tmpname ($?)\n";
+    print "fail\n";
+    exit 1;
+  }
+  print F $key;
+  close F;
+  my $newkey=`ssh-keygen -i -f '$tmpname' && rm '$tmpname'`;
+  chomp($newkey);
+  $key=$newkey if $newkey ne ''; 
+}
+
+#print "Adding key for ${user}!\n";
+
+($login,$pass,$uid,$gid) = getpwnam($user);
+if(add_to_file("/home/$user/.ssh/authorized_keys2",$uid,$gid,$key)){
+  if(add_to_file("/home/$user/.ssh/authorized_keys",$uid,$gid,$key)){
+    system "touch /home/$user/.ssh/authorized_keys2";
+    if(add_to_file("/home/$user/.ssh/authorized_keys2",$uid,$gid,$key)){
+      print LOG "Fail: cannot create new file ($?)\n";
+      print "fail\n";
+      exit 1;
+    }
+  }
+}
+
+
+print "ok\n";
+exit 0
+

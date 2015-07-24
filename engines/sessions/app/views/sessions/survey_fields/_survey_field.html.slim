@@ -1,0 +1,3 @@
+= render "sessions/survey_fields/#{survey_field.kind}_field", field: survey_field
+- if survey_field.hint?
+  span class="help-block" = survey_field.hint

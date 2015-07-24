@@ -1,0 +1,42 @@
+div class="row"
+  div class="col-xs-12"
+    = bootstrap_form_for @project do |f|
+      = f.text_field :title
+
+      = f.collection_select :kind_id, Core::ProjectKind.all, :id, :name
+
+      - primary_organization = current_user.primary_organization || current_user.organizations.first
+      = f.collection_select :organization_id, current_user.organizations, :id, :name, selected: primary_organization
+      = autocomplete f, name: :organization_department_id, label: Core::Project.human_attribute_name("organization_department"), layout: :regular, source: organization_organization_departments_path(primary_organization)
+
+      = f.text_field :estimated_finish_date, start_year: Date.current.year, class: "datepicker"
+
+      = f.fields_for :card do |card_form|
+        legend = t(".card")
+        h5 = t(".card_help.html")
+        table class="vtop"
+          tr
+            td class="col-xs-6" = card_form.text_area :name,         rows: 2, help: t(".card_name_help")
+            td class="col-xs-6" = card_form.text_area :en_name,      rows: 2
+          tr
+            td class="col-xs-6" = card_form.text_area :driver,       rows: 3, help: t(".card_driver_help")
+            td class="col-xs-6" = card_form.text_area :en_driver,    rows: 3
+          tr
+            td class="col-xs-6" = card_form.text_area :strategy,     rows: 3, help: t(".card_strategy_help")
+            td class="col-xs-6" = card_form.text_area :en_strategy,  rows: 3
+          tr
+            td class="col-xs-6" = card_form.text_area :objective,    rows: 3, help: t(".card_objective_help")
+            td class="col-xs-6" = card_form.text_area :en_objective, rows: 3
+          tr
+            td class="col-xs-6" = card_form.text_area :impact,       rows: 3, help: t(".card_impact_help")
+            td class="col-xs-6" = card_form.text_area :en_impact,    rows: 3
+          tr
+            td class="col-xs-6" = card_form.text_area :usage,        rows: 3, help: t(".card_usage_help")
+            td class="col-xs-6" = card_form.text_area :en_usage,     rows: 3
+
+      = f.collection_check_boxes :direction_of_science_ids, Core::DirectionOfScience.all, :id, :name
+      = f.collection_check_boxes :critical_technology_ids, Core::CriticalTechnology.all, :id, :name
+      = f.grouped_collection_select :research_area_ids, Core::ResearchArea.all.group_by(&:group), :last, :first, :id, :name
+
+      = f.form_group do
+        = f.submit t("buttons.save")

@@ -1,0 +1,8 @@
+en:
+  mailer:
+    activation_needed_email:
+      subject: "Activation instructions"
+    activation_success_email:
+      subject: "Your account was successfully activated"
+    reset_password_email:
+      subject: "Reset password instructions"

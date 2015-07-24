@@ -1,0 +1,49 @@
+ru:
+  authentication:
+    mailer:
+      activation_needed:
+        subject: Активация аккаунта
+        text: |-
+          <p> Для активации аккаунта пройдите по ссылке %{activate_user_link}.</p>
+          <p> Если у Вас возникли проблемы с переходом по ссылке скопируйте и вставьте её в браузер %{activate_user_link_plain}.</p>
+      activation_success:
+        subject: Активация в прошла успешно
+        text: Вы успешно активировали свой аккаунт.
+      reset_password:
+        subject: Восстановление пароля
+        text: |-
+          <p> Были запрошены инструкции по восстановлению пароля аккаунта Octoshell.</p>
+          <p> Для смены пароля проследуйте по ссылке %{change_password_link}.</p>
+          <p> Если у Вас возникли проблемы с переходом по ссылке, скопируйте и вставьте её в браузер %{change_password_link_plain}.</p>
+    flash:
+      user_is_activated: Пользователь активирован.
+      user_is_not_registered: Пользователь не зарегистрирован.
+      activation_instructions_are_sent: Инструкции по активации высланы.
+      password_reset_instructions_are_sent: Инструкции по смене пароля отправлены
+      user_is_not_activated: Пользователь еще не активирован
+      user_is_already_activated: Пользователь уже активирован.
+    helpers:
+      submit:
+        create: Создать
+        update: Сохранить
+        user:
+          create: Зарегистрироваться
+
+  activerecord:
+    models:
+      user: Пользователь
+    attributes:
+      user:
+        email: Email
+        password: Пароль
+        password_confirmation: Подтверждение пароля
+        created_at: Зарегистрирован
+        last_login_at: Последний раз заходил
+    errors:
+      models:
+        user:
+          attributes:
+            base:
+              user_is_not_registered: Пользователь не зарегистрирован.
+              user_is_not_activated: Пользователь еще не активирован. Пройдите по ссылке в письме об активации.
+              wrong_password: Неверный пароль.

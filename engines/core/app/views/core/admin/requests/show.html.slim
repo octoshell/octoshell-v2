@@ -1,0 +1,77 @@
+div class="page-header"
+  h1 Заявка на ресурсы №#{@request.id} в рамках проекта «#{@request.project.title}»
+  h3 = mark_request_state(@request)
+
+
+div class="well btn-toolbar"
+  = link_to t("actions.edit"), [:edit, :admin, @request], class: "btn btn-default" unless @request.closed?
+  - if @request.can_approve?
+    = link_to Core::Request.human_state_event_name(:approve), approve_admin_request_path(@request), class: "btn btn-success"
+  - if @request.can_reject?
+    = link_to Core::Request.human_state_event_name(:reject), reject_admin_request_path(@request), class: "btn btn-danger"
+
+
+table class="table table-bordered"
+  tr
+    th = Core::Project.human_attribute_name(:title)
+    td = @request.project.title
+  tr
+    th = Core::Request.human_attribute_name(:creator)
+    td
+      table class="table table-bordered table-condensed"
+        tr
+          th class="span3" = Core::Request.human_attribute_name(:creator)
+          td = @request.owner
+        tr
+          th Активных проектов
+          td = @request.owner.owned_projects.with_state(:active).count
+        tr
+          th Дата регистрации
+          td
+            = @request.owner.created_at.to_date
+            |  (#{(Date.current - @request.owner.created_at.to_date).to_i} дн.)
+        /tr
+          th Общий объем квот
+          td
+            = "#{@request.user.requests.sum(:cpu_hours)} часов | "
+            = "#{@request.user.requests.sum(:size)} Gb"
+  tr
+    th = Core::Organization.model_name.human
+    td
+      table class="table table-bordered table-condensed"
+        tr
+          th class="span3" = Core::Organization.model_name.human
+          td = @request.project.organization
+        tr
+          th Пользователей
+          td = @request.project.organization.users.with_access_state(:active).count
+        tr
+          th Проектов
+          td = @request.project.organization.projects.count
+  tr
+    th = Core::Cluster.model_name.human
+    td = @request.cluster
+  - @request.fields.each do |field|
+    tr
+      th = field.quota_kind.name
+      td = field.value
+
+
+/- @request.project.sureties.with_state(:active).each do |surety|
+  h4 Поручительство ##{surety.id}
+  table class="table table-bordered table-condensed"
+    tr
+      th = Core::Organization.model_name.human
+      td = smart_link_to surety.organization
+    tr
+      th = Core::User.model_name.human
+      td = smart_link_to surety.user
+    tr
+      th = Core::Project.model_name.human
+      td = link_to_project surety.project
+    tr
+      td colspan="2"
+        div id="surety" class=""
+          div = link_to "Текст поручительства", "#surety_#{surety.id}", data: { toggle: "collapse",parent: "#surety_#{surety.id}" }
+          div id="surety_#{surety.id}" class="collapse"
+            == surety.html_template

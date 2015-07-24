@@ -1,0 +1,39 @@
+h3
+  - state = { closed: "danger", active: "success" }[@user.access_state_name]
+  span class="label label-#{state}" = @user.human_access_state_name
+
+- if may? :manage, :users
+  div class="well btn-toolbar"
+    = link_to t(".login_as_user"), main_app.login_as_user_path(@user), class: "btn btn-success"
+    = link_to t(".edit_groups_involvement"), [:edit, :admin, @user], class: "btn btn-default"
+    = link_to t(".delete_user"), [:admin, @user], method: :delete, class: "btn btn-danger"
+  div class="well btn-toolbar"
+    = link_to t(".block_user"), [:block_access, :admin, @user], method: :post, class: "btn btn-danger" unless @user.closed?
+    = link_to t(".unblock_user"), [:unblock_access, :admin, @user], method: :post, class: "btn btn-success" unless @user.active?
+
+div class="row"
+  div class="page-header"
+    h1 = @user.full_name
+    h4 = @user.email
+    h4 #{User.human_attribute_name(:credentials)}: #{@user.credentials.with_state(:active).any? ? "есть" : "нет"}
+    h4 Дата регистрации: #{l @user.created_at.to_date} (#{(Date.current - @user.created_at.to_date).to_i} дн.)
+
+h4 = User.human_attribute_name(:groups)
+ul class="list-unstyled"
+  - @user.groups.each do |group|
+    li = group.name
+
+= render "core/employments/list", employments: @user.employments.with_state(:active).order(primary: :desc, created_at: :desc)
+
+h4 = User.human_attribute_name(:projects)
+= render "projects_list", projects: @user.projects.order(created_at: :desc)
+
+h4 = User.human_attribute_name(:reports)
+= render "sessions/reports/list", reports: @user.reports.order(updated_at: :desc).page(1)
+
+- if User.experts.include?(@user) && @user.assessing_reports.any?
+  h4 = User.human_attribute_name(:assessing_reports)
+  = render "sessions/reports/list", reports: @user.assessing_reports.order(updated_at: :desc).page(1)
+
+h4 = User.human_attribute_name(:surveys)
+= render "sessions/user_surveys/list", surveys: @user.surveys.order(updated_at: :desc).page(1)

@@ -1,0 +1,16 @@
+div class="row" id="spare-clusters"
+  div class="panel panel-default"
+    div class="panel-heading"
+      h4 = t(".title")
+    table class="table table-hover"
+      tr
+        th = Core::Cluster.human_attribute_name("name")
+        th = Core::Cluster.human_attribute_name("host")
+        th
+      - clusters.each do |cluster|
+        tr
+          td = cluster.name
+          td = cluster.host
+          td = link_to t(".new_request"),
+                       new_project_request_path(@project, cluster_id: cluster.id),
+                       class: "btn btn-default btn-sm"

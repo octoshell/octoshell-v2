@@ -1,0 +1,6 @@
+div class="row" data-max-values="#{field.max_values}"
+  div class="form-group"
+    div class="col-xs-8"
+      ul
+      - field.collection_values.each do |value|
+        li = value

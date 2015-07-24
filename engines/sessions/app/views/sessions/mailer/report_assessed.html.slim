@@ -1,0 +1,26 @@
+= render "header"
+
+p Ваш отчёт по проекту «#{@report.project.title}» в рамках перерегистрации «#{@report.session.description}» оценен экспертом.
+br
+p Оценки (по пятибальной шкале от 2 до 5):
+table border="1" cellpadding="20" cellspacing="0" width="300"
+  tr
+    td align="center" Иллюстрации
+    td align="center"
+      strong = @report.illustration_points
+  tr
+    td align="center" Изложение
+    td align="center"
+      strong = @report.statement_points
+  tr
+    td align="center" Общая оценка
+    td align="center"
+      strong = @report.summary_points
+
+- if @report.failed?
+  h5 К сожалению, ваш отчёт имеет как минимум одну оценку «неудовлетворительно», что влечёт за собой закрытие проекта по окончанию перерегистрации.
+- else
+  p Ваш отчёт успешно прошёл перерегистрацию!
+  p Пожалуйста, учтите замечания и пожелания эксперта (если таковые были) в последующей работе над проектом.
+
+= render "footer"

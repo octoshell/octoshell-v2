@@ -1,0 +1,7 @@
+div class="page-header"
+  h1 = t(".title", default: "Edit User")
+
+= bootstrap_form_for [:admin, @user], layout: :horizontal do |f|
+  = f.collection_check_boxes :group_ids, Group.all, :id, :name
+  = f.form_group do
+    = f.submit t("buttons.save")

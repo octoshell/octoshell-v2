@@ -1,0 +1,31 @@
+- type = SecureRandom.hex(4)
+h4
+  == stat.title
+  - if subdivision.present?
+    |  
+    span class="muted" = subdivision
+div class="row"
+  div class="col-xs-8"
+    ul class="nav nav-tabs"
+      li class="active"
+        a href="#graph-#{type}-pie" data-toggle="tab" Пирог
+      li
+        a href="#graph-#{type}-column" data-toggle="tab" Колонки
+    div class="tab-content"
+      div class="tab-pane active" id="graph-#{type}-pie"
+        div class="graph graph-pie" data-source="#{data.to_json}" data-title="#{stat.title}"
+      div class="tab-pane" id="graph-#{type}-column"
+        div class="graph graph-bar" data-source="#{data.to_json}" data-title="#{stat.title}"
+  div class="col-xs-4"
+    div class="graph-table-download text-center"
+      = link_to [:admin, stat, :download] do
+        i class="icon-cloud-download"
+        |  Загрузить .csv
+    div class="graph-table"
+      table class="table table-condensed table-striped"
+        - data.each do |array|
+          tr
+            - array.each do |item|
+              td = item
+            td style="width: 10px"
+              small = link_to "раскрыть", admin_stat_detail_path(stat, value: array.first), class: "muted"

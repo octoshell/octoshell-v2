@@ -1,0 +1,20 @@
+div class="page-header"
+  h1 = @surety
+
+= bootstrap_nested_form_for @surety, layout: :horizonatl, multipart: true do |f|
+  = f.text_field :boss_full_name
+  = f.text_field :boss_position
+  legend = Core::Surety.human_attribute_name(:scans)
+  = f.fields_for :scans, layout: :horizontal do |s_form|
+      - if s_form.object.new_record?
+        = s_form.form_group do
+          = s_form.file_field :image, help: t(".help")
+      - else
+        div class="thumbnail"
+          = link_to image_tag(s_form.object.image.path, class: "thumbnail"), s_form.object.image.url, target: :blank
+          div class="caption"
+            = s_form.link_to_remove t(".remove_scan"), class: "fa fa-times btn btn-danger"
+  = f.form_group do
+    = f.link_to_add t(".add_scan"), :scans
+  = f.form_group do
+    = f.submit t("actions.save")

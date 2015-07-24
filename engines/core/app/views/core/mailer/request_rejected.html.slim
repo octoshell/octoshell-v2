@@ -1,0 +1,9 @@
+= render "header"
+p
+  | Заявка №#{@request.id} для доступа к кластеру #{@request.cluster.name} в рамках проекта «#{request.project.title}» отклонена.
+p
+  | Выяснить причину, а также задать другие вопросы вы можете, перейдя в раздел Техподдержки.
+p
+  = link_to "Открыть раздел техподдержки.", support.tickets_url
+
+= render "footer"

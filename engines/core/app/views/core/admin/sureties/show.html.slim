@@ -1,0 +1,37 @@
+div class="page-header"
+  h1 = @surety
+
+- if may? :manage, :sureties
+  div class="well btn-toolbar"
+    - if @surety.confirmed?
+      = link_to Core::Surety.human_state_event_name(:activate), admin_surety_activate_path(@surety), class: "btn btn-success", method: :put
+      = link_to Core::Surety.human_state_event_name(:reject), admin_surety_reject_path(@surety), class: "btn btn-primary", method: :put
+    - else
+      = link_to Core::Surety.human_state_event_name(:close), admin_surety_close_path(@surety), class: "btn btn-danger", method: :put, data: { confirm: t("actions.confirm") }
+
+table class="table table-bordered"
+  tr
+    th = Core::Project.model_name.human
+    td = link_to @surety.project, [:admin, @surety.project]
+  tr
+    th = Core::Organization.model_name.human
+    td = link_to @surety.organization, [:admin, @surety.organization]
+  tr
+    th = Core::Surety.human_attribute_name(:author)
+    td
+      = link_to @surety.author.full_name, main_app.admin_user_path(@surety.author)
+  tr
+    th = Core::Surety.human_attribute_name(:state)
+    td
+      - state = { generated: "primary", confirmed: "warning", active: "success", closed: "danger" }[@surety.state_name]
+      span class="label label-#{state}" = @surety.human_state_name
+  tr
+    th = Core::Surety.human_attribute_name(:document)
+    td = link_to @surety.document.file.filename, @surety.document.url if @surety.document.present?
+
+- if @surety.scans.any?
+  div class="row"
+    h3 = Core::Surety.human_attribute_name(:scans)
+    - @surety.scans.each do |scan|
+      div class="col-xs-4"
+        = link_to image_tag(scan.image.path), scan.image.url, target: :blank, class: "thumbnail"

@@ -1,0 +1,30 @@
+div class="row" id="members"
+  div class="panel panel-default"
+    div class="panel-heading"
+    table class="table table-hover"
+      tr
+        th = t(".email")
+        th = t(".login")
+        th = t(".project_access_state")
+        th = t(".cluster_access_state")
+      - @project.members.preload(user: :profile).each do |member|
+        tr
+          td
+            ul class="list-unstyled"
+              li
+                / TODO: may? :review, :users
+                = member.full_name
+                - if member.user_id == @project.owner.id
+                  |  
+                  i class="fa fa-flag"
+              li
+                = mail_to member.email do
+                  i class="fa fa-envelope"
+                  |  
+                  = t(".send_email_to_member")
+          td = member.login
+          td
+            = mark_member_state(@project, member)
+          td
+            - fa_class = (member.has_access_to_clusters?) ? "check" : "times"
+            i class="fa fa-#{fa_class}"

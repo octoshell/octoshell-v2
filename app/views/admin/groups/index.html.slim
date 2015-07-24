@@ -1,0 +1,26 @@
+div class="page-header"
+  h1 = t(".title", default: "Groups")
+
+div class="panel panel-default"
+  div class="panel-heading"
+    = link_to t(".new_group"), new_admin_group_path, class: "btn btn-default"
+    = link_to t(".default_abilities"), default_admin_groups_path, class: "btn btn-info pull-right", data: { confirm: t("actions.confirm") }, method: :put
+
+  div class="panel-body"
+    table class="table table-hover"
+      tr
+        th = Group.human_attribute_name(:name)
+        th
+      - @groups.each do |group|
+        tr
+          td class="col-xs-10" = group.name
+          td class="btn-group"
+            = link_to t("actions.edit"), [:edit, :admin, group], class: "btn btn-default btn-sm"
+            button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+              span class="caret"
+            ul class="dropdown-menu" role="menu"
+              - name = t("actions.delete")
+              - confirm = t("actions.confirm", default: "Are You shure?")
+              - data = { method: :delete, confirm: confirm }
+              li class="text-left"
+                = link_to name, [:admin, group], data: data
