@@ -11,10 +11,10 @@ set :application, "octoshell2"
 set :user, "admin"
 set :rbenv_ruby_version, "jruby-1.7.16.1"
 set :deploy_to, "/var/www/#{application}"
-set :repository, "git@git.parallel.ru:dmitry.koprov/octoshell.git"
+set :repository, "git@github.com:octoshell/octoshell-v2.git"
 set :branch, "master"
 set :keep_releases, 3
-set :shared_paths, %w(public/uploads config/puma.rb config/database.yml log)
+set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log)
 
 task :environment do
   invoke :"rbenv:load"
