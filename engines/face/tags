@@ -1,0 +1,15 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	Development	/7760835/
+Engine	lib/face/engine.rb	/^  class Engine < ::Rails::Engine$/;"	c	module:Face
+Face	lib/face.rb	/^module Face$/;"	m
+Face	lib/face/engine.rb	/^module Face$/;"	m
+Face	lib/face/version.rb	/^module Face$/;"	m
+Face	lib/generators/face/install_generator.rb	/^module Face$/;"	m
+Generators	lib/generators/face/install_generator.rb	/^  module Generators$/;"	m	module:Face
+InstallGenerator	lib/generators/face/install_generator.rb	/^    class InstallGenerator < Rails::Generators::Base$/;"	c	module:Face.Generators
+finished	lib/generators/face/install_generator.rb	/^      def finished$/;"	f	module:Face.Generators
+mount_engine	lib/generators/face/install_generator.rb	/^      def mount_engine$/;"	f	class:Face.Generators.InstallGenerator

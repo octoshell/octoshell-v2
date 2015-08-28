@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "A core engine for octoshell"
   s.description = "Basic logic and bisuness models for an octoshell"
   s.license     = "MIT"
+  s.platform    = "java"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
