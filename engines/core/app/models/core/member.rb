@@ -77,8 +77,8 @@ module Core
     end
 
     def assign_login
-      new_login = email.delete(".+_-")[/^(.+)@/, 1].downcase().[0,24]
-      self.login = "#{new_login}_#{project.id}"
+      new_login = email.delete(".+_-")[/^(.+)@/, 1].downcase
+      self.login = "#{new_login[0,24]}_#{project.id}"
     end
   end
 end
