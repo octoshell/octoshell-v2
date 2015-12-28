@@ -13,18 +13,6 @@ GIT
 PATH
   remote: engines/announcements
   specs:
-    announcements (0.0.1)
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      decorators (~> 1.0.2)
-      kaminari
-      kramdown
-      maymay
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
-      state_machine
     announcements (0.0.1-java)
       activerecord-jdbcpostgresql-adapter
       carrierwave
@@ -75,7 +63,7 @@ PATH
       sidekiq-failures
       slim
       sshkey
-      state_machine
+      state_machines-activerecord
     core (0.0.1-java)
       activerecord-jdbcpostgresql-adapter
       carrierwave
@@ -92,7 +80,7 @@ PATH
       sidekiq-failures
       slim
       sshkey
-      state_machine
+      state_machines-activerecord
 
 PATH
   remote: engines/face
@@ -142,7 +130,7 @@ PATH
       ransack
       sidekiq
       slim
-      state_machine
+      state_machines-activerecord
     sessions (0.0.1-java)
       activerecord-jdbcpostgresql-adapter
       carrierwave
@@ -154,7 +142,7 @@ PATH
       ransack
       sidekiq
       slim
-      state_machine
+      state_machines-activerecord
 
 PATH
   remote: engines/statistics
@@ -190,7 +178,7 @@ PATH
       ransack
       sidekiq
       slim
-      state_machine
+      state_machines-activerecord
     support (0.0.1-java)
       activerecord-jdbcpostgresql-adapter
       carrierwave
@@ -202,7 +190,7 @@ PATH
       ransack
       sidekiq
       slim
-      state_machine
+      state_machines-activerecord
 
 PATH
   remote: engines/wiki
@@ -356,7 +344,7 @@ GEM
       rake
     mina-rbenv-addons (0.1)
       mina
-    mini_magick (4.2.10)
+    mini_magick (4.3.6)
     mini_portile (0.6.2)
     minitest (5.8.0)
     multi_json (1.11.2)
@@ -365,7 +353,7 @@ GEM
     nested_form (0.3.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (2.9.2)
+    net-ssh (3.0.1)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     nokogiri (1.6.6.2-java)
@@ -508,8 +496,15 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
-    sshkey (1.7.0)
+    sshkey (1.8.0)
     state_machine (1.2.0)
+    state_machines (0.4.0)
+    state_machines-activemodel (0.3.0)
+      activemodel (~> 4.1)
+      state_machines (>= 0.4.0)
+    state_machines-activerecord (0.3.0)
+      activerecord (~> 4.1)
+      state_machines-activemodel (>= 0.3.0)
     temple (0.7.6)
     therubyrhino (2.0.4)
       therubyrhino_jar (>= 1.7.3)
@@ -576,4 +571,4 @@ DEPENDENCIES
   wiki!
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
