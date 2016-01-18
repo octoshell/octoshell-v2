@@ -16,6 +16,10 @@ module Sessions
       kind.name
     end
 
+    def personal?
+      name =~ /персональный/i
+    end
+
     def template_survey_id
     end
   end
