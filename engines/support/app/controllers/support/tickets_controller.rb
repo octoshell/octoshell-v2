@@ -6,7 +6,9 @@ module Support
 
     def index
       @search = current_user.tickets.search(params[:q])
-      @tickets = @search.result(distinct: true).page(params[:page])
+      @tickets = @search.result(distinct: true)
+                        .order("id DESC, updated_at DESC")
+                        .page(params[:page])
     end
 
     def new
