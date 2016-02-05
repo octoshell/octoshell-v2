@@ -55,7 +55,7 @@ module Sessions
     end
 
     def default_index_params
-      params = { state_in: ["pending", "filling"] }
+      params = {}
       if s = Session.current
         params[:session_id_eq] = s.id
       end
