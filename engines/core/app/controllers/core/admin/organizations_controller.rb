@@ -68,7 +68,7 @@ module Core
 
     def organization_params
       params.require(:organization).permit(:name, :abbreviation, :city_id, :country_id, :kind_id,
-                                           departments_attributes: [ :name ])
+                                           departments_attributes: [ :id, :name, :_destroy ])
     end
   end
 end
