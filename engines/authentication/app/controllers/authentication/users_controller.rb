@@ -16,6 +16,7 @@ class Authentication::UsersController < Authentication::ApplicationController
     @user = User.load_from_activation_token(params[:token])
     if @user
       @user.activate!
+      @user.save
       auto_login @user
       flash[:notice] = t("authentication.flash.user_is_activated")
     else

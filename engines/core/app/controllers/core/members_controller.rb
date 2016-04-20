@@ -10,6 +10,7 @@ module Core
       @member = @project.members.find(params[:id])
       if @member.update(member_params)
         @member.accept_invitation!
+        @member.save
         redirect_to @project
       else
         render :edit

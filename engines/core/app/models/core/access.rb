@@ -1,5 +1,6 @@
 module Core
   class Access < ActiveRecord::Base
+
     belongs_to :project
     belongs_to :cluster
 
@@ -8,16 +9,18 @@ module Core
 
     validates :project, :cluster, presence: true
 
-    state_machine initial: :opened do
-      state :opened
+    include AASM
+    include ::AASM_Additions
+    aasm :state, :column => :state do
+      state :opened, :initial => true
       state :closed
 
       event :close do
-        transition :opened => :closed
+        transitions :opened => :closed
       end
 
       event :reopen do
-        transition :closed => :opened
+        transitions :closed => :opened
       end
     end
 

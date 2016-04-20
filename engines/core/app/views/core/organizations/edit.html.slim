@@ -15,4 +15,5 @@ div class="page-header"
       = d_form.link_to_remove t(".remove_department"), class: "fa fa-times text-danger"
 
   = f.form_group do
-    = f.submit t("actions.submit")
+    = f.submit
+      = t("actions.submit")

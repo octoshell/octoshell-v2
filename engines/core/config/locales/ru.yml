@@ -169,7 +169,7 @@ ru:
         user_fio: Инициалы
         updated_at: Приглашение выслано
 
-    state_machines:
+    aasm:
       user:
         access_state:
           states:

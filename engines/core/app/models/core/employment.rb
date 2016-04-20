@@ -1,6 +1,7 @@
 # encoding: utf-8
 module Core
   class Employment < ActiveRecord::Base
+
     belongs_to :user, class_name: Core.user_class, foreign_key: :user_id, inverse_of: :employments
     belongs_to :organization
     belongs_to :organization_department
@@ -10,12 +11,14 @@ module Core
 
     before_save :check_primacy
 
-    state_machine :state, initial: :active do
-      state :active
+    include AASM
+    include ::AASM_Additions
+    aasm(:state, :column => :state) do
+      state :active, :initial => true
       state :closed
 
       event :deactivate do
-        transition :active => :closed
+        transitions :from => :active, :to => :closed
       end
     end
 

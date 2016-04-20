@@ -18,6 +18,7 @@ module Core
     def update
       @request = Request.find(params[:id])
       if @request.update(request_params)
+        @request.save
         redirect_to [:admin, @request], notice: t("flash.request_updated")
       else
         render :edit

@@ -10,7 +10,7 @@ module Support
     end
 
     def new
-      @topic = Topic.new(topic_params)
+      @topic = Topic.new() #topic_params)
     end
 
     def create
@@ -38,7 +38,7 @@ module Support
     private
 
     def topic_params
-      params.require(:ticket_topic).permit(:name, :parent_id, :tags_ids, :fields_ids)
+      params.require(:topic).permit(:name, :parent_id, :tag_ids => [], :field_ids => [])
     end
   end
 end

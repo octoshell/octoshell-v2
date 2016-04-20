@@ -58,7 +58,7 @@ legend = link_to "Перейти к карточке проекта", core.admin
           div class="btn-toolbar"
             = f.submit t("actions.assess", default: "Оценить")
             = link_to "Вернуть пользователю", [:admin, @report, :reject], class: "btn btn-danger", data: { confirm: "Вы уверены?" }, method: :patch
-    - elsif may?(:manage, :reports) && @report.can_pick? && @report.expert.nil?
+    - elsif may?(:manage, :reports) && @report.may_pick? && @report.expert.nil?
       = link_to "Взять на оценку", [:admin, @report, :pick], method: :patch, class: "btn btn-info btn-lg"
     - else
       table class="table table-striped"

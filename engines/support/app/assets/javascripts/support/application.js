@@ -12,9 +12,14 @@
 //
 //= require_tree .
 
+// - require jquery
+// - require jquery_ujs
+// - require jquery-ui/autocomplete
+// - require autocomplete-rails
+
 $(document).ready(function(){
   $('#reply_template').on('change', function(){
-    $('#reply_message').val($(this).val())
+    $('#reply_message').append($(this).val())
   });
 
   $(document).on('reload_form form', function(e){

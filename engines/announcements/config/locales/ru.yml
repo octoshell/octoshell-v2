@@ -10,7 +10,7 @@ ru:
         attachment: Вложение
         is_special: Специальная (рабочая) рассылка?
 
-    state_machines:
+    aasm:
       announcement:
         state:
           states:

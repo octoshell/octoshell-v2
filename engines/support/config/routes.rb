@@ -21,6 +21,7 @@ Support::Engine.routes.draw do
     post :continue, on: :collection
     put :close
     put :resolve
+    put :reopen
   end
 
   resources :replies, only: :create

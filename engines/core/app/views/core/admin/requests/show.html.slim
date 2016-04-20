@@ -5,9 +5,9 @@ div class="page-header"
 
 div class="well btn-toolbar"
   = link_to t("actions.edit"), [:edit, :admin, @request], class: "btn btn-default" unless @request.closed?
-  - if @request.can_approve?
+  - if @request.may_approve?
     = link_to Core::Request.human_state_event_name(:approve), approve_admin_request_path(@request), class: "btn btn-success"
-  - if @request.can_reject?
+  - if @request.may_reject?
     = link_to Core::Request.human_state_event_name(:reject), reject_admin_request_path(@request), class: "btn btn-danger"
 
 
@@ -24,7 +24,7 @@ table class="table table-bordered"
           td = @request.owner
         tr
           th Активных проектов
-          td = @request.owner.owned_projects.with_state(:active).count
+          td = @request.owner.projects.where(:state=>:active).count
         tr
           th Дата регистрации
           td
@@ -44,7 +44,7 @@ table class="table table-bordered"
           td = @request.project.organization
         tr
           th Пользователей
-          td = @request.project.organization.users.with_access_state(:active).count
+          td = @request.project.organization.users.where(:access_state=>:active).count
         tr
           th Проектов
           td = @request.project.organization.projects.count
@@ -57,7 +57,7 @@ table class="table table-bordered"
       td = field.value
 
 
-/- @request.project.sureties.with_state(:active).each do |surety|
+/- @request.project.sureties.where(:state=>:active).each do |surety|
   h4 Поручительство ##{surety.id}
   table class="table table-bordered table-condensed"
     tr

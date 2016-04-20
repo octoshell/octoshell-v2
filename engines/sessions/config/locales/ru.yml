@@ -101,7 +101,7 @@ ru:
       sessions/report_submit_denial_reason:
         name: Наименование
 
-    state_machines:
+    aasm:
       sessions/report:
         state:
           states:

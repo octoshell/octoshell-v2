@@ -2,7 +2,7 @@ require "support/engine"
 require "file_size_validator"
 
 require "decorators"
-require "state_machine"
+require "aasm"
 require "slim"
 require "sidekiq"
 require "maymay"

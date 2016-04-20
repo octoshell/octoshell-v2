@@ -4,7 +4,7 @@ module Core
 
     def new
       @project = Project.find(params[:project_id])
-      @unsured_members = @project.members.with_project_access_state(:engaged)
+      @unsured_members = @project.members.where(:project_access_state =>:engaged)
       @surety = @project.sureties.build do |surety|
         surety.author = current_user
       end
@@ -14,14 +14,14 @@ module Core
       @project = Project.find(params[:surety][:project_id])
       @surety = @project.sureties.build(surety_params) do |surety|
         surety.author = current_user
-        @project.members.with_project_access_state(:engaged).each do |project_member|
+        @project.members.where(:project_access_state =>:engaged).each do |project_member|
           surety.surety_members.build(user: project_member.user,
                                       organization: project_member.organization,
                                       organization_department: project_member.organization_department)
         end
       end
       if @surety.save!
-        @project.members.with_project_access_state(:engaged).map(&:append_to_surety!)
+        @project.members.where(:project_access_state =>:engaged).map(&:append_to_surety!)
         redirect_to @project
       else
         redirect_to @project, alert: @surety.errors.full_messages.to_sentence
@@ -46,6 +46,7 @@ module Core
       @surety = find_surety(params[:id])
 
       if @surety.update(surety_params)
+        @surety.save
         redirect_to @surety
       else
         redirect_to @surety, alert: @surety.errors.full_messages.to_sentence
@@ -55,6 +56,7 @@ module Core
     def confirm
       @surety = find_surety(params[:id])
       if @surety.confirm
+        @surety.save
         redirect_to @surety.project
       else
         redirect_to @surety, alert: @surety.errors.full_messages.to_sentence
@@ -64,6 +66,7 @@ module Core
     def close
       @surety = find_surety(params[:id])
       if @surety.close
+        @surety.save
         redirect_to @surety.project
       else
         redirect_to @surety, alert: @surety.errors.full_messages.to_sentence

@@ -26,7 +26,7 @@
             li
               strong = link_to ticket, [:admin, ticket]
             li
-              - state = { pending: "danger", answered_by_support: "warning", answered_by_reporter: "danger", resolved: "success", closed: "default" }[ticket.state_name]
+              - state = { "pending" => "danger", "answered_by_support" => "warning", "answered_by_reporter" => "danger", "resolved" => "success", "closed" => "default" }[ticket.state_name]
               span class="label label-#{state}" = ticket.human_state_name
             li class="text-muted"
               | #{Support::Ticket.human_attribute_name(:topic)}: #{ticket.topic.name_with_parents}

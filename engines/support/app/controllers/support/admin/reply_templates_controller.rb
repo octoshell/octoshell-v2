@@ -10,7 +10,11 @@ module Support
     end
 
     def new
-      @reply_template = ReplyTemplate.new(reply_template_params)
+      if params[:reply_template].nil?
+        @reply_template = ReplyTemplate.new()
+      else
+        @reply_template = ReplyTemplate.new(reply_template_params)
+      end
     end
 
     def create

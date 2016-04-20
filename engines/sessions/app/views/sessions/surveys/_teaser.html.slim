@@ -33,7 +33,7 @@
                     - else
                       span class="label" = us.human_state_name
                   td
-                    - if us.can_accept?
+                    - if us.may_accept?
                       = link_to "Пройти", [us, :accept], method: :put, class: 'btn btn-mini btn-success'
                     - else
                       small = link_to "Открыть", user_survey_path(us, anchor: 'start-page')
@@ -54,7 +54,7 @@
                     - else
                       span class="label" = report.human_state_name
                   td
-                    - if report.can_accept?
+                    - if report.may_accept?
                       = link_to "Прислать отчет", [report, :accept], method: :put, class: 'btn btn-mini btn-success'
                     - else
                       small = link_to "Открыть", report_path(report, anchor: "start-page")

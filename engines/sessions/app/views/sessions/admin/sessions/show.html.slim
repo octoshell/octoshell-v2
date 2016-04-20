@@ -8,14 +8,14 @@ div class="well"
     = link_to "Начать", [:admin, @session, :start],
       class: "btn btn-large btn-success",
       method: :put, data: { confirm: t("actions.confirm") },
-      disabled: !@session.can_start?
+      disabled: !@session.may_start?
     = link_to t(".edit_projects"), [:admin, @session, :show_projects],
       class: "btn btn-large btn-warning",
       disabled: @session.ended?
     = link_to "Закончить", [:admin, @session, :stop],
       class: "btn btn-large btn-danger",
       method: :put, data: { confirm: t("actions.confirm") },
-      disabled: !@session.can_stop?
+      disabled: !@session.may_stop?
 
 blockquote class="lead"
   h4 = t(".started_at", date: @session.started_at || "--")
@@ -32,7 +32,7 @@ blockquote class="lead"
 
 h3 = Sessions::Session.human_attribute_name(:surveys)
 
-- if @session.can_start?
+- if @session.may_start?
   div class="well"
     = link_to t(".new_survey"), new_admin_session_survey_path(@session), class: "btn btn-default"
 ul class="list-unstyled"
@@ -48,5 +48,5 @@ div class="alert alert-info" id="graphs-alert"
 
 = link_to t(".show_graphs"), [:admin, @session, :stats],
   class: "btn btn-large btn-primary pull-right", id: "graphs-button",
-  disabled: @session.can_stop?
+  disabled: @session.may_stop?
 

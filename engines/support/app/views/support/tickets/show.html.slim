@@ -3,11 +3,13 @@ div class="page-header"
   h2 = @ticket.subject
   h4 class="text-muted" = @ticket.topic.name_with_parents
   h3
-    - state = { pending: "danger", answered_by_support: "danger", answered_by_reporter: "warning", resolved: "success", closed: "default" }[@ticket.state_name]
-    span class="label label-#{state}" = @ticket.human_state_name
+    - state = { "pending"=> "danger", "answered_by_support" => "danger", "answered_by_reporter" => "warning", "resolved" => "success", "closed" => "default" }[@ticket.state_name]
+    span class="label label-#{state}" = @ticket.human_state_name.to_s
 
 div class="well btn-toolbar"
-  - unless @ticket.resolved? || @ticket.closed?
+  - if @ticket.resolved? || @ticket.closed?
+    = link_to Support::Ticket.human_state_event_name(:reopen), ticket_reopen_path(@ticket), method: :put, class: "btn btn-default"
+  - else
     = link_to t("actions.edit"), [:edit, @ticket], class: "btn btn-default"
     = link_to Support::Ticket.human_state_event_name(:resolve), ticket_resolve_path(@ticket), method: :put, class: "btn btn-success"
     = link_to Support::Ticket.human_state_event_name(:close), ticket_close_path(@ticket), method: :put, class: "btn btn-danger", data: { confirm: t("actions.confirm") }
@@ -102,19 +104,20 @@ h3 = Support::Ticket.human_attribute_name(:replies)
             small = Support::Reply.human_attribute_name(:attachment)
             p = link_to_attachment reply
 
-  - if current_user.id == @ticket.reporter.id
-    div class="well"
-      = t(".problem_solved")
-      = link_to Support::Ticket.human_state_event_name(:resolve), ticket_resolve_path(@ticket), method: :put, class: "btn btn-success"
 - else
   p = t(".no_replies")
 
 
-- unless @ticket.closed?
+- unless @ticket.closed? || @ticket.resolved?
   legend = t(".new_reply")
   = bootstrap_form_for @ticket.replies.build, layout: :horizontal, multipart: true do |f|
     = f.hidden_field :ticket_id
     = f.text_area :message, rows: 5
     = f.file_field :attachment
     = f.form_group
-      = f.submit t("actions.send")
+      div class="well"
+        - if current_user.id == @ticket.reporter.id
+          = t(".problem_solved")
+          = link_to Support::Ticket.human_state_event_name(:resolve), ticket_resolve_path(@ticket), method: :put, class: "btn btn-success"
+        = t(".if_not")
+        = f.submit t("actions.send")

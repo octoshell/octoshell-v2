@@ -60,7 +60,7 @@ ru:
         subject: Заголовок
         message: Сообщение
 
-    state_machines:
+    aaaasm:
       support/ticket:
         state:
           states:
@@ -168,8 +168,9 @@ ru:
         new_ticket: Новая заявка
       show:
         title: Заявка №%{id}
-        problem_solved: "Проблема решена? Нажмите: "
+        problem_solved: "Проблема решена? Нажмите "
         new_reply: Новое сообщение
+        if_not: "Если нет, нажмите "
       new:
         title: Новая заявка
       edit:

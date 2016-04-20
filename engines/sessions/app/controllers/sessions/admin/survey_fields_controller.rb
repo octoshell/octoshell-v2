@@ -24,6 +24,7 @@ module Sessions
       @survey = Survey.find(params[:survey_id])
       @survey_field = @survey.fields.find(params[:id])
       if @survey_field.update_attributes(survey_field_params)
+        @survey_field.save
         redirect_to [:admin, @survey]
       else
         render :edit

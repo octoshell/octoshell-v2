@@ -22,10 +22,11 @@
             li
               strong = link_to ticket, ticket
             li
-              - state = { pending: "danger", answered_by_support: "danger", answered_by_reporter: "warning", resolved: "success", closed: "default" }[ticket.state_name]
+              - state = { "pending" => "danger", "answered_by_support" => "danger", "answered_by_reporter" => "warning", "resolved" => "success", "closed" => "default" }[ticket.state_name]
               span class="label label-#{state}" = ticket.human_state_name
             li class="text-muted"
               | #{Support::Ticket.human_attribute_name(:topic)}: #{ticket.topic.name_with_parents}
+            li
             - if ticket.project.present?
               li
                 | #{Support::Ticket.human_attribute_name(:project)}: #{link_to ticket.project, core.project_path(ticket.project)}

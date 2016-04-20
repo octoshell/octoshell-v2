@@ -23,19 +23,19 @@ module Core
 
     def project_activated(project_id)
       @project = Core::Project.find(project_id)
-      member_emails = @project.members.with_project_access_state(:allowed).preload(:user).map(&:email)
+      member_emails = @project.members.where(:project_access_state=>:allowed).preload(:user).map(&:email)
       mail to: member_emails, subject: t(".subject", title: @project.title)
     end
 
     def project_closed(project_id)
       @project = Core::Project.find(project_id)
-      member_emails = @project.members.with_project_access_state(:allowed).preload(:user).map(&:email)
+      member_emails = @project.members.where(:project_access_state=>:allowed).preload(:user).map(&:email)
       mail to: member_emails, subject: t(".subject", title: @project.title)
     end
 
     def project_suspended(project_id)
       @project = Core::Project.find(project_id)
-      member_emails = @project.members.with_project_access_state(:allowed).preload(:user).map(&:email)
+      member_emails = @project.members.where(:project_access_state=>:allowed).preload(:user).map(&:email)
       mail to: member_emails, subject: t(".subject", title: @project.title)
     end
 

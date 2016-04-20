@@ -27,6 +27,7 @@ module Core
     def activate
       @surety = find_surety(params[:surety_id])
       if @surety.activate
+        @surety.save
         redirect_to_surety @surety
       else
         redirect_to_surety_with_alert @surety
@@ -36,6 +37,7 @@ module Core
     def close
       @surety = find_surety(params[:surety_id])
       if @surety.close
+        @surety.save
         redirect_to_surety @surety
       else
         redirect_to_surety_with_alert @surety
@@ -45,6 +47,7 @@ module Core
     def confirm
       @surety = find_surety(params[:surety_id])
       if @surety.confirm
+        @surety.save
         redirect_to_surety(@surety)
       else
         redirect_to_surety_with_alert(@surety)
@@ -54,6 +57,7 @@ module Core
     def reject
       @surety = find_surety(params[:surety_id])
       if @surety.reject
+        @surety.save
         redirect_to_surety(@surety)
       else
         redirect_to_surety_with_alert(@surety)
@@ -85,6 +89,7 @@ module Core
     def load_scan
       @surety = Surety.find(params[:surety_id])
       if @surety.load_scan(params[:file])
+        @surety.save
         redirect_to [:admin, @surety], notice: t("flash.scan_uploaded")
       else
         redirect_to [:admin, @surety, :scan], alert: @surety.errors.full_messages.to_sentence

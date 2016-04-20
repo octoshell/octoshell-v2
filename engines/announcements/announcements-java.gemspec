@@ -21,7 +21,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "decorators", "~> 1.0.2"
-  s.add_dependency "state_machine"
+  #s.add_dependency "state_machine"
+  s.add_dependency "aasm"
   s.add_dependency "slim"
   s.add_dependency "sidekiq"
   s.add_dependency "maymay"

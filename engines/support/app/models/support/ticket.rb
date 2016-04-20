@@ -1,5 +1,6 @@
 module Support
   class Ticket < ActiveRecord::Base
+
     mount_uploader :attachment, AttachmentUploader
     mount_uploader :export_attachment, TicketAttachmentUploader, mount_on: :attachment_file_name
 
@@ -31,41 +32,69 @@ module Support
     after_create :add_reporter_to_subscribers
     after_create :notify_support
 
-    state_machine :state, initial: :pending do
-      state :pending
+    include AASM
+    include ::AASM_Additions
+    aasm(:state, :column => :state) do
+      state :pending, :initial => true
       state :answered_by_support
       state :answered_by_reporter
       state :resolved
       state :closed
 
       event :attach_support_reply do
-        transition [:pending, :resolved,
-                    :answered_by_support,
-                    :answered_by_reporter] => :answered_by_support
+        transitions :from => [:pending, :resolved, :answered_by_support,
+                              :answered_by_reporter],
+                    :to => :answered_by_support
       end
 
       event :attach_reporter_reply do
-        transition [:pending, :resolved,
-                    :answered_by_support,
-                    :answered_by_reporter] => :answered_by_reporter
+        transitions :from => [:pending, :resolved,
+                              :answered_by_support,
+                              :answered_by_reporter],
+                    :to => :answered_by_reporter
       end
 
       event :resolve do
-        transition [:pending,
-                    :answered_by_reporter,
-                    :answered_by_support] => :resolved
+        transitions :from => [:pending,
+                              :answered_by_reporter,
+                              :answered_by_support],
+                    :to => :resolved
       end
 
       event :reopen do
-        transition :closed => :pending
+        transitions :from => [:closed, :resolved], :to => :pending
       end
 
       event :close do
-        transition [:pending, :resolved,
-                    :answered_by_support,
-                    :answered_by_reporter] => :closed
+        transitions :from => [:pending, :resolved,
+                              :answered_by_support,
+                              :answered_by_reporter],
+                    :to => :closed
       end
+
+      after_all_transitions :log_status_change
     end
+
+    def log_status_change
+      #puts "======> changing from #{aasm(:state).from_state} to #{aasm(:state).to_state} (event: #{aasm(:state).current_event})"
+    end
+
+    #include ::AASM_Additions
+    # def state_name
+    #   state.to_s
+    # end
+
+    # def human_state_name st=nil
+    #   st.nil? ? state.to_s : st.to_s
+    # end
+
+    # def self.human_state_event_name s
+    #   s.to_s
+    # end
+
+    # def self.human_state_names
+    #   aasm(:state).states
+    # end
 
     def accept(user)
       replies.create! do |reply|

@@ -32,7 +32,7 @@ gem "statistics",     path: "engines/statistics"
 gem "wiki",           path: "engines/wiki"
 gem "announcements",  path: "engines/announcements"
 
-gem "rails_config"
+gem "config", github: 'railsconfig/config'
 gem "decorators", "~> 1.0.0"
 
 group :production do

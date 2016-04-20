@@ -1,7 +1,7 @@
 require "core/engine"
 require "maymay"
 require "decorators"
-require "state_machine"
+require "aasm"
 require "sidekiq"
 require "sshkey"
 require "net/ssh"

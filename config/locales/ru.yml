@@ -49,6 +49,7 @@ ru:
 
   actions:
     return_to_self_session: Вернуться в свою сессию
+    submit: Отправить
 
   activerecord:
     models:

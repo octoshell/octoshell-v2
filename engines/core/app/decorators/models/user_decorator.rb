@@ -19,14 +19,14 @@ Core.user_class.class_eval do
   has_many :invitational_account, ->{ where(project_access_state: "invited") },
     class_name: "::Core::Member",
     foreign_key: :user_id
-  has_many :projects_with_invitation, ->{ without_state(["cancelled", "closed"]) },
+  has_many :projects_with_invitation, ->{ where.not(state: ["cancelled", "closed"]) },
     through: :invitational_account, class_name: "::Core::Project",
     source: :project
 
   has_many :active_accounts, ->{ where(project_access_state: "allowed") },
     class_name: "::Core::Member",
     foreign_key: :user_id
-  has_many :available_projects, ->{ with_state("active") },
+  has_many :available_projects, ->{ where(state: "active") },
     through: :active_accounts, class_name: "::Core::Project",
     source: :project
 
@@ -58,39 +58,51 @@ Core.user_class.class_eval do
 
   after_create :check_project_invitations
 
-  state_machine :access_state, initial: :active do
-    state :active
+  include AASM
+  include ::AASM_Additions
+  aasm(:access_state, :column => :access_state) do
+    state :active, :initial => true
     state :closed
 
     event :block do
-      transition active: :closed
+      transitions :from => :active, :to => :closed, :after => :suspend_all_accounts
     end
 
     event :reactivate do
-      transition closed: :active
+      transitions :from => :closed, :to => :active, :after => :activate_suspended_accounts
     end
 
-    inside_transition on: :block, &:suspend_all_accounts
-    inside_transition on: :reactivate, &:activate_suspended_accounts
+    #inside_transition on: :block, &:suspend_all_accounts
+    #inside_transition on: :reactivate, &:activate_suspended_accounts
   end
 
   def suspend_all_accounts
-    accounts.with_project_access_state(:allowed).map(&:suspend!)
+    accounts.where(:project_access_state=>:allowed).map(&:suspend!)
     available_projects.each(&:synchronize!)
   end
 
   def activate_suspended_accounts
-    accounts.with_project_access_state(:suspended).map(&:activate!)
+    accounts.where(:project_access_state=>:suspended).map(&:activate!)
     available_projects.each(&:synchronize!)
   end
 
   def prepared_to_join_projects?
-    active? && credentials.with_state(:active).any? &&
-      employments.any?
+    b=credentials.where(:state => :active).any?
+    c=employments.any?
+    a=(self.aasm(:access_state).current_state == :active)
+    a && b && c
+  end
+
+  def human_access_state_name
+    access_state
+  end
+
+  def access_state_name
+    access_state
   end
 
   def self.human_access_state_names
-    Hash[User.state_machines[:access_state].states.map {|s| [s.human_name, s.name] }]
+    Hash[User.aasm(:access_state).states.map {|s| [s.human_name, s.name] }]
   end
 
   def check_project_invitations

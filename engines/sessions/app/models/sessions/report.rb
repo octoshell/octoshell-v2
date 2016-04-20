@@ -3,6 +3,7 @@
 # Отчет о проделанной работе по проекту.
 module Sessions
   class Report < ActiveRecord::Base
+
     belongs_to :session
 
     belongs_to :project, class_name: "Core::Project", foreign_key: :project_id
@@ -22,8 +23,10 @@ module Sessions
 
     # after_create :notify_about_new_report
 
-    state_machine :state, initial: :pending do
-      state :pending
+    include AASM
+    include ::AASM_Additions
+    aasm(:state, :column => :state) do
+      state :pending, :initial => true
       state :can_not_be_submitted
       state :accepted
       state :submitted
@@ -33,44 +36,40 @@ module Sessions
       state :exceeded
 
       event :accept do
-        transition [:pending, :exceeded] => :accepted
+        transitions :from => [:pending, :exceeded], :to => :accepted
       end
 
       event :decline_submitting do
-        transition [:pending, :rejected, :exceeded] => :can_not_be_submitted
+        transitions :from => [:pending, :rejected, :exceeded], :to => :can_not_be_submitted
       end
 
       event :submit do
-        transition [:exceeded, :accepted] => :submitted
+        transitions :from => [:exceeded, :accepted], :to => :submitted
       end
 
       event :pick do
-        transition [:pending, :accepted, :submitted, :exceeded, :rejected] => :assessing
+        transitions :from => [:pending, :accepted, :submitted, :exceeded, :rejected], :to => :assessing
       end
 
       event :assess do
-        transition [:assessed, :assessing] => :assessed
+        transitions :from => [:assessed, :assessing], :to => :assessed, :after => :notify_about_assess
       end
 
       event :reject do
-        transition [:can_not_be_submitted, :submitted, :assessing] => :rejected
+        transitions :from => [:can_not_be_submitted, :submitted, :assessing], :to => :rejected, :after => :notify_about_reject
       end
 
       event :edit do
-        transition :assessed => :assessing
+        transitions :from => :assessed, :to => :assessing
       end
 
       event :resubmit do
-        transition :rejected => :assessing
+        transitions :from => :rejected, :to => :assessing
       end
 
       event :postdate do
-        transition [:pending, :accepted, :rejected] => :exceeded
+        transitions :from => [:pending, :accepted, :rejected], :to => :exceeded, :after => :block_project
       end
-
-      inside_transition on: :assess, &:notify_about_assess
-      inside_transition on: :reject, &:notify_about_reject
-      inside_transition on: :postdate, &:block_project
     end
 
     def to_s

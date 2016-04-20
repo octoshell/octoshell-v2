@@ -4,6 +4,7 @@
 
 module Sessions
   class Session < ActiveRecord::Base
+
     belongs_to :personal_survey, class_name: "Survey"
     belongs_to :projects_survey, class_name: "Survey"
     belongs_to :counters_survey, class_name: "Survey"
@@ -21,32 +22,33 @@ module Sessions
 
     validates :description, :receiving_to, presence: true
 
-    state_machine :state, initial: :pending do
-      state :pending
+    include AASM
+    include ::AASM_Additions
+    aasm(:state, :column => :state) do
+      state :pending, :initial => true
       state :active
       state :ended
 
       event :start do
-        transition :pending => :active
+        transitions :from => :pending, :to => :active
+        after do
+          enqueue_session_start
+          touch :started_at
+        end
       end
 
       event :stop do
-        transition :active => :ended
+        transitions :from => :active, :to => :ended
+        after do
+          enqueue_session_validation
+          touch :ended_at
+        end
       end
 
-      inside_transition :on => :start do |session|
-        session.enqueue_session_start
-        session.touch :started_at
-      end
-
-      inside_transition :on => :stop do |session|
-        session.enqueue_session_validation
-        session.touch :ended_at
-      end
     end
 
     def self.current
-      with_state(:active).first
+      where(:state => :active).first
     end
 
     def survey_fields
@@ -81,7 +83,7 @@ module Sessions
         if survey.only_for_project_owners?
           project.owner.surveys.create!(session: self, survey: survey, project: project)
         else
-          project.members.with_project_access_state(:allowed).each do |member|
+          project.members.where(:project_access_state=>:allowed).each do |member|
             member.user.surveys.create!(session: self, survey: survey, project: project)
           end
         end
@@ -104,7 +106,7 @@ module Sessions
 
     def clear_report_and_surveys_for(project)
       project.reports.where(session: self).destroy_all
-      project.members.with_project_access_state(:allowed).each do |member|
+      project.members.where(:project_access_state=>:allowed).each do |member|
         member.user.surveys.where(session: self, project: project).destroy_all
       end
       # TODO Mailer: project is excluded from session.
@@ -112,12 +114,12 @@ module Sessions
     end
 
     def validate_reports_and_surveys
-      reports.with_state(:assessed).select(&:failed?).map(&:close_project!)
-      reports.with_state([:pending, :accepted, :rejected]).map(&:postdate!)
-      notify_experts_about_submitted_reports if reports.with_state(:submitted).any?
-      notify_exports_about_assessing_reports if reports.with_state(:assessing).any?
+      reports.where(:state=>:assessed).select(&:failed?).map(&:close_project!)
+      reports.where(:state=>[:pending, :accepted, :rejected]).map(&:postdate!)
+      notify_experts_about_submitted_reports if reports.where(:state=>:submitted).any?
+      notify_exports_about_assessing_reports if reports.where(:state=>:assessing).any?
 
-      user_surveys.with_state([:pending, :filling]).map(&:postdate!)
+      user_surveys.where(:state=>[:pending, :filling]).map(&:postdate!)
     end
 
     def notify_experts_about_submitted_reports

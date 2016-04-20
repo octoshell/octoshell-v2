@@ -16,7 +16,7 @@ module Support
     scope :common_theme, -> { where(name: "Другое") }
 
     def available_parents
-      new_record? ? Topic.scoped : Topic.where.not(id: id)
+      new_record? ? Topic.all : Topic.where.not(id: id)
     end
 
     def name_with_parents

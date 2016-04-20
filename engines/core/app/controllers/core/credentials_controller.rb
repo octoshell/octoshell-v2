@@ -16,6 +16,7 @@ module Core
     def deactivate
       @credential = Credential.find(params[:credential_id])
       if @credential.deactivate!
+        @credential.save
         redirect_to main_app.profile_path
       else
         flash.now[:alert] = @credential.errors.full_messages.join(', ')

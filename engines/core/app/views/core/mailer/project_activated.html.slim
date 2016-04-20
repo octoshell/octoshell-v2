@@ -7,12 +7,12 @@ p
 p
   | На данный момент доступ предоставлен к кластерам:
   ul
-    - @project.accesses.with_state(:opened).each do |access|
+    - @project.accesses.where(:state=>:opened).each do |access|
       li = "#{access.cluster.name} (#{access.cluster.host}). Квоты: #{access.quota_resources_info}"
 p
   | Логины участников проекта:
   ul
-    - @project.members.with_project_access_state(:allowed).each do |member|
+    - @project.members.where(:project_access_state=>:allowed).each do |member|
       li = member.login
 
 = render "footer"

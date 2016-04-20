@@ -4,7 +4,7 @@ $(function(){
     en: "Choose"
   }
 
-  $('select, select2-container, input.chosen, select.chosen').each(function(i, e){
+  $('select, select2-container, select2-ajax, input.chosen, select.chosen').each(function(i, e){
     var select = $(e)
     var options = select.find('option')
     if (options.size() == 1) {
@@ -15,22 +15,22 @@ $(function(){
       allowClear: true
     }
 
-    if (select.hasClass('ajax')) {
+    if (select.hasClass('ajax') || select.hasClass('select2-ajax')) {
       options.ajax = {
         url: select.data('source'),
         dataType: 'json',
         quietMillis: 100,
-        data: function(term, page) {
+        data: function(params) {
           return {
-            q: $.trim(term),
-            page: page,
+            q: $.trim(params.term),
+            page: params.page,
             per: 10
           }
         },
-        results: function(data, page) {
+        processResults: function(data, page) {
           var more = (page * 10) < data.total
-          return { results: data.records, more: more }
-        }
+          return { results: data.records, pagination:{more: more }}
+        },
       }
     }
     select.select2(options)

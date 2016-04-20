@@ -3,6 +3,7 @@
 # Опрос, который заполняет пользователь
 module Sessions
   class UserSurvey < ActiveRecord::Base
+
     belongs_to :session
     belongs_to :user, class_name: Sessions.user_class, inverse_of: :surveys
     belongs_to :survey
@@ -11,30 +12,29 @@ module Sessions
 
     has_many :values, class_name: "Sessions::SurveyValue", dependent: :destroy
 
-    state_machine :state, initial: :pending do
-      state :pending
+    include AASM
+    include ::AASM_Additions
+    aasm :state, column: 'state' do
+      state :pending, :initial => true
       state :filling
       state :submitted
       state :exceeded
 
       event :accept do
-        transition pending: :filling
+        transitions :from => :pending, :to => :filling, :after => :fill_fields
       end
 
       event :submit do
-        transition filling: :submitted
+        transitions :from => :filling, :to => :submitted
       end
 
       event :edit do
-        transition submitted: :filling
+        transitions :from => :submitted, :to => :filling
       end
 
       event :postdate do
-        transition [:pending, :filling] => :exceeded
+        transitions :from => [:pending, :filling], :to => :exceeded, :after => :block_user
       end
-
-      inside_transition :on => :accept, &:fill_fields
-      inside_transition :on => :postdate, &:block_user
     end
 
     def to_s
@@ -56,10 +56,15 @@ module Sessions
       transaction do
         saves = fields.map do |field_id, value|
           record = values.find { |v| v.survey_field_id == field_id.to_i }
-          record.value = value
-          record.save
+          record.update_value(value)
         end
-        saves.all? || (errors.add(:base, values.map{|v| v.errors.full_messages.to_sentence }); raise ActiveRecord::Rollback)
+        if saves.all?
+          true
+        else
+          errors.add(:base, values.map{|v| v.errors.full_messages.to_sentence })
+          raise ActiveRecord::Rollback
+          false
+        end
       end
     end
 

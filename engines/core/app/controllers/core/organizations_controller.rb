@@ -41,6 +41,7 @@ module Core
     def update
       @organization = Organization.find(params[:id])
       if @organization.update(organization_params)
+        @organization.save
         redirect_to new_employment_path(current_user.employments.build), notice: t("flash.organization_created", default: "Organization has been created")
       end
     end

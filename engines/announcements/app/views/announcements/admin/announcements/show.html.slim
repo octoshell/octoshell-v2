@@ -3,7 +3,7 @@ div class="page-header"
   h5 class="text-muted" = @announcement.is_special? ? "Специальная" : "Информационная"
   h5 = l @announcement.created_at.to_date
   h3
-    - state = { pending: "info", delivered: "success" }[@announcement.state_name]
+    - state = { pending: "info", delivered: "success" }[@announcement.state_name.to_sym]
     span class="label label-#{state}" = @announcement.human_state_name
   h1 = @announcement.title
 

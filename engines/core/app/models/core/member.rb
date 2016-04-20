@@ -1,5 +1,6 @@
 module Core
   class Member < ActiveRecord::Base
+
     belongs_to :user, class_name: Core.user_class, foreign_key: :user_id, inverse_of: :accounts
     belongs_to :project, inverse_of: :members
     belongs_to :organization
@@ -7,8 +8,10 @@ module Core
 
     delegate :full_name, :email, :credentials, :sured?, to: :user
 
-    state_machine :project_access_state, initial: :invited do
-      state :invited   # приглашён, не подтвердил участие
+    include AASM
+    include ::AASM_Additions
+    aasm(:project_access_state, :column => :project_access_state) do
+      state :invited, :initial => true   # приглашён, не подтвердил участие
       state :engaged   # принял приглашение (заполнил организации)
       state :unsured   # упомянут в ещё не активированном поручительстве
       state :allowed   # поручительство подписано и одобрено администрацией
@@ -16,46 +19,58 @@ module Core
       state :suspended # участие приостановлено, т.к. проект неактивен
 
       event :accept_invitation do
-        transition :invited => :engaged
+        transitions :from => :invited, :to => :engaged
       end
 
       event :append_to_surety do
-        transition :engaged => :unsured
+        transitions :from => :engaged, :to => :unsured
       end
 
       event :substract_from_surety do
-        transition [:allowed, :unsured] => :engaged
+        transitions :from => [:allowed, :unsured], :to => :engaged
       end
 
       event :activate do
-        transition [:unsured, :suspended] => :allowed
-      end
+        transitions :from => [:unsured, :suspended], :to => :allowed
 
-      event :deny do
-        transition :allowed => :denied
-      end
-
-      event :allow do
-        transition :denied => :allowed
-      end
-
-      event :suspend do
-        transition :allowed => :suspended
-      end
-
-      after_transition :unsured => :allowed do |member, _|
-        Core::MailerWorker.perform_async(:access_to_project_granted, member.id)
-        if member.project.pending? && member.project.accesses.with_state(:opened).any?
-          member.project.activate!
+        after do
+          if aasm(:project_access_state).from_state==:unsured
+            ::Core::MailerWorker.perform_async(:access_to_project_granted, id)
+            if project.pending? && project.accesses.where(state: :opened).any?
+              project.activate!
+            end
+          elsif aasm(:project_access_state).from_state == :suspended
+            ::Core::MailerWorker.perform_async(:access_to_project_granted, id)
+          end
         end
       end
 
-      after_transition :allowed => :denied do |member, _|
-        Core::MailerWorker.perform_async(:access_to_project_denied, member.id)
+      event :deny do
+        transitions :from => :allowed, :to => :denied
+  
+        after do
+          ::Core::MailerWorker.perform_async(:access_to_project_denied, id)
+        end
       end
 
-      after_transition [:denied, :suspended] => :allowed do |member, _|
-        Core::MailerWorker.perform_async(:access_to_project_granted, member.id)
+      event :allow do
+        transitions :from => :denied, :to => :allowed
+
+        after do
+          ::Core::MailerWorker.perform_async(:access_to_project_granted, id)
+        end
+      end
+
+      event :suspend do
+        transitions :from => :allowed, :to => :suspended
+      end
+    end
+
+    def human_project_access_state_name st=nil
+      if st.nil?
+        project_access_state.to_s
+      else
+        st
       end
     end
 

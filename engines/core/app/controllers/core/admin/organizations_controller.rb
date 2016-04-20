@@ -48,6 +48,7 @@ module Core
     def update
       @organization = Organization.find(params[:id])
       if @organization.update_attributes(organization_params)
+        @organization.save
         redirect_to [:admin, @organization]
       else
         render :edit
@@ -58,6 +59,7 @@ module Core
       @organization = Organization.find(params[:organization_id])
       @duplication = Organization.find(params[:organization][:merge_id])
       if @organization.merge(@duplication)
+        @organization.save
         redirect_to [:admin, @organization]
       else
         render :show

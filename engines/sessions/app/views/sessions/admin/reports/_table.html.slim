@@ -39,7 +39,7 @@
         td
           - if report.expert
             = link_to_if may?(:manage, :users), report.expert.full_name, main_app.admin_user_path(report.expert), class: "muted"
-          - elsif may?(:manage, :reports) && report.can_pick?
+          - elsif may?(:manage, :reports) && report.may_pick?
             = link_to "Взять на оценку", [:admin, report, :pick], method: :patch, class: "btn btn-info"
 
           - if report.assessed?

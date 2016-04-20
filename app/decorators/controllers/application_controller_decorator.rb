@@ -58,8 +58,8 @@ ActionController::Base.class_eval do
                                       url: core.projects_path,
                                       regexp: /core\/(?:projects|)(?!employments|organizations)/}))
     current_session = Sessions::Session.current || Sessions::Session.last
-    sessions_warning = current_user.reports.where(session: current_session).with_state([:pending, :accepted, :exceeded]).any? ||
-                       current_user.surveys.where(session: current_session).with_state([:pending, :filling, :exceeded]).any?
+    sessions_warning = current_user.reports.where(session: current_session, state: [:pending, :accepted, :exceeded]).any? ||
+                       current_user.surveys.where(session: current_session, state: [:pending, :filling, :exceeded]).any?
     sessions_title = if sessions_warning
                       t("user_submenu.sessions_warning.html").html_safe
                      else
@@ -69,7 +69,7 @@ ActionController::Base.class_eval do
                                       url: sessions.reports_path,
                                       regexp: /sessions/}))
 
-    tickets_warning = current_user.tickets.with_state(:answered_by_support).any?
+    tickets_warning = current_user.tickets.where(state: :answered_by_support).any?
     tickets_title = if tickets_warning
                       t("user_submenu.tickets_warning.html").html_safe
                      else
@@ -94,7 +94,7 @@ ActionController::Base.class_eval do
                                       url: core.admin_projects_path,
                                       regexp: /core\/admin\/projects/})) if may? :manage, :projects
 
-    tickets_count = Support::Ticket.with_state([:pending, :answered_by_reporter]).count
+    tickets_count = Support::Ticket.where(state: [:pending, :answered_by_reporter]).count
     support_title = if tickets_count.zero?
                        t("admin_submenu.support")
                      else
@@ -104,7 +104,7 @@ ActionController::Base.class_eval do
                                       url: support.admin_root_path,
                                       regexp: /support/})) if may? :manage, :tickets
 
-    sureties_count = Core::Surety.with_state(:confirmed).count
+    sureties_count = Core::Surety.where(state: :confirmed).count
     sureties_title = if sureties_count.zero?
                        t("admin_submenu.sureties")
                      else
@@ -114,7 +114,7 @@ ActionController::Base.class_eval do
                                       url: core.admin_sureties_path,
                                       regexp: /core\/admin\/sureties/})) if may? :manage, :sureties
 
-    requests_count = Core::Request.with_state(:pending).count
+    requests_count = Core::Request.where(state: :pending).count
     requests_title = if requests_count.zero?
                        t("admin_submenu.requests")
                      else
