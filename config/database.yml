@@ -3,14 +3,14 @@ development:
   encoding: unicode
   database: new_octoshell_development
   user: octo
-  password: 'oct0rul3z4ever'
+  password: 'octopass'
 
 test:
   adapter: postgresql
   encoding: unicode
   database: new_octoshell_test
   user: octo
-  password: 'oct0rul3z4ever'
+  password: 'octopass'
 
 production:
   adapter: postgresql
@@ -19,4 +19,4 @@ production:
   pool: 10
   min_messages: warning
   user: octo
-  password: 'oct0rul3z4ever'
+  password: 'octopass'

@@ -14,6 +14,7 @@ module Core
     after_create :notify_admins
 
     accepts_nested_attributes_for :departments, allow_destroy: true
+    accepts_nested_attributes_for :city, allow_destroy: false
 
     scope :finder, lambda { |q| where("lower(name) like :q OR lower(abbreviation) like :q",
                                       q: "%#{q.mb_chars.downcase}%").order("name asc") }

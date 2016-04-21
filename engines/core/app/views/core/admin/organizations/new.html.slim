@@ -6,7 +6,7 @@ div class="page-header"
   = f.text_field :abbreviation
   = f.collection_select :kind_id, Core::OrganizationKind.order(:name), :id, :name, include_blank: true
   = f.collection_select :country_id, Core::Country.order(:title_ru), :id, :title_ru, include_blank: true
-  = autocomplete f, name: :city_id, label: Core::Organization.human_attribute_name("city"), source: country_cities_path(1)
+  = f.collection_select :city_id, Core::City.order(:title_ru), :id, :title_ru, include_blank: true
 
   = f.form_group do
     = f.submit t("actions.save")

@@ -20,6 +20,9 @@ module Core
 
     def create
       @organization = Organization.new(organization_params)
+      if params[:city_id]
+        @organization.city_id=params[:city_id]
+      end
       if @organization.save
         if @organization.kind.departments_required?
           redirect_to [:admin, :edit, @organization], notice: t("flash.you_have_to_fill_departments")
@@ -69,8 +72,8 @@ module Core
     private
 
     def organization_params
-      params.require(:organization).permit(:name, :abbreviation, :city_id, :country_id, :kind_id,
-                                           departments_attributes: [ :name ])
+      params.require(:organization).permit(:name, :abbreviation, :city_id, :country_id, :kind_id, :id,
+                                           :_destroy, departments_attributes: [ :name, :_destroy, :id ], city_attributes: [:id])
     end
   end
 end

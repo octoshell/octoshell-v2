@@ -22,6 +22,13 @@ module Core
 
     def create
       @organization = Organization.new(organization_params)
+      new_city=params[:organization][:city_title].to_s
+      if new_city != ''
+        city=Core::City.create(title_ru: new_city,title_en: new_city)
+        if city.save
+          @organization.city=city
+        end
+      end
       if @organization.save
         if @organization.kind.departments_required?
           redirect_to [:edit, @organization], notice: t("flash.you_have_to_fill_departments")
@@ -50,7 +57,7 @@ module Core
 
     def organization_params
       params.require(:organization).permit(:name, :abbreviation, :country_id,
-                                           :city_title, :city_id, :kind_id,
+                                           :city_title, :city_id, :kind_id, :_destroy,
                                            departments_attributes: [ :name ])
     end
   end
