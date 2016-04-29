@@ -46,7 +46,7 @@ module Sessions
     end
 
     def self.current
-      with_state(:active).first
+      with_state(:active).first || last
     end
 
     def survey_fields

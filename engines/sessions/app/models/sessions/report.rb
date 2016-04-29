@@ -114,7 +114,7 @@ module Sessions
 
     def block_project
       # Sessions::MailerWorker.perform_async(:postdated_report_on_project, id)
-      project.block! unless project.blocked?
+      project.block! unless project.blocked? or project.finished? or project.cancelled?
     end
   end
 end
