@@ -1,0 +1,11 @@
+div class="row"
+  p = t(".help")
+  = bootstrap_nested_form_for [@project, @request], layout: :horizontal, label_col: "col-xs-4", control_col: "col-xs-3" do |f|
+    = f.hidden_field :cluster_id, value: @cluster_id
+    = f.fields_for :fields do |fields_form|
+      - quota_kind = fields_form.object.quota_kind
+      = fields_form.hidden_field :quota_kind_id, value: quota_kind.id
+      = fields_form.text_field :value, label: quota_kind.name, help: quota_kind.measurement
+
+    = f.form_group do
+      = f.submit t("buttons.save")

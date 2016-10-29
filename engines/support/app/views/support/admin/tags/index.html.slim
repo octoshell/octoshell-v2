@@ -1,0 +1,9 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="well"
+  = link_to t(".new_tag"), new_admin_tag_path, class: "btn btn-default"
+
+= safe_paginate @tags
+= render "table", tags: @tags
+= safe_paginate @tags

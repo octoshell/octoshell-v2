@@ -1,0 +1,9 @@
+= bootstrap_form_for [:admin, @field], layout: :horizontal do |f|
+  = f.text_field :name
+  = f.text_field :hint
+  = f.check_box :required
+  = f.check_box :url
+  = f.check_box :contains_source_code
+
+  = f.form_group do
+    = f.submit t("actions.save")

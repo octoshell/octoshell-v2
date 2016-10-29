@@ -1,0 +1,3 @@
+= render "sessions/user_survey_fields/#{field.kind}_field", { form: form, field: field, error: error, value: value }
+- if field.hint?
+  span class="help-block" = field.hint

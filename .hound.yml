@@ -1,0 +1,12 @@
+StringLiterals:
+  EnforcedStyle: double_quotes
+
+LineLength:
+  Max: 130
+
+AsciiComments:
+  Enabled: false
+
+Output:
+  Description: "Checks for calls to puts, print, etc."
+  Enabled: false

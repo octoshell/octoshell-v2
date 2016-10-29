@@ -1,0 +1,22 @@
+div class="page-header"
+  h1 = t(".title", name: @field.name)
+
+div class="well"
+  = link_to t("actions.edit"), edit_admin_field_path(@field), class: "btn btn-default"
+
+table class="table table-bordered"
+  tr
+    th = Support::Field.human_attribute_name(:name)
+    td = @field.name
+  tr
+    th = Support::Field.human_attribute_name(:hint)
+    td = @field.hint
+  tr
+    th = Support::Field.human_attribute_name(:required)
+    td = @field.required?
+  tr
+    th = Support::Field.human_attribute_name(:contains_source_code)
+    td = @field.contains_source_code?
+  tr
+    th = Support::Field.human_attribute_name(:url)
+    td = @field.url?

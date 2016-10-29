@@ -1,0 +1,4 @@
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+The signal USR1 is in use by the JVM and will not work correctly on this platform

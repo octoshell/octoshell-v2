@@ -1,0 +1,25 @@
+/*
+ *= require_self
+ *= require bootstrap
+ *= require disable_bootstrap_responsive
+ *= require select2
+ *= require select2-bootstrap
+ *= require bootstrap-datepicker3
+ *= require rails_bootstrap_forms
+ *= require_tree .
+ */
+
+#footer {
+  margin-top: 7em;
+  padding: 7em 0;
+  border-top: 1px solid #E5E5E5;
+  padding-top: 1em;
+}
+
+.badge.warning {
+  background-color: #d9534f;
+}
+
+.badge.info {
+  background-color: #337ab7;
+}

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+source /usr/octo/defaults.sh
+
+NEWUSER=`echo "$1" | tr -cd a-zA-Z0-9_.-`
+
+echo "block_user $1" >>$LOG_FILE
+if [ $(getent passwd $NEWUSER) ]; then
+  true
+else
+  #echo "User $NEWUSER don't exists. Ignore..."
+  echo ok
+  exit 0
+fi
+
+#id
+      
+[ -f "$HOME_BASE/$NEWUSER/.ssh/authorized_keys" ] && chmod 0 "$HOME_BASE/$NEWUSER/.ssh/authorized_keys" >>$LOG_FILE 2>&1
+[ -f "$HOME_BASE/$NEWUSER/.ssh/authorized_keys2" ] && chmod 0 "$HOME_BASE/$NEWUSER/.ssh/authorized_keys2" >>$LOG_FILE 2>&1
+
+echo ok
+exit 0

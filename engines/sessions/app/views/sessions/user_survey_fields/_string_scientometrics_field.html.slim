@@ -1,0 +1,6 @@
+table class="table table-striped"
+  - field.collection_values.each_with_index do |title, i|
+    tr
+      th class="col-xs-4" = title
+      td
+        input name="fields[#{field.id}][]" value="#{(value && value[i].present?) ? value[i] : ''}" class="col-xs-12"

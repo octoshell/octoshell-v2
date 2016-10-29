@@ -1,0 +1,25 @@
+h1 = 'Шаблон поручительства'
+
+h2 RTF шаблон
+
+p = link_to 'Скачать текущий шаблон', rtf_template_admin_sureties_path
+
+= bootstrap_form_tag rtf_template_admin_sureties_path, method: :put, class: 'form-horizontal' do
+  div class="control-group"
+    = label_tag :template, 'RTF шаблон', class: 'control-label'
+    div class="controls"
+      = text_area_tag :template, @rtf, class: 'span8 code', rows: '20'
+  div class="form-actions"
+    = button_tag 'Сохранить', class: 'btn'
+
+/markdown:
+  ### Переменные:
+  
+  `{{ id }}` - Номер поручительства
+  
+  `{{ organization_name }}` - Название организации
+  
+  `{{ user_name }}` - Имя пользователя
+
+h2 Если все сломалось:
+p = link_to 'Вернуть rtf шаблон по умолчанию', default_rtf_admin_sureties_path, method: :put, confirm: 'Вы уверены?'

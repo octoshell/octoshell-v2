@@ -1,0 +1,28 @@
+div class="page-header"
+  h1 = t(".title", default: "Directions Of Science")
+
+div class="panel panel-default"
+  div class="panel-heading"
+    = link_to t(".new_direction_of_science"), new_admin_direction_of_science_path, class: "btn btn-default"
+  div class="panel-body"
+    - if @direction_of_sciences.any?
+      table class="table table-hover"
+        tr
+          th class="col-xs-6" = Core::DirectionOfScience.human_attribute_name(:name)
+          th
+        - @direction_of_sciences.each do |direction_of_science|
+          tr
+            td class="col-xs-10" = direction_of_science.name
+            td
+              div class="btn-group pull-right"
+                = link_to t("actions.edit"), edit_admin_direction_of_science_path(direction_of_science), class: "btn btn-default btn-sm"
+                button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                  span class="caret"
+                ul class="dropdown-menu" role="menu"
+                  - name = t("actions.delete")
+                  - confirm = t("actions.confirm", default: "Are You shure?")
+                  - data = { method: :delete, confirm: confirm }
+                  li class="text-left"
+                    = link_to name, admin_direction_of_science_path(direction_of_science), data: data
+    - else
+      p = t(".no_direction_of_sciences_found")

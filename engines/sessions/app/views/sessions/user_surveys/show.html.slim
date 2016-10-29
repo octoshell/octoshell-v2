@@ -1,0 +1,36 @@
+div class="page-header"
+  h1 = @survey
+
+- if @survey.pending?
+  div class="well"
+    = link_to "Пройти", [@survey, :accept], method: :put, class: "btn btn-success"
+- else
+  - fields = @survey.survey.fields.sorted
+  - if @survey.filling?
+    - if @survey.errors.present?
+      div class="alert alert-danger"
+        - @survey.errors.full_messages.each do |error|
+          p = error
+    = bootstrap_form_for @survey do |form|
+      - fields.each_with_index do |field, i|
+        div style="margin-bottom: 40px;"
+          h4
+            = i.next
+            - if field.required?
+              abbr title="Обязательный" *
+            |.  
+            = field.name
+          - value = form.object.values.find { |v| v.survey_field_id == field.id }
+          div class="control-group #{value.errors.any? ? "error" : ""}"
+            = render "sessions/user_survey_fields/field", { form: form, field: field, error: value.errors.full_messages.to_sentence, value: value.value }
+      div class="form-actions btn-toolbar"
+        = form.submit nil, class: "btn btn-default"
+        = form.submit "Отправить", class: "btn btn-primary submit-survey", data: { action: user_survey_submit_path(@survey) }
+  - else
+    div class="well"
+      = link_to "Редактировать", edit_user_survey_path(@survey), class: "btn btn-warning"
+    - fields.each do |field|
+      div style="margin-bottom: 40px;"
+        h4 = field.name
+        - value = @survey.values.find { |v| v.survey_field_id == field.id }
+        = render "sessions/user_survey_fields/show_field", field: field, value: value

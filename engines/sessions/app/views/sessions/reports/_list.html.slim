@@ -1,0 +1,32 @@
+- if reports.any?
+  h4= page_entries_info reports
+
+  table class="table table-hover table-striped"
+    tr
+      th class="col-xs-1" #
+      th Отчет
+      th Проект
+      th = Core::Project.human_attribute_name(:research_areas)
+      th Статус
+      th Сдать до
+      th Перерегистрация
+
+    - reports.each do |report|
+      tr
+        td = report.id
+        td
+          strong = link_to "Отчет ##{report.id}", sessions.admin_report_path(report)
+        td
+          = link_to report.project.title, core.admin_project_path(report.project) if report.project
+        td
+          ul class="list-unstyled"
+            - report.project.research_areas.each do |area|
+              li = area.name
+        td
+          label class="label label-#{report_status_label(report)}" = report.human_state_name
+        td
+          strong = l report.session.receiving_to.to_date
+        td
+          strong = report.session
+- else
+  p Нет отчетов

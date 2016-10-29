@@ -1,0 +1,12 @@
+div class="page-header"
+  h1 = t(".title", default: "Sign In")
+
+div class="row"
+  div class="col-xs-4"
+    = bootstrap_form_for @user do |f|
+      = f.email_field :email
+      = f.password_field :password, help: t(".minimum_password_length", default: "at least 6 simbols")
+      = f.password_field :password_confirmation
+
+      = f.form_group do
+        = f.submit t(".sign_up", default: "Sign Up")

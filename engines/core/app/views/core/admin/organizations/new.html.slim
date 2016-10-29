@@ -1,0 +1,12 @@
+div class="page-header"
+  h1 = t(".title", default: "New Organization")
+
+= bootstrap_form_for [:admin, @organization], layout: :horizontal do |f|
+  = f.text_field :name
+  = f.text_field :abbreviation
+  = f.collection_select :kind_id, Core::OrganizationKind.order(:name), :id, :name, include_blank: true
+  = f.collection_select :country_id, Core::Country.order(:title_ru), :id, :title_ru, include_blank: true
+  = f.collection_select :city_id, Core::City.order(:title_ru), :id, :title_ru, include_blank: true
+
+  = f.form_group do
+    = f.submit t("actions.save")

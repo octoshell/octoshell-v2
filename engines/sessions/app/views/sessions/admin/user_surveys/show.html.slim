@@ -1,0 +1,18 @@
+div class="page-header"
+  h1 = @us
+
+table class="table table-condenced table-stripped"
+  th Создан
+  td = l @us.created_at, format: :long
+  th Обновлён
+  td = l @us.updated_at, format: :long
+  th Автор
+  td = link_to @us.user, main_app.admin_user_path(@us.user)
+legend
+
+- fields = @us.survey.fields.sorted
+- fields.each do |field|
+  div style="margin-bottom: 40px;"
+    h5 = field.name
+    - value = @us.values.find_by_survey_field_id(field.id)
+    = render "sessions/user_survey_fields/show_field", field: field, value: value

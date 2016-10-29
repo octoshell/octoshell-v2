@@ -1,0 +1,248 @@
+ru:
+  engine_submenu:
+    reports: Отчёты
+    surveys: Опросы
+
+  survey_field_kinds:
+    radio: Радио
+    select: Список
+    mselect: Множественный список
+    aselect: Ассоциация
+    uselect: Пользовательский список
+    text: Текст
+    string: Короткий текст
+    number: Число
+    scientometrics: Наукометрия (числа)
+    string_scientometrics: Наукометрия (строки)
+  survey_field_entities:
+    organization: Активная организация
+    positions: Должность
+
+  abilities:
+    sessions:
+      manage: Возможность запускать перерегистрацию
+    reports:
+      access: Доступ в раздел отчетов
+      manage: Эксперт (по отчетам)
+    user_surveys:
+      access: Просмотр отчетов пользователя
+
+
+  activerecord:
+    models:
+      sessions/session: Перерегистрация
+      sessions/report: Отчет
+      sessions/survey_value: Значение
+      sessions/survey: Опросник
+      sessions/user_survey: Заполненный опросник
+      sessions/report_submit_denial_reason: Причина отказа предоставления отчёта по проекту
+    attributes:
+      user:
+        reports: Отчёты
+        surveys: Опросники
+        assessing_reports: Отчёты на оценке
+      sessions/stat:
+        survey_field_id: Поле опроса
+        organization: Организация
+        organization_id: Организация
+        weight: Вес
+      sessions/session:
+        description: Название
+        motivation: Описание
+        receiving_to: Сдать до
+        started_at: Начало
+        ended_at: Конец
+        state: Состояние
+        surveys: Опросники
+        stats: Статистика
+      sessions/survey:
+        name: Название
+        state: Состояние
+        only_for_project_owners: Только для руководителей проектов
+        project: Проект
+        project_id: Проект
+      sessions/user_survey:
+        state: Состояние
+        project: Проект
+        project_id: Проект
+      sessions/report_reply:
+        message: Сообщение
+      sessions/report:
+        submit_denial_reason: Причина отказа предоставления отчёта
+        submit_denial_description: Опишите подробно почему надо сохранить проект
+        project: Проект
+        project_id: Проект
+        author: Автор
+        author_id: Автор
+        materials: Архив с материалами отчёта
+        state: Состояние
+        submitted_at: Отправлен
+        superviser_comment: Комментарий
+        allow_state: Разрешение
+        illustration_points: Иллюстрации
+        statement_points: Изложение
+        summary_points: Общая оценка
+        materials_file_name: Материалы (название файла)
+        materials_file_size: Материалы (размер файла)
+        materials_updated_at: Материалы (обновлено в)
+      sessions/survey_field:
+        name: Название
+        kind: Тип
+        hint: Подсказка
+        collection: Значения списка
+        regexp: Регулярное выражение для проверки значений
+        entity: Сущность
+        strict_collection: Строгий список
+        max_values: Максимальное кол-во значений
+        required: Обязательное
+        weight: Вес
+      sessions/survey_field_value:
+        value: Ответ
+      sessions/report_submit_denial_reason:
+        name: Наименование
+
+    aasm:
+      sessions/report:
+        state:
+          states:
+            rejected: Отклонен
+            pending: Не начат
+            accepted: Не прислан
+            can_not_be_submitted: Отказ предоставления отчёта
+            submitted: Отправлен
+            assessing: Оценивается
+            assessed: Оценен
+            exceeded: Просрочен
+          events:
+            accept: Начать заполнение
+            decline_submitting: Не могу предоставить адекватный текст отчёта
+            submit: Отправить
+            pick: Взять на оценку
+            assess: Оценить
+            reject: Отклонить
+            edit: Редактировать
+            resubmit: Отправить ещё раз
+
+      sessions/session:
+        state:
+          states:
+            active: Активна
+            ended: Завершена
+            pending: Создана
+          events:
+            start: Начать
+            stop: Остановить
+
+      sessions/user_survey:
+        state:
+          states:
+            pending: Не заполнен
+            filling: Заполняется
+            submitted: Отправлен
+            exceeded: Просрочен
+          events:
+            fill: Ответить на вопросы
+            submit: Отправить
+
+  cant_submit_report_because_of_errors: "Отчет не заполнен до конца или содержит ошибки. Пожалуйста, проверьте все поля отмеченные красной рамкой на всех этапах отчёта."
+  report_submitted: Отчет отправлен на рассмотрение
+  reports_draft_saved: Черновик отчета сохранен
+  reply: Ответ
+  report_returned_to_user_for_edit: Отчет передан пользователю для редактирования
+  report_successfuly_assessed: Отчет успешно оценен
+
+  flash:
+    fill_out_report_and_surveys: "У вас есть не заполненные и/или не отправленные отчёты и опросники в рамках перерегистрации «%{session_name}». Пожалуйста заполните и отправьте их до %{receiving_date}."
+    you_must_provide_report_materials: Вы не выбрали файл с материалами!
+
+  sessions:
+
+    mailer:
+      project_failed_session:
+        subject: Отчёт №%{id} по проекту «%{title}» не прошёл перерегистрацию
+      report_assessed:
+        subject: Отчёт №%{id} по проекту «%{title}» оценен экспертом.
+      new_report:
+        subject: Вам необходимо заполнить отчёт по проекту «%{title}»
+      report_submitted:
+        subject: Отчёт №%{id} по проекту «%{title}» подготовлен для оценки
+      report_rejected:
+        subject: Отчёт №%{id} по проекту «%{title}» отклонён
+      report_assessing:
+        subject: Отчёт №%{id} по проекту «%{title}» взят на оценку
+      report_resubmitted:
+        subject: Отчёт №%{id} по проекту «%{title}» обновлён
+      notify_exerts_about_submitted_reports:
+        subject: "%{count} опросов ожидают оценки"
+      notify_expert_about_assessing_reports:
+        subject: У вас %{count} неоцененных опросов
+      postdated_report_on_project:
+        subject: Вы просрочили предоставление отчёта №%{id} по проекту «%{title}»
+      user_postdated_survey_and_blocked:
+        subject: Вы просрочили заполнение опроса №%{name} по проекту «%{title}»
+
+    admin:
+      sessions:
+        create:
+          session_is_successfully_created: Перерегистрация создана. Выберите проекты, которые будут участвовать в перерегистрации.
+
+        index:
+          title: Список перерегистраций
+          new_session: Создать перерегистрацию
+        new:
+          title: Создание перерегистрации
+        show:
+          started_at: Началась %{date}
+          ended_at: Закончилась %{date}
+          edit_projects: Отобрать проекты-участники
+          title: "Перерегистрация «%{name}»"
+          new_survey: Добавить опросник
+          show_graphs: Показать статистику
+          graphs_alert:
+            html: <h3>Внимание!</h3> <p> Отображение графиков может занять существенное время. Ваш браузер может выдать сообщение о слишком долгой работе скрипта. Пожалуйста, не прерывайте работу скрипта. Иначе, графики не будут отображены.</p>
+        show_projects:
+          title: Выбор проектов-участников перерегистрации
+      stats:
+        new:
+          title: Добавление графика
+        index:
+          title: Статистика по перерегистрации %{session_name}
+          back_to_session: Вернуться к перерегистрации
+          add_graph: Добавить график
+      surveys:
+        new:
+          title: Создание опросника
+        show:
+          only_for_project_owners: Только для руководителя проекта
+          for_all_users: Для всех активных участников проекта
+          back_to_session: Вернуться к перерегистрации
+          new_field: Добавить поле
+          delete_survey: Удалить опросник
+          no_fields: В опроснике ещё нет полей.
+      survey_fields:
+        new:
+          title: Новое поле для опросника
+      reports:
+        index:
+          title: Список отчётов по проектам
+        show:
+          title: "Отчёт №%{id} по проекту «%{project_title}» в рамках перерегистрации «%{session_name}»"
+          other_report_title: "Отчёт №%{id} в рамках перерегистрации «%{session_name}»"
+      report_submit_denial_reasons:
+        index:
+          title: Причины отказа предоставления отчёта
+          new_reason: Добавить причину
+        new:
+          title: Создание причины отказа предоставления отчёта
+        edit:
+          title: Редактирование причины отказа предоставления отчёта
+
+    reports:
+      index:
+        title: Список отчётов по проектам
+      show:
+        title: "Отчёт по проекту «%{project_title}» в рамках перерегистрации «%{session_name}»"
+
+
+
+

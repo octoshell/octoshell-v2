@@ -1,0 +1,23 @@
+- if projects.any?
+  table class="table table-hover table-striped"
+    tr
+      th class="col-xs-4" = Core::Project.human_attribute_name(:title)
+      th = Core::Project.human_attribute_name(:state)
+      th class="col-xs-4" = Core::Project.human_attribute_name(:owner)
+      th class="col-xs-4" = Core::Project.human_attribute_name(:organization)
+      th = Core::Project.human_attribute_name(:created_at)
+      th
+    - projects.each do |project|
+      tr
+        td = link_to project.title, core.admin_project_path(project)
+        td = project.human_state_name
+        td class="col-xs-2"
+          ul class="list-unstyled"
+            li = link_to project.owner.full_name, [:admin, project.owner]
+            li = project.owner.email
+        td class="col-xs-3"
+          - organization = project.organization
+          = organization.present? ? organization.name : t(".no_organization.html")
+        td class="col-xs-2" = l project.created_at.to_date
+- else
+  p = t(".no_projects_found", default: "No Projects Found")

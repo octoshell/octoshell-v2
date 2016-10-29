@@ -1,0 +1,11 @@
+- if project_kinds.any?
+  table class="table table-bordered"
+    tr
+      th class="col-xs-1" #
+      th class="col-xs-7" = Core::ProjectKind.human_attribute_name(:name)
+    - project_kinds.each do |project_kind|
+      tr
+        td = project_kind.id
+        td = link_to project_kind.name, [:admin, project_kind]
+- else
+  p = t(".no_project_types")

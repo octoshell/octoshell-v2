@@ -1,0 +1,15 @@
+div class="page-header"
+  h1 = @organization_kind.name
+
+div class="well"
+  = link_to t("actions.edit"), [:edit, :admin, @organization_kind], class: "btn btn-default"
+
+table class="table table-bordered"
+  tr
+    th = Core::OrganizationKind.human_attribute_name(:name)
+    th = Core::OrganizationKind.human_attribute_name(:departments_required)
+  tr
+    td = @organization_kind.name
+    td
+      - icon_type = @organization_kind.departments_required? ? "check" : "times"
+      i class="fa fa-#{icon_type}-circle"

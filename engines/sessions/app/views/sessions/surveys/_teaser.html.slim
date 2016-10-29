@@ -1,0 +1,61 @@
+- if logged_in? && !(request.path =~ /admin/)
+  - current_user.unsuccessful_sessions.each do |session|
+    - surveys = current_user.user_surveys.where(survey_id: session.survey_ids).order('id')
+    - reports = Report.where(project_id: current_user.owned_project_ids, session_id: session.id)
+    - if surveys.any? || reports.any?
+      div class="well well-collapseble #{'well-collapsed' if cookies[:hide_session] == '1'}"
+        h3 Перерегистрация: #{session.description}
+        div class="alert alert-danger"
+          - if session.motivation?
+            strong = session.motivation
+            br
+          | У Вас есть неотправленные или отклонённые опросы и/или отчёт.
+          br
+          | Опросы и отчет нужно сдать 
+          strong не позднее #{l session.receiving_to}
+          | . Не прошедшим перерегистрацию закроется доступ на кластеры!
+
+        div class="well-body"
+          - if surveys.any?
+            p
+              strong Вам нужно пройти опросы для прохождения перерегистрации:
+            table class="table table-condensed"
+              - surveys.each do |us|
+                tr
+                  td class="span5" = us.human_name
+                  td class="span2"
+                    - if us.pending?
+                      span class="label label-important" = us.human_state_name
+                    - elsif us.filling?
+                      span class="label label-warning" = us.human_state_name
+                    - elsif us.submitted?
+                      span class="label label-success" = us.human_state_name
+                    - else
+                      span class="label" = us.human_state_name
+                  td
+                    - if us.may_accept?
+                      = link_to "Пройти", [us, :accept], method: :put, class: 'btn btn-mini btn-success'
+                    - else
+                      small = link_to "Открыть", user_survey_path(us, anchor: 'start-page')
+          - if reports.any?
+            p
+              strong Вам нужно прислать отчет по вашим проектам:
+            table class="table table-condensed"
+              - reports.each do |report|
+                tr
+                  td class="span5" = report.project.title
+                  td class="span2"
+                    - if report.pending? || report.rejected? || report.accepted?
+                      span class="label label-important" = report.human_state_name
+                    - elsif report.submitted? || report.assessing?
+                      span class="label label-warning" = report.human_state_name
+                    - elsif report.assessed?
+                      span class="label label-success" = report.human_state_name
+                    - else
+                      span class="label" = report.human_state_name
+                  td
+                    - if report.may_accept?
+                      = link_to "Прислать отчет", [report, :accept], method: :put, class: 'btn btn-mini btn-success'
+                    - else
+                      small = link_to "Открыть", report_path(report, anchor: "start-page")
+        div class="well-close" ●

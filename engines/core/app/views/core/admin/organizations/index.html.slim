@@ -1,0 +1,17 @@
+div class="page-header"
+  h1 = t(".title", default: "Organizations")
+
+div class="well"
+  = link_to t(".new_organization"), new_admin_organization_path, class: "btn btn-default"
+
+= bootstrap_form_for @search, url: admin_organizations_path, method: :get, layout: :horizontal do |f|
+  = f.text_field :abbreviation_cont, label: Core::Organization.human_attribute_name("abbreviation")
+  = f.collection_select :kind_id_eq, Core::OrganizationKind.order(:name), :id, :name, label: Core::Organization.human_attribute_name("kind"), include_blank: true
+  = f.collection_select :country_id_eq, Core::Country.order(:title_ru), :id, :title_ru, label: Core::Organization.human_attribute_name("country"), include_blank: true
+  = autocomplete f, name: :city_id_eq, label: Core::Organization.human_attribute_name("city"), source: country_cities_path(1)
+  = f.form_group do
+    = f.submit t("actions.find"), class: "btn btn-primary"
+
+= safe_paginate @organizations
+= render "table", organizations: @organizations
+= safe_paginate @organizations

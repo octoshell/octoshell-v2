@@ -1,0 +1,17 @@
+div class="page-header"
+  h1 = t(".title", default: "Sign In")
+
+div class="row"
+  div class="col-xs-4"
+    = bootstrap_form_for @user, url: session_path do |f|
+      = f.email_field :email
+      = f.password_field :password
+      = f.form_group do
+        = f.submit t(".sign_in", default: "Sign In")
+
+p
+  = link_to t(".forgot_password", default: "Forgot your password?"), new_password_path
+  = " "
+  = t(".or", default: "or")
+  = " "
+  = link_to t(".have_not_received_confirmation_instructions", default: "Have not received confirmation instuctions?"), new_activation_path

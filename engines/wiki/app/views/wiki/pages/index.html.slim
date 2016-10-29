@@ -1,0 +1,37 @@
+div class="page-header"
+  h1 = t(".title", default: "Справка по работе с octoshell")
+
+- if current_user && User.superadmins.include?(current_user)
+  div class="panel panel-default"
+    div class="panel-heading clearfix"
+      = link_to t(".new_page"), new_page_path, class: "btn btn-default"
+    - if @pages.any?
+      div class="panel-body"
+        table class="table table-hover"
+          tr
+            th Название
+            th Ссылка
+            th
+          - @pages.each do |page|
+            tr
+              td class="col-xs-4" = link_to page.name, page
+              td = url_for page
+              td
+                div class="btn-group pull-right"
+                  = link_to t(".edit", default: "edit"), edit_page_path(page.id), class: "btn btn-default btn-sm"
+                  button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                    span class="caret"
+                  ul class="dropdown-menu" role="menu"
+                    - name = t(".delete", default: "delete")
+                    - confirm = t(".confirm", default: "Are You shure?")
+                    - data = { method: :delete, confirm: confirm }
+                    li class="text-left"
+                      = link_to name, page_path(page.id), data: data, class: "text-danger"
+    - else
+      div class="panel-body"
+        p = t(".no_pages_found", default: "No Pages Found")
+- else
+  - if @pages.any?
+    ul class="list-group"
+      - @pages.each do |page|
+        li class= "list-group-item" = link_to page.name, page

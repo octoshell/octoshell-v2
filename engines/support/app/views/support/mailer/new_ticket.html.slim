@@ -1,0 +1,12 @@
+= render "header"
+
+p Пользователь #{@ticket.reporter.full_name} создал заявку в поддержку.
+
+h4 Вопрос: #{@ticket}
+h5 style="color: 666;" Тема: #{@ticket.topic.name_with_parents}
+p
+  strong = @ticket.subject
+
+p = link_to "Перейти к заявке", support.admin_ticket_url(@ticket)
+
+= render "footer"

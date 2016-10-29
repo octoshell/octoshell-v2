@@ -1,0 +1,30 @@
+div class="page-header"
+  h1 = @project.title
+  h3 = mark_project_state(@project)
+
+- if may? :manage, :projects
+  div class="row well btn-toolbar"
+    - if @project.accesses.any?
+      = link_to synchronize_with_clusters_admin_project_path(@project),
+                remote: true,
+                class: "btn btn-primary" do
+        i class="fa fa-refresh"
+        = " #{t(".synchronize_project")}"
+    = link_to Core::Project.human_state_event_name(:activate), activate_admin_project_path(@project), class: "btn btn-success" if @project.pending?
+    = link_to Core::Project.human_state_event_name(:block), block_admin_project_path(@project), class: "btn btn-danger" if @project.active?
+    = link_to Core::Project.human_state_event_name(:unblock), unblock_admin_project_path(@project), class: "btn btn-success" if @project.blocked?
+    = link_to Core::Project.human_state_event_name(:finish), finish_admin_project_path(@project), class: "btn btn-danger" unless @project.finished?
+    = link_to Core::Project.human_state_event_name(:resurrect), resurrect_admin_project_path(@project), class: "btn btn-info" if @project.finished? || @project.cancelled?
+
+legend = Core::Project.human_attribute_name :card
+= render "core/projects/card", project: @project
+
+
+- if @project.accesses.any?
+  = render "core/projects/accesses", accesses: @project.accesses
+
+- if @project.requests.where(:state=>[:pending, :closed]).any?
+  = render "requests", requests: @project.requests.where(:state=>[:pending, :closed])
+
+= render "core/admin/projects/members"
+= render "core/admin/projects/sureties"

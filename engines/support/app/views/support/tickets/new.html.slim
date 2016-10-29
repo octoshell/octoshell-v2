@@ -1,0 +1,26 @@
+div class="page-header"
+  h1 = t(".title")
+
+- url = @ticket.show_questions? ? continue_tickets_path : tickets_path
+= bootstrap_nested_form_for @ticket, url: url, layout: :horizontal, multipart: true do |f|
+  - if @ticket.show_questions?
+    = f.collection_select :topic_id, @ticket.topics, :id, :name_with_parents, label: Support::Ticket.human_attribute_name(:topic)
+  - else
+    = f.hidden_field :topic_id
+    = f.text_field :topic, value: @ticket.topic.name_with_parents, readonly: true
+    = f.text_field :subject
+    = f.text_field :url
+    = f.text_area :message, rows: 14
+    = f.file_field :attachment
+    = autocomplete f, name: :project_id, label: Support::Ticket.human_attribute_name(:project), source: core.projects_path, include_blank: true
+    = f.collection_select :cluster, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
+    = f.fields_for :field_values do |fv_f|
+      - value = fv_f.object
+      = fv_f.hidden_field :field_id
+      = fv_f.text_field :value, label: value.field.name, required: value.field.required, help: value.field.hint
+
+  = f.form_group do
+    - if f.object.show_form?
+      = f.submit t("actions.save")
+    - else
+      = f.submit t("actions.next")

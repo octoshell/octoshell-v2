@@ -1,0 +1,4 @@
+= bootstrap_form_for [:admin, Support::Tag.new], remote: true, layout: :inline do |f|
+  = f.text_field :name, hide_label: true
+  = f.form_group do
+    = f.submit t(".add_tag")

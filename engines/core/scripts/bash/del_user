@@ -1,0 +1,22 @@
+#!/bin/sh
+
+source /usr/octo/defaults.sh
+echo "user_del $1" >> $LOG_FILE
+
+USER=`echo "$1" | tr -d '/ ;|'`
+if [ "x$USER" = "x" ]; then
+  echo "fail: Invalid username '$1'" >> $LOG_FILE
+  echo "fail" #: Invalid username '$1'"
+  exit 1
+fi
+mv "/home/$USER" /home/01_to_del/ &>/dev/null
+
+if userdel "$USER"; then
+  touch /var/syncall
+  echo ok
+  exit 0
+fi
+
+echo "fail: $?" >> $LOG_FILE
+echo "fail" #: $?"
+exit 1

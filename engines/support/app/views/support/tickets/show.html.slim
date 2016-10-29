@@ -1,0 +1,123 @@
+div class="page-header"
+  h1 = t(".title", id: @ticket.id)
+  h2 = @ticket.subject
+  h4 class="text-muted" = @ticket.topic.name_with_parents
+  h3
+    - state = { "pending"=> "danger", "answered_by_support" => "danger", "answered_by_reporter" => "warning", "resolved" => "success", "closed" => "default" }[@ticket.state_name]
+    span class="label label-#{state}" = @ticket.human_state_name.to_s
+
+div class="well btn-toolbar"
+  - if @ticket.resolved? || @ticket.closed?
+    = link_to Support::Ticket.human_state_event_name(:reopen), ticket_reopen_path(@ticket), method: :put, class: "btn btn-default"
+  - else
+    = link_to t("actions.edit"), [:edit, @ticket], class: "btn btn-default"
+    = link_to Support::Ticket.human_state_event_name(:resolve), ticket_resolve_path(@ticket), method: :put, class: "btn btn-success"
+    = link_to Support::Ticket.human_state_event_name(:close), ticket_close_path(@ticket), method: :put, class: "btn btn-danger", data: { confirm: t("actions.confirm") }
+
+table class="table table-stripped"
+  tr
+    th class="col-xs-4" = Support::Ticket.human_attribute_name(:reporter)
+    td = @ticket.reporter.full_name
+  tr
+    th = Support::Ticket.human_attribute_name(:reporter_logins)
+    td = @ticket.reporter_logins
+
+  - if @ticket.url.present?
+    tr
+      th = Support::Ticket.human_attribute_name(:url)
+      td = link_to @ticket.url, @ticket.url
+  - else
+    tr class="hidden"
+      th = Support::Ticket.human_attribute_name(:url)
+      td
+  - if @ticket.attachment.present?
+    tr
+      th = Support::Ticket.human_attribute_name(:attachment)
+      td = link_to_attachment @ticket
+  - else
+    tr class="hidden"
+      th = Support::Ticket.human_attribute_name(:attachment)
+      td
+
+  - if @ticket.project.present?
+    tr
+      th = Support::Ticket.human_attribute_name(:project)
+      td = @ticket.project
+    tr
+      th = Support::Ticket.human_attribute_name(:project_id)
+      td = @ticket.project.id
+  - else
+    tr class="hidden"
+      th = Support::Ticket.human_attribute_name(:project)
+      td
+
+  - if @ticket.cluster.present?
+    tr
+      th = Support::Ticket.human_attribute_name(:cluster)
+      td = @ticket.cluster
+  - else
+    tr class="hidden"
+      th = Support::Ticket.human_attribute_name(:cluster)
+      td
+
+  - @ticket.field_values.each do |field_value|
+    - if field_value.value.present?
+      tr
+        th = field_value.field.present? ? field_value.field.name : "N/A"
+        td = markdown field_value.value
+    - else
+      tr class="hidden"
+        th = field_value.field.present? ? field_value.field.name : "N/A"
+        td
+
+  - if @ticket.has_blank_fields?
+    tr class="link"
+      td colspan="2"
+        small = link_to t("actions.show_empty_fields"), "#", id: "empty-fields-opener"
+
+div class="panel panel-default"
+  div class="panel-heading"
+    h4 = Support::Ticket.human_attribute_name(:message)
+    h5 class="text-muted" #{l @ticket.created_at} / #{l @ticket.updated_at}
+  div class="panel-body"
+    = markdown @ticket.message
+    div class="raw-ticket-message" = @ticket.message
+    = link_to t("actions.show_as_text"), "#", class: "raw-text-opener"
+
+h3 = Support::Ticket.human_attribute_name(:replies)
+
+- if @ticket.replies.any?
+  - @ticket.replies.order(created_at: :asc).each do |reply|
+    div class="row"
+      div class="col-xs-8"
+        p
+          strong = reply.author.full_name
+        p
+          em = l(reply.created_at)
+    div class="row"
+      div class="col-xs-10"
+        blockquote class="#{reply.author_id == reply.ticket.reporter_id ? "admin" : "user"}"
+          = markdown reply.message
+          div class="raw-reply" = reply.message
+          = link_to t("actions.show_as_text"), "#", class: "raw-text-opener"
+          - if reply.attachment?
+            small = Support::Reply.human_attribute_name(:attachment)
+            p = link_to_attachment reply
+
+- else
+  p = t(".no_replies")
+
+
+- unless @ticket.closed? || @ticket.resolved?
+  legend = t(".new_reply")
+  = bootstrap_form_for @ticket.replies.build, layout: :horizontal, multipart: true do |f|
+    = f.hidden_field :ticket_id
+    = f.text_area :message, rows: 5
+    = f.file_field :attachment
+    = f.form_group
+      div class="well"
+        - if current_user.id == @ticket.reporter.id
+          = t(".problem_solved")
+          = link_to Support::Ticket.human_state_event_name(:resolve), ticket_resolve_path(@ticket), method: :put, class: "btn btn-success"
+        = t(".if_not")
+        = f.submit t("actions.send")

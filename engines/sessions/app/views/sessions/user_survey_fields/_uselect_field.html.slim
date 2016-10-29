@@ -1,0 +1,10 @@
+div class="row" data-max-values="#{field.max_values}"
+  div class="form-group"
+    div class="col-xs-8"
+      - if error.present?
+        div class="alert alert-danger"
+          = error
+      - (field.max_values || 7).times do |i|
+        - custom_value = ((value || []) - field.collection_values).keep_if(&:present?)
+        - custom_value = custom_value.empty? ? nil : custom_value[i]
+        = text_field_tag "fields[#{field.id}][]", custom_value, placeholder: "Введите значение", class: "form-control"

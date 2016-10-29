@@ -1,0 +1,6 @@
+- if logged_in?
+  li = link_to current_user.email, main_app.profile_path
+  li = link_to t("authentication.logout", default: "logout"), authentication.session_path, method: :delete
+- else
+  li = link_to t("authentication.signup", default: "signup"), authentication.new_user_path
+  li = link_to t("authentication.signin", default: "signin"), authentication.new_session_path

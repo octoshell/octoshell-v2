@@ -1,0 +1,6 @@
+- if topics.any?
+  ul
+    - topics.each do |topics|
+      li class="#{highlight == topics.id ? "highlight" : ''}"
+        = link_to topics, [:admin, topics]
+        = render "list", topics: topics.subtopics, highlight: highlight

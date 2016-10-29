@@ -1,0 +1,23 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="well"
+  = link_to "Новая рассылка", new_admin_announcement_path, class: "btn btn-default"
+
+- if @announcements.any?
+  table class="table table-striped"
+    - @announcements.each do |announcement|
+      tr
+        td class="col-xs-1" = announcement.id
+        td class="col-xs-9"
+          ul class="list-unstyled"
+            li = link_to announcement.title, [:admin, announcement]
+            li class="text-muted" = announcement.is_special? ? "специальная" : "информационная"
+            li = l announcement.created_at.to_date
+        td class="col-xs-1"
+          - state = { pending: "info", delivered: "success" }[announcement.state_name.to_sym]
+          span class="label label-#{state}" = announcement.human_state_name
+        td class="col-xs-1"
+          = link_to [:admin, announcement], method: :delete do
+            i class="fa fa-times text-danger pull-right"
+

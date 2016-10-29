@@ -1,0 +1,89 @@
+#surety {
+  margin: 40px;
+  width: 600px;
+  padding: 100px 30px 30px;
+  box-shadow: 0 0 10px #eee;
+  position: relative;
+
+  .right {
+    text-align: right;
+  }
+  .center {
+    text-align: center;
+  }
+
+  > div {
+    padding: 30px 0;
+  }
+
+  dl {
+    padding-left: 40px;
+  }
+  dt {
+    font-weight: normal;
+    float: left;
+    margin-right: 10px;
+  }
+  dd {
+    margin-left: 40px;
+    ul {
+      margin: 0;
+      clear: both;
+    }
+  }
+  ul {
+    list-style: none;
+    margin-left: 40px;
+  }
+  .relative {
+    position: relative;
+  }
+  .stamp {
+    position: absolute;
+    right: 0;
+    text-align: center;
+    padding-top: 1em;
+  }
+
+  .surety-print {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    padding: 0;
+    font-size: 72px;
+    z-index: 110;
+  }
+
+  .surety-notice {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 22px;
+    text-transform: uppercase;
+    z-index: 100;
+    color: #666;
+  }
+}
+
+.deliver-surety {
+  font-size: 18px;
+  line-height: 35px;
+
+  .step {
+    margin-bottom: 5px;
+  }
+
+  .step-content {
+    margin-left: 38px;
+  }
+
+  i {
+    font-size: 26px;
+    line-height: 35px;
+    float: left;
+    position: relative;
+    top: 2px;
+  }
+}

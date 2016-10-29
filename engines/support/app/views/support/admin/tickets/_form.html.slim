@@ -1,0 +1,14 @@
+= bootstrap_nested_form_for [:admin, @ticket], layout: :horizontal, multipart: true do |f|
+  = f.collection_select :reporter_id, User.all - [current_user], :id, :full_name_with_email
+  = f.collection_select :responsible_id, User.support, :id, :full_name_with_email unless @ticket.new_record?
+  = f.text_field :subject
+  = f.text_field :url
+  = f.text_area :message, rows: 14
+  = f.file_field :attachment
+  = f.collection_select :topic_id, Support::Topic.common_theme, :id, :name_with_parents
+  = autocomplete f, name: :project_id, label: Support::Ticket.human_attribute_name(:project), source: core.projects_path, include_blank: true
+  = f.collection_select :cluster_id, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
+  = f.collection_select :surety_id, Core::Surety.all, :id, :name, label: Support::Ticket.human_attribute_name(:surety), include_blank: true
+
+  = f.form_group do
+    = f.submit t("actions.save")

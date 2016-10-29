@@ -1,0 +1,18 @@
+div class="page-header"
+  h1 = t(".title")
+
+= bootstrap_nested_form_for @ticket, layout: :horizontal, multipart: true do |f|
+  = f.text_field :topic, readonly: true
+  = f.text_field :subject
+  = f.text_field :url
+  = f.text_area :message, rows: 5
+  = f.file_field :attachment
+  = autocomplete f, name: 'ticket[project_id]', label: Support::Ticket.human_attribute_name(:project), source: core.projects_path, include_blank: true
+  = autocomplete f, name: 'ticket[cluster_id]', source: core.admin_clusters_path, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
+  = f.fields_for :field_values do |fv_f|
+    - value = fv_f.object
+    = fv_f.hidden_field :field_id
+    = fv_f.text_field :value, label: value.field.name, required: value.field.required, help: value.field.hint
+
+  = f.form_group do
+    = f.submit t("actions.save")

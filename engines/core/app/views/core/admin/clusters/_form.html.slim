@@ -1,0 +1,16 @@
+div class="row"
+  p = t(".help")
+  = bootstrap_nested_form_for [:admin, @cluster], layout: :horizontal do |f|
+    = f.text_field :name
+    = f.text_field :host
+    = f.form_group do
+      = f.check_box :available_for_work
+    = f.text_field :admin_login
+    = f.fields_for :quotas, layout: :horizontal do |cq_form|
+      = cq_form.collection_select :quota_kind_id, Core::QuotaKind.all, :id, :full_name
+      = cq_form.text_field :value
+      = cq_form.form_group do
+        = cq_form.link_to_remove t(".remove_quota"), class: "fa fa-times text-danger"
+    = f.link_to_add t(".add_quota"), :quotas
+    = f.form_group do
+      = f.submit t("buttons.save")

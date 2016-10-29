@@ -1,0 +1,9 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="well"
+  = link_to t(".new_field"), new_admin_field_path, class: "btn btn-default"
+
+= safe_paginate @fields
+= render "table", fields: @fields
+= safe_paginate @fields

@@ -1,0 +1,13 @@
+- if quota_kinds.any?
+  table class="table table-bordered"
+    tr
+      th class="col-xs-1" #
+      th class="col-xs-4" = Core::QuotaKind.human_attribute_name(:name)
+      th class="col-xs-3" = Core::QuotaKind.human_attribute_name(:measurement)
+    - quota_kinds.each do |quota_kind|
+      tr
+        td = quota_kind.id
+        td = link_to quota_kind.name, [:edit, :admin, quota_kind]
+        td = quota_kind.measurement
+- else
+  p = t("no_records_found")

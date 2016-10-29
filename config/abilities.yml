@@ -1,0 +1,58 @@
+accounts:
+  - manage
+tickets:
+  - manage
+clusters:
+  - manage
+cluster_fields:
+  - manage
+critical_technologies:
+  - manage
+credentials:
+  - manage
+direction_of_sciences:
+  - manage
+groups:
+  - manage
+history_items:
+  - access
+organizations:
+  - manage
+organization_kinds:
+  - manage
+position_names:
+  - manage
+projects:
+  - review
+  - manage
+requests:
+  - manage
+sureties:
+  - manage
+  - confirm
+  - unconfirm
+  - activate
+  - close
+  - decline
+users:
+  - manage
+pages:
+  - manage
+  - show_all
+all:
+  - show_all
+admin:
+  - access
+research_areas:
+  - manage
+faults:
+  - resolve
+notifications:
+  - manage
+notices:
+  - manage
+reports:
+  - manage
+  - access
+sessions:
+  - manage

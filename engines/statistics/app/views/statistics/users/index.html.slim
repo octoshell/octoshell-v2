@@ -1,0 +1,12 @@
+div class="page-header"
+  h1 = t(".title", default: "User Stats")
+
+div class="well"
+  blockquote
+    p Данные обновляются каждые 3 месяца
+  = link_to "Посчитать сейчас", [:calculate_stats, :users], class: "btn btn-info", method: :post, remote: true
+
+- Statistics::UserStat::KINDS.each do |kind|
+  - stats = Statistics::UserStat.send(kind)
+  h3 = Statistics::UserStat.human_kind_name(kind)
+  = render "statistics/shared/stats", stats: stats

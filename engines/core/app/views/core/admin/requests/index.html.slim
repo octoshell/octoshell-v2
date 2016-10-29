@@ -1,0 +1,42 @@
+div class="page-header"
+  h1 = t(".title", default: "Requests")
+
+= bootstrap_form_for @search, url: admin_requests_path, method: :get, layout: :horizontal do |f|
+  = autocomplete f, name: :project_id_eq, label: Core::Request.human_attribute_name(:project), source: core.projects_path
+  = f.collection_select :creator_id_eq, User.joins(:account_owners).preload(:profile).distinct, :id, :full_name_with_email, label: Core::Request.human_attribute_name(:creator), include_blank: true
+  = f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name, label: Core::Request.human_attribute_name(:cluster), include_blank: true
+  = f.select :state_in, Core::Request.human_state_names, { label: Core::Request.human_attribute_name(:state), include_blank: true }, { multiple: true }
+  = f.form_group do
+    = f.submit t("actions.find"), class: "btn btn-primary"
+
+= safe_paginate @requests
+- if @requests.any?
+  h4= page_entries_info @requests
+  table class="table table-hover"
+    tr
+      th class="col-xs-1"
+        - if @search
+          = sort_link @search, :id, '#', default_order: :desc
+        - else
+          | #
+      th = Core::Request.human_attribute_name(:project)
+      th = Core::Request.human_attribute_name(:cluster)
+      th = Core::Request.human_attribute_name(:state)
+      th = t(".requested_resources_info")
+      th
+        - th_title  = Core::Request.human_attribute_name(:created_at)
+        - if @search
+          = sort_link @search, :created_at, th_title, default_order: :desc
+        - else
+          = th_title
+    - @requests.each do |request|
+      tr
+        td = link_to "##{request.id}", admin_request_path(request)
+        td = link_to request.project.title, admin_project_path(request.project)
+        td = link_to request.cluster.name, admin_cluster_path(request.cluster)
+        td = mark_request_state(request)
+        td = request.requested_resources_info
+        td = l request.created_at.to_date
+- else
+  p = t("no_records_found")
+= safe_paginate @requests

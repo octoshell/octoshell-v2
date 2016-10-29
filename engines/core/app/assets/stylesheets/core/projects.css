@@ -1,0 +1,27 @@
+.state-circle {
+  border-radius: 50%;
+  border: 10px solid;
+  width: 100px;
+  height: 100px;
+}
+
+.active {
+  border-color: #006600;
+}
+
+.suspended {
+  border-color: #FF9900;
+}
+
+.closed {
+  border-color: #CC0000;
+}
+
+.new-member-form .form-control {
+  width: 80%;
+  margin-right: 2em;
+}
+
+table.vtop td, th {
+  vertical-align: top;
+}

@@ -1,0 +1,14 @@
+div class="row"
+  div class="col-xs-6"
+    = bootstrap_form_for @profile, layout: :horizontal do |f|
+      = f.text_field :last_name
+      = f.text_field :first_name
+      = f.text_field :middle_name
+      = f.form_group do
+        = f.check_box :receive_info_mails
+        span class="text-muted" = t(".info_mails_help")
+        = f.check_box :receive_special_mails
+        span class="text-muted" = t(".special_mails_help")
+
+      = f.form_group do
+        = f.submit t(".save")

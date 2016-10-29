@@ -1,0 +1,18 @@
+div class="row" data-max-values="#{field.max_values}"
+  div class="form-group"
+    - if field.collection_values.size < 10
+      div class="col-xs-8"
+        - field.collection_values.each do |value|
+          div class="checkbox"
+            label
+              input type="checkbox"
+              = value
+    - else
+      - size, i = field.collection_values.size, 0
+      - field.collection_values.in_groups(3, false).each do |collection|
+        div class="col-xs-3"
+          - collection.each do |value|
+            div class="checkbox"
+              label
+                input type="checkbox"
+                = value

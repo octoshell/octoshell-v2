@@ -1,0 +1,55 @@
+div class="page-header"
+  h1 = @surety
+
+- if @surety.scans.any? && (@surety.generated? || @surety.rejected?)
+  p class="alert-success"
+    h4 = t(".confirm_message")
+    = link_to Core::Surety.human_state_event_name(:confirm), confirm_surety_path(@surety), class: "btn btn-success"
+
+table class="table table-condenced"
+  tr
+    th = Core::Surety.human_attribute_name(:project)
+    td = link_to @surety.project.title, @surety.project
+  tr
+    th = Core::Surety.human_attribute_name(:organization)
+    td = @surety.organization.name
+  tr
+    th = Core::Surety.human_attribute_name(:state)
+    td
+      - state = { generated: "primary", confirmed: "warning", active: "success", closed: "danger" }[@surety.state_name.to_sym]
+      span class="label label-#{state}" = @surety.human_state_name
+
+div class="deliver-surety"
+  div class="step clearfix"
+    i class="fa fa-print"
+    div class="step-content"
+      span = t(".print_reminder")
+
+  div class="step clearfix"
+    i class="fa fa-envelope-o"
+    div class="step-content"
+      span = t(".send_reminder")
+
+  div class="step clearfix"
+    i class="fa fa-download"
+    div class="step-content"
+      = link_to @surety.document.url do
+        span = t(".download_surety_document")
+
+  div class="step clearfix"
+    i class="fa fa-upload"
+    div class="step-content"
+      - link_text = @surety.scans.any? ? t(".edit_scans") : t(".upload_scans")
+      = link_to link_text, edit_surety_path(@surety)
+
+- if @surety.scans.any?
+  div class="row"
+    h3 = Core::Surety.human_attribute_name(:scans)
+    - @surety.scans.each do |scan|
+      div class="col-xs-4"
+        = link_to image_tag(scan.image.path), scan.image.url, target: :blank, class: "thumbnail"
+
+- unless @surety.closed?
+  legend
+  h4 = t(".close_message")
+  = link_to Core::Surety.human_state_event_name(:close), close_surety_path(@surety), confirm: t("actions.confirm"), class: "btn btn-danger"

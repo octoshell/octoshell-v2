@@ -1,0 +1,6 @@
+- if session[:soul_id]
+  div class="navbar-fixed-top col-xs-2 return-btn-container"
+    = link_to t("actions.return_to_self_session"), main_app.return_to_self_user_path(current_user), class: "btn btn-lg btn-danger fa fa-sign-out"
+- right_bar = render "authentication/menu"
+
+= render "layouts/face/application", { right_bar: right_bar, content: yield }

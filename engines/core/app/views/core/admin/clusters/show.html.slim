@@ -1,0 +1,29 @@
+div class="page-header"
+  h1
+    = @cluster.name
+    - if may?(:manage, :clusters)
+      |  
+      = link_to "", [:edit, :admin, @cluster], class: "fa fa-pencil-square"
+
+legend = t(".info")
+table class="table table-striped"
+  tr
+    th = Core::Cluster.human_attribute_name(:host)
+    th = Core::Cluster.human_attribute_name(:admin_login)
+    th = t(".quotas_info")
+    th = Core::Cluster.human_attribute_name(:available_for_work)
+  tr
+    td = @cluster.host
+    td = @cluster.admin_login
+    td = @cluster.quotas_info
+    td class="text-center"
+      - if @cluster.available_for_work
+        i class="fa fa-check"
+      - else
+        i class="fa fa-times"
+
+p = t(".pub_key_help_html", admin_login: @cluster.admin_login)
+pre
+  code = @cluster.public_key
+
+= link_to t(".show_logs"), admin_cluster_logs_path(q: {cluster_id_eq: @cluster.id})

@@ -1,0 +1,11 @@
+- content_for :admin_engine_submenu do
+  ul class="nav nav-pills"
+    li  = link_to t("engine_submenu.projects"), projects_path
+    li  = link_to t("engine_submenu.organizations"), organizations_path
+    li  = link_to t("engine_submenu.users"), users_path
+    /* li  = link_to t("engine_submenu.sessions"), sessions_path */
+  javascript:
+    google.load('visualization', '1.0', {'packages':['corechart']})
+
+
+= render template: "layouts/application"

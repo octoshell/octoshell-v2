@@ -1,0 +1,76 @@
+#!/usr/bin/env perl
+
+my $user=$ARGV[0];
+my $key_file=$ARGV[1];
+
+my ($login,$pass,$uid,$gid);
+
+sub check_file($$){
+  my $file=$_[0];
+  my $key=$_[1];
+
+  unless(open(F,"<$file")){
+    return 0;
+  }
+  while(<F>){
+    chomp;
+#  print "compare:\n$_;\n";
+    if($_ eq $key){
+      close F;
+      print LOG "found\n";
+      print "found\n";
+      return 1;
+    }
+  }
+  close F;
+  return 0;
+}
+
+open(LOG,">>/tmp/octo.log") || open(LOG,">/dev/null");
+print LOG "check_openkey $ARGV[0] $ARGV[1]\n";
+
+$user =~ y/ |;|\||<|>|&/_/;
+
+unless(open(K,"<$key_file")){
+  print LOG "Fail: Cannot open keyfile $key_file\n";
+  print "fail\n";
+  exit(1);
+}
+my $key='';
+
+while(<K>){
+  $key.="$_";
+}
+close K;
+unlink $key_file;
+
+if($key =~ /BEGIN/){
+#  print "Converting to openssh format...\n";
+  my $tmpname="/tmp/$$-delkey";
+  unless(open(F,">$tmpname")){
+    print LOG "Fail: Cannot create $tmpname ($?)\n";
+    print "fail\n";
+    exit(1);
+  }
+  print F $key;
+  close F;
+  my $newkey=`ssh-keygen -i -f '$tmpname' && rm '$tmpname'`;
+  chomp($newkey);
+  $key=$newkey if $newkey ne ''; 
+}
+
+#print "Checking key for ${user}!\n";
+
+chomp $key;
+
+unless(check_file("/home/$user/.ssh/authorized_keys",$key)){
+  unless(check_file("/home/$user/.ssh/authorized_keys2",$key)){
+    print LOG "not found\n";
+    print "not found\n";
+    exit 0;
+  }
+}
+
+#print LOG "not found\n";
+#print "not found\n";
+exit(0);

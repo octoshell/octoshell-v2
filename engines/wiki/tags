@@ -1,0 +1,17 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	Development	/7760835/
+Engine	lib/wiki/engine.rb	/^  class Engine < ::Rails::Engine$/;"	c	module:Wiki
+Generators	lib/generators/wiki/install_generator.rb	/^  module Generators$/;"	m	module:Wiki
+InstallGenerator	lib/generators/wiki/install_generator.rb	/^    class InstallGenerator < Rails::Generators::Base$/;"	c	module:Wiki.Generators
+Wiki	lib/generators/wiki/install_generator.rb	/^module Wiki$/;"	m
+Wiki	lib/wiki.rb	/^module Wiki$/;"	m
+Wiki	lib/wiki/engine.rb	/^module Wiki$/;"	m
+Wiki	lib/wiki/version.rb	/^module Wiki$/;"	m
+finished	lib/generators/wiki/install_generator.rb	/^      def finished$/;"	f	module:Wiki.Generators
+install_migrations	lib/generators/wiki/install_generator.rb	/^      def install_migrations$/;"	f	class:Wiki.Generators.InstallGenerator
+mount_engine	lib/generators/wiki/install_generator.rb	/^      def mount_engine$/;"	f	class:Wiki.Generators.InstallGenerator
+run_migrations	lib/generators/wiki/install_generator.rb	/^      def run_migrations$/;"	f	class:Wiki.Generators.InstallGenerator

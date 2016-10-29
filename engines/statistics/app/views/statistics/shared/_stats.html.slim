@@ -1,0 +1,46 @@
+- if stats.any?
+  - if stats.first.data.first[2].is_a?(Array)
+    - stats.to_charts.each do |title, chart|
+      h4 = title
+      - rand = SecureRandom.hex(4)
+      ul class="nav nav-tabs"
+        li class="active" = link_to "График", "#graph-#{rand}-column", data: { toggle: "tab" }
+        li = link_to "Таблица", "#graph-#{rand}-table", data: { toggle: "tab" }
+
+      div class="tab-content"
+        div class="tab-pane active" id="graph-#{rand}-column"
+          div class="cohort" data-chart="#{chart}"
+        div class="tab-pane" id="graph-#{rand}-table"
+          table class="table table-condensed table-striped"
+            - head = chart.shift
+            thead
+              tr
+                - head.each do |title|
+                  th = title
+            tbody
+              - chart.each do |row|
+                tr
+                  - row.each do |val|
+                    td class="#{"date" if val.present?}" = val
+  - else
+    - rand = SecureRandom.hex(4)
+    ul class="nav nav-tabs"
+      li class="active" = link_to "График", "#graph-#{rand}-column", data: { toggle: "tab" }
+      li = link_to "Таблица", "#graph-#{rand}-table", data: { toggle: "tab" }
+
+    div class="tab-content"
+      - chart = stats.to_chart
+      div class="tab-pane active" id="graph-#{rand}-column"
+        div class="cohort" data-chart="#{chart}"
+      div class="tab-pane" id="graph-#{rand}-table"
+        table class="table table-condensed table-striped"
+          - head = chart.shift
+          thead
+            tr
+              - head.each do |title|
+                th = title
+          tbody
+            - chart.each do |row|
+              tr
+                - row.each do |val|
+                  td class="#{"date col-xs-2" if val.present?}" = val

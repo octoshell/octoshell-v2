@@ -1,0 +1,42 @@
+- if tickets.any?
+  table class="table table-bordered"
+    tr
+      th class="col-xs-1"
+        - if @search
+          = sort_link @search, :id, "#", default_order: :desc
+        - else
+          | #
+      th class="col-xs-7" = Support::Ticket.human_attribute_name(:subject)
+      th class="col-xs-4"
+        - if @search
+          = sort_link @search, :created_at, Support::Ticket.human_attribute_name(:created_at), default_order: :desc
+        - else
+          = Support::Ticket.human_attribute_name(:created_at)
+        |  / 
+        = Support::Ticket.human_attribute_name(:updated_at)
+    - tickets.each do |ticket|
+      tr
+        td = ticket.id
+        td
+          ul class="list-unstyled"
+            li
+              strong = link_to ticket, ticket
+            li
+              - state = { "pending" => "danger", "answered_by_support" => "danger", "answered_by_reporter" => "warning", "resolved" => "success", "closed" => "default" }[ticket.state_name]
+              span class="label label-#{state}" = ticket.human_state_name
+            li class="text-muted"
+              | #{Support::Ticket.human_attribute_name(:topic)}: #{ticket.topic.name_with_parents}
+            li
+            - if ticket.project.present?
+              li
+                | #{Support::Ticket.human_attribute_name(:project)}: #{link_to ticket.project, core.project_path(ticket.project)}
+            - if ticket.cluster.present?
+              li
+                | #{Support::Ticket.human_attribute_name(:cluster)}: #{ticket.cluster}
+        td
+          = l ticket.created_at
+          |  / 
+          br
+          span class="text-muted" = l ticket.updated_at
+- else
+  p = t(".no_tickets", default: "There are no tickets")

@@ -1,0 +1,51 @@
+- if tickets.any?
+  h4= page_entries_info tickets
+
+  table class="table table-bordered table-striped"
+    tr
+      th class="col-xs-1"
+        - if @search
+          = sort_link @search, :id, "#", default_order: :desc
+        - else
+          | #
+      th = Support::Ticket.human_attribute_name(:subject)
+      th = Support::Ticket.human_attribute_name(:reporter)
+      th = Support::Ticket.human_attribute_name(:responsible)
+      th
+        - if @search
+          = sort_link @search, :created_at, Support::Ticket.human_attribute_name(:created_at), default_order: :desc
+        - else
+          = Support::Ticket.human_attribute_name(:created_at)
+        |  / 
+        = Support::Ticket.human_attribute_name(:updated_at)
+    - tickets.each do |ticket|
+      tr
+        td class="col-xs-1"= ticket.id
+        td class="col-xs-5"
+          ul class="list-unstyled"
+            li
+              strong = link_to ticket, [:admin, ticket]
+            li
+              - state = { "pending" => "danger", "answered_by_support" => "warning", "answered_by_reporter" => "danger", "resolved" => "success", "closed" => "default" }[ticket.state_name]
+              span class="label label-#{state}" = ticket.human_state_name
+            li class="text-muted"
+              | #{Support::Ticket.human_attribute_name(:topic)}: #{ticket.topic.name_with_parents}
+            - if ticket.project.present?
+              li
+                | #{Support::Ticket.human_attribute_name(:project)}: #{link_to ticket.project, core.admin_project_path(ticket.project)}
+            - if ticket.cluster.present?
+              li
+                | #{Support::Ticket.human_attribute_name(:cluster)}: #{link_to ticket.cluster, core.admin_cluster_path(ticket.cluster)}
+        td class="col-xs-2" = link_to ticket.reporter, main_app.admin_user_path(ticket.reporter)
+        td class="col-xs-2"
+          - if ticket.responsible
+            = link_to ticket.responsible, main_app.admin_user_path(ticket.responsible)
+          - else
+            span class="label label-danger" N/A
+        td class="col-xs-2"
+          = l ticket.created_at
+          |  / 
+          br
+          span class="text-muted" = l ticket.updated_at
+- else
+  p = t(".no_tickets")

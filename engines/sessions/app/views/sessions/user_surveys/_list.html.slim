@@ -1,0 +1,24 @@
+- if surveys.any?
+  h4= page_entries_info surveys
+
+  table class="table table-hover table-striped"
+    tr
+      th class="col-xs-1" #
+      th Наименование
+      th Проект
+      th Статус
+      th Перерегистрация
+
+    - surveys.each do |survey|
+      tr
+        td = survey.id
+        td
+          strong = link_to survey, sessions.admin_user_survey_path(survey)
+        td
+          = link_to survey.project.title, core.admin_project_path(survey.project) if survey.project
+        td
+          label class="label label-#{report_status_label(survey)}" = survey.human_state_name
+        td
+          strong = survey.session
+- else
+  p Нет опросников

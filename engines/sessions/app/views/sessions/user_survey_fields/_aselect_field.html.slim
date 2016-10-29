@@ -1,0 +1,4 @@
+- if error.present?
+  div class="alert alert-danger"
+    = error
+input name="fields[#{field.id}]" type="text" autocomplete="off" data-entity-source="#{field.entity_source}" class="typeahead" data-strict-collection="#{field.strict_collection}" value="#{form.object.field_value(field.id)}"

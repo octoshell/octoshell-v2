@@ -1,0 +1,19 @@
+table class="table table-hover"
+  tr
+    th №
+    th = Core::Project.human_attribute_name(:title)
+    th = Core::Project.human_attribute_name(:owner)
+    th = Core::Member.human_attribute_name(:project_access_state)
+    - projects.each do |project|
+      - member = project.members.where(user: current_user).first
+      tr
+        td class="col-xs-1"
+          = project.id
+        td class="col-xs-6"
+          ul class="list-unstyled"
+            li = link_to project.title, project
+            li = mark_project_state(project)
+        td
+          = project.owner.full_name_with_email
+        td
+          = mark_member_state(project, member)

@@ -1,0 +1,8 @@
+= render "header"
+
+p Вы просрочили заполнение опроса «#{@user_survey.survey.name}» в рамках перерегистрации «#{@user_survey.session.description}»
+h5 Согласно правилам, ваш аккаунт заблокирован до момента, пока вы не заполните все просроченные опросы.
+
+p = link_to "Приступить к заполнению опроса.", sessions.user_survey_url(@user_survey)
+
+= render "footer"

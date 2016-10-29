@@ -1,0 +1,14 @@
+- if tags.any?
+  table class="table table-bordered"
+    tr
+      th class="col-xs-1" #
+      th = Support::Tag.human_attribute_name(:name)
+    - tags.each do |tag|
+      tr
+        td = tag.id
+        td
+          = link_to tag, [:admin, tag]
+          = link_to [:admin, tag], method: :delete do
+            i class="fa fa-times text-danger pull-right"
+- else
+  p = t(".no_tags")

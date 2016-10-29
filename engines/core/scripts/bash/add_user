@@ -1,0 +1,27 @@
+#!/bin/bash
+
+source /usr/octo/defaults.sh
+
+touch /var/syncall
+
+if [ $(getent passwd $1) ]; then
+  #echo "User $1 already exists. Ignore..."
+  echo ok
+  exit 0
+fi
+
+if [ $(getent group $2) ]; then
+  true
+else
+  groupadd $2 >>$LOG_FILE 2>&1
+fi
+
+if useradd -m -g "$2" "$1" >>/tmp/octo.log 2>&1 && su -c "(cd '/home/$1'; echo '' | ssh-keygen -q -t rsa -N '' && cat .ssh/id_rsa.pub >> .ssh/authorized_keys)" "$1" >>/tmp/octo.log 2>&1; then
+  echo ok
+  exit 0
+fi
+
+echo "add user $1 $2 failed: $?" >>/tmp/octo.log
+echo "fail"
+exit 1
+

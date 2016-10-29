@@ -1,0 +1,72 @@
+div class="row"
+  div class="col-xs-6"
+    blockquote
+      h4 = Core::ProjectCard.human_attribute_name :name
+      p = project.card.name
+
+      h4 = Core::ProjectCard.human_attribute_name :driver
+      p = project.card.driver
+
+      h4 = Core::ProjectCard.human_attribute_name :strategy
+      p = project.card.strategy
+
+      h4 = Core::ProjectCard.human_attribute_name :objective
+      p = project.card.objective
+
+      h4 = Core::ProjectCard.human_attribute_name :impact
+      p  = project.card.impact
+
+      h4 = Core::ProjectCard.human_attribute_name :usage
+      p  = project.card.usage
+
+  div class="col-xs-6"
+    blockquote
+      h4 = Core::ProjectCard.human_attribute_name :en_name
+      p = project.card.en_name
+
+      h4 = Core::ProjectCard.human_attribute_name :en_driver
+      p = project.card.en_driver
+
+      h4 = Core::ProjectCard.human_attribute_name :en_strategy
+      p = project.card.en_strategy
+
+      h4 = Core::ProjectCard.human_attribute_name :en_objective
+      p = project.card.en_objective
+
+      h4 = Core::ProjectCard.human_attribute_name :en_impact
+      p  = project.card.en_impact
+
+      h4 = Core::ProjectCard.human_attribute_name :en_usage
+      p  = project.card.en_usage
+
+div class="row"
+  h4 = Core::Project.human_attribute_name :owner
+  div class="col-xs-offset-1"
+    = link_to_if may?(:manage, :users), project.owner.full_name, main_app.admin_user_path(project.owner)
+
+div class="row"
+  h4 = Core::Project.human_attribute_name(:organization)
+  div class="col-xs-offset-1"
+    = project.organization.name
+
+div class="row"
+  h4 = Core::Project.human_attribute_name :direction_of_sciences
+  div class="col-xs-offset-1"
+    ul class="list-unstyled"
+      - project.direction_of_sciences.each do |dos|
+        li = dos
+
+div class="row"
+  h4 = Core::Project.human_attribute_name :critical_technologies
+  div class="col-xs-offset-1"
+    ul class="list-unstyled"
+      - project.critical_technologies.each do |ct|
+        li = ct
+
+div class="row"
+  h4 = Core::Project.human_attribute_name :research_areas
+  div class="col-xs-offset-1"
+    ul class="list-unstyled"
+      - project.research_areas.each do |ra|
+        li = ra
+

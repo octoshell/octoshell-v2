@@ -1,0 +1,11 @@
+div class="page-header"
+  h1 = t(".title", default: "Organization Types")
+
+div class="panel panel-default"
+  div class="panel-heading"
+    = link_to t(".new_organization_kind"), new_admin_organization_kind_path, class: "btn btn-default"
+
+  div class="panel-body"
+    = safe_paginate @organization_kinds
+    = render "table", organization_kinds: @organization_kinds
+    = safe_paginate @organization_kinds

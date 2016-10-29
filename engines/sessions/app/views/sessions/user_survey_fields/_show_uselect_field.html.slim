@@ -1,0 +1,9 @@
+- values = value ? value.value : []
+- values = values.find_all(&:present?)
+- if values.any?
+  ol
+    - value.value.each do |value|
+      - if value.present?
+        li = value
+- else
+  p Нет данных

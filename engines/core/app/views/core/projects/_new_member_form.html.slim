@@ -1,0 +1,3 @@
+= form_for Core::Member.new, url: invite_member_project_path(project), class: "form-inline new-member-form" do |f|
+  = autocomplete f, name: :id, hide_label: true, source: main_app.users_path
+  = f.submit t(".submit"), class: "btn btn-default btn-sm"

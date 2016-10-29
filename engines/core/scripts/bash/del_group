@@ -1,0 +1,14 @@
+#!/bin/sh
+
+source /usr/octo/defaults.sh
+
+if groupdel "$1"; then
+  touch /var/syncall
+  echo "del_group $1 ok" >>$LOG_FILE
+  echo ok
+  exit 0
+fi
+
+echo "del_group $1 fail: $?" >>$LOG_FILE
+echo "fail" #: $?"
+exit 1

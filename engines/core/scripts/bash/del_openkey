@@ -1,0 +1,65 @@
+#!/usr/bin/env perl
+
+my $user = $ARGV[0];
+my $key_file  = $ARGV[1];
+my @keys;
+my $i;
+
+$user =~ y/ |;|\||<|>|&/_/;
+#die "Empty username. No good...\n" if $user eq '';
+die "fail\n" if $user eq '';
+
+open(K,"<$key_file") or die "fail\n"; #Cannot open keyfile $key_file\n";
+my $key='';
+
+while(<K>){
+  $key.=$_;
+}
+close K;
+unlink $key_file;
+
+
+if($key =~ /BEGIN/){
+#  print "Converting to openssh format...\n";
+  my $tmpname="/tmp/$$-delkey";
+  open(F,">$tmpname") or die "fail\n"; #Cannot create $tmpname ($?)\n";
+  print F $key;
+  close F;
+  my $newkey=`ssh-keygen -i -f '$tmpname' && rm '$tmpname'`;
+  chomp($newkey);
+  $key=$newkey if $newkey ne ''; 
+}
+    
+#print "Deleting key for ${user}!\n";
+
+unless(open(F, "</home/$user/.ssh/authorized_keys")){
+  #print "No authorized_keys for $user! Ok, do nothing.\n";
+  print "ok\n";
+  exit 0;
+}
+
+my $counter=0;
+
+while(<F>){
+  chomp;
+  if($_ eq $key){
+    ++$counter;
+    next;
+  }
+  push @keys, $_;
+}
+close F;
+
+unless(open(F, ">/home/$user/.ssh/authorized_keys")){
+  print "fail\n"; #: Cannot write to /home/$user/.ssh/authorized_keys. ($?)\n";
+  exit 1;
+}
+
+foreach $i (@keys){
+  print F "$i\n";
+}
+close F;
+
+#print "Deleted $counter keys.\n";
+print "ok\n";
+exit 0;

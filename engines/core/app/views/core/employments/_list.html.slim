@@ -1,0 +1,23 @@
+h4 = t(".employments")
+table class="table table-condensed"
+  - if employments.any?
+    - employments.each do |employment|
+      tr
+        td class="col-xs-1"
+          - if employment.primary?
+            i class="fa fa-flag"
+        td class="col-xs-6"
+          strong = employment.full_name
+          br
+          - employment.position_info.each do |p|
+            ul class="list-unstyled"
+              li #{p.name}: #{p.value}
+        td = employment.post_in_organization
+        td class="col-xs-1" = link_to "", core.employment_path(employment), class: "fa fa-pencil"
+  - else
+    tr class="warning"
+      td colspan="4" = t(".no_employments_created")
+  tr
+    td colspan="4"
+      strong
+        small = link_to t(".add_employment"), core.new_employment_path

@@ -1,0 +1,25 @@
+javascript:
+  google.load('visualization', '1.0', {'packages':['corechart']})
+
+div class="page-header"
+  h1 = t(".title", session_name: @session.description)
+
+h3 = link_to t(".back_to_session"), admin_session_path(@session)
+div class="well"
+  = link_to t(".add_graph"), new_admin_session_stat_path(@session), class: "btn btn-default"
+
+- @stats.each do |stat|
+  - if stat.organization
+    div class="graph-subdivisions"
+      - stat.graph_data_for_count_in_org.each do |name, data|
+        - if data.any?
+          = render partial: "sessions/shared/graph", locals: { data: data, stat: stat, subdivision: name }
+  - else
+    = render "sessions/shared/graph", data: stat.graph_data_for_count, stat: stat, subdivision: nil
+
+  p
+    small = link_to [:edit, :admin, stat.session, stat], class: "muted" do
+      i class="fa fa-pencil"
+      |  Редактировать
+
+  hr style="margin-bottom: 40px;"

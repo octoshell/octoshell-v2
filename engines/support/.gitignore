@@ -1,0 +1,7 @@
+.bundle/
+log/*.log
+pkg/
+gems/
+spec/dummy/log/*.log
+spec/dummy/tmp/
+spec/dummy/.sass-cache

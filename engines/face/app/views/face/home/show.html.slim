@@ -1,0 +1,7 @@
+div class="jumbotron"
+  h1 = t(".welcome")
+  p = t(".about.html")
+  - unless logged_in?
+    div class="btn-toolbar"
+      = link_to t(".sign_in", default: "Sign in"), authentication.new_session_path, class: "btn btn-primary btn-lg"
+      = link_to t(".sign_up", default: "Sign up"), authentication.new_user_path, class: "btn btn-primary btn-lg"

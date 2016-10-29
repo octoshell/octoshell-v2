@@ -1,0 +1,15 @@
+div class="page-header"
+  h1
+    = @tag
+    |  
+    = link_to [:edit, :admin, @tag] do
+      i class="fa fa-pencil-square"
+
+= bootstrap_form_for @tag, url: admin_tag_merge_path(@tag), method: :put, layout: :horizontal do |f|
+  = f.collection_select :merge_id, Support::Tag.all, :id, :name, label: t(".merge_with"), help: t(".help")
+
+  = f.form_group
+    = f.submit t("actions.save")
+
+legend = t(".tickets_with_tag")
+= render "support/admin/tickets/table", tickets: @tag.tickets

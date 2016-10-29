@@ -1,0 +1,15 @@
+- if organization_kinds.any?
+  table class="table table-bordered"
+    tr
+      th class="col-xs-1" #
+      th class="col-xs-7" = Core::OrganizationKind.human_attribute_name(:name)
+      th class="col-xs-1" = Core::OrganizationKind.human_attribute_name(:departments_required)
+    - organization_kinds.each do |organization_kind|
+      tr
+        td = organization_kind.id
+        td = link_to organization_kind.name, [:admin, organization_kind]
+        td
+          - icon_type = organization_kind.departments_required? ? "check" : "times"
+          i class="fa fa-#{icon_type}-circle"
+- else
+  p = t(".no_organization_types")

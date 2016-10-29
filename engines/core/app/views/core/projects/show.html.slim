@@ -1,0 +1,32 @@
+div class="page-header"
+  h1
+    = @project.title
+    - if @user_can_manage_project
+      |  
+      = link_to "", edit_project_path(@project), class: "fa fa-pencil-square"
+  h3 = mark_project_state(@project)
+
+- if @user_can_manage_project
+  div class="row well btn-toolbar"
+    = link_to Core::Project.human_state_event_name(:cancel), cancel_project_path(@project), class: "btn btn-danger" if @project.pending? || @project.active?
+    = link_to Core::Project.human_state_event_name(:suspend), suspend_project_path(@project), class: "btn btn-warning" if @project.active?
+    = link_to Core::Project.human_state_event_name(:reactivate), reactivate_project_path(@project), class: "btn btn-success" if @project.suspended?
+    = link_to Core::Project.human_state_event_name(:finish), finish_project_path(@project), class: "btn btn-danger" unless @project.finished?
+    = link_to Core::Project.human_state_event_name(:resurrect), resurrect_project_path(@project), class: "btn btn-info" if @project.finished?
+
+legend = Core::Project.human_attribute_name :card
+= render "core/projects/card", project: @project
+
+- if @project.accesses.any?
+  = render "accesses", accesses: @project.accesses
+
+- if @project.requests.where(:state => [:pending, :closed]).any?
+  = render "requests", requests: @project.requests.where(:state => [:pending, :closed])
+
+- if @user_can_manage_project && @project.spare_clusters.any?
+  = render "spare_clusters", clusters: @project.spare_clusters
+
+= render "members"
+- if @user_can_manage_project
+  = render "invited_users"
+= render "sureties"

@@ -1,0 +1,22 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	Development	/7760835/
+Core	lib/core.rb	/^module Core$/;"	m
+Core	lib/core/engine.rb	/^module Core$/;"	m
+Core	lib/core/version.rb	/^module Core$/;"	m
+Core	lib/generators/core/install_generator.rb	/^module Core$/;"	m
+Engine	lib/core/engine.rb	/^  class Engine < ::Rails::Engine$/;"	c	module:Core
+Generators	lib/generators/core/install_generator.rb	/^  module Generators$/;"	m	module:Core
+InstallGenerator	lib/generators/core/install_generator.rb	/^    class InstallGenerator < Rails::Generators::Base$/;"	c	module:Core.Generators
+UserClassAbsenceError	lib/core.rb	/^  class UserClassAbsenceError < StandardError; end$/;"	c	module:Core
+add_projects_initializer	lib/generators/core/install_generator.rb	/^      def add_projects_initializer$/;"	f	class:Core.Generators.InstallGenerator
+determine_user_class	lib/generators/core/install_generator.rb	/^      def determine_user_class$/;"	f	class:Core.Generators.InstallGenerator
+finished	lib/generators/core/install_generator.rb	/^      def finished$/;"	f	module:Core.Generators
+install_migrations	lib/generators/core/install_generator.rb	/^      def install_migrations$/;"	f	class:Core.Generators.InstallGenerator
+mount_engine	lib/generators/core/install_generator.rb	/^      def mount_engine$/;"	f	class:Core.Generators.InstallGenerator
+run_migrations	lib/generators/core/install_generator.rb	/^      def run_migrations$/;"	f	class:Core.Generators.InstallGenerator
+user_class	lib/core.rb	/^    def user_class$/;"	f	module:Core
+user_class	lib/generators/core/install_generator.rb	/^      def user_class$/;"	f	module:Core.Generators

@@ -1,0 +1,11 @@
+div class="page-header"
+  h1 = @project_kind.name
+
+div class="well"
+  = link_to t("actions.edit"), [:edit, :admin, @project_kind], class: "btn btn-default"
+
+table class="table table-bordered"
+  tr
+    th = Core::ProjectKind.human_attribute_name(:name)
+  tr
+    td = @project_kind.name

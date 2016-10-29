@@ -1,0 +1,13 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="well"
+  = link_to t(".new_reason"), new_admin_report_submit_denial_reason_path, class: "btn btn-default"
+
+table class="table table-striped"
+  tr
+    th = Sessions::ReportSubmitDenialReason.human_attribute_name(:name)
+  - @reasons.each do |reason|
+    tr
+      td = link_to reason.name, edit_admin_report_submit_denial_reason_path(reason)
+

@@ -1,0 +1,13 @@
+p style="padding-bottom: 16px;"
+  - if name = @user.try(:initials)
+    = "Добрый день, #{name}!"
+  - else
+    = "Здравствуйте!"
+
+= markdown @announcement.body
+
+div style="border-top: 1px solid #dedede;margin-bottom: 10px;font-size: 80%; color: #444"
+  - if @announcement.is_special?
+   p Если Вы не хотите получать служебные рассылки, Вам надо в Вашем профиле убрать галку напротив «Использовать мой email для служебных рассылок».
+  - else
+   p Если Вы не хотите получать информационные рассылки, Вам надо в Вашем профиле убрать галку напротив «Использовать мой email для информационных рассылок».
