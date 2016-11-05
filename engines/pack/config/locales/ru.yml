@@ -1,0 +1,11 @@
+ru:
+  activerecord:
+    models:
+      wiki/page: Страница wiki
+    attributes:
+      wiki/page:
+        name: Название
+        url: url
+        content: Текст
+
+

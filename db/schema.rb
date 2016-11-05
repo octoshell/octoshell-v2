@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617111011) do
+ActiveRecord::Schema.define(version: 20161104161637) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "abilities", force: :cascade do |t|
     t.string   "action",     limit: 255
@@ -384,6 +387,15 @@ ActiveRecord::Schema.define(version: 20150617111011) do
     t.datetime "updated_at"
   end
 
+  create_table "pack_packages", force: :cascade do |t|
+    t.string   "name"
+    t.string   "folder"
+    t.datetime "license_date"
+    t.integer  "cost"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.integer "user_id",                                          null: false
     t.string  "first_name",            limit: 255
@@ -691,6 +703,18 @@ ActiveRecord::Schema.define(version: 20150617111011) do
   add_index "users", ["last_login_at"], name: "index_users_on_last_login_at", using: :btree
   add_index "users", ["remember_me_token"], name: "index_users_on_remember_me_token", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", using: :btree
+
+  create_table "wiki_packages", force: :cascade do |t|
+    t.string   "pname"
+    t.string   "pfolder"
+    t.text     "pcontent"
+    t.datetime "pexp_date"
+    t.string   "purl"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "wiki_packages", ["purl"], name: "index_wiki_packages_on_purl", unique: true, using: :btree
 
   create_table "wiki_pages", force: :cascade do |t|
     t.string   "name",       limit: 255

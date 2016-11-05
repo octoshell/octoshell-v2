@@ -1,0 +1,17 @@
+ru:
+  buttons:
+    save: Сохранить
+  pack:
+    markdown_help: Для разметки используется <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
+    packages:
+      new:
+        title: Новый пакет
+      edit:
+        title: Редактрование пакета
+      index:
+        title: Список пакетов
+        new_package: Новый пакет
+        edit: Редактировать
+        delete: Удалить
+        confirm: Вы действительно хотите удалить пакет?
+        no_packages_found: Ещё не создано ни одного пакета.

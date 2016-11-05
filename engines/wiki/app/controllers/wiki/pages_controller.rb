@@ -49,7 +49,7 @@ module Wiki
     end
 
     def page_params
-      params.require(:page).permit(:name, :content, :url, :show_all)
+      params.require(:page).permit(:name, :folder, :cost,:license_date)
     end
   end
 end

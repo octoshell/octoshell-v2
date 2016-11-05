@@ -139,6 +139,16 @@ PATH
       underscore-rails
 
 PATH
+  remote: engines/pack
+  specs:
+    pack (0.0.1)
+      activerecord-jdbcpostgresql-adapter
+      bootstrap_form
+      maymay
+      rails (~> 4.2)
+      slim
+
+PATH
   remote: engines/sessions
   specs:
     sessions (0.0.1)
@@ -559,6 +569,7 @@ DEPENDENCIES
   letter_opener
   mina
   mina-rbenv-addons
+  pack!
   phantomjs!
   poltergeist
   pry-rails
@@ -579,4 +590,4 @@ DEPENDENCIES
   wiki!
 
 BUNDLED WITH
-   1.11.2
+   1.13.6
