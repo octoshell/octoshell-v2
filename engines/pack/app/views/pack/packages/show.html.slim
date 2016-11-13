@@ -1,10 +1,60 @@
-     
-div class="package-header"
-  h1 название пакета: #{@package.name}
+doctype html    
+html
+	=link_to "Список пакетов", packages_path
+	br
+	br
+	br
+	- if current_user && User.superadmins.include?(current_user)
+	table  width="30%" 
+		tr 
+			td Название пакета:
+			td #{@package.name}
+		tr 
+			td Описание:
+			td #{@package.description} 
+		tr 
+			td Путь:
+			td #{@package.folder}   
+		tr 
+			td Стоимость:
+			td #{@package.cost}
+	br
+	br 
+	table 
+		tr
+			td = link_to "Редактировать", edit_package_path(@package.id)        
+			td = link_to "Добавить версию", new_package_version_path(@package.id)
+			td = link_to "Удалить", package_path(@package.id), :method => 'delete',:data => {:confirm => "Вы действительно хотите удалить  пакет?"} 
 
-p 	Путь:#{@package.folder}   
-p 	Стоимость:#{@package.cost} 
+	
+	
+	
+	- if @versions.any?
+	h3 Версии
+	div class="panel-body"
+		table   class="table table-hover" cols="6" cellspacing="30"
+			tr 
+				th  Имя
+				th 	Описание
+				th 	Дата загрузки
+				th 	Дата удаления
+				th 	Активна?
+				th 	Действия
 
-p 	Срок лицензии:#{@package.license_date} 
+			- for version in @versions
+				tr 
+					td  = version.name 
+					td  = version.description 
+					td 	= version.r_up 
+					td 	= version.r_down 
+					td 
+						- if version.active
+							Активна	 
+						- else
+							Неактивна 
+					td 
+						=link_to "Редактировать", edit_package_version_path(@package.id,version.id)
+						=link_to "Удалить", version_path(version.id), :method => 'delete',:data => {:confirm => "Вы действительно хотите удалить эту версию?"} 
 
+			
  

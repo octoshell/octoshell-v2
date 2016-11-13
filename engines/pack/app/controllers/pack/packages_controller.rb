@@ -11,6 +11,7 @@ module Pack
 
     def show
       @package = Package.find(params[:id])
+       @versions = Version.where(package_id:params[:id])
     end
 
     def new
@@ -28,6 +29,7 @@ module Pack
 
     def edit
       @package = Package.find(params[:id])
+
     end
 
     def update
@@ -48,11 +50,11 @@ module Pack
     private
 
     def check_abilities
-    #  authorize! :manage, :packages
+      authorize! :manage, :packages
     end
 
     def package_params
-      params.require(:package).permit(:name, :folder, :cost)
+      params.require(:package).permit(:name, :folder, :cost,:description)
     end
   end
 end

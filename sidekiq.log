@@ -1,8 +1,8 @@
 nohup: ввод игнорируется
 /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
 The signal USR1 is in use by the JVM and will not work correctly on this platform
-2016-11-01T15:15:21.777Z 3957 TID-g2w INFO: Running in jruby 9.0.5.0 (2.2.3) 2016-01-26 7bee00d OpenJDK Server VM 25.91-b14 on 1.8.0_91-8u91-b14-3ubuntu1~16.04.1-b14 +jit [linux-i386]
-2016-11-01T15:15:21.794Z 3957 TID-g2w INFO: See LICENSE and the LGPL-3.0 for licensing details.
-2016-11-01T15:15:21.795Z 3957 TID-g2w INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
-2016-11-01T15:15:21.809Z 3957 TID-g2w INFO: Booting Sidekiq 4.1.1 with redis options {:url=>nil}
-2016-11-01T15:15:21.882Z 3957 TID-g2w INFO: Starting processing, hit Ctrl-C to stop
+2016-11-13T07:41:18.436Z 2133 TID-g7s INFO: Running in jruby 9.0.5.0 (2.2.3) 2016-01-26 7bee00d Java HotSpot(TM) Server VM 24.80-b11 on 1.7.0_80-b15 +jit [linux-i386]
+2016-11-13T07:41:18.459Z 2133 TID-g7s INFO: See LICENSE and the LGPL-3.0 for licensing details.
+2016-11-13T07:41:18.460Z 2133 TID-g7s INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
+2016-11-13T07:41:18.463Z 2133 TID-g7s INFO: Booting Sidekiq 4.1.1 with redis options {:url=>nil}
+2016-11-13T07:41:18.576Z 2133 TID-g7s INFO: Starting processing, hit Ctrl-C to stop

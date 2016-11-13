@@ -1,10 +1,11 @@
 div class="row"
   div class="col-xs-8"
-    = bootstrap_form_for @package do |f|
+    = bootstrap_form_for @version,url: {action: "update"} do |f|
       = f.text_field :name
-      = f.text_field :folder
-      = f.number_field :cost
       = f.text_field :description
-      
+      = f.check_box :active
+      = f.date_field :r_up
+      = f.date_field :r_down
+     
       = f.form_group do
         = f.submit t("buttons.save", default: "Save")
