@@ -1,0 +1,14 @@
+div class="row"
+  div class="s"
+    = bootstrap_form_for :userver,:url => { :action => "edit" }, :html => {:id => "ajax_form"},remote: true do |f|
+      /= f.select :user, @l, { label: t("Users", default: "Users") }, { class: "selectpicker" } 
+      = autocomplete f, name: :email, label: User.human_attribute_name(:email)
+      
+      = f.select :package,@pack_names.collect {|p| [ p.name, p.id ] }, { label: t("Packages", default: "Packages") },{ class: "selectpicker" } 
+      div id="vers_fields" class="form-group"
+      	
+     
+      = f.form_group  do
+        = f.submit t("buttons.save", default: "Save"),:id => "vers_sub" 
+= javascript_include_tag "pack/application"
+= javascript_include_tag "pack/uservers/uservers"

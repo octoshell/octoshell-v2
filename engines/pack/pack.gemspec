@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "slim"
   s.add_dependency "bootstrap_form"
   s.add_dependency "maymay"
+  s.add_dependency "rails-jquery-autocomplete"
  
 
 end

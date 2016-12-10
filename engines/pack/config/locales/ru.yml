@@ -1,11 +1,23 @@
 ru:
   activerecord:
     models:
-      wiki/page: Страница wiki
     attributes:
-      wiki/page:
+      pack/package:
+        deleted:  Показать только удаленные
+        deleted?:  Удаленные/активные
+        not_deleted: Показать только активные
         name: Название
-        url: url
-        content: Текст
-
+        description: Описание
+        cost: Стоимоcть
+        folder: Путь
+        edit: Редактировать
+        delete: Удалить
+      pack/version:
+        name: Название
+        description: Описание
+        active: Актуальна
+        r_up: Дата загрузки
+        r_down: Дата удаления
+        
+        
 

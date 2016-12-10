@@ -146,6 +146,7 @@ PATH
       bootstrap_form
       maymay
       rails (~> 4.2)
+      rails-jquery-autocomplete
       slim
 
 PATH

@@ -1,0 +1,43 @@
+div class="row"
+  div class="s"
+    = bootstrap_form_for :userver,:url => { :action => "edit" }, :html => {:id => "ajax_form"},remote: true do |f|
+      /= f.select :user, @l, { label: t("Users", default: "Users") }, { class: "selectpicker" } 
+      = autocomplete f, name: :email, label: t("Choose user")
+      br
+      br
+      
+      
+      = f.select :package,@pack_names.collect {|p| [ p.name, p.id ] }, { label: t("Choose package") },{ class: "selectpicker" } 
+      div id="vers_fields" class="form-group"
+      	
+     
+      = f.form_group  do
+        = f.submit t("buttons.save", default: "Save"),:id => "vers_sub" 
+	
+	br
+	br
+	br
+	br
+
+	
+
+	= bootstrap_form_for :projectver,:url => { :action => "edit_projects" }, :html => {:id => "projects_ajax_form"},remote: true do |f|
+      /= f.select :user, @l, { label: t("Users", default: "Users") }, { class: "selectpicker" } 
+      = autocomplete f, name: :project, label: t("Choose project"),source: admin_get_projects_path
+      
+      
+      = f.select :package,@pack_names.collect {|p| [ p.name, p.id ] }, { label: t("Choose package") },{ class: "selectpicker" } 
+      div id="projects_vers_fields" class="form-group"
+      	
+     
+      = f.form_group  do
+        = f.submit t("buttons.save", default: "Save"),:id => "vers_sub" 
+
+	
+
+
+        
+= javascript_include_tag "pack/application"
+= javascript_include_tag "pack/uservers/uservers"
+
+

@@ -6,12 +6,30 @@ module Pack
 
     # GET /packages
     def index
-      @packages = Package.order(:name)
+      
+      respond_to do |format|
+
+        format.html # index.html.erb
+        format.json { 
+            if search_params[:deleted]=="active versions"
+              
+              @packages=Package.joins(:versions => :clustervers).where(pack_clustervers: {active: true}).select('distinct pack_packages.*')
+            else
+              @packages = Package.where(search_params).order(:name) 
+            end
+         
+                  
+          render :json => @packages}
+      end
+      
     end
 
+
     def show
+
       @package = Package.find(params[:id])
        @versions = Version.where(package_id:params[:id])
+      @myvers = Clusterver.all
     end
 
     def new
@@ -43,7 +61,12 @@ module Pack
 
     def destroy
       @package = Package.find(params[:id])
-      @package.destroy
+      if @package.deleted
+        @package.destroy
+      else
+        @package.deleted =  true
+        @package.save
+      end
       redirect_to packages_path
     end
 
@@ -54,7 +77,10 @@ module Pack
     end
 
     def package_params
-      params.require(:package).permit(:name, :folder, :cost,:description)
+      params.require(:package).permit(:name, :folder, :cost,:description,:deleted)   
+    end
+    def search_params
+      params.require(:search).permit(:deleted)
     end
   end
 end

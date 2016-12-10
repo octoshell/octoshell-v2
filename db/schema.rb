@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161113105544) do
+ActiveRecord::Schema.define(version: 20161209105327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -387,6 +387,17 @@ ActiveRecord::Schema.define(version: 20161113105544) do
     t.datetime "updated_at"
   end
 
+  create_table "pack_clustervers", force: :cascade do |t|
+    t.integer  "version_id"
+    t.integer  "cluster_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "active",     default: true
+  end
+
+  add_index "pack_clustervers", ["cluster_id"], name: "index_pack_clustervers_on_cluster_id", using: :btree
+  add_index "pack_clustervers", ["version_id"], name: "index_pack_clustervers_on_version_id", using: :btree
+
   create_table "pack_packages", force: :cascade do |t|
     t.string   "name"
     t.string   "folder"
@@ -394,17 +405,37 @@ ActiveRecord::Schema.define(version: 20161113105544) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
+    t.boolean  "deleted",     default: false
   end
+
+  create_table "pack_projectsvers", force: :cascade do |t|
+    t.integer "version_id"
+    t.integer "core_project_id"
+    t.text    "end_lic"
+  end
+
+  add_index "pack_projectsvers", ["core_project_id"], name: "index_pack_projectsvers_on_core_project_id", using: :btree
+  add_index "pack_projectsvers", ["version_id"], name: "index_pack_projectsvers_on_version_id", using: :btree
+
+  create_table "pack_uservers", force: :cascade do |t|
+    t.integer  "version_id"
+    t.integer  "user_id"
+    t.text     "end_lic"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "pack_uservers", ["user_id"], name: "index_pack_uservers_on_user_id", using: :btree
+  add_index "pack_uservers", ["version_id"], name: "index_pack_uservers_on_version_id", using: :btree
 
   create_table "pack_versions", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "r_up"
-    t.datetime "r_down"
-    t.boolean  "active"
     t.integer  "package_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "r_up"
+    t.text     "r_down"
   end
 
   add_index "pack_versions", ["package_id"], name: "index_pack_versions_on_package_id", using: :btree

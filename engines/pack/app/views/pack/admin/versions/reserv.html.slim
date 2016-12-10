@@ -1,0 +1,15 @@
+div class="row"
+  div class="col-xs-8"
+    = bootstrap_form_for :version,url: package_version_path(params[:package_id],params[:id]),method: "put" do |f|
+      = f.text_field :name
+      = f.text_field :description
+      = f.date_field :r_up,:placeholder=>'dd/mm/yyyy',class: 'form-control datepicker'
+      = f.date_field :r_down,:placeholder=>'dd/mm/yyyy',class: 'form-control datepicker'
+      = f.fields_for :bs do |f|
+			- @bs.each do |s|
+				= f.check_box s[:name].to_s,{ :checked => s[:Bol]}
+	  	
+      	
+     
+      = f.form_group do
+        = f.submit t("buttons.save", default: "Save")

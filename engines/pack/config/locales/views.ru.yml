@@ -1,17 +1,76 @@
 ru:
+  name: Название
+  description: Описание
+  cost: Стоимоcть
+  cost: Стоимоcть
+  folder: Путь
+  edit: Редактировать
+  delete: Удалить
+  add_v: Добавить версию
+  confirm: Вы действительно хотите удалить пакет?
+  ver_confirm: Вы действительно хотите удалить версию?
+  Versions: Версии
+  up_date: Дата загрузки
+  del_date: Дата удаления
+  active: Активна на кластере?
+  deleted:  Показать только удаленные
+  remain_deleted:  Оставить удаленным?
+  deleted?:  Удаленные/активные
+  not_deleted: Показать только существующие
+  show_active: Показать только активные
+  actions_pack: Действия
+  pack_list: Список пакетов
+  active_y: активна
+  clusters: Кластеры
+  Clusters: Кластеры
+  active_n: не активна
+  exist: Существует на кластере?
+  edit_access: Права на пакеты
+  Choose package: Выберите пакет
+  Choose user: Выберите пользователя
   buttons:
     save: Сохранить
   pack:
-    markdown_help: Для разметки используется <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
+    admin:
+      packages:
+        show:
+        
+        new:
+          title: Новый пакет
+        edit:
+          title: Редактирование пакета
+        index:
+          title: Список пакетов
+          new_package: Новый пакет
+          edit: Редактировать
+          delete: Удалить
+          confirm: Вы действительно хотите удалить пакет?
+          mega_confirm: Вы действительно хотите удалить пакет БЕЗВОЗВРАТНО?!
+          no_packages_found: Не найдено ни одного пакета
+
     packages:
+      show:
+        #name: Название
+        #description: Описание
+        #cost: Стоимоcть
+        #folder: Путь
       new:
         title: Новый пакет
       edit:
-        title: Редактрование пакета
+        title: Редактирование пакета
       index:
         title: Список пакетов
         new_package: Новый пакет
         edit: Редактировать
         delete: Удалить
         confirm: Вы действительно хотите удалить пакет?
-        no_packages_found: Ещё не создано ни одного пакета.
+        mega_confirm: Вы действительно хотите удалить пакет БЕЗВОЗВРАТНО?!
+        no_packages_found: Не найдено ни одного пакета
+  
+    versions:
+      
+      new:
+        title: Новая версия
+      edit:
+        title: Редактирование версии
+     

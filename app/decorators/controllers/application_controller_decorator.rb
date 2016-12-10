@@ -96,6 +96,9 @@ ActionController::Base.class_eval do
     menu.add_item(Face::MenuItem.new({name: t("admin_submenu.projects"),
                                       url: core.admin_projects_path,
                                       regexp: /core\/admin\/projects/})) if may? :manage, :projects
+    menu.add_item(Face::MenuItem.new({name: "Пакеты",
+                                      url: pack.admin_root_path,
+                                      regexp: /pack\/admin/}))  if may? :manage, :packages
 
     tickets_count = Support::Ticket.where(state: [:pending, :answered_by_reporter]).count
     support_title = if tickets_count.zero?
