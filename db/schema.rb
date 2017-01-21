@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161209105327) do
+ActiveRecord::Schema.define(version: 20170114194743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -387,15 +387,31 @@ ActiveRecord::Schema.define(version: 20161209105327) do
     t.datetime "updated_at"
   end
 
-  create_table "pack_clustervers", force: :cascade do |t|
+  create_table "pack_accesses", force: :cascade do |t|
     t.integer  "version_id"
-    t.integer  "cluster_id"
+    t.integer  "who_id"
+    t.string   "who_type"
+    t.integer  "status"
+    t.integer  "user_id"
+    t.text     "admin_answer"
+    t.text     "end_date"
+    t.text     "request_text"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "active",     default: true
   end
 
-  add_index "pack_clustervers", ["cluster_id"], name: "index_pack_clustervers_on_cluster_id", using: :btree
+  add_index "pack_accesses", ["version_id"], name: "index_pack_accesses_on_version_id", using: :btree
+  add_index "pack_accesses", ["who_type", "who_id"], name: "index_pack_accesses_on_who_type_and_who_id", using: :btree
+
+  create_table "pack_clustervers", force: :cascade do |t|
+    t.integer  "core_cluster_id"
+    t.integer  "version_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "active"
+  end
+
+  add_index "pack_clustervers", ["core_cluster_id"], name: "index_pack_clustervers_on_core_cluster_id", using: :btree
   add_index "pack_clustervers", ["version_id"], name: "index_pack_clustervers_on_version_id", using: :btree
 
   create_table "pack_packages", force: :cascade do |t|
@@ -408,25 +424,14 @@ ActiveRecord::Schema.define(version: 20161209105327) do
     t.boolean  "deleted",     default: false
   end
 
-  create_table "pack_projectsvers", force: :cascade do |t|
-    t.integer "version_id"
-    t.integer "core_project_id"
-    t.text    "end_lic"
-  end
-
-  add_index "pack_projectsvers", ["core_project_id"], name: "index_pack_projectsvers_on_core_project_id", using: :btree
-  add_index "pack_projectsvers", ["version_id"], name: "index_pack_projectsvers_on_version_id", using: :btree
-
-  create_table "pack_uservers", force: :cascade do |t|
-    t.integer  "version_id"
+  create_table "pack_props", force: :cascade do |t|
     t.integer  "user_id"
-    t.text     "end_lic"
+    t.integer  "proj_or_user"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "pack_uservers", ["user_id"], name: "index_pack_uservers_on_user_id", using: :btree
-  add_index "pack_uservers", ["version_id"], name: "index_pack_uservers_on_version_id", using: :btree
+  add_index "pack_props", ["user_id"], name: "index_pack_props_on_user_id", using: :btree
 
   create_table "pack_versions", force: :cascade do |t|
     t.string   "name"

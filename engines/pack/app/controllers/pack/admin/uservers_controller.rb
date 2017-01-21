@@ -2,8 +2,8 @@ require_dependency "pack/application_controller"
 
 module Pack
   class Admin::UserversController < Admin::ApplicationController
-#    autocomplete :user, :email
-    before_action :set_userver, only: [:show, :edit, :update, :destroy]
+    autocomplete :user, :email,:full => true
+   
 
     # GET /uservers
     
@@ -157,10 +157,11 @@ module Pack
       
       
       @package=Package.find(params[:pack])
-       print(@package.name)
       @versions=Version.where(package_id:@package.id)
       
-      @uservers=Userver.where(user_id: params[:user_id])
+      @user_id= User.find_by(email: params[:email]).id
+
+      @uservers=Userver.where(user_id: @user_id)
       if @versions
 
          @vers_list= @versions.map do |item|
@@ -227,36 +228,16 @@ module Pack
       end 
     end
     # POST /uservers
-    def create
-      @userver = Userver.new(userver_params)
-
-      if @userver.save
-        redirect_to @userver, notice: 'Userver was successfully created.'
-      else
-        render :new
-      end
-    end
+    
 
     # PATCH/PUT /uservers/1
-    def update
-      if @userver.update(userver_params)
-        redirect_to @userver, notice: 'Userver was successfully updated.'
-      else
-        render :edit
-      end
-    end
+   
 
     # DELETE /uservers/1
-    def destroy
-      @userver.destroy
-      redirect_to uservers_url, notice: 'Userver was successfully destroyed.'
-    end
-
+    
     private
       # Use callbacks to share common setup or constraints between actions.
-      def set_userver
-       authorize! :manage, :packages
-      end
+     
 
       # Only allow a trusted parameter "white list" through.
       def userver_params

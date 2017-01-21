@@ -12,4 +12,17 @@
  *
  *= require_tree .
  *= require_self
+ *= require jquery-ui
  */
+
+
+
+.selectpicker {
+	width: 50%;
+}
+div#ajax_paginator a
+{
+	data-remote: true;
+}
+
+

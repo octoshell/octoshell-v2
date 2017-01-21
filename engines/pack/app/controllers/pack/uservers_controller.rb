@@ -2,7 +2,6 @@ require_dependency "pack/application_controller"
 
 module Pack
   class UserversController < ApplicationController
-#    autocomplete :user, :email
     before_action :set_userver
 
    

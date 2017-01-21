@@ -5,6 +5,10 @@ module Pack
     before_action do |controller|
     	@extra_css="pack/pack.css"
     end
+    before_action :check_namespace
+    def check_namespace
+      @admin=false
+    end
     def not_authorized
       redirect_to root_path, alert: t("flash.not_authorized")
   	end

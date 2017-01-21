@@ -1,0 +1,29 @@
+function change_pref() {
+
+$( "#pref_proj_or_user option:selected" ).each(function() {
+        dict=
+      {
+        proj_or_user : $( this ).attr("value"), 
+      } ;
+    });
+
+$.ajax({
+        url : "<%=remember_pref_packages_path%>", // the endpoint
+        dataType : "json", 
+        type: "POST",
+        data: {
+          pref: dict,
+        },
+         // http method
+         // data sent with the post request
+
+        // handle a successful response
+        
+        // handle a non-successful response
+        
+  	});
+ };
+
+$("#pref_proj_or_user").change(
+	change_pref
+	);

@@ -9,18 +9,15 @@ div class="package-header"
    
   br
   br
-  br
-- if current_user && may?(:manage,:packages)
-  div class="panel panel-default"
-    div class="panel-heading clearfix"
-      = link_to t(".new_package"), new_package_path, class: "btn btn-default"
-     
-    div  class="panel-body" 
-      table  class="table table-hover"  id="json-pack" 
+  br     
+  div id="packages_table"
+   
+  div id="ajax_paginator" 
         
       
 
     
 
 = javascript_include_tag "pack/application"
-= javascript_include_tag "pack/packages/packages"
+= javascript_tag do 
+    = render(:partial => 'index', :formats => [:js]) 

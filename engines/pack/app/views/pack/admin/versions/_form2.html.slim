@@ -1,6 +1,6 @@
 div class="row"
   div class="col-xs-8"
-    = bootstrap_form_for :version,url: package_version_path(params[:package_id],params[:id]),method: @method do |f|
+    = bootstrap_form_for [:admin,@package,@version]do |f|
       = f.text_field :name
       = f.text_field :description
       = f.text_field :r_up,:placeholder=>'dd/mm/yyyy',class: 'form-control datepicker'

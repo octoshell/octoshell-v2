@@ -28,6 +28,9 @@ ru:
   edit_access: Права на пакеты
   Choose package: Выберите пакет
   Choose user: Выберите пользователя
+  user(me): для пользователя(меня)
+  project: для проекта
+  for_whom?: Для кого вы хотите запросить доступ к версии?
   buttons:
     save: Сохранить
   pack:

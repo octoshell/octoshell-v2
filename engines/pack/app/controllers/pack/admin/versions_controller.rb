@@ -1,17 +1,16 @@
 require_dependency "pack/application_controller"
 
 module Pack
-  class VersionsController < Admin::ApplicationController
+  class Admin::VersionsController < Admin::ApplicationController
     before_filter :check_abilities, except: [:index, :show]
 
     # GET /versions
     
 
-    def new
-      @method="post"    
+    def new  
       @version = Version.new()
+      @package = Package.find(params[:package_id])
       @clusters = Core::Cluster.all
-      counter=0
       @bs= @clusters.map do |item|
         
        
@@ -34,7 +33,7 @@ module Pack
         @my_params=params
          @my_params[:id]=@version.id.to_s
          cluster_ver_update(@my_params)
-        redirect_to package_path(params[:package_id])
+        redirect_to admin_package_path(params[:package_id])
 
       else
         render :new
@@ -42,22 +41,21 @@ module Pack
     end
 
     def edit
-      @method="put"
-      @version = Version.find(params[:id])
-      @clustervers = Clusterver.where(version_id: params[:id])
+      
+      @package = Package.find(params[:package_id])
+      @version = Version.includes(clustervers: :core_cluster).find(params[:id])
+      @clustervers = @version.clustervers #Clusterver.where(version_id: params[:id])
       @clusters = Core::Cluster.all
-      counter=0
       @bs= @clusters.map do |item|
-        counter=counter+1
-        ex=@clustervers.exists?(cluster_id: item.id)
-        if ex
-          active_bool= @clustervers.find_by(cluster_id: item.id).active
+        @clusterver=@clustervers.find_by core_cluster_id: item.id
+        if @clusterver
+          active_bool= @clusterver.active
         else
           active_bool=false
         end
 
         
-        {:Bol => ex, :name => item.name, :id => item.id, :Active => active_bool   }
+        {:Bol => (@clusterver!=nil), :name => item.name, :id => item.id, :Active => active_bool   }
         
         
         
@@ -77,8 +75,8 @@ module Pack
     
     def cluster_ver_update(params)
        
-      @version = Version.find(params[:id])
-      @clustervers = Clusterver.where(version_id: params[:id])
+      @version = Version.includes(clustervers:[:core_cluster]).find(params[:id])
+      @clustervers = @version.clustervers
       @clusters = Core::Cluster.all
      
       
@@ -87,16 +85,10 @@ module Pack
         
         my_hash.each do |key,value|
 
-            ex=@clustervers.exists?(cluster_id: key.to_i)
-            if value[:exist]=='0'
-              
-                 y=false
-            else
-                y=true
-            end
-            #kaminaru
-              
+            ex=@clustervers.exists?(core_cluster_id: key.to_i)
+             y= (value[:exist]=='1')
 
+            #kaminaru
             if ex != y
               
              
@@ -104,19 +96,17 @@ module Pack
               if !y
                 
                 
-                @cur=@clustervers.find_by(cluster_id: key.to_i, version_id: params[:id] )
+                @cur=@clustervers.find_by(core_cluster_id: key.to_i)
                 @cur.destroy
               else 
                     
-                @cur = Clusterver.create(cluster_id: key.to_i, version_id: params[:id] )
-                if !@cur.save
-                  render plain: "ERROR"
-                end                
+                @cur = @version.clustervers.create(core_cluster_id: key.to_i)
+                              
               end
             end
               if y
 
-                  @cur=@clustervers.find_by(cluster_id: key.to_i, version_id: params[:id] )
+                  @cur=@clustervers.find_by(core_cluster_id: key.to_i )
                   @cur.active=(value[:active]=='1' ) 
                   @cur.save
             
@@ -134,7 +124,7 @@ module Pack
       
       if @version.update(version_params) 
         cluster_ver_update(params) 
-        redirect_to package_path(params[:package_id])
+        redirect_to admin_package_path(params[:package_id])
       else
         render :edit
       end
@@ -143,7 +133,7 @@ module Pack
     def destroy
       @version = Version.find(params[:id])
       @version.destroy
-      redirect_to package_path(params[:package_id])
+      redirect_to admin_package_path(params[:package_id])
     end
 
     private

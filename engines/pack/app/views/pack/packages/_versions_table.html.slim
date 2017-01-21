@@ -1,0 +1,44 @@
+- if @versions
+		h3 =t("Versions")
+		div class="panel-body"
+			table   class="table table-hover" cols="6" cellspacing="30"
+				tr 
+					th  #{t("name")}
+					th 	#{t("description")}
+					th 	#{t("up_date",default:"Upload date")}
+					th 	#{t("del_date",default:"Deletion date")}
+					th 	#{t("clusters",default:"clusters")}
+					th 	#{t("access_user",default:"Availability for me")}
+					th 	#{t("access_project",default:"Availability for project")}  
+					th 	#{t("actions_pack")}  
+				- for version in @versions
+					tr 
+						td  #{version.name} 
+						td  #{version.description}
+						td 	#{version.r_up} 
+						td 	#{version.r_down}
+						
+									
+											
+							
+						td 	
+							-clustervers=version.clustervers
+							- if clustervers
+
+								- for clusterver in clustervers
+									=clusterver.core_cluster.name
+									="\n"
+									- if clusterver.active
+										= t("active_y",default:"active")
+									-else
+										= t("active_n",default:"not active")
+									
+									br		
+						td
+							-if version.user_accesses.take
+								p	show attributes
+							-else
+								p	no access
+						td
+							/-if version.accesses.find_by who_id: current_user.id, who_type: "Core::Project"	
+							/-if Core::Project.find
