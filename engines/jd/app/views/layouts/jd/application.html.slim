@@ -1,0 +1,10 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+    title Jd
+    = stylesheet_link_tag    "jd/application", media: "all"
+    = javascript_include_tag "jd/application"
+    = csrf_meta_tags
+
+= render template: "layouts/application"
