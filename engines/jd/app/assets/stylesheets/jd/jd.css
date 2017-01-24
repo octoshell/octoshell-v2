@@ -1,0 +1,20 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+
+.jd_table {
+	border: 4px double black;
+	border-collapse: collapse;
+	border-spacing: 5px;
+}
+
+.jd_table td
+, .jd_table th {
+	padding: 5px;
+	border: 1px solid black;
+}
+
+.jd_table_value {
+	text-align: right;
+}

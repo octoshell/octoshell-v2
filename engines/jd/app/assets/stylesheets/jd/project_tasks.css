@@ -1,0 +1,58 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+
+.jd_good_value_style {
+	background-color: #80ff80  !important
+}
+
+.jd_meh_value_style {
+	background-color: #ffff80  !important
+}
+
+.jd_bad_value_style {
+	background-color: #ff8080 !important
+}
+
+.jd_what_value_style {
+	background-color: #cccccc !important
+}
+
+.task_state_COMPLETED {
+	background-color: #00FF00 !important;
+}
+
+.task_state_COMPLETING {
+	background-color: #FFA500 !important;
+}
+
+.task_state_CANCELLED {
+	background-color: #00EEFF !important;
+}
+
+.task_state_FAILED {
+	background-color: #FF0000 !important;
+}
+
+.task_state_TIMEOUT {
+	background-color: #FF00FF !important;
+}
+
+.task_state_NODE_FAIL {
+	background-color: #BB0000 !important;
+}
+
+.table_text {
+	font-size: 11pt;
+}
+
+.sensor_text {
+	font-size: 12pt;
+	text-align: right;
+}
+
+.container_unused {
+	margin-left: 15px !important;
+	width: auto !important;
+}

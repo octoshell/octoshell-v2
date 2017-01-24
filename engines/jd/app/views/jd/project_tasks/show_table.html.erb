@@ -1,0 +1,48 @@
+<div class="navbar-fixed-top col-xs-2 return-btn-container"></div>
+
+<p id="notice"><%= notice %></p>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#tasks_table").tablesorter();
+  });
+</script>
+
+<h1>Jobs</h1>
+
+<table id="tasks_table" class="tablesorter-blue task_table">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>job_id</th>
+      <th>account</th>
+      <th>cluster</th>
+      <th>partition</th>
+      <th>t start</th>
+      <th>t end</th>
+      <th>state</th>
+      <th>num_cores</th>
+      <th>duration(hours)</th>
+      <th>cores_hours</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @jobs.each do |task| %>
+      <tr>
+        <td class="task_state_<%= task['state'] %>"><%= link_to task["id"].to_s, "/jd/job/" + task["id"].to_s %></td>
+        <td class="table_text"><%= task["job_id"] %></td>
+        <td class="table_text"><%= task["account"] %></td>
+        <td class="table_text"><%= task["cluster"] %>Lomonosov</td>
+        <td class="table_text"><%= task["partition"] %></td>
+        <td class="table_text" style="white-space: nowrap"><%= DateTime.strptime(task["t_start"].to_s, "%s").strftime("%D %T") %></td>
+        <td class="table_text" style="white-space: nowrap"><%= DateTime.strptime(task["t_end"].to_s, "%s").strftime("%D %T") %></td>
+        <td class="table_text"><%= task["state"] %></td>
+
+        <td class="sensor_text"><%= task["num_cores"] %></td>
+        <td class="sensor_text"><%= format_float_or_nil((task["t_end"] - task["t_start"]) / 3600) %></td>
+        <td class="sensor_text"><%= format_float_or_nil(task["num_cores"] * (task["t_end"] - task["t_start"]) / 3600) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
