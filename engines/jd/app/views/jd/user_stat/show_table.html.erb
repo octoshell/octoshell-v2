@@ -15,11 +15,26 @@
 </script>
 
 <%= form_for "request", url: "/jd/user_stat" do |f| %>
-    <% @accounts.each do |account, project| %>
-      <div class="text_field">
-        <%= f.label project.title + " / " + account %>
-        <%= check_box_tag "selected_accounts[]", account, @allowed_accounts.include?(account) %>
-      </div>
+    <% @available_projects.each do |project, accounts| %>
+      <h4>Project: <b><%= project.title %></b></h4>
+      <table>
+
+        <% accounts.each_with_index do |account, index| %>
+
+          <% if index % 6 == 0 %>
+            <tr>
+          <% end %>
+            <td>
+              <div class="text_field">
+                <%= f.label account %>
+                <%= check_box_tag "selected_accounts[]", account, @allowed_accounts.include?(account) %>
+              </div>
+            </td>
+          <% if index % 6 == 5 %>
+            </tr>
+          <% end %>
+      <% end %>
+      </table>
     <% end %>
 
     <div class="dropdown">
@@ -38,6 +53,30 @@
 <% end %>
 
 <% if not @user_stat.nil? %>
+    <h1>Total</h1>
+
+    <table id="general_table" class="tablesorter-blue task_table">
+      <thead>
+        <tr>
+          <th>System</th>
+          <th>Total tasks</th>
+          <th>Total CPU*Hours</th>
+          <th>Total GPU*Hours</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @cluster_stat.each do |name, stat| %>
+          <tr>
+            <td><%= name %></td>
+            <td><%= stat["count"] %></td>
+            <td><%= stat["cores_sec"] / 3600 %></td>
+            <td><%= stat["gpu_sec"] / 3600 %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
   <% @clusters.each do |cluster_name, _| %>
     <h1><%= cluster_name %></h1>
 
@@ -65,7 +104,7 @@
               <td class="table_text"><%= state %></td>
               <td class="table_text"><%= count %></td>
               <td class="table_text"><%= format_float_or_nil(@user_stat[cluster_name]["cores_sec"][partition][state] / 3600.0) %></td>
-          </tr>
+            </tr>
           <% end %>
         <% end %>
       </tbody>

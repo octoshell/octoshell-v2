@@ -50,13 +50,37 @@ module Jd
       return result
     end
 
+    def compute_cluster_stat(user_stat)
+      result = {"count" => 0, "cores_sec" => 0, "gpu_sec" => 0}
+
+      user_stat.each do |metric, values|
+        values.each do |partition, states|
+          states.each do |state, number|
+            result[metric] += number
+
+            if partition.include?("gpu") and metric.include?("cores_sec")
+              result["gpu_sec"] += number / 4 # TODO
+            end
+          end
+        end
+      end
+
+      return result
+    end
+
     def show_table()
-      @accounts = get_available_accounts()
+      @available_projects = get_available_projects()
+      @available_accounts = []
+      @available_projects.each do |_, value|
+        @available_accounts += value
+      end
+
       @clusters = @@clusters
       @user_stat = nil
       @allowed_accounts = []
       @t_from = nil
       @t_to = nil
+      @cluster_stat = nil
 
       if request.post?
         begin
@@ -66,15 +90,18 @@ module Jd
           @t_to = Time.parse(params["request"].fetch("end_date")).to_i
 
           selected_accounts = params.fetch("selected_accounts")
-          @allowed_accounts = selected_accounts.find_all { |acc| @accounts.key?(acc) }
+          @allowed_accounts = selected_accounts & @available_accounts
 
           @user_stat = {}
+          @cluster_stat = {}
           @@clusters.each do |cluster_name, cluster_url|
             @user_stat[cluster_name] = {}
             @user_stat[cluster_name]["count"] = get_accounts_stat(cluster_url + "/api/job_stat/jobs/count" \
               , @allowed_accounts, @t_from, @t_to)
             @user_stat[cluster_name]["cores_sec"] = get_accounts_stat(cluster_url + "/api/job_stat/cores_sec/sum" \
               , @allowed_accounts, @t_from, @t_to)
+
+            @cluster_stat[cluster_name] = compute_cluster_stat(@user_stat[cluster_name])
           end
         rescue KeyError
           # skip bad params
