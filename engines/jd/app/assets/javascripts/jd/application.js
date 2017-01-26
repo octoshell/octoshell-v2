@@ -11,8 +11,8 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery-tablesorter
 //= require jquery-ui
 //= require jquery-ui/widgets/datepicker
-//= require jquery-tablesorter
 //= require_tree .
 //= require_self

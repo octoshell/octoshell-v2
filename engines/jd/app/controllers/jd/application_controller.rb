@@ -1,7 +1,7 @@
 module Jd
   class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
-    @@clusters = {"Lomonosov-1" => "http://graphit.parallel.ru:5000", "Lomonosov-2" => "http://m2.lom2.parallel.ru:5000"}
+    @@clusters = {"Lomonosov-1" => "http://graphit.parallel.ru:5000", "Lomonosov-2" => "http://graphit.parallel.ru:5001"}
 
     def get_available_projects()
       result = Hash.new { |hash, key| hash[key] = [] }

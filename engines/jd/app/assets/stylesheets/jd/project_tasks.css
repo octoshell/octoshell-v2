@@ -20,7 +20,7 @@
 }
 
 .task_state_COMPLETED {
-	background-color: #00FF00 !important;
+	background-color: #80ff64 !important;
 }
 
 .task_state_COMPLETING {
@@ -28,19 +28,19 @@
 }
 
 .task_state_CANCELLED {
-	background-color: #00EEFF !important;
+	background-color: #3ff0ff !important;
 }
 
 .task_state_FAILED {
-	background-color: #FF0000 !important;
+	background-color: #ff7a60 !important;
 }
 
 .task_state_TIMEOUT {
-	background-color: #FF00FF !important;
+	background-color: #f854ff !important;
 }
 
 .task_state_NODE_FAIL {
-	background-color: #BB0000 !important;
+	background-color: #bb5f4a !important;
 }
 
 .table_text {

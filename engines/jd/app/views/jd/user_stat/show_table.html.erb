@@ -4,8 +4,6 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-  //  $("#tasks_table").tablesorter();
-
       var start_date = <% if @t_from %> new Date(<%= @t_from * 1000 %>); <% else %> "07.02.2016"; <% end %>;
       var end_date = <% if @t_to %> new Date(<%= @t_to * 1000 %>); <% else %> new Date(); <% end %>;
 
