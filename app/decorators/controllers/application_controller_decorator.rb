@@ -81,6 +81,16 @@ ActionController::Base.class_eval do
     menu.add_item(Face::MenuItem.new({name: t("user_submenu.profile"),
                                       url: main_app.profile_path,
                                       regexp: /(?:profile|(?:employments|organizations))/}))
+
+
+    menu.add_item(Face::MenuItem.new({name: t("user_submenu.job_stat"),
+                                      url: jd.job_stat_path,
+                                      regexp: /job_stat/}))
+
+    menu.add_item(Face::MenuItem.new({name: t("user_submenu.job_table"),
+                                      url: jd.job_table_path,
+                                      regexp: /job_table/}))
+
     menu.items
   end
 

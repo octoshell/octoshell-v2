@@ -29,6 +29,11 @@ gem "sessions",       path: "engines/sessions"
 gem "statistics",     path: "engines/statistics"
 gem "wiki",           path: "engines/wiki"
 gem "announcements",  path: "engines/announcements"
+gem "jd",             path: 'engines/jd'
+
+gem "jquery-rails"
+gem "jquery-ui-rails"
+gem "jquery-tablesorter"
 
 gem "rails_config"
 gem "decorators", "~> 1.0.0"
