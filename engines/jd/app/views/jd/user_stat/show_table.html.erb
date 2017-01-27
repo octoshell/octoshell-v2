@@ -12,7 +12,7 @@
   });
 </script>
 
-<%= form_for "request", url: "/jd/user_stat" do |f| %>
+<%= form_for "request", url: "/jd/job_stat" do |f| %>
     <% @available_projects.each do |project, accounts| %>
       <h4>Project: <b><%= project.title %></b></h4>
       <table>
@@ -64,7 +64,7 @@
       </thead>
 
       <tbody>
-        <% @cluster_stat.each do |name, stat| %>
+        <% @system_stat.each do |name, stat| %>
           <tr>
             <td><%= name %></td>
             <td><%= stat["count"] %></td>
@@ -75,8 +75,8 @@
       </tbody>
     </table>
 
-  <% @clusters.each do |cluster_name, _| %>
-    <h1><%= cluster_name %></h1>
+  <% @systems.each do |system_name, _| %>
+    <h1><%= system_name %></h1>
 
     <table id="tasks_table" class="tablesorter-blue task_table">
       <thead>
@@ -89,19 +89,19 @@
       </thead>
 
       <tbody>
-        <% @user_stat[cluster_name]["count"].each do |partition, states| %>
+        <% @user_stat[system_name]["count"].each do |partition, states| %>
           <tr>
             <td class="table_bold_text" rowspan="<%= states.length + 1 %>"class="table_text"><%= partition %></td>
 
             <td class="table_bold_text">TOTAL</td>
             <td class="table_bold_text"> <%= states.values.reduce(:+) %> </td>
-            <td class="table_bold_text"> <%= format_float_or_nil(@user_stat[cluster_name]["cores_sec"][partition].values.reduce(:+) / 3600.0) %> </td>
+            <td class="table_bold_text"> <%= format_float_or_nil(@user_stat[system_name]["cores_sec"][partition].values.reduce(:+) / 3600.0) %> </td>
           </tr>
           <% states.each do |state, count| %>
             <tr>
               <td class="table_text"><%= state %></td>
               <td class="table_text"><%= count %></td>
-              <td class="table_text"><%= format_float_or_nil(@user_stat[cluster_name]["cores_sec"][partition][state] / 3600.0) %></td>
+              <td class="table_text"><%= format_float_or_nil(@user_stat[system_name]["cores_sec"][partition][state] / 3600.0) %></td>
             </tr>
           <% end %>
         <% end %>

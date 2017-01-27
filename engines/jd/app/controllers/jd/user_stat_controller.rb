@@ -1,8 +1,11 @@
 require_dependency "jd/application_controller"
+require 'benchmark'
 
 module Jd
   class UserStatController < ApplicationController
     def query_stat_service(request_path, account, t_from, t_to)
+      # query stat service for 1 account statistics
+
       jobs = Hash.new { |hash, key| hash[key] = Hash.new {0} }
 
       begin
@@ -36,6 +39,8 @@ module Jd
     end
 
     def get_accounts_stat(request_path, accounts, t_from, t_to)
+      #query stat service for statistics of all listed accounts
+
       result = Hash.new { |hash, key| hash[key] = Hash.new {0} }
 
       accounts.each do |account|
@@ -50,7 +55,9 @@ module Jd
       return result
     end
 
-    def compute_cluster_stat(user_stat)
+    def compute_system_stat(user_stat)
+      # compute aggregated user statistics for each system
+
       result = {"count" => 0, "cores_sec" => 0, "gpu_sec" => 0}
 
       user_stat.each do |metric, values|
@@ -68,19 +75,35 @@ module Jd
       return result
     end
 
+    def compute_total_system_stat(system_stat)
+      # add total statistics to aggregated system statistics
+
+      result = {"count" => 0, "cores_sec" => 0, "gpu_sec" => 0}
+
+      system_stat.each do |_, stats|
+        stats.each do |key, value|
+          result[key] += value
+        end
+      end
+
+      system_stat["TOTAL"] = result
+    end
+
     def show_table()
-      @available_projects = get_available_projects()
+      # controller for job_table page
+
+      @available_projects = get_available_projects(current_user)
       @available_accounts = []
       @available_projects.each do |_, value|
         @available_accounts += value
       end
 
-      @clusters = @@clusters
+      @systems = @@systems
       @user_stat = nil
-      @allowed_accounts = []
+      @allowed_accounts = @available_accounts
       @t_from = nil
       @t_to = nil
-      @cluster_stat = nil
+      @system_stat = nil
 
       if request.post?
         begin
@@ -93,16 +116,22 @@ module Jd
           @allowed_accounts = selected_accounts & @available_accounts
 
           @user_stat = {}
-          @cluster_stat = {}
-          @@clusters.each do |cluster_name, cluster_url|
-            @user_stat[cluster_name] = {}
-            @user_stat[cluster_name]["count"] = get_accounts_stat(cluster_url + "/api/job_stat/jobs/count" \
-              , @allowed_accounts, @t_from, @t_to)
-            @user_stat[cluster_name]["cores_sec"] = get_accounts_stat(cluster_url + "/api/job_stat/cores_sec/sum" \
-              , @allowed_accounts, @t_from, @t_to)
+          @system_stat = {}
+          @@systems.each do |system_name, system_url|
+            @user_stat[system_name] = {}
 
-            @cluster_stat[cluster_name] = compute_cluster_stat(@user_stat[cluster_name])
+            print "#{system_name} user_stat query ms: ", Benchmark.ms {
+              @user_stat[system_name]["count"] = get_accounts_stat(system_url + "/api/job_stat/jobs/count" \
+                , @allowed_accounts, @t_from, @t_to)
+              @user_stat[system_name]["cores_sec"] = get_accounts_stat(system_url + "/api/job_stat/cores_sec/sum" \
+                , @allowed_accounts, @t_from, @t_to)
+            }
+
+            @system_stat[system_name] = compute_system_stat(@user_stat[system_name])
           end
+
+          compute_total_system_stat(@system_stat)
+
         rescue KeyError
           # skip bad params
         end
