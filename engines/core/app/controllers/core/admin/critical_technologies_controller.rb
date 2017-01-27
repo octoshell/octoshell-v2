@@ -1,5 +1,9 @@
 module Core
   class Admin::CriticalTechnologiesController < Admin::ApplicationController
+    def critical_technology_params
+      params.require(:critical_technology).permit(:name)
+    end
+
     def index
       @critical_technologies = CriticalTechnology.order(:name)
     end
@@ -35,10 +39,5 @@ module Core
       @critical_technology.destroy
       redirect_to admin_critical_technologies_path
     end
-  end
-
-  private
-  def critical_technology_params
-    params.require(:critical_technology).permit(:name)
   end
 end

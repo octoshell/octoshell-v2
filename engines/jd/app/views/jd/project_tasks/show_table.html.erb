@@ -1,0 +1,152 @@
+<div class="navbar-fixed-top col-xs-2 return-btn-container"></div>
+
+<p id="notice"><%= notice %></p>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var start_date = <% if @t_from %> new Date(<%= @t_from * 1000 %>); <% else %> "07.02.2016"; <% end %>;
+    var end_date = <% if @t_to %> new Date(<%= @t_to * 1000 %>); <% else %> new Date(); <% end %>;
+
+    $("#request_start_date").datepicker("setDate", start_date);
+    $("#request_end_date").datepicker("setDate", end_date);
+
+//    $('#partition option:contains("<%= @partition %>")').prop("selected", true).change();
+//    $('#state option:contains("<%= @state %>")').prop("selected", true).change();
+
+    $("#tasks_table").tablesorter();
+  });
+</script>
+
+<h1>Jobs</h1>
+
+<%= form_for "request", url: "/jd/job_table" do |f| %>
+  <% @available_projects.each do |project, accounts| %>
+      <h4>Project: <b><%= project.title %></b></h4>
+      <table>
+
+        <% accounts.each_with_index do |account, index| %>
+
+            <% if index % 6 == 0 %>
+              <tr>
+            <% end %>
+            <td>
+              <div class="text_field">
+                <%= f.label account %>
+                <%= check_box_tag "selected_accounts[]", account, @allowed_accounts.include?(account) %>
+              </div>
+            </td>
+            <% if index % 6 == 5 %>
+              </tr>
+            <% end %>
+        <% end %>
+      </table>
+  <% end %>
+
+  <table>
+    <tr>
+      <div class="dropdown">
+        <td>
+          <%= f.label :start_date%>
+        </td>
+        <td>
+          <%= f.text_field :start_date, :class => 'datepicker' %>
+        </td>
+      </div>
+    </tr>
+
+    <tr>
+      <div class="dropdown">
+        <td>
+          <%= f.label :end_date%>
+        </td>
+        <td>
+          <%= f.text_field :end_date, :class => 'datepicker' %>
+        </td>
+      </div>
+    </tr>
+
+    <tr>
+      <div>
+        <td>
+          <%= f.label :partition %>
+        </td>
+        <td>
+          <select multiple id="partition" name="partitions[]" style="width: 600px">
+            <option value="compute" selected>lom2 - compute</option>
+            <option value="regular4">regular4</option>
+            <option value="regular6">regular6</option>
+            <option value="hdd4">hdd4</option>
+            <option value="hdd6">hdd6</option>
+            <option value="gputest">gputest</option>
+            <option value="test">test</option>
+            <option value="smp">smp</option>
+            <option value="gpu">gpu</option>
+          </select>
+        </td>
+      </div>
+    </tr>
+
+    <tr>
+      <div>
+        <td>
+          <%= f.label :state %>
+        </td>
+        <td>
+          <select id="state" name="state" style="width: 200px">
+            <option value="" selected>All</option>
+            <option value="COMPLETED">completed</option>
+            <option value="TIMEOUT">timeout</option>
+            <option value="CANCELLED">cancelled</option>
+            <option value="FAILED">failed</option>
+            <option value="NODE_FAIL">node_fail</option>
+          </select>
+        </td>
+      </div>
+    </tr>
+  </table>
+
+  <div class="submit">
+    <%= f.submit "Show" %>
+    <p>
+      Shown result will be limited to 100 jobs max.
+    </p>
+  </div>
+
+<% end %>
+
+<table id="tasks_table" class="tablesorter-blue task_table">
+  <thead>
+    <tr>
+      <th>System</th>
+      <th>job_id</th>
+      <th>account</th>
+      <th>partition</th>
+      <th>t start</th>
+      <th>t end</th>
+      <th>state</th>
+      <th>num_cores</th>
+      <th>duration(hours)</th>
+      <th>cores * hours</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @jobs.each do |system_name, tasks| %>
+      <% tasks.each do |task| %>
+        <tr>
+          <td class="table_text"><%= system_name %></td>
+          <td class="table_text"><%= task["job_id"] %></td>
+          <td class="table_text"><%= task["account"] %></td>
+          <td class="table_text"><%= task["partition"] %></td>
+          <td class="table_text" style="white-space: nowrap"><%= DateTime.strptime(task["t_start"].to_s, "%s").strftime("%D %T") %></td>
+          <td class="table_text" style="white-space: nowrap"><%= DateTime.strptime(task["t_end"].to_s, "%s").strftime("%D %T") %></td>
+          <td class="task_state_<%= task['state'] %>"><%= task["state"] %></td>
+
+          <td class="sensor_text"><%= task["num_cores"] %></td>
+          <td class="sensor_text"><%= format_float_or_nil((task["t_end"] - task["t_start"]) / 3600) %></td>
+          <td class="sensor_text"><%= format_float_or_nil(task["num_cores"] * (task["t_end"] - task["t_start"]) / 3600) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
