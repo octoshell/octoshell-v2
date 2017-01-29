@@ -4,8 +4,8 @@
       h4 = title
       - rand = SecureRandom.hex(4)
       ul class="nav nav-tabs"
-        li class="active" = link_to "График", "#graph-#{rand}-column", data: { toggle: "tab" }
-        li = link_to "Таблица", "#graph-#{rand}-table", data: { toggle: "tab" }
+        li class="active" = link_to t('.graph'), "#graph-#{rand}-column", data: { toggle: "tab" }
+        li = link_to t('.table'), "#graph-#{rand}-table", data: { toggle: "tab" }
 
       div class="tab-content"
         div class="tab-pane active" id="graph-#{rand}-column"
@@ -25,8 +25,8 @@
   - else
     - rand = SecureRandom.hex(4)
     ul class="nav nav-tabs"
-      li class="active" = link_to "График", "#graph-#{rand}-column", data: { toggle: "tab" }
-      li = link_to "Таблица", "#graph-#{rand}-table", data: { toggle: "tab" }
+      li class="active" = link_to t('.graph'), "#graph-#{rand}-column", data: { toggle: "tab" }
+      li = link_to t('.table'), "#graph-#{rand}-table", data: { toggle: "tab" }
 
     div class="tab-content"
       - chart = stats.to_chart

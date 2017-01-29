@@ -270,43 +270,101 @@ ru:
 
   core:
     mailer:
+      _header:
+        hello_known_name: Здравствуйте, %{name}!
+        hello_unknown: Здравствуйте!
+      _footer:
+        octo_regards: С уважением, Octoshell.
+        maintained_by: Лаборатория Параллельных информационных технологий НИВЦ МГУ.
       invitation_to_project:
-        subject: "Приглашение в проект «%{title}»"
+        subject: Приглашение в проект «%{title}»
+        msg_project_invitation: Руководитель проекта %{pid}:«%{title}» приглашает Вас принять участие в работе над проектом.
+        msg_confirm_invitation: Пожалуйста, подтвердите участие в проекте. Сделать это можно на вкладке «Проекты».
+        open_projects_list: Открыть список проектов.
       invitation_to_octoshell:
-        subject: "Приглашение в проект «%{title}» в системе Octoshell"
+        subject: Приглашение в проект «%{title}» в системе Octoshell
+        hello_known_name: Здравствуйте, %{name}!
+        msg_project_invitation: Руководитель проекта %{pid}:«%{title}» приглашает Вас принять участие в работе над проектом.
+        msg_register: Для начала работы над проектом, пожалуйста, зарегистрируйтесь, перейдя по ссылке
+        msg_first_step: После регистрации Вам необходимо заполнить свой Профиль, указав Ваши инициалы, место работы или учебы, а также публичный ssh-ключ (на странице Профиля есть ссылка на описание того, как это сделать правильно).
+        msg_accept_invitation: После этого Вам необходимо подтвердить участие в проекте. Сделать это можно на вкладке «Проекты».
+        msg_register_email: Пожалуйста, имейте в виду, что зарегистрироваться Вы должны используя именно тот email, на который пришло письмо
       access_to_project_granted:
-        subject: "Вам разрешён доступ к проекту «%{title}»"
+        subject: Вам разрешен доступ к проекту «%{title}»
+        msg_project_acc_granted: Вам предоставили доступ к проекту %{pid}:«%{title}».
+        msg_project_head: Руководитель проекта: %{full_name}
       access_to_project_denied:
-        subject: "Вам закрыли доступ к проекту «%{title}»"
+        subject: Вам закрыли доступ к проекту «%{title}»
+        msg_project_acc_denied: Руководитель проекта %{pid}:«%{title}» закрыл Вам доступ к проекту.
+        msg_recommendation: Для выяснения причины, пожалуйста, свяжитесь с руководителем проекта.
       project_activated:
-        subject: "Проект «%{title}» активирован"
+        subject: Проект «%{title}» активирован
+        msg_project_activated: Проект %{pid}:«%{title}» активирован! Вы можете приступать к работе.
+        msg_project_head: Руководитель проекта: %{full_name}
+        msg_access: На данный момент доступ предоставлен к кластерам
+        msg_quotas: Квоты
+        msg_project_members_logins: Логины участников проекта
       project_closed:
-        subject: "Проект «%{title}» завершён"
+        subject: Проект «%{title}» завершен
+        msg_project_closed: Проект %{pid}:«%{@title}» завершен. Доступы на кластеры закрыты.
+        msg_recommendation: Выяснить причину, а также задать другие вопросы Вы можете, перейдя в раздел Техподдержки.
+        open_support: Открыть раздел техподдержки.
       project_suspended:
-        subject: "Проект «%{title}» приостановлен"
+        subject: Проект «%{title}» приостановлен
+        msg_project_suspended: Проект %{pid}:«%{@title}» приостановлен. Доступы на кластеры закрыты.
+        msg_recommendation: Выяснить причину, а также задать другие вопросы Вы можете, перейдя в раздел Техподдержки.
+        open_support: Открыть раздел техподдержки.
       request_accepted:
         subject: Заявка №%{number} одобрена
+        msg_request_accepted: Заявка №%{id} для доступа к кластеру %{name} одобрена! Для вашего проекта %{pid}:«%{title}» выделен доступ со следующими квотами: %{info}.
+        msg_comment: Желаем Вам плодотворной работы и успехов в исследовании!
       request_rejected:
         subject: Заявка №%{number} отклонена
+        msg_request_rejected: Заявка №%{id} для доступа к кластеру %{name} в рамках проекта %{pid}:«%{title}» отклонена.
+        msg_recommendation: Выяснить причину, а также задать другие вопросы Вы можете, перейдя в раздел Техподдержки.
+        open_support: Открыть раздел техподдержки.
       new_organization:
         subject: Создана новая организация
+        msg_new_organization: Создана новая организация.
       new_organization_department:
         subject: Создано подразделение для %{org_title}
+        msg_new_department: Создано новое подразделение организации.
       surety_confirmed:
         subject: Поручительство №%{number} готово к рассмотрению
+        msg_surety_process: Пожалуйста, проверьте корректность заполнения поручительства, активируйте или отклоните его.
+        msg_surety_confirmed: Пользователь %{full_name} завершил заполнение Поручительства №%{id}.
+        process_surety:  Приступить к рассмотрению.
       surety_accepted:
         subject: Поручительство №%{number} одобрено
+        msg_surety_accepted: Поручительство №%{id} в рамках проекта %{pid}:«%{title}» одобрено!
+        msg_comment: Желаем Вам плодотворной работы и успехов в исследовании!
       surety_rejected:
         subject: Поручительство №%{number} отклонено
+        msg_surety_rejected: Поручительство №%{id} в рамках проекта %{pid}:«%{title}» отклонено.
+        msg_recommendation: Выяснить причину, а также задать другие вопросы Вы можете, перейдя в раздел Техподдержки.
+        open_support: Открыть раздел техподдержки.
       user_access_suspended:
         subject: Ваш аккаунт заблокирован
+        msg_access_suspended: Ваш аккаунт заблокирован, так как Вы не прошли перерегистрацию (не прислали заполненный опросник или отчет по проекту) или нарушили правила работы в рамках суперкомпьютерного комплекса МГУ. После исправления Вами всех недочетов доступ может быть возобновлен.
+        msg_recommendation: Выяснить причину, а также задать другие вопросы Вы можете, перейдя в раздел Техподдержки.
+        open_support: Открыть раздел техподдержки.
       user_access_activated:
         subject: Ваш аккаунт активирован
+        msg_activated: Ваш аккаунт снова активен. Вы можете продолжать работу в системе.
 
     admin:
       projects:
+        _requests:
+          access_request: Заявки на доступ к ресурсам СКЦ МГУ
+          resources_requested: Запрошено ресурсов
         index:
           title: Проекты
+          created_after: Создан после
+          created_before: Создан до
+          activated_after: Активирован после
+          activated_before: Активирован до
+          updated_after: Обновлен после
+          updated_before: Обновлен до
         table:
           no_organization:
             html: "<span class='fa fa-exclamation-triangle text-danger'> не заполнена</span>"
@@ -339,6 +397,17 @@ ru:
           no_other_requests_found: Нет заявок
         edit:
           title: Редактирование заявки на ресурсы
+        show:
+          title: Заявка на ресурсы №%{id} в рамках проекта %{pid}:«%{title}»
+          active_projects: Активных проектов
+          reg_date: Дата регистрации
+          days_short: дн.
+          quotas_ammount: Общий объем квот
+          cpu_hours: часов
+          users_num: Пользователей
+          projects_num: Проектов
+          surety: Поручительство
+          surety_text: Текст поручительства
       project_kinds:
         index:
           title: Типы проектов
@@ -380,6 +449,8 @@ ru:
       cluster_logs:
         index:
           title: Логи кластеров
+          created_after: Создан после
+          created_before: Создан до
       users:
         index:
           title: Управление доступом пользователей к ресурсам
@@ -438,10 +509,39 @@ ru:
         index:
           title: Поручительства
           template: Редактировать шаблон поручительств
+        edit_template:
+          title: Шаблон поручительства
+          surety_rtf_template: RTF шаблон
+          download_surety_template: Скачать текущий шаблон
+          save: Сохранить
+          surety_id: Номер поручительства
+          organization: Название организации
+          user_name: Имя пользователя
+          if_issues: Если все сломалось
+          surety_recover: Вернуть rtf шаблон по умолчанию
+          confirm: Вы уверены?
         table:
           no_sureties: Ничего не найдено.
 
+    credentials:
+      _list:
+        msg_help_sshkey: Если Вы не знаете как добавить публичый ssh-ключ, перейдите по ссылке: <a href="http://parallel.ru/cluster/ssh-keys/ssh_keys.html" target="_blank">Добавление публичного ssh-ключа</a>.
+
     projects:
+      _members: 
+        invite_member: " добавить участника"
+      _invited_users:
+        send_invitations: Отправить приглашения новым участникам
+        msg_if_member_uregistered: Если некоторые пользователи не зарегистрированы в octoshell, Вы можете выслать им приграшения. 
+        msg_invitation_csv: Для этого вам надо сформировать .csv документ с колонками
+        msg_intitation_csv_col: email, Фамилия Имя Отчество
+        msg_invitation_csv_example: Пример
+        msg_invitation_csv_example_body1: gav@abyrvalg.com,Шариков Полиграф Полиграфович
+        msg_invitation_csv_example_body2: filipp@mail.ru,Преображенский Филипп Филиппович
+        invitation_csv_file: Файл формата .csv в кодировке UTF-8.
+        invitation_upload: Загрузить
+        members_invited: Приглашенные пользователи
+        resend_invitations: Выслать приглашения еще раз
       new:
         title: Создание нового проекта
       edit:
@@ -467,7 +567,6 @@ ru:
         projects_with_participation: Проекты с моим участием
         projects_with_invitation: Проекты, к которым есть приглашение присоединиться
         new_project: Создать проект
-
       projects_with_invitation:
         join_project: Принять приглашение
       show:

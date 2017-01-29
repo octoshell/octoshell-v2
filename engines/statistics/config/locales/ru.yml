@@ -20,12 +20,24 @@ ru:
     projects:
       index:
         title: Статистика по проектам
+        refresh_rate: Данные обновляются каждые 3 месяца
+        calculate_now: Посчитать сейчас
     organizations:
       index:
         title: Статистика по организациям
+        refresh_rate: Данные обновляются каждые 3 месяца
+        calculate_now: Посчитать сейчас
     users:
       index:
         title: Статистика по пользователям
+        refresh_rate: Данные обновляются каждые 3 месяца
+        calculate_now: Посчитать сейчас
     sessions:
       index:
         title: Статистика по перерегистрациям
+        refresh_rate: Данные обновляются каждые 3 месяца
+        calculate_now: Посчитать сейчас
+    shared:
+      _stats:
+        graph: График
+        table: Таблица        

@@ -7,4 +7,4 @@ div class="row" data-max-values="#{field.max_values}"
       - (field.max_values || 7).times do |i|
         - custom_value = ((value || []) - field.collection_values).keep_if(&:present?)
         - custom_value = custom_value.empty? ? nil : custom_value[i]
-        = text_field_tag "fields[#{field.id}][]", custom_value, placeholder: "Введите значение", class: "form-control"
+        = text_field_tag "fields[#{field.id}][]", custom_value, placeholder: t('.msg_input_value'), class: "form-control"

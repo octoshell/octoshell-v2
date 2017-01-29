@@ -2,9 +2,11 @@ ru:
   face:
     shared:
       user_submenu:
-        more: Ещё 
+        more: Еще 
       admin_submenu:
-        more: Ещё 
+        more: Еще 
+      _submenu:
+        more: Еще 
     home:
       show:
         welcome: Octoshell
@@ -187,3 +189,8 @@ ru:
 
   util:
     number: №
+
+  layouts:
+    face:
+      _application: 
+        maintaining_organization: НИВЦ МГУ имени М.В. Ломоносова

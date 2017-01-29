@@ -11,7 +11,7 @@ div class="row" data-max-values="#{field.max_values}"
           - custom_value = ((value || []) - field.collection_values).keep_if(&:present?)
           - custom_value = custom_value.empty? ? nil : custom_value.first
           div class="custom-answer"
-            = text_field_tag "fields[#{field.id}][]", custom_value, placeholder: "Свой вариант"
+            = text_field_tag "fields[#{field.id}][]", custom_value, placeholder: t('.user_value')
     - else
       - size, i = field.collection_values.size, 0
       - field.collection_values.in_groups(3, false).each do |collection|
@@ -26,4 +26,4 @@ div class="row" data-max-values="#{field.max_values}"
               - custom_value = (value || [] - field.collection_values).keep_if(&:present?)
               - custom_value = custom_value.empty? ? nil : custom_value.first
               div class="custom-answer"
-                = text_field_tag "fields[#{field.id}][]", custom_value, placeholder: "Свой вариант"
+                = text_field_tag "fields[#{field.id}][]", custom_value, placeholder: t('.user_value')

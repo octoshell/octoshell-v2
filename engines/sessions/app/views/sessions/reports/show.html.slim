@@ -4,57 +4,57 @@ div class="page-header"
     label class="label label-#{report_status_label(@report)}" = @report.human_state_name
 
 - if @report.can_not_be_submitted?
-  h3 Причина отказа
+  h3 #{t('.report_submit_denial_reason')}
   div class="col-xs-offset-1"
     = @report.submit_denial_reason.present? ? @report.submit_denial_reason.name : 'N/A'
-  h3 Обоснование сохранения проекта
+  h3 #{t('.motivation_to_keep_the_project')}
   div class="col-xs-offset-1"
     = @report.submit_denial_description
 - else
   div class="well"
     - if @report.pending?
-      = link_to "Начать заполнение отчета", [@report, :accept], method: :put, class: "btn btn-success"
-      = link_to "Не могу предоставить адекватный текст отчёта", [@report, :decline_submitting], method: :put, class: "btn btn-warning"
+      = link_to t('.start_report_completion'), [@report, :accept], method: :put, class: "btn btn-success"
+      = link_to t('.decline_submitting'), [@report, :decline_submitting], method: :put, class: "btn btn-warning"
     - else
       - if @report.materials.present?
         table class="table table-bordered"
           tr
-            th Обновлён
-            th Размер
+            th #{t('.updated')}
+            th #{t('.size')}
             th
           tr
             td class="col-xs-5" = l(@report.updated_at, format: :long)
             td class="col-xs-1" = number_to_human_size(@report.materials.size)
-            td class="col-xs-2" = link_to "Скачать материалы", @report.materials.url, class: "btn btn-primary"
+            td class="col-xs-2" = link_to t('.download_report_file'), @report.materials.url, class: "btn btn-primary"
       - unless @report.assessed?
         - if @report.rejected?
           div class="well"
-            p Если Вы не можете предоставить отчёт, нажмите: 
-            = link_to "Не могу предоставить адекватный текст отчёта", [@report, :decline_submitting], method: :put, class: "btn btn-warning"
+            p #{t('.decline_submitting')} 
+            = link_to t('.decline_submitting'), [@report, :decline_submitting], method: :put, class: "btn btn-warning"
         - if @report.accepted?
-          legend Прикрепить материалы отчёта
+          legend #{t('.attach_report_file')}
         - else
-          legend Обновить материалы
+          legend #{t('.update_report_file')}
         = bootstrap_form_for @report, url: [@report, (@report.accepted? || @report.exceeded?) ? :submit : :resubmit], layout: :horizontal, multipart: true do |f|
-          = f.file_field :materials, help: "Aрхив zip, не более 20Мб, в архиве - помимо текста отчета, минимум один с расширением графического типа файла (минимум одна иллюстрация)"
+          = f.file_field :materials, help: t('.report_file_help')
           = f.form_group do
             = f.submit t("actions.send")
 
-  legend Оценки
+  legend #{t('.report_evaluation')}
   table class="table table-striped"
     tr
       th class="col-xs-3" = Sessions::Report.human_attribute_name(:illustration_points)
-      td = @report.illustration_points || "Не оценивалось"
+      td = @report.illustration_points || t('.not_evaluated')
     tr
       th class="col-xs-3" = Sessions::Report.human_attribute_name(:statement_points)
-      td = @report.statement_points || "Не оценивалось"
+      td = @report.statement_points || t('.not_evaluated')
     tr
       th class="col-xs-3" = Sessions::Report.human_attribute_name(:summary_points)
-      td = @report.summary_points || "Не оценивалось"
+      td = @report.summary_points || t('.not_evaluated')
 
 
 
-legend Переписка
+legend #{t('.conversation')}
 
 - replies = @report.replies.order(:created_at).find_all(&:persisted?)
 - if replies.any?
@@ -65,18 +65,18 @@ legend Переписка
         - if @report.author == r.user
           = r.user.full_name
         - elsif Sessions.user_class.experts.include? r.user
-          span class="label label-info" Эксперт
+          span class="label label-info" #{t('.expert')}
         - else
           = r.user.full_name
           |  
-          span class="label label-danger" Администрация
+          span class="label label-danger" #{t('.administration')}
 
       = markdown r.message
 
 div class="row"
   div class="well well-small col-xs-6"
     = bootstrap_form_for @reply, url: report_replies_path(@report) do |f|
-      = f.text_area :message, rows: 3, hide_label: true, placeholder: "Сообщение"
+      = f.text_area :message, rows: 3, hide_label: true, placeholder: t('.message')
       = f.form_group
         = f.submit t("actions.send")
 

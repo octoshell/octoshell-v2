@@ -1,7 +1,7 @@
 = render "header"
 p
-  | Поручительство №#{@surety.id} в рамках проекта «#{@surety.project.title}» одобрено!
+  | #{t('.msg_surety_accepted', id: @surety.id, pid: @surety.project.id, title: @surety.project.title)}
 p
-  | Желаем вам плодотворной работы и успехов в исследовании!
+  | #{t('.msg_comment')}
 
 = render "footer"

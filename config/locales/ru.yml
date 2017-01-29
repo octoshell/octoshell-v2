@@ -198,6 +198,13 @@ ru:
     users:
       index:
         title: Пользователи
+        managed_project_statuses: Руководит проектами со статусами
+        participated_project_statuses: Участвует в проектах со статусами
+        has_account_on_clusters: Есть аккаунт на кластере
+        rereg_participated: Участвовал в перерегистрации
+        has_rereg_report_statuses: Имеет отчеты в состоянии
+        has_survey_statuses: Имеет опросы в состоянии
+        access_state: Статус
       table:
         no_employment:
           html: "<span class='fa fa-exclamation-triangle text-danger'> не указано место работы</span>"
@@ -209,6 +216,11 @@ ru:
         delete_user: Удалить аккаунт пользователя
         block_user: Заблокировать доступ
         unblock_user: Возобновить доступ
+        reg_date: Дата регистрации
+        days_short: дн.
+        present: есть
+        none: нет
+        
 
 
   helpers:

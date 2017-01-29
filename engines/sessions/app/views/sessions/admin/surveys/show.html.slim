@@ -20,9 +20,9 @@ h4 = link_to t(".back_to_session"), [:admin, @survey.session]
       h4
         = field.name
         - if field.required?
-          abbr title="Обязательное" *
+          abbr title=t('.compulsive') *
         |  
-        small title="Вес" (#{field.weight})
+        small title=t('.weight') (#{field.weight})
       div class="control-group"
         = render field
       p

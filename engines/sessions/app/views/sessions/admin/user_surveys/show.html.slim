@@ -2,11 +2,11 @@ div class="page-header"
   h1 = @us
 
 table class="table table-condenced table-stripped"
-  th Создан
+  th #{t('.created')}
   td = l @us.created_at, format: :long
-  th Обновлён
+  th #{t('.updated')}
   td = l @us.updated_at, format: :long
-  th Автор
+  th #{t('.author')}
   td = link_to @us.user, main_app.admin_user_path(@us.user)
 legend
 
