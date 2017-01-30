@@ -2,65 +2,12 @@
 
 <p id="notice"><%= notice %></p>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-      var start_date = <% if @t_from %> new Date(<%= @t_from * 1000 %>); <% else %> new Date(2016, 1, 7); <% end %>
-      var end_date = <% if @t_to %> new Date(<%= @t_to * 1000 %>); <% else %> new Date(); <% end %>
-
-      $("#request_start_date").datepicker({format: 'yyyy-mm-dd'});
-      $("#request_start_date").datepicker("setDate", start_date);
-
-      $("#request_end_date").datepicker({format: 'yyyy-mm-dd'});
-      $("#request_end_date").datepicker("setDate", end_date);
-  });
-</script>
 
 <%= form_for "request", url: "/jd/job_stat" do |f| %>
-    <% @available_projects.each do |project, accounts| %>
-      <h2>Project: <%= project.title %></h2>
-      <table border="1" width="100%">
-
-        <% accounts.each_with_index do |account, index| %>
-
-          <% if index % 5 == 0 %>
-            <tr>
-          <% end %>
-            <td style="padding: 5px 10px; width: 20%">
-              <div class="text_field">
-                <%= check_box_tag "selected_accounts[]", account, @allowed_accounts.include?(account) %>
-                <%= f.label account %>
-              </div>
-            </td>
-          <% if index % 5 == 5 %>
-            </tr>
-          <% end %>
-      <% end %>
-      </table>
-      <div style="margin-top: 20px; "></div>
-    <% end %>
+  <%= render partial: "shared/project_subform", locals: { f: f }%>
 
     <table>
-      <tr>
-        <div>
-          <td>
-            <%= f.label :start_date%>
-          </td>
-          <td>
-            <%= f.text_field :start_date %>
-          </td>
-        </div>
-      </tr>
-
-      <tr>
-        <div>
-          <td>
-            <%= f.label :end_date%>
-          </td>
-          <td>
-            <%= f.text_field :end_date %>
-          </td>
-        </div>
-      </tr>
+      <%= render partial: "shared/date_subform", locals: { f: f }%>
     </table>
 
     <div style="margin-top: 20px; "></div>
@@ -88,8 +35,8 @@
           <tr>
             <td class="table_text"><%= name %></td>
             <td class="sensor_text"><%= stat["count"] %></td>
-            <td class="sensor_text"><%= stat["cores_sec"] / 3600 %></td>
-            <td class="sensor_text"><%= stat["gpu_sec"] / 3600 %></td>
+            <td class="sensor_text"><%= format_float_or_nil(stat["cores_sec"] / 3600.0) %></td>
+            <td class="sensor_text"><%= format_float_or_nil(stat["gpu_sec"] / 3600.0) %></td>
           </tr>
         <% end %>
       </tbody>
