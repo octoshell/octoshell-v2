@@ -4,65 +4,15 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-      var start_date = <% if @t_from %> new Date(<%= @t_from * 1000 %>); <% else %> new Date(2016, 1, 7); <% end %>
-      var end_date = <% if @t_to %> new Date(<%= @t_to * 1000 %>); <% else %> new Date(); <% end %>
-
-      $("#request_start_date").datepicker({format: 'yyyy-mm-dd'});
-      $("#request_start_date").datepicker("setDate", start_date);
-
-      $("#request_end_date").datepicker({format: 'yyyy-mm-dd'});
-      $("#request_end_date").datepicker("setDate", end_date);
-
     $("#tasks_table").tablesorter();
   });
 </script>
 
 <%= form_for "request", url: "/jd/job_table" do |f| %>
-    <% @available_projects.each do |project, accounts| %>
-        <h2>Project: <%= project.title %></h2>
-        <table border="1" width="100%">
-
-          <% accounts.each_with_index do |account, index| %>
-
-              <% if index % 5 == 0 %>
-                  <tr>
-              <% end %>
-              <td style="padding: 5px 10px; width: 20%">
-                <div class="text_field">
-                  <%= check_box_tag "selected_accounts[]", account, @allowed_accounts.include?(account) %>
-                  <%= f.label account %>
-                </div>
-              </td>
-              <% if index % 5 == 5 %>
-                  </tr>
-              <% end %>
-          <% end %>
-        </table>
-        <div style="margin-top: 20px; "></div>
-    <% end %>
+    <%= render partial: "shared/project_subform", locals: { f: f }%>
 
   <table>
-    <tr>
-      <div>
-        <td>
-          <%= f.label :start_date%>
-        </td>
-        <td>
-          <%= f.text_field :start_date %>
-        </td>
-      </div>
-    </tr>
-
-    <tr>
-      <div>
-        <td>
-          <%= f.label :end_date%>
-        </td>
-        <td>
-          <%= f.text_field :end_date %>
-        </td>
-      </div>
-    </tr>
+    <%= render partial: "shared/date_subform", locals: { f: f }%>
 
     <tr>
       <div>
@@ -71,15 +21,9 @@
         </td>
         <td>
           <select multiple id="partition" name="partitions[]" style="width: 600px">
-            <option value="compute" selected>lom2 - compute</option>
-            <option value="regular4">regular4</option>
-            <option value="regular6">regular6</option>
-            <option value="hdd4">hdd4</option>
-            <option value="hdd6">hdd6</option>
-            <option value="gputest">gputest</option>
-            <option value="test">test</option>
-            <option value="smp">smp</option>
-            <option value="gpu">gpu</option>
+            <% ["compute", "regular4", "regular6", "hdd4", "hdd6", "gputest", "test", "smp", "gpu"].each do |value| %>
+              <option value="<%= value %>" <% if @partitions.include?(value) %> selected <% end %> ><%= value %></option>
+            <% end %>
           </select>
         </td>
       </div>
@@ -92,12 +36,9 @@
         </td>
         <td>
           <select id="state" name="state" style="width: 200px">
-            <option value="" selected>All</option>
-            <option value="COMPLETED">completed</option>
-            <option value="TIMEOUT">timeout</option>
-            <option value="CANCELLED">cancelled</option>
-            <option value="FAILED">failed</option>
-            <option value="NODE_FAIL">node_fail</option>
+            <% {"" => "All", "COMPLETED" => "Completed", "TIMEOUT" => "Timeout", "CANCELLED" => "Cancelled", "FAILED" => "Failed", "NODE_FAIL" => "Node failed"}.each do |value, name| %>
+                <option value="<%= value %>" <% if @state == value %> selected <% end %> ><%= name %></option>
+            <% end %>
           </select>
         </td>
       </div>
