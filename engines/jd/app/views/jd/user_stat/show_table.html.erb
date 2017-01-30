@@ -4,46 +4,66 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-      var start_date = <% if @t_from %> new Date(<%= @t_from * 1000 %>); <% else %> "07.02.2016"; <% end %>;
-      var end_date = <% if @t_to %> new Date(<%= @t_to * 1000 %>); <% else %> new Date(); <% end %>;
+      var start_date = <% if @t_from %> new Date(<%= @t_from * 1000 %>); <% else %> new Date(2016, 1, 7); <% end %>
+      var end_date = <% if @t_to %> new Date(<%= @t_to * 1000 %>); <% else %> new Date(); <% end %>
 
+      $("#request_start_date").datepicker({format: 'yyyy-mm-dd'});
       $("#request_start_date").datepicker("setDate", start_date);
+
+      $("#request_end_date").datepicker({format: 'yyyy-mm-dd'});
       $("#request_end_date").datepicker("setDate", end_date);
   });
 </script>
 
 <%= form_for "request", url: "/jd/job_stat" do |f| %>
     <% @available_projects.each do |project, accounts| %>
-      <h4>Project: <b><%= project.title %></b></h4>
-      <table>
+      <h2>Project: <%= project.title %></h2>
+      <table border="1" width="100%">
 
         <% accounts.each_with_index do |account, index| %>
 
-          <% if index % 6 == 0 %>
+          <% if index % 5 == 0 %>
             <tr>
           <% end %>
-            <td>
+            <td style="padding: 5px 10px; width: 20%">
               <div class="text_field">
-                <%= f.label account %>
                 <%= check_box_tag "selected_accounts[]", account, @allowed_accounts.include?(account) %>
+                <%= f.label account %>
               </div>
             </td>
-          <% if index % 6 == 5 %>
+          <% if index % 5 == 5 %>
             </tr>
           <% end %>
       <% end %>
       </table>
+      <div style="margin-top: 20px; "></div>
     <% end %>
 
-    <div class="dropdown">
-      <%= f.label :start_date%>
-      <%= f.text_field :start_date, :class => 'datepicker' %>
-    </div>
+    <table>
+      <tr>
+        <div>
+          <td>
+            <%= f.label :start_date%>
+          </td>
+          <td>
+            <%= f.text_field :start_date %>
+          </td>
+        </div>
+      </tr>
 
-    <div class="dropdown">
-      <%= f.label :end_date%>
-      <%= f.text_field :end_date, :class => 'datepicker' %>
-    </div>
+      <tr>
+        <div>
+          <td>
+            <%= f.label :end_date%>
+          </td>
+          <td>
+            <%= f.text_field :end_date %>
+          </td>
+        </div>
+      </tr>
+    </table>
+
+    <div style="margin-top: 20px; "></div>
 
     <div class="submit">
       <%= f.submit "Show" %>
@@ -66,10 +86,10 @@
       <tbody>
         <% @system_stat.each do |name, stat| %>
           <tr>
-            <td><%= name %></td>
-            <td><%= stat["count"] %></td>
-            <td><%= stat["cores_sec"] / 3600 %></td>
-            <td><%= stat["gpu_sec"] / 3600 %></td>
+            <td class="table_text"><%= name %></td>
+            <td class="sensor_text"><%= stat["count"] %></td>
+            <td class="sensor_text"><%= stat["cores_sec"] / 3600 %></td>
+            <td class="sensor_text"><%= stat["gpu_sec"] / 3600 %></td>
           </tr>
         <% end %>
       </tbody>
@@ -94,14 +114,14 @@
             <td class="table_bold_text" rowspan="<%= states.length + 1 %>"class="table_text"><%= partition %></td>
 
             <td class="table_bold_text">TOTAL</td>
-            <td class="table_bold_text"> <%= states.values.reduce(:+) %> </td>
-            <td class="table_bold_text"> <%= format_float_or_nil(@user_stat[system_name]["cores_sec"][partition].values.reduce(:+) / 3600.0) %> </td>
+            <td class="table_bold_text sensor_text"> <%= states.values.reduce(:+) %> </td>
+            <td class="table_bold_text sensor_text"> <%= format_float_or_nil(@user_stat[system_name]["cores_sec"][partition].values.reduce(:+) / 3600.0) %> </td>
           </tr>
           <% states.each do |state, count| %>
             <tr>
               <td class="table_text"><%= state %></td>
-              <td class="table_text"><%= count %></td>
-              <td class="table_text"><%= format_float_or_nil(@user_stat[system_name]["cores_sec"][partition][state] / 3600.0) %></td>
+              <td class="sensor_text"><%= count %></td>
+              <td class="sensor_text"><%= format_float_or_nil(@user_stat[system_name]["cores_sec"][partition][state] / 3600.0) %></td>
             </tr>
           <% end %>
         <% end %>

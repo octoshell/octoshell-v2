@@ -4,63 +4,62 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    var start_date = <% if @t_from %> new Date(<%= @t_from * 1000 %>); <% else %> "07.02.2016"; <% end %>;
-    var end_date = <% if @t_to %> new Date(<%= @t_to * 1000 %>); <% else %> new Date(); <% end %>;
+      var start_date = <% if @t_from %> new Date(<%= @t_from * 1000 %>); <% else %> new Date(2016, 1, 7); <% end %>
+      var end_date = <% if @t_to %> new Date(<%= @t_to * 1000 %>); <% else %> new Date(); <% end %>
 
-    $("#request_start_date").datepicker("setDate", start_date);
-    $("#request_end_date").datepicker("setDate", end_date);
+      $("#request_start_date").datepicker({format: 'yyyy-mm-dd'});
+      $("#request_start_date").datepicker("setDate", start_date);
 
-//    $('#partition option:contains("<%= @partition %>")').prop("selected", true).change();
-//    $('#state option:contains("<%= @state %>")').prop("selected", true).change();
+      $("#request_end_date").datepicker({format: 'yyyy-mm-dd'});
+      $("#request_end_date").datepicker("setDate", end_date);
 
     $("#tasks_table").tablesorter();
   });
 </script>
 
-<h1>Jobs</h1>
-
 <%= form_for "request", url: "/jd/job_table" do |f| %>
-  <% @available_projects.each do |project, accounts| %>
-      <h4>Project: <b><%= project.title %></b></h4>
-      <table>
+    <% @available_projects.each do |project, accounts| %>
+        <h2>Project: <%= project.title %></h2>
+        <table border="1" width="100%">
 
-        <% accounts.each_with_index do |account, index| %>
+          <% accounts.each_with_index do |account, index| %>
 
-            <% if index % 6 == 0 %>
-              <tr>
-            <% end %>
-            <td>
-              <div class="text_field">
-                <%= f.label account %>
-                <%= check_box_tag "selected_accounts[]", account, @allowed_accounts.include?(account) %>
-              </div>
-            </td>
-            <% if index % 6 == 5 %>
-              </tr>
-            <% end %>
-        <% end %>
-      </table>
-  <% end %>
+              <% if index % 5 == 0 %>
+                  <tr>
+              <% end %>
+              <td style="padding: 5px 10px; width: 20%">
+                <div class="text_field">
+                  <%= check_box_tag "selected_accounts[]", account, @allowed_accounts.include?(account) %>
+                  <%= f.label account %>
+                </div>
+              </td>
+              <% if index % 5 == 5 %>
+                  </tr>
+              <% end %>
+          <% end %>
+        </table>
+        <div style="margin-top: 20px; "></div>
+    <% end %>
 
   <table>
     <tr>
-      <div class="dropdown">
+      <div>
         <td>
           <%= f.label :start_date%>
         </td>
         <td>
-          <%= f.text_field :start_date, :class => 'datepicker' %>
+          <%= f.text_field :start_date %>
         </td>
       </div>
     </tr>
 
     <tr>
-      <div class="dropdown">
+      <div>
         <td>
           <%= f.label :end_date%>
         </td>
         <td>
-          <%= f.text_field :end_date, :class => 'datepicker' %>
+          <%= f.text_field :end_date %>
         </td>
       </div>
     </tr>
@@ -105,6 +104,8 @@
     </tr>
   </table>
 
+  <div style="margin-top: 20px; "></div>
+
   <div class="submit">
     <%= f.submit "Show" %>
     <p>
@@ -126,7 +127,7 @@
       <th>state</th>
       <th>num_cores</th>
       <th>duration(hours)</th>
-      <th>cores * hours</th>
+      <th style="white-space: nowrap">cores * hours</th>
     </tr>
   </thead>
 
@@ -143,8 +144,8 @@
           <td class="task_state_<%= task['state'] %>"><%= task["state"] %></td>
 
           <td class="sensor_text"><%= task["num_cores"] %></td>
-          <td class="sensor_text"><%= format_float_or_nil((task["t_end"] - task["t_start"]) / 3600) %></td>
-          <td class="sensor_text"><%= format_float_or_nil(task["num_cores"] * (task["t_end"] - task["t_start"]) / 3600) %></td>
+          <td class="sensor_text"><%= format_float_or_nil((task["t_end"] - task["t_start"]) / 3600.0) %></td>
+          <td class="sensor_text"><%= format_float_or_nil(task["num_cores"] * (task["t_end"] - task["t_start"]) / 3600.0) %></td>
         </tr>
       <% end %>
     <% end %>
