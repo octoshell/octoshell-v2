@@ -39,8 +39,8 @@ module Jd
 
       if request.post?
         begin
-          @t_from = Time.parse(params["request"].fetch("start_date")).to_i
-          @t_to = Time.parse(params["request"].fetch("end_date")).to_i
+          @t_from = Time.strptime(params["request"].fetch("start_date"), "%Y-%m-%d").to_i
+          @t_to = Time.strptime(params["request"].fetch("end_date"), "%Y-%m-%d").to_i
 
           selected_accounts = params.fetch("selected_accounts")
           @allowed_accounts = selected_accounts & @available_accounts # filter accounts to avoid forgery

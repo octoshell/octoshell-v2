@@ -4,7 +4,7 @@ module Jd
       if value.nil?
         return ""
       else
-        return "%.1f" % value
+        return "%.2f" % value.round(2)
       end
     end
   end

@@ -12,6 +12,7 @@
  *= require core/application
  *= require support/application
  *= require sessions/application
+ *= require jd/application
  *= require_self
  *= require_tree .
  */

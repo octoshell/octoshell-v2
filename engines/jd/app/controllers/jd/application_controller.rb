@@ -1,5 +1,7 @@
 module Jd
   class ApplicationController < ActionController::Base
+    layout "layouts/application"
+
     protect_from_forgery with: :exception
 
     rescue_from MayMay::Unauthorized, with: :not_authorized
@@ -28,7 +30,7 @@ module Jd
 
       projects_with_participation.each do |project|
         project.members.each do |member|
-          if member.id == user.user_id
+          if member.id == user.id
             result[project].push(member.login)
           end
         end

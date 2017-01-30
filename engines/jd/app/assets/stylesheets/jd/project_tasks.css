@@ -45,6 +45,7 @@
 
 .table_text {
 	font-size: 11pt;
+	white-space: nowrap;
 }
 
 .sensor_text {
