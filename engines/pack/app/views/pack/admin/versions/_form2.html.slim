@@ -3,8 +3,8 @@ div class="row"
     = bootstrap_form_for [:admin,@package,@version]do |f|
       = f.text_field :name
       = f.text_field :description
-      = f.text_field :r_up,:placeholder=>'dd/mm/yyyy',class: 'form-control datepicker'
-      = f.text_field :r_down,:placeholder=>'dd/mm/yyyy',class: 'form-control datepicker'
+      = f.text_field :r_up ,:placeholder=>'dd.mm.yyyy',class: 'form-control datepicker'
+      = f.text_field :r_down,:placeholder=>'dd.mm.yyyy',class: 'form-control datepicker'
       br
       br
       h3 = t("Clusters")

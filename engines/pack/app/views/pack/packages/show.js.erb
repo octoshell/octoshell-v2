@@ -1,6 +1,2 @@
-
-
-      $('#versions_table').html("<%=escape_javascript(render 'versions_table')%>");
-      $('#ajax_paginator').html('<%= escape_javascript(paginate(@versions, :remote => true).to_s) %>');
-
-
+$('#versions_table').html("<%=escape_javascript(render 'versions_table')%>");
+ $('#ajax_paginator').html('<%= escape_javascript(paginate(@versions, :remote => true).to_s) %>');

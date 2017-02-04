@@ -1,4 +1,5 @@
 ru:
+  
   activerecord:
     models:
     attributes:
@@ -18,6 +19,9 @@ ru:
         active: Актуальна
         r_up: Дата загрузки
         r_down: Дата удаления
+    errors:
+        messages:
+            uniq_access: Пользователь/проект уже имеет доступ/заявку на данную версию
         
         
 

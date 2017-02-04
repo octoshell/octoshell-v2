@@ -11,19 +11,22 @@ html
 		tr 
 			td #{t("description", default: "Description")}:
 			td #{@package.description} 
-		tr 
-			td #{t("folder", default: "Folder")}:
-			td #{@package.folder}   
-		tr 
-			td #{t("cost", default: "Cost")}:
-			td #{@package.cost}
+		
+
+		
+			
 	br
 	br
 
 	
-	= form_for :pref, url: remember_pref_packages_path, layout: :horizontal,remote: true,:html => { :class => "col-xs-6" } do |f|
+	= form_for :pref, url: remember_pref_packages_path, layout: :horizontal,remote: true,:html => { :class => "col-xs-6",:id => "pref_form" } do |f|
 		= f.label :proj_or_user,t("for_whom?", default: "Do you want to request abilities for:")
-    	= f.select :proj_or_user,options_for_select(  @arr, @pref.proj_or_user.to_s ),{ label: t("for_whom?", default: "Do you want to request abilities for:") }, { class: "selectpicker" } 
+    	= f.select :proj_or_user,options_for_select(  @pref_form, @pref_selected ),{ label: t("for_whom?", default: "Do you want to request abilities for:") }, { class: "selectpicker" }
+    	br
+    	= f.label :def_date,t("end_lic")
+    	br
+    	= f.text_field :def_date, {class: 'my_datepicker',value: @pref.def_date}
+    	= f.submit t("buttons.ready", default: "Ready")  
 		
     	 
 
@@ -43,6 +46,6 @@ html
 	div id="ajax_paginator" 
 		=paginate(@versions, :remote => true).to_s
 
-	= javascript_include_tag "pack/application"
+	/= javascript_include_tag "pack/application"
 	= javascript_tag do 
     	= render(:partial => 'show', :formats => [:js]) 

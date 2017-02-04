@@ -1,0 +1,36 @@
+doctype html    
+html
+	br
+	br
+	br
+	
+	table  width="50%" 
+		tr 
+			td #{t("from", default: "Package name")}:
+			td 
+				-if @access.who_type=="User"
+					= t('from_user') + ' ' +  @access.who.email 
+				- else
+					= t('from_project') + ' ' +   @access.who.to_s 
+		tr	
+			td 
+				=t("user", default: "User")
+			td #{@access.user.email} 
+		tr 
+			td #{t("status")}
+			td #{@access.status}   
+		
+	br
+	br 
+	table width="50%" 
+		tr 
+			
+				- edit= t("edit", default: "Edit")
+				- delete= t("delete", default: "Delete")
+				-add_v= t("add_v", default: "Add version")
+				td = link_to edit , edit_admin_access_path(@access.id)        
+				td = link_to delete, admin_access_path(@access.id), :method => 'delete',:data => {:confirm => t("confirm", default: "Are you sure")} 
+
+	
+			
+ 

@@ -145,10 +145,8 @@ PATH
       activerecord-jdbcpostgresql-adapter
       bootstrap_form
       jquery-ui-rails
-      js-routes
       maymay
       rails (~> 4.2)
-      rails-jquery-autocomplete
       rails4-autocomplete
       slim
 
@@ -357,9 +355,6 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    js-routes (1.3.2)
-      railties (>= 3.2)
-      sprockets-rails
     json (1.8.3)
     json (1.8.3-java)
     jwt (1.5.1)

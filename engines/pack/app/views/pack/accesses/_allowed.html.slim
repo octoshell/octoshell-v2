@@ -1,0 +1,3 @@
+= bootstrap_form_for @access, layout: :horizontal,remote: true do |f|									
+		= f.text_field :new_end_lic,{ class: 'my_datepicker',value: params[:def_date],label: t('new_end_lic')}
+		= f.submit t("buttons.ready", default: "Ready") 

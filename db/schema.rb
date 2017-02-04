@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170114194743) do
+ActiveRecord::Schema.define(version: 20170204090304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -393,11 +393,12 @@ ActiveRecord::Schema.define(version: 20170114194743) do
     t.string   "who_type"
     t.integer  "status"
     t.integer  "user_id"
-    t.text     "admin_answer"
-    t.text     "end_date"
-    t.text     "request_text"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "end_lic"
+    t.string   "begin_lic"
+    t.string   "new_end_lic"
+    t.integer  "ticket_id"
   end
 
   add_index "pack_accesses", ["version_id"], name: "index_pack_accesses_on_version_id", using: :btree
@@ -416,8 +417,6 @@ ActiveRecord::Schema.define(version: 20170114194743) do
 
   create_table "pack_packages", force: :cascade do |t|
     t.string   "name"
-    t.string   "folder"
-    t.integer  "cost"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
@@ -429,9 +428,24 @@ ActiveRecord::Schema.define(version: 20170114194743) do
     t.integer  "proj_or_user"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "project_id"
+    t.string   "def_date"
   end
 
   add_index "pack_props", ["user_id"], name: "index_pack_props_on_user_id", using: :btree
+
+  create_table "pack_version_options", force: :cascade do |t|
+    t.integer  "version_id"
+    t.string   "name"
+    t.string   "value"
+    t.text     "admin_answer"
+    t.text     "end_date"
+    t.text     "request_text"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "pack_version_options", ["version_id"], name: "index_pack_version_options_on_version_id", using: :btree
 
   create_table "pack_versions", force: :cascade do |t|
     t.string   "name"
@@ -439,8 +453,10 @@ ActiveRecord::Schema.define(version: 20170114194743) do
     t.integer  "package_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "r_up"
-    t.text     "r_down"
+    t.integer  "cost"
+    t.string   "end_lic"
+    t.integer  "vers_type",   default: 0
+    t.integer  "folder"
   end
 
   add_index "pack_versions", ["package_id"], name: "index_pack_versions_on_package_id", using: :btree

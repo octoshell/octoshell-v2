@@ -1,43 +1,44 @@
- module Pack
+ module Face
+  module ApplicationHelper
+  def m_autocomplete( options = {})
+      content_tag(:div, class: "form-group") do
+        layout = options.delete(:layout)
+        hide_label = options.delete(:hide_label)
+        data = { source: options[:source], url: options[:url] }
+        label_content =  content_tag :label, (options[:label].presence || "")
+        #field_content = form.collection_select options[:name], class: "form-control chosen ajax", data: data, role: options[:role]
+        field_content = content_tag :select, options[:name], {
+          name: options[:name],
+          class: 'form-control select2-ajax',
+          data: data,
+          role: options[:role]
+        }
+        #warn "======c #{field_content} // #{field_content.html_safe}"
 
-  @ac= Access.new
-  @ac.version= Version.first
-  @ac.who= User.first
-  @ac.user=User.first
-  if (!@ac.save)
-    print("error")
-  end
-  print(@ac.who_type)
-  Access.first.delete
+        case layout
+        when :regular
+          label_div = content_tag(:div, class: "control-label") { label_content }
+          if hide_label
+            field_content.html_safe
+          else
+            (label_div + field_content).html_safe
+          end
+        else
+          label_div = content_tag(:div, class: "control-label col-sm-2") { label_content }
+          field_div = content_tag(:div, class: "col-sm-10") { field_content }
+          #warn "====== #{field_div}"
+          if hide_label
+            field_div.html_safe
+          else
+            (label_div + field_div).html_safe
+          end
+        end
+      end
+    end
 
+   puts m_autocomplete  ({name: 'access[user_id]', label: "zz", source:  "PATH"} )
 
-  @ac = Access.all
-  if !@ac
-    print("NO")
-  end
-  @ac.destroy_all
-
-  @ac = Access.all
-  if !@ac
-    print("NO")
-  end
-  
-
- # print(Package.column_names)
-
-   #print(Clusterver.new.methods)#.include?(:javax))
-  #v=Version.all
-  #print()
-  #p=Package.all
-  
- #v=Version.where(package_id: 3.to_i)
-  #v.each do |pac|
-  	#print(pac.r_up.to_s+" "+ pac.package_id.to_s+pac.description+pac.active.to_s+"\n")
  
-   
-  #gr=Group.all
-  #gr.each do |z|
-  #	ab=Ability.create(action: "manage", subject: "packages",group_id: z.id)
-  #	ab.save
-  
+
+ end
 end

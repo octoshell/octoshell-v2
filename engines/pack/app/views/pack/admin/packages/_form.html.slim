@@ -3,7 +3,6 @@ div class="row"
     = bootstrap_form_for [:admin,@package] do |f|
       = f.text_field :name
       = f.text_field :folder
-      = f.number_field :cost
       = f.text_field :description
       - if @package.deleted
      	 = f.check_box :deleted, { label: t("remain_deleted", default: "remain package?") }

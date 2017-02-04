@@ -1,0 +1,8 @@
+div class="row"
+  div class="col-xs-8"
+  	
+    = bootstrap_form_for [:admin,@access] do |f|
+      = f.select :status,@statuses
+      
+      = f.form_group do
+        = f.submit t("buttons.save", default: "Save")

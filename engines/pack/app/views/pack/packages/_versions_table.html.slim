@@ -5,8 +5,7 @@
 				tr 
 					th  #{t("name")}
 					th 	#{t("description")}
-					th 	#{t("up_date",default:"Upload date")}
-					th 	#{t("del_date",default:"Deletion date")}
+					th 	#{t("cost")}
 					th 	#{t("clusters",default:"clusters")}
 					th 	#{t("access_user",default:"Availability for me")}
 					th 	#{t("access_project",default:"Availability for project")}  
@@ -15,8 +14,9 @@
 					tr 
 						td  #{version.name} 
 						td  #{version.description}
-						td 	#{version.r_up} 
-						td 	#{version.r_down}
+						td  #{version.cost} 
+						
+
 						
 									
 											
@@ -35,10 +35,38 @@
 									
 									br		
 						td
-							-if version.user_accesses.take
-								p	show attributes
+							-if @user_ac=version.user_accesses.take
+								=@user_ac.status
 							-else
-								p	no access
+								=t("not available")
 						td
-							/-if version.accesses.find_by who_id: current_user.id, who_type: "Core::Project"	
-							/-if Core::Project.find
+							-@v=version.proj_accesses_allowed.first	
+							-if @v
+								=@v.status
+								br
+								=@v.who.title 
+							
+							
+							-else
+								-if @v=version.proj_accesses.first	
+									=@v.status 
+									br
+									=@v.who.title 
+								-else
+									=t("not available")
+						td
+
+							
+ 								button class="btn btn-primary btn_access" vers_id=version.id  =t("want",default:"want this")
+								
+ 					tr 
+ 						td colspan='6'
+
+ 							div class='select_for_access' hidden="" vers_id=version.id 
+								/=f.label t("for_whom?", default: "Do you want to request abilities for:")
+ 								=select_tag :proj_or_user,options_for_select(  @pref_form, @pref_selected ), {class: :select_ajax_access,vers_id: version.id }
+ 								div class='form_for_access'  vers_id=version.id 
+ 								
+/Совместить то, что достали уже из базы,с этим делом.
+/ В джаваскрипте проверять рельс переменные не вариант,если делать это максимально просто/
+/Попробовать запрос скрипта с  version_id

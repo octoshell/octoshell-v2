@@ -1,0 +1,20 @@
+- if @accesses
+      div  class="panel-body"
+        table  class="table table-hover"
+          tr
+            th #{t("name", default: "Package name")}
+            th
+          -@accesses.each do |item|
+            tr
+              td class="col-xs-4" = link_to item.user.email, admin_access_path(item)
+              td
+                div class="btn-group pull-right"
+                  = link_to t("edit", default: "edit"), edit_admin_access_path(item.id), class: "btn btn-default btn-sm"
+                  button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                    span class="caret"
+                  ul class="dropdown-menu" role="menu"
+                    li class="text-left"
+                      = link_to t("delete", default: "delete"), admin_access_path(item.id), data:  { method: :delete, confirm: t("delete", default: "delete") }, class: "text-danger"
+- else
+    div class="panel-body"
+       	p = t(".no_packages_found", default: "No packages Found") 

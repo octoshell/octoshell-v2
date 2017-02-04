@@ -3,12 +3,10 @@
         table  class="table table-hover"
           tr
             th #{t("name", default: "Package name")}
-            th #{t("cost", default: "Package cost")}
             th
           -@packages.each do |package|
             tr
               td class="col-xs-4" = link_to package.name, admin_package_path(package)
-              td = package.cost
               td
                 div class="btn-group pull-right"
                   = link_to t("edit", default: "edit"), edit_admin_package_path(package.id), class: "btn btn-default btn-sm"

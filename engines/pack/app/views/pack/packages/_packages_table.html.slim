@@ -3,12 +3,11 @@
         table  class="table table-hover"
           tr
             th #{t("name", default: "Package name")}
-            th #{t("cost", default: "Package cost")}
             th
           -@packages.each do |package|
             tr
               td class="col-xs-4" = link_to package.name, package_path(package)
-              td = package.cost
+              
               
                 
 - else

@@ -1,0 +1,8 @@
+
+
+	= bootstrap_form_for :access, url: accesses_path, layout: :horizontal,remote: true do |f|									
+		= f.text_field :end_lic,{ class: 'my_datepicker',value: params[:def_date],label: t('end_lic')}
+		= f.hidden_field :from,:value =>  "no_admin"
+		= f.hidden_field :version_id,:value =>  params[:version_id]
+		= f.hidden_field :proj_or_user,:value =>  params[:proj_or_user]
+		= f.submit t("buttons.ready", default: "Ready") 

@@ -22,11 +22,11 @@ Gem::Specification.new do |s|
   s.add_dependency "slim"
   s.add_dependency "bootstrap_form"
   s.add_dependency "maymay"
-  s.add_dependency "rails-jquery-autocomplete"
   s.add_dependency "jquery-ui-rails"
-  s.add_dependency "js-routes"
+  #s.add_dependency 'rails-jquery-autocomplete'
   s.add_dependency 'rails4-autocomplete'
+
   #s.add_dependency 'simple_form'
-  s.add_development_dependency "better_errors"
+  #s.add_development_dependency "better_errors"
 
 end

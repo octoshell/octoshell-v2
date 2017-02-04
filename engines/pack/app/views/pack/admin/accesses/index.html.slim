@@ -1,0 +1,31 @@
+div class="package-header"
+  h1 = t(".title", default: "Packages list")
+  
+    
+  
+
+  /= bootstrap_form_for :search, url: packages_path, method: :get, layout: :horizontal do |f|
+    = f.select :deleted, [[t("not_deleted", default: "Show only existing packages"),false], [ t("deleted", default: "Show only deleted packages"),true], [ t("show_active", default: "Show only active packages"),"active versions"]], { label: t("deleted?", default: "deleted/not deleted") }, { class: "selectpicker" } 
+   
+  br
+  br
+  br
+  div class="panel panel-default"
+    div class="panel-heading clearfix"
+      = link_to t(".new"), new_admin_access_path, class: "btn btn-default"
+       
+  div id="my_table"
+    =render 'accesses_table'
+  
+  div id="ajax_paginator" 
+    =paginate(@accesses, :remote => true).to_s     
+
+  div id="packages_table"
+   
+  div id="ajax_paginator" 
+      
+
+    
+/= javascript_tag do 
+    = render(:partial => 'pack/packages/index', :formats => [:js]) 
+

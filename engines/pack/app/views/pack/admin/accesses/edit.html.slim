@@ -1,0 +1,27 @@
+div class="page-header"
+  h1 = t(".title", default: "Access Editing")
+
+table  width="50%" 
+		tr 
+			td #{t("from", default: "Package name")}:
+			td 
+				-if @access.who_type=="User"
+					= t('from_user') + ' ' +  @access.who.email 
+				- else
+					= t('from_project') + ' ' +   @access.who.to_s 
+		tr	
+			td 
+				=t("user", default: "User")
+			td #{@access.user.email} 
+
+
+div class="row"
+  div class="col-xs-8"
+  	
+    = bootstrap_form_for [:admin,@access] do |f|
+      = f.select :status,@statuses
+      
+      = f.form_group do
+        = f.submit t("buttons.save", default: "Save")
+
+

@@ -15,5 +15,17 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
-//= require js-routes
 //= require autocomplete-rails
+
+
+ $(document).on('focus',".my_datepicker", function(){
+    $(this).datepicker({
+  dateFormat: 'dd.mm.yy',
+  minDate: new Date(),
+  
+});
+});
+
+
+
+

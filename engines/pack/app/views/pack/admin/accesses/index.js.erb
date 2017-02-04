@@ -1,0 +1,6 @@
+
+
+      $('#my_table').html("<%=escape_javascript(render 'accesses_table')%>");
+      $('#ajax_paginator').html('<%= escape_javascript(paginate(@accesses, :remote => true).to_s) %>');
+
+

@@ -5,7 +5,7 @@ module Pack
 
     # GET /packages
     def index
-      print(admin_package_path('{{}}'))
+    
       
       respond_to do |format|
 
@@ -19,8 +19,7 @@ module Pack
               @packages = @model.where(search_params).order(:name) 
             end
          
-                  
-          
+              
         }
       end
       

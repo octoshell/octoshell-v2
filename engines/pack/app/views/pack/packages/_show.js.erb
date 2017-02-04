@@ -1,29 +1,66 @@
-function change_pref() {
 
-$( "#pref_proj_or_user option:selected" ).each(function() {
-        dict=
-      {
-        proj_or_user : $( this ).attr("value"), 
-      } ;
+
+
+ $(document).on('ajax:complete','#pref_form',function(){
+  $.ajax({
+        url : "<%=package_path(@package)%>", // the endpoint
+        dataType : "script", 
+        type: "GET",
+        data:
+        {
+          page: "<%=params[:page]%>",
+          id: "<%=params[:id]%>",
+        }
+       
+        
     });
+});
+ 
 
-$.ajax({
-        url : "<%=remember_pref_packages_path%>", // the endpoint
-        dataType : "json", 
-        type: "POST",
-        data: {
-          pref: dict,
-        },
-         // http method
-         // data sent with the post request
 
-        // handle a successful response
+  $(document ).on('click',".btn_access",function()
+ {
+   
+    var my_id=$(this).attr('vers_id');
+   var el= $(".select_for_access[vers_id='" + my_id + "']");
+   if (el.attr('hidden'))
+   {
+      $(this).html("<%=t('disable')%>");
+      el.removeProp('hidden');
+      $(".select_ajax_access[vers_id='" + my_id + "']").each(make_form);
+   }
+   else
+   {
+      el.attr('hidden','');
+      $(this).html('<%=t("want")%>');
+   } 
+  
+ });
+
+function make_form(){
+  $.ajax({
+        url : "<%=form_accesses_path%>", // the endpoint
+        dataType : "script", 
+        type: "GET",
+        data:
+        {
+          proj_or_user: $(this).val(),
+          version_id: $(this).attr('vers_id'),
+          def_date: "<%=@pref.def_date%>"
+        }
+       
         
-        // handle a non-successful response
-        
-  	});
- };
+    });
+}
 
-$("#pref_proj_or_user").change(
-	change_pref
-	);
+  $(document).on('change','.select_ajax_access',make_form);
+  
+
+
+
+
+
+
+
+ 
+ 
