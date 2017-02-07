@@ -30,7 +30,7 @@ module Jd
 
       projects_with_participation.each do |project|
         project.members.each do |member|
-          if member.id == user.id
+          if member.user_id == user.id
             result[project].push(member.login)
           end
         end

@@ -80,8 +80,8 @@
           <td class="table_text"><%= task["job_id"] %></td>
           <td class="table_text"><%= task["account"] %></td>
           <td class="table_text"><%= task["partition"] %></td>
-          <td class="table_text" style="white-space: nowrap"><%= DateTime.strptime(task["t_start"].to_s, "%s").strftime("%D %T") %></td>
-          <td class="table_text" style="white-space: nowrap"><%= DateTime.strptime(task["t_end"].to_s, "%s").strftime("%D %T") %></td>
+          <td class="table_text"><%= DateTime.strptime(task["t_start"].to_s, "%s").strftime("%D %T") %></td>
+          <td class="table_text"><%= DateTime.strptime(task["t_end"].to_s, "%s").strftime("%D %T") %></td>
           <td class="task_state_<%= task['state'] %>"><%= task["state"] %></td>
 
           <td class="sensor_text"><%= task["num_cores"] %></td>
