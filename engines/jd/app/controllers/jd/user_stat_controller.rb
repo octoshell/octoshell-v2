@@ -66,7 +66,10 @@ module Jd
             result[metric] += number
 
             if partition.include?("gpu") and metric.include?("cores_sec")
-              result["gpu_sec"] += number / 4 # TODO
+              result["gpu_sec"] += number / 4 # 2 cards per node, TODO
+            end
+            if partition.include?("compute") and metric.include?("cores_sec")
+              result["gpu_sec"] += number / 14 # 1 card per node, TODO
             end
           end
         end
@@ -89,53 +92,65 @@ module Jd
       system_stat["TOTAL"] = result
     end
 
-    def show_table()
+    def get_users_stat(accounts, t_from, t_to)
+      user_stat = {}
+
+      @@systems.each do |system_name, system_url|
+        user_stat[system_name] = {}
+
+        print "jd: #{system_name} user_stat query ms: ", Benchmark.ms {
+          user_stat[system_name]["count"] = get_accounts_stat(system_url + "/api/job_stat/jobs/count" \
+                , accounts, t_from, t_to)
+          user_stat[system_name]["cores_sec"] = get_accounts_stat(system_url + "/api/job_stat/cores_sec/sum" \
+                , accounts, t_from, t_to)
+        }
+      end
+
+      return user_stat
+    end
+
+    def get_system_stat(user_stat)
+      system_stat = {}
+
+      @@systems.each do |system_name, _|
+        system_stat[system_name] = compute_system_stat(user_stat[system_name])
+      end
+
+      compute_total_system_stat(system_stat)
+
+      return system_stat
+    end
+
+    def query_stat()
       # controller for job_table page
 
       @available_projects = get_available_projects(current_user)
-      @available_accounts = []
-      @available_projects.each do |_, value|
-        @available_accounts += value
-      end
+      @selected_accounts = params.fetch("selected_accounts") & get_available_accounts(@available_projects)
+
+      @t_from = Time.strptime(params["request"].fetch("start_date"), "%Y-%m-%d").to_i
+      @t_to = Time.strptime(params["request"].fetch("end_date"), "%Y-%m-%d").to_i
 
       @systems = @@systems
+
+      @user_stat = get_users_stat(@selected_accounts, @t_from, @t_to)
+      @system_stat = get_system_stat(@user_stat)
+
+      render :show_table
+    end
+
+    def show_stat()
+      # controller for job_table page
+
+      @available_projects = get_available_projects(current_user)
+      @selected_accounts = get_available_accounts(@available_projects) # select all by default
+
+      @systems = @@systems
+
       @user_stat = nil
-      @allowed_accounts = @available_accounts
-      @t_from = nil
-      @t_to = nil
       @system_stat = nil
 
-      if request.post?
-        begin
-          puts request.params
-
-          @t_from = Time.parse(params["request"].fetch("start_date")).to_i
-          @t_to = Time.parse(params["request"].fetch("end_date")).to_i
-
-          selected_accounts = params.fetch("selected_accounts")
-          @allowed_accounts = selected_accounts & @available_accounts
-
-          @user_stat = {}
-          @system_stat = {}
-          @@systems.each do |system_name, system_url|
-            @user_stat[system_name] = {}
-
-            print "jd: #{system_name} user_stat query ms: ", Benchmark.ms {
-              @user_stat[system_name]["count"] = get_accounts_stat(system_url + "/api/job_stat/jobs/count" \
-                , @allowed_accounts, @t_from, @t_to)
-              @user_stat[system_name]["cores_sec"] = get_accounts_stat(system_url + "/api/job_stat/cores_sec/sum" \
-                , @allowed_accounts, @t_from, @t_to)
-            }
-
-            @system_stat[system_name] = compute_system_stat(@user_stat[system_name])
-          end
-
-          compute_total_system_stat(@system_stat)
-
-        rescue KeyError
-          # skip bad params
-        end
-      end
+      @t_from = nil
+      @t_to = nil
 
       render :show_table
     end

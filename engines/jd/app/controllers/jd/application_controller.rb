@@ -38,5 +38,15 @@ module Jd
 
       return result
     end
+
+    def get_available_accounts(available_projects)
+      available_accounts = []
+
+      available_projects.each do |_, value|
+        available_accounts += value
+      end
+
+      return available_accounts
+    end
   end
 end
