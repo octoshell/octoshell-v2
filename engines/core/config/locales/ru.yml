@@ -525,7 +525,7 @@ ru:
 
     credentials:
       _list:
-        msg_help_sshkey: "Если Вы не знаете как добавить публичый ssh-ключ, перейдите по ссылке: <a href="http://parallel.ru/cluster/ssh-keys/ssh_keys.html" target="_blank">Добавление публичного ssh-ключа</a>."
+        msg_help_sshkey: "Если Вы не знаете как добавить публичый ssh-ключ, перейдите по ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Добавление публичного ssh-ключа</a>."
 
     projects:
       _members: 
@@ -549,7 +549,7 @@ ru:
       form:
         card: "Карточка проекта"
         card_help:
-          html: "<a href="http://parallel.ru/cluster/reregistration/project_card", target="_blank">Пример оформления карточки проекта</a>"
+          html: "<a href=\"http://parallel.ru/cluster/reregistration/project_card\", target=\"_blank\">Пример оформления карточки проекта</a>"
         card_name_help: "Здесь следует ввести реальное название исследовательского проекта"
         card_driver_help: "Описание задачи, на решение которой направлен проект"
         card_strategy_help: "Описание идеи подхода к решению задачи"
@@ -602,9 +602,9 @@ ru:
         title: "Прилашение в проект «%{project_title}»"
         choose_organization: "Выберите организацию, от лица которой вы будете участвовать в проекте"
         accept_invitation: "Присоединиться к проекту"
-        no_employments: "|-"
+        no_employments: "|-
           <strong>Вы не указали в своём профиле место работы.</strong>
-          <p>Пожалуйста, добавьте место работы, после чего можно будет подтвердить участие в проекте.</p>
+          <p>Пожалуйста, добавьте место работы, после чего можно будет подтвердить участие в проекте.</p>"
         add_employment: "Добавить место работы."
     organizations:
       new:

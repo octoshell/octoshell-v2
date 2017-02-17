@@ -6,24 +6,24 @@ ru:
   user_submenu:
     projects: "Проекты"
     tickets_warning:
-      html: "Поддержка <span class="badge warning"><i class="fa fa-bell"></i></span>"
+      html: "Поддержка <span class=\"badge warning\"><i class=\"fa fa-bell\"></i></span>"
     tickets: "Поддержка"
     sessions: "Перерегистрации"
     sessions_warning:
-      html: "Перерегистрации <span class="badge warning"><i class="fa fa-bell"> </i></span>"
+      html: "Перерегистрации <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
     profile: "Профиль"
   admin_submenu:
     projects: "Проекты"
     project_kinds: "Типы проектов"
     sureties: "Поручительства"
     sureties_with_count:
-      html: "Поручительства <span class="badge info">%{count}</span>"
+      html: "Поручительства <span class=\"badge info\">%{count}</span>"
     requests: "Заявки"
     requests_with_count:
-      html: "Заявки <span class="badge info">%{count}</span>"
+      html: "Заявки <span class=\"badge info\">%{count}</span>"
     support: "Поддержка"
     support_with_count:
-      html: "Поддержка <span class="badge info">%{count}</span>"
+      html: "Поддержка <span class=\"badge info\">%{count}</span>"
     clusters: "Кластеры"
     cluster_logs: "Логи кластеров"
     quota_kinds: "Виды квот на ресурсы"

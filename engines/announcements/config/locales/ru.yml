@@ -27,7 +27,7 @@ ru:
           informative: "информационная"
           new: "Новая рассылка"
         form:
-          markdown_help: 'В качестве разметки используется Markdown. Описание синтаксиса <a href="http://vstarkov.ru/markdown-basics/", target="_blank">здесь</a>.'
+          markdown_help: "В качестве разметки используется Markdown. Описание синтаксиса <a href=\"http://vstarkov.ru/markdown-basics/\", target=\"_blank\">здесь</a>."
         new:
           title: "Добавление рассылки"
         edit:

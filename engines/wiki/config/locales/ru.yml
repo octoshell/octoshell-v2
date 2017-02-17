@@ -12,7 +12,7 @@ ru:
     save: "Сохранить"
 
   wiki:
-    markdown_help: "Для разметки используется <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>"
+    markdown_help: "Для разметки используется <a href=\"http://daringfireball.net/projects/markdown/syntax\">Markdown</a>"
     pages:
       new:
         title: "Новая страница"
