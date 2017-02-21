@@ -6,4 +6,5 @@ Jd::Engine.routes.draw do
   post "job_table" => "project_tasks#query_table"
 
   get 'projects/:id', to: "project_stat#show"
+  post 'projects/:id', to: "project_stat#query"
 end

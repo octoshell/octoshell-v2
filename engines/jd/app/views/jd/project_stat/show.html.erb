@@ -5,6 +5,16 @@
 <h1>Statistics for project <%= @project %> </h1>
 <h4> <%= @accounts.join(", ") %> </h4>
 
+<%= form_for "request", url: "/jd/projects/" + @project.id.to_s do |f| %>
+  <table>
+    <%= render partial: "shared/date_subform", locals: { f: f }%>
+  </table>
+
+  <div class="submit">
+    <%= f.submit "Show" %>
+  </div>
+<% end %>
+
 <% if not @user_stat.nil? %>
     <h1>Total</h1>
 
