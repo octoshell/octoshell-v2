@@ -12,7 +12,7 @@
       <% accounts.each_with_index do |account, index| %>
         <td style="padding: 5px 10px; width: 20%">
           <div class="text_field">
-            <%= check_box_tag "selected_accounts[]", account, @allowed_accounts.include?(account) %>
+            <%= check_box_tag "selected_accounts[]", account, @selected_accounts.include?(account) %>
             <%= f.label account %>
           </div>
         </td>

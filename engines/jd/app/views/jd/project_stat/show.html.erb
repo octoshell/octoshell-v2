@@ -1,0 +1,76 @@
+<div class="navbar-fixed-top col-xs-2 return-btn-container"></div>
+
+<p id="notice"><%= notice %></p>
+
+<h1>Statistics for project <%= @project %> </h1>
+<h4> <%= @accounts.join(", ") %> </h4>
+
+<%= form_for "request", url: "/jd/projects/" + @project.id.to_s do |f| %>
+  <table>
+    <%= render partial: "shared/date_subform", locals: { f: f }%>
+  </table>
+
+  <div class="submit">
+    <%= f.submit "Show" %>
+  </div>
+<% end %>
+
+<% if not @user_stat.nil? %>
+    <h1>Total</h1>
+
+    <table id="general_table" class="tablesorter-blue task_table">
+      <thead>
+      <tr>
+        <th>System</th>
+        <th>Total tasks</th>
+        <th>Total CPU*Hours</th>
+        <th>Total GPU*Hours</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @system_stat.each do |name, stat| %>
+          <tr>
+            <td class="table_text"><%= name %></td>
+            <td class="sensor_text"><%= stat["count"] %></td>
+            <td class="sensor_text"><%= format_float_or_nil(stat["cores_sec"] / 3600.0) %></td>
+            <td class="sensor_text"><%= format_float_or_nil(stat["gpu_sec"] / 3600.0) %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <% @systems.each do |system_name, _| %>
+        <h1><%= system_name %></h1>
+
+        <table id="tasks_table" class="tablesorter-blue task_table">
+          <thead>
+          <tr>
+            <th>Partition</th>
+            <th>State</th>
+            <th>Count</th>
+            <th>Cores*Hours</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <% @user_stat[system_name]["count"].each do |partition, states| %>
+              <tr>
+                <td class="table_bold_text" rowspan="<%= states.length + 1 %>"class="table_text"><%= partition %></td>
+
+                <td class="table_bold_text">TOTAL</td>
+                <td class="table_bold_text sensor_text"> <%= states.values.reduce(:+) %> </td>
+                <td class="table_bold_text sensor_text"> <%= format_float_or_nil(@user_stat[system_name]["cores_sec"][partition].values.reduce(:+) / 3600.0) %> </td>
+              </tr>
+              <% states.each do |state, count| %>
+                  <tr>
+                    <td class="table_text"><%= state %></td>
+                    <td class="sensor_text"><%= count %></td>
+                    <td class="sensor_text"><%= format_float_or_nil(@user_stat[system_name]["cores_sec"][partition][state] / 3600.0) %></td>
+                  </tr>
+              <% end %>
+          <% end %>
+          </tbody>
+        </table>
+    <% end %>
+<% end %>
