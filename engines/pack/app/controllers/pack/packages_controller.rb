@@ -47,6 +47,8 @@ module Pack
 
     def show
       
+
+      
       @a=[t("Create_request"),t("изменить")]
       if !@pref
         @pref=Prop.new
@@ -61,16 +63,17 @@ module Pack
        end
        
 
-      @ids= Core::Project.joins(members: :user).where(users: {id: current_user.id}).pluck('core_projects.id')
-      for proj in @ids
-        print(proj)
-      end
-      Version.user_id=current_user.id
-      Version.proj_ids=@ids
+      
+      
 
       @package = Package.find(params[:id])
-       @versions = Version.page(params[:page]).per(2).includes({clustervers: :core_cluster},:user_accesses,{proj_accesses_allowed: :who},{proj_accesses: :who})
-       .where(package_id:params[:id])#.where(pack_accesses: {who_id: current_user.id}).references(:accesses)#where('accesses.who_id=? AND accessed.who_type=User',current_user.id)
+       #Arel::Table.new(:photos)
+       
+
+       
+
+        @versions = Version.page(params[:page]).per(@per).includes(:clustervers).where(package_id:params[:id])
+        Version.preload_and_to_a(current_user.id,@versions)
       respond_to do |format|
         format.html
         format.js 

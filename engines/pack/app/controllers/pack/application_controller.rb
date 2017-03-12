@@ -5,6 +5,7 @@ module Pack
     before_action do |controller|
     	@extra_css="pack/pack.css"
     end
+    @per=20
     before_action :check_namespace
     def check_namespace
       @admin=false

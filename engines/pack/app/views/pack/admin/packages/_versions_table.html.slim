@@ -5,8 +5,7 @@
 				tr 
 					th  #{t("name")}
 					th 	#{t("description")}
-					th 	#{t("up_date",default:"Upload date")}
-					th 	#{t("del_date",default:"Deletion date")}
+					th 	#{t("end_lic",default:"Upload date")}
 					th 	#{t("active",default:"Active?")}
 					th 	#{t("clusters",default:"clusters")}
 					-if current_user && may?(:manage,:packages)
@@ -14,10 +13,10 @@
 
 				- for version in @versions
 					tr 
-						td  #{version.name} 
+						td  =link_to version.name, admin_package_version_path(@package.id,version.id)
 						td  #{version.description}
-						td 	#{version.r_up} 
-						td 	#{version.r_down}
+						td 	#{version.end_lic} 
+						
 						
 									
 						td  					

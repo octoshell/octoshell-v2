@@ -20,9 +20,10 @@
 .selectpicker {
 	width: 50%;
 }
-div#ajax_paginator a
-{
-	data-remote: true;
+
+
+table.vtop td, th {
+  vertical-align: top;
 }
 
 

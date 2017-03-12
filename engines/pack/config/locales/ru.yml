@@ -1,27 +1,41 @@
 ru:
   
+
+  project: Проект
   activerecord:
     models:
     attributes:
-      pack/package:
-        deleted:  Показать только удаленные
-        deleted?:  Удаленные/активные
-        not_deleted: Показать только активные
-        name: Название
-        description: Описание
-        cost: Стоимоcть
-        folder: Путь
-        edit: Редактировать
-        delete: Удалить
-      pack/version:
-        name: Название
-        description: Описание
-        active: Актуальна
-        r_up: Дата загрузки
-        r_down: Дата удаления
+        pack/package:
+            deleted:  Показать только удаленные
+            deleted?:  Удаленные/активные
+            not_deleted: Показать только активные
+            name: Название
+            description: Описание
+            cost: Стоимоcть
+            folder: Путь
+            edit: Редактировать
+            delete: Удалить
+        pack/version:
+            name: Название
+            description: Описание
+            active: Актуальна
+            r_up: Дата загрузки
+            r_down: Дата удаления
+        pack/version_option:
+            name: Название опции
+            value: Значение
+       
+             
+              
     errors:
         messages:
             uniq_access: Пользователь/проект уже имеет доступ/заявку на данную версию
+            deleted_record: "Эта запись %{value} была удалена,пока Вы редактировали форму "
+        models:
+            pack/version_option:
+                taken: Опция для этой версии с таким именем уже существует ( названия опций должны быть уникальными)
+
+
         
         
 

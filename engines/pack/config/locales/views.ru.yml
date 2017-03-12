@@ -1,5 +1,6 @@
 ru:
-
+  for_ever: Навсегда
+  not_for_ever: Не на всегда
   Package_name: Имя пакета
   status: Статус
   from: От кого
@@ -40,7 +41,7 @@ ru:
   Choose package: Выберите пакет
   Choose user: Выберите пользователя
   user(me): для пользователя(меня)
-  project: для проекта
+  project:  Проект
   for_whom?: Для кого?
   want: послать заявку
   no_packages_found: Не найдено ни одного доступа

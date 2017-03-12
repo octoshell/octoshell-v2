@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170204090304) do
+ActiveRecord::Schema.define(version: 20170312180757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -391,14 +391,14 @@ ActiveRecord::Schema.define(version: 20170204090304) do
     t.integer  "version_id"
     t.integer  "who_id"
     t.string   "who_type"
-    t.integer  "status"
+    t.string   "status"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "end_lic"
-    t.string   "begin_lic"
-    t.string   "new_end_lic"
-    t.integer  "ticket_id"
+    t.date     "end_lic"
+    t.integer  "support_ticket_id"
+    t.date     "begin_lic"
+    t.date     "new_end_lic"
   end
 
   add_index "pack_accesses", ["version_id"], name: "index_pack_accesses_on_version_id", using: :btree
@@ -415,12 +415,17 @@ ActiveRecord::Schema.define(version: 20170204090304) do
   add_index "pack_clustervers", ["core_cluster_id"], name: "index_pack_clustervers_on_core_cluster_id", using: :btree
   add_index "pack_clustervers", ["version_id"], name: "index_pack_clustervers_on_version_id", using: :btree
 
+  create_table "pack_options_categories", force: :cascade do |t|
+    t.string   "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "pack_packages", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
-    t.boolean  "deleted",     default: false
   end
 
   create_table "pack_props", force: :cascade do |t|
@@ -429,7 +434,7 @@ ActiveRecord::Schema.define(version: 20170204090304) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "project_id"
-    t.string   "def_date"
+    t.date     "def_date"
   end
 
   add_index "pack_props", ["user_id"], name: "index_pack_props_on_user_id", using: :btree
@@ -437,12 +442,9 @@ ActiveRecord::Schema.define(version: 20170204090304) do
   create_table "pack_version_options", force: :cascade do |t|
     t.integer  "version_id"
     t.string   "name"
-    t.string   "value"
-    t.text     "admin_answer"
-    t.text     "end_date"
-    t.text     "request_text"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.text     "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "pack_version_options", ["version_id"], name: "index_pack_version_options_on_version_id", using: :btree
@@ -454,9 +456,11 @@ ActiveRecord::Schema.define(version: 20170204090304) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "cost"
-    t.string   "end_lic"
-    t.integer  "vers_type",   default: 0
-    t.integer  "folder"
+    t.string   "folder"
+    t.date     "end_lic"
+    t.string   "state"
+    t.integer  "lock_version", default: 0, null: false
+    t.boolean  "deleted"
   end
 
   add_index "pack_versions", ["package_id"], name: "index_pack_versions_on_package_id", using: :btree

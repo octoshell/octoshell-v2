@@ -14,11 +14,17 @@ html
 					= t('from_project') + ' ' +   @access.who.to_s 
 		tr	
 			td 
-				=t("user", default: "User")
+				=t("created_by")
 			td #{@access.user.email} 
 		tr 
 			td #{t("status")}
 			td #{@access.status}   
+		tr 
+			td #{t("end_lic")}
+			td #{@access.end_lic}   
+		tr 
+			td #{t("new_end_lic")}
+			td #{@access.new_end_lic}   
 		
 	br
 	br 

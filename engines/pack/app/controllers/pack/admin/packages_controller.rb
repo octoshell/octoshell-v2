@@ -11,7 +11,7 @@ module Pack
 
         format.html # index.html.erb
         format.js { 
-            @model=Package.page(params[:page]).per(2)
+            @model=Package.page(params[:page]).per(@per)
             if search_params[:deleted]=="active versions"
               
               @packages=@model.joins(:versions => :clustervers).where(pack_clustervers: {active: true}).select('distinct pack_packages.*')
@@ -28,8 +28,12 @@ module Pack
 
     def show
 
+
       @package = Package.find(params[:id])
-       @versions = Version.page(params[:page]).per(2).includes(clustervers: :core_cluster).where(package_id:params[:id])
+
+
+
+      @versions=@package.versions.page(params[:page]).per(@per).includes(clustervers: :core_cluster)
       
       
       
@@ -54,10 +58,13 @@ module Pack
     end
 
     def update
+      
       @package = Package.find(params[:id])
+      
       if @package.update(package_params)
         redirect_to admin_package_path(@package.id)
       else
+      
         render :edit
       end
     end
@@ -78,7 +85,7 @@ module Pack
    
 
     def package_params
-      params.require(:package).permit(:name, :folder, :cost,:description,:deleted)   
+      params.require(:package).permit(:name, :folder, :cost,:description,:deleted,:lock_version)   
     end
     def search_params
       params.require(:search).permit(:deleted)

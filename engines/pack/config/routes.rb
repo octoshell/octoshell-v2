@@ -9,7 +9,7 @@ Pack::Engine.routes.draw do
     
   	resources :versions 
   end
-  resources :versions,only: [:index]
+  resources :versions
 
   resources :accesses do
     get :autocomplete_package_name, :on => :collection
@@ -28,7 +28,7 @@ Pack::Engine.routes.draw do
       get 'json'
       post 'remember_pref'
     end
-  	resources :versions 
+  	#resources :versions 
 
   end
   resources :accesses,only: [:create,:update]  do

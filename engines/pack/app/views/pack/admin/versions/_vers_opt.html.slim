@@ -1,0 +1,17 @@
+
+
+
+table class="vtop" class="col-xs-12"
+          = f.fields_for :version_options,@version.version_options.build,child_index: "new_index" do |ff|
+            tr
+              td 
+                = ff.text_field :name
+              td 
+                = ff.text_area :value,rows: 3
+            tr
+              td 
+                = ff.check_box :_destroy
+			
+      
+
+

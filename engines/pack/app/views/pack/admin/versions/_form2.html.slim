@@ -1,25 +1,64 @@
 div class="row"
-  div class="col-xs-8"
+  div class="col-xs-12"
     = bootstrap_form_for [:admin,@package,@version]do |f|
+      -@f=f
       = f.text_field :name
       = f.text_field :description
-      = f.text_field :r_up ,:placeholder=>'dd.mm.yyyy',class: 'form-control datepicker'
-      = f.text_field :r_down,:placeholder=>'dd.mm.yyyy',class: 'form-control datepicker'
+      = f.text_field :folder
+      = f.number_field :cost
+    
+      div id='select_state'
+        =t "state"
+        = f.radio_button :state_select ,  "forever" ,label: t("forever")  
+        = f.radio_button :state_select , "not_forever",label: t("not_forever")  
+      div id="end_lic"
+
       br
       br
       h3 = t("Clusters")
       
+      = f.fields_for :my_clustervers do |ff|
+
+        -@version.clusters_with_status.each do |s|
+          = s.name 
+          =ff.fields_for s.cluster_id.to_s,s do |fff|
+            =fff.hidden_field :core_cluster_id,value: s.cluster_id
+            =fff.hidden_field :id,value: s.id if s.id
+            =fff.radio_button  :action,"_destroy", label: t("doesn't exist")  
+            =fff.radio_button  :action,"not_active", label: t("only exist")
+            =fff.radio_button  :action,"active" , label: t("active") 
+     
+
       
       
-      = f.fields_for :bs do |f|
-        - @bs.each do |s|
-          =s[:name]
-          = f.fields_for s[:id].to_s do |f|
+      table class="vtop" class="col-xs-12"
+          = f.fields_for :version_options do |ff|
+            tr
+              td 
+                = ff.text_field :name
+              td 
+                = ff.text_area :value,rows: 3
+            tr
+              td 
+                = ff.check_box :_destroy
               
-            = f.check_box :exist,{ :checked => s[:Bol]}
-            = f.check_box :active,{ :checked => s[:Active]}
+
+           
+      
+      
+     
+
+      div id="new_options"
+      /=link_to_add_options_fields  f 
+      button class="btn btn-primary btn_access" id="options" =t("new") 
+      br
+      br
+      br
+
 
       	
      
       = f.form_group do
         = f.submit t("buttons.save", default: "Save")
+= javascript_tag do 
+  = render(:partial => 'form', :formats => [:js]) 

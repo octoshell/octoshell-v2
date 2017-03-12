@@ -1,0 +1,31 @@
+
+
+
+ $("#options ").click(function()
+ {
+   	content=("<%=escape_javascript(render 'vers_opt',f: @f)%>");
+   	var regexp = new RegExp("new_index" , "g");
+   	var new_id = new Date().getTime();
+  
+ 	$('#new_options').append(content.replace(regexp, new_id));
+ 	return false;
+ });
+
+
+function date_element()
+{
+ 	if ($(this).val()=="forever")
+ 	$("#date_element").remove();
+ 	else
+ 	{
+
+ 	content=("<%= escape_javascript (@f.text_field :end_lic ,class: 'form-control my_datepicker')%>");
+	
+ 	 $(this).parent().after( "<div id='date_element'>"+ content+ "</div>");
+ 	}
+
+};
+
+ 
+ $("#select_state input").change(date_element);
+ $("#select_state input[checked]").each(date_element);

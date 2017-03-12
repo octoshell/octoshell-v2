@@ -35,23 +35,22 @@
 									
 									br		
 						td
-							-if @user_ac=version.user_accesses.take
-								=@user_ac.status
-							-else
-								=t("not available")
+							
+							=version.user_access_status
+							
 						td
-							-@v=version.proj_accesses_allowed.first	
-							-if @v
-								=@v.status
+							
+							-if version.proj_accesses && v=version.proj_accesses.detect{|ac| ac.status='allowed'}
+								=v.status
 								br
-								=@v.who.title 
+								=v.title 
 							
 							
 							-else
-								-if @v=version.proj_accesses.first	
-									=@v.status 
+								-if version.proj_accesses && v=version.proj_accesses.first
+									=v.status 
 									br
-									=@v.who.title 
+									=v.title 
 								-else
 									=t("not available")
 						td
@@ -67,6 +66,4 @@
  								=select_tag :proj_or_user,options_for_select(  @pref_form, @pref_selected ), {class: :select_ajax_access,vers_id: version.id }
  								div class='form_for_access'  vers_id=version.id 
  								
-/Совместить то, что достали уже из базы,с этим делом.
-/ В джаваскрипте проверять рельс переменные не вариант,если делать это максимально просто/
-/Попробовать запрос скрипта с  version_id
+/

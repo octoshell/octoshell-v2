@@ -2,7 +2,7 @@ div class="page-header"
 	h1 = t(".title", default: "Access Creation")
 = bootstrap_form_for [:admin,@access] do |f|
 
-
+	
 	=f.radio_button  "who_type", "User",checked: true, label: t("user")
 	= autocomplete f, name: 'access[user_id]', label: t("user"), source:  main_app.users_path
 

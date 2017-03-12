@@ -20,7 +20,7 @@
 
  $(document).on('focus',".my_datepicker", function(){
     $(this).datepicker({
-  dateFormat: 'dd.mm.yy',
+  dateFormat: 'mm-dd-yy',
   minDate: new Date(),
   
 });

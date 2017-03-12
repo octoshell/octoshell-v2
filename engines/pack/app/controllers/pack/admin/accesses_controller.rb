@@ -2,7 +2,7 @@ require_dependency "pack/application_controller"
 
 module Pack
   class Admin::AccessesController < Admin::ApplicationController
-     autocomplete :package, :name, :full => true
+     
      before_action :access_init, only: [:edit, :show,:update,:destroy]
 
     def access_init
@@ -13,7 +13,8 @@ module Pack
 
     def index
       
-      @accesses=Access.page(params[:page]).per(2)#.includes()
+
+      @accesses=Access.page(params[:page]).per(2).includes(:who_user,:who_project,:version)
       
     end
     

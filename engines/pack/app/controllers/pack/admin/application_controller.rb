@@ -2,7 +2,9 @@ module Pack
   class Admin::ApplicationController < ActionController::Base
   	 layout "layouts/application"
      #layout "layouts/pack/application"
+    
     rescue_from MayMay::Unauthorized, with: :not_authorized
+    @per=20
     before_action do |controller|
     	@extra_css="pack/pack.css"
     end
