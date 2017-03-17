@@ -1,0 +1,34 @@
+<script type="text/javascript">
+  $(document).ready(function() {
+    var start_date = <% if @t_from %> new Date(<%= @t_from * 1000 %>); <% else %> new Date(2016, 1, 7); <% end %>
+    var end_date = <% if @t_to %> new Date(<%= @t_to * 1000 %>); <% else %> new Date(); <% end %>
+
+    $("#request_start_date").datepicker({format: 'yyyy-mm-dd'});
+    $("#request_start_date").datepicker("setDate", start_date);
+
+    $("#request_end_date").datepicker({format: 'yyyy-mm-dd'});
+    $("#request_end_date").datepicker("setDate", end_date);
+  });
+</script>
+
+<tr>
+  <div>
+    <td>
+      <%= f.label :start_date%>
+    </td>
+    <td>
+      <%= f.text_field :start_date %>
+    </td>
+  </div>
+</tr>
+
+<tr>
+  <div>
+    <td>
+      <%= f.label :end_date%>
+    </td>
+    <td>
+      <%= f.text_field :end_date %>
+    </td>
+  </div>
+</tr>

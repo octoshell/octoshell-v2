@@ -48,5 +48,4 @@ module Core
       redirect_to admin_critical_technologies_path
     end
   end
-
 end

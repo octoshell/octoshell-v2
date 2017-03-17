@@ -1,12 +1,12 @@
-web: rbenv exec bundle exec puma -p $PORT --config config/puma.rb
+web: rbenv exec bundle exec puma -p $PORT -b 0.0.0.0 -e production --config config/puma.rb
 
-sq-auth-mailer: rbenv exec bundle exec sidekiq -q auth_mailer
-sq-core-mailer: rbenv exec bundle exec sidekiq -q core_mailer
-sq-support-mailer: rbenv exec bundle exec sidekiq -q support_mailer
-sq-sessions-mailer: rbenv exec bundle exec sidekiq -q sessions_mailer
-sq-announcements-mailer: rbenv exec bundle exec sidekiq -q announcements_mailer
+sq-auth-mailer: RACK_ENV=production rbenv exec bundle exec sidekiq -q auth_mailer
+sq-core-mailer: RACK_ENV=production rbenv exec bundle exec sidekiq -q core_mailer
+sq-support-mailer: RACK_ENV=production rbenv exec bundle exec sidekiq -q support_mailer
+sq-sessions-mailer: RACK_ENV=production rbenv exec bundle exec sidekiq -q sessions_mailer
+sq-announcements-mailer: RACK_ENV=production rbenv exec bundle exec sidekiq -q announcements_mailer
 
-sq-synchronizer: rbenv exec bundle exec sidekiq -q synchronizer
-sq-sessions-starter: rbenv exec bundle exec sidekiq -q sessions_starter
-sq-sessions-validator: rbenv exec bundle exec sidekiq -q sessions_validator
-sq-statistics-collector: rbenv exec bundle exec sidekiq -q stats_collector
+sq-synchronizer: RACK_ENV=production rbenv exec bundle exec sidekiq -q synchronizer
+sq-sessions-starter: RACK_ENV=production rbenv exec bundle exec sidekiq -q sessions_starter
+sq-sessions-validator: RACK_ENV=production rbenv exec bundle exec sidekiq -q sessions_validator
+sq-statistics-collector: RACK_ENV=production rbenv exec bundle exec sidekiq -q stats_collector

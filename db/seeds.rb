@@ -56,4 +56,3 @@ c.save
 c=Core::ProjectKind.create(name: 'Исследовательский')
 c.save
 
-
