@@ -1,8 +1,11 @@
 ru:
   
-
-  project: Проект
-  activerecord:
+    packages or versions: Пакеты или версии
+    versions: версии
+    packages: пакеты
+    project: Проект
+    success_access: "Доступ успешно обновлен. Текущий статут %{status}"
+    activerecord:
     models:
     attributes:
         pack/package:

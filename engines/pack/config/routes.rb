@@ -4,7 +4,11 @@ Pack::Engine.routes.draw do
 
 
   root "packages#index"
-  resources :accesses
+  resources :accesses do
+    member do
+      post 'manage_access'
+    end
+  end
   resources :packages do
     
   	resources :versions 
@@ -31,10 +35,13 @@ Pack::Engine.routes.draw do
   	#resources :versions 
 
   end
-  resources :accesses,only: [:create,:update]  do
+  resources :accesses,only: []  do
     collection do
       get 'form'
-    end  
+      post 'update'
+      post 'destroy'
+    end
+
   end
   delete 'destroy_request/:id',to: 'accesses#destroy_request',as: 'access_req'
 end

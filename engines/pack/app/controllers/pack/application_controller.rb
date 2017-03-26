@@ -5,11 +5,22 @@ module Pack
     before_action do |controller|
     	@extra_css="pack/pack.css"
     end
-    @per=20
-    before_action :check_namespace
-    def check_namespace
-      @admin=false
+    
+    def per_record
+      10
     end
+    
+    def stale_update_page
+      
+    end
+    def render_paginator(records,partial='table',table_selector='#table_records',
+      paginator_selector='#ajax_paginator')
+      
+      #@records,@partial,@table_selector,@paginator_selector=records,partial,table_selector,paginator_selector
+      render "helper_templates/render_paginator",format: :js,locals: {records: records,
+       partial: partial, table_selector: table_selector,paginator_selector: paginator_selector }
+    end 
+
     def not_authorized
       redirect_to root_path, alert: t("flash.not_authorized")
   	end

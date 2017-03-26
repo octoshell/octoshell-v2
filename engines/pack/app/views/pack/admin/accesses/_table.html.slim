@@ -1,14 +1,24 @@
-- if @accesses
+
+
+- if records
       div  class="panel-body"
         table  class="table table-hover"
           tr
             th =t 'name'
             th =t 'version'
+            th =t 'status'
             
-          -@accesses.each do |item|
+
+            
+          -records.each do |item|
             tr
               td class="col-xs-4" = link_to item.who_name, admin_access_path(item)
               td class="col-xs-4" =  item.version.name
+              td rec_id=item.id
+                  =render "manage_access",item: item
+              td  =item.status
+
+                
               td
                 div class="btn-group pull-right"
                   = link_to t("edit", default: "edit"), edit_admin_access_path(item.id), class: "btn btn-default btn-sm"
@@ -20,3 +30,5 @@
 - else
     div class="panel-body"
        	p = t(".no_packages_found", default: "No packages Found") 
+
+

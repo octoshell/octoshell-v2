@@ -16,6 +16,11 @@
  */
 
 
+.margin {
+    
+    margin: 10px; /* Отступы вокруг */
+}
+
 
 .selectpicker {
 	width: 50%;

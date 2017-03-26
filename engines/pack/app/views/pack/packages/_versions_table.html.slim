@@ -1,4 +1,4 @@
-- if @versions
+- if records
 		h3 =t("Versions")
 		div class="panel-body"
 			table   class="table table-hover" cols="6" cellspacing="30"
@@ -10,7 +10,8 @@
 					th 	#{t("access_user",default:"Availability for me")}
 					th 	#{t("access_project",default:"Availability for project")}  
 					th 	#{t("actions_pack")}  
-				- for version in @versions
+				- for version in records
+					/-puts version.as_json
 					tr 
 						td  #{version.name} 
 						td  #{version.description}
@@ -36,23 +37,34 @@
 									br		
 						td
 							
-							=version.user_access_status
+							-if version.user_access
+								=version.user_access.status
+								br
+								=version.user_access.end_lic_readable
+							-else 
+								=t('not_available')  
 							
 						td
-							
-							-if version.proj_accesses && v=version.proj_accesses.detect{|ac| ac.status='allowed'}
-								=v.status
-								br
-								=v.title 
-							
-							
-							-else
-								-if version.proj_accesses && v=version.proj_accesses.first
-									=v.status 
+							-if version.proj_accesses 
+								-if v=version.proj_accesses.detect{|ac| ac.status=='allowed'}
 									br
 									=v.title 
+									br 
+									=v.status
+									br
+									=v.end_lic_readable
+									
 								-else
-									=t("not available")
+									-if   v=version.proj_accesses.detect{|ac| ac.who_type='Core::Project'}
+										=v.status 
+										br
+										=v.title 
+										br
+										=v.end_lic_readable
+							-else
+								=t("not available")
+							
+							
 						td
 
 							
@@ -63,7 +75,7 @@
 
  							div class='select_for_access' hidden="" vers_id=version.id 
 								/=f.label t("for_whom?", default: "Do you want to request abilities for:")
- 								=select_tag :proj_or_user,options_for_select(  @pref_form, @pref_selected ), {class: :select_ajax_access,vers_id: version.id }
+ 								=select_tag :proj_or_user,options_for_select( @options_for_select, @pref_selected ), {class: :select_ajax_access,vers_id: version.id }
  								div class='form_for_access'  vers_id=version.id 
  								
 /

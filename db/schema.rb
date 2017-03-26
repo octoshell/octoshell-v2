@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312180757) do
+ActiveRecord::Schema.define(version: 20170320083905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -392,13 +392,14 @@ ActiveRecord::Schema.define(version: 20170312180757) do
     t.integer  "who_id"
     t.string   "who_type"
     t.string   "status"
-    t.integer  "user_id"
+    t.integer  "created_by_key"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "end_lic"
     t.integer  "support_ticket_id"
-    t.date     "begin_lic"
     t.date     "new_end_lic"
+    t.integer  "allowed_by_key"
+    t.integer  "lock_version",      default: 0, null: false
   end
 
   add_index "pack_accesses", ["version_id"], name: "index_pack_accesses_on_version_id", using: :btree
@@ -426,18 +427,8 @@ ActiveRecord::Schema.define(version: 20170312180757) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
+    t.boolean  "deleted",     default: false
   end
-
-  create_table "pack_props", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "proj_or_user"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "project_id"
-    t.date     "def_date"
-  end
-
-  add_index "pack_props", ["user_id"], name: "index_pack_props_on_user_id", using: :btree
 
   create_table "pack_version_options", force: :cascade do |t|
     t.integer  "version_id"
@@ -459,8 +450,8 @@ ActiveRecord::Schema.define(version: 20170312180757) do
     t.string   "folder"
     t.date     "end_lic"
     t.string   "state"
-    t.integer  "lock_version", default: 0, null: false
-    t.boolean  "deleted"
+    t.integer  "lock_version", default: 0,     null: false
+    t.boolean  "deleted",      default: false
   end
 
   add_index "pack_versions", ["package_id"], name: "index_pack_versions_on_package_id", using: :btree

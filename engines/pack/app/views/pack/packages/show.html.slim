@@ -19,14 +19,14 @@ html
 	br
 
 	
-	= form_for :pref, url: remember_pref_packages_path, layout: :horizontal,remote: true,:html => { :class => "col-xs-6",:id => "pref_form" } do |f|
-		= f.label :proj_or_user,t("for_whom?", default: "Do you want to request abilities for:")
-    	= f.select :proj_or_user,options_for_select(  @pref_form, @pref_selected ),{ label: t("for_whom?", default: "Do you want to request abilities for:") }, { class: "selectpicker" }
-    	br
-    	= f.label :def_date,t("end_lic")
-    	br
-    	= f.text_field :def_date, {class: 'my_datepicker',value: @pref.def_date}
-    	= f.submit t("buttons.ready", default: "Ready")  
+	//= form_for :pref, url: remember_pref_packages_path, layout: :horizontal,remote: true,:html => { :class => "col-xs-6",:id => "pref_form" } do |f|
+	//	= f.label :proj_or_user,t("for_whom?", default: "Do you want to request abilities for:")
+    //	= f.select :proj_or_user,options_for_select(  @pref_form, @pref_selected ),{ label: t("for_whom?", default: "Do you want to request abilities for:") }, { class: "selectpicker" }
+    //	br
+    //	= f.label :def_date,t("end_lic")
+    //	br
+    //	= f.text_field :def_date, {class: 'my_datepicker',value: @pref.def_date}
+    //	= f.submit t("buttons.ready", default: "Ready")  
 		
     	 
 
@@ -40,8 +40,9 @@ html
 
 	br
 	br 
-	div id="versions_table"
-		=render 'versions_table'
+
+	div id="table_records"
+		=render 'versions_table',records: @versions
 	
 	div id="ajax_paginator" 
 		=paginate(@versions, :remote => true).to_s

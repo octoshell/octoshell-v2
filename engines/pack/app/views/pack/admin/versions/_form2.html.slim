@@ -3,33 +3,29 @@ div class="row"
     = bootstrap_form_for [:admin,@package,@version]do |f|
       -@f=f
       = f.text_field :name
-      = f.text_field :description
+      = f.text_field :description,disabled: "true"
       = f.text_field :folder
       = f.number_field :cost
+      = f.check_box :deleted
     
-      div id='select_state'
-        =t "state"
-        = f.radio_button :state_select ,  "forever" ,label: t("forever")  
-        = f.radio_button :state_select , "not_forever",label: t("not_forever")  
-      div id="end_lic"
+     
+      =t "state"
+      = f.radio_button :state_select ,  "forever" ,label: t("forever"),id: "disable_id"  
+      = f.radio_button :state_select , "not_forever",label: t("not_forever"),id: "enable_id"  
+      = f.text_field :end_lic ,class: 'form-control my_datepicker',id: "item_id"
+     
 
       br
       br
       h3 = t("Clusters")
       
-      = f.fields_for :my_clustervers do |ff|
-
-        -@version.clusters_with_status.each do |s|
-          = s.name 
-          =ff.fields_for s.cluster_id.to_s,s do |fff|
-            =fff.hidden_field :core_cluster_id,value: s.cluster_id
-            =fff.hidden_field :id,value: s.id if s.id
-            =fff.radio_button  :action,"_destroy", label: t("doesn't exist")  
-            =fff.radio_button  :action,"not_active", label: t("only exist")
-            =fff.radio_button  :action,"active" , label: t("active") 
-     
-
       
+      = f.fields_for :clustervers do |ff|
+        =ff.object.name
+        =ff.hidden_field :core_cluster_id
+        =ff.radio_button  :action,"_destroy", label: t("doesn't exist")  
+        =ff.radio_button  :action,"not_active", label: t("only exist")
+        =ff.radio_button  :action,"active" , label: t("active")  
       
       table class="vtop" class="col-xs-12"
           = f.fields_for :version_options do |ff|
@@ -62,3 +58,5 @@ div class="row"
         = f.submit t("buttons.save", default: "Save")
 = javascript_tag do 
   = render(:partial => 'form', :formats => [:js]) 
+
+     

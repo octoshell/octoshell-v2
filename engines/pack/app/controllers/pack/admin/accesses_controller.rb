@@ -3,47 +3,64 @@ require_dependency "pack/application_controller"
 module Pack
   class Admin::AccessesController < Admin::ApplicationController
      
-     before_action :access_init, only: [:edit, :show,:update,:destroy]
+
+    before_action :access_init, only: [:edit, :show,:update,:destroy,:manage_access]
 
     def access_init
       @access = Access.find(params[:id])
-      @statuses=Access.statuses.keys
+     
 
     end
 
-    def index
-      
+    
 
-      @accesses=Access.page(params[:page]).per(2).includes(:who_user,:who_project,:version)
+
+    def index
+
+
+
+      
+      #@access=Access.first
+      #puts @access.status
+     
+      @accesses=Access.page(params[:page]).per(per_record).includes(:version)
+
+      #puts @access.aasm.states(:permitted => true)
+      respond_to do |format|
+        format.html
+        format.js{
+          #render "helper_templates/render_paginator2",format: :js
+          render_paginator(@accesses)
+          }
+      end
       
     end
     
     def show
+     
+   
+    end
+
+    def manage_access
+     
+     
+     @access.update access_params.slice(:lock_version,:action) 
+    
+     #@accesses=Access.page(params[:page]).per(per_record).includes(:version)
+     #render :index,formats: :js
+     
    
     end
 
     def new
-      @packages=Package.all
-      @statuses=Access.statuses.keys
       @access = Access.new
     end
 
     def create
-      @statuses=Access.statuses.keys 
-      @hash=access_params.clone
-      puts access_params
-      if @hash[:who_type]=='User'
-        @hash[:who_id]=@hash.delete(:user_id)
-      else
-        @hash[:who_id]=@hash.delete(:project_id)
-      end
-
-      @access = Access.new(@hash)
-      @access.user_id=current_user.id
+      @access = Access.new access_params
       if @access.save
         redirect_to admin_access_path(@access)
       else
-        puts @access.errors.messages[:version_id]
         #@access.version_id=0
         render :new
       end
@@ -51,7 +68,7 @@ module Pack
 
     def edit
       
-
+     
     end
 
     def update
@@ -74,7 +91,7 @@ module Pack
 
     private	
   	def access_params
-      params.require(:access).permit(:proj_or_user, :version_id, :end_lic,:from,:status,:user_id,:project_id,:who_type)   
+      params.require(:access).permit(:action,:lock_version,:proj_or_user, :version_id, :end_lic,:from,:status,:user_id,:project_id,:who_type)   
     end
 
   end

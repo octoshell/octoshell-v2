@@ -11,8 +11,8 @@ table  width="50%"
 					= t('from_project') + ' ' +   @access.who.to_s 
 		tr	
 			td 
-				=t("user", default: "User")
-			td #{@access.user.email} 
+				=t("created_by", default: "User")
+			td #{@access.created_by.email} 
 		tr
 			
 
@@ -20,9 +20,9 @@ div class="row"
   div class="col-xs-8"
   	
     = bootstrap_form_for [:admin,@access] do |f|
-      = f.select :status,@statuses
-      =f.text_field :end_lic,{ class: 'my_datepicker',value: @access.end_lic,label: t('end_lic')}
-      =f.text_field :new_end_lic,{ class: 'my_datepicker',value: @access.new_end_lic,label: t('new_end_lic')}
+      = f.select :status,@access.aasm.states
+      =f.text_field :end_lic,{ class: 'my_datepicker',label: t('end_lic')}
+      =f.text_field :new_end_lic,{ class: 'my_datepicker',label: t('new_end_lic')}
       
       = f.form_group do
         = f.submit t("buttons.save", default: "Save")

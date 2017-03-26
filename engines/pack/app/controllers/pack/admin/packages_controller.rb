@@ -9,16 +9,14 @@ module Pack
       
       respond_to do |format|
 
-        format.html # index.html.erb
+        format.html{
+          @packages=Package.page(params[:page]).per(@per)
+
+        } # index.html.erb
         format.js { 
-            @model=Package.page(params[:page]).per(@per)
-            if search_params[:deleted]=="active versions"
-              
-              @packages=@model.joins(:versions => :clustervers).where(pack_clustervers: {active: true}).select('distinct pack_packages.*')
-            else
-              @packages = @model.where(search_params).order(:name) 
-            end
-         
+           
+            
+           @packages=Package.page(params[:page]).per(@per)
               
         }
       end
@@ -27,13 +25,22 @@ module Pack
 
 
     def show
+      puts "FIRST"
+      @test=Core::Cluster.first
+      puts "SECOND"
+      Core::Cluster.all.each do |i|
+        puts i.clustervers.count
+      end
+      puts "Third"
 
 
       @package = Package.find(params[:id])
 
 
 
+
       @versions=@package.versions.page(params[:page]).per(@per).includes(clustervers: :core_cluster)
+
       
       
       

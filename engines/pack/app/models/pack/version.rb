@@ -3,14 +3,16 @@ module Pack
   
   class Version < ActiveRecord::Base
   	
-   
+     
     include AASM
-    attr_reader :user_access_status,:proj_accesses
+    american_date_proccess
+    attr_accessor :user_access,:proj_accesses
+
   	validates :name, :description,:package, presence: true
     validates_uniqueness_of :name,:scope => :package_id
   	belongs_to :package,inverse_of: :versions
-  	has_many :clustervers,:dependent => :destroy
-    has_many :version_options,:dependent => :destroy
+  	has_many :clustervers,inverse_of: :version, :dependent => :destroy
+    has_many :version_options,inverse_of: :version,:dependent => :destroy
   	has_many :accesses,:dependent => :destroy
     accepts_nested_attributes_for :version_options,:clustervers, allow_destroy: true
     accepts_my_nested_attributes_for :version_options
@@ -27,10 +29,12 @@ module Pack
      
     end
 
+
+   
+
     def date_and_state
       
       if state!= "forever" && !end_lic
-       
         self.errors.add(:end_lic,:blank)
       end
     end
@@ -48,7 +52,12 @@ module Pack
 
 
     
-    
+   # def end_lic
+    #    
+     #   if self[:end_lic]
+      #    self[:end_lic].to_s(:american)  
+       # end
+    #end     
 
     def end_lic_edit(date,state)
       
@@ -63,7 +72,10 @@ module Pack
     end 
     def edit_state_and_lic(state,date)
       
-      self.end_lic_edit(date,state) 
+      if state=="forever"
+        date=""
+      end
+      self.end_lic=(date)
 
        case state
        when "forever"
@@ -74,12 +86,7 @@ module Pack
           self.state = "available"
           return false
         end
-          
-          
-          
-        
-        
-        if  end_lic   >= Date.current 
+        if  self[:end_lic]   >= Date.current 
           self[:state] = "available"
         else 
           self[:state] = "expired"
@@ -93,53 +100,47 @@ module Pack
         
          
     
-    def clusters_with_status
-      
-        
-        clustervers= self.clustervers.map do |item|
-          
-          item.slice("id","core_cluster_id","active","_destroy")
-
-        end
-        #checked: s.respond_to?(:active) && !s.active && !s._destroy
-        ::Core::Cluster.all.select('id as cluster_id,name').map do |cluster|
-
-          
-          clver=  clustervers.detect {|vers| vers[:core_cluster_id] ==cluster.cluster_id }
-            
-          item=if clver
-
-            OpenStruct.new cluster.attributes.merge(clver)
-          else
-            OpenStruct.new cluster.attributes
-          end
-          item.action = if !item.respond_to?(:active) || item._destroy
-            "_destroy"
-          elsif !item.active 
-            "not_active"
-          elsif item.active 
-            "active"
-          
-          else 
-            raise "incorrect argument"
-          end
-          item
-
-
-          
-        end
-            
+    
+    
+    def create_temp_clusterver(cluster_id)
+      clustervers.new(core_cluster_id: cluster_id).mark_for_destruction  
     end
+    def create_temp_clustervers
+      if new_record?
+        cl= ::Core::Cluster.all
+        cl.each do |t| 
+          
+            create_temp_clusterver t.id
+          
+        end
+      else
+        cl= ::Core::Cluster.select('core_clusters.id ,pack_clustervers.id as ex').uniq.joins("LEFT JOIN pack_clustervers ON  (core_clusters.id = pack_clustervers.core_cluster_id AND pack_clustervers.version_id=#{self.id})")
+      
+        cl.each do |t| 
+          if !t.ex
+            create_temp_clusterver t.id
+          end
+        end
+      end
+      
+    end
+     
+
+
+          
+       
     def vers_update params
+      
       params= params.require(:version)
       (hash=params.delete(:version_options_attributes)) && self.version_options_attributes= hash
-       update_clustervers params.delete(:my_clustervers)
+       update_clustervers params.delete(:clustervers_attributes)
        
       edit_state_and_lic( params.delete(:state_select),params.delete(:end_lic) ) 
       update(version_params params)
 
     end
     def update_clustervers hash
+      puts hash
       if !hash 
         return 
       end
@@ -152,13 +153,36 @@ module Pack
         when "not_active"
           h[:active]="0"
         when "_destroy" 
+          create_temp_clusterver h[:core_cluster_id]
           h[:_destroy]="1"
         else 
           raise "error"
         end
       end
-      
+      puts hash
       self.clustervers_attributes= hash
+    end
+
+    def self.test_preload user_id
+
+        
+       #accesses= Access.select('pack_accesses.*,core_projects.title')
+      self.select('pack_versions.*').joins(
+        <<-eoruby
+          LEFT JOIN "pack_accesses"   ON  "pack_accesses"."version_id" = "pack_versions"."id" AND
+          (  "pack_accesses"."who_type" = 'Core::Project'  OR "pack_accesses"."who_type" = 'User'
+         AND "pack_accesses"."who_id" = #{user_id}   )
+        eoruby
+        ).joins(
+        <<-eoruby
+       
+        LEFT JOIN "core_members" ON ( "pack_accesses"."who_id" = "core_members"."project_id" 
+        AND "core_members"."user_id" = #{user_id}  )
+        LEFT JOIN core_projects ON core_projects.id= core_members.project_id 
+        
+        
+        eoruby
+      )
     end
 
 
@@ -176,18 +200,18 @@ module Pack
          AND "pack_accesses"."who_id" = #{user_id}  ) AND "pack_accesses"."version_id" IN (#{(versions.ids).join (',')} )
         eoruby
       )
+
+
+     
       
       versions.each do |vers|
-        vers.instance_eval  do
-          @user_access_status= if v=accesses.detect{|ac| ac.version_id==vers.id && ac.who_type=="User" }   
-          v.status       
-          else 
-            I18n.t("not available")
-          end
-            @proj_accesses=accesses.select{|ac| ac.version_id==vers.id && ac.who_type=="Core::Project" }
+        
+          vers.user_access= accesses.detect{|ac| ac.version_id==vers.id && ac.who_type=="User" }   
+          vers.proj_accesses=accesses.select{|ac| ac.version_id==vers.id && ac.who_type=="Core::Project" }
+            
           
-        end
       end
+    
       
 
     end    
@@ -195,7 +219,7 @@ module Pack
     { id: id, text: (name + self.package_id) }
     end
     def version_params params
-      params.permit(:name, :description,:version,:folder,:cost)
+      params.permit(:name, :description,:version,:folder,:cost,:deleted)
     end
    
   end

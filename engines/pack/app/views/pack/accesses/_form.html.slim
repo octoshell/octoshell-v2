@@ -1,8 +1,12 @@
 
 
-	= bootstrap_form_for :access, url: accesses_path, layout: :horizontal,remote: true do |f|									
-		= f.text_field :end_lic,{ class: 'my_datepicker',value: params[:def_date],label: t('end_lic')}
-		= f.hidden_field :from,:value =>  "no_admin"
-		= f.hidden_field :version_id,:value =>  params[:version_id]
-		= f.hidden_field :proj_or_user,:value =>  params[:proj_or_user]
+	= bootstrap_form_for @access,  :url => { :controller => "accesses", :action => "update" }, :html => {:method => :post}, layout: :horizontal,remote: true do |f|		
+		= f.radio_button :forever,true ,label: t("forever"),enab: "disable"  
+      	= f.radio_button :forever,false,label: t("not_forever"),enab: "enable" 
+		= f.text_field :end_lic,{label: t('end_lic'), class: 'form-control my_datepicker',enab: "item",placeholder: "mm-dd-yy"}
+		= f.hidden_field :version_id
+		= f.hidden_field :who_id
+		= f.hidden_field :who_type
+		= f.hidden_field :lock_version
+		= hidden_field :access,:expected_status,:value =>  "new"
 		= f.submit t("buttons.ready", default: "Ready") 

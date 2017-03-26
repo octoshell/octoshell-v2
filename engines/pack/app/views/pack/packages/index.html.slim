@@ -3,16 +3,33 @@ div class="package-header"
   
     
   
+  =bootstrap_form_for @q,url: admin_packages_path, method: :get do |f|
+    =t('packages or versions')
+    div class='margin'
+      =f.label t('packages')
+      =radio_button_tag :type, 'packages',@model_table=='packages'
+      br
+      =f.label t('versions')
+      =radio_button_tag :type, 'versions',@model_table=='versions'
 
-  = bootstrap_form_for :search, url: packages_path, method: :get, layout: :horizontal do |f|
-    = f.select :deleted, [[t("not_deleted", default: "Show only existing packages"),false], [ t("deleted", default: "Show only deleted packages"),true], [ t("show_active", default: "Show only active packages"),"active versions"]], { label: t("deleted?", default: "deleted/not deleted") }, { class: "selectpicker" } 
+    = f.form_group do
+        = f.submit t("buttons.save", default: "Save")
+
+
+  
+
+
+  //= bootstrap_form_for :search, url: packages_path, method: :get, layout: :horizontal do |f|
+    = f.select :deleted, [[t("not_deleted", default: "Show only existing packages"),false], [ t("deleted"   efault: "Show only deleted packages"),true], [ t("show_active", default: "Show only active packages"),"active versions"]], { label: t("deleted?", default: "deleted/not deleted") }, { class: "selectpicker" } 
    
   br
   br
   br     
-  div id="packages_table"
-   
+  div id="table_records"
+
+	   =render(:partial => "#{@model_table}_table",locals: {records: @records } )   
   div id="ajax_paginator" 
+  	=paginate(@records, :remote => true).to_s
         
       
 = javascript_tag do 

@@ -29,7 +29,7 @@ module Pack
 
     def new  
       @version = Version.new
-      
+      @version.create_temp_clustervers
       
     end
 
@@ -53,10 +53,8 @@ module Pack
       
      
       @version = Version.includes(clustervers: :core_cluster).find(params[:id]) 
-      @version.errors.add(:base,:deleted_record) 
-        @version.errors.each do |k,v|
-          puts v
-        end
+      @version.create_temp_clustervers
+      
       
     end
     
@@ -79,7 +77,7 @@ module Pack
       
 
       
-      @version = Version.includes({clustervers: :core_cluster}).find(params[:id])
+      @version = Version.find(params[:id])
       
       
       #@version.version_options_my_attributes=params[:version][:version_options_attributes]
@@ -90,6 +88,10 @@ module Pack
         
         redirect_to admin_package_path(@package)
       else
+        puts @version.errors.full_messages
+        @version.clustervers.each {|i| puts i.active 
+         puts i.errors.full_messages}
+        puts "END UPDATE"
         #puts @version.errors.messages
          
         

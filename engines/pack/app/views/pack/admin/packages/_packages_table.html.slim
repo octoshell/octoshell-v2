@@ -14,10 +14,10 @@
                     span class="caret"
                   ul class="dropdown-menu" role="menu"
                     - name = t("delete", default: "delete")
-                    - if package.deleted
-                        - confirm = t(".mega_confirm", default: "Are You sure?")
-                    - else
-                        - confirm = t(".confirm", default: "Are You sure?")
+                   
+                    - confirm = t(".mega_confirm", default: "Are You sure?")
+                   
+                    - confirm = t(".confirm", default: "Are You sure?")
 
                     - data = { method: :delete, confirm: confirm }
                     li class="text-left"

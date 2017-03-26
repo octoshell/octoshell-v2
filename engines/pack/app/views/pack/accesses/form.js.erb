@@ -1,5 +1,8 @@
 
-	$('.form_for_access[vers_id=<%=params[:version_id]%>]').html("<%=escape_javascript(render :partial => @to)%>");
+	$('.form_for_access[vers_id=<%=@vers_id%>]').html("<%=escape_javascript(render :partial => @to)%>");
+	function wrap_str (arg){
+		return ".form_for_access[vers_id=<%=@vers_id%>] input[enab='"+ arg + "']"
+	}
+	bind_func_disable(wrap_str("enable"),wrap_str("disable"),wrap_str("item"));
 
-	
 	//$(".select_ajax_access[vers_id='" + my_id + "']").each(make_form);

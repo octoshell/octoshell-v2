@@ -2,30 +2,38 @@ div class="page-header"
 	h1 = t(".title", default: "Access Creation")
 = bootstrap_form_for [:admin,@access] do |f|
 
-	
-	=f.radio_button  "who_type", "User",checked: true, label: t("user")
-	= autocomplete f, name: 'access[user_id]', label: t("user"), source:  main_app.users_path
-
-
-	=f.radio_button  "who_type", "Core::Project",label: t("project")
-	= autocomplete f, name: 'access[project_id]', label: t("project"), source: core.projects_path
+	div id="enab"
+		=f.radio_button  "who_type", "User",checked: true, label: t("user"),class: 'hid-decision'
+		= autocomplete f, name: 'access[user_id]', label: t("user"), source:  main_app.users_path
+		=f.radio_button  "who_type", "Core::Project",label: t("project"),class: 'hid-decision'
+		= autocomplete f, name: 'access[project_id]', label: t("project"), source: core.projects_path
 
 	br
 	br
 	= autocomplete f,  name: 'access[version_id]', label: t("version"), source: admin_versions_path
-	font color='red'
-		- if d=@access.errors.messages[:version_id]
-			=t("Version") + ':  '
-			-d.each do  |t| 
-				=t
+	/font color='red'
+	/	- if d=@access.errors.messages[:version_id]
+	/		=t("Version") + ':  '
+	/		-d.each do  |t| 
+	/			=t
 
 	= f.text_field :end_lic, class: 'my_datepicker',label: t("end_lic")	
-	= f.select :status,@statuses	
+	= f.text_field :new_end_lic, class: 'my_datepicker',label: t("new_end_lic")	
+	= f.select :status,@access.aasm.states
  	= f.form_group do
     	= f.submit t("buttons.save", default: "Save")
 	 
 
+javascript:
 
+	  $(".hid-decision").each(function(i,e) {
+
+	  	$(e).parents(".radio").next("div").prop("disabled",true).attr("test","test")
+	  	}) ;
+
+
+
+	
 
 
 	

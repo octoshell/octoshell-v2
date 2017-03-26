@@ -2,7 +2,7 @@ require_dependency "pack/application_controller"
 
 module Pack
   class AccessesController <ApplicationController
-    before_action :access_init, only: [:update,:destroy]
+    #before_action :access_init, only: [:update,:destroy]
 
     def access_init
       @access = Access.find(params[:id])
@@ -27,20 +27,43 @@ module Pack
   	end
 
     def update
-
-       @access.update!(new_end_lic: access_params[:new_end_lic])
-       
-      render nothing: :true
+      @access=Access.user_update(access_params,current_user.id)
+      @vers_id=access_params[:version_id]
+      if @access.save
+        @to='success'
+        render "form"
+      else
+        
+        render_template
+      end
+        
       
+      #
+    end
+
+    def destroy 
+      @access=Access.user_update(access_params,current_user.id)
+      @vers_id=access_params[:version_id]
+      @access.destroy
+      @to='success'
+      render "form"
+      
+     
+        
+
     end
   	def form
-      if params[:proj_or_user]== 'user'
-        @access=Access.find_by(who_id: current_user.id,who_type: 'User',version_id: params[:version_id])
-      else
-        @access=Access.find_by(who_id: params[:proj_or_user] ,who_type: 'Core::Project',version_id: params[:version_id])
-      end
-      if (!@access)
+       @access=Access.search_access( params,current_user.id)
+       @vers_id=params[:version_id]
+       puts @access.as_json
+       render_template     
+     
+    end
+
+    def render_template
+       if @access.new_record?
         @to='form'
+        
       else
         case @access.status
           when 'requested'
@@ -53,6 +76,7 @@ module Pack
             puts( 'ERROR')  
         end
       end
+      render "form"
     end
 
     def destroy_request
@@ -75,7 +99,7 @@ module Pack
   	
 
   	def access_params
-      params.require(:access).permit(:proj_or_user, :version_id, :end_lic,:new_end_lic,:from)   
+      params.require(:access).permit(:forever,:who_id,:who_type,:proj_or_user, :version_id, :end_lic,:new_end_lic,:from,:expected_status)   
     end
 
   end

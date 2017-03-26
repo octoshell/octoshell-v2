@@ -1,3 +1,10 @@
-= bootstrap_form_for @access, layout: :horizontal,remote: true do |f|									
-		= f.text_field :new_end_lic,{ class: 'my_datepicker',value: params[:def_date],label: t('new_end_lic')}
+
+-if @access.end_lic
+	= bootstrap_form_for @access,  :url => { :controller => "accesses", :action => "update" }, :html => {:method => :post}, layout: :horizontal,remote: true do |f|		
+		= f.text_field :new_end_lic,{ class: 'my_datepicker',label: t('new_end_lic')}
+		= f.hidden_field :version_id
+		= f.hidden_field :who_id
+		= f.hidden_field :who_type
+		= f.hidden_field :lock_version
+		= hidden_field :access,:expected_status,:value =>  @access.status
 		= f.submit t("buttons.ready", default: "Ready") 

@@ -1,21 +1,8 @@
 
 
 
- $(document).on('ajax:complete','#pref_form',function(){
-  $.ajax({
-        url : "<%=package_path(@package)%>", // the endpoint
-        dataType : "script", 
-        type: "GET",
-        data:
-        {
-          page: "<%=params[:page]%>",
-          id: "<%=params[:id]%>",
-        }
-       
-        
-    });
-});
- 
+
+
 
 
   $(document ).on('click',".btn_access",function()
@@ -38,6 +25,10 @@
  });
 
 function make_form(){
+
+ 
+  $(".form_for_access[vers_id='" + $(this).attr('vers_id') +  "']").empty();
+
   $.ajax({
         url : "<%=form_accesses_path%>", // the endpoint
         dataType : "script", 
@@ -46,12 +37,14 @@ function make_form(){
         {
           proj_or_user: $(this).val(),
           version_id: $(this).attr('vers_id'),
-          def_date: "<%=@pref.def_date%>"
+          
         }
        
         
     });
+  
 }
+
 
   $(document).on('change','.select_ajax_access',make_form);
   

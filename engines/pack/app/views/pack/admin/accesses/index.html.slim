@@ -3,7 +3,6 @@ div class="package-header"
   
     
   
-
   /= bootstrap_form_for :search, url: packages_path, method: :get, layout: :horizontal do |f|
     = f.select :deleted, [[t("not_deleted", default: "Show only existing packages"),false], [ t("deleted", default: "Show only deleted packages"),true], [ t("show_active", default: "Show only active packages"),"active versions"]], { label: t("deleted?", default: "deleted/not deleted") }, { class: "selectpicker" } 
    
@@ -14,15 +13,13 @@ div class="package-header"
     div class="panel-heading clearfix"
       = link_to t(".new"), new_admin_access_path, class: "btn btn-default"
        
-  div id="my_table"
-    =render 'accesses_table'
+  div id="table_records"
+    =render 'table',records: @accesses
   
   div id="ajax_paginator" 
     =paginate(@accesses, :remote => true).to_s     
 
-  div id="packages_table"
-   
-  div id="ajax_paginator" 
+  
       
 
     
