@@ -7,7 +7,7 @@ module Pack
     end
     
     def per_record
-      10
+      3
     end
     
     def stale_update_page

@@ -1,6 +1,13 @@
 
 
-      $('#my_table').html("<%=escape_javascript(render 'accesses_table')%>");
-      $('#ajax_paginator').html('<%= escape_javascript(paginate(@accesses, :remote => true).to_s) %>');
-
+     $(document).on('change','#q_who_type_in',function()
+    {
+     
+      if ($(this).find('option:selected').length == 1)
+      {
+        
+        var temp= $(this).find('option:selected');
+        
+      }
+    });
 

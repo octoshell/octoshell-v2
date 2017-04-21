@@ -1,32 +1,45 @@
 ru:
-  
+
+    
+    engine_submenu:
+        packages_list: Пакеты
+        accesses_list: Доступы
+    who_types:
+      User: Пользователь
+      Group: Группа
+      'Core::Project': Проект
+      User_me: Пользователь(я)
     packages or versions: Пакеты или версии
     versions: версии
     packages: пакеты
     project: Проект
+    all: Все
     success_access: "Доступ успешно обновлен. Текущий статут %{status}"
     activerecord:
-    models:
-    attributes:
+      models:
+      attributes:
         pack/package:
-            deleted:  Показать только удаленные
-            deleted?:  Удаленные/активные
-            not_deleted: Показать только активные
-            name: Название
-            description: Описание
-            cost: Стоимоcть
-            folder: Путь
-            edit: Редактировать
-            delete: Удалить
+          deleted:  удален
+          deleted?:  Удаленные/активные
+          not_deleted: Показать только активные
+          name: Название
+          description: Описание
+                
         pack/version:
-            name: Название
-            description: Описание
-            active: Актуальна
-            r_up: Дата загрузки
-            r_down: Дата удаления
+          name: Название
+          description: Описание
+          active: Актуальна
+          cost: Стоимоcть
+          folder: Путь
+          edit: Редактировать
+          delete: Удалить
         pack/version_option:
             name: Название опции
             value: Значение
+        pack/access:
+            forever: Без даты окончания
+            status: Статус
+            
        
              
               

@@ -4,6 +4,57 @@ module Pack
   	#@a=[t("Create request"),t("new date")]
     include AASM
     american_date_proccess
+
+    scope :preload_who, -> { select("pack_accesses.*,u.email as who_user,proj.title as who_project,g.name as who_group").joins(<<-eoruby
+        
+         LEFT JOIN core_projects as proj ON (proj.id= "pack_accesses"."who_id" AND pack_accesses.who_type='Core::Project'  )
+         LEFT JOIN users as u ON (u.id= "pack_accesses"."who_id" AND pack_accesses.who_type='User'  )
+         LEFT JOIN groups as g ON (g.id= "pack_accesses"."who_id" AND pack_accesses.who_type='Group'  )
+       
+        eoruby
+        ) 
+        }
+
+    def self.admin_user_access(user_id)
+
+      user_access(user_id).joins(<<-eoruby
+        JOIN users ON (users.id= pack_accesses.who_id AND pack_accesses.who_type='User'
+        OR pack_accesses.who_type='Core::Project' AND "core_members"."user_id" = #{user_id} 
+        OR pack_accesses.who_type='Group' AND "user_groups"."user_id" = #{user_id}   )
+        eoruby
+        )
+      
+    end
+
+    def self.user_access(user_id)
+
+
+        select('pack_accesses.*,core_projects.title as who_project,groups.name as who_group').user_access_without_select user_id
+    end
+
+
+    def self.user_access_without_select(user_id)
+
+
+        joins(
+        <<-eoruby
+        LEFT JOIN "core_members" ON ( "pack_accesses"."who_id" = "core_members"."project_id" 
+        AND "core_members"."user_id" = #{user_id} AND "pack_accesses"."who_type" = 'Core::Project'   )
+        LEFT JOIN core_projects ON core_projects.id= core_members.project_id 
+        eoruby
+        ).joins(
+        <<-eoruby
+        LEFT JOIN "user_groups" ON ( "pack_accesses"."who_id" = "user_groups"."group_id" 
+        AND "user_groups"."user_id" = #{user_id}   AND "pack_accesses"."who_type" = 'Group' )
+        LEFT JOIN "groups" ON ( "user_groups"."group_id" = "groups"."id"  )
+        eoruby
+        ).where(
+        <<-eoruby
+        (  "pack_accesses"."who_type" = 'Core::Project' OR "pack_accesses"."who_type" = 'Group'  OR "pack_accesses"."who_type" = 'User'
+         AND "pack_accesses"."who_id" = #{user_id}  ) 
+         eoruby
+         )
+    end
     
     def forever=(arg)
       @forever= arg=='false' ? false : true 
@@ -22,10 +73,18 @@ module Pack
       else
         aasm.states(:permitted => true).map(&:to_s)
       end
-      
-      #aasm.states(:permitted => true)
-
+     
     end
+    def self.states_list
+      
+      aasm.states.map(&:to_s)
+      
+    end
+    def self.ransackable_scopes(auth_object = nil)
+      [:user_access,:admin_user_access]
+    end
+
+    #private_class_method :ransackable_scopes
     def action= arg
       if ! ( actions.detect{ |i| i==arg  } ) 
         raise 'incorect argument'
@@ -50,9 +109,9 @@ module Pack
     
 
 
-  	validates :version_id, :created_by_key,:who,:status,presence: true
+  	validates :version, :created_by_key,:who,:status,presence: true
     validates_uniqueness_of :who_id,:scope => [:version_id,:who_type],:message => :uniq_access
-    validate :date_and_status,:date_correct
+    validate :date_and_status,:date_correct,:new_end_lic_correct
 
     aasm :column => :status  do
      
@@ -73,6 +132,20 @@ module Pack
      
     end
 
+    def get_color
+      case status
+      when 'allowed'
+        'green'
+      when 'requested'
+        'blue'
+      when 'denied'
+        'red'
+      when 'expired'
+        'yellow'
+      end
+      
+    end
+
     def check_expired?
       end_lic && ( end_lic < Date.current )
     end
@@ -91,16 +164,22 @@ module Pack
       end
     end
 
+    def new_end_lic_correct
+      
+      if end_lic && new_end_lic && end_lic > new_end_lic
+        self.errors.add(:new_end_lic,:incorect)
+      end
+    end
+
     def end_lic_readable
-      end_lic || I18n.t('forever')
+      end_lic || Access.human_attribute_name(:forever)
     end
 
 
   	belongs_to :version
   	belongs_to :created_by,class_name: 'User',foreign_key: :created_by_key
   	belongs_to :who, :polymorphic => true
-    belongs_to :who_project, foreign_key: :who_id,class_name: 'Core::Project'
-    belongs_to :who_user, foreign_key: :who_id,class_name: 'User'
+    
   	
    
 
@@ -159,15 +238,19 @@ module Pack
      
      
     end
+
+    
+    def who_name_with_type
+      
+      
+      
+      "#{I18n.t('who_types.'+who_type)} #{who_name}"
+        #!who_user.nil? && who_user ||  !who_group.nil? && who_group || !who_project.nil? && who_project 
+    end
+    
+
     def who_name
-      case who_type 
-        when 'User'
-          "#{I18n.t ('user')} #{who_user.email}"
-        when 'Core::Project'
-          "#{I18n.t ('project')} #{who_project.title}"
-        else
-          raise ActiveRecord::RecordInvalid
-        end
+      who_group || who_project || who_user 
     end
 
   	

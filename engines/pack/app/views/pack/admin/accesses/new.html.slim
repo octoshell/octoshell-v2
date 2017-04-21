@@ -3,40 +3,51 @@ div class="page-header"
 = bootstrap_form_for [:admin,@access] do |f|
 
 	div id="enab"
-		=f.radio_button  "who_type", "User",checked: true, label: t("user"),class: 'hid-decision'
-		= autocomplete f, name: 'access[user_id]', label: t("user"), source:  main_app.users_path
+		=f.radio_button  "who_type", "User", label: t("user"),class: 'hid-decision'
+		= f.autocomplete_field :who_id,label: t("user"), source:  main_app.users_path,display: "who.email"
+	br
 		=f.radio_button  "who_type", "Core::Project",label: t("project"),class: 'hid-decision'
-		= autocomplete f, name: 'access[project_id]', label: t("project"), source: core.projects_path
+		= f.autocomplete_field :who_id, label: t("project"), source:  core.projects_path,display: "who.title"
+	br
+		=f.radio_button  "who_type", "Group", label: t("Group"),class: 'hid-decision'
+		= f.autocomplete_field :who_id, label: t("Group"), source:  admin_get_groups_path,display: "who.name"
+		
 
 	br
-	br
-	= autocomplete f,  name: 'access[version_id]', label: t("version"), source: admin_versions_path
-	/font color='red'
-	/	- if d=@access.errors.messages[:version_id]
-	/		=t("Version") + ':  '
-	/		-d.each do  |t| 
-	/			=t
+	
+	
+	= f.autocomplete_field :version_id, label: t("version"), source: admin_versions_path,display: "version.name"
+	= f.radio_button :forever,true ,label: t("forever"),enab: "disable"  
+    = f.radio_button :forever,false,label: t("not_forever"),enab: "enable" 
+	= f.text_field :end_lic,{ class: 'form-control my_datepicker',enab: "item",placeholder: "mm-dd-yy"}
+	= f.text_field :new_end_lic,{ class: 'form-control my_datepicker',enab: "item",placeholder: "mm-dd-yy"}
 
-	= f.text_field :end_lic, class: 'my_datepicker',label: t("end_lic")	
-	= f.text_field :new_end_lic, class: 'my_datepicker',label: t("new_end_lic")	
 	= f.select :status,@access.aasm.states
  	= f.form_group do
     	= f.submit t("buttons.save", default: "Save")
+		
 	 
 
 javascript:
 
-	  $(".hid-decision").each(function(i,e) {
+	bind_func_disable("[enab='enable']","[enab='disable']","[enab='item']");
+	$(".hid-decision").not("[checked]").parents(".radio").next().removeClass('has-error').find("select").prop('disabled',true);
+	$(".hid-decision").not("[checked]").parents(".radio").next().find("span").remove(".help-block");
+	//$(".hid-decision").not("[checked]").parents(".radio").next
+	$(".hid-decision").change(function(i,e){
+			
+		$(".hid-decision").parents(".radio").next().find("select").prop('disabled',true);	
+		$(this).parents(".radio").next().find("select").prop('disabled',false);
+			
+			
 
-	  	$(e).parents(".radio").next("div").prop("disabled",true).attr("test","test")
-	  	}) ;
-
+		}); 
 
 
 	
 
 
 	
-= javascript_tag do 
+/= javascript_tag do 
     = render(:partial => 'new', :formats => [:js]) 
 

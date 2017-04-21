@@ -1,12 +1,14 @@
 div class="row"
   div class="col-xs-12"
-    = bootstrap_form_for [:admin,@package,@version]do |f|
+    = bootstrap_form_for [:admin,@package,@version],@form_for_options do |f|
       -@f=f
+      - f.stale_params= params[:stale] if !@stale
       = f.text_field :name
-      = f.text_field :description,disabled: "true"
+      = f.text_field :description
       = f.text_field :folder
       = f.number_field :cost
       = f.check_box :deleted
+      = f.hidden_field :lock_version
     
      
       =t "state"
@@ -31,14 +33,20 @@ div class="row"
           = f.fields_for :version_options do |ff|
             tr
               td 
+                = radio_button "name_sel"+ ff.object.id.to_s,"to_s","auto",class: "select-auto"
+                = ff.autocomplete_field :name, {source: admin_options_categories_path,display: "name"},{id: "select"+ ff.object.id.to_s}
+
+                = radio_button "name_sel"+ ff.object.id.to_s,"to_s","no",class: "select-auto",checked: true
                 = ff.text_field :name
               td 
                 = ff.text_area :value,rows: 3
             tr
               td 
                 = ff.check_box :_destroy
+            tr
+              td -----------------------
               
-
+    
            
       
       
@@ -46,7 +54,7 @@ div class="row"
 
       div id="new_options"
       /=link_to_add_options_fields  f 
-      button class="btn btn-primary btn_access" id="options" =t("new") 
+      button class="btn btn-primary btn_access" type="button" id="options" =t("new") 
       br
       br
       br
@@ -54,8 +62,8 @@ div class="row"
 
       	
      
-      = f.form_group do
-        = f.submit t("buttons.save", default: "Save")
+      /= f.form_group do
+      = f.submit t("buttons.save", default: "Save")
 = javascript_tag do 
   = render(:partial => 'form', :formats => [:js]) 
 

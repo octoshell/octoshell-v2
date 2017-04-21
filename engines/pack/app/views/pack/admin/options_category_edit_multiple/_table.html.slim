@@ -1,0 +1,29 @@
+- if records
+    div  class="panel-body"
+        table  class="table table-hover"
+          tr
+            th #{t("name", default: "Package name")}
+            th
+          -records.each do |r|
+            tr
+              td class="col-xs-4"  
+                =r.category
+                
+              td
+               / div class="btn-group pull-right"
+                  = link_to t("edit", default: "edit"), edit_admin_package_path(package.id), class: "btn btn-default btn-sm"
+                  button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                    span class="caret"
+                  ul class="dropdown-menu" role="menu"
+                    - name = t("delete", default: "delete")
+                   
+                    - confirm = t(".mega_confirm", default: "Are You sure?")
+                   
+                    - confirm = t(".confirm", default: "Are You sure?")
+
+                    /- data = { method: :delete, confirm: confirm }
+                    /li class="text-left"
+                      = link_to name, admin_package_path(package.id), data: data, class: "text-danger"
+- else
+    div class="panel-body"
+       	p = t(".no_categories_found", default: "Categories empty") 

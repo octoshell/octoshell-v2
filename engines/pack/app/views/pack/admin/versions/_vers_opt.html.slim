@@ -5,12 +5,18 @@ table class="vtop" class="col-xs-12"
           = f.fields_for :version_options,@version.version_options.build,child_index: "new_index" do |ff|
             tr
               td 
+                = radio_button "name_sel"+ "new_index","to_s","auto",class: "select-auto",por: "new_index"
+                = ff.autocomplete_field :name, {source: admin_options_categories_path,display: "name"},{id: "select"+ ff.object.id.to_s}
+
+                = radio_button "name_sel"+ "new_index","to_s","no",class: "select-auto",checked: true
                 = ff.text_field :name
               td 
                 = ff.text_area :value,rows: 3
             tr
               td 
                 = ff.check_box :_destroy
+            tr
+              td -----------------------
 			
       
 

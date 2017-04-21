@@ -1,4 +1,4 @@
-$(function(){
+  function  apply_select2(){
   
   select2_localization = {
     ru: "Выберите значение",
@@ -17,6 +17,11 @@ $(function(){
     }
 
     if (select.hasClass('ajax') || select.hasClass('select2-ajax')) {
+       select.removeClass('ajax select2-ajax');
+       for ( i in options )
+       {
+         console.log(options[i]);
+       }
       options.ajax = {
         url: select.data('source'),
         dataType: 'json',
@@ -36,4 +41,4 @@ $(function(){
     }
     select.select2(options)
   })
-});
+}

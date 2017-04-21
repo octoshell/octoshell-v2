@@ -1,0 +1,5 @@
+
+            =bootstrap_form_for [:admin,@option] do |f|
+            	=f.text_field :category
+            	=f.form_group do
+        			= f.submit t("buttons.save", default: "Save")

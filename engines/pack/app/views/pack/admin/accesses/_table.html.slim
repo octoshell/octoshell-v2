@@ -12,7 +12,7 @@
             
           -records.each do |item|
             tr
-              td class="col-xs-4" = link_to item.who_name, admin_access_path(item)
+              td class="col-xs-4" = link_to item.who_name_with_type, admin_access_path(item)
               td class="col-xs-4" =  item.version.name
               td rec_id=item.id
                   =render "manage_access",item: item

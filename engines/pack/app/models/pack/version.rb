@@ -6,7 +6,7 @@ module Pack
      
     include AASM
     american_date_proccess
-    attr_accessor :user_access,:proj_accesses
+    attr_accessor :user_accesses
 
   	validates :name, :description,:package, presence: true
     validates_uniqueness_of :name,:scope => :package_id
@@ -140,7 +140,7 @@ module Pack
 
     end
     def update_clustervers hash
-      puts hash
+      
       if !hash 
         return 
       end
@@ -159,67 +159,29 @@ module Pack
           raise "error"
         end
       end
-      puts hash
+     
       self.clustervers_attributes= hash
     end
 
-    def self.test_preload user_id
+     def self.preload_and_to_a user_id,versions
 
+            
+       accesses=Access.user_access(user_id).where(version_id: versions.ids )#where("pack_accesses.version_id IN (#{(versions.ids).join (',')})")
+        versions.each do |vers|
         
-       #accesses= Access.select('pack_accesses.*,core_projects.title')
-      self.select('pack_versions.*').joins(
-        <<-eoruby
-          LEFT JOIN "pack_accesses"   ON  "pack_accesses"."version_id" = "pack_versions"."id" AND
-          (  "pack_accesses"."who_type" = 'Core::Project'  OR "pack_accesses"."who_type" = 'User'
-         AND "pack_accesses"."who_id" = #{user_id}   )
-        eoruby
-        ).joins(
-        <<-eoruby
-       
-        LEFT JOIN "core_members" ON ( "pack_accesses"."who_id" = "core_members"."project_id" 
-        AND "core_members"."user_id" = #{user_id}  )
-        LEFT JOIN core_projects ON core_projects.id= core_members.project_id 
-        
-        
-        eoruby
-      )
+          vers.user_accesses= accesses.select{|ac| ac.version_id==vers.id}   
+         
+        end
+    
     end
 
 
-    def self.preload_and_to_a user_id,versions
-
-            
-       accesses= Access.select('pack_accesses.*,core_projects.title')
-      .joins(
-        <<-eoruby
-        LEFT JOIN "core_members" ON ( "pack_accesses"."who_id" = "core_members"."project_id" 
-        AND "core_members"."user_id" = #{user_id}  )
-        LEFT JOIN core_projects ON core_projects.id= core_members.project_id 
-        WHERE
-        (  "pack_accesses"."who_type" = 'Core::Project'  OR "pack_accesses"."who_type" = 'User'
-         AND "pack_accesses"."who_id" = #{user_id}  ) AND "pack_accesses"."version_id" IN (#{(versions.ids).join (',')} )
-        eoruby
-      )
-
-
      
-      
-      versions.each do |vers|
-        
-          vers.user_access= accesses.detect{|ac| ac.version_id==vers.id && ac.who_type=="User" }   
-          vers.proj_accesses=accesses.select{|ac| ac.version_id==vers.id && ac.who_type=="Core::Project" }
-            
-          
-      end
-    
-      
-
-    end    
     def as_json(options)
     { id: id, text: (name + self.package_id) }
     end
     def version_params params
-      params.permit(:name, :description,:version,:folder,:cost,:deleted)
+      params.permit(:name, :description,:version,:folder,:cost,:deleted,:lock_version)
     end
    
   end

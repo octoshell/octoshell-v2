@@ -13,5 +13,12 @@ module Pack
   			"not_active"
   		end
   	end
+     def get_color
+      if active 
+        'green'
+      else
+        'red'
+      end
+    end
   end
 end

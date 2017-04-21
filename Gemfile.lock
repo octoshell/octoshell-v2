@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/bootstrap-ruby/rails-bootstrap-forms.git
-  revision: 941edb9535f4cc38f175368439453294618bd501
+  revision: ff4f7ff127d582fbe340e8ca93ec93b0e7acac02
   specs:
-    bootstrap_form (2.3.0)
+    bootstrap_form (2.6.0)
 
 GIT
   remote: git://github.com/colszowka/phantomjs-gem.git
@@ -601,4 +601,4 @@ DEPENDENCIES
   wiki!
 
 BUNDLED WITH
-   1.13.6
+   1.14.6

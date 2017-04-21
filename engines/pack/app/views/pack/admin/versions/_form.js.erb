@@ -1,35 +1,44 @@
 
+	
+$(".select-auto").not("[checked]").next().find("select, input").prop('disabled',true);
+$(".select-auto").not("[checked]").next().removeClass('has-error').find("span").remove(".help-block");
+	
+	
+	//$(".hid-decision").not("[checked]").parents(".radio").next
+	//
+	$(document).on("change",".select-auto",function(){
+		
+		 //alert ( $(this).parents("td").find(".select-auto").attr('id'));
+		 $(this).parents("td").find("select, input[type='text']").prop('disabled',true);
+		$(this).next().find("select, input").prop('disabled',false);
+		
+		//$(this).parents("td").find(".select-auto").not("[checked]").next("div").find("select").prop('disabled',true);
+		//$(this).parents("td").find(".select-auto").not("[checked]").next("div").find("input").prop('disabled',true);
+
+		//$(this).next("div").find("select, input").prop('disabled',false);
+		
+			
+			
+
+		}); 
+
+
 
 
  $("#options ").click(function()
  {
+
    	content=("<%=escape_javascript(render 'vers_opt',f: @f)%>");
    	var regexp = new RegExp("new_index" , "g");
    	var new_id = new Date().getTime();
   
  	$('#new_options').append(content.replace(regexp, new_id));
+
+ 	$(".select-auto[por='" +new_id + "']").not("[checked]").next().find("select, input[type='text']").prop('disabled',true);
+ 	apply_select2();
  	return false;
  });
 
 
-function date_element()
-{
- 	if ($(this).val()=="forever")
- 	$("#date_element").remove();
- 	else
- 	{
-
- 	content=("<%= escape_javascript (@f.text_field :end_lic ,class: 'form-control my_datepicker')%>");
-	
- 	 $(this).parent().after( "<div id='date_element'>"+ content+ "</div>");
- 	}
-
-};
-
-
-
-
 
 bind_func_disable("#enable_id","#disable_id","#item_id"); 
-//$("#select_state input").change(date_element);
- //$("#select_state input[checked]").each(date_element);

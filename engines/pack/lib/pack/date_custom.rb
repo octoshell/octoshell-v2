@@ -1,3 +1,7 @@
+
+
+
+
 class AmericanDate < ::Date
 	def to_s
 		to_formatted_s(:american) 

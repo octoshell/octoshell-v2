@@ -9,7 +9,7 @@ module Pack
     def index
       
 
-      @zz=Packages.joins(:versions).where(versions.t)
+      
       #puts  ( ['packages','versions'].map  { |i| [t(i),i]  } )
       @model_table=params[:type] || 'packages'
       model_table= if @model_table=='packages'

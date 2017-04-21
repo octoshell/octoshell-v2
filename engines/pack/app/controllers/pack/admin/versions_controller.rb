@@ -3,10 +3,18 @@ require_dependency "pack/application_controller"
 module Pack
   class Admin::VersionsController < Admin::ApplicationController
     before_action :pack_init, except: [:index]
-
+    before_action :upd_form,only: [:edit,:update,:new,:create]
 
     # GET /versions
-    
+    def upd_form
+
+      @stale= params[:stale].nil?
+      @form_for_options= if @stale
+        {}
+      else
+        {builder: StaleFormBuilder}
+      end
+    end
 
     def index
       
@@ -84,17 +92,20 @@ module Pack
       #@version.update_clustervers params[:version][:my_clustervers]
       #VersionOption.create!(name: 'second',value: 'value',version_id: @version.id)
       #@version.clustervers_attributes=clustervers_update(params[:version][:p_clvers]) 
+      begin
       if @version.vers_update(params)
         
         redirect_to admin_package_path(@package)
       else
-        puts @version.errors.full_messages
-        @version.clustervers.each {|i| puts i.active 
-         puts i.errors.full_messages}
-        puts "END UPDATE"
+       
         #puts @version.errors.messages
          
         
+        render :edit
+      end
+      rescue ActiveRecord::StaleObjectError
+        @form_for_options={builder: StaleFormBuilder}
+        @version.restore_attributes([:lock_version])
         render :edit
       end
     end

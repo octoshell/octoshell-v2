@@ -8,7 +8,6 @@
 					th 	#{t("cost")}
 					th 	#{t("clusters",default:"clusters")}
 					th 	#{t("access_user",default:"Availability for me")}
-					th 	#{t("access_project",default:"Availability for project")}  
 					th 	#{t("actions_pack")}  
 				- for version in records
 					/-puts version.as_json
@@ -27,47 +26,27 @@
 							- if clustervers
 
 								- for clusterver in clustervers
-									=clusterver.core_cluster.name
-									="\n"
-									- if clusterver.active
-										= t("active_y",default:"active")
-									-else
-										= t("active_n",default:"not active")
+									p
+										font color=clusterver.get_color
+											=clusterver.core_cluster.name
 									
-									br		
 						td
 							
-							-if version.user_access
-								=version.user_access.status
-								br
-								=version.user_access.end_lic_readable
-							-else 
-								=t('not_available')  
 							
-						td
-							-if version.proj_accesses 
-								-if v=version.proj_accesses.detect{|ac| ac.status=='allowed'}
-									br
-									=v.title 
-									br 
-									=v.status
-									br
-									=v.end_lic_readable
-									
-								-else
-									-if   v=version.proj_accesses.detect{|ac| ac.who_type='Core::Project'}
-										=v.status 
-										br
-										=v.title 
-										br
-										=v.end_lic_readable
-							-else
-								=t("not available")
-							
-							
-						td
+							-if version.user_accesses
 
+								-version.user_accesses.each do |ac|
+										p
+											font color=ac.get_color
+												=ac.who_name_with_type if ac.who_type!="User"
+												=t('who_types.User_me') if ac.who_type=="User"
+												=" " + ac.end_lic_readable.to_s
+							-else
+								font color='red' 	
+									=t('not_available')  
 							
+						
+						td	
  								button class="btn btn-primary btn_access" vers_id=version.id  =t("want",default:"want this")
 								
  					tr 

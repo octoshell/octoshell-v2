@@ -3,7 +3,8 @@ module Pack
   	 
     
     
-    
+    layout "layouts/pack/admin"
+
      before_filter :check_abilities
     def check_abilities
       

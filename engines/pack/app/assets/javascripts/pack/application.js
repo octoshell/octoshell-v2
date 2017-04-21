@@ -16,7 +16,20 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require autocomplete-rails
+$(function(){
+	
+ $(".stale_error").not(":checked").prevAll("div.form-group").find("input,select").prop("disabled",true);
+});
 
+$(document).on('change',".stale_error",function(){
+	var obj= $(this).prevAll("div.form-group").find("input,select");
+	if  ( $(this).is(':checked') )
+
+		obj.prop('disabled',false);
+	else
+		obj.prop('disabled',true);
+
+});
 
  $(document).on('focus',".my_datepicker", function(){
     $(this).datepicker({
@@ -52,31 +65,95 @@ function bind_func_disable (enable,disable,item)
 
 };
 
-function enab_radio( enab,paste )
+$(function ()
 {
 
-	function enab_paste()
-	{
-	
-		if  ( $(enable).prop("checked") )
-		{
-			$(item).prop("disabled",false);	
-			return;
-		}
-	
+  $(`form.ajax-form`).submit(function(event) {
+  
+    
+    
+    var msg   = $(this).serialize();
+        $.ajax({
+          type: 'GET',
+          dataType: 'script',
+          url: $(this).attr('action'),
 
-		if  ( $(disable).prop("checked") )
-		{
-			$(item).prop("disabled",true);	
-		}	
+          data: msg
+         
+          
+          
+        });
+ 
+    
+    return false;
 
-	};	
+  });
+});
 
-	disable_enable_select();
-	$(enable1).change(disable_enable_select);
-	$(enable2).change(disable_enable_select);
+function render_on_click(source,html,target)
+{
+  
 
+
+}
+
+function apply_select2(url,aim='select, select2-container, select2-ajax, input.chosen, select.chosen')
+
+{
+
+	$(function(){
+  
+  select2_localization = {
+    ru: "Выберите значение",
+    en: "Choose"
+  }
+
+  
+  
+  $(aim).each(function(i, e){
+    var select = $(e)
+    var source;
+  if (url)
+  {
+    source=url;
+  }
+  else
+  {
+    source=select.data('source');
+  }
+    var options = select.find('option')
+    if (options.size() == 1) {
+      $(options[0]).select()
+    }
+    options = {
+      placeholder: select2_localization[window.locale],
+      allowClear: true
+    }
+
+    if (select.hasClass('ajax') || select.hasClass('select2-ajax')) {
+      options.ajax = {
+        url: source,
+        dataType: 'json',
+        quietMillis: 100,
+        data: function(params) {
+          return {
+            q: $.trim(params.term),
+            page: params.page,
+            per: 10
+          }
+        },
+        processResults: function(data, page) {
+          var more = (page * 10) < data.total
+          return { results: data.records, pagination:{more: more }}
+        },
+      }
+    }
+    select.select2(options)
+  })
+});
 };
+
+
 
 
 
