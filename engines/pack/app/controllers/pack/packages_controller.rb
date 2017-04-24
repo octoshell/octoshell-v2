@@ -36,15 +36,12 @@ module Pack
         } # index.html.erb
         format.js { 
             
-            render_paginator(@records,'#{@model_table}_table')
+            render_paginator(@records,"#{@model_table}_table")
         }
         format.json do
-        @packages = Package.finder(params[:q])    
-        render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count }
-
-      
-        
-      end
+          @packages = Package.finder(params[:q])    
+          render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count } 
+        end
 
       end
       
@@ -68,32 +65,19 @@ module Pack
       @options_for_select<<[t('user'),"user"] 
 
       @package = Package.find(params[:id])
-      @versions = Version.page(params[:page]).per(@per).includes(clustervers: :core_cluster).where(package_id:params[:id])
-      #@versions=Version.all.test_preload
+      @versions = @package.versions.page(params[:page]).per(6).includes(clustervers: :core_cluster).uniq
+      
       Version.preload_and_to_a(current_user.id,@versions)
-     
-          
-
+      
       respond_to do |format|
         format.html
         format.js{
-           render_paginator(@versions,'#versions_table')
+           render_paginator(@versions,'versions_table')
         }
       end
     end
 
-    def remember_pref
-      @pref.def_date=prop_params[:def_date]
-      if prop_params[:proj_or_user] == 'user'
-        @pref.proj_or_user=prop_params[:proj_or_user]
-      else 
-         @pref.proj_or_user=Prop.proj_or_users[:project]
-         @pref.project_id=prop_params[:proj_or_user]
-      end
-      @pref.save
-      render nothing: "text"
-    end
-
+    
     
     
 

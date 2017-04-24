@@ -5,7 +5,7 @@ require 'decorators'
 require "pack/my_nested_attrs"
 require "pack/date_custom"
 require "aasm"
-require "pack/contr"
+require "pack/support_integration"
 require "ransack"
 require "kaminari"
 

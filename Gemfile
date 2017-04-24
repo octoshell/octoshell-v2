@@ -37,9 +37,9 @@ gem "pack",           path: "engines/pack"
 
 gem "config", github: 'railsconfig/config'
 gem "decorators", "~> 1.0.0"
-
+gem "whenever"
 group :production do
-  gem "whenever"
+  #gem "whenever"
 end
 
 group :test do

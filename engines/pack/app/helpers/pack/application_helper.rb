@@ -57,7 +57,7 @@ class StaleFormBuilder<BootstrapForm::FormBuilder
 
         define_method(selector) do |name,options={}|
           if object.changed.include? name.to_s
-            content_tag(:div,( super + render_check_box(name)))
+            content_tag(:div,( super + render_check_box(name,options)))
            
           else
             super
@@ -67,16 +67,20 @@ class StaleFormBuilder<BootstrapForm::FormBuilder
         end
         
       end
-    def render_check_box(method)
+    def render_check_box(method,options={})
+       key=method.to_s + "_stale"
+       ActionView::Helpers::Tags::Base.new(@object_name, key, self, objectify_options(options)).send(:add_default_name_and_id,options)
+       name=options['name']
+       
       key=method.to_s + "_stale"
-      box_name= "stale[#{key}]"
+      
 
       checked=if stale_params
         stale_params[key] 
       else
         false
       end
-      label(box_name,I18n.t('make available')) + check_box_tag(box_name,"1", checked,class: "stale_error" ) 
+      label(name,I18n.t('make available')) + check_box_tag(name,"1", checked,class: "stale_error" ) 
     end  
 
 
@@ -87,7 +91,10 @@ module Pack
   
   module ApplicationHelper
 
-    
+    def readable_attrs(record)
+      record.attributes.reject{|key,value|  key.match(/_id$/) || ['id','lock_version','updated_at','created_at'].include?(key)  } 
+    end
+
     def pack_admin_submenu_items
       menu = Face::Menu.new
       menu.items.clear

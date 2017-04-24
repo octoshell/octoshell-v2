@@ -1,4 +1,4 @@
-- if records
+ 	- if records
 		h3 =t("Versions")
 		div class="panel-body"
 			table   class="table table-hover" cols="6" cellspacing="30"
@@ -34,8 +34,10 @@
 							
 							
 							-if version.user_accesses
-
+		
 								-version.user_accesses.each do |ac|
+
+										
 										p
 											font color=ac.get_color
 												=ac.who_name_with_type if ac.who_type!="User"
@@ -57,4 +59,3 @@
  								=select_tag :proj_or_user,options_for_select( @options_for_select, @pref_selected ), {class: :select_ajax_access,vers_id: version.id }
  								div class='form_for_access'  vers_id=version.id 
  								
-/

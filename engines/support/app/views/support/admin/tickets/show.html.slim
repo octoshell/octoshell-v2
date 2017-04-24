@@ -9,6 +9,8 @@ div class="page-header"
         - if @ticket.pending?
           = link_to t(".accept"), [:admin, @ticket, :accept], class: "btn btn-warning", method: :post
         = link_to Support::Ticket.human_state_event_name(:close), admin_ticket_close_path(@ticket), method: :put, class: "btn btn-danger", data: { confirm: t("actions.confirm")}
+        = link_to t("actions.edit_access"), pack.admin_access_path(@ticket.pack_accesses.first), class: "btn btn-default"  if @ticket.pack_accesses
+
       h3
         - state = { pending: "danger", answered_by_support: "warning", answered_by_reporter: "danger", resolved: "success", closed: "default" }[@ticket.state_name.to_sym]
         span class="label label-#{state}" = @ticket.human_state_name

@@ -11,6 +11,7 @@ div class="package-header"
     div id='who_type_aim'
     = f.select :status_in, Pack::Access.states_list,{label:  Pack::Access.human_attribute_name(:status)},{multiple: true} 
     = f.autocomplete_field :admin_user_access,label: t("connected_to_user"), source:  main_app.users_path 
+    = f.check_box :new_end_lic_not_null,label: Pack::Access.human_attribute_name(:new_end_lic)
     = f.form_group do
       = f.submit t("actions.find"), class: "btn btn-primary"
     -@f=f

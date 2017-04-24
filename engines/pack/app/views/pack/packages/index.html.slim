@@ -2,8 +2,9 @@ div class="package-header"
   h1 = t(".title", default: "Packages list")
   
     
-  
-  =bootstrap_form_for @q,url: admin_packages_path, method: :get do |f|
+   / = bootstrap_form_for @q, url: admin_accesses_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
+
+  = bootstrap_form_for :custom_q, url: packages_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
     =t('packages or versions')
     div class='margin'
       =f.label t('packages')
@@ -12,6 +13,10 @@ div class="package-header"
       =f.label t('versions')
       =radio_button_tag :type, 'versions',@model_table=='versions'
 
+      =f.text_field :accesses_who_type_eq 
+      =f.text_field :name_eq
+      =f.select :accesses_who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } )  , { label: Pack::Package.human_attribute_name(:who_type) },{multiple: true}
+      
     = f.form_group do
         = f.submit t("buttons.save", default: "Save")
 
@@ -32,5 +37,5 @@ div class="package-header"
   	=paginate(@records, :remote => true).to_s
         
       
-= javascript_tag do 
+/= javascript_tag do 
     = render(:partial => 'index', :formats => [:js]) 

@@ -2,8 +2,53 @@ module Pack
   class Access < ActiveRecord::Base
   	#enum status: [:requested,:allowed,:denied]
   	#@a=[t("Create request"),t("new date")]
+    
+    if !Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
+
+      Support::Topic.create!(name: I18n.t('integration.support_theme_name'))
+
+    end
+    #self.support_access_topic_id=Support::Topic.find_by(name: I18n.t('integration.support_theme_name')).id
+    def self.support_access_topic_id
+     @@support_access_topic_id ||=Support::Topic.find_by(name: I18n.t('integration.support_theme_name')).id
+    end
+
+    def self.expired_accesses
+      where("end_lic > ?", Date.today)
+      puts "ZZZZZ"
+    end
+
     include AASM
     american_date_proccess
+    validates :version, :created_by,:who,:status,presence: true
+    validates_uniqueness_of :who_id,:scope => [:version_id,:who_type],:message => :uniq_access
+    validate :date_and_status,:date_correct,:new_end_lic_correct
+    attr_accessor :allow_create_ticket
+    aasm :column => :status  do
+     
+      state :requested,:initial => true
+      state :allowed
+      state :denied
+      state :expired
+      event :to_expired do
+        transitions :from =>  :allowed, :to => :expired,:guard => :check_expired? 
+      end
+      event :allow do
+        transitions :from =>  [:requested,:denied], :to => :allowed
+      end
+
+      event :deny do
+        transitions :from =>  [:requested,:allowed], :to => :denied
+      end
+     
+    end
+    belongs_to :version
+    belongs_to :created_by,class_name: 'User',foreign_key: :created_by_id
+    belongs_to :allowed_by,class_name: 'User',foreign_key: :allowed_by_id
+    belongs_to :who, :polymorphic => true
+    has_and_belongs_to_many :tickets,join_table: 'pack_access_tickets',class_name: "Support::Ticket",
+      foreign_key: "access_id",
+      association_foreign_key: "ticket_id"
 
     scope :preload_who, -> { select("pack_accesses.*,u.email as who_user,proj.title as who_project,g.name as who_group").joins(<<-eoruby
         
@@ -15,7 +60,45 @@ module Pack
         ) 
         }
 
+    after_commit :send_email,if: Proc.new{ who_type=='User' ||  who_type=='Core::Project'} 
+    after_save :create_ticket,if: Proc.new{ allow_create_ticket && (new_end_lic || status=='requested')} 
+
+    def send_email
+
+      if  status!='requested'
+        if previous_changes["status"]  
+          ::Pack::PackWorker.perform_async(:access_changed, id)
+        end
+        if  previous_changes["new_end_lic"] && previous_changes["new_end_lic"][0]
+          if  previous_changes["end_lic"]
+            ::Pack::PackWorker.perform_async(:access_changed, [id,"made_longer"])
+          else
+             ::Pack::PackWorker.perform_async(:access_changed, [id,"denied_longer"])
+          end
+         
+        end
+      
+
+      end
+      #::Pack::PackWorker.perform_async(:project_activated, id)
+      
+    end
+    def create_ticket  
+
+      subject= if new_end_lic 
+        I18n.t('tickets_access.subject.new_end_lic',who_name: who_name_with_type,user: created_by.email) 
+      elsif status=='requested'
+        I18n.t('tickets_access.subject.requested',who_name: who_name_with_type,user: created_by.email) 
+      end 
+
+      tickets.create!(subject: subject,reporter: created_by,message: subject,topic_id: Access.support_access_topic_id )
+    end
     def self.admin_user_access(user_id)
+
+
+      if user_id==true
+        user_id=1
+      end
 
       user_access(user_id).joins(<<-eoruby
         JOIN users ON (users.id= pack_accesses.who_id AND pack_accesses.who_type='User'
@@ -61,6 +144,9 @@ module Pack
     end
     def forever
       @forever || false 
+      if @forever==nil
+        true
+      end
     end
 
     def expected_status
@@ -69,12 +155,17 @@ module Pack
 
     def actions
       if status == 'allowed' && new_end_lic
-        aasm.states(:permitted => true).map(&:to_s)<<'make_longer'
+        aasm.states(:permitted => true).map(&:to_s) + ['make_longer','deny_longer']
       else
         aasm.states(:permitted => true).map(&:to_s)
       end
      
     end
+
+    def actions_for_select
+      actions.map{ |a| [I18n.t("access_actions.#{a}"),a]  }
+    end
+
     def self.states_list
       
       aasm.states.map(&:to_s)
@@ -84,7 +175,10 @@ module Pack
       [:user_access,:admin_user_access]
     end
 
-    #private_class_method :ransackable_scopes
+
+    def action
+
+    end
     def action= arg
       if ! ( actions.detect{ |i| i==arg  } ) 
         raise 'incorect argument'
@@ -99,7 +193,8 @@ module Pack
 
         self.end_lic= new_end_lic
         self.new_end_lic= nil
-
+      elsif arg=='deny_longer'
+        self.new_end_lic= nil
 
       else
         self.status= arg
@@ -109,29 +204,8 @@ module Pack
     
 
 
-  	validates :version, :created_by_key,:who,:status,presence: true
-    validates_uniqueness_of :who_id,:scope => [:version_id,:who_type],:message => :uniq_access
-    validate :date_and_status,:date_correct,:new_end_lic_correct
 
-    aasm :column => :status  do
-     
-      state :requested,:initial => true
-      state :allowed
-      state :denied
-      state :expired
-      event :to_expired do
-        transitions :from =>  :allowed, :to => :expired,:guard => :check_expired? 
-      end
-      event :allow do
-        transitions :from =>  :requested, :to => :allowed
-      end
-
-      event :deny do
-        transitions :from =>  [:requested,:allowed], :to => :denied
-      end
-     
-    end
-
+    
     def get_color
       case status
       when 'allowed'
@@ -146,6 +220,7 @@ module Pack
       
     end
 
+
     def check_expired?
       end_lic && ( end_lic < Date.current )
     end
@@ -159,7 +234,7 @@ module Pack
 
     def date_and_status
       
-      if !forever && !end_lic
+      if !forever && !end_lic 
         self.errors.add(:end_lic,:blank)
       end
     end
@@ -176,10 +251,7 @@ module Pack
     end
 
 
-  	belongs_to :version
-  	belongs_to :created_by,class_name: 'User',foreign_key: :created_by_key
-  	belongs_to :who, :polymorphic => true
-    
+  	
   	
    
 
@@ -214,7 +286,7 @@ module Pack
     def self.user_update( access_params,user_id )
 
      
-      puts user_id
+      
       access=Access.find_by(access_params.slice(:who_id,:who_type,:version_id))   ||       
       #execute_find_query(update_params,user_id)
      Access.new(access_params.slice(:who_id,:who_type,:version_id,:end_lic,:new_end_lic,:forever))
@@ -223,11 +295,11 @@ module Pack
       
       
       if access.new_record?
-        raise "ERROR in new" if access_params[:expected_status]!="new"
-        access.created_by_key = user_id
+        #raise "ERROR in new" if access_params[:expected_status]!="new"
+        access.created_by_id = user_id
         
       else
-        raise "ERROR in existing" if access_params[:expected_status]!=access.status
+        #raise "ERROR in existing" if access_params[:expected_status]!=access.status
         access.attributes= access_params.slice(:new_end_lic)
         
       
@@ -245,12 +317,26 @@ module Pack
       
       
       "#{I18n.t('who_types.'+who_type)} #{who_name}"
-        #!who_user.nil? && who_user ||  !who_group.nil? && who_group || !who_project.nil? && who_project 
     end
     
 
     def who_name
-      who_group || who_project || who_user 
+      try(:who_project) || try(:who_project) || try(:who_user) || who_name_without_preload
+    end
+    def who_name_without_preload
+     
+      case who_type
+      when 'User'
+        who.email
+      when 'Core::Project'
+        who.title
+      when 'Group'
+        who.name
+      else
+        raise 'unrecognizable who_type'
+      end
+
+      
     end
 
   	

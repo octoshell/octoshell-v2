@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320083905) do
+ActiveRecord::Schema.define(version: 20170422084518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -387,19 +387,26 @@ ActiveRecord::Schema.define(version: 20170320083905) do
     t.datetime "updated_at"
   end
 
+  create_table "pack_access_tickets", id: false, force: :cascade do |t|
+    t.integer "access_id"
+    t.integer "ticket_id"
+  end
+
+  add_index "pack_access_tickets", ["access_id"], name: "index_pack_access_tickets_on_access_id", using: :btree
+  add_index "pack_access_tickets", ["ticket_id"], name: "index_pack_access_tickets_on_ticket_id", using: :btree
+
   create_table "pack_accesses", force: :cascade do |t|
     t.integer  "version_id"
     t.integer  "who_id"
     t.string   "who_type"
     t.string   "status"
-    t.integer  "created_by_key"
+    t.integer  "created_by_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "end_lic"
-    t.integer  "support_ticket_id"
     t.date     "new_end_lic"
-    t.integer  "allowed_by_key"
-    t.integer  "lock_version",      default: 0, null: false
+    t.integer  "allowed_by_id"
+    t.integer  "lock_version",  default: 0, null: false
   end
 
   add_index "pack_accesses", ["version_id"], name: "index_pack_accesses_on_version_id", using: :btree

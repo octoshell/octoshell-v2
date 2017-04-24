@@ -4,13 +4,14 @@ module Pack
   class Admin::PackagesController < Admin::ApplicationController
 
     # GET /packages
+    
     def index
     
       
       respond_to do |format|
 
         format.html{
-          @packages=Package.page(params[:page]).per(@per)
+          @packages=Package.page(params[:page]).per(3)
 
         } # index.html.erb
         format.js { 
@@ -25,13 +26,8 @@ module Pack
 
 
     def show
-      puts "FIRST"
-      @test=Core::Cluster.first
-      puts "SECOND"
-      Core::Cluster.all.each do |i|
-        puts i.clustervers.count
-      end
-      puts "Third"
+    
+
 
 
       @package = Package.find(params[:id])

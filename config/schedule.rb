@@ -7,4 +7,7 @@ job_type :rake, "cd :path && RAILS_ENV=:environment #{ruby_path} bundle exec rak
 every 2.hours do
   rake "db:backup"
 end
+every :minute do
+  runner "Pack::Access.expired_accesses"
+end
 

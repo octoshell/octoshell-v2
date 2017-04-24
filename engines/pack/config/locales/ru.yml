@@ -1,6 +1,7 @@
 ru:
-
-    
+  
+    integration:
+      support_theme_name: Заявка на доступ к версиям пакетов
     engine_submenu:
         packages_list: Пакеты
         accesses_list: Доступы
@@ -9,6 +10,25 @@ ru:
       Group: Группа
       'Core::Project': Проект
       User_me: Пользователь(я)
+    mailer_messages:
+      denied: Вам отказано в доступе
+      allowed: Вам разрешен доступ
+      expired: У Вас истек доступ
+      made_longer: Вам продлили доступ
+      denied_longer: Вам отказали в продлении
+      subject: Изменено состояние вашего доступа к версии  %{version_name}
+      body: "%{status_info} к версии  %{version_name}. Для подробностей напишите нам или просмотрите ответы администраторов на ваши заявки"
+    access_actions:
+      denied: отказать
+      requested: запросить
+      allowed: разрешить
+      expired: в просроченные
+      make_longer: продлить
+      deny_longer: отказать в продлении
+    tickets_access:
+      subject:
+        requested: "Заявка для %{who_name} от %{user}"
+        new_end_lic: "Заявка на продление от  %{who_name} от %{user}"
     packages or versions: Пакеты или версии
     versions: версии
     packages: пакеты
@@ -38,7 +58,18 @@ ru:
             value: Значение
         pack/access:
             forever: Без даты окончания
+            not_forever: Без даты окончания
+            ac_forever: С датой окончания
             status: Статус
+            end_lic: Дата окончания лицензии
+            new_end_lic: Дата окончания заявки на продление(если есть)
+            end_lic_if_exists: Дата окончания лицензии(если она конечна)
+            end_lic_readable: Дата окончания лицензии
+            created_by: Доступ создан
+            allowed_by: Доступ одобрен
+            who_name_with_type: Чей доступ
+
+
             
        
              

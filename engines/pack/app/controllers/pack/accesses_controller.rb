@@ -29,6 +29,7 @@ module Pack
     def update
       @access=Access.user_update(access_params,current_user.id)
       @vers_id=access_params[:version_id]
+      @access.allow_create_ticket= true
       if @access.save
         @to='success'
         render "form"
@@ -55,7 +56,6 @@ module Pack
   	def form
        @access=Access.search_access( params,current_user.id)
        @vers_id=params[:version_id]
-       puts @access.as_json
        render_template     
      
     end
@@ -99,7 +99,7 @@ module Pack
   	
 
   	def access_params
-      params.require(:access).permit(:forever,:who_id,:who_type,:proj_or_user, :version_id, :end_lic,:new_end_lic,:from,:expected_status)   
+      params.require(:access).permit(:forever,:who_id,:who_type,:proj_or_user, :version_id, :end_lic,:new_end_lic,:from,:lock_version)   
     end
 
   end

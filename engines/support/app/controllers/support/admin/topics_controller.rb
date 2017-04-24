@@ -28,6 +28,7 @@ module Support
 
     def update
       @topic = Topic.find(params[:id])
+      @topic.first=
       if @topic.update(topic_params)
         redirect_to [:admin, @topic]
       else

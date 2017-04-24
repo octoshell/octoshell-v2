@@ -1,8 +1,2 @@
 nohup: ввод игнорируется
 /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
-The signal USR1 is in use by the JVM and will not work correctly on this platform
-2017-04-20T05:50:47.976Z 1980 TID-gf2 INFO: Running in jruby 9.0.5.0 (2.2.3) 2016-01-26 7bee00d Java HotSpot(TM) Server VM 24.80-b11 on 1.7.0_80-b15 +jit [linux-i386]
-2017-04-20T05:50:47.983Z 1980 TID-gf2 INFO: See LICENSE and the LGPL-3.0 for licensing details.
-2017-04-20T05:50:47.984Z 1980 TID-gf2 INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
-2017-04-20T05:50:47.986Z 1980 TID-gf2 INFO: Booting Sidekiq 4.1.1 with redis options {:url=>nil}
-2017-04-20T05:50:48.010Z 1980 TID-gf2 INFO: Starting processing, hit Ctrl-C to stop

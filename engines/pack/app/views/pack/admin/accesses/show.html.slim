@@ -4,39 +4,46 @@ html
 	br
 	br
 	
-	table  width="50%" 
-		tr 
-			td #{t("from", default: "Package name")}:
-			td 
-				-if @access.who_type=="User"
-					= t('from_user') + ' ' +  @access.who.email 
-				- else
-					= t('from_project') + ' ' +   @access.who.to_s 
-		tr	
-			td 
-				=t("created_by")
-			td #{@access.created_by.email} 
-		tr 
-			td #{t("status")}
-			td #{@access.status}   
-		tr 
-			td #{t("end_lic")}
-			td #{@access.end_lic}   
-		tr 
-			td #{t("new_end_lic")}
-			td #{@access.new_end_lic}   
+
+	
 		
 	br
 	br 
-	table width="50%" 
-		tr 
-			
-				- edit= t("edit", default: "Edit")
-				- delete= t("delete", default: "Delete")
-				-add_v= t("add_v", default: "Add version")
-				td = link_to edit , edit_admin_access_path(@access.id)        
-				td = link_to delete, admin_access_path(@access.id), :method => 'delete',:data => {:confirm => t("confirm", default: "Are you sure")} 
+	div class="row well btn-toolbar"
+		- edit= t("edit", default: "Edit")
+		- delete= t("delete", default: "Delete")
+				
+		= link_to edit , edit_admin_access_path(@access.id),class: "btn btn-success"         
+		= link_to delete, admin_access_path(@access.id), :method => 'delete',:data => {:confirm => t("confirm", default: "Are you sure")},class: "btn btn-success"  
 
+	div class="col-xs-12"
+		table
+			tr
+	 			td rec_id=@access.id
+                  =render "manage_access",item: @access
+
+		/-readable_attrs(@access).reject{ |key,value| key.match(/who/)  }.each do |key,value|
+		-[:end_lic_readable,:status].each do |key|
+			div class="col-xs-12"
+				div class="col-xs-3"
+      				h5 = @access.class.human_attribute_name key
+      			div class="col-xs-9"
+      				h5 = @access.send key
+      	/-readable_attrs(@access).reject{ |key,value| key.match(/who/) }.each do |key,value|
+		/	blockquote
+      	/		h4 = @access.class.human_attribute_name key
+      	/		p = value
+			
+		-if @access.tickets
+			-@access.tickets.each do |ticket|
+				p = link_to ticket,support.admin_ticket_path(ticket) 	
+
+
+
+
+
+	
+				
 	
 			
  

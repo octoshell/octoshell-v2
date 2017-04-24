@@ -7,7 +7,7 @@ module Pack
     before_action :access_init, only: [:edit, :show,:update,:destroy,:manage_access]
 
     def access_init
-     @access = Access.find(params[:id])
+     @access = Access.preload_who.find(params[:id])
      
 
     end
@@ -18,12 +18,15 @@ module Pack
     def index
 
       
+      puts Access.expired_accesses.map(&:end_lic)
       @q = Access.ransack(params[:q])
                   
      
       
-       @accesses = @q.result.page(params[:page]).per(per_record)
-       @accesses = @accesses.preload_who # unless params[:q] && params[:q][:admin_user_access]
+       @accesses = @q.result.page(params[:page]).per(20).preload_who.includes(:version)
+        # unless params[:q] && params[:q][:admin_user_access]
+       
+       #v= @accesses.first.tickets.create!(subject: 'test',reporter: current_user,message: 'test',topic_id: Access.support_access_topic_id )
        
        
      # @accesses=Access.page(params[:page]).per(per_record).includes(:version).preload_who
@@ -37,13 +40,13 @@ module Pack
     end
     
     def show
-     
-   
+      
     end
 
     def manage_access
       
-     @access.update access_params.slice(:lock_version,:action) 
+      
+     @access.update! access_params.slice(:lock_version,:action) 
     
     end
 
@@ -61,9 +64,6 @@ module Pack
       if @access.save
         redirect_to admin_access_path(@access)
       else
-        puts @access.errors.to_h
-        puts @access.errors.to_h.slice(:version_id,:who)
-        add_errors_to_id(@access)
         render :new
       end
     end

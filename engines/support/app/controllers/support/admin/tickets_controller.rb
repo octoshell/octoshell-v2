@@ -27,10 +27,12 @@ module Support
     def create
       @ticket = Ticket.new(ticket_params)
       @ticket.responsible = current_user
+       @ticket.topic=Topic.first
       if @ticket.save
         @ticket.subscribers << current_user
         redirect_to [:admin, @ticket]
       else
+        puts @ticket.errors.full_messages
         render :new
       end
     end

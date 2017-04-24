@@ -1,8 +1,0 @@
-=bootstrap_form_for item,:url => manage_access_admin_access_path(item),method: :post,remote: true do |f|
-    =f.hidden_field :who_id
-	=f.hidden_field :who_type
-	=f.hidden_field :expected_status
-	=f.hidden_field :lock_version
-	=select_field_tag :access,:action, item.actions
-	=select_field_tag :access,:action, item.actions
-	=f.submit t("buttons.send", default: "Send") 

@@ -49,16 +49,6 @@ module Pack
        state == "forever" ? "forever" :  "not_forever"
     end
 
-
-
-    
-   # def end_lic
-    #    
-     #   if self[:end_lic]
-      #    self[:end_lic].to_s(:american)  
-       # end
-    #end     
-
     def end_lic_edit(date,state)
       
       self[:end_lic]= if date!="" && state!="forever"

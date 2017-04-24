@@ -1,5 +1,6 @@
 module Pack
   class Package < ActiveRecord::Base
+    attr_accessor :dwdwdwwd
   	self.locking_column = :lock_version
   	validates :name, :description, presence: true
   	validates :name,uniqueness: true 
