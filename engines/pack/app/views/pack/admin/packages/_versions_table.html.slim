@@ -1,4 +1,36 @@
-- if @versions
+ 	div class="row" style="border:1px solid #cecece;"
+		h3 =t('legend')
+		div class="col-xs-6" 
+			h4 =t('clvers.title')
+			table class='table' 
+				tr
+					td 
+						font color='red'
+							=t 'colors.red'
+
+					td 
+							=t 'clvers.red'
+				tr
+					td
+						font color='green'
+							=t 'colors.green'
+					td 
+							=t 'clvers.green'
+			h5 =t 'clvers.note'
+		div class="col-xs-6" 
+			h4 =t('accesses.title')
+			table class="table" 
+				-['red','blue','green','brown'].each do |col|
+					tr
+						td 
+							font color=col
+								=t "colors.#{col}"
+						td 
+							=t "accesses.#{col}"
+
+
+	
+	- if records
 		h3 =t("Versions")
 		div class="panel-body"
 			table   class="table table-hover" cols="6" cellspacing="30"
@@ -11,9 +43,9 @@
 					-if current_user && may?(:manage,:packages)
 						th 	#{t("actions_pack",default:"actions")}
 
-				- for version in @versions
+				- for version in records
 					tr 
-						td  =link_to version.name, admin_package_version_path(@package.id,version.id)
+						td  =link_to version.name, admin_package_version_path(version.package_id,version.id)
 						td  #{version.description}
 						td 	#{version.end_lic} 
 						
@@ -38,8 +70,5 @@
 						td 
 							-if current_user && may?(:manage,:packages)
 								div class="btn-group pull-right"
-  									=link_to t("edit"), edit_admin_package_version_path(@package.id,version.id), class: "btn btn-default btn-sm" 
-  									button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
-  							 			span class="caret"
-  									ul class="dropdown-menu" role="menu"
-    										li=link_to t("delete"), admin_package_version_path(@package.id,version.id), :method => 'delete',:data => {:confirm => t("ver_confirm")} 
+  									=link_to t("edit"), edit_admin_package_version_path(version.package_id,version.id), class: "btn btn-default btn-sm" 
+									=link_to t("delete"), admin_package_version_path(version.package_id,version.id), :method => 'delete',:data => {:confirm => t("ver_confirm")},class: "btn btn-default btn-sm"  

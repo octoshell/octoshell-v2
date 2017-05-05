@@ -14,4 +14,6 @@ require "kaminari"
 
 module Pack
 	Date::DATE_FORMATS[:american] = "%m-%d-%Y" 
+	mattr_accessor :support_access_topic_id
+	
 end

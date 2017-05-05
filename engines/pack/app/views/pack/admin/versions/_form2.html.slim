@@ -1,69 +1,54 @@
 div class="row"
   div class="col-xs-12"
-    = bootstrap_form_for [:admin,@package,@version],@form_for_options do |f|
+    -if @stale_message
+      h3
+        font color="red"
+          =@stale_message
+    = bootstrap_form_for [:admin,@package,@version] do |f|
       -@f=f
-      - f.stale_params= params[:stale] if !@stale
-      = f.text_field :name
-      = f.text_field :description
-      = f.text_field :folder
-      = f.number_field :cost
-      = f.check_box :deleted
-      = f.hidden_field :lock_version
+      div class="row"
+        div class="col-xs-9"
+          
+          = f.text_field :name
+          = f.text_area :description,rows:3
+          = f.text_field :folder
+          = f.number_field :cost
+          = f.check_box :deleted
+          = f.check_box :service
+          = f.hidden_field :lock_col
     
      
-      =t "state"
-      = f.radio_button :state_select ,  "forever" ,label: t("forever"),id: "disable_id"  
-      = f.radio_button :state_select , "not_forever",label: t("not_forever"),id: "enable_id"  
-      = f.text_field :end_lic ,class: 'form-control my_datepicker',id: "item_id"
-     
-
-      br
-      br
-      h3 = t("Clusters")
-      
-      
-      = f.fields_for :clustervers do |ff|
-        =ff.object.name
-        =ff.hidden_field :core_cluster_id
-        =ff.radio_button  :action,"_destroy", label: t("doesn't exist")  
-        =ff.radio_button  :action,"not_active", label: t("only exist")
-        =ff.radio_button  :action,"active" , label: t("active")  
-      
-      table class="vtop" class="col-xs-12"
+          =t "versions.state"
+          = f.radio_button :state_select ,  "forever" ,label: t("versions.forever"),id: "disable_id"  
+          = f.radio_button :state_select , "not_forever",label: t("versions.not_forever"),id: "enable_id"  
+          = f.text_field :end_lic ,class: 'form-control my_datepicker',id: "item_id"
+         
+          h3 = t("Clusters")
+      div class="row"
+        div class="col-xs-6"
+          = f.fields_for :clustervers do |ff|
+            =ff.object.name
+            =ff.hidden_field :core_cluster_id
+            =ff.radio_button  :action,"_destroy", label: t("doesn't exist")  
+            =ff.radio_button  :action,"not_active", label: t("only exist")
+            =ff.radio_button  :action,"active" , label: t("active")  
+        
+        div class="col-xs-12"
           = f.fields_for :version_options do |ff|
-            tr
-              td 
-                = radio_button "name_sel"+ ff.object.id.to_s,"to_s","auto",class: "select-auto"
-                = ff.autocomplete_field :name, {source: admin_options_categories_path,display: "name"},{id: "select"+ ff.object.id.to_s}
-
-                = radio_button "name_sel"+ ff.object.id.to_s,"to_s","no",class: "select-auto",checked: true
-                = ff.text_field :name
-              td 
-                = ff.text_area :value,rows: 3
-            tr
-              td 
-                = ff.check_box :_destroy
-            tr
-              td -----------------------
-              
-    
-           
-      
-      
-     
-
-      div id="new_options"
-      /=link_to_add_options_fields  f 
-      button class="btn btn-primary btn_access" type="button" id="options" =t("new") 
-      br
-      br
-      br
+            =render "version_opts_fields",ff: ff
+        
+          div id="new_options"
+      div class="row"
+        button class="btn btn-primary btn_access" type="button" id="options" =t("new") 
+        br
+        br
+        br
 
 
       	
      
-      /= f.form_group do
-      = f.submit t("buttons.save", default: "Save")
+        /= f.form_group do
+        = f.submit t("buttons.save", default: "Save")
 = javascript_tag do 
   = render(:partial => 'form', :formats => [:js]) 
 

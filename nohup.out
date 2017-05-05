@@ -391,3 +391,1004 @@ LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/
 LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
 LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
 LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1492981463_6d646a0/rich.html
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493018879_6c2a4ba/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493018879_6c2a4ba/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493018879_6c2a4ba/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493018879_6c2a4ba/rich.html
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+AAAAAAAA
+expired_accesses
+String
+allowed
+allowed
+allowed
+allowed
+allowed
+allowed
+ZZZZZ
+      
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493023265_e6b0f36/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493023265_e6b0f36/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493023265_e6b0f36/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493023265_c50cf7f/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493023265_c50cf7f/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493023265_c50cf7f/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493023265_b605b9a/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493023265_b605b9a/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493023265_b605b9a/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefoxLAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/binLAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493023265_fe81c0a/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493023265_fe81c0a/rich.html", :query=>nil, :fragment=>nil}LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493023265_fe81c0a/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493023265_b605b9a/rich.html
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493023265_c50cf7f/rich.html
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493023265_e6b0f36/rich.htmlLAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493023265_fe81c0a/rich.html
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493023297_8791f57/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493023297_8791f57/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493023297_8791f57/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493023297_8791f57/rich.html
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493023311_7371eb9/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493023311_7371eb9/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493023311_7371eb9/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493023311_7371eb9/rich.html
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493031644_42e7828/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493031644_42e7828/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493031644_42e7828/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493031644_42e7828/rich.html
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493041139_58f84bc/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493041139_58f84bc/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493041139_58f84bc/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493041139_58f84bc/rich.html
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/octoshell/engines/pack/app/workers/pack/pack_worker.rb:12: warning: Found '=' in conditional, should be '=='.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/octoshell/engines/pack/app/workers/pack/pack_worker.rb:12: warning: Found '=' in conditional, should be '=='.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/octoshell/engines/pack/app/workers/pack/pack_worker.rb:12: warning: Found '=' in conditional, should be '=='.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/octoshell/engines/pack/app/workers/pack/pack_worker.rb:12: warning: Found '=' in conditional, should be '=='.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493576518_1506eec/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493576518_1506eec/rich.html", :query=>nil, :fragment=>nil}LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493576518_6a81249/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493576518_6a81249/rich.html", :query=>nil, :fragment=>nil}
+
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493576518_1506eec/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493576518_6a81249/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493576518_9e1de78/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493576518_9e1de78/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493576518_9e1de78/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/binLAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefoxLAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/binLAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/binLAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/binLAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493576518_6a81249/rich.htmlLAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493576518_9e1de78/rich.htmlLAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493576518_1506eec/rich.html
+
+
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493577680_68395c9/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493577680_68395c9/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493577680_68395c9/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493577680_68395c9/rich.html
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
+/home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
+The signal USR1 is in use by the JVM and will not work correctly on this platform
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493577905_db1b5fb/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493577905_db1b5fb/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493577905_db1b5fb/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493577905_d35c999/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493577905_d35c999/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493577905_d35c999/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: URI parsing pass 1 : file:////home/andrey/octoshell/tmp/letter_opener/1493577905_27ed75a/rich.html -> {:scheme=>"file", :user=>nil, :password=>nil, :host=>"", :port=>nil, :path=>"//home/andrey/octoshell/tmp/letter_opener/1493577905_27ed75a/rich.html", :query=>nil, :fragment=>nil}
+LAUNCHY_DEBUG: Checking if class Launchy::Application::Browser is the one for handles?(file:////home/andrey/octoshell/tmp/letter_opener/1493577905_27ed75a/rich.html)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/binLAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Windows is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Darwin is the one for matches?(linux)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::HostOsFamily::Nix is the one for matches?(linux)}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Mri is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::RubyEngine::Jruby is the one for is_current_engine?(jruby)}
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : possibility from app_list : firefox
+LAUNCHY_DEBUG: Checking if class Launchy::Detect::NixDesktopEnvironment::Kde is the one for is_current_desktop_environment?()}
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `kfmclient' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : found executable /usr/bin/firefox
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `iceweasel' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `seamonkey' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `opera' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `mozilla' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `netscape' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application : Unable to find `galeon' in /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bin, /home/andrey/.rbenv/versions/jruby-9.0.5.0/bin, /home/andrey/.rbenv/libexec, /home/andrey/.rbenv/plugins/ruby-build/bin, /home/andrey/.rbenv/shims, /home/andrey/.rbenv/bin, /home/andrey/bin, /home/andrey/.local/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/games, /usr/local/games, /snap/bin, /usr/lib/jvm/java-7-oracle/bin, /usr/lib/jvm/java-7-oracle/db/bin, /usr/lib/jvm/java-7-oracle/jre/bin
+LAUNCHY_DEBUG: Launchy::Application::Browser : Using browser value 'firefox'
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493577905_d35c999/rich.html
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493577905_27ed75a/rich.html
+LAUNCHY_DEBUG: commandline_normalized => firefox file:////home/andrey/octoshell/tmp/letter_opener/1493577905_db1b5fb/rich.html

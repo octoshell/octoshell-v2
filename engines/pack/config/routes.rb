@@ -25,6 +25,7 @@ Pack::Engine.routes.draw do
   end
 
   root "packages#index"
+  resources :versions,only: :show
   resources :packages do
     collection do
       get 'json'
@@ -41,5 +42,5 @@ Pack::Engine.routes.draw do
     end
 
   end
-  delete 'destroy_request/:id',to: 'accesses#destroy_request',as: 'access_req'
+ 
 end

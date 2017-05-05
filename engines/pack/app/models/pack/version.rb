@@ -8,6 +8,7 @@ module Pack
     american_date_proccess
     attr_accessor :user_accesses
 
+    validate :work_with_stale
   	validates :name, :description,:package, presence: true
     validates_uniqueness_of :name,:scope => :package_id
   	belongs_to :package,inverse_of: :versions
@@ -15,7 +16,6 @@ module Pack
     has_many :version_options,inverse_of: :version,:dependent => :destroy
   	has_many :accesses,:dependent => :destroy
     accepts_nested_attributes_for :version_options,:clustervers, allow_destroy: true
-    accepts_my_nested_attributes_for :version_options
     validates_associated :version_options,:clustervers
     scope :finder, ->(q) { where("lower(name) like lower(:q)", q: "%#{q.mb_chars}%").limit(10) }
     validate :date_and_state
@@ -26,10 +26,106 @@ module Pack
       event :to_expired do
         transitions :from =>  :available, :to => :expired
       end
-     
+    
+    end
+    def add_errors(to)
+      to.changes.except("lock_col","updated_at").each do  |key,val|
+          to.errors.add(key.to_sym,I18n.t("stale_error",m:val[0]))
+        end
+    end
+
+    def work_with_stale
+
+
+      if changes["lock_col"]
+       
+        add_errors(self)
+        version_options.each do |opt|
+          add_errors(opt)
+        end
+        clustervers.each do |opt|
+          add_errors(opt)
+        end
+        restore_attributes([:lock_col])
+      end
+        
+
+    end
+
+    before_save :incr
+    def incr
+      self.lock_col= lock_col.to_i + 1
+    end
+
+    after_commit :send_emails 
+
+    def send_emails
+      
+        if previous_changes["state"]
+            accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status !='denied'").each do |ac|
+              ::Pack::PackWorker.perform_async(:email_vers_state_changed, ac.id)  
+            end
+        end
+
     end
 
 
+    def self.ransackable_scopes(auth_object = nil)
+      [:user_access]
+    end
+
+    def self.expired_versions
+      Version.transaction do 
+       where("end_lic < ? and state='available'", Date.today).each{ |ac| ac.update!(status: 'expired') }
+      end
+            
+    end
+    \
+    def self.allowed_for_users user_id
+     
+     where("pack_versions.service IS NULL OR pack_versions.service= 'f' OR pack_accesses.who_type!='denied'")
+
+    end
+
+    def self.joins_user_accesses user_id
+      joins(
+        <<-eoruby
+        LEFT JOIN "core_members" ON ( "core_members"."user_id" = #{user_id}   )
+
+        LEFT JOIN "user_groups" ON ( "user_groups"."user_id" = #{user_id}   )
+
+         LEFT JOIN pack_accesses ON (pack_accesses.version_id = pack_versions.id
+        AND (pack_accesses.who_type='User' AND pack_accesses.who_id=#{user_id} OR
+         pack_accesses.who_type='Core::Project' AND pack_accesses.who_id=core_members.project_id OR
+         pack_accesses.who_type='Group' AND pack_accesses.who_id="user_groups"."group_id"  ))
+
+        
+       
+          
+        eoruby
+        )
+
+    end
+
+
+    
+
+    def self.user_access user_id
+      if user_id==true
+        user_id=1
+      end
+      select("pack_versions.*").joins(:accesses).merge(Access.inner_join_user_access user_id)
+    end
+
+    def deleted?
+
+        deleted || package.deleted
+    end
+
+    def readable_state
+
+      I18n.t "versions.#{state}"
+    end
    
 
     def date_and_state
@@ -49,17 +145,7 @@ module Pack
        state == "forever" ? "forever" :  "not_forever"
     end
 
-    def end_lic_edit(date,state)
-      
-      self[:end_lic]= if date!="" && state!="forever"
-        date= 
-         Date.strptime date,Date::DATE_FORMATS[:default]
-      else
-        ""
-      end
-      
-      date
-    end 
+   
     def edit_state_and_lic(state,date)
       
       if state=="forever"
@@ -116,17 +202,32 @@ module Pack
     end
      
 
+    def edit_opts
+      if (hash=@params.delete(:version_options_attributes))
+        
+        ( hash.values.select{ |i| i[:id]  }.map{ |i| i[:id].to_i  } -  version_options.map(&:id) ).each do |opt_id|
+          opt_params= hash.values.detect{ |val| val[:id].to_i == opt_id  } 
+          opt=version_options.new(opt_params.except(:_destroy))
+          opt.mark_for_destruction
+          opt.errors.add(:name,I18n.t("stale_error_nested"))
 
+         hash.delete_if{ |key,val| val[:id].to_i == opt_id  }
+          self.version_options_attributes= hash  
+        end
+        
+      end 
+    end
           
        
     def vers_update params
       
-      params= params.require(:version)
-      (hash=params.delete(:version_options_attributes)) && self.version_options_attributes= hash
-       update_clustervers params.delete(:clustervers_attributes)
+
+      @params= params.require(:version)
+      edit_opts
+       update_clustervers @params.delete(:clustervers_attributes)
        
-      edit_state_and_lic( params.delete(:state_select),params.delete(:end_lic) ) 
-      update(version_params params)
+      edit_state_and_lic( @params.delete(:state_select),@params.delete(:end_lic) ) 
+      assign_attributes(version_params @params)
 
     end
     def update_clustervers hash
@@ -171,7 +272,7 @@ module Pack
     { id: id, text: (name + self.package_id) }
     end
     def version_params params
-      params.permit(:name, :description,:version,:folder,:cost,:deleted,:lock_version)
+      params.permit(:name, :description,:version,:folder,:cost,:deleted,:lock_col,:service)
     end
    
   end

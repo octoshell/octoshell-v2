@@ -10,31 +10,22 @@ module Pack
 
     end    
 
-  	def create
-      if access_params[:from]=='no_admin'
-        @type=   access_params[:proj_or_user]== 'user' ?  'User' : 'Core::Project'
-        @who_id=   access_params[:proj_or_user]== 'user' ?  current_user.id : access_params[:proj_or_user]
-        @user=Access.new do |u|
-          u.who_type=@type
-          u.who_id=@who_id
-          u.user_id=current_user.id
-          u.version_id=access_params[:version_id]
-          u.requested!
-        end
-      end
-        @user.save!	 
-    	render nothing: :true
-  	end
+
 
     def update
       @access=Access.user_update(access_params,current_user.id)
       @vers_id=access_params[:version_id]
       @access.allow_create_ticket= true
-      if @access.save
+      @version=@access.version
+
+      if @version.deleted? || @version.service
+        render nothing: true
+       
+      elsif @access.save
         @to='success'
         render "form"
       else
-        
+       puts  @access.errors.full_messages
         render_template
       end
         
@@ -46,7 +37,7 @@ module Pack
       @access=Access.user_update(access_params,current_user.id)
       @vers_id=access_params[:version_id]
       @access.destroy
-      @to='success'
+      @to='delete_success'
       render "form"
       
      
@@ -72,19 +63,16 @@ module Pack
             @to='allowed'
           when 'denied'
             @to='denied'
+          when 'expired'
+            @to='allowed'
           else
-            puts( 'ERROR')  
+            raise 'Error in @access status'
         end
       end
       render "form"
     end
 
-    def destroy_request
-      
-      @access=Access.find(params[:id])
-      @access.destroy
-      render nothing: :true
-    end
+    
 
 
   

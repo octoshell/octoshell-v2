@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170422084518) do
+ActiveRecord::Schema.define(version: 20170503233002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -457,8 +457,9 @@ ActiveRecord::Schema.define(version: 20170422084518) do
     t.string   "folder"
     t.date     "end_lic"
     t.string   "state"
-    t.integer  "lock_version", default: 0,     null: false
-    t.boolean  "deleted",      default: false
+    t.integer  "lock_col",    default: 0,     null: false
+    t.boolean  "deleted",     default: false
+    t.boolean  "service",     default: false, null: false
   end
 
   add_index "pack_versions", ["package_id"], name: "index_pack_versions_on_package_id", using: :btree

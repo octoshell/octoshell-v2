@@ -3,25 +3,24 @@ module Pack
   	#enum status: [:requested,:allowed,:denied]
   	#@a=[t("Create request"),t("new date")]
     
-    if !Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
+    #if !Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
 
-      Support::Topic.create!(name: I18n.t('integration.support_theme_name'))
+      #Support::Topic.create!(name: I18n.t('integration.support_theme_name'))
 
-    end
+    #end
     #self.support_access_topic_id=Support::Topic.find_by(name: I18n.t('integration.support_theme_name')).id
-    def self.support_access_topic_id
-     @@support_access_topic_id ||=Support::Topic.find_by(name: I18n.t('integration.support_theme_name')).id
-    end
 
     def self.expired_accesses
-      where("end_lic > ?", Date.today)
-      puts "ZZZZZ"
+      Access.transaction do 
+       where("end_lic < ? and status='allowed'", Date.today).each{ |ac| ac.update!(status: 'expired') }
+      end
+            
     end
 
     include AASM
     american_date_proccess
     validates :version, :created_by,:who,:status,presence: true
-    validates_uniqueness_of :who_id,:scope => [:version_id,:who_type],:message => :uniq_access
+    validates_uniqueness_of :who_id,:scope => [:version_id,:who_type]
     validate :date_and_status,:date_correct,:new_end_lic_correct
     attr_accessor :allow_create_ticket
     aasm :column => :status  do
@@ -61,7 +60,7 @@ module Pack
         }
 
     after_commit :send_email,if: Proc.new{ who_type=='User' ||  who_type=='Core::Project'} 
-    after_save :create_ticket,if: Proc.new{ allow_create_ticket && (new_end_lic || status=='requested')} 
+    after_save :create_ticket,if: Proc.new{ allow_create_ticket && (new_end_lic && changes[:new_end_lic] || status=='requested')} 
 
     def send_email
 
@@ -72,7 +71,7 @@ module Pack
         if  previous_changes["new_end_lic"] && previous_changes["new_end_lic"][0]
           if  previous_changes["end_lic"]
             ::Pack::PackWorker.perform_async(:access_changed, [id,"made_longer"])
-          else
+          elsif !previous_changes["new_end_lic"][1] 
              ::Pack::PackWorker.perform_async(:access_changed, [id,"denied_longer"])
           end
          
@@ -80,7 +79,7 @@ module Pack
       
 
       end
-      #::Pack::PackWorker.perform_async(:project_activated, id)
+      
       
     end
     def create_ticket  
@@ -90,18 +89,19 @@ module Pack
       elsif status=='requested'
         I18n.t('tickets_access.subject.requested',who_name: who_name_with_type,user: created_by.email) 
       end 
+      Pack.support_access_topic_id||= Support::Topic.find_by(name: I18n.t('integration.support_theme_name')).id
 
-      tickets.create!(subject: subject,reporter: created_by,message: subject,topic_id: Access.support_access_topic_id )
+      tickets.create!(subject: subject,reporter: created_by,message: subject,topic_id: Pack.support_access_topic_id)
     end
-    def self.admin_user_access(user_id)
+    def self.inner_join_user_access(user_id)
 
 
       if user_id==true
         user_id=1
       end
 
-      user_access(user_id).joins(<<-eoruby
-        JOIN users ON (users.id= pack_accesses.who_id AND pack_accesses.who_type='User'
+      user_access_without_select(user_id).where(<<-eoruby
+        (#{user_id} = pack_accesses.who_id AND pack_accesses.who_type='User'
         OR pack_accesses.who_type='Core::Project' AND "core_members"."user_id" = #{user_id} 
         OR pack_accesses.who_type='Group' AND "user_groups"."user_id" = #{user_id}   )
         eoruby
@@ -116,8 +116,12 @@ module Pack
     end
 
 
+    
     def self.user_access_without_select(user_id)
 
+       if user_id==true
+        user_id=1
+      end
 
         joins(
         <<-eoruby
@@ -140,13 +144,19 @@ module Pack
     end
     
     def forever=(arg)
-      @forever= arg=='false' ? false : true 
+      @forever= (arg=='false' ? false : true )
     end
     def forever
       @forever || false 
+    end
+    def forever_in_valid
+      
       if @forever==nil
-        true
+        @forever=true
       end
+      @forever
+      
+      
     end
 
     def expected_status
@@ -154,8 +164,12 @@ module Pack
     end
 
     def actions
-      if status == 'allowed' && new_end_lic
-        aasm.states(:permitted => true).map(&:to_s) + ['make_longer','deny_longer']
+      if end_lic
+        if new_end_lic 
+          aasm.states(:permitted => true).map(&:to_s) + ['make_longer','deny_longer']
+        else
+          aasm.states(:permitted => true).map(&:to_s) + ['make_longer']
+        end
       else
         aasm.states(:permitted => true).map(&:to_s)
       end
@@ -171,8 +185,13 @@ module Pack
       aasm.states.map(&:to_s)
       
     end
+    def self.states_list_readable
+      
+      aasm.states.map{ |st| [I18n.t( "access_states.#{st}" ),st ]  }
+      
+    end
     def self.ransackable_scopes(auth_object = nil)
-      [:user_access,:admin_user_access]
+      [:user_access,:inner_join_user_access]
     end
 
 
@@ -181,14 +200,13 @@ module Pack
     end
     def action= arg
       if ! ( actions.detect{ |i| i==arg  } ) 
-        raise 'incorect argument'
+        errors.add( :status,'incorect argument')
       end
       if arg == 'make_longer'
 
         if !new_end_lic ||( end_lic >= new_end_lic )
 
-          raise 'incorect new_end_lic'
-
+           errors.add( :new_end_lic,"incorect_date")
         end
 
         self.end_lic= new_end_lic
@@ -215,7 +233,7 @@ module Pack
       when 'denied'
         'red'
       when 'expired'
-        'yellow'
+        'brown'
       end
       
     end
@@ -233,17 +251,19 @@ module Pack
 
 
     def date_and_status
-      
-      if !forever && !end_lic 
+      puts @forever
+      puts (!forever_in_valid)
+      if !forever_in_valid && !end_lic 
         self.errors.add(:end_lic,:blank)
       end
     end
 
     def new_end_lic_correct
       
-      if end_lic && new_end_lic && end_lic > new_end_lic
-        self.errors.add(:new_end_lic,:incorect)
+      if end_lic && new_end_lic && ( end_lic >= new_end_lic || !["expired","allowed"].include?(status))
+        self.errors.add(:new_end_lic,:incorect_date)
       end
+
     end
 
     def end_lic_readable
@@ -251,16 +271,6 @@ module Pack
     end
 
 
-  	
-  	
-   
-
-    def self.execute_find_query params,user_id
-
-      
-            
-
-    end
     def self.search_access ( params,user_id )
 
       #update_params=params.clone

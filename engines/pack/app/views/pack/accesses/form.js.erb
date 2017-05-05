@@ -5,4 +5,8 @@
 	}
 	bind_func_disable(wrap_str("enable"),wrap_str("disable"),wrap_str("item"));
 
-	//$(".select_ajax_access[vers_id='" + my_id + "']").each(make_form);
+
+	<%if @to=="success" || @to="delete_success" %>
+		
+		$('#accesses_<%=@access.version_id%>').html("<%=escape_javascript(render :partial => 'pack/packages/accesses',locals: {accesses: Pack::Version.find(@access.version_id).accesses.user_access_without_select(current_user.id)})%>");
+	<%end %>

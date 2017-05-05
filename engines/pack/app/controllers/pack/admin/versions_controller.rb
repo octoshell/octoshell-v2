@@ -16,6 +16,10 @@ module Pack
       end
     end
 
+
+
+    
+
     def index
       
       respond_to do |format|
@@ -42,14 +46,13 @@ module Pack
     end
 
     def create
-      #puts  clusters_params[:clusters]
-      #@par=params[:version].delete(:clusters)
+      
       @version = Version.new
       @version.package=@package
       if @version.vers_update(params) 
        
         
-        redirect_to admin_package_path(@package)
+        redirect_to admin_package_version_path(@package,@version)
 
       else
         
@@ -86,33 +89,41 @@ module Pack
 
       
       @version = Version.find(params[:id])
-      
+     
       
       #@version.version_options_my_attributes=params[:version][:version_options_attributes]
       #@version.update_clustervers params[:version][:my_clustervers]
       #VersionOption.create!(name: 'second',value: 'value',version_id: @version.id)
-      #@version.clustervers_attributes=clustervers_update(params[:version][:p_clvers]) 
-      begin
-      if @version.vers_update(params)
+      
+
+      @version.vers_update params
+
+      @stale_message=t("stale_message") if @version.changes["lock_col"]
+      if @version.save
         
-        redirect_to admin_package_path(@package)
+        
+        redirect_to admin_package_version_path(@package,@version)
+        
+
       else
        
         #puts @version.errors.messages
          
         
+         
         render :edit
       end
-      rescue ActiveRecord::StaleObjectError
-        @form_for_options={builder: StaleFormBuilder}
-        @version.restore_attributes([:lock_version])
-        render :edit
-      end
+     
     end
 
+   
     def show
       
-      @version = Version.find(params[:id])
+      @version = Version.includes(:version_options,clustervers: :core_cluster).find(params[:id])
+
+
+      render 'pack/versions/show'
+
       
     
     end

@@ -3,29 +3,36 @@ div class="package-header"
   
     
    / = bootstrap_form_for @q, url: admin_accesses_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
-
-  = bootstrap_form_for :custom_q, url: packages_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
+  
+  = bootstrap_form_for @q_form,as: "q", url: packages_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
+    -@f=f
     =t('packages or versions')
     div class='margin'
-      =f.label t('packages')
+      =f.label t('pack_search.packages.packages')
       =radio_button_tag :type, 'packages',@model_table=='packages'
       br
-      =f.label t('versions')
+      =f.label t('pack_search.packages.versions')
       =radio_button_tag :type, 'versions',@model_table=='versions'
+    div id='type_aim'
+    =f.check_box :user_access,{label: t("pack_search.packages.my_packs") }, current_user.id
+    =f.select :accesses_who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } )  , { label: t("pack_search.packages.who_type") },{class: "change_user_access", multiple: true}
+    =f.select :accesses_status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{class: "change_user_access",multiple: true} 
+     =f.check_box :clustervers_active_in,{label: t("pack_search.packages.active_cl")},"1",""
+    =f.autocomplete_field :clustervers_core_cluster_id_in,{label: t("pack_search.packages.clusters"), source:  core.admin_clusters_path},include_blank: true
 
-      =f.text_field :accesses_who_type_eq 
-      =f.text_field :name_eq
-      =f.select :accesses_who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } )  , { label: Pack::Package.human_attribute_name(:who_type) },{multiple: true}
+      /=f.autocomplete_field :user_access,{display: "User.find(user_access).email",label: t("connected_to_user"), source:  main_app.users_path},include_blank: true
+    
+    =f.check_box :deleted_eq,{label: t("pack_search.packages.show_deleted") },"","0"
+    /=f.check_box :service_eq,{label: t("pack_search.packages.show_service") },"","0"
       
     = f.form_group do
-        = f.submit t("buttons.save", default: "Save")
+        = f.submit t("actions.find")
 
 
-  
+ 
 
 
-  //= bootstrap_form_for :search, url: packages_path, method: :get, layout: :horizontal do |f|
-    = f.select :deleted, [[t("not_deleted", default: "Show only existing packages"),false], [ t("deleted"   efault: "Show only deleted packages"),true], [ t("show_active", default: "Show only active packages"),"active versions"]], { label: t("deleted?", default: "deleted/not deleted") }, { class: "selectpicker" } 
+     
    
   br
   br
@@ -37,5 +44,8 @@ div class="package-header"
   	=paginate(@records, :remote => true).to_s
         
       
-/= javascript_tag do 
-    = render(:partial => 'index', :formats => [:js]) 
+= javascript_tag do 
+      = render(:partial => 'show', :formats => [:js]) 
+      = render(:partial => 'pack/packages/index', :formats => [:js],:locals=>{f: @f}) 
+
+

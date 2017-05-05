@@ -8,21 +8,52 @@ module Pack
     def index
     
       
+     @q_form=OpenStruct.new(params[:q])
+      @model_table=params[:type] || 'packages'
+      model_table= if @model_table=='packages'
+       Package.select("pack_packages.*")
+      else 
+        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:version_options)#.joins(:accesses).where("pack_accesses.status = 'expired'")
+      end
+      
+
+
+      if @model_table=='packages' 
+        permanent = [:user_access,:deleted_eq]
+        q_hash=Hash[@q_form.to_h.except(*permanent)
+          .map{ |key,val| ["versions_#{key}",val]  }].
+          merge @q_form.to_h.slice(*permanent)  
+      else 
+        q_hash = @q_form.to_h
+        q_hash[:package_deleted_eq] =q_hash[:deleted_eq]
+        
+      end
+     
+
+      @q=model_table.ransack(q_hash)
+     
+      @records=@q.result(distinct: true).order(:id).page(params[:page]).per(6)
+      
+    
       respond_to do |format|
 
-        format.html{
-          @packages=Package.page(params[:page]).per(3)
 
+        format.html{
+          
         } # index.html.erb
         format.js { 
-           
             
-           @packages=Package.page(params[:page]).per(@per)
-              
+            render_paginator(@records,"#{@model_table}_table")
         }
+        format.json do
+          @packages = Package.finder(params[:q])    
+          render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count } 
+        end
+
       end
       
     end
+    
 
 
     def show

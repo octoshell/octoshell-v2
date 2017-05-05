@@ -22,7 +22,7 @@ class ActionView::Helpers::FormBuilder
     if options[:display]
 
       display_method=  options[:display]
-      raise "error" if not   display_method.is_a?(String) 
+      raise "display option must be a string" if not   display_method.is_a?(String) 
       begin 
         result= object.instance_eval(display_method) 
       rescue NoMethodError 
@@ -38,6 +38,13 @@ class ActionView::Helpers::FormBuilder
 
     
 end
+
+
+def admin? 
+  controller.class.name.split("::").include? "Admin"
+end
+
+
 
 
 class StaleFormBuilder<BootstrapForm::FormBuilder

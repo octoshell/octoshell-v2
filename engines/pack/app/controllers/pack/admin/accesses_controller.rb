@@ -18,7 +18,7 @@ module Pack
     def index
 
       
-      puts Access.expired_accesses.map(&:end_lic)
+     
       @q = Access.ransack(params[:q])
                   
      

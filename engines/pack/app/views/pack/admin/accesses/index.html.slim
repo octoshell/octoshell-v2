@@ -5,13 +5,13 @@ div class="package-header"
  
   = bootstrap_form_for @q, url: admin_accesses_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
    
-    = f.text_field :who_id_eq
+    
     = f.select :who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } )  , { label: Pack::Access.human_attribute_name(:who_type) },{multiple: true}
 
     div id='who_type_aim'
-    = f.select :status_in, Pack::Access.states_list,{label:  Pack::Access.human_attribute_name(:status)},{multiple: true} 
-    = f.autocomplete_field :admin_user_access,label: t("connected_to_user"), source:  main_app.users_path 
-    = f.check_box :new_end_lic_not_null,label: Pack::Access.human_attribute_name(:new_end_lic)
+    = f.select :status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{multiple: true} 
+    = f.autocomplete_field :inner_join_user_access,{label: t("connected_to_user"), source:  main_app.users_path},include_blank: true
+    = f.autocomplete_field :version_id_in,{label: Pack::Access.human_attribute_name(:version), source:  admin_versions_path}, multiple: true
     = f.form_group do
       = f.submit t("actions.find"), class: "btn btn-primary"
     -@f=f

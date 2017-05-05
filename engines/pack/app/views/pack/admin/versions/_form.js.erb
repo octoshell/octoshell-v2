@@ -4,22 +4,12 @@ $(".select-auto").not("[checked]").next().find("select, input").prop('disabled',
 $(".select-auto").not("[checked]").next().removeClass('has-error').find("span").remove(".help-block");
 	
 	
-	//$(".hid-decision").not("[checked]").parents(".radio").next
-	//
 	$(document).on("change",".select-auto",function(){
 		
-		 //alert ( $(this).parents("td").find(".select-auto").attr('id'));
-		 $(this).parents("td").find("select, input[type='text']").prop('disabled',true);
-		$(this).next().find("select, input").prop('disabled',false);
 		
-		//$(this).parents("td").find(".select-auto").not("[checked]").next("div").find("select").prop('disabled',true);
-		//$(this).parents("td").find(".select-auto").not("[checked]").next("div").find("input").prop('disabled',true);
-
-		//$(this).next("div").find("select, input").prop('disabled',false);
+		$(".select-auto:checked").next().find("select, input").prop('disabled',false);
+		$(".select-auto").not(":checked").next().find("select, input").prop('disabled',true);
 		
-			
-			
-
 		}); 
 
 

@@ -12,22 +12,20 @@ html
 			td #{t("description", default: "Description")}:
 			td #{@package.description} 
 		
-			 
-		
 	br
-	br 
-	table width="50%" 
-		tr 
-			-if current_user && may?(:manage,:packages)
-				- edit= t("edit", default: "Edit")
-				- delete= t("delete", default: "Delete")
-				-add_v= t("add_v", default: "Add version")
-				td = link_to edit , edit_admin_package_path(@package.id)        
-				td = link_to add_v, new_admin_package_version_path(@package.id)
-				td = link_to delete, admin_package_path(@package.id), :method => 'delete',:data => {:confirm => t("confirm", default: "Are you sure")} 
+	br
+	div class="panel  panel-heading clearfix"
+
+      		 
+		= link_to t("edit") , edit_admin_package_path(@package.id),class: "btn btn-default"	        
+		= link_to t("add_v"), new_admin_package_version_path(@package.id),class: "btn btn-default"	
+		= link_to t("delete"), admin_package_path(@package.id), :method => 'delete',:data => {:confirm => t("confirm", default: "Are you sure")},class: "btn btn-default"	 
+	
+	
+	
 
 	div id="versions_table"
-		=render 'versions_table'
+		=render 'versions_table',records: @versions
 	
 	div id="ajax_paginator" 
 		=paginate(@versions, :remote => true).to_s

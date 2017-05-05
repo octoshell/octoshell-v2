@@ -4,23 +4,12 @@ html
 	br
 	br
 	
-	table  class="col-xs-6"
-		tr 
-			td #{t("name", default: "Package name")}:
-			td #{@package.name}
-		tr 
-			td #{t("description", default: "Description")}:
-			td #{@package.description} 
+	table  class="table"
+		-["name","description","deleted"].each do |a|
+			tr 
+				td =Pack::Package.human_attribute_name a
+				td #{@package.public_send a}
 		
-
-		
-			
-	br
-	br
-
-	
-	
-   	
 
 	br
 	br 

@@ -6,28 +6,60 @@ module Pack
     
 
     # GET /packages
-    def index
-      
+    # 
+    def get_search_form
 
-      
-      #puts  ( ['packages','versions'].map  { |i| [t(i),i]  } )
+    end
+    def index
+  
+      @q_form=OpenStruct.new(params[:q] || {user_access: current_user.id})
       @model_table=params[:type] || 'packages'
       model_table= if @model_table=='packages'
-       Package
+       Package.select("pack_packages.*")
       else 
-        Version.includes(:clustervers)
+        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:version_options)#.joins(:accesses).where("pack_accesses.status = 'expired'")
       end
-      @q=model_table.ransack(params[:q])
-      @records=@q.result.page(params[:page]).per(2)
+      
 
-      if @model_table=='versions'
-        Version.preload_and_to_a(current_user.id,@records) 
+
+      if @model_table=='packages' 
+        permanent = [:user_access,:deleted_eq,:id_in]
+        q_hash=Hash[@q_form.to_h.except(*permanent)
+          .map{ |key,val| ["versions_#{key}",val]  }].
+          merge @q_form.to_h.slice(*permanent)  
+      else 
+        q_hash = @q_form.to_h
+        q_hash[:package_deleted_eq] =q_hash[:deleted_eq]
         @options_for_select=Core::Project.joins(members: :user).where(core_members: {owner: true}).map do |item|
         [t('project') + ' ' + item.title,item.id]
         end
         @options_for_select<<[t('user'),"user"] 
       end
-      #@model_table=params[:version]
+
+      @q=model_table.ransack(q_hash)
+     
+      @records=@q.result(distinct: true).order(:id)
+       if q_hash[:user_access]=='0'
+
+        if @model_table=='packages'
+          @records =  @records.joins(<<-eoruby
+          LEFT JOIN pack_versions ON pack_versions.package_id = pack_packages.id
+          eoruby
+
+          )
+
+        end
+        @records=@records.merge( Version.joins_user_accesses(current_user.id))
+
+      end
+       @records=@records.allowed_for_users(current_user.id).page(params[:page]).per(6)
+
+       Version.preload_and_to_a(current_user.id,@records)  if @model_table=='versions'
+
+      #puts @records.length
+
+     
+      
       respond_to do |format|
 
 
@@ -47,11 +79,8 @@ module Pack
       
     end
     def json
-      @packages = Package.finder(params[:q])
-      @hash=@packages.map do |item|
-          {label: item.name, value: item.id}
-      end
-      render json: @hash
+        @packages = Package.finder(params[:q])    
+        render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count } 
 
     end
 
@@ -65,8 +94,7 @@ module Pack
       @options_for_select<<[t('user'),"user"] 
 
       @package = Package.find(params[:id])
-      @versions = @package.versions.page(params[:page]).per(6).includes(clustervers: :core_cluster).uniq
-      
+      @versions = @package.versions.order(:id).page(params[:page]).per(6).includes(clustervers: :core_cluster).uniq
       Version.preload_and_to_a(current_user.id,@versions)
       
       respond_to do |format|
