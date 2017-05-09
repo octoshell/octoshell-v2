@@ -74,6 +74,10 @@ every 1.day do
 end
 ```
 
+Добавить в config/locales/ru.yml
+
+ packages:
+      manage: Полный доступ к Пакетам
 
 
 Для того,чтобы работала аякс пагинация,нужно поправить view для каминари:
@@ -86,7 +90,7 @@ end
 
 ```ruby
  link_to raw(t "views.pagination.first"), url,opts = { remote: remote}
- 
+
 ```
 
 
