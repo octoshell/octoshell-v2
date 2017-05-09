@@ -7,12 +7,12 @@ namespace :pack do
    
    
       puts "Copying over Pack migrations..."
-      #  Dir.chdir(Rails.root) do
-       #   `rake pack:install:migrations`
-        #end
+        Dir.chdir(Rails.root) do
+          `rake pack:install:migrations`
+        end
       
         puts "Running rake db:migrate"
-       # `rake db:migrate`
+        `rake db:migrate`
      
      
        puts "Creating abilities for groups"
