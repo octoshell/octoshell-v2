@@ -3,8 +3,10 @@ require_dependency "pack/application_controller"
 module Pack
   class Admin::AccessesController < Admin::ApplicationController
      
-
-    before_action :access_init, only: [:edit, :show,:update,:destroy,:manage_access]
+    rescue_from ActiveRecord::RecordNotFound do |ex|
+      render "not_found"
+    end
+    before_action :access_init, only: [:edit, :show,:update,:destroy]
 
     def access_init
      @access = Access.preload_who.find(params[:id])
@@ -18,7 +20,7 @@ module Pack
     def index
 
       
-     
+           
       @q = Access.ransack(params[:q])
                   
      
@@ -40,14 +42,37 @@ module Pack
     end
     
     def show
-      
+    
     end
 
     def manage_access
       
       
-     @access.update! access_params.slice(:lock_version,:action) 
-    
+      begin
+        access_init
+        if access_params[:action]=='edit_by_hand'
+          @access.attributes= access_params.slice(:lock_version,:forever,:end_lic) 
+        else
+          @access.attributes= access_params.slice(:lock_version,:action)
+        end 
+        if @access.save
+
+        
+          @to='successful'
+
+        else
+          @to='manage_access'
+        end
+
+        rescue ActiveRecord::StaleObjectError
+          @to='manage_access'
+          @message=t("stale_message") 
+          @access.restore_attributes
+        rescue ActiveRecord::RecordNotFound
+          @to='manage_access'
+          @message= t("exception_messages.not_found") + t("exception_messages.not_found")
+        
+      end
     end
 
     def new
@@ -69,7 +94,7 @@ module Pack
     end
 
     def edit
-      
+    
      
     end
 

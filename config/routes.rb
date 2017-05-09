@@ -2,6 +2,9 @@ require "sidekiq/web"
 require "admin_constraint"
 
 Octoshell::Application.routes.draw do
+
+  # This line mounts Wiki's routes at /wiki by default.
+  
   # This line mounts Wiki routes at /wiki by default.
   mount Wiki::Engine, :at => "/wiki"
 

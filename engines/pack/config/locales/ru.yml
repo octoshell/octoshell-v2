@@ -2,8 +2,11 @@ ru:
     "false": "нет"
     "true": "да"
     legend: Легенда
+    denied: отказано
+    no_records_found: Не найдено записей
     new_package: Новый пакет
-    return_to_pack: Вернуться к пакетам
+    tickets: Заявки в тех поддержку 
+    return_to_pack: Вернуться к пакету
     for_ever: Навсегда
     not_for_ever: Не на всегда
     Package_name: Имя пакета
@@ -21,7 +24,7 @@ ru:
     edit: Редактировать
     delete: Удалить
     add_v: Добавить версию
-    confirm: Вы действительно хотите удалить пакет?
+    confirm: Вы действительно хотите удалить эту запись?
     ver_confirm: Вы действительно хотите удалить версию?
     Versions: Версии
     up_date: Дата загрузки
@@ -59,6 +62,7 @@ ru:
     engine_submenu:
         packages_list: Пакеты
         accesses_list: Доступы
+        options_list: Опции
     who_types:
       User: Пользователь
       Group: Группа
@@ -69,12 +73,14 @@ ru:
       forever: Лицензия не имеет дату окончания
       available: Лицензия актуальна до "%{date}"  
     mailer_messages:
+      show_vers: Перейти к версии
       denied: Вам отказано в доступе
       allowed: Вам разрешен доступ
       expired: У Вас истек доступ
       made_longer: Вам продлили доступ
       version_ended: Вам продлили доступ
       denied_longer: Вам отказали в продлении
+      deleted: Ваш доступ удален 
       subject: Изменено состояние вашего доступа к версии  %{version_name}
       body: "%{status_info} к версии  %{version_name}. Для подробностей напишите нам или просмотрите ответы администраторов на ваши заявки"
     access_actions:
@@ -84,22 +90,38 @@ ru:
       expired: в просроченные
       make_longer: продлить
       deny_longer: отказать в продлении
+      edit_by_hand: редактировать вручную(заполнить поля сверху)
+    notice:
+      pack_deleted: Пакет, в которую входит данная версия, удален. Вы не можете определять,удалена ли версия или нет.
+    
+    main_form_m:
+      form:  Отправить заявку
+      delete: Удалить заявку
+      allowed: Действия при  разрешенном/истекшем доступе
+      denied: "Отказано в доступе"
+      deleted: ""   
+
     tickets_access:
       subject:
         requested: "Заявка для %{who_name} от %{user}"
         new_end_lic: "Заявка на продление от  %{who_name} от %{user}"
+
+    exception_messages:
+      not_found: Запись не найдена. Скорее всего, она была удалена.
+      refresh_page: Пожалуйста, обновите страницу.
     packages or versions: Пакеты или версии
     
     project: Проект
     all: Все
-    success_access: "Доступ успешно обновлен. Текущий статут %{status}"
+    success_access: "Доступ успешно обновлен. Текущий статус %{status}"
+    allowed_forever: "Вы не можете ничего более запросить"
     colors:
       red: красный
       blue: синий
       green: зеленый
       yellow: желтый
       brown: коричневый
-
+      black: черный
     clvers:
       title: Активность на кластерах
       note: "Примечание: если кластера нет в списке,то версия на нем не установлена!"
@@ -111,6 +133,7 @@ ru:
       blue: Ваш доступ запрошен
       green: Вам разрешен доступ
       brown: Ваш доступ истек
+      black: Ваш доступ удален
       success: Действие с данным доступом успешно выполнено.Статус доступа/запроса на доступ %{status}. Если у Вас будут какие-то вопросы,пишите нам.
       delete_success: Заявка успешно удалена
       status: 
@@ -118,11 +141,18 @@ ru:
         requested: запрошен
         allowed: разрешен
         expired: истек
+        deleted: удален
     stale_error: "В базе данных находится %{m}" 
     stale_error_nested: "Эта запись была удалена другим пользователем" 
     stale_message: Во время редактирования другой пользователь изменил данные в базе данных.
     versions:
-
+      not_available: нет доступа
+      exp_mes: Лицензия данной версии истекла. Вы не можете пользоваться истекшей версией.
+      my_accesses: Мои доступы
+      my_accesses_edit: Редактировать мои доступы  
+      active: версия активна на кластере
+      not_active: версия неактивна на кластере
+      not_exist: версия не существует на кластере
       cl_autocomplete: ввести с помощью автодополнения
       cl_byhand: ввести с помощью ручного ввода
       state: дата окончания
@@ -156,6 +186,7 @@ ru:
       denied: отказан
       expired:  истек
       requested:  запрошен
+      deleted: удален
 
     version_states:
       expired: истек
@@ -167,7 +198,7 @@ ru:
     pack:
       mailer:
         email_vers_state_changed:
-          subject: "Изменилась информация о лицензии  версии  «%{name}»"
+          subject: "Изменилась информация о лицензии  версии  «%{version_name}»"
           body: "У версии «%{vers}» изменилась информации о лицензии.%{message}."
 
     activerecord:
@@ -183,6 +214,8 @@ ru:
           description: Описание
                 
         pack/version:
+          delete_on_expire: Помечать доступы удаленными,когда лицения истечет
+          package: Пакет
           state: Состояние лицензии
           name: Название
           service: Служебная
@@ -204,6 +237,7 @@ ru:
             status: Статус
             name: Кластер
         pack/access:
+            version: Версия
             forever: Без даты окончания
             not_forever: Без даты окончания
             ac_forever: С датой окончания

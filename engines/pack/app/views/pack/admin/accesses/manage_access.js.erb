@@ -1,2 +1,3 @@
 
-$('td[rec_id=<%=@access.id%>]').html('<%=t("success_access",status: @access.status)%>');
+
+$('td[rec_id=<%=params[:id]%>]').html("<%=escape_javascript(render :partial => @to,locals: {item: @access})%>");

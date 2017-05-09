@@ -29,10 +29,9 @@ Pack::Engine.routes.draw do
   resources :packages do
     collection do
       get 'json'
-      post 'remember_pref'
+      
     end
-  	#resources :versions 
-
+  
   end
   resources :accesses,only: []  do
     collection do

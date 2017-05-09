@@ -11,6 +11,9 @@ html
 		tr 
 			td #{t("description", default: "Description")}:
 			td #{@package.description} 
+		tr
+			td =Pack::Package.human_attribute_name :deleted
+			td =t("#{@package.deleted}")
 		
 	br
 	br

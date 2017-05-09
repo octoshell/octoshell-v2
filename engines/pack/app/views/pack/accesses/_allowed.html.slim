@@ -6,5 +6,6 @@
 		= f.hidden_field :who_id
 		= f.hidden_field :who_type
 		= f.hidden_field :lock_version
-		= hidden_field :access,:expected_status,:value =>  @access.status
 		= f.submit t("buttons.ready", default: "Ready") 
+-else
+	= t 'allowed_forever'

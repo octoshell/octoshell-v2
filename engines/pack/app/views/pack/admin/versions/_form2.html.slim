@@ -13,8 +13,13 @@ div class="row"
           = f.text_area :description,rows:3
           = f.text_field :folder
           = f.number_field :cost
-          = f.check_box :deleted
+         
+          -if @package.deleted
+            =t 'notice.pack_deleted' 
+          -else
+             = f.check_box :deleted
           = f.check_box :service
+          = f.check_box :delete_on_expire
           = f.hidden_field :lock_col
     
      
@@ -27,11 +32,18 @@ div class="row"
       div class="row"
         div class="col-xs-6"
           = f.fields_for :clustervers do |ff|
-            =ff.object.name
-            =ff.hidden_field :core_cluster_id
-            =ff.radio_button  :action,"_destroy", label: t("doesn't exist")  
-            =ff.radio_button  :action,"not_active", label: t("only exist")
-            =ff.radio_button  :action,"active" , label: t("active")  
+            p
+             div style="margin:20px;"              
+                =ff.object.name
+                
+                =ff.hidden_field :core_cluster_id
+                =ff.radio_button  :action,"_destroy", label: t("versions.not_exist")  
+                =ff.radio_button  :action,"not_active", label: t("versions.not_active")
+                =ff.radio_button  :action,"active" , label: t("versions.active")  
+                -if ff.object.errors[:active]!=[]
+                    p
+                      font color="red"
+                        =ff.object.errors[:active][0]
         
         div class="col-xs-12"
           = f.fields_for :version_options do |ff|

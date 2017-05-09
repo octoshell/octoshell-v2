@@ -1,8 +1,8 @@
 
-	-puts "YYYYY"
+	
       $("#{table_selector}").html("#{escape_javascript(render partial  )}");
 
-      -puts "ZZZZZ"
+      
       
       $("#{paginator_selector}").html("= escape_javascript(paginate(records, :remote => true).to_s)");
 

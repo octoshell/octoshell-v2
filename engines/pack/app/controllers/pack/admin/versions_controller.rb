@@ -3,18 +3,10 @@ require_dependency "pack/application_controller"
 module Pack
   class Admin::VersionsController < Admin::ApplicationController
     before_action :pack_init, except: [:index]
-    before_action :upd_form,only: [:edit,:update,:new,:create]
+    
 
     # GET /versions
-    def upd_form
-
-      @stale= params[:stale].nil?
-      @form_for_options= if @stale
-        {}
-      else
-        {builder: StaleFormBuilder}
-      end
-    end
+    
 
 
 
@@ -49,7 +41,8 @@ module Pack
       
       @version = Version.new
       @version.package=@package
-      if @version.vers_update(params) 
+      @version.vers_update(params) 
+      if @version.save
        
         
         redirect_to admin_package_version_path(@package,@version)
@@ -91,23 +84,20 @@ module Pack
       @version = Version.find(params[:id])
      
       
-      #@version.version_options_my_attributes=params[:version][:version_options_attributes]
-      #@version.update_clustervers params[:version][:my_clustervers]
-      #VersionOption.create!(name: 'second',value: 'value',version_id: @version.id)
-      
+     
 
       @version.vers_update params
 
       @stale_message=t("stale_message") if @version.changes["lock_col"]
       if @version.save
         
-        
+       
         redirect_to admin_package_version_path(@package,@version)
         
 
       else
        
-        #puts @version.errors.messages
+      
          
         
          
@@ -141,8 +131,6 @@ module Pack
     end
 
     
-    def test_params
-      #params.require(:version).permit(:version_options_attributes)
-    end
+    
   end
 end

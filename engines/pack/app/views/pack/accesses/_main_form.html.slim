@@ -1,0 +1,11 @@
+
+
+-if @message
+    h3
+    	font color="red"
+        	=@message
+
+-if @access && @to!='delete_not_success'
+	=t("main_form_m.#{@to}") + ":"
+	p
+		=render @to

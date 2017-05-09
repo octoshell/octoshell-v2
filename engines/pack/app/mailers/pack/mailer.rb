@@ -6,7 +6,7 @@ module Pack
       @access=Access.find id
       get_receiver
 
-      mail to: @receiver.email, subject: t(".subject",name: @access.version.name)
+      mail to: @receiver.email, subject: t(".subject",version_name: @access.version.name)
       
 
     end
@@ -22,7 +22,7 @@ module Pack
       else
         t("mailer_messages.#{@access.status}")
       end
-      mail to: @receiver.email, subject: t("mailer_messages.subject",name: @access.version.name)
+      mail to: @receiver.email, subject: t("mailer_messages.subject",version_name: @access.version.name)
     end
 
 

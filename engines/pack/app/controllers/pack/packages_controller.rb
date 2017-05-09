@@ -39,8 +39,8 @@ module Pack
       @q=model_table.ransack(q_hash)
      
       @records=@q.result(distinct: true).order(:id)
-       if q_hash[:user_access]=='0'
-
+      if q_hash[:user_access]=='0'
+        puts "ZZZZZ"
         if @model_table=='packages'
           @records =  @records.joins(<<-eoruby
           LEFT JOIN pack_versions ON pack_versions.package_id = pack_packages.id
@@ -56,7 +56,7 @@ module Pack
 
        Version.preload_and_to_a(current_user.id,@records)  if @model_table=='versions'
 
-      #puts @records.length
+   
 
      
       
@@ -87,14 +87,14 @@ module Pack
     def show
 
       
-     
+    
       @options_for_select=Core::Project.joins(members: :user).where(core_members: {owner: true}).map do |item|
         [t('project') + ' ' + item.title,item.id]
       end
       @options_for_select<<[t('user'),"user"] 
 
       @package = Package.find(params[:id])
-      @versions = @package.versions.order(:id).page(params[:page]).per(6).includes(clustervers: :core_cluster).uniq
+      @versions = @package.versions.allowed_for_users(current_user.id).joins_user_accesses(current_user.id).order(:id).page(params[:page]).per(6).includes(clustervers: :core_cluster).uniq
       Version.preload_and_to_a(current_user.id,@versions)
       
       respond_to do |format|

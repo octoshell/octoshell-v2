@@ -5,10 +5,13 @@ html
 	br
 	
 	table  class="table"
-		-["name","description","deleted"].each do |a|
+		-["name","description"].each do |a|
 			tr 
 				td =Pack::Package.human_attribute_name a
 				td #{@package.public_send a}
+		tr
+			td =Pack::Package.human_attribute_name :deleted
+			td =t("#{@package.deleted?}")
 		
 
 	br

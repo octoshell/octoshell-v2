@@ -1,7 +1,13 @@
             
 
-            div class="row"  
+            div class="row"  style="border:1px solid black;margin:10px;"  
               div class="col-xs-6"
+
+                -if ff.object.errors[:deleted_record]!=[]
+                  font color="red"
+                    
+                    =ff.object.errors[:deleted_record][0]
+
                 -rad_name="name_sel"+ ff.object.id.to_s
 
                 =label_tag rad_name,t('versions.cl_autocomplete')

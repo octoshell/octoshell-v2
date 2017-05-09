@@ -1,12 +1,27 @@
-  function  apply_select2(){
+function apply_select2(url,aim='select, select2-container, select2-ajax, input.chosen, select.chosen')
+
+{
+
+	$(function(){
   
   select2_localization = {
     ru: "Выберите значение",
     en: "Choose"
   }
 
-  $('select, select2-container, select2-ajax, input.chosen, select.chosen').each(function(i, e){
+  
+  
+  $(aim).each(function(i, e){
     var select = $(e)
+    var source;
+  if (url)
+  {
+    source=url;
+  }
+  else
+  {
+    source=select.data('source');
+  }
     var options = select.find('option')
     if (options.size() == 1) {
       $(options[0]).select()
@@ -17,13 +32,8 @@
     }
 
     if (select.hasClass('ajax') || select.hasClass('select2-ajax')) {
-       select.removeClass('ajax select2-ajax');
-       for ( i in options )
-       {
-         console.log(options[i]);
-       }
       options.ajax = {
-        url: select.data('source'),
+        url: source,
         dataType: 'json',
         quietMillis: 100,
         data: function(params) {
@@ -41,4 +51,8 @@
     }
     select.select2(options)
   })
-}
+});
+};
+
+
+

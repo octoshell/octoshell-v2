@@ -1,7 +1,23 @@
 
 
+
+	
 div class="page-header"
   h1 = t(".title")
+
+
+div class="row" style="border:1px solid #cecece;"
+
+		div class="col-xs-6" 
+			h4 =t('accesses.title')
+			table class="table" 
+				-['red','blue','green','brown','black'].each do |col|
+					tr
+						td 
+							font color=col
+								=t "colors.#{col}"
+						td 
+							=t "accesses.#{col}"
 
 -if admin?
 	div class="panel  panel-heading clearfix"
@@ -16,12 +32,12 @@ div class="page-header"
 
 
 table
-	-@version.attributes.except("lock_col","service","deleted","state","created_at","updated_at","package_id","id","deleted").each do |key,value|
+	-@version.attributes.except("delete_on_expire","lock_col","service","deleted","state","created_at","updated_at","package_id","id","deleted").each do |key,value|
 		tr
 			td class="col-xs-3"
 				=Pack::Version.human_attribute_name key
 			td class="col-xs-9"
-				=value
+				=@version.send key
 	tr 
 			td class="col-xs-3" 
 				=Pack::Version.human_attribute_name "state"
@@ -38,50 +54,63 @@ table
 				=Pack::Version.human_attribute_name "service"
 			td class="col-xs-9"
 				= t("#{@version.service}")
+		
+	tr 
+			td class="col-xs-3" 
+				=Pack::Version.human_attribute_name "package"
+			td class="col-xs-9"
+				=t("#{@version.package.name}")
 
 
 
 p
 	h4 =t "versions.options"
-	table  
-		-@version.version_options.each do |opt|	
-			tr 
-				td class="col-xs-3"
-					=Pack::VersionOption.human_attribute_name "name"
-				td class="col-xs-3"
-					=opt.name
-			tr 
-				td class="col-xs-3"
-					=Pack::VersionOption.human_attribute_name "value"
-				td class="col-xs-9"
-					=opt.value
+	
+	-@version.version_options.each do |opt|	
+		p	
+			table  
+				tr 
+					td class="col-xs-3"
+						=Pack::VersionOption.human_attribute_name "name"
+					td class="col-xs-9"
+						=opt.name
+				tr 
+					td class="col-xs-3"
+						=Pack::VersionOption.human_attribute_name "value"
+					td class="col-xs-9"
+						=opt.value
 
 
 p
 	h4 =t "versions.clusters"
-	table 
-		-@version.clustervers.each do |cl|			
-			tr 
-				td class="col-xs-3" 
-					=Pack::Clusterver.human_attribute_name "name"
-				td  class="col-xs-9" 
-					=cl.core_cluster.name
-			tr 
-				td class="col-xs-3" 
-					 =Pack::Clusterver.human_attribute_name  "status"
-				td class="col-xs-9" 
-					= t "versions.cl_status.#{cl.action}"	
+	-@version.clustervers.each do |cl|	
+		p
+			table		
+				tr 
+					td class="col-xs-3" 
+						=Pack::Clusterver.human_attribute_name "name"
+					td  class="col-xs-9" 
+						=cl.core_cluster.name
+				tr 
+					td class="col-xs-3" 
+						 =Pack::Clusterver.human_attribute_name  "status"
+					td class="col-xs-9" 
+						= t "versions.cl_status.#{cl.action}"	
 
 
 	
 	-unless admin?
-		p
-			h4 =t "versions.my_accesses" 
-			=render "pack/packages/accesses",accesses: @version.accesses.user_access(current_user.id)
-		P
-			h4 =t "versions.my_accesses_edit"
-			=select_tag :proj_or_user,options_for_select( @options_for_select ), {class: :select_ajax_access,vers_id: @version.id }
- 			div class='form_for_access'  vers_id=@version.id 
+		div class='margin' 
+			p
+				h4 =t"versions.my_accesses"
+				div id="accesses_#{@version.id}"	
+					=render "pack/packages/accesses",accesses: @accesses
+		-if !@version.deleted? && !@version.service
+			div class='margin' 
+				P
+					h4 =t "versions.my_accesses_edit"
+					=select_tag :proj_or_user,options_for_select( @options_for_select ), {class: :select_ajax_access,vers_id: @version.id }
+		 			div class='form_for_access'  vers_id=@version.id 
 
 
  		=javascript_tag do

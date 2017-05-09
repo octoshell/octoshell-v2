@@ -6,12 +6,21 @@ module Pack
   	validates :name,uniqueness: true 
   	has_many :versions,:dependent => :destroy,inverse_of: :package
   	scope :finder, ->(q) { where("lower(name) like lower(:q)", q: "%#{q.mb_chars}%") }
-    #scope :, -> { where(published: true) }
   	def as_json(options)
     { id: id, text: name }
   	end
     def self.ransackable_scopes(auth_object = nil)
       [:user_access]
+    end
+
+    before_save do 
+      if deleted==true
+        versions.load
+       versions.each do |v|
+          v.deleted=true
+          v.save
+        end
+      end
     end
     def self.allowed_for_users user_id
 

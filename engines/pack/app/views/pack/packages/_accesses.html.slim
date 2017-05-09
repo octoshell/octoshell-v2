@@ -1,5 +1,7 @@
--if accesses
-		
+
+-if accesses.length!=0
+
+	=t 'versions.exp_mes' if accesses[0].version.state=='expired'		
 	-accesses.each do |ac|
 
 				
@@ -10,4 +12,4 @@
 				=" " + ac.end_lic_readable.to_s
 -else
 	font color='red' 	
-		=t('not_available')  
+		=t('versions.not_available')  

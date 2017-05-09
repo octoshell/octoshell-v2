@@ -21,26 +21,42 @@ module Pack
     american_date_proccess
     validates :version, :created_by,:who,:status,presence: true
     validates_uniqueness_of :who_id,:scope => [:version_id,:who_type]
-    validate :date_and_status,:date_correct,:new_end_lic_correct
-    attr_accessor :allow_create_ticket
+    
+    attr_accessor :user_edit
     aasm :column => :status  do
      
       state :requested,:initial => true
       state :allowed
       state :denied
       state :expired
+      state :deleted
       event :to_expired do
         transitions :from =>  :allowed, :to => :expired,:guard => :check_expired? 
       end
+      event :to_allowed do
+        transitions :from =>  :expired, :to => :allowed,:guard => :check_allowed?,success: :allowed_callback 
+      end
       event :allow do
-        transitions :from =>  [:requested,:denied], :to => :allowed
+        transitions :from =>  [:requested,:denied], :to => :allowed,guard: :check_allowed?
+      end
+
+      event :expire do
+        transitions :from =>  [:requested,:denied], :to => :expired,guard: :check_expired?
       end
 
       event :deny do
-        transitions :from =>  [:requested,:allowed], :to => :denied
+        transitions :from =>  [:requested,:expired,:allowed], :to => :denied
       end
      
     end
+    def allowed_callback
+        
+        if forever
+            end_lic= new_end_lic= nil      
+        end
+    end  
+
+    
     belongs_to :version
     belongs_to :created_by,class_name: 'User',foreign_key: :created_by_id
     belongs_to :allowed_by,class_name: 'User',foreign_key: :allowed_by_id
@@ -59,19 +75,35 @@ module Pack
         ) 
         }
 
-    after_commit :send_email,if: Proc.new{ who_type=='User' ||  who_type=='Core::Project'} 
-    after_save :create_ticket,if: Proc.new{ allow_create_ticket && (new_end_lic && changes[:new_end_lic] || status=='requested')} 
+    after_find :init_find
+    after_initialize :init_init
+    after_commit :send_email,if: Proc.new{( who_type=='User' ||  who_type=='Core::Project') && !user_edit} 
+    after_save :create_ticket,if: Proc.new{ user_edit && (new_end_lic && changes[:new_end_lic] || status=='requested')} 
+    before_validation do
+     
+      to_expired  if may_to_expired?
+      to_allowed if may_to_allowed?
+    
+    end
+    def init_find 
+      @forever= end_lic==nil
+    end
+    def init_init
 
+      if @forever==nil
+        @forever= false
+      end
+    end
     def send_email
 
       if  status!='requested'
         if previous_changes["status"]  
           ::Pack::PackWorker.perform_async(:access_changed, id)
         end
-        if  previous_changes["new_end_lic"] && previous_changes["new_end_lic"][0]
+        if  previous_changes["new_end_lic"] 
           if  previous_changes["end_lic"]
             ::Pack::PackWorker.perform_async(:access_changed, [id,"made_longer"])
-          elsif !previous_changes["new_end_lic"][1] 
+          else
              ::Pack::PackWorker.perform_async(:access_changed, [id,"denied_longer"])
           end
          
@@ -147,33 +179,18 @@ module Pack
       @forever= (arg=='false' ? false : true )
     end
     def forever
-      @forever || false 
-    end
-    def forever_in_valid
-      
-      if @forever==nil
-        @forever=true
-      end
       @forever
-      
-      
     end
-
-    def expected_status
-      status
-    end
+    
 
     def actions
-      if end_lic
-        if new_end_lic 
-          aasm.states(:permitted => true).map(&:to_s) + ['make_longer','deny_longer']
-        else
-          aasm.states(:permitted => true).map(&:to_s) + ['make_longer']
-        end
-      else
-        aasm.states(:permitted => true).map(&:to_s)
-      end
-     
+      st=(aasm.states(:permitted => true).map(&:to_s) )<<'edit_by_hand'
+    
+      if end_lic && new_end_lic 
+        st + ['make_longer','deny_longer']
+      end 
+      st 
+   
     end
 
     def actions_for_select
@@ -195,22 +212,23 @@ module Pack
     end
 
 
+
+
     def action
 
     end
     def action= arg
-      if ! ( actions.detect{ |i| i==arg  } ) 
-        errors.add( :status,'incorect argument')
-      end
+      
       if arg == 'make_longer'
 
         if !new_end_lic ||( end_lic >= new_end_lic )
 
-           errors.add( :new_end_lic,"incorect_date")
+           @date_err=true
         end
 
         self.end_lic= new_end_lic
         self.new_end_lic= nil
+        #self.status= 'allowed' if ["allowed","expired"].include? status
       elsif arg=='deny_longer'
         self.new_end_lic= nil
 
@@ -234,35 +252,44 @@ module Pack
         'red'
       when 'expired'
         'brown'
+      
+      when 'deleted'
+        'black'
       end
+
       
     end
 
 
     def check_expired?
-      end_lic && ( end_lic < Date.current )
-    end
-    def date_correct
-      
-      if new_end_lic && !end_lic 
-        self.errors.add(:new_end_lic,'must be blank')
-      end
+       end_lic && ( end_lic < Date.current )
     end
 
+    def check_allowed?
+       end_lic >= Date.current || !end_lic || forever
+    end
 
-    def date_and_status
-      puts @forever
-      puts (!forever_in_valid)
-      if !forever_in_valid && !end_lic 
+    validate :end_lic_correct,:new_end_lic_correct,if: Proc.new {status!='deleted'}
+
+
+    def end_lic_correct
+    
+     
+      if !forever && !end_lic 
         self.errors.add(:end_lic,:blank)
       end
     end
 
+
     def new_end_lic_correct
       
-      if end_lic && new_end_lic && ( end_lic >= new_end_lic || !["expired","allowed"].include?(status))
+      if @date_err || end_lic && new_end_lic && ( end_lic >= new_end_lic || !["expired","allowed"].include?(status))
         self.errors.add(:new_end_lic,:incorect_date)
       end
+      if new_end_lic && !end_lic 
+        self.errors.add(:new_end_lic,'must be blank')
+      end
+      
 
     end
 
@@ -274,7 +301,7 @@ module Pack
     def self.search_access ( params,user_id )
 
       #update_params=params.clone
-     
+    
       find_params=  case params[:proj_or_user]
           when 'user'
             { who_id: user_id,who_type: 'User' }    
@@ -305,13 +332,10 @@ module Pack
       
       
       if access.new_record?
-        #raise "ERROR in new" if access_params[:expected_status]!="new"
         access.created_by_id = user_id
         
       else
-        #raise "ERROR in existing" if access_params[:expected_status]!=access.status
-        access.attributes= access_params.slice(:new_end_lic)
-        
+        access.attributes= access_params.slice(:new_end_lic,:lock_version)        
       
       end
 

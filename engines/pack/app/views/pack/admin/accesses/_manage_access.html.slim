@@ -1,6 +1,19 @@
-=bootstrap_form_for item,:url => manage_access_admin_access_path(item),method: :post,remote: true do |f|
-    =f.hidden_field :who_id
-	=f.hidden_field :who_type
-	=f.hidden_field :lock_version
-	=select :access,:action, item.actions_for_select
-	=f.submit t("buttons.send", default: "Send") 
+-if @message
+      h3
+        font color="red"
+          =@message
+-if item
+	=bootstrap_form_for item,:url => manage_access_admin_access_path(item),method: :post,remote: true do |f|
+	    
+	    =f.hidden_field :who_id
+		=f.hidden_field :who_type
+		=f.hidden_field :lock_version
+		=f.radio_button :forever,true ,label: Pack::Access.human_attribute_name("not_forever"),enab: "disable"  
+	    =f.radio_button :forever,false,label: Pack::Access.human_attribute_name("ac_forever"),enab: "enable" 
+		=f.text_field :end_lic,{label: Pack::Access.human_attribute_name('end_lic'), class: 'form-control my_datepicker',enab: "item",placeholder: "mm-dd-yy"}
+
+		=select :access,:action, item.actions_for_select
+		=f.submit t("buttons.send", default: "Send") 
+
+javascript:
+	bind_func_disable("[enab='enable']","[enab='disable']","[enab='item']");

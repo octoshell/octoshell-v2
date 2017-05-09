@@ -1,13 +1,15 @@
 require "pack/engine"
-require "jquery-ui-rails"
-require 'rails4-autocomplete'
-require 'decorators'
-require "pack/my_nested_attrs"
 require "pack/date_custom"
+require "pack/autocomplete_field"
+require "decorators"
 require "aasm"
-require "pack/support_integration"
+require "slim"
+require "sidekiq"
+require "maymay"
 require "ransack"
 require "kaminari"
+require "carrierwave"
+require "mime-types"
 
 
 #require 'simple_form'

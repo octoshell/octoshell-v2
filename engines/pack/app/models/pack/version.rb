@@ -8,7 +8,7 @@ module Pack
     american_date_proccess
     attr_accessor :user_accesses
 
-    validate :work_with_stale
+     
   	validates :name, :description,:package, presence: true
     validates_uniqueness_of :name,:scope => :package_id
   	belongs_to :package,inverse_of: :versions
@@ -18,7 +18,7 @@ module Pack
     accepts_nested_attributes_for :version_options,:clustervers, allow_destroy: true
     validates_associated :version_options,:clustervers
     scope :finder, ->(q) { where("lower(name) like lower(:q)", q: "%#{q.mb_chars}%").limit(10) }
-    validate :date_and_state
+    validate :date_and_state,:work_with_stale
 
     aasm :column => :state  do
      
@@ -52,9 +52,23 @@ module Pack
 
     end
 
-    before_save :incr
+    before_save :incr,:delete_accesses
     def incr
       self.lock_col= lock_col.to_i + 1
+    end
+
+    def delete_accesses
+      if deleted == true || package.deleted==true
+        deleted=true
+      end
+      if deleted == true || state=='expired' && delete_on_expire
+        accesses.load
+        accesses.each do |a|
+          a.status='deleted'
+          a.save
+          
+        end
+      end
     end
 
     after_commit :send_emails 
@@ -76,14 +90,14 @@ module Pack
 
     def self.expired_versions
       Version.transaction do 
-       where("end_lic < ? and state='available'", Date.today).each{ |ac| ac.update!(status: 'expired') }
+       where("end_lic IS NOT NULL and end_lic < ? and state='available'", Date.today).each{ |ac| ac.update!(state: 'expired') }
       end
             
     end
-    \
+    
     def self.allowed_for_users user_id
      
-     where("pack_versions.service IS NULL OR pack_versions.service= 'f' OR pack_accesses.who_type!='denied'")
+     where("pack_versions.service IS NULL OR pack_versions.service= 'f' OR pack_accesses.status in ('allowed','expired')")
 
     end
 
@@ -162,7 +176,7 @@ module Pack
           self.state = "available"
           return false
         end
-        if  self[:end_lic]   >= Date.current 
+        if  self.end_lic   >= Date.current 
           self[:state] = "available"
         else 
           self[:state] = "expired"
@@ -207,14 +221,18 @@ module Pack
         
         ( hash.values.select{ |i| i[:id]  }.map{ |i| i[:id].to_i  } -  version_options.map(&:id) ).each do |opt_id|
           opt_params= hash.values.detect{ |val| val[:id].to_i == opt_id  } 
-          opt=version_options.new(opt_params.except(:_destroy))
-          opt.mark_for_destruction
-          opt.errors.add(:name,I18n.t("stale_error_nested"))
+          opt=version_options.new(opt_params.except(:id,:_destroy))
+          opt
+          opt.stale_edit= true
+         
 
          hash.delete_if{ |key,val| val[:id].to_i == opt_id  }
-          self.version_options_attributes= hash  
+       
+
+         
         end
-        
+         self.version_options_attributes= hash  
+         
       end 
     end
           
@@ -235,6 +253,19 @@ module Pack
       if !hash 
         return 
       end
+       (hash.values.select{ |i| i[:id]  }.map{ |i| i[:id].to_i  } -  clustervers.map(&:id) ).each do |cl_id|
+          opt_params= hash.values.detect{ |val| val[:id].to_i == cl_id  } 
+          opt=clustervers.new(opt_params.except(:id,:_destroy,:action))
+          opt
+          opt.stale_edit= true
+         
+
+         hash.delete_if{ |key,val| val[:id].to_i == cl_id  }
+       
+
+         
+        end
+
       hash.each_value do |h|
         method_name=h.delete(:action)
         
@@ -247,7 +278,7 @@ module Pack
           create_temp_clusterver h[:core_cluster_id]
           h[:_destroy]="1"
         else 
-          raise "error"
+          raise "incorrect attribute in clustervers"
         end
       end
      
@@ -263,6 +294,8 @@ module Pack
           vers.user_accesses= accesses.select{|ac| ac.version_id==vers.id}   
          
         end
+       
+
     
     end
 
@@ -272,7 +305,7 @@ module Pack
     { id: id, text: (name + self.package_id) }
     end
     def version_params params
-      params.permit(:name, :description,:version,:folder,:cost,:deleted,:lock_col,:service)
+      params.permit(:delete_on_expire,:name, :description,:version,:folder,:cost,:deleted,:lock_col,:service)
     end
    
   end

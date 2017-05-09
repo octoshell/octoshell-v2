@@ -1,12 +1,12 @@
 
-	$('.form_for_access[vers_id=<%=@vers_id%>]').html("<%=escape_javascript(render :partial => @to)%>");
+	$('.form_for_access[vers_id=<%=@vers_id%>]').html("<%=escape_javascript(render :partial => 'main_form')%>");
 	function wrap_str (arg){
 		return ".form_for_access[vers_id=<%=@vers_id%>] input[enab='"+ arg + "']"
 	}
 	bind_func_disable(wrap_str("enable"),wrap_str("disable"),wrap_str("item"));
 
 
-	<%if @to=="success" || @to="delete_success" %>
+	<%if @to && ( @to=="success" || @to=="delete_success" )%>
 		
 		$('#accesses_<%=@access.version_id%>').html("<%=escape_javascript(render :partial => 'pack/packages/accesses',locals: {accesses: Pack::Version.find(@access.version_id).accesses.user_access_without_select(current_user.id)})%>");
 	<%end %>

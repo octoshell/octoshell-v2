@@ -20,7 +20,7 @@
 		div class="col-xs-6" 
 			h4 =t('accesses.title')
 			table class="table" 
-				-['red','blue','green','brown'].each do |col|
+				-['red','blue','green','brown','black'].each do |col|
 					tr
 						td 
 							font color=col
@@ -40,7 +40,7 @@
 						th =Pack::Version.human_attribute_name str
 					th 	#{t("actions_pack")}  
 				- for version in records
-					/-puts version.as_json
+					
 					tr 
 						td  =link_to version.name,version
 						td  #{version.description}
@@ -74,7 +74,6 @@
  						td colspan='6'
 
  							div class='select_for_access' hidden="" vers_id=version.id 
-								/=f.label t("for_whom?", default: "Do you want to request abilities for:")
  								=select_tag :proj_or_user,options_for_select( @options_for_select ), {class: :select_ajax_access,vers_id: version.id }
  								div class='form_for_access'  vers_id=version.id 
  								

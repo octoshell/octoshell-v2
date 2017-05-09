@@ -20,10 +20,8 @@ div class="package-header"
      =f.check_box :clustervers_active_in,{label: t("pack_search.packages.active_cl")},"1",""
     =f.autocomplete_field :clustervers_core_cluster_id_in,{label: t("pack_search.packages.clusters"), source:  core.admin_clusters_path},include_blank: true
 
-      /=f.autocomplete_field :user_access,{display: "User.find(user_access).email",label: t("connected_to_user"), source:  main_app.users_path},include_blank: true
-    
     =f.check_box :deleted_eq,{label: t("pack_search.packages.show_deleted") },"","0"
-    /=f.check_box :service_eq,{label: t("pack_search.packages.show_service") },"","0"
+   
       
     = f.form_group do
         = f.submit t("actions.find")

@@ -1,43 +1,13 @@
 
-class ActionView::Helpers::FormBuilder
-    include ActionView::Helpers::TagHelper
-    include ActionView::Helpers::FormTagHelper
-    include ActionView::Helpers::FormOptionsHelper
-    include ActionView::Helpers::CaptureHelper
-    include ActionView::Helpers::AssetTagHelper
+
 
   # Accepts an int and displays a smiley based on >, <, or = 0
   # 
   
 
-  def autocomplete_field(method, options = {}, html_options = {}, &block) 
-
-    html_options[:class]= 'select2-ajax'
-     data = { source: options.delete(:source), url: options.delete(:url) }
-     html_options[:data] = data
-     
-     #display= object.send ( method.to_s.slice(0..-4)).
-     #puts method.to_s.slice(0..-4)
-     sel_opts=[]
-    if options[:display]
-
-      display_method=  options[:display]
-      raise "display option must be a string" if not   display_method.is_a?(String) 
-      begin 
-        result= object.instance_eval(display_method) 
-      rescue NoMethodError 
-          nil
-      end
-      sel_opts=options_for_select([[result,object.send(method)]] )
-    end
-     
-     select(method,  sel_opts, options, html_options, &block)  
+ 
     
-    
-  end
 
-    
-end
 
 
 def admin? 
@@ -47,51 +17,6 @@ end
 
 
 
-class StaleFormBuilder<BootstrapForm::FormBuilder
-   class_attribute :stale_field_helpers
-   attr_accessor :stale_params
-   self.stale_field_helpers = [  :text_field, :password_field,
-                             :file_field, :text_area, :check_box,
-                            :radio_button, :color_field, :search_field,
-                            :telephone_field, :phone_field, :date_field,
-                            :time_field, :datetime_field, :datetime_local_field,
-                            :month_field, :week_field, :url_field, :email_field,
-                            :number_field, :range_field]
-
-
-    (stale_field_helpers - [ :check_box, :radio_button, :fields_for, :hidden_field, :file_field]).each do |selector|
-
-
-        define_method(selector) do |name,options={}|
-          if object.changed.include? name.to_s
-            content_tag(:div,( super + render_check_box(name,options)))
-           
-          else
-            super
-          end
-
-          
-        end
-        
-      end
-    def render_check_box(method,options={})
-       key=method.to_s + "_stale"
-       ActionView::Helpers::Tags::Base.new(@object_name, key, self, objectify_options(options)).send(:add_default_name_and_id,options)
-       name=options['name']
-       
-      key=method.to_s + "_stale"
-      
-
-      checked=if stale_params
-        stale_params[key] 
-      else
-        false
-      end
-      label(name,I18n.t('make available')) + check_box_tag(name,"1", checked,class: "stale_error" ) 
-    end  
-
-
-end  
 
 module Pack
 
@@ -121,9 +46,7 @@ module Pack
    
 
 
-    def reload_page
-      render "helper_templates/reload_page"
-    end
+   
 
 
     
