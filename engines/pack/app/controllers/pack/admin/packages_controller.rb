@@ -3,7 +3,7 @@ require_dependency "pack/application_controller"
 module Pack
   class Admin::PackagesController < Admin::ApplicationController
 
-    # GET /packages
+  
     
     def index
     
@@ -13,7 +13,7 @@ module Pack
       model_table= if @model_table=='packages'
        Package.select("pack_packages.*")
       else 
-        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:version_options)#.joins(:accesses).where("pack_accesses.status = 'expired'")
+        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:version_options)
       end
       
 

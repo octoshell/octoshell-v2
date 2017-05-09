@@ -33,7 +33,7 @@ javascript:
 	bind_func_disable("[enab='enable']","[enab='disable']","[enab='item']");
 	$(".hid-decision").not("[checked]").parents(".radio").next().removeClass('has-error').find("select").prop('disabled',true);
 	$(".hid-decision").not("[checked]").parents(".radio").next().find("span").remove(".help-block");
-	//$(".hid-decision").not("[checked]").parents(".radio").next
+
 	$(".hid-decision").change(function(i,e){
 			
 		$(".hid-decision").parents(".radio").next().find("select").prop('disabled',true);	
@@ -48,6 +48,3 @@ javascript:
 
 
 	
-/= javascript_tag do 
-    = render(:partial => 'new', :formats => [:js]) 
-

@@ -12,7 +12,7 @@ div class="package-header"
   div class="panel panel-default"
     div class="panel-heading clearfix"
       = link_to t(".new"), new_admin_options_category_path, class: "btn btn-default"
-      /=link_to t("edit_access"),admin_accesses_path,class: "btn btn-default"
+     
    
        
       
@@ -25,7 +25,3 @@ div class="package-header"
     
 
 
-/= javascript_tag do 
-    = render(:partial => 'pack/packages/index', :formats => [:js]) 
-/= javascript_tag do 
-    = render(:partial => 'index', :formats => [:js]) 

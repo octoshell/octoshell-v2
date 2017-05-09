@@ -1,14 +1,5 @@
 module Pack
   class Access < ActiveRecord::Base
-  	#enum status: [:requested,:allowed,:denied]
-  	#@a=[t("Create request"),t("new date")]
-    
-    #if !Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
-
-      #Support::Topic.create!(name: I18n.t('integration.support_theme_name'))
-
-    #end
-    #self.support_access_topic_id=Support::Topic.find_by(name: I18n.t('integration.support_theme_name')).id
 
     def self.expired_accesses
       Access.transaction do 

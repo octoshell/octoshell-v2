@@ -288,7 +288,7 @@ module Pack
      def self.preload_and_to_a user_id,versions
 
             
-       accesses=Access.user_access(user_id).where(version_id: versions.ids )#where("pack_accesses.version_id IN (#{(versions.ids).join (',')})")
+       accesses=Access.user_access(user_id).where(version_id: versions.ids )
         versions.each do |vers|
         
           vers.user_accesses= accesses.select{|ac| ac.version_id==vers.id}   

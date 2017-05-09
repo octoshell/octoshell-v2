@@ -2,11 +2,8 @@ require_dependency "pack/application_controller"
 
 module Pack
   class PackagesController < ApplicationController
-    #before_action :prop_init, only: [:remember_pref, :show]
+   
     
-
-    # GET /packages
-    # 
     def get_search_form
 
     end
@@ -40,7 +37,7 @@ module Pack
      
       @records=@q.result(distinct: true).order(:id)
       if q_hash[:user_access]=='0'
-        puts "ZZZZZ"
+
         if @model_table=='packages'
           @records =  @records.joins(<<-eoruby
           LEFT JOIN pack_versions ON pack_versions.package_id = pack_packages.id

@@ -2,8 +2,7 @@ require_dependency "pack/application_controller"
 
 module Pack
   class AccessesController <ApplicationController
-    #before_action :access_init, only: [:update,:destroy]
-
+    
     def access_init
       @access = Access.find(params[:id])
       @statuses=Access.statuses.keys
@@ -46,7 +45,7 @@ module Pack
     end
         
       
-      #
+      
   
 
     def destroy 

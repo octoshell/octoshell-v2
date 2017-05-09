@@ -3,11 +3,42 @@
 #   # Task goes here
 # end
 namespace :pack do
+  task :install => :environment do
+   
+   
+      puts "Copying over Pack migrations..."
+      #  Dir.chdir(Rails.root) do
+       #   `rake pack:install:migrations`
+        #end
+      
+        puts "Running rake db:migrate"
+       # `rake db:migrate`
+     
+     
+       puts "Creating abilities for groups"
+      Group.all.each do |g|
+        Ability.create({action: "manage",subject: "packages",group_id: g.id,available: (g.name=="superadmins")  } )
+
+
+      end
+
+      puts "Creating topic for access tickets"
+
+      unless Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
+        Support::Topic.create!(name: I18n.t('integration.support_theme_name'))
+      end
+
+     
+        output = "\n\n" + ("*" * 53)
+        output += "\nDone! Pack engine has been successfully installed."
+
+        puts output
+      
+    
+	end
+
   task :expired => :environment do
-    #time = Time.current
-    #tar = "/var/www/octoshell2/shared/db_backups/#{time.strftime('%d%m%Y_%H%M')}.tar"
-    #system "pg_dump -U octo -f #{tar} -F tar new_octoshell"
-    #system "gzip #{tar}"
+
     ::Pack::PackWorker.perform_async(:expired)
     
   end

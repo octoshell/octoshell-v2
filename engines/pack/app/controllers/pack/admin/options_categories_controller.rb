@@ -4,7 +4,6 @@ module Pack
   class Admin::OptionsCategoriesController < Admin::ApplicationController
   	def index
 
-  		#OptionsCategory.create(categories: "second")
   		@records=OptionsCategory.page(params[:page]).per(2)
   		respond_to do |format|
   			format.html

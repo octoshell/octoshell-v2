@@ -1,5 +1,5 @@
 upstream app_server {
-  server localhost:3000;
+  server localhost:5000;
 }
 
 server {

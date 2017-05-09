@@ -14,7 +14,6 @@ module Pack
     def render_paginator(records,partial='table',table_selector='#table_records',
       paginator_selector='#ajax_paginator')
       
-      #@records,@partial,@table_selector,@paginator_selector=records,partial,table_selector,paginator_selector
       render "helper_templates/render_paginator",format: :js,locals: {records: records,
        partial: partial, table_selector: table_selector,paginator_selector: paginator_selector }
     end 

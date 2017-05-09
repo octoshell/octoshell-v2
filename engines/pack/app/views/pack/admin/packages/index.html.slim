@@ -20,7 +20,7 @@ div class="package-header"
      =f.check_box :clustervers_active_in,{label: t("pack_search.packages.active_cl")},"1",""
     =f.autocomplete_field :clustervers_core_cluster_id_in,{label: t("pack_search.packages.clusters"), source:  core.admin_clusters_path},include_blank: true
 
-      /=f.autocomplete_field :user_access,{display: "User.find(user_access).email",label: t("connected_to_user"), source:  main_app.users_path},include_blank: true
+    
     
     =f.check_box :deleted_eq,{label: t("pack_search.packages.only_deleted") },"1",""
     =f.check_box :service_eq,{label: t("pack_search.packages.only_service") },"1",""
@@ -46,10 +46,7 @@ div class="package-header"
 
     
 
-/= javascript_include_tag "pack/application"
 
-/= javascript_tag do 
-    = render(:partial => 'pack/packages/index', :formats => [:js]) 
 = javascript_tag do 
    = render(:partial => 'index', :formats => [:js],:locals=>{f: @f}) 
 

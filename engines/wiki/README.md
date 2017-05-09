@@ -19,8 +19,11 @@ bundle install
 Там же
 
 ```bash
-bundle exec rails g wiki:install
+bundle exec rake  pack:install
 ```
+
+
+ 
 
 В базовом приложении организовать путь к плагину, используя хелпер `wiki.root_path`.
 Пример можно увидеть в octoshell-basic `app/decorators/controllers/application_controller_decorator.rb` метод `wiki_item`.

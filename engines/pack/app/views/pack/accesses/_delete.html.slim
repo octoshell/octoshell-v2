@@ -1,5 +1,3 @@
-	/= link_to t("delete", default: "delete"), access_req_path(@access),data: {method: :delete,remote: :true}, class: "btn btn-default btn-sm"
-
 	= bootstrap_form_for @access,  :url => { :controller => "accesses", :action => "destroy" }, :html => {:method => :post}, layout: :horizontal,remote: true do |f|		
 		= f.hidden_field :id
 		= f.hidden_field :version_id

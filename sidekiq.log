@@ -7,3 +7,8 @@ The signal USR1 is in use by the JVM and will not work correctly on this platfor
 2017-05-07T18:00:44.172Z 1776 TID-gg8 INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
 2017-05-07T18:00:44.174Z 1776 TID-gg8 INFO: Booting Sidekiq 4.1.1 with redis options {:url=>nil}
 2017-05-07T18:00:44.229Z 1776 TID-gg8 INFO: Starting processing, hit Ctrl-C to stop
+2017-05-09T17:25:41.370Z 1776 TID-gg8 INFO: Shutting down
+2017-05-09T17:25:41.594Z 1776 TID-gg8 INFO: Terminating quiet workers
+2017-05-09T17:25:41.595Z 1776 TID-gm6 INFO: Scheduler exiting...
+2017-05-09T17:25:42.096Z 1776 TID-gg8 INFO: Pausing to allow workers to finish...
+2017-05-09T17:25:43.599Z 1776 TID-gg8 INFO: Bye!

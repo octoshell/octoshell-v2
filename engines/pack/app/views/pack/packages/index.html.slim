@@ -2,7 +2,7 @@ div class="package-header"
   h1 = t(".title", default: "Packages list")
   
     
-   / = bootstrap_form_for @q, url: admin_accesses_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
+   
   
   = bootstrap_form_for @q_form,as: "q", url: packages_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
     -@f=f

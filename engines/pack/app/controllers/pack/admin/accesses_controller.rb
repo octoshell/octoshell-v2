@@ -26,12 +26,6 @@ module Pack
      
       
        @accesses = @q.result.page(params[:page]).per(20).preload_who.includes(:version)
-        # unless params[:q] && params[:q][:admin_user_access]
-       
-       #v= @accesses.first.tickets.create!(subject: 'test',reporter: current_user,message: 'test',topic_id: Access.support_access_topic_id )
-       
-       
-     # @accesses=Access.page(params[:page]).per(per_record).includes(:version).preload_who
       respond_to do |format|
         format.html
         format.js{
