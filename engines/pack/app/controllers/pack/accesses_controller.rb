@@ -22,9 +22,9 @@ module Pack
 
         @access=Access.user_update(access_params,current_user.id)
         @access.user_edit= true
-        @version=@access.version
- 
+        @access.created_by_id=current_user.id unless @access.created_by
         if @access.save
+
           @to='success'
           render "form"
         else

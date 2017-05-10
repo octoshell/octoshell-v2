@@ -115,6 +115,8 @@ ru:
     packages or versions: Пакеты или версии
     
     project: Проект
+    group: Группа
+    version: Версия
     all: Все
     success_access: "Доступ успешно обновлен. Текущий статус %{status}"
     allowed_forever: "Вы не можете ничего более запросить"
@@ -244,9 +246,10 @@ ru:
             new_end_lic_not_null: Показать только заявки на продление
             version: Версия
             forever: Без даты окончания
-            not_forever: Без даты окончания
+            not_forever: C датой окончания
             ac_forever: С датой окончания
             status: Статус
+            status_readable: Статус
             end_lic: Дата окончания лицензии
             new_end_lic: Дата окончания заявки на продление(если есть)
             end_lic_if_exists: Дата окончания лицензии(если она конечна)

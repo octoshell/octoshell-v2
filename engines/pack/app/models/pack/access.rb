@@ -49,8 +49,8 @@ module Pack
 
     
     belongs_to :version
-    belongs_to :created_by,class_name: 'User',foreign_key: :created_by_id
-    belongs_to :allowed_by,class_name: 'User',foreign_key: :allowed_by_id
+    belongs_to :created_by,class_name: '::User',foreign_key: :created_by_id
+    belongs_to :allowed_by,class_name: '::User',foreign_key: :allowed_by_id
     belongs_to :who, :polymorphic => true
     has_and_belongs_to_many :tickets,join_table: 'pack_access_tickets',class_name: "Support::Ticket",
       foreign_key: "access_id",
@@ -179,7 +179,9 @@ module Pack
     
       if end_lic && new_end_lic 
         st + ['make_longer','deny_longer']
-      end 
+      else
+        st
+      end
       
    
     end
@@ -219,7 +221,6 @@ module Pack
 
         self.end_lic= new_end_lic
         self.new_end_lic= nil
-        #self.status= 'allowed' if ["allowed","expired"].include? status
       elsif arg=='deny_longer'
         self.new_end_lic= nil
 

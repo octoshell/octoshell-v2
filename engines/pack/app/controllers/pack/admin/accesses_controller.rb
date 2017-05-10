@@ -49,8 +49,9 @@ module Pack
         else
           @access.attributes= access_params.slice(:lock_version,:action)
         end 
+       
+        @access.allowed_by_id=current_user.id if @access.changes[:status] && @access.status=='allowed'
         if @access.save
-
         
           @to='successful'
 
@@ -79,7 +80,8 @@ module Pack
     def create
       
       @access = Access.new access_params
-      
+      @access.created_by_id=current_user.id
+      @access.allowed_by_id=current_user.id if @access.status=='allowed' 
       if @access.save
         redirect_to admin_access_path(@access)
       else
@@ -94,7 +96,7 @@ module Pack
 
     def update
      
-      
+      @access.allowed_by_id=current_user.id if @access.changes[:status] && @access.status=='allowed' 
       if @access.update(access_params)
         redirect_to admin_access_path(@access.id)
       else
