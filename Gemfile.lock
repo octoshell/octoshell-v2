@@ -147,7 +147,6 @@ PATH
       jquery-ui-rails
       maymay
       rails (~> 4.2)
-      rails4-autocomplete
       slim
 
 PATH
@@ -452,8 +451,6 @@ GEM
       loofah (~> 2.0)
     rails-jquery-autocomplete (1.0.3)
       rails (>= 3.2)
-    rails4-autocomplete (1.1.1)
-      rails (>= 3.0)
     railties (4.2.6)
       actionpack (= 4.2.6)
       activesupport (= 4.2.6)

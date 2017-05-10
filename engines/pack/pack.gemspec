@@ -18,16 +18,15 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 4.2"
-  #s.add_dependency'decorators', '~> 2.0.1'
+ 
   s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "slim"
   s.add_dependency "bootstrap_form"
   s.add_dependency "maymay"
   s.add_dependency "jquery-ui-rails"
-  #s.add_dependency 'rails-jquery-autocomplete'
-  s.add_dependency 'rails4-autocomplete'
+  
+  
 
-  #s.add_dependency 'simple_form'
-  #s.add_development_dependency "better_errors"
+  
 
 end

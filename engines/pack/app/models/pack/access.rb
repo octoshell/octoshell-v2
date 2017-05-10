@@ -69,7 +69,7 @@ module Pack
     after_find :init_find
     after_initialize :init_init
     after_commit :send_email,if: Proc.new{( who_type=='User' ||  who_type=='Core::Project') && !user_edit} 
-    after_save :create_ticket,if: Proc.new{ user_edit && (new_end_lic && changes[:new_end_lic] || status=='requested')} 
+    after_save :create_ticket,if: Proc.new{ user_edit && (new_end_lic && changes[:new_end_lic] &&  !changes[:new_end_lic][0] || status=='requested')} 
     before_validation do
      
       to_expired  if may_to_expired?
@@ -180,7 +180,7 @@ module Pack
       if end_lic && new_end_lic 
         st + ['make_longer','deny_longer']
       end 
-      st 
+      
    
     end
 
@@ -286,6 +286,9 @@ module Pack
 
     def end_lic_readable
       end_lic || Access.human_attribute_name(:forever)
+    end
+    def status_readable
+      I18n.t("access_states.#{status}")
     end
 
 

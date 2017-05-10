@@ -10,7 +10,7 @@ require "ransack"
 require "kaminari"
 require "carrierwave"
 require "mime-types"
-
+require "jquery-ui-rails"
 
 #require 'simple_form'
 

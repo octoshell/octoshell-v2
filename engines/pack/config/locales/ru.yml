@@ -101,7 +101,8 @@ ru:
       delete: Удалить заявку
       allowed: Действия при  разрешенном/истекшем доступе
       denied: "Отказано в доступе"
-      deleted: ""   
+      deleted: ""
+      success: Удачно   
 
     tickets_access:
       subject:
@@ -240,6 +241,7 @@ ru:
             status: Статус
             name: Кластер
         pack/access:
+            new_end_lic_not_null: Показать только заявки на продление
             version: Версия
             forever: Без даты окончания
             not_forever: Без даты окончания

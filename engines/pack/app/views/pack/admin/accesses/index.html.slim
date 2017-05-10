@@ -12,6 +12,7 @@ div class="package-header"
     = f.select :status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{multiple: true} 
     = f.autocomplete_field :inner_join_user_access,{label: t("connected_to_user"), source:  main_app.users_path},include_blank: true
     = f.autocomplete_field :version_id_in,{label: Pack::Access.human_attribute_name(:version), source:  admin_versions_path}, multiple: true
+    = f.check_box :new_end_lic_not_null, {label: Pack::Access.human_attribute_name(:new_end_lic_not_null)},"1",""
     = f.form_group do
       = f.submit t("actions.find"), class: "btn btn-primary"
     -@f=f
