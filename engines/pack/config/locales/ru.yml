@@ -181,7 +181,7 @@ ru:
         packages: Пакеты
         versions_name: Имена версий
         packages_name: Имена пакетов
-        my_packs: Версии и пакеты, к которым у меня есть доступ
+        my_packs: Версии и пакеты, к которым у меня есть доступ/заявка на доступ
         show_deleted: Показать удаленные
         show_service: Показать служебные
     access_states:
