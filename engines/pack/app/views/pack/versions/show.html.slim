@@ -5,19 +5,19 @@
 div class="page-header"
   h1 = t(".title")
 
+-unless admin?
+	div class="row" style="border:1px solid #cecece;"
 
-div class="row" style="border:1px solid #cecece;"
-
-		div class="col-xs-6" 
-			h4 =t('accesses.title')
-			table class="table" 
-				-['red','blue','green','brown','black'].each do |col|
-					tr
-						td 
-							font color=col
-								=t "colors.#{col}"
-						td 
-							=t "accesses.#{col}"
+			div class="col-xs-6" 
+				h4 =t('accesses.title')
+				table class="table" 
+					-['red','blue','green','brown','black'].each do |col|
+						tr
+							td 
+								font color=col
+									=t "colors.#{col}"
+							td 
+								=t "accesses.#{col}"
 
 -if admin?
 	div class="panel  panel-heading clearfix"

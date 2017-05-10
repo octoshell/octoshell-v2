@@ -17,9 +17,25 @@ div class="row"
           -if @package.deleted
             =t 'notice.pack_deleted' 
           -else
-             = f.check_box :deleted
+            = f.check_box :deleted
+            -if f.object.errors[:deleted]!=[]
+                    p
+                      font color="red"
+                        -f.object.errors[:deleted].each do  |e|
+                          =e
           = f.check_box :service
+          -if f.object.errors[:service]!=[]
+                    p
+                      font color="red"
+                        -f.object.errors[:service].each do  |e|
+                          =e
           = f.check_box :delete_on_expire
+          -if f.object.errors[:delete_on_expire]!=[]
+                    p
+                      font color="red"
+                        -f.object.errors[:delete_on_expire].each do  |e|
+                          =e
+
           = f.hidden_field :lock_col
     
      

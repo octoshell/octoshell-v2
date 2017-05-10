@@ -10,10 +10,6 @@
 
 
 
-def admin? 
-  controller.class.name.split("::").include? "Admin"
-end
-
 
 
 
@@ -22,6 +18,13 @@ module Pack
 
   
   module ApplicationHelper
+
+    def admin? 
+      controller.class.name.split("::").include? "Admin"
+    end
+
+
+   
 
     def readable_attrs(record)
       record.attributes.reject{|key,value|  key.match(/_id$/) || ['id','lock_version','updated_at','created_at'].include?(key)  } 
