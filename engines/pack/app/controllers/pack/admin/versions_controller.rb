@@ -96,11 +96,7 @@ module Pack
         
 
       else
-       
-      
-         
-        
-         
+                
         render :edit
       end
      

@@ -32,7 +32,7 @@ module Pack
 
       @q=model_table.ransack(q_hash)
      
-      @records=@q.result(distinct: true).order(:id).page(params[:page]).per(6)
+      @records=@q.result(distinct: true).order(:id).page(params[:page]).per(15)
       
     
       respond_to do |format|

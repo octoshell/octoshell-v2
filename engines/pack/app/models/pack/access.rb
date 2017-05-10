@@ -257,7 +257,7 @@ module Pack
     end
 
     def check_allowed?
-       end_lic >= Date.current || !end_lic || forever
+       end_lic && end_lic >= Date.current || !end_lic || forever
     end
 
     validate :end_lic_correct,:new_end_lic_correct,if: Proc.new {status!='deleted'}

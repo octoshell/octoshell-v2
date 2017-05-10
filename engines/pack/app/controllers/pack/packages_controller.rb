@@ -14,7 +14,7 @@ module Pack
       model_table= if @model_table=='packages'
        Package.select("pack_packages.*")
       else 
-        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:version_options)#.joins(:accesses).where("pack_accesses.status = 'expired'")
+        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:version_options)
       end
       
 
@@ -49,7 +49,7 @@ module Pack
         @records=@records.merge( Version.joins_user_accesses(current_user.id))
 
       end
-       @records=@records.allowed_for_users(current_user.id).page(params[:page]).per(6)
+       @records=@records.allowed_for_users(current_user.id).page(params[:page]).per(15)
 
        Version.preload_and_to_a(current_user.id,@records)  if @model_table=='versions'
 

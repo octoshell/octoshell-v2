@@ -2,13 +2,8 @@ nohup: ввод игнорируется
 /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
 /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
 The signal USR1 is in use by the JVM and will not work correctly on this platform
-2017-05-07T18:00:44.158Z 1776 TID-gg8 INFO: Running in jruby 9.0.5.0 (2.2.3) 2016-01-26 7bee00d Java HotSpot(TM) Server VM 24.80-b11 on 1.7.0_80-b15 +jit [linux-i386]
-2017-05-07T18:00:44.169Z 1776 TID-gg8 INFO: See LICENSE and the LGPL-3.0 for licensing details.
-2017-05-07T18:00:44.172Z 1776 TID-gg8 INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
-2017-05-07T18:00:44.174Z 1776 TID-gg8 INFO: Booting Sidekiq 4.1.1 with redis options {:url=>nil}
-2017-05-07T18:00:44.229Z 1776 TID-gg8 INFO: Starting processing, hit Ctrl-C to stop
-2017-05-09T17:25:41.370Z 1776 TID-gg8 INFO: Shutting down
-2017-05-09T17:25:41.594Z 1776 TID-gg8 INFO: Terminating quiet workers
-2017-05-09T17:25:41.595Z 1776 TID-gm6 INFO: Scheduler exiting...
-2017-05-09T17:25:42.096Z 1776 TID-gg8 INFO: Pausing to allow workers to finish...
-2017-05-09T17:25:43.599Z 1776 TID-gg8 INFO: Bye!
+2017-05-10T06:57:57.877Z 3239 TID-gk6 INFO: Running in jruby 9.0.5.0 (2.2.3) 2016-01-26 7bee00d Java HotSpot(TM) Server VM 24.80-b11 on 1.7.0_80-b15 +jit [linux-i386]
+2017-05-10T06:57:57.885Z 3239 TID-gk6 INFO: See LICENSE and the LGPL-3.0 for licensing details.
+2017-05-10T06:57:57.886Z 3239 TID-gk6 INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
+2017-05-10T06:57:57.888Z 3239 TID-gk6 INFO: Booting Sidekiq 4.1.1 with redis options {:url=>nil}
+2017-05-10T06:57:57.927Z 3239 TID-gk6 INFO: Starting processing, hit Ctrl-C to stop

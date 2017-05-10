@@ -25,7 +25,7 @@ module Pack
                   
      
       
-       @accesses = @q.result.page(params[:page]).per(20).preload_who.includes(:version)
+       @accesses = @q.result(distinct: true).order(:id).page(params[:page]).per(20).preload_who.includes(:version)
       respond_to do |format|
         format.html
         format.js{

@@ -94,8 +94,12 @@ end
 ```
 
 
+В engines/support/app/views/support/admin/tickets/show.html.slim в любом разумном месте дописать следующее:
 
-
+```ruby
+= link_to t("actions.edit_access"), pack.admin_access_path(@ticket.pack_accesses.first), class: "btn btn-default"  if @ticket.pack_accesses.exists?
+```
+Это нужно для того,чтобы администратор из тикета сразу мог перейти к редактированию доступа.
 
 
 

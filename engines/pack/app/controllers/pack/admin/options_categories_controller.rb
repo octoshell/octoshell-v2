@@ -4,7 +4,7 @@ module Pack
   class Admin::OptionsCategoriesController < Admin::ApplicationController
   	def index
 
-  		@records=OptionsCategory.page(params[:page]).per(2)
+  		@records=OptionsCategory.order(:id).page(params[:page]).per(20)
   		respond_to do |format|
   			format.html
   			format.js{
