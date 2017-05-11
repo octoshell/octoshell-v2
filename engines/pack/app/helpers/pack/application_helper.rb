@@ -23,8 +23,18 @@ module Pack
       controller.class.name.split("::").include? "Admin"
     end
 
+    def show_errors(f,attr)
+      if f.object.errors[attr]!=[]
+       
+        errors=f.object.errors[attr].join(" ")
+                          
+        content_tag("p", content_tag("font",errors,color: "red")  )
+      end
+    end
 
    
+   
+               
 
     def readable_attrs(record)
       record.attributes.reject{|key,value|  key.match(/_id$/) || ['id','lock_version','updated_at','created_at'].include?(key)  } 

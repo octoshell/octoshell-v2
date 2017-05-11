@@ -136,6 +136,13 @@ module Pack
         deleted || package.deleted
     end
 
+    def available_for_user?
+
+      
+      
+      user_accesses &&  user_accesses.detect{ |a| a.status=='allowed'}!=nil && ( state=='available' || state=='forever') && !deleted?
+    end
+
     def readable_state
 
       I18n.t "versions.#{state}"

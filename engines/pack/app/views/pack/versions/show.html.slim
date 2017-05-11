@@ -61,6 +61,20 @@ table
 			td class="col-xs-9"
 				=t("#{@version.package.name}")
 
+	-unless admin?
+		tr
+			td class="col-xs-3" 
+					=Pack::Version.human_attribute_name "available_for_user?"
+
+			td class="col-xs-9"									
+				- if @version.available_for_user?
+					font color="green"
+						=t "#{@version.available_for_user?}"
+
+				-else 
+					font color="red"							
+						=t "#{@version.available_for_user?}"
+
 
 
 p
@@ -104,7 +118,7 @@ p
 			p
 				h4 =t"versions.my_accesses"
 				div id="accesses_#{@version.id}"	
-					=render "pack/packages/accesses",accesses: @accesses
+					=render "pack/packages/accesses",accesses: @version.user_accesses
 		-if !@version.deleted? && !@version.service
 			div class='margin' 
 				P

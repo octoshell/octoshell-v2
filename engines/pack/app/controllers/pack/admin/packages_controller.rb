@@ -13,7 +13,7 @@ module Pack
       model_table= if @model_table=='packages'
        Package.select("pack_packages.*")
       else 
-        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:version_options)
+        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:package)
       end
       
 

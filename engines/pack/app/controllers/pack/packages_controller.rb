@@ -14,7 +14,7 @@ module Pack
       model_table= if @model_table=='packages'
        Package.select("pack_packages.*")
       else 
-        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:version_options)
+        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:package)
       end
       
 
@@ -91,7 +91,7 @@ module Pack
       @options_for_select<<[t('user'),"user"] 
 
       @package = Package.find(params[:id])
-      @versions = @package.versions.allowed_for_users(current_user.id).joins_user_accesses(current_user.id).order(:id).page(params[:page]).per(6).includes(clustervers: :core_cluster).uniq
+      @versions = @package.versions.includes({clustervers: :core_cluster},:package).allowed_for_users(current_user.id).joins_user_accesses(current_user.id).order(:id).page(params[:page]).per(6).includes(clustervers: :core_cluster).uniq
       Version.preload_and_to_a(current_user.id,@versions)
       
       respond_to do |format|

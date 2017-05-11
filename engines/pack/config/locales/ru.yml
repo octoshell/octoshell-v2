@@ -235,6 +235,7 @@ ru:
           deleted: Удаленная
           access_user: Мои доступы
           clusters: Кластеры
+          available_for_user?: Доступна ли?
 
         pack/version_option:
             name: Название опции

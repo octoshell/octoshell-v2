@@ -25,7 +25,7 @@ div class="row"
   div class="col-xs-4"
   	
     = bootstrap_form_for [:admin,@access] do |f|
-      = f.select :status,@access.aasm.states
+      = f.select :status,Pack::Access.states_list_readable
       =f.text_field :end_lic,{ class: 'my_datepicker',label: @access.class.human_attribute_name('end_lic_if_exists')}
       =f.text_field :new_end_lic,{ class: 'my_datepicker'}
       
