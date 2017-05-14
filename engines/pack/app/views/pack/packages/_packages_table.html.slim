@@ -1,15 +1,17 @@
-- if records
+- if records!=[]
       div  class="panel-body"
         table  class="table table-hover"
           tr
             th #{t("name", default: "Package name")}
-            th
+            th =Pack::Package.human_attribute_name :description
+            
+
           -records.each do |package|
             tr
-              td class="col-xs-4" = link_to package.name, package_path(package)
+              td class="col-xs-3" = link_to package.name, package_path(package)
+              td class="col-xs-9" = package.description
               
               
                 
-- else
-    div class="panel-body"
-       	p = t(".no_packages_found", default: "No packages Found") 
+-else
+  p = t("no_records_found") 

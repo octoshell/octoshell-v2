@@ -18,7 +18,7 @@ module Pack
     accepts_nested_attributes_for :version_options,:clustervers, allow_destroy: true
     validates_associated :version_options,:clustervers
     scope :finder, ->(q) { where("lower(name) like lower(:q)", q: "%#{q.mb_chars}%").limit(10) }
-    validate :date_and_state,:work_with_stale
+    validate :date_and_state,:work_with_stale,:pack_deleted
 
     aasm :column => :state  do
      
@@ -30,7 +30,7 @@ module Pack
     end
     def add_errors(to)
       to.changes.except("lock_col","updated_at").each do  |key,val|
-          to.errors.add(key.to_sym,I18n.t("stale_error",m:val[0]))
+          to.errors.add(key.to_sym,I18n.t("stale_error"))
         end
     end
 
@@ -48,11 +48,16 @@ module Pack
         end
         restore_attributes([:lock_col])
       end
-        
 
     end
 
-    before_save :incr,:delete_accesses
+    def pack_deleted
+      if package.deleted && !deleted
+        errors.add(:deleted,:pack_deleted)
+      end
+    end
+
+    before_save :incr,:delete_accesses,:make_clvers_not_active
     def incr
       self.lock_col= lock_col.to_i + 1
     end
@@ -71,12 +76,28 @@ module Pack
       end
     end
 
+    def make_clvers_not_active
+    
+      if deleted == true
+        
+        
+        clustervers.where(active: true).each do |cl|
+          cl.active= false
+          cl.save
+        end
+      end
+    end
+
+    def end_lic_readable
+      end_lic || Access.human_attribute_name(:forever)
+    end
+    
     after_commit :send_emails 
 
     def send_emails
       
         if previous_changes["state"]
-            accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status !='denied'").each do |ac|
+            accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status IN ('allowed','expired')").each do |ac|
               ::Pack::PackWorker.perform_async(:email_vers_state_changed, ac.id)  
             end
         end
@@ -85,7 +106,7 @@ module Pack
 
 
     def self.ransackable_scopes(auth_object = nil)
-      [:user_access]
+      [:user_access,:allowed_for_users]
     end
 
     def self.expired_versions
@@ -97,7 +118,7 @@ module Pack
     
     def self.allowed_for_users user_id
      
-     where("pack_versions.service IS NULL OR pack_versions.service= 'f' OR pack_accesses.status in ('allowed','expired')")
+     where("pack_versions.service= 'f' OR pack_accesses.status in ('allowed','expired')")
 
     end
 
@@ -128,7 +149,7 @@ module Pack
       if user_id==true
         user_id=1
       end
-      select("pack_versions.*").joins(:accesses).merge(Access.inner_join_user_access user_id)
+      joins(:accesses).merge(Access.user_access_with_where user_id)
     end
 
     def deleted?
@@ -261,11 +282,12 @@ module Pack
         return 
       end
        (hash.values.select{ |i| i[:id]  }.map{ |i| i[:id].to_i  } -  clustervers.map(&:id) ).each do |cl_id|
-          opt_params= hash.values.detect{ |val| val[:id].to_i == cl_id  } 
-          opt=clustervers.new(opt_params.except(:id,:_destroy,:action))
-          opt
-          opt.stale_edit= true
-         
+
+        
+          cl_params= hash.values.detect{ |val| val[:id].to_i == cl_id  }
+          cl=clustervers.new(cl_params.except(:id,:_destroy))
+          cl.action=cl_params[:action]
+          cl.stale_edit= true
 
          hash.delete_if{ |key,val| val[:id].to_i == cl_id  }
        
@@ -282,14 +304,14 @@ module Pack
         when "not_active"
           h[:active]="0"
         when "_destroy" 
-          create_temp_clusterver h[:core_cluster_id]
           h[:_destroy]="1"
         else 
           raise "incorrect attribute in clustervers"
         end
       end
-     
+      
       self.clustervers_attributes= hash
+     
     end
 
      def self.preload_and_to_a user_id,versions

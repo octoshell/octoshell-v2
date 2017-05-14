@@ -1,56 +1,30 @@
 require_dependency "pack/application_controller"
+#require "app/services/pack/pack_search_service"
 
 module Pack
   class PackagesController < ApplicationController
    
     
-    def get_search_form
-
-    end
+   
     def index
   
-      @q_form=OpenStruct.new(params[:q] || {user_access: current_user.id})
-      @model_table=params[:type] || 'packages'
-      model_table= if @model_table=='packages'
-       Package.select("pack_packages.*")
-      else 
-        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:package)
+
+      @q_form=OpenStruct.new(params[:q] || {type:'packages',user_access: current_user.id})
+      search=Pack::PackSearch.new(@q_form.to_h,true)
+
+      @model_table=search.model_table
+
+      if search.model_table=='versions'
+        @options_for_select=Core::Project.joins(members: :user).where(core_members: {user_id: current_user.id,owner: true}).map do |item|
+              [t('project') + ' ' + item.title,item.id]
+        end
+        @options_for_select<<[t('user'),"user"]       
       end
+
+      @records=search.get_results.allowed_for_users(current_user.id).page(params[:page]).per(15)
       
 
-
-      if @model_table=='packages' 
-        permanent = [:user_access,:deleted_eq,:id_in]
-        q_hash=Hash[@q_form.to_h.except(*permanent)
-          .map{ |key,val| ["versions_#{key}",val]  }].
-          merge @q_form.to_h.slice(*permanent)  
-      else 
-        q_hash = @q_form.to_h
-        q_hash[:package_deleted_eq] =q_hash[:deleted_eq]
-        @options_for_select=Core::Project.joins(members: :user).where(core_members: {owner: true}).map do |item|
-        [t('project') + ' ' + item.title,item.id]
-        end
-        @options_for_select<<[t('user'),"user"] 
-      end
-
-      @q=model_table.ransack(q_hash)
-     
-      @records=@q.result(distinct: true).order(:id)
-      if q_hash[:user_access]=='0'
-
-        if @model_table=='packages'
-          @records =  @records.joins(<<-eoruby
-          LEFT JOIN pack_versions ON pack_versions.package_id = pack_packages.id
-          eoruby
-
-          )
-
-        end
-        @records=@records.merge( Version.joins_user_accesses(current_user.id))
-
-      end
-       @records=@records.allowed_for_users(current_user.id).page(params[:page]).per(15)
-
+        
        Version.preload_and_to_a(current_user.id,@records)  if @model_table=='versions'
 
    
@@ -84,8 +58,8 @@ module Pack
     def show
 
       
-    
-      @options_for_select=Core::Project.joins(members: :user).where(core_members: {owner: true}).map do |item|
+      
+      @options_for_select=Core::Project.joins(members: :user).where(core_members: {user_id: current_user.id,owner: true}).map do |item|
         [t('project') + ' ' + item.title,item.id]
       end
       @options_for_select<<[t('user'),"user"] 

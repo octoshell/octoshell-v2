@@ -17,13 +17,14 @@ div class="row"
           -if @package.deleted
             =t 'notice.pack_deleted' 
           -else
-            = f.check_box :deleted
-            = show_errors(f,:deleted)
-          = f.check_box :service
-          = show_errors(f,:service)
-          
-          = f.check_box :delete_on_expire
-          = show_errors(f,:delete_on_expire)
+            =f.form_group :deleted
+              = f.check_box :deleted
+          =f.form_group :service 
+            = f.check_box :service
+         
+          =f.form_group :delete_on_expire 
+            = f.check_box :delete_on_expire
+         
             
 
           = f.hidden_field :lock_col
@@ -41,12 +42,12 @@ div class="row"
             p
              div style="margin:20px;"              
                 =ff.object.name
-                
                 =ff.hidden_field :core_cluster_id
-                =ff.radio_button  :action,"_destroy", label: t("versions.not_exist")  
-                =ff.radio_button  :action,"not_active", label: t("versions.not_active")
-                =ff.radio_button  :action,"active" , label: t("versions.active")  
-                -if ff.object.errors[:active]!=[]
+                =ff.form_group :action
+                  =ff.radio_button  :action,"_destroy", label: t("versions.not_exist")  
+                  =ff.radio_button  :action,"not_active", label: t("versions.not_active")
+                  =ff.radio_button  :action,"active" , label: t("versions.active")  
+                /-if ff.object.errors[:active]!=[]
                     p
                       font color="red"
                         =ff.object.errors[:active][0]
@@ -57,7 +58,7 @@ div class="row"
         
           div id="new_options"
       div class="row"
-        button class="btn btn-primary btn_access" type="button" id="options" =t("new") 
+        button class="btn btn-primary btn_access" type="button" id="options" =t(".new") 
         br
         br
         br

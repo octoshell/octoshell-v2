@@ -1,6 +1,7 @@
 require "pack/engine"
 require "pack/date_custom"
 require "pack/autocomplete_field"
+require "pack/pack_search_service"
 require "decorators"
 require "aasm"
 require "slim"

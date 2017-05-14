@@ -1,0 +1,20 @@
+=bootstrap_form_for @q, url: admin_accesses_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
+	div class='row'
+	    div class='col-md-3'
+	    	= f.select :who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } )  , { label: Pack::Access.human_attribute_name(:who_type) },{multiple: true}
+		
+	    div id='who_type_aim' class='col-md-9'
+	div class='row'
+	    div class='col-md-4'
+			= f.select :status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{multiple: true} 
+		div class='col-md-4'
+	    	= f.autocomplete_field :user_access_with_where,{label: Pack::Access.human_attribute_name(:con_to_user), source:  main_app.users_path},include_blank: true
+	div class='row'
+	    
+		div class='col-md-3'
+	 		= f.check_box :new_end_lic_not_null, {label: Pack::Access.human_attribute_name(:new_end_lic_not_null)},"1",""
+	 	div class='col-md-9'
+			= f.autocomplete_field :version_id_in,{label: Pack::Access.human_attribute_name(:versions), source:  admin_versions_path}, multiple: true
+    = f.form_group do
+      		= f.submit t("actions.find"), class: "btn btn-primary"
+    -@f=f

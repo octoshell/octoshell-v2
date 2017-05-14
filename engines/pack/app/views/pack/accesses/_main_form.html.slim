@@ -5,7 +5,7 @@
     	font color="red"
         	=@message
 
--if @access && @to!='delete_not_success'
-	=t("main_form_m.#{@to}") + ":"
+-if @access && @to &&  @to!='delete_not_success' 
+	=(t("main_form_m.#{@to}") + ":" ) if @to!='delete_success'
 	p
 		=render @to

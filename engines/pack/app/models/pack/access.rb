@@ -12,6 +12,8 @@ module Pack
     american_date_proccess
     validates :version, :created_by,:who,:status,presence: true
     validates_uniqueness_of :who_id,:scope => [:version_id,:who_type]
+
+
     
     attr_accessor :user_edit
     aasm :column => :status  do
@@ -116,7 +118,11 @@ module Pack
 
       tickets.create!(subject: subject,reporter: created_by,message: subject,topic_id: Pack.support_access_topic_id)
     end
-    def self.inner_join_user_access(user_id)
+
+    def version_name
+       version.name
+    end
+    def self.user_access_with_where(user_id)
 
 
       if user_id==true
@@ -160,7 +166,7 @@ module Pack
         eoruby
         ).where(
         <<-eoruby
-        (  "pack_accesses"."who_type" = 'Core::Project' OR "pack_accesses"."who_type" = 'Group'  OR "pack_accesses"."who_type" = 'User'
+        (  "pack_accesses"."who_type" = 'Core::Project' AND core_projects.id IS NOT NULL OR "pack_accesses"."who_type" = 'Group' AND  groups.id IS NOT NULL  OR "pack_accesses"."who_type" = 'User'
          AND "pack_accesses"."who_id" = #{user_id}  ) 
          eoruby
          )
@@ -201,7 +207,7 @@ module Pack
       
     end
     def self.ransackable_scopes(auth_object = nil)
-      [:user_access,:inner_join_user_access]
+      [:user_access,:user_access_with_where]
     end
 
 
@@ -262,6 +268,11 @@ module Pack
     end
 
     validate :end_lic_correct,:new_end_lic_correct,if: Proc.new {status!='deleted'}
+    validate do 
+     if  version.deleted && status!='deleted'
+       errors.add(:status,:version_deleted) 
+     end
+    end
 
 
     def end_lic_correct
@@ -345,7 +356,7 @@ module Pack
       
       
       
-      "#{I18n.t('who_types.'+who_type)} #{who_name}"
+      "#{I18n.t('who_types.'+who_type)} \"#{who_name}\""
     end
     
 

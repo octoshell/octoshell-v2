@@ -1,5 +1,5 @@
 table  width="50%" 
 		tr 
-			td #{t("category", default: "category")}:
+			td =Pack::OptionsCategory.human_attribute_name :category
 			td #{@option.category}
 		

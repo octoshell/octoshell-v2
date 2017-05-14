@@ -4,49 +4,27 @@ div class="package-header"
    
   
 
-  = bootstrap_form_for @q_form,as: "q", url: admin_packages_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
-    -@f=f
-    =t('packages or versions')
-    div class='margin'
-      =f.label t('pack_search.packages.packages')
-      =radio_button_tag :type, 'packages',@model_table=='packages'
-      br
-      =f.label t('pack_search.packages.versions')
-      =radio_button_tag :type, 'versions',@model_table=='versions'
-    div id='type_aim'
-    =f.autocomplete_field :user_access,{label: t("pack_search.packages.user_access"), source:  main_app.users_path},include_blank: true
-    =f.select :accesses_who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } )  , { label: t("pack_search.packages.who_type_admin") },{class: "change_user_access", multiple: true}
-    =f.select :accesses_status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{class: "change_user_access",multiple: true} 
-     =f.check_box :clustervers_active_in,{label: t("pack_search.packages.active_cl")},"1",""
-    =f.autocomplete_field :clustervers_core_cluster_id_in,{label: t("pack_search.packages.clusters"), source:  core.admin_clusters_path},include_blank: true
-
-    
-    
-    =f.check_box :deleted_eq,{label: t("pack_search.packages.only_deleted") },"1",""
-    =f.check_box :service_eq,{label: t("pack_search.packages.only_service") },"1",""
-      
-    = f.form_group do
-        = f.submit t("actions.find")
-
+  div id="qq"
+ 
 
  
  
-   
+ 
   br
   br
   br
-  
-     
-        
+    
+       
+          
   div id="table_records"
-     =render(:partial => "#{@model_table}_table",locals: {records: @records } )   
+       =render(:partial => "#{@model_table}_table",locals: {records: @records } )   
   div id="ajax_paginator" 
-    =paginate(@records, :remote => true).to_s
+      =paginate(@records, :remote => true).to_s
       
 
     
 
 
 = javascript_tag do 
-   = render(:partial => 'index', :formats => [:js],:locals=>{f: @f}) 
+   = render(:partial => 'index', :formats => [:js]) 
 

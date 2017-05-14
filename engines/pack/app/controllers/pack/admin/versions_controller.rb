@@ -90,8 +90,6 @@ module Pack
 
       @stale_message=t("stale_message") if @version.changes["lock_col"]
       if @version.save
-        
-       
         redirect_to admin_package_version_path(@package,@version)
         
 

@@ -8,31 +8,15 @@ module Pack
     def index
     
       
-     @q_form=OpenStruct.new(params[:q])
-      @model_table=params[:type] || 'packages'
-      model_table= if @model_table=='packages'
-       Package.select("pack_packages.*")
-      else 
-        Version.select("pack_versions.*").includes({clustervers: :core_cluster},:package)
-      end
+      @q_form=OpenStruct.new(params[:q] || {type:'packages',user_access: current_user.id})
+      search=Pack::PackSearch.new(@q_form.to_h,false)
+
+      @model_table=search.model_table
+
+      @records=search.get_results.page(params[:page]).per(15)
       
 
-
-      if @model_table=='packages' 
-        permanent = [:user_access,:deleted_eq]
-        q_hash=Hash[@q_form.to_h.except(*permanent)
-          .map{ |key,val| ["versions_#{key}",val]  }].
-          merge @q_form.to_h.slice(*permanent)  
-      else 
-        q_hash = @q_form.to_h
-        q_hash[:package_deleted_eq] =q_hash[:deleted_eq]
         
-      end
-     
-
-      @q=model_table.ransack(q_hash)
-     
-      @records=@q.result(distinct: true).order(:id).page(params[:page]).per(15)
       
     
       respond_to do |format|

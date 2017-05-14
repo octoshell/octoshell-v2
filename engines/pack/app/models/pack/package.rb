@@ -9,9 +9,7 @@ module Pack
   	def as_json(options)
     { id: id, text: name }
   	end
-    def self.ransackable_scopes(auth_object = nil)
-      [:user_access]
-    end
+    
 
     before_save do 
       if deleted==true
@@ -32,7 +30,7 @@ module Pack
       if user_id==true
         user_id=1
       end
-      joins(versions: :accesses).merge(Access.inner_join_user_access user_id)
+      joins(:versions).merge(Version.user_access user_id)
     end
   end
   

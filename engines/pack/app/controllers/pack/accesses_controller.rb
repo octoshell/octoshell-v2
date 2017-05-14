@@ -5,7 +5,6 @@ module Pack
     
     def access_init
       @access = Access.find(params[:id])
-      @statuses=Access.statuses.keys
 
     end    
 
@@ -16,7 +15,7 @@ module Pack
        
         @vers_id=access_params[:version_id]
         @version=Version.find(@vers_id)
-        if @version.service || @version.deleted?
+        if @version.service || @version.deleted
           raise ActiveRecord::RecordNotFound
         end
 
@@ -55,6 +54,7 @@ module Pack
         @access=Access.find(access_params[:id])
        
         @access.status='deleted' if @access.status=='requested'
+        @access.user_edit= true
         @access.save!
         
       rescue ActiveRecord::StaleObjectError
@@ -67,6 +67,8 @@ module Pack
       render "form"
      
     end
+
+    
   	def form
       begin
         @vers_id=params[:version_id]

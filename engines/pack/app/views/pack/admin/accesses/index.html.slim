@@ -3,19 +3,7 @@ div class="package-header"
   
     
  
-  = bootstrap_form_for @q, url: admin_accesses_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
-   
-    
-    = f.select :who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } )  , { label: Pack::Access.human_attribute_name(:who_type) },{multiple: true}
-
-    div id='who_type_aim'
-    = f.select :status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{multiple: true} 
-    = f.autocomplete_field :inner_join_user_access,{label: t("connected_to_user"), source:  main_app.users_path},include_blank: true
-    = f.autocomplete_field :version_id_in,{label: Pack::Access.human_attribute_name(:version), source:  admin_versions_path}, multiple: true
-    = f.check_box :new_end_lic_not_null, {label: Pack::Access.human_attribute_name(:new_end_lic_not_null)},"1",""
-    = f.form_group do
-      = f.submit t("actions.find"), class: "btn btn-primary"
-    -@f=f
+  div id="qq"
  
   br
   br
@@ -35,8 +23,9 @@ div class="package-header"
 
   
     
-  //apply_select2();
+  
     
 = javascript_tag do 
-    = render(:partial => 'pack/admin/accesses/index', :formats => [:js],:locals=>{f: @f}) 
+
+    = render(:partial => 'pack/admin/accesses/index', :formats => [:js]) 
 

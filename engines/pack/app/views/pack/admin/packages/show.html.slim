@@ -4,17 +4,14 @@ html
 	br
 	br
 	
-	table  width="50%" 
-		tr 
-			td #{t("name", default: "Package name")}:
-			td #{@package.name}
-		tr 
-			td #{t("description", default: "Description")}:
-			td #{@package.description} 
+	table  class="table"
+		-["name","description"].each do |a|
+			tr 
+				td class="col-xs-3" =Pack::Package.human_attribute_name a
+				td class="col-xs-9"#{@package.public_send a}
 		tr
-			td =Pack::Package.human_attribute_name :deleted
-			td =t("#{@package.deleted}")
-		
+			td class="col-xs-3" =Pack::Package.human_attribute_name :deleted
+			td class="col-xs-9" =t("#{@package.deleted}")
 	br
 	br
 	div class="panel  panel-heading clearfix"

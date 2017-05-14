@@ -1,0 +1,35 @@
+  = bootstrap_form_for @q_form,as: "q", url: packages_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
+    -@f=f
+
+    =f.label :type,t('packages or versions')
+    div class='margin'
+      =f.radio_button :type, 'packages',label: t('pack_search.packages.packages')
+
+      br
+      
+      =f.radio_button :type, 'versions',label:  t('pack_search.packages.versions')
+    div id='type_aim'
+  
+    div class="row"
+      =f.check_box :user_access,{label: t("pack_search.packages.my_packs") }, current_user.id
+    
+
+    div class='row'
+
+      div class='col-md-4'
+        =f.select :accesses_who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } )  , { label: t("pack_search.packages.who_type") },{class: "change_user_access", multiple: true}
+      div class='col-md-4'
+        =f.select :accesses_status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{class: "change_user_access",multiple: true} 
+      div class='col-md-4'
+        =f.autocomplete_field :clustervers_core_cluster_id_in,{label: t("pack_search.packages.clusters"), source:  get_clusters_path},include_blank: true
+    div class='row'
+
+      div class='col-md-4'
+        =f.check_box :clustervers_active_in,{label: t("pack_search.packages.active_cl")},"1",""
+        =f.check_box :deleted_eq,{label: t("pack_search.packages.show_deleted") },"","0"
+        
+   
+      
+    = f.form_group do
+        = f.submit t("actions.find")
+

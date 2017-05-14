@@ -4,14 +4,15 @@ html
 	br
 	br
 	
+
 	table  class="table"
 		-["name","description"].each do |a|
 			tr 
-				td =Pack::Package.human_attribute_name a
-				td #{@package.public_send a}
+				td class="col-xs-3" =Pack::Package.human_attribute_name a
+				td class="col-xs-9"#{@package.public_send a}
 		tr
-			td =Pack::Package.human_attribute_name :deleted
-			td =t("#{@package.deleted?}")
+			td class="col-xs-3" =Pack::Package.human_attribute_name :deleted
+			td class="col-xs-9" =t("#{@package.deleted}")
 		
 
 	br

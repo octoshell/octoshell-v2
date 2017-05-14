@@ -1,4 +1,7 @@
 
+  $("#qq").html("<%=j render 'q'%>");
+   <%f=@f%>
+
 
      $(document).on('change','#q_who_type_in',function()
     {
@@ -17,7 +20,7 @@
        	}
        	if(temp.val()=='Group')
        	{
-       		$('#who_type_aim').html("<%=j f.autocomplete_field :who_id_eq,label: t('Group'), source:  admin_get_groups_path %>");
+       		$('#who_type_aim').html("<%=j f.autocomplete_field :who_id_eq,label: t('group'), source:  admin_get_groups_path %>");
        	}
        	
 

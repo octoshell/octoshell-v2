@@ -6,7 +6,7 @@ module Pack
 
     def stale_check
       if stale_edit
-        mark_for_destruction
+       
         errors.add(:active,I18n.t("stale_error_nested"))
       end
     end
@@ -22,6 +22,24 @@ module Pack
   			"not_active"
   		end
   	end
+
+    
+    def action=(arg)
+     
+    
+      case arg
+        when "active"
+          active=true
+        when "not_active"
+         active=false
+        when "_destroy" 
+
+          mark_for_destruction
+          
+        else 
+            raise "incorrect attribute in clustervers"
+        end
+    end
      def get_color
       if active 
         'green'

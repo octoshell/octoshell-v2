@@ -1,15 +1,18 @@
 div class="panel  panel-heading clearfix"
       = link_to t("new_package"), new_admin_package_path, class: "btn btn-default"
-- if records
+- if records!=[]
       div  class="panel-body"
         table  class="table table-hover"
           tr
             th #{t("name", default: "Package name")}
+            th =Pack::Package.human_attribute_name :description
             th
           -records.each do |package|
             tr
               td class="col-xs-4" = link_to package.name, admin_package_path(package)
-              td
+              td class="col-xs-6" = package.description
+
+              td class="col-xs-2"
                 div class="btn-group pull-right"
                   = link_to t("edit", default: "edit"), edit_admin_package_path(package.id), class: "btn btn-default btn-sm"
                   button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -25,5 +28,4 @@ div class="panel  panel-heading clearfix"
                     li class="text-left"
                       = link_to name, admin_package_path(package.id), data: data, class: "text-danger"
 - else
-    div class="panel-body"
-       	p = t(".no_packages_found", default: "No packages Found") 
+    p = t("no_records_found") 
