@@ -4,6 +4,8 @@ div class="row"
       h3
         font color="red"
           =@stale_message
+        p
+          =link_to (t "mailer_messages.show_vers" ), admin_package_version_path(@package,@version)
     = bootstrap_form_for [:admin,@package,@version] do |f|
       -@f=f
       div class="row"
@@ -47,10 +49,7 @@ div class="row"
                   =ff.radio_button  :action,"_destroy", label: t("versions.not_exist")  
                   =ff.radio_button  :action,"not_active", label: t("versions.not_active")
                   =ff.radio_button  :action,"active" , label: t("versions.active")  
-                /-if ff.object.errors[:active]!=[]
-                    p
-                      font color="red"
-                        =ff.object.errors[:active][0]
+                
         
         div class="col-xs-12"
           = f.fields_for :version_options do |ff|
