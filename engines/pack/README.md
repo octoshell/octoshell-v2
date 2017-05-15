@@ -34,6 +34,13 @@ bundle install
 ```bash
 bundle exec rake  pack:install
 ```
+В app/assets/javascripts/application.js дописать:
+
+```
+//= require pack/application
+```
+
+
 
 
 В app/decorators/controllers/application_controller_decorator.rb  дописать:
