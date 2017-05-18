@@ -105,9 +105,6 @@ module Pack
     end
 
 
-    def self.ransackable_scopes(auth_object = nil)
-      [:user_access,:allowed_for_users]
-    end
 
     def self.expired_versions
       Version.transaction do 
@@ -118,11 +115,11 @@ module Pack
     
     def self.allowed_for_users user_id
      
-     where("pack_versions.service= 'f' OR pack_accesses.status in ('allowed','expired')")
+     where("pack_versions.service= 'f' OR pack_accesses.status='allowed'")
 
     end
 
-    def self.joins_user_accesses user_id
+    def self.left_join_user_accesses user_id
       joins(
         <<-eoruby
         LEFT JOIN "core_members" ON ( "core_members"."user_id" = #{user_id}   )
@@ -149,7 +146,7 @@ module Pack
       if user_id==true
         user_id=1
       end
-      joins(:accesses).merge(Access.user_access_with_where user_id)
+      joins(:accesses).merge(Access.user_access_without_select user_id)
     end
 
     def deleted?

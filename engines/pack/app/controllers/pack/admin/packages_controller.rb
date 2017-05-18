@@ -8,8 +8,8 @@ module Pack
     def index
     
       
-      @q_form=OpenStruct.new(params[:q] || {type:'packages',user_access: current_user.id})
-      search=Pack::PackSearch.new(@q_form.to_h,false)
+      @q_form=OpenStruct.new(params[:q] || {type:'packages'})
+      search=Pack::PackSearch.new(@q_form.to_h)
 
       @model_table=search.model_table
 

@@ -122,31 +122,18 @@ module Pack
     def version_name
        version.name
     end
-    def self.user_access_with_where(user_id)
-
-
-      if user_id==true
-        user_id=1
-      end
-
-      user_access_without_select(user_id).where(<<-eoruby
-        (#{user_id} = pack_accesses.who_id AND pack_accesses.who_type='User'
-        OR pack_accesses.who_type='Core::Project' AND "core_members"."user_id" = #{user_id} 
-        OR pack_accesses.who_type='Group' AND "user_groups"."user_id" = #{user_id}   )
-        eoruby
-        )
-      
-    end
+    
 
     def self.user_access(user_id)
 
 
-        select('pack_accesses.*,core_projects.title as who_project,groups.name as who_group').user_access_without_select user_id
+        select('pack_accesses.*,core_projects.title as who_project,groups.name as who_group').
+        user_access_without_select(user_id)
+
     end
 
 
-    
-    def self.user_access_without_select(user_id)
+    def self.joins_projects_groups(user_id)
 
        if user_id==true
         user_id=1
@@ -164,10 +151,21 @@ module Pack
         AND "user_groups"."user_id" = #{user_id}   AND "pack_accesses"."who_type" = 'Group' )
         LEFT JOIN "groups" ON ( "user_groups"."group_id" = "groups"."id"  )
         eoruby
-        ).where(
+        )
+    end
+    
+    def self.user_access_without_select(user_id)
+
+       if user_id==true
+        user_id=1
+      end
+
+        joins_projects_groups(user_id).
+        where(
         <<-eoruby
-        (  "pack_accesses"."who_type" = 'Core::Project' AND core_projects.id IS NOT NULL OR "pack_accesses"."who_type" = 'Group' AND  groups.id IS NOT NULL  OR "pack_accesses"."who_type" = 'User'
-         AND "pack_accesses"."who_id" = #{user_id}  ) 
+        (  "pack_accesses"."who_type" = 'Core::Project' AND core_projects.id IS NOT NULL 
+        OR "pack_accesses"."who_type" = 'Group' AND  groups.id IS NOT NULL 
+         OR "pack_accesses"."who_type" = 'User' AND "pack_accesses"."who_id" = #{user_id}  ) 
          eoruby
          )
     end
@@ -207,7 +205,7 @@ module Pack
       
     end
     def self.ransackable_scopes(auth_object = nil)
-      [:user_access,:user_access_with_where]
+      [:user_access,:user_access_without_select]
     end
 
 

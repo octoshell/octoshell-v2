@@ -3,10 +3,10 @@ module Pack
 		
 		NOT_CHANGED = [:deleted_eq,:id_in]
 		attr_reader :model_table
-		def initialize search_hash,user_controller
+		def initialize search_hash,user_id=nil
 
 
-			@user_controller= user_controller
+			@user_id= user_id
 			@model_table=search_hash.delete(:type)
 			@user_access_value=search_hash.delete(:user_access)
 	    	@relation= if @model_table=='packages'
@@ -37,9 +37,9 @@ module Pack
 				remove_joins 
 				@relation.user_access @user_access_value
 			else
-				if @user_controller
+				if @user_id
 					( @relation=@relation.joins("LEFT JOIN pack_versions on pack_versions.package_id=pack_packages.id") ) if model_table=='packages'
-					@relation.joins("LEFT JOIN pack_accesses on pack_versions.id=pack_accesses.version_id")
+					@relation.merge( Version.left_join_user_accesses( @user_id ) )
 				else
 					@relation
 				end
@@ -71,8 +71,12 @@ module Pack
 		def must_delete_dependency? j
 			
 			tables=j.aliases.instance_variable_get("@tables")
+			puts tables.map { |t | t.table.table_name }  
+			puts "---"
 
-			( tables.length==1) &&  (['pack_versions','pack_accesses'].include? tables.first.table.table_name)
+			( tables.length==1) &&  (['pack_versions','pack_accesses'].include? tables.first.table.table_name) ||
+			( tables.length==2) &&  'pack_versions' ==tables.first.table.table_name && 'pack_accesses' ==tables.second.table.table_name 
+
 			# j.aliases.instance_variable_get("@tables").each do |table|
 			 #	return true if 	['pack_versions','pack_accesses'].include? table.table.table_name
 			 #end

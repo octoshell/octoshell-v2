@@ -8,7 +8,7 @@
 	    div class='col-md-4'
 			= f.select :status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{multiple: true} 
 		div class='col-md-4'
-	    	= f.autocomplete_field :user_access_with_where,{label: Pack::Access.human_attribute_name(:con_to_user), source:  main_app.users_path},include_blank: true
+	    	= f.autocomplete_field :user_access_without_select,{label: Pack::Access.human_attribute_name(:con_to_user), source:  main_app.users_path},include_blank: true
 	div class='row'
 	    
 		div class='col-md-3'
