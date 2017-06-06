@@ -7,7 +7,8 @@ module Pack
     def stale_check
       if stale_edit
        
-        errors.add(:active,I18n.t("stale_error_nested"))
+        errors.add(:action,I18n.t("stale_error_nested"))
+
       end
     end
   	validates :core_cluster,:version, presence: true

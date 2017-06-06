@@ -22,7 +22,7 @@ div class="page-header"
 	= f.text_field :end_lic,{ class: 'form-control my_datepicker',enab: "item",placeholder: "mm-dd-yy"}
 	= f.text_field :new_end_lic,{ class: 'form-control my_datepicker',enab: "item",placeholder: "mm-dd-yy"}
 
-	= f.select :status,Pack::Access.states_list_readable
+	= f.select :status,Pack::Access.states_list_for_form
  	= f.form_group do
     	= f.submit t("buttons.save", default: "Save")
 		

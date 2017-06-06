@@ -80,18 +80,20 @@ table
 
 p
 	h4 =t "versions.options"
-	
-	-@version.version_options.each do |opt|	
-		p	
-			table  
-				tr 
-					td class="col-xs-3"
+	p	
+		table  
+			tr 
+					th class="col-xs-3"
 						=Pack::VersionOption.human_attribute_name "name"
-					td class="col-xs-9"
-						=opt.name
+					th class="col-xs-9"
+						=Pack::VersionOption.human_attribute_name "value"
+			-@version.version_options.each do |opt|	
+		
+				
+						
 				tr 
 					td class="col-xs-3"
-						=Pack::VersionOption.human_attribute_name "value"
+						=opt.name
 					td class="col-xs-9"
 						=opt.value
 

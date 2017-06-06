@@ -21,9 +21,24 @@ Gem::Specification.new do |s|
  
   s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "slim"
+  s.add_dependency "decorators"
+
   s.add_dependency "bootstrap_form"
-  s.add_dependency "maymay"
+  
   s.add_dependency "jquery-ui-rails"
+  s.add_dependency "aasm"
+  s.add_dependency "sidekiq"
+  s.add_dependency "maymay"
+  s.add_dependency "ransack"
+  s.add_dependency "kaminari"
+  s.add_dependency "carrierwave"
+  s.add_dependency "mime-types"
+#    s.add_dependency "core"
+
+  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'capybara'
+  s.add_development_dependency 'factory_girl_rails'
+  s.test_files = Dir["spec/**/*"]
   
   
 

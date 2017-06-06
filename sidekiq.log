@@ -2,8 +2,8 @@ nohup: ввод игнорируется
 /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/bundler/gems/config-813e504f47d3/lib/config/compatibility.rb:1:in `<top>': Use RbConfig instead of obsolete and deprecated Config.
 /home/andrey/.rbenv/versions/jruby-9.0.5.0/lib/ruby/gems/shared/gems/activerecord-4.2.6/lib/active_record/associations.rb:1694: warning: already initialized constant HABTM_PackAccesses
 The signal USR1 is in use by the JVM and will not work correctly on this platform
-2017-05-18T15:15:25.249Z 2386 TID-ggo INFO: Running in jruby 9.0.5.0 (2.2.3) 2016-01-26 7bee00d Java HotSpot(TM) Server VM 24.80-b11 on 1.7.0_80-b15 +jit [linux-i386]
-2017-05-18T15:15:25.255Z 2386 TID-ggo INFO: See LICENSE and the LGPL-3.0 for licensing details.
-2017-05-18T15:15:25.256Z 2386 TID-ggo INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
-2017-05-18T15:15:25.258Z 2386 TID-ggo INFO: Booting Sidekiq 4.1.1 with redis options {:url=>nil}
-2017-05-18T15:15:25.288Z 2386 TID-ggo INFO: Starting processing, hit Ctrl-C to stop
+2017-06-06T20:22:12.949Z 2413 TID-gl2 INFO: Running in jruby 9.0.5.0 (2.2.3) 2016-01-26 7bee00d Java HotSpot(TM) Server VM 24.80-b11 on 1.7.0_80-b15 +jit [linux-i386]
+2017-06-06T20:22:12.957Z 2413 TID-gl2 INFO: See LICENSE and the LGPL-3.0 for licensing details.
+2017-06-06T20:22:12.958Z 2413 TID-gl2 INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
+2017-06-06T20:22:12.961Z 2413 TID-gl2 INFO: Booting Sidekiq 4.1.1 with redis options {:url=>nil}
+2017-06-06T20:22:13.032Z 2413 TID-gl2 INFO: Starting processing, hit Ctrl-C to stop

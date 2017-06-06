@@ -29,6 +29,10 @@ module Pack
     
     end
     def add_errors(to)
+      if to != self && to.changes!= {}
+
+        errors.add(:stale,"stale_error_nested")
+      end
       to.changes.except("lock_col","updated_at").each do  |key,val|
           to.errors.add(key.to_sym,I18n.t("stale_error"))
         end
@@ -36,9 +40,8 @@ module Pack
 
     def work_with_stale
 
-
       if changes["lock_col"]
-       
+        
         add_errors(self)
         version_options.each do |opt|
           add_errors(opt)
@@ -278,36 +281,47 @@ module Pack
       if !hash 
         return 
       end
-       (hash.values.select{ |i| i[:id]  }.map{ |i| i[:id].to_i  } -  clustervers.map(&:id) ).each do |cl_id|
+       #(hash.values.select{ |i| i[:id]  }.map{ |i| i[:id].to_i  } -  clustervers.map(&:id) ).each do |cl_id|
 
         
-          cl_params= hash.values.detect{ |val| val[:id].to_i == cl_id  }
-          cl=clustervers.new(cl_params.except(:id,:_destroy))
-          cl.action=cl_params[:action]
-          cl.stale_edit= true
+        #  cl_params= hash.values.detect{ |val| val[:id].to_i == cl_id  }
+         # cl=clustervers.new(cl_params.except(:id,:_destroy))
+          #cl.action=cl_params[:action]
+         
 
-         hash.delete_if{ |key,val| val[:id].to_i == cl_id  }
-       
+         #hash.delete_if{ |key,val| val[:id].to_i == cl_id  }
+
 
          
-        end
+        #end
 
       hash.each_value do |h|
         method_name=h.delete(:action)
-        
+        destroy = false
         case method_name
         when "active"
           h[:active]="1"
         when "not_active"
           h[:active]="0"
         when "_destroy" 
-          h[:_destroy]="1"
+         destroy = true
         else 
           raise "incorrect attribute in clustervers"
         end
+        
+          needed_cl = clustervers.detect { |cl| cl.core_cluster_id == h[:core_cluster_id].to_i }
+        unless needed_cl
+            
+            needed_cl = clustervers.new 
+        end
+        if destroy
+              needed_cl.mark_for_destruction
+            else
+              needed_cl.assign_attributes(h)
+        end
+
       end
       
-      self.clustervers_attributes= hash
      
     end
 

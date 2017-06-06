@@ -42,10 +42,10 @@ div class="row"
         div class="col-xs-6"
           = f.fields_for :clustervers do |ff|
             p
-             div style="margin:20px;"              
+             div style="margin:20px;"
                 =ff.object.name
                 =ff.hidden_field :core_cluster_id
-                =ff.form_group :action
+                =ff.form_group :active
                   =ff.radio_button  :action,"_destroy", label: t("versions.not_exist")  
                   =ff.radio_button  :action,"not_active", label: t("versions.not_active")
                   =ff.radio_button  :action,"active" , label: t("versions.active")  
@@ -53,7 +53,7 @@ div class="row"
         
         div class="col-xs-12"
           = f.fields_for :version_options do |ff|
-            =render "version_opts_fields",ff: ff
+            =render partial: "version_opts_fields",locals: {ff: ff,new: false}
         
           div id="new_options"
       div class="row"

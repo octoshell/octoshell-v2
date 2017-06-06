@@ -204,6 +204,12 @@ module Pack
       aasm.states.map{ |st| [I18n.t( "access_states.#{st}" ),st ]  }
       
     end
+    def self.states_list_for_form
+      
+
+      (aasm.states.map(&:to_s)-["expired"] ).map{ |st| [I18n.t( "access_states.#{st}" ),st ]  }
+      
+    end
     def self.ransackable_scopes(auth_object = nil)
       [:user_access,:user_access_without_select]
     end
@@ -229,6 +235,7 @@ module Pack
         self.new_end_lic= nil
 
       else
+
         self.status= arg
       end       
     end
@@ -282,11 +289,20 @@ module Pack
     end
 
 
+    def new_end_lic_correct_status?
+      end_lic && new_end_lic && ( !["expired","allowed"].include?(status))
+    end
+
     def new_end_lic_correct
       
-      if @date_err || end_lic && new_end_lic && ( end_lic >= new_end_lic || !["expired","allowed"].include?(status))
+      if @date_err || end_lic && new_end_lic && ( end_lic >= new_end_lic )
         self.errors.add(:new_end_lic,:incorect_date)
       end
+      
+        self.errors.add(:new_end_lic,:status_only) if new_end_lic_correct_status?
+      
+
+
       if new_end_lic && !end_lic 
         self.errors.add(:new_end_lic,'must be blank')
       end

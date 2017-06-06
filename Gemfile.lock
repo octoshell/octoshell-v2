@@ -142,11 +142,18 @@ PATH
   remote: engines/pack
   specs:
     pack (0.0.1)
+      aasm
       activerecord-jdbcpostgresql-adapter
       bootstrap_form
+      carrierwave
+      decorators
       jquery-ui-rails
+      kaminari
       maymay
+      mime-types
       rails (~> 4.2)
+      ransack
+      sidekiq
       slim
 
 PATH

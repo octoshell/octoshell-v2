@@ -49,13 +49,17 @@ module Pack
         else
           @access.attributes= access_params.slice(:lock_version,:action)
         end 
-       
+        @access.new_end_lic= nil unless ["expired","allowed"].include?(@access.status)
+
         @access.allowed_by_id=current_user.id if @access.changes[:status] && @access.status=='allowed'
         if @access.save
         
           @to='successful'
+          puts @access.status
 
         else
+          puts @access.errors.full_messages
+
           @to='manage_access'
         end
 

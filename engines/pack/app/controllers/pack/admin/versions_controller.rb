@@ -94,7 +94,7 @@ module Pack
         
 
       else
-                
+        puts @version.errors.inspect      
         render :edit
       end
      
