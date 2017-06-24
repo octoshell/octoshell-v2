@@ -6,6 +6,6 @@
         	=@message
 
 -if @access && @to &&  @to!='delete_not_success' 
-	=(t("main_form_m.#{@to}") + ":" ) if @to!='delete_success'
+	=(t("main_form_m.#{@to}") + ":" ) if @to=='allowed' || @to=='form'
 	p
 		=render @to

@@ -34,7 +34,7 @@ module Pack
       end
 
       event :expire do
-        transitions :from =>  [:requested,:denied], :to => :expired,guard: :check_expired?
+        transitions :from =>  [:denied], :to => :expired,guard: :check_expired?
       end
 
       event :deny do
@@ -45,7 +45,7 @@ module Pack
     def allowed_callback
         
         if forever
-            end_lic= new_end_lic= nil      
+            self.end_lic= self.new_end_lic= nil      
         end
     end  
 
@@ -73,8 +73,8 @@ module Pack
     after_commit :send_email,if: Proc.new{( who_type=='User' ||  who_type=='Core::Project') && !user_edit} 
     after_save :create_ticket,if: Proc.new{ user_edit && (new_end_lic && changes[:new_end_lic] &&  !changes[:new_end_lic][0] || status=='requested')} 
     before_validation do
-     
-      to_expired  if may_to_expired?
+      self.new_end_lic= nil unless ["expired","allowed"].include?(status)
+      to_expired if may_to_expired?
       to_allowed if may_to_allowed?
     
     end
@@ -171,7 +171,16 @@ module Pack
     end
     
     def forever=(arg)
-      @forever= (arg=='false' ? false : true )
+     
+      if arg==true || arg==false
+        @forever = arg
+      else
+        @forever= (arg=='false' ? false : true )
+      end
+      if forever
+
+        self.end_lic= self.new_end_lic= nil
+      end
     end
     def forever
       @forever
@@ -224,7 +233,7 @@ module Pack
       
       if arg == 'make_longer'
 
-        if !new_end_lic ||( end_lic >= new_end_lic )
+        if !new_end_lic 
 
            @date_err=true
         end

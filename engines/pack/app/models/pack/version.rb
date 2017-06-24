@@ -55,7 +55,7 @@ module Pack
     end
 
     def pack_deleted
-      if package.deleted && !deleted
+      if package && package.deleted && !deleted
         errors.add(:deleted,:pack_deleted)
       end
     end

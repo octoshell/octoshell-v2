@@ -1,14 +1,13 @@
  = bootstrap_form_for @q_form,as: "q", url: admin_packages_path, method: :get,remote: true,html:{class: 'ajax-form'} do |f|
     -@f=f
-    =f.label :type,t('packages or versions')
-    div class='margin'
-      =f.radio_button :type, 'packages',label: t('pack_search.packages.packages')
-
-      br
-      
-      =f.radio_button :type, 'versions',label:  t('pack_search.packages.versions')
-    div class="row"
-      div id='type_aim' class="col-md-12"
+    div class='row'
+      div class='col-md-4'
+        =f.label :type,t('packages or versions')
+        div class='margin'
+          =f.radio_button :type, 'packages',label: t('pack_search.packages.packages')    
+          =f.radio_button :type, 'versions',label:  t('pack_search.packages.versions')
+      div  id='type_aim' class='col-md-4'
+       
     div class="row"
       div class="col-md-4"
         =f.autocomplete_field :user_access,{label: t("pack_search.packages.user_access"), source:  main_app.users_path},include_blank: true

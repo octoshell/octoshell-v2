@@ -16,6 +16,7 @@ describe User do
 
   describe "mail sending" do
     it "sends activation mail" do
+      puts "IN USER_SPEC"
       expect(Authentication::MailWorker).to have_enqueued_job(:activation_needed,
                                                               [user.email, user.activation_token])
     end

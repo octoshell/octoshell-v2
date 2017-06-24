@@ -67,6 +67,7 @@ ru:
         packages_list: Пакеты
         accesses_list: Доступы
         options_list: Опции
+    options_list: Опции
     who_types:
       User: Пользователь
       Group: Группа
@@ -145,7 +146,9 @@ ru:
       brown: Ваш доступ истек
       black: Ваш доступ удален
       success: "Действие с данным доступом успешно выполнено.Статус доступа: \"%{status}\". Если у Вас будут какие-то вопросы,пишите нам."
-
+      messages: 
+        deleted: Ваш доступ к данной версии удален
+        denied: Вам отказано в доступе к данной версии
       delete_success: Заявка успешно удалена
       status: 
         denied: отказан
@@ -252,6 +255,7 @@ ru:
             name: Кластер
         pack/access:
             who_type: Тип доступа
+            version_name: Имя версии
             new_end_lic_not_null: Показать только заявки на продление
             versions: Версии
             version: Версия

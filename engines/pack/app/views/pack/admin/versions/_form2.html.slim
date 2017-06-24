@@ -50,8 +50,9 @@ div class="row"
                   =ff.radio_button  :action,"not_active", label: t("versions.not_active")
                   =ff.radio_button  :action,"active" , label: t("versions.active")  
                 
-        
+       
         div class="col-xs-12"
+          h3 =t "options_list"
           = f.fields_for :version_options do |ff|
             =render partial: "version_opts_fields",locals: {ff: ff,new: false}
         

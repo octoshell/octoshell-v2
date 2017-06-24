@@ -2,9 +2,9 @@ class Seed
   def self.all
     user = create(:user)
     create(:unactivated_user)
-    create(:admin)
+    #create(:admin)
 
-    create(:project, owner: user)
+    #create(:project, owner: user)
     create(:cluster)
   end
 
