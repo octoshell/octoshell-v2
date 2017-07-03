@@ -17,19 +17,19 @@ describe User do
   describe "mail sending" do
     it "sends activation mail" do
       puts "IN USER_SPEC"
-      expect(Authentication::MailWorker).to have_enqueued_job(:activation_needed,
+      expect(Authentication::MailerWorker).to have_enqueued_job(:activation_needed,
                                                               [user.email, user.activation_token])
     end
 
     it "sends activation success mail" do
       user.activate!
-      expect(Authentication::MailWorker).to have_enqueued_job(:activation_success, user.email)
+      expect(Authentication::MailerWorker).to have_enqueued_job(:activation_success, user.email)
     end
 
 
     it "sends reset password email" do
       user.deliver_reset_password_instructions!
-      expect(Authentication::MailWorker).to have_enqueued_job(:reset_password,
+      expect(Authentication::MailerWorker).to have_enqueued_job(:reset_password,
                                                               [user.email, user.reset_password_token])
     end
   end

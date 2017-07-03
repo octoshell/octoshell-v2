@@ -29,7 +29,7 @@ module Pack
     
     end
     def add_errors(to)
-      if to != self && to.changes!= {}
+      if to != self && to.changes != {}
 
         errors.add(:stale,"stale_error_nested")
       end
@@ -67,7 +67,7 @@ module Pack
 
     def delete_accesses
       if deleted == true || package.deleted==true
-        deleted=true
+        self.deleted = true
       end
       if deleted == true || state=='expired' && delete_on_expire
         accesses.load
@@ -116,7 +116,7 @@ module Pack
             
     end
     
-    def self.allowed_for_users user_id
+    def self.allowed_for_users 
      
      where("pack_versions.service= 'f' OR pack_accesses.status='allowed'")
 

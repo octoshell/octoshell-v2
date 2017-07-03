@@ -21,8 +21,9 @@ module Pack
 					describe "changes status  to #{a}" do
 						it "saves correctly" do
 							@access.action= a
-							
-							expect( @access.save ).to  be(true)
+													
+							expect { @access.save! }.to change { ActionMailer::Base.deliveries.count }.by(1)
+
 							expect( @access.status ).to eq a
 							
 

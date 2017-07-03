@@ -20,10 +20,10 @@ module Pack
         end
       end
     end
-    def self.allowed_for_users user_id
+    def self.allowed_for_users
 
 
-      all.merge(Version.allowed_for_users user_id)
+      all.merge(Version.allowed_for_users)
     end
     def self.user_access user_id
       

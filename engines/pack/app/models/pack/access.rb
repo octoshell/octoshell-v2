@@ -88,12 +88,13 @@ module Pack
       end
     end
     def send_email
+            
 
       if  status!='requested'
         if previous_changes["status"]  
           ::Pack::PackWorker.perform_async(:access_changed, id)
         end
-        if  previous_changes["new_end_lic"] 
+        if  previous_changes["new_end_lic"] && ["expired","allowed"].include?(status)
           if  previous_changes["end_lic"]
             ::Pack::PackWorker.perform_async(:access_changed, [id,"made_longer"])
           else
@@ -341,9 +342,7 @@ module Pack
       params.slice!(:end_lic,:new_end_lic)
       params.merge! find_params
       params.permit!
-      Access.find_by(find_params)   ||       
-      #execute_find_query(update_params,user_id)
-     Access.new(params)
+      Access.find_by(find_params)   ||       Access.new(params)
 
       
      

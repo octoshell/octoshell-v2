@@ -123,7 +123,7 @@ ru:
     group: Группа
     version: Версия
     all: Все
-    success_access: "Доступ успешно обновлен. Текущий статус %{status}"
+    success_access: "Доступ успешно обновлен. Текущий статус: %{status}"
     allowed_forever: "Вы не можете ничего более запросить"
     colors:
       red: красный

@@ -11,7 +11,7 @@ module Pack
     	
        
         else
-        	Pack::Mailer.send(template, *args).deliver!
+        	Pack::Mailer.send(template, *args).deliver_now!
 
         end
     end

@@ -1,4 +1,3 @@
-puts "AAA"
 if ENV["CI_RUN"]
   require "codeclimate-test-reporter"
   CodeClimate::TestReporter.start
@@ -12,7 +11,9 @@ require "database_cleaner"
 require "factory_girl_rails"
 require "capybara/rspec"
 require "capybara/poltergeist"
-
+require "sidekiq/testing"
+require "contexts/user_abilities"
+  Sidekiq::Testing.inline!
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 
@@ -22,6 +23,10 @@ require "capybara/poltergeist"
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
 RSpec.configure do |config|
+
+  config.include Sorcery::TestHelpers::Rails::Controller, type: :controller
+  config.include Sorcery::TestHelpers::Rails::Integration, type: :feature
+
   # ## Mock Framework
   # config.mock_with :rr
     Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
@@ -34,7 +39,6 @@ RSpec.configure do |config|
   #config.include Requests::Helpers, type: :feature
   config.use_transactional_fixtures = true
   config.order = "random"
-
   Capybara.javascript_driver = :poltergeist
 
   Capybara.register_driver :poltergeist do |app|
@@ -55,13 +59,15 @@ RSpec.configure do |config|
 
   DatabaseCleaner.strategy = :transaction
   DatabaseCleaner.clean_with :truncation
-
+  config.before(:each) do
+    Sidekiq::Worker.clear_all
+  end
   config.before(:suite) do
     begin
     
       DatabaseCleaner.start
       FactoryGirl.lint
-     
+
       
     ensure
       DatabaseCleaner.clean

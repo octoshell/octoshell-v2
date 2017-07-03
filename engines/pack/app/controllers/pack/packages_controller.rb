@@ -7,8 +7,7 @@ module Pack
     
    
     def index
-      
-
+     
       @q_form=OpenStruct.new(params[:q] || {type:'packages',user_access: current_user.id})
       search=Pack::PackSearch.new(@q_form.to_h,current_user.id)
 
@@ -21,11 +20,11 @@ module Pack
         @options_for_select<<[t('user'),"user"]       
       end
 
-      @records=search.get_results.allowed_for_users(current_user.id).page(params[:page]).per(15)
-      
 
-        
-       Version.preload_and_to_a(current_user.id,@records)  if @model_table=='versions'
+      @records=search.get_results.allowed_for_users.page(params[:page]).per(15)
+
+
+      Version.preload_and_to_a(current_user.id,@records)  if @model_table=='versions'
 
    
 
@@ -66,7 +65,7 @@ module Pack
 
       @package = Package.find(params[:id])
       @versions = @package.versions.includes({clustervers: :core_cluster},:package).
-      allowed_for_users(current_user.id).left_join_user_accesses(current_user.id).order(:id).
+      allowed_for_users.left_join_user_accesses(current_user.id).order(:id).
       page(params[:page]).per(6).includes(clustervers: :core_cluster).uniq
       Version.preload_and_to_a(current_user.id,@versions)
       

@@ -55,10 +55,8 @@ module Pack
         if @access.save
         
           @to='successful'
-          puts @access.status
 
         else
-          puts @access.errors.full_messages
 
           @to='manage_access'
         end

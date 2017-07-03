@@ -74,7 +74,6 @@ module Pack
 			
 			tables=j.aliases.instance_variable_get("@tables")
 			
-
 			( tables.length==1) &&  (['pack_versions','pack_accesses'].include? tables.first.table.table_name) ||
 			( tables.length==2) &&  'pack_versions' ==tables.first.table.table_name && 'pack_accesses' ==tables.second.table.table_name 
 
