@@ -48,7 +48,7 @@ module Sessions
     end
 
     def self.current
-      with_state(:active).first || last
+      where(state: :active).first || last
     end
 
     def survey_fields

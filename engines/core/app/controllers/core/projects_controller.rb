@@ -120,7 +120,7 @@ module Core
       @project = current_user.owned_projects.find(params[:id])
       file = params[:invitation][:csv_file]
       CSV.foreach(file.path) do |row|
-        email = row.first
+        email = row.first.downcase
         initials = row.last
         user = User.find_by_email(email)
         if user.present?

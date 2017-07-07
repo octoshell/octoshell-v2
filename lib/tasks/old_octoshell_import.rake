@@ -67,7 +67,7 @@ namespace :import do
   end
 
   task :create_documents_for_active_sureties => :environment do
-    Core::Surety.with_state(:active).map(&:save_rft_document)
+    Core::Surety.where(state: :active).map(&:save_rft_document)
   end
 
   task :add_admin_login_and_keys_for_clusters => :environment do

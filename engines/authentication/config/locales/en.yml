@@ -6,3 +6,17 @@ en:
       subject: "Your account was successfully activated"
     reset_password_email:
       subject: "Reset password instructions"
+  authentication:
+    flash:
+      conditions_must_be_accepted: You must accept conditions for registration.
+  activerecord:
+    models:
+      user: User
+    attributes:
+      user:
+        email: Email
+        password: Password
+        password_confirmation: Password confirmations
+        created_at: Registered at
+        last_login_at: Lat login at
+        cond_accepted: I permit for Moscow State University to process my personal data
