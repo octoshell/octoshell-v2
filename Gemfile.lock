@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/asabourin/mina-foreman.git
+  revision: 8ad86ca1dcfb96f0a98c03ad518b7631d84d8247
+  specs:
+    mina-foreman (1.0.0)
+      mina (~> 1.0)
+
+GIT
   remote: git://github.com/bootstrap-ruby/rails-bootstrap-forms.git
   revision: 0fac4b176e753e2883b6632ab62926981cc88550
   specs:
@@ -19,21 +26,16 @@ GIT
       deep_merge (~> 1.1.1)
       dry-validation (~> 0.10.4)
 
+GIT
+  remote: git://github.com/zhum/mina.git
+  revision: a23c47b22d82b3119a7628a64a5e35883148d5ec
+  specs:
+    mina (1.0.6)
+      rake
+
 PATH
   remote: engines/announcements
   specs:
-    announcements (0.0.1)
-      aasm
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      decorators (~> 1.0.2)
-      kaminari
-      kramdown
-      maymay
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
     announcements (0.0.1-java)
       aasm
       activerecord-jdbcpostgresql-adapter
@@ -50,13 +52,6 @@ PATH
 PATH
   remote: engines/authentication
   specs:
-    authentication (0.0.1)
-      activerecord-jdbcpostgresql-adapter
-      bootstrap_form
-      rails (~> 4.2)
-      sidekiq
-      slim
-      sorcery
     authentication (0.0.1-java)
       activerecord-jdbcpostgresql-adapter
       bootstrap_form
@@ -68,23 +63,6 @@ PATH
 PATH
   remote: engines/core
   specs:
-    core (0.0.1)
-      aasm
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      clbustos-rtf
-      decorators (~> 1.0.2)
-      kaminari
-      maymay
-      mini_magick
-      net-scp
-      net-ssh
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      sidekiq-failures
-      slim
-      sshkey
     core (0.0.1-java)
       aasm
       activerecord-jdbcpostgresql-adapter
@@ -106,22 +84,6 @@ PATH
 PATH
   remote: engines/face
   specs:
-    face (0.0.1)
-      activerecord-jdbcpostgresql-adapter
-      bootstrap-datepicker-rails
-      bootstrap_form
-      coffee-rails
-      jquery-rails
-      kramdown
-      nested_form
-      rails (~> 4.2)
-      rails-jquery-autocomplete
-      russian
-      sass-rails
-      select2-rails
-      slim
-      therubyrhino
-      underscore-rails
     face (0.0.1-java)
       activerecord-jdbcpostgresql-adapter
       bootstrap-datepicker-rails
@@ -148,18 +110,6 @@ PATH
 PATH
   remote: engines/sessions
   specs:
-    sessions (0.0.1)
-      aasm
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      decorators (~> 1.0.2)
-      kaminari
-      maymay
-      mini_magick
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
     sessions (0.0.1-java)
       aasm
       activerecord-jdbcpostgresql-adapter
@@ -176,14 +126,6 @@ PATH
 PATH
   remote: engines/statistics
   specs:
-    statistics (0.0.1)
-      activerecord-jdbcpostgresql-adapter
-      kaminari
-      maymay
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
     statistics (0.0.1-java)
       activerecord-jdbcpostgresql-adapter
       kaminari
@@ -196,18 +138,6 @@ PATH
 PATH
   remote: engines/support
   specs:
-    support (0.0.1)
-      aasm
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      decorators (~> 1.0.2)
-      kaminari
-      maymay
-      mini_magick
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
     support (0.0.1-java)
       aasm
       activerecord-jdbcpostgresql-adapter
@@ -224,12 +154,6 @@ PATH
 PATH
   remote: engines/wiki
   specs:
-    wiki (0.0.1)
-      activerecord-jdbcpostgresql-adapter
-      bootstrap_form
-      maymay
-      rails (~> 4.2)
-      slim
     wiki (0.0.1-java)
       activerecord-jdbcpostgresql-adapter
       bootstrap_form
@@ -284,7 +208,6 @@ GEM
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (6.0.4)
-    bcrypt (3.1.11)
     bcrypt (3.1.11-java)
     bootstrap-datepicker-rails (1.6.4.1)
       railties (>= 3.0)
@@ -313,7 +236,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.0.5)
     concurrent-ruby (1.0.5-java)
     connection_pool (2.2.1)
     database_cleaner (1.6.1)
@@ -376,7 +298,6 @@ GEM
       railties (>= 3.2, < 6)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    json (2.1.0)
     json (2.1.0-java)
     jwt (1.5.6)
     kaminari (1.0.1)
@@ -392,8 +313,6 @@ GEM
       kaminari-core (= 1.0.1)
     kaminari-core (1.0.1)
     kramdown (1.14.0)
-    launchy (2.4.3)
-      addressable (~> 2.3)
     launchy (2.4.3-java)
       addressable (~> 2.3)
       spoon (~> 0.0.1)
@@ -408,13 +327,9 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mina (1.0.6)
-      open4 (~> 1.3.4)
-      rake
     mina-rbenv-addons (0.2)
       mina (~> 1.0.0)
     mini_magick (4.8.0)
-    mini_portile2 (2.2.0)
     minitest (5.10.2)
     multi_json (1.12.1)
     multi_xml (0.6.0)
@@ -423,8 +338,6 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
-    nokogiri (1.8.0)
-      mini_portile2 (~> 2.2.0)
     nokogiri (1.8.0-java)
     oauth (0.5.3)
     oauth2 (1.4.0)
@@ -433,17 +346,12 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
-    open4 (1.3.4)
     poltergeist (1.15.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
     polyamorous (1.3.1)
       activerecord (>= 3.0)
-    pry (0.10.4)
-      coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
     pry (0.10.4-java)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -452,7 +360,6 @@ GEM
     pry-rails (0.3.6)
       pry (>= 0.10.4)
     public_suffix (2.0.5)
-    puma (3.9.1)
     puma (3.9.1-java)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
@@ -569,7 +476,6 @@ GEM
       therubyrhino_jar (>= 1.7.3)
     therubyrhino_jar (1.7.6)
     thor (0.19.4)
-    thread_safe (0.3.6)
     thread_safe (0.3.6-java)
     tilt (2.0.7)
     tzinfo (1.2.3)
@@ -577,8 +483,6 @@ GEM
     uglifier (3.2.0)
       execjs (>= 0.3.0, < 3)
     underscore-rails (1.8.3)
-    websocket-driver (0.6.5)
-      websocket-extensions (>= 0.1.0)
     websocket-driver (0.6.5-java)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -589,7 +493,6 @@ GEM
 
 PLATFORMS
   java
-  ruby
 
 DEPENDENCIES
   activerecord-jdbcpostgresql-adapter (~> 1.3.21)
@@ -611,7 +514,8 @@ DEPENDENCIES
   jquery-tablesorter
   jquery-ui-rails
   letter_opener
-  mina
+  mina!
+  mina-foreman!
   mina-rbenv-addons
   phantomjs!
   poltergeist
