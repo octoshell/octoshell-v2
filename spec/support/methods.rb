@@ -23,3 +23,8 @@ def create_admin(overrides = {})
 	UserGroup.create!(user: user,group: Group.find_by!( name: "superadmins" ) )
 	user
 end
+def create_support(overrides = {})
+	user = create(:user,overrides)
+	UserGroup.create!(user: user,group: Group.find_by!( name: "support" ) )
+	user
+end

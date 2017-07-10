@@ -23,7 +23,7 @@ module Pack
         @hash=[]
         @versions.each do |item|
         
-        @hash<<{ text: item.name +  "   #{t('Package_name')}: #{item.package.name}", id: item.id }
+          @hash<<{ text: item.name +  "   #{t('Package_name')}: #{item.package.name}", id: item.id }
         end        
         render json: { records: @hash, total: @versions.count }
 

@@ -5,7 +5,50 @@ module Pack
 
 	describe PackagesController,type: :controller do
 		routes { Pack::Engine.routes }
+		
 		describe "#index" do 
+			describe "options_for_select" do 
+				it "1" do
+
+					
+					user = create(:user)
+					project = create_project(owner: user)		
+					login_user(user)
+
+					get :index,{q: {type: 'versions',user_access: user.id}}
+					expect(assigns(:options_for_select)).to eq( [[I18n.t('project') + ' ' + project.title,project.id],[I18n.t('user'),"user"] ] )
+					expect(response).to render_template("index")
+				end
+				it "2" do
+
+					
+					user = create(:user)
+					project = create_project
+					project.members.create!(user: user )
+
+					login_user(user)
+
+					get :index,{q: {type: 'versions',user_access: user.id}}
+					expect(assigns(:options_for_select)).to eq( [[I18n.t('user'),"user"] ] )
+					expect(response).to render_template("index")
+				end
+
+				it "3" do
+
+					
+					user = create(:user)
+					project = create_project
+
+					login_user(user)
+
+					get :index,{q: {type: 'versions',user_access: user.id}}
+					expect(assigns(:options_for_select)).to eq( [[I18n.t('user'),"user"] ] )
+					expect(response).to render_template("index")
+				end
+
+
+			
+			end
 			describe "shows versions with {user_access: current_user.id}" do
 				it "user has not got access, associated with  version" do
 

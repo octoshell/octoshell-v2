@@ -1,7 +1,11 @@
-function apply_select2(url,aim='select, select2-container, select2-ajax, input.chosen, select.chosen')
 
-{
+function apply_select2(url,aim){
 
+ if (aim === undefined)
+ { 
+  aim = 'select, select2-container, select2-ajax, input.chosen, select.chosen'
+
+  }
 	$(function(){
   
   select2_localization = {
@@ -9,12 +13,12 @@ function apply_select2(url,aim='select, select2-container, select2-ajax, input.c
     en: "Choose"
   }
 
-  
+
   
   $(aim).each(function(i, e){
     var select = $(e)
     var source;
-  if (url)
+  if(url)
   {
     source=url;
   }
@@ -31,7 +35,7 @@ function apply_select2(url,aim='select, select2-container, select2-ajax, input.c
       allowClear: true
     }
 
-    if (select.hasClass('ajax') || select.hasClass('select2-ajax')) {
+    if(select.hasClass('ajax') || select.hasClass('select2-ajax')) {
       options.ajax = {
         url: source,
         dataType: 'json',
@@ -43,14 +47,14 @@ function apply_select2(url,aim='select, select2-container, select2-ajax, input.c
             per: 10
           }
         },
-        processResults: function(data, page) {
+        processResults: function(data, page){
           var more = (page * 10) < data.total
           return { results: data.records, pagination:{more: more }}
         },
       }
     }
     select.select2(options)
-  })
+  });
 });
 };
 

@@ -310,6 +310,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-select2 (1.0.1)
+      capybara
+      rspec
     carrierwave (0.11.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -475,6 +478,10 @@ GEM
       railties (>= 4.2.0, < 5.1)
     rollbar (2.8.3)
       multi_json
+    rspec (3.4.0)
+      rspec-core (~> 3.4.0)
+      rspec-expectations (~> 3.4.0)
+      rspec-mocks (~> 3.4.0)
     rspec-core (3.4.4)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -577,6 +584,7 @@ DEPENDENCIES
   better_errors
   bootstrap_form!
   capybara
+  capybara-select2
   codeclimate-test-reporter
   config!
   core!

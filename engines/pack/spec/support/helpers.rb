@@ -28,5 +28,65 @@ module PackHelpers
 
 	end
 
+	def login_capybara user
+      				
+
+		visit '/auth/session/new'
+	    fill_in 'user_email',    with: user.email
+	    fill_in 'user_password', with: '123456'
+	    click_button 'Войти'
+
+
+    end
+
+    def jquery_regex
+    	page.execute_script(<<-eo)
+	    	jQuery.expr[':'].regex = function(elem, index, match) {
+		    var matchParams = match[3].split(','),
+	        validLabels = /^(data|css):/,
+	        attr = {
+	            method: matchParams[0].match(validLabels) ? 
+	                        matchParams[0].split(':')[0] : 'attr',
+	            property: matchParams.shift().replace(validLabels,'')
+	        },
+	        regexFlags = 'ig',
+	        regex = new RegExp(matchParams.join('').replace(/^\s+|\s+$/g,''), regexFlags);
+	    	return regex.test(jQuery(elem)[attr.method](attr.property));
+		}
+		eo
+    end
+
+    def select2 select_id,option_text
+		
+		find("#select2-#{select_id}-container").click
+		a = <<-eoruby
+			$('#select2-#{select_id}-results').find('li').filter(function(){
+			return $(this).text() === '#{option_text}';
+			}).mouseup();
+		eoruby
+		page.execute_script(a)
+	end
+
+	def all_with_con(con)
+		arr = []
+		
+		all(con).each do  |elem|
+			if yield(elem) 
+				arr << elem
+			end
+
+		end
+		arr 
+	end
+	def get_all_cat_radio
+
+		all(".select-auto")
+	 	
+	end 
+
+
+
+
+
  
 end

@@ -35,6 +35,8 @@ module Pack
 						expect { @access.save! }.to change { ActionMailer::Base.deliveries.count }.by(2)
 
 						expect( @access.status ).to eq "allowed"
+						expect( Access.count ).to eq(1)
+
 						expect( @access.new_end_lic ).to eq nil
 						date = Date.current
 						am_date = AmericanDate.new( date.year,date.month,date.day )

@@ -6,7 +6,11 @@ module Pack
       # version = create(:version, package: pack)
       # user= create(:user)
 
-      #create(:project, owner: user)
+
+      unless Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
+        Support::Topic.create!(name: I18n.t('integration.support_theme_name'))
+      end
+
       
     end
 

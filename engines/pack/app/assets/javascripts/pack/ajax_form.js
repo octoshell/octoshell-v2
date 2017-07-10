@@ -1,8 +1,9 @@
-//Нужно для того,чтобы поля формы не сбрасывались после отправки
-$(function ()
-{
 
-  $(`form.ajax-form`).submit(function(event) {
+
+//Нужно для того,чтобы поля формы не сбрасывались после отправки
+$(function (){
+
+  $('form.ajax-form').submit(function(event) {
   
     
     
@@ -23,3 +24,5 @@ $(function ()
 
   });
 });
+
+

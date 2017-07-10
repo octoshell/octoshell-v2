@@ -43,7 +43,9 @@ group :production do
 end
 
 group :test do
+  gem 'capybara-select2'
   gem "rspec-rails"
+  gem 'poltergeist'
   gem "rspec-sidekiq"
   gem "test_after_commit"
   gem "shoulda-matchers"
