@@ -9,9 +9,10 @@
 		=f.hidden_field :who_type
 		=f.hidden_field :lock_version
 		-@f=f
+		=select :access,:action, item.actions_for_select,{},{id: "actions"}
 		div id="hid"
 			
-		=select :access,:action, item.actions_for_select,{},{id: "actions"}
+		
 		=f.form_group :status
 			p
 			
