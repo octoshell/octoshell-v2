@@ -10,7 +10,7 @@ module Core
       touch
     end
 
-    def :downcase_email user
+    def downcase_email user
       user.email.downcase! if user.email
     end
   end
