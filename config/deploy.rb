@@ -5,6 +5,7 @@ require "mina/foreman"
 require "mina/rails"
 require "mina/git"
 
+
 set :domain, "octoshell-v2.parallel.ru"
 set :forward_agent, true
 set :application, "octoshell2"
