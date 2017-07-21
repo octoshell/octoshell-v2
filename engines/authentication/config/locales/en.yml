@@ -7,6 +7,10 @@ en:
     reset_password_email:
       subject: "Reset password instructions"
   authentication:
+    users:
+      new:
+        cond_accepted: I allow Moscow State University to process my personal data.
+
     flash:
       conditions_must_be_accepted: You must accept conditions for registration.
   activerecord:

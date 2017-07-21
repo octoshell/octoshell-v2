@@ -1,4 +1,4 @@
-web: rbenv exec bundle exec puma -p $PORT -b 0.0.0.0 -e production --config config/puma.rb
+web: rbenv exec bundle exec puma -e production --config config/puma.rb
 
 sq-auth-mailer: RACK_ENV=production rbenv exec bundle exec sidekiq -q auth_mailer
 sq-core-mailer: RACK_ENV=production rbenv exec bundle exec sidekiq -q core_mailer

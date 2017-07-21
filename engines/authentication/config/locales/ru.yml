@@ -1,5 +1,8 @@
 ru:
   authentication:
+    users:
+      new:
+        cond_accepted: Я разрешаю МГУ им.М.В.Ломоносова обработку моих персональных данных
     mailer:
       activation_needed:
         subject: Активация аккаунта
@@ -40,7 +43,6 @@ ru:
         password_confirmation: Подтверждение пароля
         created_at: Зарегистрирован
         last_login_at: Последний раз заходил
-        cond_accepted: Я разрешаю МГУ им.М.В.Ломоносова обработку моих персональных данных
     errors:
       models:
         user:
