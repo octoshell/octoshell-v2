@@ -47,8 +47,8 @@ task :deploy => :environment do
     invoke :"set_whenever"
 
     on :launch do
-      #invoke :"export_foreman"
-      invoke :"foreman:export"
+      invoke :"export_foreman"
+      #invoke :"foreman:export"
       invoke :"foreman:restart"
     end
   end
@@ -60,11 +60,11 @@ task :set_whenever do
 end
 
 task :export_foreman do
-  set :export_cmd, "rbenv exec bundle exec foreman export #{fetch(:foreman_format)} #{fetch(:deploy_to)}/tmp/foreman -a #{fetch(:foreman_app)} -u #{fetch(:foreman_user)} -d #{fetch(:deploy_to)}/#{fetch(:current_path)} -l #{fetch(:foreman_log)}"
-  set :copy_cmd, "sudo /usr/bin/for_cp #{fetch(:deploy_to)}/tmp/foreman/* #{fetch(:foreman_location)}"
+  set :export_cmd, "rbenv exec bundle exec foreman export #{fetch(:foreman_format)} #{fetch(:deploy_to)}/tmp/foreman -a #{fetch(:foreman_app)} -u #{fetch(:foreman_user)} -d #{fetch(:current_path)} -l #{fetch(:foreman_log)}"
+  set :copy_cmd, "sudo cp #{fetch(:deploy_to)}/tmp/foreman/* #{fetch(:foreman_location)}"
   comment "Exporting foreman procfile for #{fetch(:foreman_app)}"
   command %{
-    #{echo_cmd %[cd #{fetch(:deploy_to)}/#{fetch(:current_path)} ; #{fetch(:export_cmd)} ; #{fetch(:copy_cmd)}]}
+    #{echo_cmd %[cd #{fetch(:current_path)} ; #{fetch(:export_cmd)} ; #{fetch(:copy_cmd)}]}
   }
 end
 
