@@ -5,7 +5,7 @@ require "mina/foreman"
 require "mina/rails"
 require "mina/git"
 
-set :domain, "octoshell-test.parallel.ru"
+set :domain, "octoshell-v2.parallel.ru"
 set :forward_agent, true
 set :application, "octoshell2"
 set :user, "admin"
@@ -15,7 +15,7 @@ set :deploy_to, "/var/www/#{fetch(:application)}"
 set :repository, "git@github.com:octoshell/octoshell-v2.git"
 set :branch, "rails4_2_jruby_9000_1"
 set :keep_releases, 5
-set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log)
+set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)
 
 task :environment do
   invoke :"rbenv:load"
@@ -40,7 +40,9 @@ task :deploy => :environment do
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
     invoke :"rails:assets_precompile"
+    comment "Done precompile"
     invoke :"deploy:cleanup"
+    comment "Done cleanup"
     invoke :"set_whenever"
 
     on :launch do
