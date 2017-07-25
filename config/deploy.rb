@@ -64,7 +64,7 @@ task :export_foreman do
   set :copy_cmd, "sudo cp #{fetch(:deploy_to)}/tmp/foreman/* #{fetch(:foreman_location)}"
   comment "Exporting foreman procfile for #{fetch(:foreman_app)}"
   command %{
-    #{echo_cmd %[cd #{fetch(:current_path)} ; #{fetch(:export_cmd)} ; #{fetch(:copy_cmd)}]}
+    #{echo_cmd %[(cd #{fetch(:current_path)} ; #{fetch(:export_cmd)} ; #{fetch(:copy_cmd))}]}
   }
 end
 
