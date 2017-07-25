@@ -15,6 +15,7 @@ set :deploy_to, "/var/www/#{fetch(:application)}"
 set :repository, "git@github.com:octoshell/octoshell-v2.git"
 set :branch, "rails4_2_jruby_9000_1"
 set :keep_releases, 5
+set :foreman_app, 'octoshell3'
 set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)
 
 task :environment do
