@@ -47,6 +47,8 @@ module Pack
 				end
 
 				it "user's project  has  got  access, associated with package's version)" do
+					puts Version.count
+					puts Access.count
 					owner = create(:user)
 					project = create_project(owner: owner)
 					package = create(:package)
@@ -55,7 +57,8 @@ module Pack
 					user = create(:user)
 					login_user(user)
 					project.members.create!(user: user )
-
+					puts "111111111111111111"
+					
 					get :index
 					expect(assigns(:records)).to eq( [package] )
 					expect(response).to render_template("index")
@@ -103,11 +106,11 @@ module Pack
 					user = create(:user)
 					project.members.create!(user: user )
 					login_user(user)
+					puts "22222222222222222222222222222222222222"
 
 					get :index,{q: {type: 'packages',user_access: user.id,accesses_status_in: "allowed"}}
 					expect(assigns(:records)).to eq( [package] )
 					expect(response).to render_template("index")
-				
 					
 				end
 

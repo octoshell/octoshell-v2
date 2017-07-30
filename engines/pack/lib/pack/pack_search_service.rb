@@ -2,7 +2,10 @@ module Pack
 	class PackSearch 
 		
 		NOT_CHANGED = [:deleted_eq,:id_in]
-		attr_reader :model_table
+		attr_reader :model_table,:table_relation
+
+
+		
 		def initialize search_hash,user_id=nil
 
 
@@ -17,12 +20,12 @@ module Pack
 		          .map{ |key,val| ["versions_#{key}",val]  }].
 		          merge search_hash.slice(*NOT_CHANGED)  #Необходимо добавить приставку versions, 
 		          #если поиск ведется по пакетам и ,например,  ассоциированным  кластерверсиям вложенных версий
-		       	Package
+		       	@table_relation = Package
 	      	else 
 		        
 		       @search_hash=search_hash
 
-		        Version.includes({clustervers: :core_cluster},:package)
+		        @table_relation = Version
 		        
 		    end
 
@@ -31,21 +34,28 @@ module Pack
 
 		end
 
-		def get_results
+		def get_results inside_scope
 			q=@relation.ransack(@search_hash)
-			@relation=q.result(distinct: true).order(:id)
-			if user_access_applied? 
+			@relation=q.result(distinct: true)
+			@relation = @relation.merge( inside_scope ) if inside_scope
+
+			@relation = if user_access_applied? 
 				remove_joins 
-				@relation.user_access @user_access_value
+				@relation.user_access @user_access_value,"INNER"
 			else
 				if @user_id #В этом случае нам обязательно нужно присоединить версии(если поиск ведется по пакетам) и доступы пользователя
-					( @relation=@relation.joins("LEFT JOIN pack_versions on pack_versions.package_id=pack_packages.id") ) if model_table=='packages' 
-					@relation.merge( Version.left_join_user_accesses( @user_id ) )
+					@relation.user_access @user_id,"LEFT"
 				else
 					@relation
 				end
 			end
-
+			if table_relation == Version
+				@relation.includes({clustervers: :core_cluster},:package) 
+			else
+				@relation
+			end
+			@relation.order(:id)
+				
 		
 		end
 

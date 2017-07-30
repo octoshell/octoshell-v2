@@ -1,4 +1,21 @@
 module PackHelpers
+
+	def build_packs(n,user)
+			packages = []
+			n.times  do |i|
+
+				package = Pack::Package.new(name: "name#{i}") 
+				n.times do |j|
+					version = Pack::Version.new(name: "name#{i}_#{j}")
+					version.accesses << Pack::Access.new(who: user)
+					package.versions << version
+				end
+				
+				packages << package
+			end
+
+			Pack::Package.import packages,{recursive: true,validate: false}
+	end
 	def access_with_status overrides=nil 
 		access=FactoryGirl.build(:access,overrides)	
 		access.save

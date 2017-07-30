@@ -12,7 +12,6 @@ module Pack
       search=Pack::PackSearch.new(@q_form.to_h,current_user.id)
 
       @model_table=search.model_table
-
       if search.model_table=='versions'
         @options_for_select=Core::Project.joins(members: :user).where(core_members: {user_id: current_user.id,owner: true}).map do |item|
               [t('project') + ' ' + item.title,item.id]
@@ -21,7 +20,7 @@ module Pack
       end
 
 
-      @records=search.get_results.allowed_for_users.page(params[:page]).per(15)
+      @records=search.get_results(search.table_relation.allowed_for_users).page(params[:page]).per(15)
 
 
       Version.preload_and_to_a(current_user.id,@records)  if @model_table=='versions'
@@ -64,9 +63,8 @@ module Pack
       @options_for_select<<[t('user'),"user"] 
 
       @package = Package.find(params[:id])
-      @versions = @package.versions.includes({clustervers: :core_cluster},:package).
-      allowed_for_users.left_join_user_accesses(current_user.id).order(:id).
-      page(params[:page]).per(6).includes(clustervers: :core_cluster).uniq
+      @versions = @package.versions.allowed_for_users.user_access( current_user.id,"LEFT").order(:id).
+      page(params[:page]).per(6).includes({clustervers: :core_cluster},:package).uniq
       Version.preload_and_to_a(current_user.id,@versions)
       
       respond_to do |format|

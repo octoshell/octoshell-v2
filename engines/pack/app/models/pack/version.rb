@@ -145,12 +145,53 @@ module Pack
 
     
 
-    def self.user_access user_id
+    def self.user_access user_id,join_type
       if user_id==true
         user_id=1
       end
-      joins(:accesses).merge(Access.user_access_without_select user_id)
+
+      self.join_accesses self,user_id,join_type
+       
+
+       
+        
+
+
+       
+
     end
+
+    def self.join_accesses relation,user_id,join_type
+
+      project_accesses =  relation.joins(
+          <<-eoruby
+          LEFT JOIN "core_members" ON ( "core_members"."user_id" = #{user_id}   )
+          #{join_type} JOIN  pack_accesses ON (pack_accesses.version_id = pack_versions.id AND "pack_accesses"."who_type" = 'Core::Project' 
+          AND core_members.project_id = pack_accesses.who_id)
+          eoruby
+         )
+
+
+      group_accesses = relation.joins(
+          <<-eoruby
+         LEFT JOIN "user_groups" ON ("user_groups"."user_id" = #{user_id}  )
+           #{join_type} JOIN  pack_accesses ON (pack_accesses.version_id = pack_versions.id AND "pack_accesses"."who_type" = 'Group' 
+          AND user_groups.group_id = pack_accesses.who_id)
+          eoruby
+          )
+      user_accesses  = relation.joins(
+          <<-eoruby
+         
+          #{join_type} JOIN  pack_accesses ON (pack_accesses.version_id = pack_versions.id AND "pack_accesses"."who_type" = 'User' 
+          AND #{user_id} = pack_accesses.who_id)
+          eoruby
+            )
+       (project_accesses.union group_accesses).union user_accesses
+      
+      
+      #sql_array.map{ |r| '(' + r.to_sql + ')' }.join(" UNION ")
+    end
+    
 
     def deleted?
 
@@ -328,7 +369,7 @@ module Pack
      def self.preload_and_to_a user_id,versions
 
             
-       accesses=Access.user_access(user_id).where(version_id: versions.ids )
+       accesses=Access.user_access(user_id).where(version_id: versions.map(&:id) )
         versions.each do |vers|
         
           vers.user_accesses= accesses.select{|ac| ac.version_id==vers.id}   

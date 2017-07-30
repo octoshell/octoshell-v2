@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170507185017) do
+ActiveRecord::Schema.define(version: 20170728232831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -410,6 +410,7 @@ ActiveRecord::Schema.define(version: 20170507185017) do
   end
 
   add_index "pack_accesses", ["version_id"], name: "index_pack_accesses_on_version_id", using: :btree
+  add_index "pack_accesses", ["who_type", "who_id", "version_id"], name: "who_type,who_id,vers_id index", using: :btree
   add_index "pack_accesses", ["who_type", "who_id"], name: "index_pack_accesses_on_who_type_and_who_id", using: :btree
 
   create_table "pack_clustervers", force: :cascade do |t|

@@ -128,10 +128,12 @@ module Pack
     def self.user_access(user_id)
 
 
-        select('pack_accesses.*,core_projects.title as who_project,groups.name as who_group').
         user_access_without_select(user_id)
 
     end
+
+    
+
 
 
     def self.joins_projects_groups(user_id)
@@ -140,35 +142,33 @@ module Pack
         user_id=1
       end
 
-        joins(
+        select('pack_accesses.*,groups.name as who_name_from_union').joins(
         <<-eoruby
-        LEFT JOIN "core_members" ON ( "pack_accesses"."who_id" = "core_members"."project_id" 
-        AND "core_members"."user_id" = #{user_id} AND "pack_accesses"."who_type" = 'Core::Project'   )
-        LEFT JOIN core_projects ON core_projects.id= core_members.project_id 
-        eoruby
-        ).joins(
-        <<-eoruby
-        LEFT JOIN "user_groups" ON ( "pack_accesses"."who_id" = "user_groups"."group_id" 
+        INNER JOIN "user_groups" ON ( "pack_accesses"."who_id" = "user_groups"."group_id" 
         AND "user_groups"."user_id" = #{user_id}   AND "pack_accesses"."who_type" = 'Group' )
         LEFT JOIN "groups" ON ( "user_groups"."group_id" = "groups"."id"  )
         eoruby
-        )
+        ).union(  select('pack_accesses.*,core_projects.title as who_name_from_union').joins(
+        <<-eoruby
+        INNER JOIN "core_members" ON ( "pack_accesses"."who_id" = "core_members"."project_id" 
+        AND "core_members"."user_id" = #{user_id} AND "pack_accesses"."who_type" = 'Core::Project'   )
+        LEFT JOIN core_projects ON core_projects.id= core_members.project_id 
+        eoruby
+        )).union  select("pack_accesses.*,'User' as who_name_from_union").where(
+         <<-eoruby
+         "pack_accesses"."who_type" = 'User' AND "pack_accesses"."who_id" = #{user_id} 
+         eoruby
+         )
     end
     
     def self.user_access_without_select(user_id)
 
-       if user_id==true
-        user_id=1
-      end
+        if user_id==true
+          user_id=1
+        end
 
-        joins_projects_groups(user_id).
-        where(
-        <<-eoruby
-        (  "pack_accesses"."who_type" = 'Core::Project' AND core_projects.id IS NOT NULL 
-        OR "pack_accesses"."who_type" = 'Group' AND  groups.id IS NOT NULL 
-         OR "pack_accesses"."who_type" = 'User' AND "pack_accesses"."who_id" = #{user_id}  ) 
-         eoruby
-         )
+        joins_projects_groups(user_id).order(:id)
+        
     end
     
     def forever=(arg)
@@ -383,7 +383,7 @@ module Pack
     
 
     def who_name
-      try(:who_project) || try(:who_project) || try(:who_user) || who_name_without_preload
+      try(:who_name_from_union) ||  try(:who_project) || try(:who_group) || try(:who_user) || who_name_without_preload
     end
     def who_name_without_preload
      

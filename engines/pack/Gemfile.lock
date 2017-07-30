@@ -3,6 +3,7 @@ PATH
   specs:
     pack (0.0.1)
       aasm
+      active_record_union
       activerecord-jdbcpostgresql-adapter
       bootstrap_form
       carrierwave
@@ -40,6 +41,8 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_record_union (1.2.0)
+      activerecord (>= 4.0)
     activejob (4.2.7.1)
       activesupport (= 4.2.7.1)
       globalid (>= 0.3.0)

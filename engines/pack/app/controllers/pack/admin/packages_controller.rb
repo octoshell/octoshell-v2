@@ -13,7 +13,7 @@ module Pack
 
       @model_table=search.model_table
 
-      @records=search.get_results.page(params[:page]).per(15)
+      @records=search.get_results(nil).page(params[:page]).per(15)
       
 
         

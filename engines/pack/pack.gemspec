@@ -33,8 +33,7 @@ Gem::Specification.new do |s|
   s.add_dependency "kaminari"
   s.add_dependency "carrierwave"
   s.add_dependency "mime-types"
-#    s.add_dependency "core"
-
+  s.add_dependency 'active_record_union'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'factory_girl_rails'

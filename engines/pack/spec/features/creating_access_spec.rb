@@ -26,12 +26,13 @@ module Pack
 
 					within("div.select_for_access[vers_id=#{"'" + version.id.to_s + "'"}]") do	
 						select2 'proj_or_user','Пользователь'
-						expect(page).to have_content('Пользователь')
 
 						date = Date.current
 						am_date = AmericanDate.new( date.year,date.month,date.day )
 
 						 fill_in "access_end_lic",with: am_date.to_s 
+						 # expect(page).to have_content(am_date.to_s)
+
 						 click_button 'Отправить'
 					end
 					expect(page).to have_content('Действие с данным доступом успешно выполнено')

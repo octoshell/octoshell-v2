@@ -12,6 +12,7 @@ require "kaminari"
 require "carrierwave"
 require "mime-types"
 require "jquery-ui-rails"
+require "active_record_union"
 
 #require 'simple_form'
 

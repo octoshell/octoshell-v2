@@ -3,7 +3,7 @@
 
 
 class AmericanDate < ::Date
-	def to_s
+	def to_s input = nil
 		to_formatted_s(:american) 
 	end
 end

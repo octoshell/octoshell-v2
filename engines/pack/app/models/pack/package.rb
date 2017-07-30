@@ -25,13 +25,24 @@ module Pack
 
       all.merge(Version.allowed_for_users)
     end
-    def self.user_access user_id
-      
+    def self.user_access user_id,join_type
       if user_id==true
         user_id=1
       end
-      joins(:versions).merge(Version.user_access user_id)
+      
+
+      
+     
+      result = Version.join_accesses  self.joins(:versions),user_id,join_type
+       
+
+       
+      
+
+       
+
     end
+    
   end
   
 end

@@ -43,7 +43,7 @@ group :production do
 end
 
 group :test do
-  gem 'capybara-select2'
+  gem "activerecord-import", ">= 0.2.0"
   gem "rspec-rails"
   gem 'poltergeist'
   gem "rspec-sidekiq"
