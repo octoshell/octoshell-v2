@@ -14,6 +14,7 @@ require "capybara/poltergeist"
 require "sidekiq/testing"
 require "contexts/user_abilities"
 require 'capybara/poltergeist'
+require "common_helper"
   Sidekiq::Testing.inline!
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -31,10 +32,7 @@ RSpec.configure do |config|
 
   # ## Mock Framework
   # config.mock_with :rr
-    Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-  Dir[Rails.root.join("engines/pack/spec/support/**/*.rb")].each { |f| require f }
-  Dir[Rails.root.join("engines/pack/spec/factories/**/*.rb")].each { |f| require f }
   config.treat_symbols_as_metadata_keys_with_true_values = true
 
   
