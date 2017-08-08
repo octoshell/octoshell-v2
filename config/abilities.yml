@@ -56,3 +56,7 @@ reports:
   - access
 sessions:
   - manage
+packages:
+  - manage
+versions:
+  - manage

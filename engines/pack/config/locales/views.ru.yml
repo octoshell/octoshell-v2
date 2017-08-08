@@ -1,0 +1,59 @@
+ru:
+  
+  pack:
+    packages:
+        index:
+          title: Список пакетов и версий
+    versions:
+        show:
+          title: Версия
+    admin:
+      options_categories:
+        new:
+          title: Новая категория
+        index:
+          new: Новая категория
+          title: Категории для опций версий
+        edit:
+          title: Редактирование категории
+      packages:
+        show:
+        
+        new:
+          title: Новый пакет
+        edit:
+          title: Редактирование пакета
+        index:
+          title: Список пакетов
+          new_package: Новый пакет
+          edit: Редактировать
+          delete: Удалить
+          confirm: Вы действительно хотите удалить пакет?
+          mega_confirm: Вы действительно хотите удалить пакет БЕЗВОЗВРАТНО?!
+          no_packages_found: Не найдено ни одного пакета
+      accesses:
+        show:
+        
+        new:
+          title: Новый доступ
+        edit:
+          title: Редактирование доступа
+        index:
+          new: Новый доступ
+          title: Список доступов к пакетам
+          new_package: Новый доступ
+          edit: Редактировать
+          delete: Удалить
+          confirm: Вы действительно хотите удалить пакет?
+          mega_confirm: Вы действительно хотите удалить пакет БЕЗВОЗВРАТНО?!
+          no_packages_found: Не найдено ни одного пакета  
+      versions:
+        new:
+          title: Новая версия
+        edit:
+          title: Редактирование версии
+        show:
+          title: Информация о версии
+        form2:
+          new: Добавить опцию
+     

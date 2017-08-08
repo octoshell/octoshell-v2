@@ -1,0 +1,39 @@
+-if @message
+      h3
+        font color="red"
+          =@message
+-if item
+	=bootstrap_form_for item,:url => manage_access_admin_access_path(item),method: :post,remote: true do |f|
+	    
+	    =f.hidden_field :who_id
+		=f.hidden_field :who_type
+		=f.hidden_field :lock_version
+		-@f=f
+		=select :access,:action, item.actions_for_select,{},{id: "actions"}
+		div id="hid"
+			
+		
+		=f.form_group :status
+			p
+			
+		=f.submit t("buttons.save", default: "Send") 
+
+javascript:
+	
+	
+	if ($("#actions").val() == 'edit_by_hand')
+	{
+			$('#hid').html("#{escape_javascript(render :partial => 'hidden_fields',locals: {f: @f})}");
+	}
+	$(document).on('change','#actions',function(){
+		$("#hid").empty();
+		if ($("#actions").val() == 'edit_by_hand')
+		{
+			$('#hid').html("#{escape_javascript(render :partial => 'hidden_fields',locals: {f: @f})}");
+		}
+	});
+	
+
+  
+  
+	bind_func_disable("[enab='enable']","[enab='disable']","[enab='item']");
