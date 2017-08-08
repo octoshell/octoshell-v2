@@ -16,4 +16,5 @@
 //= require sessions/application
 //= require announcements/application
 //= require jd/application
+//= require pack/application
 //= require_tree .

@@ -1,0 +1,31 @@
+div class="package-header"
+  h1 = t(".title", default: "Packages list")
+  
+    
+ 
+  div id="qq"
+ 
+  br
+  br
+  br
+  div class="panel panel-default"
+    div class="panel-heading clearfix"
+      = link_to t(".new"), new_admin_access_path, class: "btn btn-default"
+       
+  div id="table_records"
+    =render 'table',records: @accesses
+  
+  div id="ajax_paginator" 
+    =paginate(@accesses, :remote => true).to_s  
+  
+
+  
+
+  
+    
+  
+    
+= javascript_tag do 
+
+    = render(:partial => 'pack/admin/accesses/index', :formats => [:js]) 
+

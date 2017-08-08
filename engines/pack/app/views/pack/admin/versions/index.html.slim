@@ -1,0 +1,37 @@
+div class="package-header"
+  h1 = t(".title", default: "Пакеты")
+
+- if current_user && User.superadmins.include?(current_user)
+  div class="panel panel-default"
+    div class="panel-heading clearfix"
+      = link_to t(".new_package"), new_package_path, class: "btn btn-default"
+    - if @packages.any?
+      div class="panel-body"
+        table class="table table-hover"
+          tr
+            th Название
+            th Стоимость
+            th
+          - @packages.each do |package|
+            tr
+              td class="col-xs-4" = link_to package.name, package
+              td = package.cost
+              td
+                div class="btn-group pull-right"
+                  = link_to t(".edit", default: "edit"), edit_package_path(package.id), class: "btn btn-default btn-sm"
+                  button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                    span class="caret"
+                  ul class="dropdown-menu" role="menu"
+                    - name = t(".delete", default: "delete")
+                    - confirm = t(".confirm", default: "Are You sure?")
+                    - data = { method: :delete, confirm: confirm }
+                    li class="text-left"
+                      = link_to name, package_path(package.id), data: data, class: "text-danger"
+    - else
+      div class="panel-body"
+        p = t(".no_packages_found", default: "No packages Found")
+- else
+  - if @packages.any?
+    ul class="list-group"
+      - @packages.each do |package|
+        li class= "list-group-item" = link_to package.name, package

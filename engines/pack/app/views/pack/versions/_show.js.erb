@@ -1,0 +1,25 @@
+
+$(".select_ajax_access").each(make_form);
+
+
+function make_form(){
+
+ 
+  $(".form_for_access").empty();
+
+  $.ajax({
+        url : "<%=form_accesses_path%>", // the endpoint
+        dataType : "script", 
+        type: "GET",
+        data:
+        {
+          proj_or_user: $(this).val(),
+          version_id: $(this).attr('vers_id'),
+          
+        }
+       
+        
+    });
+  
+}
+$(document).on('change','.select_ajax_access',make_form);

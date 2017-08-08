@@ -1,0 +1,37 @@
+
+	
+$(".select-auto").not("[checked]").next().find("select, input").prop('disabled',true); 
+$(".select-auto").not("[checked]").next().removeClass('has-error').find("span").remove(".help-block");
+	
+	
+	$(document).on("change",".select-auto",function(){
+		
+		
+		$(".select-auto:checked").next().find("select, input").prop('disabled',false);
+		$(".select-auto").not(":checked").next().find("select, input").prop('disabled',true);
+		
+		
+		}); 
+
+
+
+
+ $("#options ").click(function()
+ {
+
+   	content=("<%=escape_javascript(render 'vers_opt',f: @f)%>");
+   	var regexp = new RegExp("new_index" , "g");
+   	var new_id = new Date().getTime();
+  
+ 	$('#new_options').append(content.replace(regexp, new_id));
+
+ 	$(".select-auto[por='" +new_id + "']").not("[checked]").next().find("select, input[type='text']").prop('disabled',true);
+ 	
+ 	apply_select2();
+ 	$(".select-auto").not(":checked").next().find("select, input").prop('disabled',true);
+ 	return false;
+ });
+
+
+
+bind_func_disable("#enable_id","#disable_id","#item_id"); 
