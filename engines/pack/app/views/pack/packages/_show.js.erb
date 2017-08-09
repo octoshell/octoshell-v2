@@ -1,0 +1,55 @@
+
+
+
+  $(document ).on('click',".btn_access",function()
+ {
+   
+    var my_id=$(this).attr('vers_id');
+   var el= $(".select_for_access[vers_id='" + my_id + "']");
+   if (el.attr('hidden'))
+   {
+      $(this).html("<%=t('disable')%>");
+      el.removeProp('hidden');
+      $(".select_ajax_access[vers_id='" + my_id + "']").each(make_form);
+   }
+   else
+   {
+      el.attr('hidden','');
+      $(this).html('<%=t("want")%>');
+   } 
+  
+ });
+
+function make_form(){
+
+ 
+  $(".form_for_access[vers_id='" + $(this).attr('vers_id') +  "']").empty();
+
+  $.ajax({
+        url : "<%=form_accesses_path%>", // the endpoint
+        dataType : "script", 
+        type: "GET",
+        data:
+        {
+          proj_or_user: $(this).val(),
+          version_id: $(this).attr('vers_id'),
+          
+        }
+       
+        
+    });
+  
+}
+
+
+  $(document).on('change','.select_ajax_access',make_form);
+  
+
+
+
+
+
+
+
+ 
+ 
