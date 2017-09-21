@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/asabourin/mina-foreman.git
-  revision: 8ad86ca1dcfb96f0a98c03ad518b7631d84d8247
-  specs:
-    mina-foreman (1.0.0)
-      mina (~> 1.0)
-
-GIT
   remote: git://github.com/bootstrap-ruby/rails-bootstrap-forms.git
   revision: 0fac4b176e753e2883b6632ab62926981cc88550
   specs:
@@ -327,6 +320,8 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mina-systemd (0.1.1)
+      mina (~> 1.0.0)
     mini_magick (4.8.0)
     minitest (5.10.2)
     multi_json (1.12.1)
@@ -513,7 +508,7 @@ DEPENDENCIES
   jquery-ui-rails
   letter_opener
   mina!
-  mina-foreman!
+  mina-systemd
   phantomjs!
   poltergeist
   pry-rails
@@ -534,4 +529,4 @@ DEPENDENCIES
   wiki!
 
 BUNDLED WITH
-   1.15.2
+   1.15.3

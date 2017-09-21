@@ -2,11 +2,15 @@ development:
   adapter: postgresql
   encoding: unicode
   database: new_octoshell_development
+  user: octo
+  password: 'octopass'
 
 test:
   adapter: postgresql
   encoding: unicode
   database: new_octoshell_test
+  user: octo
+  password: 'octopass'
 
 production:
   adapter: postgresql

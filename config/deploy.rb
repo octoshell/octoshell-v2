@@ -1,9 +1,10 @@
 require "mina/bundler"
 require "mina/rbenv"
 #require "mina/rbenv/addons"
-require "mina/foreman"
+#require "mina/foreman"
 require "mina/rails"
 require "mina/git"
+#require "mina/systemd"
 
 set :domain, "octoshell-v2.parallel.ru"
 set :forward_agent, true
@@ -15,8 +16,11 @@ set :deploy_to, "/var/www/#{fetch(:application)}"
 set :repository, "git@github.com:octoshell/octoshell-v2.git"
 set :branch, "rails4_2_jruby_9000_1"
 set :keep_releases, 5
-set :foreman_app, 'octoshell3'
-set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)
+#set :foreman_app, 'octoshell3'
+#old set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)
+set :shared_dirs, %w(public/uploads log vendor/bundle)
+set :shared_files, %w(config/puma.rb config/settings.yml config/database.yml)
+set :force_asset_precompile=true
 
 task :environment do
   invoke :"rbenv:load"
@@ -46,11 +50,12 @@ task :deploy => :environment do
     comment "Done cleanup"
     invoke :"set_whenever"
 
-    on :launch do
-      invoke :"export_foreman"
-      #invoke :"foreman:export"
-      invoke :"foreman:restart"
-    end
+    #on :launch do
+    #  invoke :"export_foreman"
+    #  #invoke :"foreman:export"
+    #  invoke :"foreman:restart"
+    #  invoke :'systemctl:restart', 'octoshell'
+    #end
   end
 end
 
