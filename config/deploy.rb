@@ -46,6 +46,7 @@ task setup: :environment do
 
   command %[touch "#{fetch(:deploy_to)}/shared/config/database.yml"]
   comment %[Be sure to edit 'shared/config/database.yml'.]
+
 end
 #task setup: :environment do
 #  queue! %[mkdir -p "#{deploy_to}/shared/log"]
@@ -144,13 +145,17 @@ task :deploy => :environment do
     invoke :"rails:db_migrate"
     invoke :"deploy:cleanup"
     invoke :"set_whenever"
+    invoke :"check_secrets"
 
     on :launch do
-#      invoke :"export_foreman"
-#      invoke "foreman:restart"
-      invoke :restart_service
+#      invoke :restart_service
     end
   end
+end
+
+task :check_secrets do
+  comment "Create secrets if needed"
+  command "test -f /var/www/octoshell2/shared/config/settings.yml || (echo \"cookie_token: $(rbenv exec bundle exec rake secret)\" > /var/www/octoshell2/shared/config/settings.yml)"
 end
 
 task :set_whenever do
