@@ -6,6 +6,8 @@ require "mina/rails"
 require "mina/git"
 #require "mina/systemd"
 
+#set :execution_mode, :printer
+
 domain=ENV['DEPLOY_DOMAIN'] || "ooctoshell-v2.parallel.ru"
 user=ENV['DEPLOY_USER'] || 'admin'
 ruby_ver=ENV['DEPLOY_RUBY'] || "jruby-9.1.10.0"
@@ -32,6 +34,7 @@ set :shared_dirs, %w(public/uploads log )
 set :shared_files, %w(config/puma.rb config/settings.yml config/database.yml)
 #set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log)
 set :force_asset_precompile, true
+set :rails_env, 'production'
 
 task :environment do
   invoke :"rbenv:load"
@@ -66,7 +69,7 @@ development: &def
   encoding: unicode
   database: new_octoshell_development
   user: #{fetch(:dbuser)}
-  password: "#{fetch(:octopass)}"
+  password: "#{fetch(:dbpass)}"
 
 test:
   <<: *def
@@ -74,7 +77,7 @@ test:
 
 production:
   <<: *def
-  database: new_octoshell_production
+  database: new_octoshell
   pool: 10
   min_messages: warning
   DATABASE
@@ -82,19 +85,19 @@ production:
   command %{
     echo "#{database_yml}" > #{fetch(:deploy_to)}/shared/config/database.yml
   }
-  comment "-----> Done"
+  comment "-----> Database configured."
 end
 
 task :setup_runner => :environment do
   run_file = <<-RUN.dedent
   #!/bin/bash
 
-  cd /var/www/octoshell2/current
+  cd #{fetch(:deploy_to)}/current
   exec "\$@"
   RUN
   command %{
-    echo "#{run_file}" > /var/www/octoshell2/run_current
-    chmod a+x /var/www/octoshell2/run_current
+    echo "#{run_file}" > #{fetch(:deploy_to)}/run_current
+    chmod a+x #{fetch(:deploy_to)}/run_current
   }
 end
 
@@ -135,27 +138,67 @@ end
 #    #end
 #  end
 #end
+
 desc "Deploys the current version to the server."
 task :deploy => :environment do
   deploy do
-    invoke :"git:clone"
-    invoke :"deploy:link_shared_paths"
-    invoke :"bundle:install"
-    invoke :"rails:assets_precompile"
-    invoke :"rails:db_migrate"
-    invoke :"deploy:cleanup"
-    invoke :"set_whenever"
-    invoke :"check_secrets"
-
+#    run(:remote) do
+#    in_path(fetch(:current_path)) do
+      comment "Start deploy..."
+      command "hostname"
+      command "pwd"
+      invoke :"git:clone"
+      invoke :"deploy:link_shared_paths"
+      invoke :"bundle:install"
+      invoke :"rails:assets_precompile"
+      invoke :"rails:db_migrate"
+      invoke :"deploy:cleanup"
+#      invoke :"set_whenever"
     on :launch do
 #      invoke :restart_service
     end
   end
 end
 
+desc "Seed if needed"
+task :"seed_if_needed" do
+  command "test #{fetch(:deploy_to)}/seed_done.txt || RACK_ENV=production rbenv exec bundle exec rake db:seed && touch #{fetch(:deploy_to)}/seed_done.txt"
+end
+
+desc "Prepare for first deploy"
+task :deploy_1 do
+  run(:local) do
+      command "hostname"
+      command "pwd"
+      comment "Copying puma.rb"
+      command "scp config/puma.rb #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/puma.rb"
+      comment "Copying settings.yml"
+      command "scp config/settings.yml #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/settings.yml"
+  end
+end
+
+task :make_seed => :environment do
+  in_path(fetch(:current_path)) do
+    comment "Seed database..."
+    command %{pwd; RACK_ENV=production rbenv exec bundle exec rake db:migrate}
+    comment "Migrated..."
+    command %{RACK_ENV=production rbenv exec bundle exec rake db:seed}
+    comment "Seeded..."
+  end
+end
+
+desc "Update bundles"
+task :update_bundles => :environment do
+  in_path(fetch(:current_path)) do
+    comment "Rebuild bundles..."
+    command %{for i in engines/*; do (cd $i; rm Gemfile.lock; RACK_ENV=production rbenv exec bundle install); done}
+  end
+end
+
 task :check_secrets do
-  comment "Create secrets if needed"
-  command "test -f /var/www/octoshell2/shared/config/settings.yml || (echo \"cookie_token: $(rbenv exec bundle exec rake secret)\" > /var/www/octoshell2/shared/config/settings.yml)"
+  #comment "Create secrets if needed"
+  #command "test -f /var/www/octoshell2/shared/config/settings.yml && (sed -i 's/development:/production:/' /var/www/octoshell2/shared/config/settings.yml)"
+  #command "test -f /var/www/octoshell2/shared/config/settings.yml || (echo \"cookie_token: $(rbenv exec bundle exec rake secret)\" > /var/www/octoshell2/shared/config/settings.yml)"
 end
 
 task :set_whenever do

@@ -1,0 +1,7 @@
+export DEPLOY_BRANCH=master
+export DEPLOY_DOMAIN=octo-test-local
+export DEPLOY_REPO=git@github.com:octoshell2/octoshell2.git
+export DEPLOY_RUBY=jruby-9.1.13.0
+export DEPLOY_USER=octoadmin
+export DEPLOY_DBUSER=octo
+export DEPLOY_DBPASS=stagepass

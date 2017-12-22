@@ -22,6 +22,20 @@ Base application for modular version of Octoshell.
 1. Start server: `./run`
 1. Enter as admin with login `admin@octoshell.ru` and password `12345`
 
+## Deploy
+
+1. Prepare deploy server (1-10 from above)
+1. Make sure you can ssh to deploy server without password
+1. `git clone`
+1. Rename `deploy_env.sample` to `deploy_env` and fill right environment
+1. `./do_deploy_setup`
+1. `./do_deploy`
+1. `./deploy_copy_files`
+1. `./do_after_1_deploy`
+1. ssh to deploy server and start all by `systemctl start octoshell`
+
+All deploys after this can be done by `git fetch; ./do_deploy`, and then on deploy server `systemctl restart octoshell`.
+
 # README
 Базовое приложение для модульной версии octoshell.
 
@@ -45,5 +59,18 @@ Base application for modular version of Octoshell.
 1. Запустить сервер: `./run`
 1. Войти по адресу `http://localhost:3000/` с логином `admin@octoshell.ru` и паролем `12345`
 
-Процедура деплоя на удалённый серввер сделана через mina: `bundle exec mina deploy`. См. документация на mina.
+## Деплой
+
+1. Подготовьте сервер деплоя (пп. 1-10 из раздела "Установка...")
+1. Убедитесь, что вы можете входить на сервер деплоя по ssh без пароля
+1. `git clone`
+1. Переименовать `deploy_env.sample` в `deploy_env` и внесите нужные правки
+1. `./do_deploy_setup`
+1. `./do_deploy`
+1. `./deploy_copy_files`
+1. `./do_after_1_deploy`
+1. Войдите на сервер деплоя и запустите сервисы `systemctl start octoshell`
+
+Последующие деплои можно выполнять командой `git fetch; ./do_deploy` и последующим перезапуском сервиса на сервере `systemctl restart octoshell`.
+
 
