@@ -2,6 +2,9 @@ require_dependency "jobstat/application_controller"
 
 module Jobstat
   class AccountSummaryController < ApplicationController
+    before_filter :require_login
+    rescue_from MayMay::Unauthorized, with: :not_authorized
+
     def show
       defaults = {"start_time" => Date.new(2017).strftime("%d.%m.%Y"),
                   "end_time" => Date.new(2018).strftime("%d.%m.%Y"),

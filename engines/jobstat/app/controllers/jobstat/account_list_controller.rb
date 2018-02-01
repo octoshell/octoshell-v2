@@ -2,6 +2,10 @@ require_dependency "jobstat/application_controller"
 
 module Jobstat
   class AccountListController < ApplicationController
+
+    before_filter :require_login
+    rescue_from MayMay::Unauthorized, with: :not_authorized
+
     @@clusters_options = [['Lomonosov-1', "lomonosov-1"], ['Lomonosov-2', "lomonosov-2"]]
 
     @@states_options = [["All", "ALL"] \

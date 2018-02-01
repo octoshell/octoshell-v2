@@ -47,7 +47,7 @@ module Jobstat
 
     def fill_owned_logins
       @owned_projects = get_owned_projects(current_user)
-      @owned_logins = ["ilyalihachev_1706"]
+      @owned_logins = []
 
       @owned_projects.each do |_, value|
         @owned_logins += value
