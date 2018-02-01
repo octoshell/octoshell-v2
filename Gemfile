@@ -36,7 +36,7 @@ gem "sessions",       path: "engines/sessions"
 gem "statistics",     path: "engines/statistics"
 gem "wiki",           path: "engines/wiki"
 gem "announcements",  path: "engines/announcements"
-gem "jd",             path: 'engines/jd'
+gem "jobstat",        path: 'engines/jobstat'
 
 gem "jquery-rails"
 gem "jquery-ui-rails"

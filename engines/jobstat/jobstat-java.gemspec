@@ -28,5 +28,3 @@ Gem::Specification.new do |s|
   s.add_dependency "ransack"
   s.add_dependency "kaminari"
 end
-
-end

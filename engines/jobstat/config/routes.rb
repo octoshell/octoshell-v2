@@ -1,7 +1,11 @@
 Jobstat::Engine.routes.draw do
-  resources :digest_string_data
-  resources :digest_float_data
-  resources :float_data
-  resources :string_data
-  resources :jobs
+  get 'account/list/index' => "account_list#index"
+  get 'account/summary/show' => "account_summary#show"
+
+  resources :job
+
+  post 'job/info' => "job#post_info"
+  post 'job/performance' => "job#post_performance"
+  post 'job/tags' => "job#post_tags"
+
 end

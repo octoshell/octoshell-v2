@@ -1,0 +1,23 @@
+div
+  h1 = "Statistics on all submitted jobs"
+
+  = render "form"
+
+  br
+
+  table class="table table-bordered table-striped"
+    thead
+      tr
+        td = "cluster"
+        td = "partition"
+        td = "state"
+        td = "count"
+        td = "total CPU time"
+      tbody
+      - @jobs.each do |job|
+        tr
+          td = job.cluster
+          td = job.partition
+          td = job.state
+          td = job.count
+          td = job.sum

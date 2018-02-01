@@ -1,0 +1,115 @@
+css:
+  .job_metric_low { background-color: #ff8080 }
+  .job_metric_average { background-color: #ffff80 }
+  .job_metric_good { background-color: #80ff80 }
+
+h1
+  | Job info for
+  = @job["drms_job_id"]
+
+= @job["command"]
+
+div class="row"
+  div class="col-md-4"
+    h3 = "General info"
+    table class="table table-bordered table-striped"
+      tr
+        td
+          | cluster
+        td
+          = @job["cluster"]
+      tr
+        td
+          | Job id
+        td
+          = @job["drms_job_id"]
+      tr
+        td
+          | Login
+        td
+          = @job["login"]
+      tr
+        td
+          | State
+        td
+          = @job["state"]
+      tr
+        td
+          | Partition
+        td
+          = @job["partition"]
+      tr
+        td
+          | Num cores
+        td
+          = @job["num_cores"]
+      tr
+        td
+          | Submit time
+        td
+          = @job["submit_time"].strftime("%D %T")
+      tr
+        td
+          | Start time
+        td
+          = @job["start_time"].strftime("%D %T")
+      tr
+        td
+          | End time
+        td
+          = @job["end_time"].strftime("%D %T")
+  div class="col-md-4"
+    h3 = "Job performance"
+    table class="table table-bordered table-striped"
+      tr
+        td
+          | Metric
+        td
+          | Value
+        td
+          | Ranking
+      tr
+        td
+          | Average CPU load (%)
+        td
+          = format_float_or_nil(@job_perf[:cpu_user])
+        td class="job_metric_#{@ranking[:cpu_user]}"
+          = @ranking[:cpu_user]
+      tr
+        td
+          | Average Loadavg
+        td
+          = format_float_or_nil(@job_perf[:loadavg])
+        td class="job_metric_#{@ranking[:loadavg]}"
+          = @ranking[:loadavg]
+      tr
+        td
+          | Average GPU load (%)
+        td
+          = format_float_or_nil(@job_perf[:gpu_load])
+        td class="job_metric_#{@ranking[:gpu_load]}"
+          = @ranking[:gpu_load]
+      tr
+        td
+          | Average IB receive data (MB/s, total MPI + FS)
+        td
+          = format_float_or_nil(@job_perf[:ib_rcv_data] / 1024 / 1024)
+        td class="job_metric_#{@ranking[:ib_rcv_data]}"
+          = @ranking[:ib_rcv_data]
+      tr
+        td
+          | Average IB send data (MB/s)
+        td
+          = format_float_or_nil(@job_perf[:ib_xmit_data] / 1024 / 1024)
+        td class="job_metric_#{@ranking[:ib_xmit_data]}"
+          = @ranking[:ib_xmit_data]
+
+/  div class="col-md-4"
+    h3 = "Job tags"
+    ul
+      - @job_tags.each do |tag|
+        li
+          = tag
+          |  :
+          = tags[tag]
+/

@@ -1,0 +1,35 @@
+h3 = "Job table query interface"
+
+= render "form"
+
+- if @notice
+  p[ style = 'color:#FF0000;' ] = @notice
+
+div
+  h3 = "Results (limited to 100)"
+  table class="table table-bordered table-striped"
+    thead
+      tr
+        td = "cluster"
+        td = "job_id"
+        td = "login"
+        td = "partition"
+        td = "start_time"
+        td = "end_time"
+        td = "state"
+        td = "num_cores"
+        td = "duration(h)"
+        td = "cores*hours"
+    tbody
+      - @jobs.each do |job|
+        tr
+          td = job.cluster
+          td = link_to(job.drms_job_id, job)
+          td = job.login
+          td = job.partition
+          td = job.start_time.strftime('%D %T')
+          td = job.end_time.strftime('%D %T')
+          td = job.state
+          td = job.num_cores
+          td = number_with_precision((job.end_time - job.start_time) / 3600, :precision => 1)
+          td = number_with_precision((job.end_time - job.start_time) / 3600 * job.num_cores, :precision => 1)

@@ -20,7 +20,7 @@ module Jobstat
 
     test "should create string_datum" do
       assert_difference('StringDatum.count') do
-        post :create, string_datum: { name: @string_datum.name, task_id: @string_datum.task_id, value: @string_datum.value }
+        post :create, string_datum: { name: @string_datum.name, job_id: @string_datum.job_id, value: @string_datum.value }
       end
 
       assert_redirected_to string_datum_path(assigns(:string_datum))
@@ -37,7 +37,7 @@ module Jobstat
     end
 
     test "should update string_datum" do
-      patch :update, id: @string_datum, string_datum: { name: @string_datum.name, task_id: @string_datum.task_id, value: @string_datum.value }
+      patch :update, id: @string_datum, string_datum: { name: @string_datum.name, job_id: @string_datum.job_id, value: @string_datum.value }
       assert_redirected_to string_datum_path(assigns(:string_datum))
     end
 

@@ -84,12 +84,12 @@ ActionController::Base.class_eval do
 
 
     menu.add_item(Face::MenuItem.new({name: t("user_submenu.job_stat"),
-                                      url: jd.job_stat_path,
-                                      regexp: /job_stat/}))
+                                      url: jobstat.account_summary_show_path,
+                                      regexp: /account\/summary/}))
 
     menu.add_item(Face::MenuItem.new({name: t("user_submenu.job_table"),
-                                      url: jd.job_table_path,
-                                      regexp: /job_table/}))
+                                      url: jobstat.account_list_index_path,
+                                      regexp: /account\/list/}))
 
     menu.items
   end

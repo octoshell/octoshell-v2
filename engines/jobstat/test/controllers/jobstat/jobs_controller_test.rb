@@ -10,7 +10,7 @@ module Jobstat
     test "should get index" do
       get :index
       assert_response :success
-      assert_not_nil assigns(:jobs)
+      assert_not_nil assigns(:job)
     end
 
     test "should get new" do
