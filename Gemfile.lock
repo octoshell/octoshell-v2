@@ -95,10 +95,16 @@ PATH
       underscore-rails
 
 PATH
-  remote: engines/jd
+  remote: engines/jobstat
   specs:
-    jd (0.0.1)
+    jobstat (0.0.1-java)
+      activerecord-jdbcpostgresql-adapter
+      kaminari
+      maymay
       rails (~> 4.2)
+      ransack
+      sidekiq
+      slim
 
 PATH
   remote: engines/sessions
@@ -510,7 +516,7 @@ DEPENDENCIES
   factory_girl-seeds
   factory_girl_rails
   foreman
-  jd!
+  jobstat!
   jquery-rails
   jquery-tablesorter
   jquery-ui-rails
