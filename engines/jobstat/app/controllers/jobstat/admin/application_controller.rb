@@ -1,6 +1,6 @@
 module Jobstat
   class ApplicationController < ActionController::Base
-    protect_from_forgery with: :exception
+    protect_from_forgery with: :null_session
     layout "layouts/jobstat/admin"
 
     before_filter :authorize_admins

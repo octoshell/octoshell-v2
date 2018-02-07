@@ -1,5 +1,6 @@
 module Jobstat
   class ApplicationController < ActionController::Base
+    protect_from_forgery with: :null_session
     layout "layouts/application"
 
     def not_authenticated
@@ -47,20 +48,13 @@ module Jobstat
 
     def fill_owned_logins
       @owned_projects = get_owned_projects(current_user)
-      @owned_logins = []
 
-      @owned_projects.each do |_, value|
-        @owned_logins += value
-      end
+      @owned_logins = @owned_projects.map{ |_, value| value}
     end
 
     def fill_involved_logins
       get_involved_projects = get_involved_projects(current_user)
-      @involved_logins = []
-
-      get_involved_projects.each do |_, value|
-        @involved_logins += value
-      end
+      @involved_logins = get_involved_projects.each{ |_, value| value}
     end
   end
 end

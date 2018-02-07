@@ -4,8 +4,9 @@ Jobstat::Engine.routes.draw do
 
   resources :job
 
-  post 'job/info' => "job#post_info"
-  post 'job/performance' => "job#post_performance"
-  post 'job/tags' => "job#post_tags"
+  # post 'job/info' => "job#post_info"
+  # post 'job/performance' => "job#post_performance"
+  # post 'job/tags' => "job#post_tags"
+  post 'api/push' => 'api/push'
 
 end
