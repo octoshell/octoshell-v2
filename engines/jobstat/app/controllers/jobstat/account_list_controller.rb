@@ -14,9 +14,9 @@ module Jobstat
 
       query_logins = (@params["involved_logins"] | @params["owned_logins"]) & (@involved_logins | @owned_logins)
 
-      if @params["states"].length == 0
-         or @params["partitions"].length == 0
-         or query_logins.length == 0
+      if @params["states"].length == 0 or
+         @params["partitions"].length == 0 or
+         query_logins.length == 0
 
         @notice = "Choose all query parameters"
         @jobs = []
@@ -36,16 +36,16 @@ module Jobstat
 
       defaults = {"start_time" => Date.today.beginning_of_month.strftime("%d.%m.%Y"),
         'end_time' => Date.today.strftime("%d.%m.%Y"),
-        'cluster' => @@default_cluster,
+        'cluster' => @default_cluster,
         'states' => [],
         'partitions' => [],
         'involved_logins' => [],
         'owned_logins' => [],
       } #ActiveRecord bugs out with empty array
 
-      @clusters_options = @@clusters_options
-      @states_options = @@states_options
-      @partitions_options = @@partitions_options
+      # @clusters_options = @@clusters_options
+      # @states_options = @@states_options
+      # @partitions_options = @@partitions_options
 
       return defaults
     end
@@ -63,12 +63,12 @@ module Jobstat
     def load_defaults
       #FIXME!
       #TODO: load defaults from file
-      @@clusters_options = [
+      @clusters_options = [
         ['Lomonosov-1', "lomonosov-1"],
         ['Lomonosov-2', "lomonosov-2"],
       ]
 
-      @@states_options = [["All", "ALL"],
+      @states_options = [["All", "ALL"],
         ["Completed", "COMPLETED"],
         ["Failed", "FAILED"],
         ["Cancelled", "CANCELLED"],
@@ -76,7 +76,7 @@ module Jobstat
         ["Node failed", "NODE_FAIL"],
       ]
 
-      @@partitions_options = [["All", "ALL"],
+      @partitions_options = [["All", "ALL"],
         ["compute", "compute"],
         ["gpu", "gpu"],
         ["regular4", "regular4"],
@@ -88,7 +88,7 @@ module Jobstat
         ["smp", "smp"],
       ]
 
-      @@default_cluster='lomonosov-1'
+      @default_cluster='lomonosov-1'
     end
   end
 end

@@ -1,7 +1,7 @@
 #require_dependency "jobstat/application_controller"
 
 module Jobstat
-  class ApiController < ActionController::API
+  class ApiController < ActionController::Base
 
     before_filter :parse_request, :authenticate_from_token!, only: [:push]
 
