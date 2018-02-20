@@ -1,5 +1,5 @@
 module Jobstat
-  class ApplicationController < ActionController::Base
+  class AdminApplicationController < ActionController::Base
     protect_from_forgery with: :null_session
     layout "layouts/jobstat/admin"
 

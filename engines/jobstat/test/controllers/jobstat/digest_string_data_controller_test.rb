@@ -20,7 +20,7 @@ module Jobstat
 
     test "should create digest_string_datum" do
       assert_difference('DigestStringDatum.count') do
-        post :create, digest_string_datum: { name: @digest_string_datum.name, job_id: @digest_string_datum.job_id, time: @digest_string_datum.time, value: @digest_string_datum.value }
+        post :create, digest_string_datum: {name: @digest_string_datum.name, job_id: @digest_string_datum.job_id, time: @digest_string_datum.time, value: @digest_string_datum.value}
       end
 
       assert_redirected_to digest_string_datum_path(assigns(:digest_string_datum))
@@ -37,7 +37,7 @@ module Jobstat
     end
 
     test "should update digest_string_datum" do
-      patch :update, id: @digest_string_datum, digest_string_datum: { name: @digest_string_datum.name, job_id: @digest_string_datum.job_id, time: @digest_string_datum.time, value: @digest_string_datum.value }
+      patch :update, id: @digest_string_datum, digest_string_datum: {name: @digest_string_datum.name, job_id: @digest_string_datum.job_id, time: @digest_string_datum.time, value: @digest_string_datum.value}
       assert_redirected_to digest_string_datum_path(assigns(:digest_string_datum))
     end
 

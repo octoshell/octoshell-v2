@@ -20,7 +20,7 @@ module Jobstat
 
     test "should create job" do
       assert_difference('Job.count') do
-        post :create, job: { account: @job.account, alloc_cpus: @job.alloc_cpus, end_time: @job.end_time, job_id: @job.job_id, job_name: @job.job_name, login: @job.login, nodelist: @job.nodelist, partition: @job.partition, priority: @job.priority, req_cpus: @job.req_cpus, start_time: @job.start_time, state: @job.state, submit_time: @job.submit_time, timelimit: @job.timelimit }
+        post :create, job: {account: @job.account, alloc_cpus: @job.alloc_cpus, end_time: @job.end_time, job_id: @job.job_id, job_name: @job.job_name, login: @job.login, nodelist: @job.nodelist, partition: @job.partition, priority: @job.priority, req_cpus: @job.req_cpus, start_time: @job.start_time, state: @job.state, submit_time: @job.submit_time, timelimit: @job.timelimit}
       end
 
       assert_redirected_to job_path(assigns(:job))
@@ -37,7 +37,7 @@ module Jobstat
     end
 
     test "should update job" do
-      patch :update, id: @job, job: { account: @job.account, alloc_cpus: @job.alloc_cpus, end_time: @job.end_time, job_id: @job.job_id, job_name: @job.job_name, login: @job.login, nodelist: @job.nodelist, partition: @job.partition, priority: @job.priority, req_cpus: @job.req_cpus, start_time: @job.start_time, state: @job.state, submit_time: @job.submit_time, timelimit: @job.timelimit }
+      patch :update, id: @job, job: {account: @job.account, alloc_cpus: @job.alloc_cpus, end_time: @job.end_time, job_id: @job.job_id, job_name: @job.job_name, login: @job.login, nodelist: @job.nodelist, partition: @job.partition, priority: @job.priority, req_cpus: @job.req_cpus, start_time: @job.start_time, state: @job.state, submit_time: @job.submit_time, timelimit: @job.timelimit}
       assert_redirected_to job_path(assigns(:job))
     end
 

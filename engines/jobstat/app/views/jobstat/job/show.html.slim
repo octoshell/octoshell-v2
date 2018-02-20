@@ -1,13 +1,20 @@
 css:
-  .job_metric_low { background-color: #ff8080 }
-  .job_metric_average { background-color: #ffff80 }
-  .job_metric_good { background-color: #80ff80 }
+  .job_metric_low {
+    background-color: #ff8080
+  }
+
+  .job_metric_average {
+    background-color: #ffff80
+  }
+
+  .job_metric_good {
+    background-color: #80ff80
+  }
 
 h1
-  | Job info for
-  = @job["drms_job_id"]
+  = "Job info for #{@job[:drms_job_id]}"
 
-= @job["command"]
+= @job[:command]
 
 div class="row"
   div class="col-md-4"
@@ -17,47 +24,47 @@ div class="row"
         td
           | cluster
         td
-          = @job["cluster"]
+          = @job[:cluster]
       tr
         td
           | Job id
         td
-          = @job["drms_job_id"]
+          = @job[:drms_job_id]
       tr
         td
           | Login
         td
-          = @job["login"]
+          = @job[:login]
       tr
         td
           | State
         td
-          = @job["state"]
+          = @job[:state]
       tr
         td
           | Partition
         td
-          = @job["partition"]
+          = @job[:partition]
       tr
         td
           | Num cores
         td
-          = @job["num_cores"]
+          = @job[:num_cores]
       tr
         td
           | Submit time
         td
-          = @job["submit_time"].strftime("%D %T")
+          = @job[:submit_time].strftime("%D %T")
       tr
         td
           | Start time
         td
-          = @job["start_time"].strftime("%D %T")
+          = @job[:start_time].strftime("%D %T")
       tr
         td
           | End time
         td
-          = @job["end_time"].strftime("%D %T")
+          = @job[:end_time].strftime("%D %T")
   div class="col-md-4"
     h3 = "Job performance"
     table class="table table-bordered table-striped"
@@ -104,12 +111,11 @@ div class="row"
         td class="job_metric_#{@ranking[:ib_xmit_data]}"
           = @ranking[:ib_xmit_data]
 
-/  div class="col-md-4"
-    h3 = "Job tags"
-    ul
-      - @job_tags.each do |tag|
-        li
-          = tag
-          |  :
-          = tags[tag]
-/
+div class="row"
+  h3 = "Job tags"
+  ul
+    - @job_tags.each do |tag|
+      li
+        = tag
+        = " : "
+        = @tags.fetch(tag, "???")

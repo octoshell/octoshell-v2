@@ -20,7 +20,7 @@ module Jobstat
 
     test "should create float_datum" do
       assert_difference('FloatDatum.count') do
-        post :create, float_datum: { name: @float_datum.name, job_id: @float_datum.job_id, value: @float_datum.value }
+        post :create, float_datum: {name: @float_datum.name, job_id: @float_datum.job_id, value: @float_datum.value}
       end
 
       assert_redirected_to float_datum_path(assigns(:float_datum))
@@ -37,7 +37,7 @@ module Jobstat
     end
 
     test "should update float_datum" do
-      patch :update, id: @float_datum, float_datum: { name: @float_datum.name, job_id: @float_datum.job_id, value: @float_datum.value }
+      patch :update, id: @float_datum, float_datum: {name: @float_datum.name, job_id: @float_datum.job_id, value: @float_datum.value}
       assert_redirected_to float_datum_path(assigns(:float_datum))
     end
 
