@@ -22,7 +22,7 @@ module Jobstat
     }
 
     def show
-      @job = Job.find(params[:id])
+      @job = Job.find(params["id"])
       @job_perf = @job.get_performance
       @ranking = @job.get_ranking
       @job_tags = @job.get_tags
@@ -31,26 +31,37 @@ module Jobstat
 
 
     def post_info
-      drms_job_id = params[:job_id]
-      drms_task_id = params.fetch(:task_id, 0)
+      drms_job_id = params["job_id"]
+      drms_task_id = params.fetch("task_id", 0)
 
       Job.where(drms_job_id: drms_job_id, drms_task_id: drms_task_id).first_or_create
-          .update({cluster: params[:cluster],
-                   login: params[:account],
-                   partition: params[:partition],
-                   submit_time: Time.at(params[:t_submit]).utc.to_datetime,
-                   start_time: Time.at(params[:t_start]).utc.to_datetime,
-                   end_time: Time.at(params[:t_end]).utc.to_datetime,
-                   timelimit: params[:timelimit],
-                   command: params[:command],
-                   state: params[:state],
-                   num_cores: params[:num_cores],
+          .update({cluster: params["cluster"],
+                   login: params["account"],
+                   partition: params["partition"],
+                   submit_time: Time.at(params["t_submit"]).utc.to_datetime,
+                   start_time: Time.at(params["t_start"]).utc.to_datetime,
+                   end_time: Time.at(params["t_end"]).utc.to_datetime,
+                   timelimit: params["timelimit"],
+                   command: params["command"],
+                   state: params["state"],
+                   num_cores: params["num_cores"],
                   })
     end
 
+    def post_tags
+      drms_job_id = params["job_id"]
+      drms_task_id = params.fetch("task_id", 0)
+      tags = params["tags"]
+      job = Job.where(drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+
+      tags.each do |name|
+        StringDatum.where(job_id: job.id, name: "tag", value: name).first_or_create()
+      end
+    end
+
     def post_performance
-      drms_job_id = params[:job_id]
-      drms_task_id = params.fetch(:task_id, 0)
+      drms_job_id = params["job_id"]
+      drms_task_id = params.fetch("task_id", 0)
 
       job = Job.where(drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
 
