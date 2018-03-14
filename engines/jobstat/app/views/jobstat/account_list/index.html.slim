@@ -48,26 +48,26 @@ div
     thead
       tr
         td = "cluster"
-        td = "job_id"
+        td = "job id"
         td = "login"
         td = "partition"
-        td = "start_time"
-        td = "end_time"
+        td = "start time"
+        td = "end time"
         td = "state"
-        td = "num_cores"
-        td = "duration(h)"
-        td = "cores*hours"
+        td = "num cores"
+        td = "duration (hours)"
+        td = "cores* hours"
         td = "cpu load"
         td = "gpu load"
-        td = "loadavg"
-        td = "ib receive"
-        td = "ib sent"
+        td = "loadavg (processes)"
+        td = "ib_receive (MB)"
+        td = "ib_sent (MB)"
     tbody
       - @jobs.each do |job|
         - job_performance = job.get_performance
         - job_ranking = job.get_ranking
         tr
-          td = job.cluster
+          td style="white-space: nowrap" = job.cluster
           td = link_to(job.drms_job_id, job)
           td = job.login
           td = job.partition
