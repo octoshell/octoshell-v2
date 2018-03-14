@@ -100,14 +100,14 @@ div class="row"
         td
           | Average IB receive data (MB/s, total MPI + FS)
         td
-          = format_float_or_nil(@job_perf[:ib_rcv_data] / 1024 / 1024)
+          = format_float_or_nil(@job_perf[:ib_rcv_data])
         td class="job_metric_#{@ranking[:ib_rcv_data]}"
           = @ranking[:ib_rcv_data]
       tr
         td
           | Average IB send data (MB/s)
         td
-          = format_float_or_nil(@job_perf[:ib_xmit_data] / 1024 / 1024)
+          = format_float_or_nil(@job_perf[:ib_xmit_data])
         td class="job_metric_#{@ranking[:ib_xmit_data]}"
           = @ranking[:ib_xmit_data]
 
@@ -115,7 +115,6 @@ div class="row"
   h3 = "Job tags"
   ul
     - @job_tags.each do |tag|
-      li
-        = tag
-        = " : "
-        = @tags.fetch(tag, tag)
+      - if @tags.include?(tag)
+        li
+          = @tags.fetch(tag, tag)

@@ -49,14 +49,14 @@ module Jobstat
       @owned_projects = get_owned_projects(current_user)
 
       @owned_logins = @owned_projects.map {|_, value| value}.uniq
-      @owned_logins = ["vurdizm"]
+      @owned_logins = []
 
     end
 
     def fill_involved_logins
       get_involved_projects = get_involved_projects(current_user)
       @involved_logins = get_involved_projects.map {|_, value| value}.uniq
-      @involved_logins = ["vurdizm"]
+      @involved_logins = []
     end
   end
 end

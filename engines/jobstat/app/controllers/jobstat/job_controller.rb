@@ -5,20 +5,17 @@ module Jobstat
     include JobHelper
 
     @@tags = {
-        :cls_communicative_volume => "receive or transmitted data > 500MB/s",
-        :cls_communicative_packets => "receive or transmitted packets > 300k/s",
-        :cls_sc_appropriate => "high data transmission rate and fitting loadavg",
-        :cls_not_communicative => "multi-node job with low network activity",
-        :cls_serial => "single node, single process jobs",
-        :cls_suspicious => "low cpu load, low loadavg, low gpu load",
-        :cls_data_intensive => "high memory activity",
-        :cls_gpu_pure => "high gpu load, low cpu load",
-        :cls_gpu_hybrid_good => "high gpu load, high cpu load",
-        :cls_single => "single node jobs",
-        :cls_locality_good => "good l1 and not bad l23 or good l23 and not bad l1",
-        :cls_locality_bad => "bad l1 and not good l23 or bad l23 and not good l1",
-        :cls_locality_weird => "good l1 and bad l23 or good l23 and bad l1",
-        :short => "less than 15 minutes"
+        "cls_communicative_volume" => "receive or transmitted data > 500MB/s",
+        "cls_communicative_packets" => "receive or transmitted packets > 300k/s",
+        "cls_sc_appropriate" => "high data transmission rate and fitting loadavg",
+        "cls_not_communicative" => "multi-node job with low network activity",
+        "cls_serial" => "single node, single process jobs",
+        "cls_suspicious" => "low cpu load, low loadavg, low gpu load",
+        "cls_data_intensive" => "high memory activity",
+        "cls_gpu_pure" => "high gpu load, low cpu load",
+        "cls_gpu_hybrid_good" => "high gpu load, high cpu load",
+        "cls_single" => "single node jobs",
+        "short" => "less than 15 minutes"
     }
 
     def show

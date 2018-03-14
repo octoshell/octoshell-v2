@@ -48,26 +48,26 @@ div
     thead
       tr
         td = "cluster"
-        td = "job_id"
+        td = "job id"
         td = "login"
         td = "partition"
-        td = "start_time"
-        td = "end_time"
+        td = "start time"
+        td = "end time"
         td = "state"
-        td = "num_cores"
-        td = "duration(h)"
-        td = "cores*hours"
+        td = "num cores"
+        td = "duration (hours)"
+        td = "cores* hours"
         td = "cpu load"
         td = "gpu load"
-        td = "loadavg"
-        td = "ib receive"
-        td = "ib sent"
+        td = "loadavg (processes)"
+        td = "ib_receive (MB)"
+        td = "ib_sent (MB)"
     tbody
       - @jobs.each do |job|
         - job_performance = job.get_performance
         - job_ranking = job.get_ranking
         tr
-          td = job.cluster
+          td style="white-space: nowrap" = job.cluster
           td = link_to(job.drms_job_id, job)
           td = job.login
           td = job.partition
@@ -80,5 +80,5 @@ div
           td class="job_metric_#{job_ranking[:cpu_user]}" = number_with_precision(job_performance[:cpu_user], :precision => 1)
           td class="job_metric_#{job_ranking[:gpu_load]}" = number_with_precision(job_performance[:gpu_load], :precision => 1)
           td class="job_metric_#{job_ranking[:loadavg]}" = number_with_precision(job_performance[:loadavg], :precision => 1)
-          td class="job_metric_#{job_ranking[:ib_rcv_data]}" = number_with_precision(job_performance[:ib_rcv_data] / 1024 / 1024, :precision => 1)
-          td class="job_metric_#{job_ranking[:ib_xmit_data]}" = number_with_precision(job_performance[:ib_xmit_data] / 1024 / 1024, :precision => 1)
+          td class="job_metric_#{job_ranking[:ib_rcv_data]}" = number_with_precision(job_performance[:ib_rcv_data], :precision => 1)
+          td class="job_metric_#{job_ranking[:ib_xmit_data]}" = number_with_precision(job_performance[:ib_xmit_data], :precision => 1)
