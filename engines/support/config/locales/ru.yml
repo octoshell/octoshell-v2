@@ -110,10 +110,13 @@ ru:
         index:
           title: Список заявок в поддержку
           new_ticket_on_user: Создать тикет на пользователя
+          project: Проект
+          reporter: Автор
           created_after: Создан после
           created_before: Создан до
-          updated_after: Обновлен после
-          updated_before: Обновлен до
+          updated_after: Обновлён после
+          updated_before: Обновлён до
+
         table:
           no_tickets: Нет тикетов
         edit:

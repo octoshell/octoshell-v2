@@ -5,7 +5,7 @@ class Authentication::ActivationsController < Authentication::ApplicationControl
   end
 
   def create
-    @user = User.find_by_email(params[:email])
+    @user = User.find_by_email(params[:email].downcase)
     if @user && @user.activation_pending?
       @user.send_activation_needed_email!
       redirect_to new_session_path, notice: t("authentication.flash.activation_instructions_are_sent")

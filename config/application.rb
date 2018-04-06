@@ -22,5 +22,6 @@ module Octoshell
     config.i18n.locale = :ru
     config.i18n.default_locale = :ru
     config.assets.initialize_on_precompile = false
+    config.jd_systems = {}
   end
 end

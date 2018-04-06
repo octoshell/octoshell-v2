@@ -118,16 +118,23 @@ module Core
 
     def invite_users_from_csv
       @project = current_user.owned_projects.find(params[:id])
+      if params[:invitation].nil?
+        return redirect_to @project, notice: t("flash.no_file_selected")
+      end
       file = params[:invitation][:csv_file]
-      CSV.foreach(file.path) do |row|
-        email = row.first
-        initials = row.last
-        user = User.find_by_email(email)
-        if user.present?
-          @project.invite_member(user.id) unless @project.users.exists?(id: user.id)
-        else
-          @project.invitations.find_or_create_by!(user_email: email, user_fio: initials)
+      begin
+        CSV.foreach(file.path) do |row|
+          email = row.first.downcase
+          initials = row.last
+          user = User.find_by_email(email)
+          if user.present?
+            @project.invite_member(user.id) unless @project.users.exists?(id: user.id)
+          else
+            @project.invitations.find_or_create_by!(user_email: email, user_fio: initials)
+          end
         end
+      rescue => e
+        return redirect_to @project, notice: t("flash.bad_csv_file")+e.message
       end
       @project.save
       redirect_to @project

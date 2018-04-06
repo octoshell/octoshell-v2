@@ -8,5 +8,6 @@ module Core
       Core::MailerWorker.perform_async(:invitation_to_octoshell, self.id)
       touch
     end
+
   end
 end

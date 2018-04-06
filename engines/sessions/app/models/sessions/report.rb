@@ -80,7 +80,7 @@ module Sessions
       [ illustration_points,
         statement_points,
         summary_points
-      ].any? { |point| point == 2 }
+      ].any? { |point| [1, 2].include? point }
     end
 
     def close_project!
@@ -113,7 +113,7 @@ module Sessions
 
     def block_project
       # Sessions::MailerWorker.perform_async(:postdated_report_on_project, id)
-      project.block! unless project.blocked?
+      project.block! unless project.blocked? or project.finished? or project.cancelled?
     end
   end
 end

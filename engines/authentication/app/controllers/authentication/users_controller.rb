@@ -4,11 +4,16 @@ class Authentication::UsersController < Authentication::ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
-      redirect_to confirmation_users_path(email: @user.email)
+    if cond_params[:cond_accepted].to_i!=1
+      flash[:notice] = t("authentication.flash.conditions_must_be_accepted")
+      redirect_back_or_to(root_url)
     else
-      render :new
+      @user = User.new(user_params)
+      if @user.save
+        redirect_to confirmation_users_path(email: @user.email)
+      else
+        render :new
+      end
     end
   end
 
@@ -30,8 +35,13 @@ class Authentication::UsersController < Authentication::ApplicationController
   end
 
   private
+  def cond_params
+    params.require(:cond).permit(:cond_accepted)
+  end
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    p=params.require(:user).permit(:email, :password, :password_confirmation)
+    p[:email]=p[:email].to_s.downcase
+    p
   end
 end

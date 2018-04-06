@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "rake"
 gem "rails", "~> 4.2"
-gem "activerecord-jdbcpostgresql-adapter"
+gem "activerecord-jdbcpostgresql-adapter", "~> 1.3.21"
 gem "responders", "~> 2.0"
 gem "uglifier", ">= 1.3.0"
 gem "bootstrap_form", github: "bootstrap-ruby/rails-bootstrap-forms"
@@ -15,8 +15,13 @@ end
 
 gem "sinatra", ">= 1.3.0", :require => nil
 
-gem "mina"
+gem "mina",  "~> 0.3.0", require: false  #github: "zhum/mina"
 gem "mina-rbenv-addons", require: false
+#gem "mina-foreman", github: "mina-deploy/mina-foreman"
+#gem "mina-foreman", github: "asabourin/mina-foreman"
+gem "mina-rbenv-addons", require: false
+#gem "mina-rails"
+#gem "mina-git"
 
 gem "rollbar"
 
@@ -31,6 +36,11 @@ gem "sessions",       path: "engines/sessions"
 gem "statistics",     path: "engines/statistics"
 gem "wiki",           path: "engines/wiki"
 gem "announcements",  path: "engines/announcements"
+gem "jd",             path: 'engines/jd'
+
+gem "jquery-rails"
+gem "jquery-ui-rails"
+gem "jquery-tablesorter"
 
 gem "config", github: 'railsconfig/config'
 gem "decorators", "~> 1.0.0"

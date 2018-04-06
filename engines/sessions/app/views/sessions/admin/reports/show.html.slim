@@ -51,9 +51,9 @@ legend = link_to t('.open_project_card'), core.admin_project_path(@report.projec
     h3 #{t('.report_evaluation')}
     - if @report.assessing? && (current_user == @report.expert)
       = bootstrap_form_for @report, url: [:admin, @report, :assess], layout: :horizontal do |f|
-        = f.collection_radio_buttons :illustration_points, (2..5), :inspect, :inspect, inline: true
-        = f.collection_radio_buttons :statement_points, (2..5), :inspect, :inspect, inline: true
-        = f.collection_radio_buttons :summary_points, (2..5), :inspect, :inspect, inline: true
+        = f.collection_radio_buttons :illustration_points, (1..5), :inspect, :inspect, inline: true
+        = f.collection_radio_buttons :statement_points, (1..5), :inspect, :inspect, inline: true
+        = f.collection_radio_buttons :summary_points, (1..5), :inspect, :inspect, inline: true
         = f.form_group do
           div class="btn-toolbar"
             = f.submit t("actions.assess", default: t('.evaluate'))
