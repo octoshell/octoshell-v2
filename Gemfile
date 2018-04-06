@@ -15,11 +15,11 @@ end
 
 gem "sinatra", ">= 1.3.0", :require => nil
 
-gem "mina",  "~> 0.3.0", require: false  #github: "zhum/mina"
-gem "mina-rbenv-addons", require: false
+gem "mina", github: "zhum/mina", require: false
+gem "mina-systemd", require: false
+#gem "mina-rbenv-addons", require: false
 #gem "mina-foreman", github: "mina-deploy/mina-foreman"
-#gem "mina-foreman", github: "asabourin/mina-foreman"
-gem "mina-rbenv-addons", require: false
+#gem "mina-foreman", github: "asabourin/mina-foreman", require: false
 #gem "mina-rails"
 #gem "mina-git"
 
