@@ -1,6 +1,6 @@
 = render "header"
 p
-  | Создана новая организация 
+  | #{t('.msg_new_organization')} 
   = link_to @organization.name, core.admin_organization_url(@organization)
   |.
 

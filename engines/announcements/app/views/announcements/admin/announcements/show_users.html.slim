@@ -1,20 +1,20 @@
 div class="page-header"
-  h1 = t(".title", default: "Users")
+  h1 = t(".title")
 
 = bootstrap_form_for @search, url: admin_announcement_show_users_path(@announcement), method: :get, layout: :horizontal do |f|
-  = autocomplete f, name: :id_eq, label: "Пользователь", source: main_app.users_path
-  = f.select :owned_projects_state_in, Core::Project.human_state_names, { label: "Руководит проектами со статусами", include_blank: true }, { multiple: true }
-  = f.select :projects_state_in, Core::Project.human_state_names, { label: "Участвует в проектах со статусами", include_blank: true }, { multiple: true }
-  = f.collection_select :available_projects_avaliable_clusters_id_eq, Core::Cluster.all, :id, :name, label: "Есть аккаунт на кластере", include_blank: true
-  = f.collection_select :sessions_id_in, Sessions::Session.all, :id, :description, { label: "Участвовал в перерегистрации", include_blank: true }, { multiple: true }
-  = f.select :reports_state_in, Sessions::Report.human_state_names, { label: "Имеет отчёты в состоянии", include_blank: true }, { multiple: true }
-  = f.select :surveys_state_in, Sessions::UserSurvey.human_state_names, { label: "Имеет опросы в состоянии", include_blank: true }, { multiple: true }
+  = autocomplete f, name: :id_eq, label: t('.user'), source: main_app.users_path
+  = f.select :owned_projects_state_in, Core::Project.human_state_names, { label: t('.managed_project_statuses'), include_blank: true }, { multiple: true }
+  = f.select :projects_state_in, Core::Project.human_state_names, { label: t('.participated_project_statuses'), include_blank: true }, { multiple: true }
+  = f.collection_select :available_projects_avaliable_clusters_id_eq, Core::Cluster.all, :id, :name, label: t('.has_account_on_clusters'), include_blank: true
+  = f.collection_select :sessions_id_in, Sessions::Session.all, :id, :description, { label: t('.rereg_participated'), include_blank: true }, { multiple: true }
+  = f.select :reports_state_in, Sessions::Report.human_state_names, { label: t('.has_rereg_report_statuses'), include_blank: true }, { multiple: true }
+  = f.select :surveys_state_in, Sessions::UserSurvey.human_state_names, { label: t('.has_survey_statuses'), include_blank: true }, { multiple: true }
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
 
 = form_tag admin_announcement_select_recipients_path(@announcement) do
   - if @users.any?
-    h3 Найдено пользователей: #{@users.count}
+    h3 t('.users_found'): #{@users.count}
     div class="panel-body"
       table class="table table-hover"
         tr

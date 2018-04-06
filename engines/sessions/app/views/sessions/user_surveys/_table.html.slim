@@ -8,10 +8,10 @@
           = sort_link @search, :id, "#", default_order: :desc
         - else
           | #
-      th Наименование
-      th Проект
-      th Статус
-      th Перерегистрация
+      th #{t('.title')}
+      th #{t('.project')}
+      th #{t('.status')}
+      th #{t('.session')}
 
     - surveys.each do |survey|
       tr
@@ -25,4 +25,4 @@
         td
           strong = survey.session
 - else
-  p Нет опросников
+  p #{t('.no_surveys')}

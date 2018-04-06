@@ -1,5 +1,5 @@
 div class="page-header"
-  h1 Заявка на ресурсы №#{@request.id} в рамках проекта «#{@request.project.title}»
+  h1 #{t('.title', id: @request.id, pid: @request.project.id, title: @request.project.title)}
   h3 = mark_request_state(@request)
 
 
@@ -23,17 +23,17 @@ table class="table table-bordered"
           th class="span3" = Core::Request.human_attribute_name(:creator)
           td = @request.owner
         tr
-          th Активных проектов
+          th #{t('.active_projects')}
           td = @request.owner.projects.where(:state=>:active).count
         tr
-          th Дата регистрации
+          th #{t('.reg_date')}
           td
             = @request.owner.created_at.to_date
-            |  (#{(Date.current - @request.owner.created_at.to_date).to_i} дн.)
+            |  (#{(Date.current - @request.owner.created_at.to_date).to_i} #{t('.days_short')})
         /tr
           th Общий объем квот
           td
-            = "#{@request.user.requests.sum(:cpu_hours)} часов | "
+            = "#{@request.user.requests.sum(:cpu_hours)} #{t('.cpu_hours')} | "
             = "#{@request.user.requests.sum(:size)} Gb"
   tr
     th = Core::Organization.model_name.human
@@ -43,10 +43,10 @@ table class="table table-bordered"
           th class="span3" = Core::Organization.model_name.human
           td = @request.project.organization
         tr
-          th Пользователей
+          th #{t('.users_num')}
           td = @request.project.organization.users.where(:access_state=>:active).count
         tr
-          th Проектов
+          th #{t('.projects_num')}
           td = @request.project.organization.projects.count
   tr
     th = Core::Cluster.model_name.human
@@ -58,7 +58,7 @@ table class="table table-bordered"
 
 
 /- @request.project.sureties.where(:state=>:active).each do |surety|
-  h4 Поручительство ##{surety.id}
+  h4 #{t('.surety')} ##{surety.id}
   table class="table table-bordered table-condensed"
     tr
       th = Core::Organization.model_name.human
@@ -72,6 +72,6 @@ table class="table table-bordered"
     tr
       td colspan="2"
         div id="surety" class=""
-          div = link_to "Текст поручительства", "#surety_#{surety.id}", data: { toggle: "collapse",parent: "#surety_#{surety.id}" }
+          div = link_to t('.seruty_text'), "#surety_#{surety.id}", data: { toggle: "collapse",parent: "#surety_#{surety.id}" }
           div id="surety_#{surety.id}" class="collapse"
             == surety.html_template

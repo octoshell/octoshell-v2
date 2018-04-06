@@ -1,11 +1,29 @@
 ru:
   activerecord:
     models:
-      wiki/page: Страница wiki
+      wiki/page: "Страница wiki"
     attributes:
       wiki/page:
-        name: Название
-        url: url
-        content: Текст
+        name: "Название"
+        url: "url"
+        content: "Текст"
 
+  buttons:
+    save: "Сохранить"
 
+  wiki:
+    markdown_help: "Для разметки используется <a href=\"http://daringfireball.net/projects/markdown/syntax\">Markdown</a>"
+    pages:
+      new:
+        title: "Новая страница"
+      edit:
+        title: "Редактирование страницы"
+      index:
+        title: "Справка по работе с Octoshell"
+        new_page: "Новая страница"
+        edit: "Редактировать"
+        delete: "Удалить"
+        confirm: "Вы действительно хотите удалить страницу?"
+        no_pages_found: "Ещё не создано ни одной wiki-страницы."
+        name: "Название"
+        link: "Ссылка"
