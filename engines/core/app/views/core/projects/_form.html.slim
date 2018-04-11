@@ -4,10 +4,15 @@ div class="row"
       = f.text_field :title
 
       = f.collection_select :kind_id, Core::ProjectKind.all, :id, :name
+      - @organizations = current_user.checked_active_organizations(@project)
+      - @departments = current_user.checked_active_organization_departments_to_hash(@project,@organizations)
+      /- primary_organization = current_user.primary_organization || current_user.organizations.first
+      = f.collection_select :organization_id, @organizations, :id, :name
+      /= f.collection_select :organization_department_id,[],:id,:name
+      = f.form_group :organization_department,label:{text: Core::OrganizationDepartment.model_name.human} do
+        select#project_2organization_department_id.form-control name="project[organization_department_id]"
 
-      - primary_organization = current_user.primary_organization || current_user.organizations.first
-      = f.collection_select :organization_id, current_user.organizations, :id, :name, selected: primary_organization
-      = autocomplete f, name: :organization_department_id, label: Core::Project.human_attribute_name("organization_department"), layout: :regular, source: organization_organization_departments_path(primary_organization)
+      /= autocomplete f, name: :organization_department_id, label: Core::Project.human_attribute_name("organization_department"), layout: :regular, source: organization_organization_departments_path(primary_organization)
 
       = f.text_field :estimated_finish_date, start_year: Date.current.year, class: "datepicker"
 
@@ -40,3 +45,5 @@ div class="row"
 
       = f.form_group do
         = f.submit t("buttons.save")
+      =javascript_tag do
+        =render partial: 'form',formats: [:js]

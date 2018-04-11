@@ -5,7 +5,6 @@ module Core
     belongs_to :project, inverse_of: :members
     belongs_to :organization
     belongs_to :organization_department
-
     delegate :full_name, :email, :credentials, :sured?, to: :user
 
     include AASM
@@ -47,7 +46,7 @@ module Core
 
       event :deny do
         transitions :from => :allowed, :to => :denied
-  
+
         after do
           ::Core::MailerWorker.perform_async(:access_to_project_denied, id)
         end

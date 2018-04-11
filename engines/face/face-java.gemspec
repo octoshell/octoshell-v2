@@ -33,6 +33,8 @@ Gem::Specification.new do |s|
   s.add_dependency "bootstrap-datepicker-rails"
   s.add_dependency "kramdown"
   s.add_dependency "rails-jquery-autocomplete"
+  s.add_dependency "jquery-fileupload-rails"
+
 
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "capybara"

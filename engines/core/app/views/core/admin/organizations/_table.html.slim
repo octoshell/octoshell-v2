@@ -33,8 +33,8 @@
         td = link_to organization.short_name, [:admin, organization]
         td = organization.name
         td = organization.kind
-        td = organization.country
-        td = organization.city
+        td = organization.country.to_s
+        td = organization.city.to_s
         / TODO: заменить сбор статистики на rake задачу. Обсудить.
-        td class="text-center" = organization.users.where(users: { :activation_state => "active" }).count
-        td class="text-center" = organization.projects.where(core_projects: { :state => "active" }).count
+        td class="text-center" = @users_count[organization.id] || 0
+        td class="text-center" = @projects_count[organization.id] || 0
