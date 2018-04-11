@@ -14,7 +14,11 @@ ru:
     profile: Профиль
     job_stat: Статистика запусков
     job_table: Запуски
+    comments: Комментарии
   admin_submenu:
+    comments: "Комментарии"
+    cities: "Города"
+    countries: "Страны"
     projects: "Проекты"
     project_kinds: "Типы проектов"
     sureties: "Поручительства"
@@ -222,7 +226,7 @@ ru:
         days_short: "дн."
         present: "есть"
         none: "нет"
-        
+
 
 
   helpers:

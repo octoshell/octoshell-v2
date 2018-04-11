@@ -13,6 +13,7 @@
  *= require support/application
  *= require sessions/application
  *= require jd/application
+ *= require comments/application
  *= require_self
  *= require_tree .
  */

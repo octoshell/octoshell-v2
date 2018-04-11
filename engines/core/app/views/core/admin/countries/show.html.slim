@@ -1,0 +1,30 @@
+div class="page-header"
+  h1 = @country.title_ru
+
+div class="well"
+  = link_to t("actions.edit"), [:edit, :admin, @country], class: "btn btn-default"
+  - name = t("actions.delete", default: "delete")
+  - confirm = t("core_confirm", default: "Are You sure?")
+  - data = { method: :delete, confirm: confirm }
+  = link_to name, [:admin, @country], data: data, class: "btn btn-default"
+  = link_to t('countries.new_city'), new_admin_city_path(params: {country_id: @country.id}), class: "btn btn-default"
+
+table class="table table-hover"
+  tr
+      td class='col-xs-6'
+        h4 = Core::Country.human_attribute_name :title_ru
+      td class='col-xs-6'
+        h4 = @country.title_ru
+  tr
+      td class='col-xs-6'
+        h4 = Core::Country.human_attribute_name :title_en
+      td class='col-xs-6'
+        h4 = @country.title_en
+  tr
+      td class='col-xs-6'
+        h4 = Core::Country.human_attribute_name :checked
+      td class='col-xs-6'
+        h4 = @country.checked ? t('answers.yess',default: 'yes') : t('answers.noo',default: 'no')
+h2 = t('.cities_title')
+= render 'cities_table',cities: @cities
+= safe_paginate @cities

@@ -1,0 +1,169 @@
+var group_title = "<%= Group.model_name.human %>";
+var context_title = "<%= Comments::ContextGroup.human_attribute_name(:context) %>";
+var class_groups_title = '<%= t(".class_groups_title") %>';
+var context_groups_title = '<%= t(".context_groups_title") %>';
+
+var save = "<%=j t 'buttons.save'%>";
+var action = "<%=url_for(action: 'update')%>";
+var success_message = "<%=j t '.success_message'%>";
+var errors_message = "<%=j t '.errors_message'%>";
+
+var form;
+var properties = <%= raw @properties.to_json%>;
+<% @alpaca_raw_json.each do |key, value| %>
+  var <%= key %> =  <%= raw value.to_json %>;
+<% end %>
+var array = ["context_id", "group_id"];
+function disableForm(){
+  submit_button().attr('disabled',true);
+  for(var i in array){
+    var elem = form.getControlByPath(array[i]);
+    elem.options.disabled = true;
+    elem.refresh();
+  }
+}
+function enableForm(){
+  for(var i in array){
+    var elem = form.getControlByPath(array[i]);
+    elem.options.disabled = false;
+    elem.refresh();
+  }
+  apply_select();
+  submit_button().attr('disabled',false);
+}
+
+function add_loading_elem(elem)
+{
+  var loading = `<div id="load_elem"class="alert alert-info"> <strong><%= t('.loading')%></strong></div>`;
+  var load_elem =   $(loading);
+  load_elem.insertBefore(elem);
+  return load_elem;
+}
+
+function loadData(funct = null){
+  var context_id = form.getControlByPath("context_id").getValue();
+  var group_id = form.getControlByPath("group_id").getValue();
+  var params = {context_id: context_id, group_id: group_id};
+  var url = '/comments/admin/context_groups/type_abs';
+  disableForm();
+  $.getJSON( url,params, function( data ) {
+    enableForm();
+    loadCheckboxData(data);
+  });
+}
+
+function loadCheckboxData(data)
+{
+  var checkbox_control = form.getControlByPath('context_groups').getControlEl();
+  checkbox_control.find('font').remove();
+  for (var p in data) {
+    if( data.hasOwnProperty(p) ) {
+      var elem = checkbox_control.find(`input[data-checkbox-value='${p}']`);
+      if(data[p] == true){
+        elem.prop('checked',true);
+      }
+      else{
+        elem.prop('checked',false);
+      }
+    }
+  }
+}
+
+function submit_button()
+{
+  return form.domEl.find(".alpaca-form-button-submit");
+}
+
+$("#context_groups_form").alpaca({
+    "schema": {
+        "type": "object",
+        "properties": {
+              "context_id":{
+                "title": context_title,
+                "enum": context_options,
+                "required": true
+              },
+              "group_id":{
+                "title": group_title,
+                "enum": group_options,
+                "required": true
+              },
+              "context_groups": {
+                "type": "array",
+                "enum": context_groups_options
+              }
+
+        }
+    },
+    "options":{
+      "focus":"",
+      "hideInitValidationError":true,
+      "fields":{
+            "group_id":{
+              "type": "select",
+              "optionLabels": group_labels,
+              "validate": false
+            },
+            "context_id":{
+              "type": "select",
+              "optionLabels": context_labels,
+              "validate": false
+            },
+            "context_groups":{
+              "type": "checkbox",
+              "label": context_groups_title,
+              "optionLabels": context_groups_labels,
+              "validate": false
+              },
+      },
+      "form": {
+            "attributes": {
+                "method": "post",
+                "action": action
+            },
+            "buttons": {
+                "submit": {
+                    "title": save,
+                    "click": function() {
+                      var elem = $("#messages");
+                      elem.empty();
+                      elem.html('<div class="alert alert-success" id="success_div"></div>');
+                       var promise = this.ajaxSubmit();
+                       promise.done(function(arg) {
+                         $("#success_div").text(success_message);
+                       });
+                       promise.fail(function(arg) {
+                         elem.html('<div class="alert alert-danger" id="errors_div"></div>');
+                         $("#errors_div").text(errors_message);
+                       });
+                       promise.always(function(){
+                        //  form.domEl.find(".alpaca-form-button-submit").attrProp("disabled", false);
+                       });
+                    }
+                }
+        }
+    },
+    "view": {
+      "layout": {
+          "template": "<%=j render partial: 'form_layout' %>",
+          "bindings": {
+            "context_id" : "column-1",
+            "group_id": "column-1",
+            "context_groups" : "column-2"
+          }
+        }
+    }
+  },
+  "postRender": function(control) {
+    apply_select();
+    form = control;
+    loadData();
+    bind_select2('group_id',loadData);
+    bind_select2('context_id',loadData);
+  }
+});
+function bind_select2(path,func)
+{
+  var id = form.getControlByPath(path).getControlEl().prop('id');
+  $(document).on( "select2:select", ('#' + id),func);
+}

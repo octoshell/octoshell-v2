@@ -1,0 +1,35 @@
+span class='tag-container' tag-id="{{id}}"
+  button.btn-primary.show-extra tag-id="{{id}}"
+    |{{name}}
+  span class='extra-info' hidden='true'
+    ul.list-unstyled
+      li
+        button type="button" class="btn btn-default remove-extra"
+          = t '.index.hide'
+        |{{#if can_update}}
+        button type="button" class="btn btn-default delete-button"
+          span class="glyphicon glyphicon-erase"
+            = t 'actions.delete'
+        |{{/if}}
+      li
+        |{{email}}
+      li
+        |{{first_name}}  {{last_name}}
+      li
+        |{{#if context_name}}
+          #{t('.index.context')}:  {{context_name}}
+        |{{/if}}
+      li
+        = t('.index.group_l')
+        |{{#each user_groups}}
+            <li>{{this}}</li>
+        |{{/each}}
+
+/        |{{#if can_update}}
+/        button type="button" class="btn btn-default edit-button"
+/          span class="glyphicon glyphicon-edit"
+/            = t 'actions.edit'
+/        button type="button" class="btn btn-default delete-button"
+/          span class="glyphicon glyphicon-erase"
+/            = t 'actions.delete'
+/        |{{/if}}

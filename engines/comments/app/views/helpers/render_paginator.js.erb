@@ -1,0 +1,2 @@
+$('<%=table%>').html("<%=escape_javascript(render partial: partial, locals: records  )%>");
+$("<%=paginator%>").html("<%=escape_javascript(paginate(records[:records], {remote: true}.merge(extra_options)).to_s)%>");

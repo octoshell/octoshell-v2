@@ -1,5 +1,7 @@
 module Core
   class OrganizationDepartment < ActiveRecord::Base
+    include MergeDepartments
+    include Checkable
     belongs_to :organization, inverse_of: :departments
 
     has_many :projects
@@ -27,6 +29,10 @@ module Core
 
     def notify_admins
       Core::MailerWorker.perform_async(:new_organization_department, id)
+    end
+
+    def simple_readable_attributes
+      %i[name]
     end
   end
 end

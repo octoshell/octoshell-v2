@@ -1,0 +1,6 @@
+h3
+  |{{#each tags}}
+    #{render partial: 'show'}
+   {{else}}
+    #{t('.index.empty')}
+   {{/each}}

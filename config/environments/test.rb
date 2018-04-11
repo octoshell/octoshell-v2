@@ -6,7 +6,7 @@ Octoshell::Application.configure do
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs. Don't rely on the data there!
   config.cache_classes = true
-
+  config.active_record.raise_in_transactional_callbacks = true
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
   # preloads Rails for running tests, you may have to set it to true.
@@ -19,6 +19,9 @@ Octoshell::Application.configure do
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
+  config.action_mailer.default_options = { from: "info@localhost" }
+  config.action_mailer.default_url_options = { host: "localhost:5000" }
+
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false

@@ -1,0 +1,74 @@
+function renderJS()
+{
+	var initTwbs;
+	var form;
+	var attachment_type = 'tags';
+	var attachable_type =   "<%=@attach_to[:class_name]%>";
+	var attachable_ids =   "<%=@attachable_ids%>";
+	var name_label = "<%=j t('.create.tags') %>";
+	var main_element =  $(`div[attachable_type='${attachable_type}'][attachable_ids='${attachable_ids}'][attachment_type=${attachment_type}]`);
+	var index_template = Handlebars.compile(main_element.find("#index_template").html());
+	var attach_to = <%=raw @attach_to.to_json %>;
+	var twbs = main_element.find("#pagination");
+	var q = {};
+
+	function renderIndex()
+	{
+		<% records, pages = Comments::Tagging.to_json_view(attach_to: @attach_to,user_id: current_user.id)%>
+		var records = <%=raw records.to_json%>;
+		var totalPages = <%=pages%>;
+		var index_template = Handlebars.compile(main_element.find("#index_template").html());
+		var html    =  index_template({tags: records});
+		main_element.find('#table').html(html);
+		initTwbs = true;
+		if(totalPages != 0)
+		{
+			twbs.ruTwbsPagination({
+				totalPages: totalPages,
+				startPage: 1,
+				onPageClick: function (event, page) {
+							pageClick(page);
+				}
+			});
+		}
+		initTwbs = false;
+	}
+
+	function pageClick(page = twbs.twbsPagination('getCurrentPage'))
+	{
+		if(initTwbs){
+			return;
+		}
+		initTwbs = true;
+		var url = '/comments/tags/index';
+		var params = {attach_to: attach_to, page: page,q: q};
+		var loading_html =`<div class="alert alert-success"><%=t('.index.loading')%></div>`;
+		main_element.find('#table').html(loading_html);
+		$.getJSON( url,params, function( data ) {
+			var html    =  index_template({tags: data.records});
+			main_element.find('#table').html(html);
+			var totalPages = data.pages;
+			var currentPage = Number(data.page);
+			twbs.twbsPagination('destroy');
+			if(totalPages != 0)
+			{
+				twbs.ruTwbsPagination({
+						startPage: currentPage,
+						totalPages: totalPages,
+						onPageClick: function (event, page) {
+									pageClick(page);
+						}
+				});
+			}
+			initTwbs = false;
+		});
+	}
+	renderIndex();
+	<% if @attach_to[:class_name] != 'all' %>
+		<%=render partial: 'create',formats: :js%>
+	<% else %>
+		<%=render partial: 'comments/comments/q',formats: :js%>
+	<% end %>
+	<%=render partial: 'pop_up',formats: :js%>
+}
+renderJS();
