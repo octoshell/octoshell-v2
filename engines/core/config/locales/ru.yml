@@ -252,7 +252,7 @@ ru:
     user:
       employment:
         organization_was_incorrect_and_deleted:
-          html: "<span class='fa fa-exclamation-triangle text-danger'> организация была удалена администрацией</span>"
+          html: "<span class=\"fa fa-exclamation-triangle text-danger\"> организация была удалена администрацией</span>"
 
   flash:
     project_created: "Проект создан"
@@ -370,7 +370,7 @@ ru:
           updated_before: "Обновлен до"
         table:
           no_organization:
-            html: "<span class='fa fa-exclamation-triangle text-danger'> не заполнена</span>"
+            html: "<span class=\"fa fa-exclamation-triangle text-danger\"> не заполнена</span>"
           no_projects_found: "Нет проектов"
         show:
           synchronize_project: "Синхронизовать с кластерами"
