@@ -10,7 +10,7 @@ ru:
     tickets: "Поддержка"
     sessions: "Перерегистрации"
     sessions_warning:
-      html: "Перерегистрации <span class="badge warning"><i class="fa fa-bell"> </i></span>"
+      html: "Перерегистрации <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
     profile: Профиль
     job_stat: Статистика запусков
     job_table: Запуски

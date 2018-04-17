@@ -14,7 +14,7 @@ set :rbenv_ruby_version, "jruby-9.1.10.0"
 set :deploy_to, "/var/www/#{fetch(:application)}"
 #set :deploy_to, "/var/www/octoshell2"
 set :repository, "git@github.com:octoshell/octoshell-v2.git"
-set :branch, "rails4_2_jruby_9000_1"
+set :branch, "rails4_2_jruby_9000"
 set :keep_releases, 5
 #set :foreman_app, 'octoshell3'
 #old set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)

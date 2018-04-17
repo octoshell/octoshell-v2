@@ -18,8 +18,6 @@ html
       window.env = "#{Rails.env}"
       window.locale = "#{I18n.locale}"
   body
-    div
-      | dev
     div class="navbar navbar-default navbar-static-top" role="navigation"
       div class="container"
         div class="navbar-header"
@@ -42,7 +40,8 @@ html
       = render "face/shared/flashes"
       = content
 
-      div id="footer
+      div id="footer"
         = link_to #{t('.maintaining_organization')}, 'http://parallel.ru/cluster', target: '_blank'
         br
-        | Created by #{link_to('Evrone', 'http://evrone.ru')}"
+        | Created by #{link_to('Evrone', 'http://evrone.ru')}
+
