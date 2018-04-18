@@ -7,7 +7,7 @@ div class="panel panel-info"
   div class="panel-body"
     - if current_user.employments.any?
       = bootstrap_form_for [@project, @member] do |f|
-        = f.collection_select :organization_id, current_user.organizations, :id, :name, hide_label: true
+        = f.collection_select :organization_id, current_user.checked_active_organizations, :id, :name, hide_label: true
         = f.form_group do
           = f.submit t(".accept_invitation")
     - else
