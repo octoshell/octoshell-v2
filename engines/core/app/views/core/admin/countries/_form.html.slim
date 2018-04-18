@@ -1,0 +1,7 @@
+= bootstrap_form_for [:admin, @country], layout: :horizontal do |f|
+  = f.text_field :title_ru
+  = f.text_field :title_en
+  = f.form_group :checked,label:{text: Core::Country.human_attribute_name(:checked)} do
+    = f.check_box :checked,label: ''
+  = f.form_group do
+    = f.submit t("actions.save")

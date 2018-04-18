@@ -56,3 +56,5 @@ reports:
   - access
 sessions:
   - manage
+comments:
+  - manage

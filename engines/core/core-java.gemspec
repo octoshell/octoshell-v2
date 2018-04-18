@@ -35,6 +35,8 @@ Gem::Specification.new do |s|
   s.add_dependency "clbustos-rtf"
   s.add_dependency "mini_magick"
   s.add_dependency "carrierwave"
+  s.add_dependency "roo"
+  s.add_dependency "colorize"
 
   s.test_files = Dir["spec/**/*"]
 

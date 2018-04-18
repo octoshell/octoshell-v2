@@ -1,5 +1,41 @@
 ru:
+  engine_submenu:
+    organizations_list: Список организаций
+    merge_edit: Слияние
+  answers:
+    yess: да
+    noo: нет
+  core_no_name: Нет названия
+  choose_value: Выберите значение
+  core_confirm: Вы уверены?
+  countries:
+    new_city: Новый город
+  merge:
+    show: Перейти на страницу записи
+    support:
+      subject: "Создана новая запись. %{model_name} : %{to_s}"
+      theme_name: Проверить новую запись
   activerecord:
+    errors:
+      models:
+        core/country:
+          attributes:
+            title_ru:
+              name_required: Необходимо ввести название или название на английском
+        core/city:
+          attributes:
+            title_ru:
+              name_required: Необходимо ввести название или название на английском
+        core/project:
+          attributes:
+            organization_department:
+              dif: Подразделение должно входить в организацию
+        core/organization:
+          attributes:
+            city_id:
+              dif: Город не является частью страны, указанной в организации
+
+
     models:
       core/credential: "SSH-ключ"
       core/project: "Проект"
@@ -21,7 +57,23 @@ ru:
       core/cluster_quota: "Квота на ресурс кластера"
       core/surety: "Поручительство"
       core/project_invitation: "Приглашение в проект"
+      core/country: Страна
+      core/city: Город
     attributes:
+      core/country:
+        title_ru: Название
+        title_en: Название на английском
+        checked: Проверена
+      core/city:
+        country_id: Страна
+        link_to_show: Просмотреть
+        title_ru: Название
+        title_en: Название на английском
+        checked: Проверена
+        country: Страна
+        country_title_ru: Название страны
+        country_title_en: Название страны на английском
+
       user:
         access_state: "Доступ"
         credentials: "ssh *.pub ключи для доступа на кластеры"
@@ -130,15 +182,18 @@ ru:
         country: "Страна"
         country_id: "Страна"
         city: "Город"
+        city_id: "Город"
         city_title: "Город"
         department: "Подразделение"
         departments: "Подразделения"
         users_count: "Активных пользователей"
         projects_count: "Активных проектов"
+        checked: Проверена
       core/organization_department:
         name: "Наименование"
         users_count: "Активных пользователей"
         projects_count: "Активных проектов"
+        checked: "Проверена"
       core/organization_kind:
         name: "Название"
         departments_required: "Требуется наличие подразделений"
@@ -493,6 +548,47 @@ ru:
         index:
           title: "Организации"
           new_organization: "Новая организация"
+      countries:
+        new:
+          title: Новая страна
+        index:
+          find_by_name: Найти по названию
+          title: Страны
+          new_country: Новая страна
+          none: Не имеет значения
+          yess: Да
+          noo: Нет
+        edit:
+          title: Редактировать страну
+        show:
+          cities_title: Города
+        destroy:
+          org_exist: Нельзя удалить страну,если в ней есть организации
+      cities:
+        new:
+          title: Новый город
+        index:
+          find_by_name: Найти по названию
+          title: Города
+          new_city: Новый город
+          none: Не имеет значения
+          yess: Да
+          noo: Нет
+        edit:
+          title: Редактировать город
+        destroy:
+          org_exist: Нельзя удалить город,если в нём есть организации
+        show:
+          cities_title: Города
+      organizations:
+        index:
+          find_by_name: Найти по названию
+          none: Не имеет значения
+          yess: Да
+          noo: Нет
+          title: Организации
+          new_organization: Новая организация
+          empty_cities_countries: Очистить поля города, страны и типа
         new:
           title: "Создание новой организации"
         edit:
@@ -500,6 +596,39 @@ ru:
           help: "Вы можете задать значения квот на ресурсы по-молчанию, кликнув на «+ добавить квоту». Эти значения будут использованы пользователями при создании заявки на ресурс."
           add_department: "+ добавить подразделение"
           remove_department: "удалить подразделение"
+        show:
+          merge_edit: Редактировать со слиянием
+        merge_update:
+          same_object: Вы патаетесь слить объект сам с собой
+          forbidden: Нельзя сливать организации с подразделениями.
+          stale_organization_id: Вы пытаетесь слить исходный объект с подразделением «%{dep_name}», уже не находящимся в организации «%{org_name}».
+          stale_organization_id_source: Вы пытаетесь слить  подразделение «%{dep_name}», уже не находящееся в организации «%{org_name}».
+          update: Пожалуйста, обновите страницу.
+        merge_edit:
+          preview: Предварительный просмотр
+          new_record: Новая запись
+          action_type: Вид действия
+          merge: Слить
+          organization: Организация «{{organization_name}}» с  id {{organization_id}}
+          from: из
+          department: Подразделение «{{department_name}}» с  id {{department_id}}
+          merge_with: будет слито с
+          success_message: Редактирование прошло успешно
+          department_title: Имя нового подразделения
+          title: Слияние
+          create_organization: Выделить в новую организацю
+          create_organization_error: Выделять в новую организацию можно только подразделение
+          merge_to_organization: Слить с организацией
+          merge_to_new_department: Создать новое подразделение
+          merge_to_existing_department: Слить с подраазделением организации
+          loading: Идет загрузка
+          merge_type: Вид слияния
+          merge_organization: Организация
+          merge_department: Подразделение
+          choose_source_dep: Выберите подразделение для слияния
+          choose_source_org: Выберите организацию для слияния
+          choose_to_org: Выберите организацию, с которой будет слит исходный объект
+          choose_to_dep: Выберите с каким подразделением будет слит исходный объект
       organization_kinds:
         index:
           title: "Типы организаций"
@@ -531,7 +660,7 @@ ru:
         msg_help_sshkey: "Если Вы не знаете как добавить публичый ssh-ключ, перейдите по ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Добавление публичного ssh-ключа</a>."
 
     projects:
-      _members: 
+      _members:
         invite_member: " добавить участника"
       _invited_users:
         send_invitations: "Отправить приглашения новым участникам"
@@ -550,6 +679,7 @@ ru:
       edit:
         title: "Редактирование профиля проекта"
       form:
+        nothing: "без подразделения"
         card: "Карточка проекта"
         card_help:
           html: "<a href=\"http://parallel.ru/cluster/reregistration/project_card\", target=\"_blank\">Пример оформления карточки проекта</a>"
@@ -634,9 +764,13 @@ ru:
         help: "скопируйте сюда содержимое файла .ssh/*.pub"
     employments:
       list:
+        edit_organization: "Редактировать организацию"
         employments: "Места работы"
         no_employments_created: "Добавьте место работы!"
         add_employment: "Добавить место работы"
+        employments: Места работы
+        no_employments_created: Добавьте место работы!
+        add_employment: Добавить место работы
       form:
         add_organization: "Добавить организацию"
         no_department: "Не нашли своё подразделение?"
@@ -660,6 +794,3 @@ ru:
         help: "Поддерживаются форматы: pdf, png, jpeg, jpg."
         remove_scan: "Удалить скан"
         add_scan: "Добавить скан"
-
-
-

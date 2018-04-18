@@ -1,0 +1,9 @@
+.container
+  .row
+    .col-md-8.panel.panel-default
+      section.comment-list
+        |{{#each files}}
+          #{render partial: 'show'}
+         {{else}}
+          <h4>#{t('.index.empty')}</h4>
+         {{/each}}

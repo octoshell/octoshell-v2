@@ -32,27 +32,17 @@ admin.save!
 
 # create projects prerequisites
 
-country=Core::Country.create(title_en: 'Russia', title_ru: 'Россия')
-country.save
+Core::Country.create!(title_en: 'Russia', title_ru: 'Россия')
 
-c=Core::City.create(title_en: 'Moscow', title_ru: "Москва", country: country)
-c.save
+Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country)
 
-c=Core::Cluster.create(host: 'localhost', admin_login: 'octo', name: 'test')
-c.save
+Core::Cluster.create!(host: 'localhost', admin_login: 'octo', name: 'test')
 
-c=Core::OrganizationKind.create(name: 'Российская коммерческая организация')
-c.save
+Core::OrganizationKind.create!(name: 'Российская коммерческая организация')
+Core::CriticalTechnology.create!(name: 'Робототехника')
 
-c=Core::CriticalTechnology.create(name: 'Робототехника')
-c.save
+Core::DirectionOfScience.create!(name: 'Информационно-телекоммуникационные системы')
 
-c=Core::DirectionOfScience.create(name: 'Информационно-телекоммуникационные системы')
-c.save
+Core::ResearchArea.create!(name: 'Математика')
 
-c=Core::ResearchArea.create(name: 'Математика')
-c.save
-
-c=Core::ProjectKind.create(name: 'Исследовательский')
-c.save
-
+Core::ProjectKind.create!(name: 'Исследовательский')
