@@ -27,7 +27,7 @@ ru:
     - Пт
     - Сб
     abbr_month_names:
-    - 
+    -
     - янв.
     - февр.
     - марта
@@ -53,7 +53,7 @@ ru:
       long: "! '%d %B %Y'"
       short: "! '%d %b'"
     month_names:
-    - 
+    -
     - января
     - февраля
     - марта
@@ -192,6 +192,5 @@ ru:
 
   layouts:
     face:
-      _application:
+      application:
         maintaining_organization: "НИВЦ МГУ имени М.В. Ломоносова"
-
