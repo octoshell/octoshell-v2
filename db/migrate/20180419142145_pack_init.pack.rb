@@ -1,3 +1,4 @@
+# This migration comes from pack (originally 20170509142359)
 class PackInit < ActiveRecord::Migration
   def change
 	  create_table "pack_access_tickets", id: false, force: :cascade do |t|
@@ -78,5 +79,6 @@ class PackInit < ActiveRecord::Migration
 
 	  add_index "pack_versions", ["package_id"], name: "index_pack_versions_on_package_id", using: :btree
 
-  
+
+	end
 end

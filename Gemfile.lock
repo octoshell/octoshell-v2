@@ -164,6 +164,25 @@ PATH
       rails (~> 4.2)
 
 PATH
+  remote: engines/pack
+  specs:
+    pack (0.0.1)
+      aasm
+      active_record_union
+      activerecord-jdbcpostgresql-adapter
+      bootstrap_form
+      carrierwave
+      decorators
+      jquery-ui-rails
+      kaminari
+      maymay
+      mime-types
+      rails (~> 4.2)
+      ransack
+      sidekiq
+      slim
+
+PATH
   remote: engines/sessions
   specs:
     sessions (0.0.1)
@@ -674,6 +693,7 @@ DEPENDENCIES
   letter_opener
   mina!
   mina-systemd
+  pack!
   phantomjs!
   poltergeist
   pry-rails
