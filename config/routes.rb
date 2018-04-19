@@ -25,6 +25,8 @@ Octoshell::Application.routes.draw do
 
   # This line mounts Authentication's routes at /auth by default.
   mount Authentication::Engine, at: "/auth"
+
+  mount Pack::Engine, at: "/pack"
   mount Announcements::Engine, :at => "/announcements"
   mount Comments::Engine, :at => "/comments"
 

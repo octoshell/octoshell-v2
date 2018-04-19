@@ -1,0 +1,43 @@
+
+  $("#qq").html("<%=j render 'q'%>");
+   <%f=@f%>
+
+    function check_input()
+    {
+      if (  $("input[name='q[type]']:checked").val() == 'packages' )
+      {
+
+        $('#type_aim').html("<%=j f.autocomplete_field :id_in,{label: t('pack_search.packages.packages_name'), source:  json_packages_path},multiple: true %>");
+
+      }
+      else
+      {
+        $('#type_aim').html("<%=j f.autocomplete_field :id_in,{label: t('pack_search.packages.versions_name'), source: admin_versions_path},multiple: true %>");
+
+      }
+
+    }
+    check_input();
+
+     $(document).on('change',"input[name='q[type]']",function()
+    {
+     
+       
+      check_input();
+      
+       
+
+       	apply_select2();
+       
+      
+     
+      
+    });
+
+
+
+$("input[name='commit']").click(function(){
+ 
+  $("#ajax_paginator").empty();
+  $("#table_records").empty();
+});

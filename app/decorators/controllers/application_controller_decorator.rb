@@ -69,6 +69,9 @@ ActionController::Base.class_eval do
                                       url: sessions.reports_path,
                                       regexp: /sessions/}))
 
+    menu.add_item(Face::MenuItem.new({name: "Пакеты",
+                                      url: pack.root_path,
+                                      regexp: /pack/}))
 
     tickets_warning = current_user.tickets.where(state: :answered_by_support).any?
     tickets_title = if tickets_warning
@@ -108,7 +111,15 @@ ActionController::Base.class_eval do
                                       url: core.admin_projects_path,
                                       regexp: /core\/admin\/projects/})) if may? :manage, :projects
 
+<<<<<<< HEAD
 
+||||||| merged common ancestors
+=======
+    menu.add_item(Face::MenuItem.new({name: "Пакеты",
+                                      url: pack.admin_root_path,
+                                      regexp: /pack\/admin/}))  if may? :manage, :packages
+
+>>>>>>> github/rails4_2_jruby_9000_1
     tickets_count = Support::Ticket.where(state: [:pending, :answered_by_reporter]).count
     support_title = if tickets_count.zero?
                        t("admin_submenu.support")

@@ -58,3 +58,7 @@ sessions:
   - manage
 comments:
   - manage
+packages:
+  - manage
+versions:
+  - manage

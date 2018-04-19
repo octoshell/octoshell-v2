@@ -36,7 +36,12 @@ gem "statistics",     path: "engines/statistics"
 gem "wiki",           path: "engines/wiki"
 gem "announcements",  path: "engines/announcements"
 gem "jd",             path: 'engines/jd'
+<<<<<<< HEAD
 gem "comments",             path: 'engines/comments'
+||||||| merged common ancestors
+=======
+gem "pack",           path: "engines/pack"
+>>>>>>> github/rails4_2_jruby_9000_1
 
 gem "jquery-rails"
 gem "jquery-ui-rails"
@@ -44,8 +49,14 @@ gem "jquery-tablesorter"
 
 gem "config", github: 'railsconfig/config'
 gem "decorators", "~> 1.0.0"
+<<<<<<< HEAD
 gem 'active_record_union'
 gem "whenever"
+||||||| merged common ancestors
+
+=======
+gem "whenever"
+>>>>>>> github/rails4_2_jruby_9000_1
 group :production do
   gem "whenever"
 end
