@@ -1,0 +1,50 @@
+div class="page-header"
+	h1 = t(".title", default: "Access Creation")
+= bootstrap_form_for [:admin,@access] do |f|
+
+	div id="enab"
+		=f.radio_button  "who_type", "User", label: t("user"),class: 'hid-decision'
+		= f.autocomplete_field :who_id,label: t("user"), source:  main_app.users_path,display: "who.email"
+	br
+		=f.radio_button  "who_type", "Core::Project",label: t("project"),class: 'hid-decision'
+		= f.autocomplete_field :who_id, label: t("project"), source:  core.projects_path,display: "who.title"
+	br
+		=f.radio_button  "who_type", "Group", label: t("group"),class: 'hid-decision'
+		= f.autocomplete_field :who_id, label: t("group"), source:  admin_get_groups_path,display: "who.name"
+		
+
+	br
+	
+	
+	= f.autocomplete_field :version_id, label: t("version"), source: admin_versions_path,display: "version.name"
+	= f.radio_button :forever,true ,label: Pack::Access.human_attribute_name(:forever),enab: "disable"  
+    = f.radio_button :forever,false,label: Pack::Access.human_attribute_name(:not_forever),enab: "enable" 
+	= f.text_field :end_lic,{ class: 'form-control my_datepicker',enab: "item",placeholder: "mm-dd-yy"}
+	= f.text_field :new_end_lic,{ class: 'form-control my_datepicker',enab: "item",placeholder: "mm-dd-yy"}
+
+	= f.select :status,Pack::Access.states_list_for_form
+ 	= f.form_group do
+    	= f.submit t("buttons.save", default: "Save")
+		
+	 
+
+javascript:
+
+	bind_func_disable("[enab='enable']","[enab='disable']","[enab='item']");
+	$(".hid-decision").not("[checked]").parents(".radio").next().removeClass('has-error').find("select").prop('disabled',true);
+	$(".hid-decision").not("[checked]").parents(".radio").next().find("span").remove(".help-block");
+
+	$(".hid-decision").change(function(i,e){
+			
+		$(".hid-decision").parents(".radio").next().find("select").prop('disabled',true);	
+		$(this).parents(".radio").next().find("select").prop('disabled',false);
+			
+			
+
+		}); 
+
+
+	
+
+
+	

@@ -1,3 +1,4 @@
 - unless current_page.last?
   li class="last next"
-    = link_to raw(t "views.pagination.last"), url
+    = link_to raw(t "views.pagination.last"), url,opts = { remote: remote}
+

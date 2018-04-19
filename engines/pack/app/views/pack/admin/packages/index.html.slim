@@ -1,0 +1,30 @@
+div class="package-header"
+  h1 = t(".title", default: "Packages list")
+  
+   
+  
+
+  div id="qq"
+ 
+
+ 
+ 
+ 
+  br
+  br
+  br
+    
+       
+          
+  div id="table_records"
+       =render(:partial => "#{@model_table}_table",locals: {records: @records } )   
+  div id="ajax_paginator" 
+      =paginate(@records, :remote => true).to_s
+      
+
+    
+
+
+= javascript_tag do 
+   = render(:partial => 'index', :formats => [:js]) 
+

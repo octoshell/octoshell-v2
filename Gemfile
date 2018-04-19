@@ -11,6 +11,7 @@ group :development do
   gem "letter_opener"
   gem "quiet_assets"
   gem "pry-rails"
+  gem "better_errors"
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil
@@ -37,6 +38,7 @@ gem "statistics",     path: "engines/statistics"
 gem "wiki",           path: "engines/wiki"
 gem "announcements",  path: "engines/announcements"
 gem "jd",             path: 'engines/jd'
+gem "pack",           path: "engines/pack"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"
@@ -44,13 +46,17 @@ gem "jquery-tablesorter"
 
 gem "config", github: 'railsconfig/config'
 gem "decorators", "~> 1.0.0"
-
+gem "whenever"
 group :production do
   gem "whenever"
 end
 
 group :test do
   gem "rspec-rails"
+  gem "activerecord-import", ">= 0.2.0"
+  gem 'poltergeist'
+  gem "rspec-sidekiq"
+  gem "test_after_commit"
   gem "shoulda-matchers"
   gem "database_cleaner"
   gem "factory_girl_rails"

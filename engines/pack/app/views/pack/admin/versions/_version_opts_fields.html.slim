@@ -1,0 +1,27 @@
+            
+
+            div class="row"  style="border:1px solid black;margin:10px;"  
+              div class="col-xs-6"
+                -uniq = new ? "new_index" : ff.object.id.to_s 
+
+                
+                -if ff.object.errors[:deleted_record]!=[]
+                  font color="red"
+                    
+                    =ff.object.errors[:deleted_record][0]
+
+                -rad_name="name_sel"+ uniq
+
+                =label_tag rad_name,t('versions.cl_autocomplete')
+                = radio_button rad_name,"to_s","auto",class: "select-auto"
+                = ff.autocomplete_field :name, {source: admin_options_categories_path,display: "name"},{id: "select"+ uniq}
+
+                =label_tag rad_name, t('versions.cl_byhand')
+                = radio_button rad_name,"to_s","no",class: "select-auto",checked: true
+                = ff.text_field :name
+
+              div class="col-xs-6"
+                = ff.text_area :value,rows: 3
+              div class="col-xs-6"
+                = ff.check_box :_destroy,label: t("destroy")
+            
