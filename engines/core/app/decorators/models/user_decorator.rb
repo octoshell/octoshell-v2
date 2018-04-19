@@ -37,8 +37,20 @@ Core.user_class.class_eval do
     class_name: "::Core::Organization",
     through: :employments,
     inverse_of: :users
-
   has_many :organization_departments, through: :employments
+
+  has_many :active_employments, -> { where(state: 'active') },
+    class_name: "::Core::Employment",
+    foreign_key: :user_id, dependent: :destroy
+  has_many :active_organizations,
+    class_name: "::Core::Organization",
+    through: :active_employments,
+    source: :organization
+  has_many :active_organization_departments,
+           class_name: "::Core::OrganizationDepartment",
+           through: :active_employments,
+           source: :organization_department
+
 
   has_one :primary_employment, ->{ where(primary: true) },
     class_name: "::Core::Employment",
@@ -112,4 +124,36 @@ Core.user_class.class_eval do
       invitation.destroy!
     end
   end
+
+  def checked_active_organization_departments(project)
+    rel1 = active_organization_departments
+           .joins(:organization)
+           .where(checked: true)
+           .where("core_organizations.checked = 't'")
+    rel2 = Core::OrganizationDepartment
+           .where(id: project.organization_department_id)
+    rel1.union rel2
+  end
+
+  def checked_active_organization_departments_to_hash(project, organizations)
+    rel = checked_active_organization_departments(project)
+    hash = rel.to_a.group_by(&:organization_id)
+    hash.each do |key, value|
+      hash[key] = value.map { |i| i.as_json(:nothing) }
+    end
+    organizations.each do |o|
+      hash[o.id] = [{}] unless hash[o.id]
+    end
+    hash
+  end
+
+  def checked_active_organizations(project = :no_project)
+    rel1 = active_organizations
+           .where(checked: true)
+    return rel1 if project == :no_project
+    rel2 = Core::Organization
+           .where(id: project.organization_id)
+    rel1.union rel2
+  end
+
 end if Core.user_class

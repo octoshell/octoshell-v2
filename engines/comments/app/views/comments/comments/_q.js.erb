@@ -1,0 +1,124 @@
+{
+	var attachable_id =   "<%=@attachable_ids%>";
+	var context_title = "<%=j Comments::Comment.human_attribute_name(:context) %>";
+	var class_title = "<%=j Comments::Comment.human_attribute_name(:attachable_type) %>";
+	var id_title = "<%=j Comments::Comment.human_attribute_name(:attachable_id) %>";
+
+	var successMessage = "<%= t('.create.success_message') %>";
+	var errorsMessage = "<%= t('.create.errors_message') %>";
+	var updatedAtLtTitle = "<%= t('comments.comments.index.updated_at_lt') %>";
+	var updatedAtGtTitle = "<%= t('comments.comments.index.updated_at_gt') %>";
+	var createdAtLtTitle = "<%= t('comments.comments.index.created_at_lt') %>";
+	var createdAtGtTitle = "<%= t('comments.comments.index.created_at_gt') %>";
+
+	var errorsMessage = "<%= t('.create.errors_message') %>";
+	<% contexts = Comments::Context.allow_read(current_user.id) %>
+	var context_ids = <%=raw contexts.map{ |c| c.id.to_s }.to_json%>;
+	var context_labels = <%=raw contexts.map(&:name).to_json%>;
+	var classes_ids = <%=raw Comments::ModelsList.to_a.to_json%>;
+	var classes_labels = <%=raw Comments::ModelsList.to_a_labels.to_json%>;
+
+	var context_hidden = false;
+	context_ids.push(' ');
+	context_labels.push("<%=t('.create.no_context')%>");
+	context_ids.push('all');
+	context_labels.push("<%=t('.q.all')%>");
+	classes_ids.push('all');
+	classes_labels.push("<%=t('.q.all')%>");
+
+	main_element.find(`.q-form`).alpaca({
+			"schema": {
+			"type": "object",
+					"type": "object",
+					"properties":{
+						"context_id_eq":{
+							"title": context_title,
+							"enum": context_ids,
+							"required": true,
+							"default": 'all'
+						},
+						"attachable_type_eq":{
+							"title": class_title,
+							"enum": classes_ids,
+							"required": true,
+							"default": 'all'
+						},
+						"attachable_id_eq":{
+							"title": id_title,
+						},
+						"created_at_gt":{
+							"title": createdAtGtTitle
+						},
+						"created_at_lt":{
+							"title": createdAtLtTitle
+						},
+						"updated_at_gt":{
+							"title": updatedAtGtTitle
+						},
+						"updated_at_lt":{
+							"title": updatedAtLtTitle
+						}
+
+
+
+
+
+					}
+			},
+			"options":{
+				"focus": "",
+				"hideInitValidationError":true,
+				"fields":{
+					"context_id_eq":{
+						"type":"select",
+						"optionLabels": context_labels,
+					},
+					"attachable_type_eq":{
+						"type":"select",
+						"optionLabels": classes_labels,
+					}
+
+				},
+				"form": {
+					"buttons": {
+							"submit": {
+									"title": "<%= t 'actions.find'%>",
+									"click": function(e) {
+										q = this.getValue();
+										pageClick(1);
+									}
+							}
+					}
+				},
+				"view": {
+						"layout": {
+								"template": "<%=j render partial: 'comments/comments/form_layout' %>",
+								"bindings": {
+										"attachable_type_eq": "column-1",
+										"attachable_id_eq": "column-1",
+										"context_id_eq" : "column-2",
+										"created_at_gt": "column-3",
+										"created_at_lt": "column-3",
+										"updated_at_gt": "column-4",
+										"updated_at_lt": "column-4",
+
+								}
+						}
+				}
+
+			},
+			"postRender": function(control) {
+				form = control;
+				apply_select();
+				var array = [ 'created_at_gt', 'created_at_lt', 'updated_at_lt','updated_at_gt'];
+				$.each(array, function( index, value ) {
+					control.getControlByPath(value).getControlEl().datepicker({
+						format: "dd.mm.yyyy",
+						language: "ru",
+						autoclose: true
+					});
+				});
+
+			}
+	});
+}

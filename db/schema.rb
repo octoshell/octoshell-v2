@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617111011) do
+ActiveRecord::Schema.define(version: 20180219165759) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "abilities", force: :cascade do |t|
     t.string   "action",     limit: 255
@@ -43,6 +46,83 @@ ActiveRecord::Schema.define(version: 20150617111011) do
     t.datetime "updated_at"
   end
 
+  create_table "comments_comments", force: :cascade do |t|
+    t.text     "text"
+    t.integer  "attachable_id",   null: false
+    t.string   "attachable_type", null: false
+    t.integer  "user_id",         null: false
+    t.integer  "context_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "comments_comments", ["attachable_type", "attachable_id"], name: "index_comments_comments_on_attachable_type_and_attachable_id", using: :btree
+  add_index "comments_comments", ["context_id"], name: "index_comments_comments_on_context_id", using: :btree
+  add_index "comments_comments", ["user_id"], name: "index_comments_comments_on_user_id", using: :btree
+
+  create_table "comments_context_groups", force: :cascade do |t|
+    t.integer  "context_id", null: false
+    t.integer  "group_id",   null: false
+    t.integer  "type_ab",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "comments_context_groups", ["context_id"], name: "index_comments_context_groups_on_context_id", using: :btree
+  add_index "comments_context_groups", ["group_id"], name: "index_comments_context_groups_on_group_id", using: :btree
+
+  create_table "comments_contexts", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "comments_file_attachments", force: :cascade do |t|
+    t.string   "file"
+    t.text     "description"
+    t.integer  "attachable_id",   null: false
+    t.string   "attachable_type", null: false
+    t.integer  "user_id",         null: false
+    t.integer  "context_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "comments_file_attachments", ["attachable_id", "attachable_type"], name: "attach_index", using: :btree
+  add_index "comments_file_attachments", ["context_id"], name: "index_comments_file_attachments_on_context_id", using: :btree
+  add_index "comments_file_attachments", ["user_id"], name: "index_comments_file_attachments_on_user_id", using: :btree
+
+  create_table "comments_group_classes", force: :cascade do |t|
+    t.string   "class_name"
+    t.integer  "obj_id"
+    t.integer  "group_id"
+    t.boolean  "allow",      null: false
+    t.integer  "type_ab",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "comments_group_classes", ["group_id"], name: "index_comments_group_classes_on_group_id", using: :btree
+
+  create_table "comments_taggings", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "attachable_id",   null: false
+    t.string   "attachable_type", null: false
+    t.integer  "user_id"
+    t.integer  "context_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "comments_taggings", ["attachable_type", "attachable_id"], name: "index_comments_taggings_on_attachable_type_and_attachable_id", using: :btree
+  add_index "comments_taggings", ["context_id"], name: "index_comments_taggings_on_context_id", using: :btree
+  add_index "comments_taggings", ["tag_id", "attachable_id", "attachable_type", "context_id"], name: "att_contex_index", unique: true, using: :btree
+  add_index "comments_taggings", ["user_id"], name: "index_comments_taggings_on_user_id", using: :btree
+
+  create_table "comments_tags", force: :cascade do |t|
+    t.string "name"
+  end
+
   create_table "core_access_fields", force: :cascade do |t|
     t.integer "access_id"
     t.integer "quota"
@@ -69,6 +149,7 @@ ActiveRecord::Schema.define(version: 20150617111011) do
     t.integer "country_id"
     t.string  "title_ru",   limit: 255
     t.string  "title_en",   limit: 255
+    t.boolean "checked",                default: false
   end
 
   add_index "core_cities", ["country_id"], name: "index_core_cities_on_country_id", using: :btree
@@ -109,8 +190,9 @@ ActiveRecord::Schema.define(version: 20150617111011) do
   add_index "core_clusters", ["public_key"], name: "index_core_clusters_on_public_key", unique: true, using: :btree
 
   create_table "core_countries", force: :cascade do |t|
-    t.string "title_ru", limit: 255
-    t.string "title_en", limit: 255
+    t.string  "title_ru", limit: 255
+    t.string  "title_en", limit: 255
+    t.boolean "checked",              default: false
   end
 
   create_table "core_credentials", force: :cascade do |t|
@@ -204,6 +286,7 @@ ActiveRecord::Schema.define(version: 20150617111011) do
   create_table "core_organization_departments", force: :cascade do |t|
     t.integer "organization_id"
     t.string  "name",            limit: 255
+    t.boolean "checked",                     default: false
   end
 
   add_index "core_organization_departments", ["organization_id"], name: "index_core_organization_departments_on_organization_id", using: :btree
@@ -223,6 +306,7 @@ ActiveRecord::Schema.define(version: 20150617111011) do
     t.integer  "city_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "checked",                  default: false
   end
 
   add_index "core_organizations", ["city_id"], name: "index_core_organizations_on_city_id", using: :btree

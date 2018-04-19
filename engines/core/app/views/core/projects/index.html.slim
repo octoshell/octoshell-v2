@@ -14,13 +14,14 @@ div class="page-header"
       h4 = t(".owned_projects")
       = link_to t(".new_project"), new_project_path, class: "btn btn-success"
     - if @owned_projects.any?
-      = render "owned_projects", projects: @owned_projects
 
+      = render "owned_projects", projects: @owned_projects
   - if @projects_with_participation.any?
     div class="panel panel-default"
       div class="panel-heading"
         h4 = t(".projects_with_participation")
       = render "projects_with_participation", projects: @projects_with_participation
+
 - else
   div class="panel panel-danger"
     div class="panel-heading"

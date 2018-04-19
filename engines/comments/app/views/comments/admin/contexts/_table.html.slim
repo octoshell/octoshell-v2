@@ -1,0 +1,12 @@
+- if contexts.any?
+  table class="table table-hover"
+    tr
+      th = Comments::Context.human_attribute_name(:name)
+      - contexts.each do |c|
+        tr
+          td = link_to c.name, [:edit,:admin, c]
+          td
+            - name = t("actions.delete", default: "delete")
+            - confirm = t("core_confirm", default: "Are You sure?")
+            - data = { method: :delete, confirm: confirm }
+            = link_to name, [:admin, c], data: data, class: "btn btn-default btn-sm"

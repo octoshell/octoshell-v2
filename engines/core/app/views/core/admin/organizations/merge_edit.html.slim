@@ -1,0 +1,45 @@
+div class="page-header"
+  h1 = t(".title")
+#messages
+div id="merge_organization"
+/Выбираем эту организацию или подразделение
+/Выбираем  организацию слияния
+/Выбираем её или подразделение
+/script#preview type="text/x-handlebars-template"
+/  .row
+/    #source_preview.col-xs-6
+/    #to_preview.col-xs-6
+script#half_department type="text/x-handlebars-template"
+  div class='well'
+    h4 = Core::Organization.model_name.human
+    table class="table table-hover"
+      tr
+        th = Core::Organization.human_attribute_name(:name)
+        td = '{{organization_name}}'
+      tr
+        th  id
+        td = '{{organization_id}}'
+  div class='well well-sm'
+    h4 = Core::OrganizationDepartment.model_name.human
+    table class="table table-hover"
+      tr
+        th = Core::OrganizationDepartment.human_attribute_name(:name)
+        td = '{{department_name}}'
+      tr
+        th  id
+        td = '{{department_id}}'
+
+script#half_organization type="text/x-handlebars-template"
+  div class='well'
+    h4 = Core::Organization.model_name.human
+    table class="table table-hover"
+      tr
+        th = Core::Organization.human_attribute_name(:name)
+        td = '{{organization_name}}'
+      tr
+        th  id
+        td = '{{organization_id}}'
+
+
+= javascript_tag do
+  = render partial: 'merge_edit',formats: :js

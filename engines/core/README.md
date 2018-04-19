@@ -40,4 +40,40 @@ bundle exec rails g core:install
 Подразумевается, что в системе существует механизм авторизации доступа с двумя ролями: администратор и обычный пользователь.
 Пример настроек также в octoshell-basic `app/decorators/controllers/application_controller_decorator.rb` метод `ability`.
 
+В production.rb обязательно должны быть следующие строки:
+
+``` ruby
+  config.assets.js_compressor = Uglifier.new(harmony: true) # Поддержка ES6
+```
+
+Прекомпиляция командой rake assets:precompile javascript-файлов может занимать довольно много времени, а иногда и занимать слишком много памяти для вашей машины. При установленном NodeJS можно ускорить этот процесс следующей командой:
+``` bash
+  RAILS_ENV=production bundle exec rake assets:precompile EXECJS_RUNTIME='Node' JRUBY_OPTS="-J-d32 -X-C"
+ ```
+
+## Обновленный core
+Были добавлены новые валидации. Проверить, что старые объекты валидны, можно с помощью raketasks этого модуля. Они снабжены небольшим комментарием, зачем они нужны.
+Все скрипты необходимо запускать с source!!!!
+Запустить все проверки:
+``` bash
+	source engines/core/scripts/bash/merge/check.sh
+ ```
+ После редактирования организаций в веб-интерфейсе их нужно проверить, поэтому это выделено еще и в отдельный скрипт:
+ ``` bash
+ 	source engines/core/scripts/bash/merge/check_organizations.sh
+  ```
+
+
+## Инструкция по слиянию организации и подразделений:
+Положить в корень octoshell таблицу, будем считать её имя таковым: joining-orgs_2017_11-2.ods
+Для слияния:
+```bash
+rake RAILS_ENV=production core:merge[joining-orgs_2017_11-2.ods]
+```
+Или скриптом(его можно вызвать откуда угодно)
+``` bash
+ source engines/core/scripts/bash/merge/merge.sh  joining-orgs_2017_11-2.ods
+ ```
+
+
 This project uses MIT-LICENSE.

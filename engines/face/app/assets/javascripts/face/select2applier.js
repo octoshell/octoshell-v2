@@ -4,7 +4,7 @@ $(function(){
     en: "Choose"
   }
 
-  $('select, select2-container, select2-ajax, input.chosen, select.chosen').each(function(i, e){
+  $('select, select2-container, select2-ajax, input.chosen, select.chosen').not('.select2-custom').each(function(i, e){
     var select = $(e)
     var options = select.find('option')
     if (options.size() == 1) {
@@ -27,8 +27,9 @@ $(function(){
             per: 10
           }
         },
-        processResults: function(data, page) {
-          var more = (page * 10) < data.total
+        processResults: function(data, params) {
+          var page = params.page | 1;
+          var more = (page * 10) < data.total;
           return { results: data.records, pagination:{more: more }}
         },
       }

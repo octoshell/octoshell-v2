@@ -1,0 +1,154 @@
+
+upstream octo2 {
+  server unix:///var/www/octoshell2/socket fail_timeout=0;
+  #server 127.0.0.1:5000;
+}
+
+server {
+  listen 80;
+
+  root /var/www/octoshell2/current/public;
+
+  charset utf-8;
+
+  include acme;
+
+  #proxy_connect_timeout       160;
+  #proxy_send_timeout          160;
+  #proxy_read_timeout          160;
+  #send_timeout                160;
+  keepalive_timeout 10;
+
+  location /nbasic_status {
+      stub_status on;
+  }
+
+  location /secured_uploads/{
+        alias   /var/www/octoshell2/current/;  # Append the path with /
+        internal;   # Can't access this directory from direct access from the web
+  }
+  location / {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+    proxy_redirect off;
+    proxy_set_header  X-Sendfile-Type  X-Accel-Redirect;
+    proxy_set_header  X-Accel-Mapping  "/var/www/octoshell2/releases/[\d]+/=/secured_uploads/";
+    proxy_pass http://octo2;
+  }
+
+  location ~ \.(php|cgi) {
+    deny all;
+  }
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location ^~ /uploads/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location = /favicon.ico {
+    expires    max;
+    add_header Cache-Control public;
+  }
+
+  location = /robots.txt {
+    expires    max;
+    add_header Cache-Control public;
+  }
+
+  error_page 502 /502.html;
+  location = /502.html {
+    root /var/www/octoshell2/current/public;
+  }
+
+  error_page 500 503 504 /500.html;
+  location = /500.html {
+    root /var/www/octoshell2/current/public;
+  }
+}
+
+server {
+  listen 443;
+  #server_name users.parallel.ru;
+
+  ssl                  on;
+#  ssl_certificate      /etc/ssl/certs/octoshell.crt;
+#  ssl_certificate_key  /etc/ssl/certs/octoshell.key;
+
+  ssl_certificate /etc/letsencrypt/live/users.parallel.ru/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/users.parallel.ru/privkey.pem;
+
+
+  ssl_protocols TLSv1;
+  ssl_ciphers ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM;
+
+  proxy_set_header           X-SSL     1;
+
+  charset utf-8;
+
+  #proxy_connect_timeout       160;
+  #proxy_send_timeout          160;
+  #proxy_read_timeout          160;
+  #send_timeout                160;
+  keepalive_timeout 10;
+
+
+  root /var/www/octoshell2/current/public;
+
+  include acme;
+
+  location /nbasic_status {
+      stub_status on;
+  }
+  location /secured_uploads/{
+        alias   /var/www/octoshell2/current/;  # Append the path with /
+        internal;   # Can't access this directory from direct access from the web
+  }
+
+
+  location / {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+    proxy_redirect off;
+    proxy_set_header  X-Sendfile-Type  X-Accel-Redirect;
+    proxy_set_header  X-Accel-Mapping  "/var/www/octoshell2/releases/[\d]+/=/secured_uploads/";
+    proxy_pass http://octo2;
+  }
+
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location ^~ /uploads/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location = /favicon.ico {
+    expires    max;
+    add_header Cache-Control public;
+  }
+
+  location = /robots.txt {
+    expires    max;
+    add_header Cache-Control public;
+  }
+
+  error_page 502 /502.html;
+  location = /502.html {
+    root /var/www/octoshell2/current/public;
+  }
+
+  error_page 500 503 504 /500.html;
+  location = /500.html {
+    root /var/www/octoshell2/current/public;
+  }
+}
