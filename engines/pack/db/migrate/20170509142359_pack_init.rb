@@ -78,6 +78,6 @@ class PackInit < ActiveRecord::Migration
 
 	  add_index "pack_versions", ["package_id"], name: "index_pack_versions_on_package_id", using: :btree
 
-  
+
 	end
 end
