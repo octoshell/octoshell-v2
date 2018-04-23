@@ -660,11 +660,11 @@ ru:
         msg_help_sshkey: "Если Вы не знаете как добавить публичый ssh-ключ, перейдите по ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Добавление публичного ssh-ключа</a>."
 
     projects:
-      _members:
+      members:
         invite_member: " добавить участника"
-      _invited_users:
+      invited_users:
         send_invitations: "Отправить приглашения новым участникам"
-        msg_if_member_uregistered: "Если некоторые пользователи не зарегистрированы в octoshell, Вы можете выслать им приграшения. "
+        msg_if_member_unregistered: "Если некоторые пользователи не зарегистрированы в octoshell, Вы можете выслать им приграшения. "
         msg_invitation_csv: "Для этого вам надо сформировать .csv документ с колонками"
         msg_intitation_csv_col: "email, Фамилия Имя Отчество"
         msg_invitation_csv_example: "Пример"

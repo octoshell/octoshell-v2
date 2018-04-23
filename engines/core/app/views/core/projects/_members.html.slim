@@ -2,7 +2,7 @@ div class="row" id="members"
   div class="panel panel-default"
     div class="panel-heading"
       h4 class="pull-left" = t(".title")
-      | #{link_to #{t('.invite_member')}, "#", id: "member_adder", class: "fa fa-plus btn btn-primary pull-right" if @user_can_manage_project}
+      | #{link_to t('.invite_member'), "#", id: "member_adder", class: "fa fa-plus btn btn-primary pull-right" if @user_can_manage_project}
       div class="clearfix"
     table class="table table-hover"
       tr id="new_member_row" class="hidden"
@@ -19,12 +19,12 @@ div class="row" id="members"
               li
                 = member.full_name
                 - if member.user_id == @project.owner.id
-                  |  
+                  |
                   i class="fa fa-flag"
               li
                 = mail_to member.email do
                   i class="fa fa-envelope"
-                  |  
+                  |
                   = t(".send_email_to_member")
           td = member.login
           td
