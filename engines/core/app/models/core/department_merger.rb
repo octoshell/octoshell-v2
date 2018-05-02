@@ -44,10 +44,10 @@ module Core
 
     def merge!
       if to.instance_of?(Organization)
-        source_department.merge_to_organization!(to_organization_id, true)
+        source_department.merge_with_organization!(to_organization_id, true)
       elsif to.instance_of?(OrganizationDepartment)
         if to_organization_id
-          source_department.merge_to_new_department_with_merger!(to_organization_id)
+          source_department.merge_with_new_department_with_merger!(to_organization_id)
         else
           source_department.merge_with_existing_department_without_check!(to.organization_id, to.id, true)
         end

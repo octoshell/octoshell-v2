@@ -645,9 +645,9 @@ ru:
           title: Слияние
           create_organization: Выделить в новую организацю
           create_organization_error: Выделять в новую организацию можно только подразделение
-          merge_to_organization: Слить с организацией
-          merge_to_new_department: Создать новое подразделение
-          merge_to_existing_department: Слить с подраазделением организации
+          merge_with_organization: Слить с организацией
+          merge_with_new_department: Создать новое подразделение
+          merge_with_existing_department: Слить с подраазделением организации
           loading: Идет загрузка
           merge_type: Вид слияния
           merge_organization: Организация

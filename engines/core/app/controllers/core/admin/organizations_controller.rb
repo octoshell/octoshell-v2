@@ -100,8 +100,8 @@ module Core
       @text = params[:text]
       # @organization = Organization.includes(:departments).find(params[:id])
       # @departments_names = @organization.departments.map { |d| { id: d.id, text: d.name } }
-      @merge_types_options = %w[merge_to_organization merge_to_existing_department
-                                merge_to_new_department]
+      @merge_types_options = %w[merge_with_organization merge_with_existing_department
+                                merge_with_new_department]
       @merge_types_labels = @merge_types_options.map { |o| t ".#{o}" }
       @source_merge_type_options = %w[merge_organization merge_department]
       @to_types_options = %w[create_organization merge]
@@ -182,12 +182,12 @@ module Core
       Organization.find @to_org_id
       @to_merge_type = params[:to][:merge_type]
       @res, @error = case @to_merge_type
-                     when 'merge_to_organization'
-                       source_object.merge_to_organization @to_org_id
-                     when 'merge_to_new_department'
-                       source_object.merge_to_new_department @to_org_id, params[:to][:department_name]
-                     when 'merge_to_existing_department'
-                       source_object.merge_to_existing_department(@to_org_id, params[:to][:department_id].to_i)
+                     when 'merge_with_organization'
+                       source_object.merge_with_organization @to_org_id
+                     when 'merge_with_new_department'
+                       source_object.merge_with_new_department @to_org_id, params[:to][:department_name]
+                     when 'merge_with_existing_department'
+                       source_object.merge_with_existing_department(@to_org_id, params[:to][:department_id].to_i)
                      end
       if @res.instance_of?(DepartmentMerger)
         @link = view_context.link_to t('.here'), edit_admin_prepare_merge_path(@res).to_s

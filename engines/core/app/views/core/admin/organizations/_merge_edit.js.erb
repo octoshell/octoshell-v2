@@ -80,9 +80,9 @@ function render_to()
                         "organization_name": remove_sticks(to_org_data.text),
                         "organization_id": to_org_data.id
                       };
-    if (merge_type != 'merge_to_organization')
+    if (merge_type != 'merge_with_organization')
     {
-      if(merge_type == 'merge_to_existing_department')
+      if(merge_type == 'merge_with_existing_department')
       {
         var to_dep_data = select2_data("to/department_id");
         half_context.department_name = remove_sticks(to_dep_data.text);
@@ -410,7 +410,7 @@ $("#merge_organization").alpaca({
             "department_id":{
               "type" : "select",
               "dependencies":{
-                "merge_type": "merge_to_existing_department"
+                "merge_type": "merge_with_existing_department"
               },
             },
             "department_name":{
@@ -418,7 +418,7 @@ $("#merge_organization").alpaca({
               "rows": 5,
               "wordlimit": 250,
               "dependencies":{
-                "merge_type": "merge_to_new_department"
+                "merge_type": "merge_with_new_department"
               }
             },
             "create_organization":{

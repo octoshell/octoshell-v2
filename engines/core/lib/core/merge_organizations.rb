@@ -13,9 +13,9 @@ module Core
       end
     end
 
-    def merge_to_existing_department(to_organization_id, to_department_id)
+    def merge_with_existing_department(to_organization_id, to_department_id)
       transaction do
-        merge_to_existing_department!(to_organization_id, to_department_id)
+        merge_with_existing_department!(to_organization_id, to_department_id)
       end
       true
     rescue ActiveRecord::RecordInvalid => exception
@@ -24,9 +24,9 @@ module Core
       return false, exception.message
     end
 
-    def merge_to_new_department(to_id, name = self.name)
+    def merge_with_new_department(to_id, name = self.name)
     transaction do
-      merge_to_new_department!(to_id, name)
+      merge_with_new_department!(to_id, name)
     end
     true
     rescue ActiveRecord::RecordInvalid => exception
@@ -35,22 +35,22 @@ module Core
       return false, exception.message
     end
 
-    def merge_to_existing_department!(to_organization_id, to_department_id)
+    def merge_with_existing_department!(to_organization_id, to_department_id)
       department = OrganizationDepartment.find(to_department_id)
       if to_organization_id != department.organization_id
         raise MergeError, 'stale_organization_id'
       end
-      merge_to_department!(department)
+      merge_with_department!(department)
     end
 
-    def merge_to_new_department!(to_id, name = self.name)
+    def merge_with_new_department!(to_id, name = self.name)
       department = OrganizationDepartment.new(name: name,
                                               organization_id: to_id,
                                               checked: true)
-      merge_to_department!(department)
+      merge_with_department!(department)
     end
 
-    def merge_to_organization!(to_id)
+    def merge_with_organization!(to_id)
       # raise MergeError, 'forbidden' if departments.exists?
       raise MergeError, 'same_object' if to_id == id
       Organization.find(to_id)
@@ -62,9 +62,9 @@ module Core
       destroy!
     end
 
-    def merge_to_organization(to_id)
+    def merge_with_organization(to_id)
       transaction do
-        merge_to_organization! to_id
+        merge_with_organization! to_id
       end
       true
     rescue ActiveRecord::RecordInvalid => exception
@@ -79,7 +79,7 @@ module Core
     #
     # end
 
-    def merge_to_department!(department)
+    def merge_with_department!(department)
       raise MergeError, 'forbidden' if departments.exists?
       department.save!
       merge_associations({ organization_id: id},

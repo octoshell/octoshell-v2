@@ -1,14 +1,14 @@
 module Core
   require "initial_create_helper"
   describe Organization do
-    describe "#merge_to_existing_department" do
+    describe "#merge_with_existing_department" do
       before (:each) do
         @organization = create(:organization)
         @organization2 = create(:organization)
         @department2 = create(:organization_department, organization: @organization2)
       end
       it "merges to existing department successfully" do
-        @res, @message = @organization.merge_to_existing_department(@department2.organization_id,@department2.id)
+        @res, @message = @organization.merge_with_existing_department(@department2.organization_id,@department2.id)
         expect(@message).to eq nil
         expect(@res).to eq true
         expect(Organization.count).to eq 1
@@ -16,7 +16,7 @@ module Core
       end
       it "doesn't destroy  organization with existing departments" do
         create(:organization_department, organization: @organization)
-        @res, @message = @organization.merge_to_existing_department(@department2.organization_id,@department2.id)
+        @res, @message = @organization.merge_with_existing_department(@department2.organization_id,@department2.id)
         expect(@res).to eq false
         puts @message
         expect(Organization.all).to match_array [@organization, @organization2]
@@ -28,7 +28,7 @@ module Core
                                           organization: @organization
         @member = @project.members.create!(user: @user,
                                            organization: @organization)
-       @res, @message = @organization.merge_to_existing_department(@department2.organization_id,@department2.id)
+       @res, @message = @organization.merge_with_existing_department(@department2.organization_id,@department2.id)
 
         expect(@message).to eq nil
         expect(Organization.all).to eq [@organization2]

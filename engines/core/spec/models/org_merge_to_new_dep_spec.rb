@@ -1,26 +1,26 @@
 module Core
   require "initial_create_helper"
   describe Organization do
-    describe "#merge_to_new_department" do
+    describe "#merge_with_new_department" do
       before(:each) do
         @organization = create(:organization)
         @organization2 = create(:organization)
       end
       it "creates  organization department" do
-        @department, @message = @organization.merge_to_new_department(@organization2.id)
+        @department, @message = @organization.merge_with_new_department(@organization2.id)
         expect(@message).to eq nil
         expect(Organization.count).to eq 1
         expect(OrganizationDepartment.count).to eq 1
 
       end
       it "doesn't create  department with empty name" do
-        @res, @error = @organization.merge_to_new_department(@organization2.id, '')
+        @res, @error = @organization.merge_with_new_department(@organization2.id, '')
         puts @error
         expect(OrganizationDepartment.count).to eq 0
       end
       it "doesn't destroy  organization with existing departments" do
         create(:organization_department, organization: @organization)
-        @department, @message = @organization.merge_to_new_department(@organization2.id)
+        @department, @message = @organization.merge_with_new_department(@organization2.id)
         expect(@organization2.departments.exists?).to eq false
         expect(@message).not_to eq nil
       end
@@ -31,7 +31,7 @@ module Core
                                           organization: @organization
         @member = @project.members.create!(user: @user,
                                            organization: @organization)
-        @res, @message = @organization.merge_to_new_department(@organization2.id)
+        @res, @message = @organization.merge_with_new_department(@organization2.id)
         @department = Core::OrganizationDepartment.first
         expect(@message).to eq nil
         expect(Organization.count).to eq 1

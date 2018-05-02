@@ -1,7 +1,7 @@
 module Core
   require "initial_create_helper"
   describe OrganizationDepartment do
-    describe "#merge_to_existing_department" do
+    describe "#merge_with_existing_department" do
       before (:each) do
         @organization = create(:organization)
         @department = create(:organization_department, organization: @organization)
@@ -11,7 +11,7 @@ module Core
       end
 
       it "merges to existing department successfully" do
-        @res, @message = @department.merge_to_existing_department(@department2.organization_id,@department2.id)
+        @res, @message = @department.merge_with_existing_department(@department2.organization_id,@department2.id)
         expect(@res).not_to eq false
         expect(@message).to eq nil
         expect(OrganizationDepartment.all).to eq [@department2]
@@ -32,13 +32,13 @@ module Core
                                 organization: @organization)
         @project.members.create!(user: @user_with_many_employments,
                                 organization: @organization)
-        @res, @message = @department.merge_to_existing_department(@department3.organization_id,@department3.id)
+        @res, @message = @department.merge_with_existing_department(@department3.organization_id,@department3.id)
         expect(@res.instance_of?(DepartmentMerger)).to eq true
         expect(@message).to eq nil
       end
 
       it "doesn't merge changed organization_department" do
-        @res, @message = @department.merge_to_existing_department(@department2.organization_id + 1001,@department2.id)
+        @res, @message = @department.merge_with_existing_department(@department2.organization_id + 1001,@department2.id)
         expect(@message).to eq 'stale_organization_id'
         expect(OrganizationDepartment.all).to match_array [@department, @department2]
       end
@@ -54,7 +54,7 @@ module Core
         @member = @project.members.create!(user: @user,
                                            organization: @organization,
                                            organization_department: @department)
-        @res, @message = @department.merge_to_existing_department(@department2.organization_id,@department2.id)
+        @res, @message = @department.merge_with_existing_department(@department2.organization_id,@department2.id)
 
         expect(@res).not_to eq false
         expect(@message).to eq nil
@@ -79,7 +79,7 @@ module Core
                                           organization_department: @department
         @member = @project.members.create!(user: @user,
                                            organization: @organization)
-        @res, @message = @department.merge_to_existing_department(@department2.organization_id,@department2.id)
+        @res, @message = @department.merge_with_existing_department(@department2.organization_id,@department2.id)
 
         expect(@res).not_to eq false
         expect(@message).to eq nil

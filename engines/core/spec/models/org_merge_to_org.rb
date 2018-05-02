@@ -1,13 +1,13 @@
 module Core
   require "initial_create_helper"
   describe Organization do
-    describe "#merge_to_organization" do
+    describe "#merge_with_organization" do
       before (:each) do
         @organization = create(:organization)
         @organization2 = create(:organization)
       end
       it "works successfully" do
-        @result, @message = @organization.merge_to_organization(@organization2.id)
+        @result, @message = @organization.merge_with_organization(@organization2.id)
         expect(@result).to eq true
         expect(@message).to eq nil
         expect(Organization.all).to eq [@organization2]
@@ -17,7 +17,7 @@ module Core
 
       it "doesn't destroy  organization with existing departments" do
         @department = create(:organization_department, organization: @organization)
-        @result, @message = @organization.merge_to_organization(@organization2.id)
+        @result, @message = @organization.merge_with_organization(@organization2.id)
         expect(@result).to eq true
         expect(@message).not_to eq nil
         expect(Organization.all).to match_array [@organization2,@organization]
@@ -31,7 +31,7 @@ module Core
                                           organization: @organization
         @member = @project.members.create!(user: @user,
                                            organization: @organization)
-        @result, @message = @organization.merge_to_organization(@organization2.id)
+        @result, @message = @organization.merge_with_organization(@organization2.id)
         expect(@result).to eq true
         expect(@message).to eq nil
         expect(Organization.all).to eq [@organization2]
