@@ -24,8 +24,6 @@ div class="well"
 = render "table", organizations: @organizations
 = safe_paginate @organizations
 =render_attachments(@organizations, "tags")
-=render_attachments(@organizations, "comments")
-=render_attachments(@organizations, "files")
 
 =javascript_tag do
   =render partial: 'index',formats: :js

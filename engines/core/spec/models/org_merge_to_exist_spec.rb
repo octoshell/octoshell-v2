@@ -18,6 +18,7 @@ module Core
         create(:organization_department, organization: @organization)
         @res, @message = @organization.merge_to_existing_department(@department2.organization_id,@department2.id)
         expect(@res).to eq false
+        puts @message
         expect(Organization.all).to match_array [@organization, @organization2]
       end
       it "changes associated objects " do

@@ -1,0 +1,113 @@
+div class="page-header"
+  h1 = t(".title", default: "Merge")
+
+= bootstrap_form_for :merger,as: OpenStruct.new, url: admin_prepare_merge_path(@merger),method: :patch , layout: :horizontal do |f|
+
+  = f.text_field :source_organization,value: @merger.source_department.organization.name_with_id,readonly: true
+  = f.text_field :source_department,value: @merger.source_department.name,readonly: true
+  -if @merger.to_department
+    = f.text_field :to_organization,value: @merger.to_department.organization.name_with_id,readonly: true
+    = f.text_field :to_department,value: @merger.to_department.name,readonly: true
+  -else
+    = f.text_field :to_organization,value: @merger.to_organization.name_with_id,readonly: true
+  h3 = t(".automerged")
+  table class="table table-hover"
+    tr
+      th = User.model_name.human
+      th = Core::Organization.model_name.human
+      th = Core::OrganizationDepartment.model_name.human
+      th = t(".with_surety")
+    - @auto_open_structs.each do |struct|
+      tr
+        td
+          = struct.core_member.user.full_name if struct.core_member.user.full_name
+        td
+          = struct.core_member.organization.name_with_id if struct.core_member.organization
+        td
+          = struct.core_member.organization_department.name if struct.core_member.organization_department
+        td
+          = struct.surety_member ? t('yes') : t('no')
+
+  h3 = t(".automerged_surety_members_without_core_members")
+  table class="table table-hover"
+    tr
+      th = User.model_name.human
+      th = Core::Organization.model_name.human
+      th = Core::OrganizationDepartment.model_name.human
+    - @auto_surety_members.each do |member|
+      tr
+        td
+          = member.user.full_name if member.user
+        td
+          = member.organization.name_with_id if member.organization
+        td
+          = member.organization_department.name if member.organization_department
+
+  h3 = t(".not_automerged")
+  table class="table table-hover"
+    tr
+      th = User.model_name.human
+      th = Core::Organization.model_name.human
+      th = Core::OrganizationDepartment.model_name.human
+      th = t(".with_surety")
+      th = t('.merge?')
+    =f.fields_for :core_members do |ff|
+      -@open_structs.each do |struct|
+        tr
+          td
+            = struct.core_member.user.full_name
+          td
+            = struct.core_member.organization.name_with_id if struct.core_member.organization
+          td
+            = struct.core_member.organization_department.name if struct.core_member.organization_department
+          td
+            = struct.surety_member ? t('yes') : t('no')
+          td
+            =ff.fields_for struct.core_member.id.to_s do |fff|
+              -if struct.surety_member
+                = fff.hidden_field :surety_member_id,value: struct.surety_member.id.to_s
+              = fff.check_box :merge,hide_label: true,label: ''
+
+  h3 = t(".not_automerged_surety_members_without_core_members")
+  table class="table table-hover"
+    tr
+      th = User.model_name.human
+      th = Core::Organization.model_name.human
+      th = Core::OrganizationDepartment.model_name.human
+      th = t('.merge?')
+    =f.fields_for :surety_members do |ff|
+      -@surety_members.each do |m|
+        tr
+          td
+            = m.user.full_name if m.user
+          td
+            = m.organization.name_with_id if m.organization
+          td
+            = m.organization_department.name if m.organization_department
+          td
+            =ff.fields_for m.id.to_s do |fff|
+              = fff.check_box :merge,hide_label: true,label: ''
+
+  h3 = t(".not_automerged_projects")
+  table class="table table-hover"
+    tr
+      th = Core::Project.human_attribute_name(:title)
+      th = Core::Organization.model_name.human
+      th = Core::OrganizationDepartment.model_name.human
+      th = t('.merge?')
+    =f.fields_for :projects do |ff|
+      -@projects.each do |m|
+        tr
+          td
+            = m.title
+          td
+            = m.organization.name_with_id if m.organization
+          td
+            = m.organization_department.name if m.organization_department
+          td
+            =ff.fields_for m.id.to_s do |fff|
+              = fff.check_box :merge,hide_label: true,label: ''
+
+
+  = f.form_group do
+    = f.submit t("actions.save")

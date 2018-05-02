@@ -94,5 +94,28 @@ module Core
       new_login = email.delete(".+_-")[/^(.+)@/, 1].downcase
       self.login = "#{new_login[0,24]}_#{project.id}"
     end
+
+    def self.department_members(department)
+      where(organization_id: department.organization_id)
+        .joins("INNER JOIN core_employments AS u_e ON core_members.user_id = u_e.user_id AND
+          u_e.organization_department_id = #{department.id}")
+        .joins("LEFT JOIN core_employments As e ON
+          e.organization_id = #{department.organization_id} AND
+          core_members.user_id = e.user_id")
+        .group('core_members.id')
+    end
+
+    def self.can_be_automerged(department)
+      department_members(department).having("COUNT( DISTINCT COALESCE(e.organization_department_id,-1)) = 1")
+    end
+
+    def self.can_not_be_automerged(department)
+      department_members(department).having("Count( DISTINCT COALESCE(e.organization_department_id,-1)) > 1")
+    end
+
+    def self.can_not_be_automerged?(department)
+      can_not_be_automerged(department).exists?
+    end
+
   end
 end

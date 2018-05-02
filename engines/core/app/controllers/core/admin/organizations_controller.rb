@@ -189,6 +189,11 @@ module Core
                      when 'merge_to_existing_department'
                        source_object.merge_to_existing_department(@to_org_id, params[:to][:department_id].to_i)
                      end
+      if @res.instance_of?(DepartmentMerger)
+        @link = view_context.link_to t('.here'), edit_admin_prepare_merge_path(@res).to_s
+        puts @link
+        @error = t('.not_auto', link: @link)
+      end
       @error
     end
 

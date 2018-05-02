@@ -1,0 +1,24 @@
+- if mergers.any?
+  table class="table table-hover"
+    tr
+      th = Core::DepartmentMerger.human_attribute_name(:source_organization)
+      th = Core::DepartmentMerger.human_attribute_name(:source_department)
+      th = Core::DepartmentMerger.human_attribute_name(:to_organization)
+      th = Core::DepartmentMerger.human_attribute_name(:to_department)
+      th
+    - mergers.each do |m|
+      tr
+        td = link_to m.source_department.organization.name_with_id, [:admin, m.source_department.organization]
+        td = m.source_department.name
+        -if m.to_department
+          td = link_to m.to_department.organization.name_with_id, [:admin, m.to_department.organization]
+          td = m.to_department.name
+        -else
+          td = link_to m.to_organization.name_with_id,  [:admin, m.to_organization]
+          td
+        td
+          = link_to t('.merge'),edit_admin_prepare_merge_path(m),class: 'btn btn-info'
+          - name = t("actions.delete", default: "delete")
+          - confirm = t("core_confirm", default: "Are You sure?")
+          - data = { method: :delete, confirm: confirm }
+          = link_to name,admin_prepare_merge_path(m), data: data, class: "btn btn-danger"

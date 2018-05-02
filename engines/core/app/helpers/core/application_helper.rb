@@ -24,6 +24,10 @@ module Core
       menu.add_item(Face::MenuItem.new({name: t("engine_submenu.merge_edit"),
                                         url: [:merge_edit, :admin, :organizations],
                                         regexp: /merge_edit/}))
+      menu.add_item(Face::MenuItem.new({name: t("engine_submenu.prepare_merge"),
+                                        url: [:admin, :prepare_merge,:index],
+                                        regexp: /merge_edit/}))
+
       menu.items
     end
     def mark_project_state(project)

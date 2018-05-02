@@ -32,7 +32,7 @@ admin.save!
 
 # create projects prerequisites
 
-Core::Country.create!(title_en: 'Russia', title_ru: 'Россия')
+country = Core::Country.create!(title_en: 'Russia', title_ru: 'Россия')
 
 Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country)
 

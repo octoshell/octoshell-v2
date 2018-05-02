@@ -125,17 +125,18 @@ Core.user_class.class_eval do
     end
   end
 
-  def checked_active_organization_departments(project)
+  def checked_active_organization_departments(project = nil)
     rel1 = active_organization_departments
            .joins(:organization)
            .where(checked: true)
            .where("core_organizations.checked = 't'")
+    return rel1 unless project
     rel2 = Core::OrganizationDepartment
            .where(id: project.organization_department_id)
     rel1.union rel2
   end
 
-  def checked_active_organization_departments_to_hash(project, organizations)
+  def checked_active_organization_departments_to_hash(organizations, project = nil)
     rel = checked_active_organization_departments(project)
     hash = rel.to_a.group_by(&:organization_id)
     hash.each do |key, value|

@@ -342,7 +342,7 @@ $("#merge_organization").alpaca({
                         });
                         promise.fail(function(arg) {
                           elem.html('<div class="alert alert-danger" id="errors_div"></div>');
-                          $("#errors_div").text(arg.responseJSON.message);
+                          $("#errors_div").html(arg.responseJSON.message);
                         });
                         promise.always(function(){
                           form.domEl.find(".alpaca-form-button-submit").attrProp("disabled", false);

@@ -2,6 +2,7 @@ ru:
   engine_submenu:
     organizations_list: Список организаций
     merge_edit: Слияние
+    prepare_merge: Неслитые организации
   answers:
     yess: да
     noo: нет
@@ -60,6 +61,12 @@ ru:
       core/country: Страна
       core/city: Город
     attributes:
+      core/department_merger:
+        source_organization: Исходная организация
+        source_department: Исходное подразделение
+        to_organization: Организация назначения
+        to_department: Подразделение назначения
+
       core/country:
         title_ru: Название
         title_en: Название на английском
@@ -548,6 +555,23 @@ ru:
         index:
           title: "Организации"
           new_organization: "Новая организация"
+      prepare_merge:
+        index:
+          title: "Не слитые автоматически организации и подразделения"
+        table:
+          merge: "Слить"
+        edit:
+          title: Слияние
+          automerged: Следующие членства в проектах будут слиты автоматически
+          not_automerged: Следующие членства в проектах не будут слиты автоматически
+          not_automerged_projects:  Слияние проектов
+
+          merge?: Слить?
+          with_surety: С поручительством?
+          automerged_surety_members_without_core_members: Следующие поручительства в проектах будут слиты автоматически
+          not_automerged_surety_members_without_core_members: Следующие поручительства в проектах не будут слиты автоматически
+
+
       countries:
         new:
           title: Новая страна
@@ -599,6 +623,9 @@ ru:
         show:
           merge_edit: Редактировать со слиянием
         merge_update:
+          here: здесь
+          not_auto: |
+            <p>Не удалось слить автоматически. Дальнейшие инструкции по слиянию  %{link}</p>
           same_object: Вы патаетесь слить объект сам с собой
           forbidden: Нельзя сливать организации с подразделениями.
           stale_organization_id: Вы пытаетесь слить исходный объект с подразделением «%{dep_name}», уже не находящимся в организации «%{org_name}».
@@ -731,6 +758,8 @@ ru:
         new_member_email: "введите email нового участника"
         submit: "Добавить участника"
     members:
+      form:
+        nothing: "без подразделения"
       edit:
         title: "Прилашение в проект «%{project_title}»"
         choose_organization: "Выберите организацию, от лица которой вы будете участвовать в проекте"

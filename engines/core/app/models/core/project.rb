@@ -192,5 +192,21 @@ module Core
         end
       end
     end
+    def self.can_not_be_automerged(department)
+      joins(:members)
+        .joins("INNER JOIN core_employments As e ON
+          e.organization_id = #{department.organization_id} AND
+          core_members.user_id = e.user_id")
+        .joins("INNER JOIN core_employments AS u_e ON core_members.user_id = u_e.user_id AND
+          u_e.organization_department_id = #{department.id}")
+        .where('core_projects.organization_department_id IS NULL OR core_projects.organization_department_id != e.organization_department_id ')
+        .where(core_members: {organization_id: department.organization_id, owner: true})
+
+    end
+
+    def self.can_not_be_automerged?(department)
+      can_not_be_automerged(department).exists?
+    end
+
   end
 end

@@ -2,7 +2,7 @@ div class="page-header"
   h1 = t(".title", default: "Users")
 
 = bootstrap_form_for @search, method: :get, url: admin_users_path, layout: :horizontal do |f|
-  = autocomplete f, name: :id_in, label: User.model_name.human, source: main_app.users_path
+  = autocomplete f, name: 'q[id_in]', label: User.model_name.human, source: main_app.users_path
   = autocomplete f, name: :employments_organization_id_eq, label: Core::Employment.model_name.human, source: core.organizations_path
   = f.select :user_groups_group_name_in, Group.pluck(:name), {label: User.human_attribute_name(:groups), include_blank: true}, {multiselect: true}
   = f.select :owned_projects_state_in, Core::Project.human_state_names, { label: t('.managed_project_statuses'), include_blank: true }, { multiple: true }
