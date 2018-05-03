@@ -97,6 +97,8 @@ module Core
 
     def self.department_members(department)
       where(organization_id: department.organization_id)
+        .where("core_members.organization_department_id is NULL
+          OR core_members.organization_department_id = #{department.id}")
         .joins("INNER JOIN core_employments AS u_e ON core_members.user_id = u_e.user_id AND
           u_e.organization_department_id = #{department.id}")
         .joins("LEFT JOIN core_employments As e ON
