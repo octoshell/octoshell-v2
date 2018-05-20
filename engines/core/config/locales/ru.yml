@@ -1,4 +1,6 @@
 ru:
+  "yes": да
+  "no": нет
   engine_submenu:
     organizations_list: Список организаций
     merge_edit: Слияние

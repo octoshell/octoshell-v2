@@ -15,7 +15,7 @@ module Core
 
       end
 
-      it "doesn't destroy  organization with existing departments" do
+      it "merges organization with existing departments" do
         @department = create(:organization_department, organization: @organization)
         @result, @message = @organization.merge_with_organization(@organization2.id)
         expect(@result).to eq true

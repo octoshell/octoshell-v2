@@ -1,7 +1,7 @@
 # Вступление
 Модуль комментариев позволяет прикреплять текстовые комментарии,теги и файлы(далее будем называть их одним словом -- комментарии) к любому объекту в Octoshell. Также модуль обладает системой прав для модерации комментарий.
 # Интеграция в коде
-Для интеграции достаточно во view в месте, где Вам нужно отобразить комментарии, вызвать метод render_attachments (attachable, attachment_type), где attachable -- объект класса ActiveRecord::Relation, наследник класса ActiveRecord::Model или массив объектов ActiveRecord::Model, а attachment_type -- одно из следующих значений: :comments, :files, :tags или любой другой объект, который при явном приведении к String методом to_s имеет одно из следующих значений: 'comments', 'files', 'tags'.
+Для интеграции достаточно во view в месте, где Вам нужно отобразить комментарии, вызвать метод render_attachments (attachable, attachment_type), где attachable -- объект класса ActiveRecord::Relation, наследник класса ActiveRecord::Base или массив объектов ActiveRecord::Base, а attachment_type -- одно из следующих значений: :comments, :files, :tags или любой другой объект, который при явном приведении к String методом to_s имеет одно из следующих значений: 'comments', 'files', 'tags'.
 
 ##### Пример в slim:
 ``` slim

@@ -32,7 +32,8 @@ module Core
                                 organization: @organization)
         @project.members.create!(user: @user_with_many_employments,
                                 organization: @organization)
-        @res, @message = @department.merge_with_existing_department(@department3.organization_id,@department3.id)
+        @res, @message = @department1.merge_with_existing_department(@department3.organization_id,@department3.id)
+        puts @res.inspect
         expect(@res.instance_of?(DepartmentMerger)).to eq true
         expect(@message).to eq nil
       end
