@@ -3,29 +3,11 @@ require_dependency "jobstat/application_controller"
 module Jobstat
   class JobController < ApplicationController
     include JobHelper
-
-    @@tags = {
-        "cls_communicative_volume" => "receive or transmitted data > 500MB/s",
-        "cls_communicative_packets" => "receive or transmitted packets > 300k/s",
-        "cls_sc_appropriate" => "high data transmission rate and fitting loadavg",
-        "cls_not_communicative" => "multi-node job with low network activity",
-        "cls_serial" => "single node, single process jobs",
-        "cls_suspicious" => "low cpu load, low loadavg, low gpu load",
-        "cls_data_intensive" => "high memory activity",
-        "cls_gpu_pure" => "high gpu load, low cpu load",
-        "cls_gpu_hybrid_good" => "high gpu load, high cpu load",
-        "cls_single" => "single node jobs",
-        "short" => "less than 15 minutes"
-    }
-
     def show
       @job = Job.find(params["id"])
       @job_perf = @job.get_performance
       @ranking = @job.get_ranking
-      @job_tags = @job.get_tags
-      @tags = @@tags
     end
-
 
     def post_info
       drms_job_id = params["job_id"]
@@ -51,6 +33,8 @@ module Jobstat
       tags = params["tags"]
       job = Job.where(drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
 
+      StringDatum.where(job_id: job.id).destroy_all
+
       tags.each do |name|
         StringDatum.where(job_id: job.id, name: "tag", value: name).first_or_create()
       end
@@ -62,8 +46,14 @@ module Jobstat
 
       job = Job.where(drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
 
+      FloatDatum.where(job_id: job.id).destroy_all
+
       FloatDatum.where(job_id: job.id, name: "cpu_user").first_or_create
           .update({value: params["avg"]["cpu_user"]})
+
+      FloatDatum.where(job_id: job.id, name: "instructions").first_or_create
+          .update({value: params["avg"]["fixed_counter1"]})
+
       FloatDatum.where(job_id: job.id, name: "gpu_load").first_or_create
           .update({value: params["avg"]["gpu_load"]})
       FloatDatum.where(job_id: job.id, name: "loadavg").first_or_create

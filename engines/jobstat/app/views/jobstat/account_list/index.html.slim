@@ -1,3 +1,5 @@
+== '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.2/js/jquery.tablesorter.min.js"></script> '
+
 css:
   .job_metric_low {
     background-color: #ff8080
@@ -12,19 +14,19 @@ css:
   }
 
   .task_state_COMPLETED {
-    background-color: #00FF00 !important;
+    background-color: #80FF80 !important;
   }
 
   .task_state_COMPLETING {
-    background-color: #FFA500 !important;
+    background-color: #FFA580 !important;
   }
 
   .task_state_CANCELLED {
-    background-color: #00EEFF !important;
+    background-color: #80EEFF !important;
   }
 
   .task_state_FAILED {
-    background-color: #FF0000 !important;
+    background-color: #FF8080 !important;
   }
 
   .task_state_TIMEOUT {
@@ -44,9 +46,10 @@ h3 = "Job table query interface"
 
 div
   h3 = "Results (limited to 100)"
-  table class="table table-bordered table-striped"
+  table id="jobs" class="table table-bordered table-striped"
     thead
       tr
+        td = "job issues"
         td = "cluster"
         td = "job id"
         td = "login"
@@ -56,17 +59,38 @@ div
         td = "state"
         td = "num cores"
         td = "duration (hours)"
-        td = "cores* hours"
+        td = "cores * hours"
         td = "cpu load"
+        td = "inst / sec (10^9)"
         td = "gpu load"
         td = "loadavg (processes)"
         td = "ib_receive (MB)"
         td = "ib_sent (MB)"
     tbody
       - @jobs.each do |job|
+	    - warn "view job #{job.id}"
         - job_performance = job.get_performance
         - job_ranking = job.get_ranking
+        - job_cond = get_smart_conditions(job)
+	    - warn "done job #{job.id}"
         tr
+          td
+            - if job_cond.size() > 0
+              - job_cond.each do |cond|
+                - if cond.include? "packets"
+                  = image_tag "packets.png", size: "20", alt: cond, title: cond, style: "margin: 1px"
+                - elsif cond.include? "gpu"
+                  = image_tag "gpu.png", size: "20", alt: cond, title: cond, style: "margin: 1px"
+                - elsif cond.include? "disbalance"
+                  = image_tag "disbalance.png", size: "20", alt: cond, title: cond, style: "margin: 1px"
+                - elsif cond.include? "disaster" or cond.include? "anomaly"
+                  = image_tag "error.png", size: "20", alt: cond, title: cond, style: "margin: 1px"
+                - else
+                  = image_tag "other.png", size: "20", alt: cond, title: cond, style: "margin: 1px"
+              = link_to("show_details", job_analysis_path(job.id))
+
+            - else
+              = image_tag "ok.png", size: "20", border: 2
           td style="white-space: nowrap" = job.cluster
           td = link_to(job.drms_job_id, job)
           td = job.login
@@ -76,9 +100,22 @@ div
           td class="task_state_#{job.state}" = job.state
           td = job.num_cores
           td = number_with_precision((job.end_time - job.start_time) / 3600, :precision => 1)
+
           td = number_with_precision((job.end_time - job.start_time) / 3600 * job.num_cores, :precision => 1)
+ 
           td class="job_metric_#{job_ranking[:cpu_user]}" = number_with_precision(job_performance[:cpu_user], :precision => 1)
+
+          td class="job_metric_#{job_ranking[:instructions]}" = number_with_precision(job_performance[:instructions] && job_performance[:instructions] / 1000000000, :precision => 2)
+
           td class="job_metric_#{job_ranking[:gpu_load]}" = number_with_precision(job_performance[:gpu_load], :precision => 1)
+
           td class="job_metric_#{job_ranking[:loadavg]}" = number_with_precision(job_performance[:loadavg], :precision => 1)
+
           td class="job_metric_#{job_ranking[:ib_rcv_data]}" = number_with_precision(job_performance[:ib_rcv_data], :precision => 1)
+
           td class="job_metric_#{job_ranking[:ib_xmit_data]}" = number_with_precision(job_performance[:ib_xmit_data], :precision => 1)
+
+javascript:
+  $("table").tablesorter(); 
+
+- warn "page done!"

@@ -15,6 +15,8 @@ module Jobstat
 
       query_logins = (@params[:involved_logins] | @params[:owned_logins]) & (@involved_logins | @owned_logins)
 
+      @JobAnalysisController = JobAnalysisController
+
       if @params[:states].length == 0 or
           @params[:partitions].length == 0 or
           query_logins.length == 0
@@ -27,6 +29,7 @@ module Jobstat
       end
 
       @jobs = get_jobs(@params, query_logins)
+	  warn "Controller done!"
     end
 
     protected
@@ -48,10 +51,13 @@ module Jobstat
       jobs = Job.where "start_time > ? AND end_time < ?",
                        DateTime.parse(params[:start_time]), DateTime.parse(params[:end_time])
 
+	  warn "Get jobs 1"
       jobs = jobs.where(state: @params[:states]) unless params[:states].include?("ALL")
+	  warn "Get jobs 2"
       jobs = jobs.where(partition: @params[:partitions]) unless params[:partitions].include?("ALL")
+	  warn "Get jobs 3"
 
-      jobs.where(login: query_logins, cluster: params[:cluster]).limit(100)
+      jobs.where(login: query_logins, cluster: params[:cluster]).order(:drms_job_id).limit(100)
     end
 
     def load_defaults
