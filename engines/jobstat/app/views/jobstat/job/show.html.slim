@@ -98,6 +98,13 @@ div class="row"
           = @ranking[:loadavg]
       tr
         td
+          | Average IPC
+        td
+          = format_float_or_nil(@job_perf[:ipc])
+        td class="job_metric_#{@ranking[:ipc]}"
+          = @ranking[:ipc]
+      tr
+        td
           | Average GPU load (%)
         td
           = format_float_or_nil(@job_perf[:gpu_load])

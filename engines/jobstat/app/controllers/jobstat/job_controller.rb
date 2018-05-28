@@ -59,6 +59,9 @@ module Jobstat
       FloatDatum.where(job_id: job.id, name: "loadavg").first_or_create
           .update({value: params["avg"]["loadavg"]})
 
+      FloatDatum.where(job_id: job.id, name: "ipc").first_or_create
+          .update({value: params["avg"]["ipc"]})
+
       if params["avg"].key?("ib_rcv_data")
         FloatDatum.where(job_id: job.id, name: "ib_rcv_data").first_or_create
             .update({value: params["avg"]["ib_rcv_data"]})
