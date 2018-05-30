@@ -226,7 +226,6 @@ module Pack
 
 
     def edit_state_and_lic(state,date)
-
       if state=="forever"
         date=""
       end
@@ -282,58 +281,32 @@ module Pack
 
 
     def edit_opts
-      if (hash=@params.delete(:version_options_attributes))
-
-        ( hash.values.select{ |i| i[:id]  }.map{ |i| i[:id].to_i  } -  version_options.map(&:id) ).each do |opt_id|
-          opt_params= hash.values.detect{ |val| val[:id].to_i == opt_id  }
-          opt=version_options.new(opt_params.except(:id,:_destroy))
-          opt
-          opt.stale_edit= true
-
-
-         hash.delete_if{ |key,val| val[:id].to_i == opt_id  }
-
-
-
-        end
-         self.version_options_attributes= hash
-
+      hash = @params.delete(:version_options_attributes)
+      return unless hash
+      #Удаляем все
+      (hash.values.select { |i| i[:id] }.map { |i| i[:id].to_i } - version_options.map(&:id)).each do |opt_id|
+          opt_params = hash.values.detect { |val| val[:id].to_i == opt_id  }
+          opt = version_options.new(opt_params.except(:id, :_destroy))
+          opt.stale_edit = true
+          hash.delete_if { |key, val| val[:id].to_i == opt_id }
       end
+      self.version_options_attributes = hash
+
     end
 
 
     def vers_update params
-
-
       @params= params.require(:version)
       edit_opts
-       update_clustervers @params.delete(:clustervers_attributes)
-
+      update_clustervers @params.delete(:clustervers_attributes)
       edit_state_and_lic( @params.delete(:state_select),@params.delete(:end_lic) )
       assign_attributes(version_params @params)
-
     end
+
     def update_clustervers hash
-
-      if !hash
-        return
-      end
-       #(hash.values.select{ |i| i[:id]  }.map{ |i| i[:id].to_i  } -  clustervers.map(&:id) ).each do |cl_id|
-
-
-        #  cl_params= hash.values.detect{ |val| val[:id].to_i == cl_id  }
-         # cl=clustervers.new(cl_params.except(:id,:_destroy))
-          #cl.action=cl_params[:action]
-
-
-         #hash.delete_if{ |key,val| val[:id].to_i == cl_id  }
-
-
-
-        #end
-
+      return unless hash
       hash.each_value do |h|
-        method_name=h.delete(:action)
+        method_name = h.delete(:action)
         destroy = false
         case method_name
         when "active"
@@ -345,21 +318,14 @@ module Pack
         else
           raise "incorrect attribute in clustervers"
         end
-
-          needed_cl = clustervers.detect { |cl| cl.core_cluster_id == h[:core_cluster_id].to_i }
-        unless needed_cl
-
-            needed_cl = clustervers.new
-        end
+        needed_cl = clustervers.detect { |cl| cl.core_cluster_id == h[:core_cluster_id].to_i }
+        needed_cl ||= clustervers.new
         if destroy
-              needed_cl.mark_for_destruction
-            else
-              needed_cl.assign_attributes(h)
+          needed_cl.mark_for_destruction
+        else
+          needed_cl.assign_attributes(h)
         end
-
       end
-
-
     end
 
      def self.preload_and_to_a user_id,versions
