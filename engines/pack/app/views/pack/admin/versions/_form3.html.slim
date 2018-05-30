@@ -1,13 +1,5 @@
 div class="row"
-  div class="col-xs-12"
-    -if @stale_message
-      h3
-        font color="red"
-          =@stale_message
-        p
-          =link_to (t "mailer_messages.show_vers" ), admin_package_version_path(@package,@version)
-    = bootstrap_form_for [:admin,@package,@version] do |f|
-      -@f=f
+  = bootstrap_nested_form_for [:admin,@package,@version] do |f|
       div class="row"
         div class="col-xs-9"
           = f.text_field :name
@@ -21,7 +13,6 @@ div class="row"
               = f.check_box :deleted
           =f.form_group :service
             = f.check_box :service
-
           =f.form_group :delete_on_expire
             = f.check_box :delete_on_expire
           = f.hidden_field :lock_col
@@ -30,7 +21,7 @@ div class="row"
           = f.radio_button :state_select , "not_forever",label: t("versions.not_forever"),id: "enable_id"
           = f.text_field :end_lic ,class: 'form-control my_datepicker',id: "item_id"
 
-          h3 = t("Clusters")
+      h3 = t("Clusters")
       div class="row"
         div class="col-xs-6"
           = f.fields_for :clustervers do |ff|
@@ -44,15 +35,23 @@ div class="row"
                   =ff.radio_button  :action,"active" , label: t("versions.active")
         div class="col-xs-12"
           h3 =t "options_list"
-          = f.fields_for :version_options do |ff|
-            =render partial: "version_opts_fields",locals: {ff: ff,new: false}
+          /= f.fields_for :version_options do |ff|
+          /  =render partial: "version_opts_fields",locals: {ff: ff,new: false}
 
-          div id="new_options"
-      div class="row"
-        button class="btn btn-primary btn_access" type="button" id="options" =t(".new")
-        br
-        br
-        br
+      div class="row" id="new_options"
+        /button class="btn btn-primary btn_access" type="button" id="options" =t(".new")
+        h3 =t "options_list"
+        = f.form_group do
+          = f.link_to_add t(".add_option"), :version_options
+          = f.fields_for :version_options, layout: :horizontal do |ff|
+            =render partial: "version_opts_fields",locals: {ff: ff}
+            /= o_form.text_field :name
+            /= o_form.text_area :value,rows: 3
+            /= o_form.autocomplete_field :name, {source: admin_options_categories_path,display: "name"}
+            /= o_form.link_to_remove t(".remove_department"), class: "fa fa-times text-danger"
+
+
+
 
         = f.submit t("buttons.save", default: "Save")
 = javascript_tag do

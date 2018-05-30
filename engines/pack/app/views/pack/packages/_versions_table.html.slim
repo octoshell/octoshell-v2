@@ -1,78 +1,72 @@
- 	
-				
-			
-
-
- 	- if records!=[]
+ 	- if records.any?
 		div class="row" style="border:1px solid #cecece;"
 			h3 =t('legend')
-			div class="col-xs-6" 
+			div class="col-xs-6"
 				h4 =t('clvers.title')
-				table class='table' 
+				table class='table'
 					tr
-						td 
+						td
 							font color='red'
 								=t 'colors.red'
 
-						td 
+						td
 								=t 'clvers.red'
 					tr
 						td
 							font color='green'
 								=t 'colors.green'
-						td 
+						td
 								=t 'clvers.green'
 				h5 =t 'clvers.note'
-			div class="col-xs-6" 
+			div class="col-xs-6"
 				h4 =t('accesses.title')
-				table class="table" 
+				table class="table"
 					-['red','blue','green','brown','black'].each do |col|
 						tr
-							td 
+							td
 								font color=col
 									=t "colors.#{col}"
-							td 
+							td
 								=t "accesses.#{col}"
 		h3 =t("Versions")
 		div class="panel-body"
 			table   class="table table-hover" cols="6" cellspacing="30"
-				tr 
+				tr
 					-['name','description','clusters','access_user',"available_for_user?"].each do |str|
 						th =Pack::Version.human_attribute_name str
-					th 	#{t("actions_pack")}  
+					th 	#{t("actions_pack")}
 				- for version in records
-					
-					tr 
+
+					tr
 						td  =link_to version.name,version
 						td  #{version.description}
-							
-						td 	
+
+						td
 							=render "clustervers",clustervers: version.clustervers
-									
+
 						td id="accesses_#{version.id}"	class="col-xs-3"
-							
-							
+
+
 							=render "accesses",accesses: version.user_accesses
 						td
 							- if version.available_for_user?
 								font color="green"
 									=t "#{version.available_for_user?}"
 
-							-else 
-								font color="red"							
+							-else
+								font color="red"
 									=t "#{version.available_for_user?}"
 
 						td
-							
+
 							-if !version.deleted && !version.service
- 								button class="btn btn-primary btn_access" vers_id=version.id  = t("want",default:"want this") 
-								
- 					tr 
+ 								button class="btn btn-primary btn_access" vers_id=version.id  = t("want",default:"want this")
+
+ 					tr
  						td colspan='6'
 
- 							div class='select_for_access' hidden="" vers_id=version.id 
+ 							div class='select_for_access' hidden="" vers_id=version.id
  								=select_tag :proj_or_user,options_for_select( @options_for_select ), {class: :select_ajax_access,vers_id: version.id }
- 								div class='form_for_access'  vers_id=version.id 
+ 								div class='form_for_access'  vers_id=version.id
  	-else
- 		p = t("no_records_found") 
-							
+ 		p = t("no_records_found")
