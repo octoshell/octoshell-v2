@@ -84,13 +84,6 @@ div class="row"
           = @ranking[:cpu_user]
       tr
         td
-          | Average Instructions per second (10^9)
-        td
-          = @job_perf[:instructions] && format_float_or_nil(@job_perf[:instructions] / 1000000000)
-        td class="job_metric_#{@ranking[:instructions]}"
-          = @ranking[:instructions]
-      tr
-        td
           | Average Loadavg
         td
           = format_float_or_nil(@job_perf[:loadavg])

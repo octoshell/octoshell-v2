@@ -2,6 +2,12 @@ module Jobstat
   class ApplicationController < ActionController::Base
     layout "layouts/application"
 
+    before_filter :require_login
+
+    def root_path
+      main_app.root_path
+    end
+
     def not_authenticated
       redirect_to main_app.root_path, alert: t("flash.not_logged_in")
     end
