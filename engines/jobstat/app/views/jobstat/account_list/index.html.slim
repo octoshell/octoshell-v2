@@ -68,11 +68,9 @@ div
         td = "ib_sent (MB)"
     tbody
       - @jobs.each do |job|
-        - warn "view job #{job.id}"
         - job_performance = job.get_performance
         - job_ranking = job.get_ranking
         - job_cond = get_smart_conditions(job)
-        - warn "done job #{job.id}"
         tr
           td
             - if job_cond.size() > 0
@@ -117,5 +115,3 @@ div
 
 javascript:
   $("table").tablesorter(); 
-
-- warn "page done!"
