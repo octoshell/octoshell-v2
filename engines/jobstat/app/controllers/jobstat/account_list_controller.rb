@@ -29,7 +29,7 @@ module Jobstat
       end
 
       @jobs = get_jobs(@params, query_logins)
-	  warn "Controller done!"
+	    warn "Controller done!"
     end
 
     protected
@@ -44,6 +44,8 @@ module Jobstat
        :partitions => [],
        :involved_logins => [],
        :owned_logins => [],
+       :only_long => 1,
+       :offset => 0
       }
     end
 
@@ -59,12 +61,17 @@ module Jobstat
         jobs = jobs.where "end_time - start_time > 15 * '1 min'::interval"
       end
 
-      jobs.where(login: query_logins, cluster: params[:cluster]).order(:drms_job_id).limit(100)
+      jobs.where(login: query_logins, cluster: params[:cluster])
+        .order(:drms_job_id)
+        .offset(params[:offset].to_i)
+        .limit(@PER_PAGE)
     end
 
     def load_defaults
       #FIXME!
       #TODO: load defaults from file
+      @PER_PAGE = 100
+
       @clusters_options = [
           ["Lomonosov-1", "lomonosov-1"],
           ["Lomonosov-2", "lomonosov-2"],
@@ -90,7 +97,7 @@ module Jobstat
                              ["smp", "smp"],
       ]
 
-      @default_cluster = "lomonosov-1"
+      @default_cluster = "lomonosov-2"
     end
   end
 end

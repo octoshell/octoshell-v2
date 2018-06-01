@@ -113,5 +113,16 @@ div
 
           td class="job_metric_#{job_ranking[:ib_xmit_data]}" = number_with_precision(job_performance[:ib_xmit_data], :precision => 1)
 
+table
+  tr
+    td
+      - if @params[:offset].to_i >= @PER_PAGE
+        a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i - @PER_PAGE)}" <<< prev
+    td width="10px"
+    td
+      a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" next >>>
+
 javascript:
-  $("table").tablesorter(); 
+  $(document).ready(function(){
+    $("table").tablesorter();
+  });
