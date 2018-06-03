@@ -1,0 +1,522 @@
+
+var action = "<%=url_for(action: 'merge_update')%>";
+var merge_source_dep_title = "<%=j t '.choose_source_dep'%>";
+var merge_source_org_title = "<%=j t '.choose_source_org'%>";
+
+var choose_to_org = "<%=j t '.choose_to_org'%>";
+var choose_to_dep = "<%=j t '.choose_to_dep'%>";
+var merge_type = "<%=j t '.merge_type'%>";
+var department_title = "<%=j t '.department_title'%>";
+var success_message = "<%=j t '.success_message'%>";
+var create_organization_error = "<%=j t '.create_organization_error'%>";
+var to_type_label = "<%=j t '.action_type'%>";
+var new_record = "<%=j t '.new_record'%>";
+var preview = "<%=j t '.preview'%>";
+var save = "<%=j t 'buttons.save'%>";
+var choose_value = "<%=j t 'choose_value'%>";
+
+var all_organizations =  <%=raw Core::Organization.all.map(&:full_json).to_json%>;
+all_organizations.push({id: "",text: "",selected: "selected"});
+var departments_names = <%=raw @departments_names.to_json%>;
+var merge_types = <%=raw @merge_types_options.to_json%>;
+var merge_types_labels = <%=raw @merge_types_labels.to_json%>;
+var source_merge_types =  <%=raw @source_merge_type_options.to_json%>;
+var source_merge_type_labels = <%=raw @source_merge_type_labels.to_json%>;
+var to_types_labels = <%=raw @to_types_labels.to_json%>;
+var to_types_options = <%=raw @to_types_options.to_json%>;
+
+var form;
+var preview_on = false;
+
+var half_organization_template   = document.getElementById("half_organization").innerHTML;
+var half_organization = Handlebars.compile(half_organization_template);
+var half_department_template   = document.getElementById("half_department").innerHTML;
+var half_department = Handlebars.compile(half_department_template);
+<% %w[name abbreviation kind_id city_id country_id checked].map do |w| %>
+  var  create_organization_<%=w%> = '<%=j Core::Organization.human_attribute_name(w)  %>'
+<% end %>
+var countries = <%=raw @countries.to_json%>;
+var cities =  <%=raw @cities.to_json%>;
+var kinds = <%=raw @kinds.to_json%>;
+function remove_sticks(str){
+  return str.replace(/^\d+\|/,'');
+}
+function select2_data(path)
+{
+  return form.getControlByPath(path).getControlEl().select2('data')[0];
+}
+function render_source()
+{
+  var html;
+  var source_org_data = select2_data("source/organization_id");
+  var source_dep_data = select2_data("source/department_id");
+  var merge_type = form.getControlByPath("source/merge_type").getValue();
+  var half_context = {
+                      "organization_name": remove_sticks(source_org_data.text),
+                      "organization_id": source_org_data.id
+                     }
+
+  if (source_dep_data && merge_type == 'merge_department')
+  {
+    half_context.department_name = remove_sticks(source_dep_data.text);
+    half_context.department_id = source_dep_data.id;
+    html = half_department(half_context);
+  }
+  else {
+     html = half_organization(half_context);
+  }
+  $('#source_preview').html(html);
+}
+
+function render_to()
+{
+  var html;
+  var to_org_data = select2_data("to/organization_id");
+  var merge_type = form.getControlByPath("to/merge_type").getValue();
+  var to_type = form.getControlByPath("to/to_type").getValue();
+  if (to_type=='merge')
+  {
+    var half_context = {
+                        "organization_name": remove_sticks(to_org_data.text),
+                        "organization_id": to_org_data.id
+                      };
+    if (merge_type != 'merge_to_organization')
+    {
+      if(merge_type == 'merge_to_existing_department')
+      {
+        var to_dep_data = select2_data("to/department_id");
+        half_context.department_name = remove_sticks(to_dep_data.text);
+        half_context.department_id = to_dep_data.id;
+
+      }
+      else
+      {
+        var value = form.getControlByPath("to/department_name").getValue();
+        half_context.department_name = remove_sticks(value);
+        half_context.department_id = new_record;
+
+      }
+      html = half_department(half_context);
+    }
+    else {
+       html = half_organization(half_context);
+    }
+  }
+  else {
+    var value = form.getControlByPath("to/create_organization/name").getValue();
+    var half_context = {
+                        "organization_name": remove_sticks(value),
+                        "organization_id": new_record
+                       }
+    html = half_organization(half_context);
+  }
+  $('#to_preview').html(html);
+}
+
+function submit_button()
+{
+  return form.domEl.find(".alpaca-form-button-submit");
+}
+
+function render_preview()
+{
+  preview_on = true;
+  render_source();
+  render_to();
+
+}
+
+function empty_preview()
+{
+  form.domEl.find(".alpaca-form-button-submit").text(preview);
+  preview_on = false;
+  $('#source_preview').empty();
+  $('#to_preview').empty();
+
+}
+
+function select2_organization(control, org_address, dep_address)
+{
+  var org_select = control.getControlByPath(org_address).getControlEl();
+  var source_org_select = control.getControlByPath("source/organization_id").getControlEl();
+  var dep_select = control.getControlByPath(dep_address).getControlEl();
+  var style = source_org_select.next().attr('style');
+  var load_id = `loading${dep_address}`;
+  org_select.on("select2:select", function(e) {
+    dep_select.select2('destroy');
+    dep_select.empty();
+    var loading = `<div id="${load_id}"class="alert alert-info"> <strong><%= t('.loading')%></strong></div>`;
+    var load_elem =   $(loading);
+    load_elem.insertBefore(dep_select);
+    var url = "/core/admin/organizations/" + e.params.data.id +  "/index_for_organization";
+    getJSONSync( url, function( data ) {
+      dep_select.select2({
+        data: data
+      });
+      dep_select.next().attr('style',style);
+      load_elem.remove();
+    });
+  });
+
+}
+
+function choose_organization(organization_id,organization_text)
+{
+  var org_select = form.getControlByPath('source/organization_id').getControlEl();
+  var dep_select = form.getControlByPath('source/department_id').getControlEl();
+  var load_id = `loadingsource/department_id`;
+  org_select.val(organization_id);
+  org_select.trigger('change');
+
+  // org_select.select2({
+  //     data: [{id: organization_id, text: organization_text }]
+  //   });
+
+  var loading = `<div id="${load_id}"class="alert alert-info"> <strong><%= t('.loading')%></strong></div>`;
+  var load_elem =   $(loading);
+  load_elem.insertBefore(dep_select);
+  var url = "/core/admin/organizations/" + organization_id +  "/index_for_organization";
+  getJSONSync( url, function( data ) {
+    dep_select.select2({
+      data: data
+    });
+    var style = org_select.next().attr('style');
+    dep_select.next().attr('style',style);
+    load_elem.remove();
+  });
+  var e = jQuery.Event('change');
+  org_select.trigger(e);
+}
+
+$("#merge_organization").alpaca({
+    "schema": {
+        "type": "object",
+        "properties": {
+          "source":{
+            "type": "object",
+            "properties":{
+              "organization_id":{
+                "title": merge_source_org_title,
+                "required": true,
+              },
+              "merge_type":{
+                 "enum": source_merge_types,
+                 "required": true,
+                 "dependencies": ["organization_id"]
+              },
+              "department_id":{
+                "title": merge_source_dep_title,
+                "required": true,
+                "dependencies": ["merge_type"]
+              }
+            }
+          },
+          "to":{
+            "type": "object",
+            "properties":{
+              "to_type":{
+                "title": to_type_label,
+                 "enum": to_types_options,
+                 "default": "merge",
+                 "required": true
+              },
+              "organization_id":{
+                "title": choose_to_org,
+                "required": true,
+                "dependencies": ["to_type"]
+              },
+              "merge_type":{
+                "title": merge_type,
+                 "enum": merge_types,
+                 "required": true,
+                "dependencies": ["organization_id"],
+              },
+              "department_id":{
+                "title": choose_to_dep,
+                "required": true,
+                "dependencies": ["merge_type"]
+              },
+              "department_name":{
+                "title": department_title,
+                "required": true,
+                "dependencies": ["merge_type"]
+              },
+              "create_organization":{
+                "type":"object",
+                "dependencies": ["to_type"],
+                "properties":{
+                  "name": {
+                    "title": create_organization_name,
+                    "required": true
+                  },
+                  "abbreviation": {
+                    "title": create_organization_abbreviation,
+                  },
+                  "kind_id": {
+                    "title": create_organization_kind_id,
+                    "required": true
+                  },
+                  "country_id":{
+                    "title": create_organization_country_id,
+                    "required": true
+                  },
+                  "city_id": {
+                    "title": create_organization_city_id,
+                    "required": true
+                  },
+                  "checked": {
+                    "default": true
+                  }
+
+                }
+              }
+
+            }
+          }
+
+        }
+    },
+    "options":{
+      "focus":"",
+      "hideInitValidationError":true,
+      "form": {
+            "attributes": {
+                "method": "post",
+                "action": action
+            },
+            "buttons": {
+                "submit": {
+                    "title": preview,
+                    "click": function() {
+                       this.validate(true);
+                       this.refreshValidationState(true);
+                       if (!this.isValid(true)) {
+                           empty_preview();
+                           return;
+                       }
+
+                      if(!preview_on)
+                      {
+                        form.domEl.find(".alpaca-form-button-submit").text(save);
+                        render_preview();
+                        return;
+                      }
+                      empty_preview();
+                      form.domEl.find(".alpaca-form-button-submit").attrProp("disabled", true);
+                       var elem = $("#messages");
+                       elem.empty();
+                       elem.html('<div class="alert alert-success" id="success_div"></div>');
+                        var promise = this.ajaxSubmit();
+                        promise.done(function(arg) {
+                          $("#success_div").text(success_message);
+                          if(arg.reload)
+                          {
+                            var to_org_select = form.getControlByPath("source/organization_id").getControlEl();
+                            to_org_select.select2('destroy');
+                            to_org_select.empty();
+                            $.getJSON( "<%=all_organizations_organizations_path%>", function( data ) {
+                              data.push({id: "",text: "",selected: "selected"});
+                              to_org_select.select2({
+                                data: data,
+                                allowClear: true,
+                                placeholder: choose_value,
+                              });
+                              source_org_select.select2({
+                                data: data,
+                                allowClear: true,
+                                placeholder: choose_value,
+                              });
+
+                            });
+
+                          }
+                          else {
+                            var source_dep_select = form.getControlByPath("source/department_id").getControlEl();
+                            source_dep_select.select2('destroy');
+                            source_dep_select.empty();
+                            source_dep_select.select2({
+                                data: arg
+                            });
+                          }
+
+                        });
+                        promise.fail(function(arg) {
+                          elem.html('<div class="alert alert-danger" id="errors_div"></div>');
+                          $("#errors_div").text(arg.responseJSON.message);
+                        });
+                        promise.always(function(){
+                          form.domEl.find(".alpaca-form-button-submit").attrProp("disabled", false);
+                        });
+                    }
+                }
+        }
+    },
+      "fields":{
+        "source":{
+          "fields":{
+            "organization_id":{
+              "type": "select"
+            },
+            "department_id":{
+              "type":"select",
+              "dependencies":{
+                "merge_type": "merge_department"
+              }
+            },
+            "merge_type":{
+              "type": "radio",
+              "optionLabels":  source_merge_type_labels,
+              "onFieldClick": function(e) {
+                  var e = jQuery.Event('click');
+                  form.getControlByPath("to/to_type").getControlEl().find(":checked").trigger(e);
+                  e = jQuery.Event('change');
+                  form.getControlByPath("to/to_type").getControlEl().find(":checked").trigger(e);
+
+              }
+            }
+          }
+        },
+        "to":{
+          "fields":{
+            "to_type":{
+              "type":"radio",
+              "optionLabels":to_types_labels,
+              "validator": function(callback) {
+                  var value = this.getValue();
+                  var source_merge_type = form.getControlByPath("source/merge_type").getValue();
+                  if (value == "create_organization" && source_merge_type == "merge_organization") {
+                      callback({
+                          "status": false,
+                          "message": create_organization_error
+                      });
+                  } else {
+                      callback({
+                          "status": true
+                      });
+                  }
+              }
+            },
+            "organization_id":{
+              "type": "select",
+              "dependencies":{
+                "to_type": "merge"
+              }
+
+            },
+            "merge_type":{
+              "type": "radio",
+              "optionLabels":  merge_types_labels
+            },
+            "department_id":{
+              "type" : "select",
+              "dependencies":{
+                "merge_type": "merge_to_existing_department"
+              },
+            },
+            "department_name":{
+              "type": "textarea",
+              "rows": 5,
+              "wordlimit": 250,
+              "dependencies":{
+                "merge_type": "merge_to_new_department"
+              }
+            },
+            "create_organization":{
+              "dependencies":{
+                "to_type": "create_organization"
+              },
+              "fields":{
+                "name":{
+                  "type": "textarea",
+                  "rows": 2,
+                  "wordlimit": 250
+                },
+                "city_id": {
+                  "type":"select"
+                },
+                "country_id": {
+                  "type":"select"
+                },
+                "kind_id":{
+                  "type":"select"
+                },
+                "checked":{
+                  "type":"checkbox",
+                  "rightLabel": create_organization_checked,
+                }
+
+              }
+            }
+          }
+        }
+      },
+    "view": {
+        "layout": {
+            "template": "<%=j render partial: 'form_layout' %>",
+            "bindings": {
+                "source": "column-1",
+                "to" : "column-2"
+            }
+        }
+    }
+  },
+  "postRender": function(control) {
+    form = control;
+    var to_org_select = control.getControlByPath("to/organization_id").getControlEl();
+    var source_org_select = control.getControlByPath("source/organization_id").getControlEl();
+    var source_dep_select = control.getControlByPath("source/department_id").getControlEl();
+    var city = control.getControlByPath("to/create_organization/city_id");
+    var country = control.getControlByPath("to/create_organization/country_id");
+    var kind_elem = control.getControlByPath("to/create_organization/kind_id").getControlEl();
+
+    apply_select();
+    source_org_select.select2({data: all_organizations,allowClear: true, placeholder: choose_value});
+    to_org_select.select2({data: all_organizations,allowClear: true, placeholder: choose_value});
+    <%if @id%>
+      choose_organization('<%=j @id%>','<%=j @text%>')
+    <% end %>
+    select2_organization(control,'source/organization_id','source/department_id');
+    select2_organization(control,'to/organization_id','to/department_id');
+    control.on("change",empty_preview);
+    var radios = [control.getControlByPath('source/merge_type'),
+                  control.getControlByPath('to/to_type'),
+                  control.getControlByPath('to/merge_type')];
+    radios.forEach(function(val, index, array){
+      val.on('click',empty_preview);
+    });
+
+    remove_extra_spaces();
+    var str = '<div class="row"><div class="col-xs-6" id="source_preview"></div><div class="col-xs-6" id="to_preview"></div></div>';
+    form.domEl.find(".alpaca-form-buttons-container").before(str);
+    var select2 = country.getControlEl();
+    select2.select2('destroy');
+    select2.empty();
+    select2.select2({
+      data: countries
+    });
+    var city_select2 = city.getControlEl();
+    city_select2.select2('destroy');
+    city_select2.empty();
+    city_select2.select2({
+      data: cities[select2.val()]
+    });
+
+    kind_elem.select2('destroy');
+    kind_elem.empty();
+    kind_elem.select2({
+      data: kinds,
+    });
+    city.subscribe(country, function(val) {
+      var select2 = city.getControlEl();
+      select2.select2('destroy');
+      select2.empty();
+      select2.select2({
+        data: cities[val]
+      });
+    });
+    var style = to_org_select.next().attr('style');
+    select2.next().attr('style',style);
+    city_select2.next().attr('style',style);
+    kind_elem.next().attr('style',style);
+  }
+});

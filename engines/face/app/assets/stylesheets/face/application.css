@@ -1,6 +1,8 @@
 /*
  *= require_self
  *= require bootstrap
+ *= require glyphicon
+ *= require jquery
  *= require disable_bootstrap_responsive
  *= require select2
  *= require select2-bootstrap

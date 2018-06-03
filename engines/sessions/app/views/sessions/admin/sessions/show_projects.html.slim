@@ -10,11 +10,11 @@ div class="page-header"
   = f.select :state_in, Core::Project.human_state_names, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
   - options = { include_blank: true, label_col: "col-sm-4", control_col: "col-sm-8", start_year: 2012, end_year: Date.current.year, class: "datepicker" }
   div class="col-md-6"
-    = f.text_field :created_at_gt, options.merge(label: "Создан после")
-    = f.text_field :created_at_lt, options.merge(label: "Создан до")
+    = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
+    = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
   div class="col-md-6"
-    = f.text_field :first_activation_at_gt, options.merge(label: "Активирован после")
-    = f.text_field :first_activation_at_lt, options.merge(label: "Активирован до")
+    = f.text_field :first_activation_at_gt, options.merge(label: t('.activated_after'))
+    = f.text_field :first_activation_at_lt, options.merge(label: t('.activated_before'))
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
 

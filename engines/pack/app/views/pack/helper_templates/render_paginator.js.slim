@@ -1,0 +1,9 @@
+
+	
+      $("#{table_selector}").html("#{escape_javascript(render partial  )}");
+
+      
+      
+      $("#{paginator_selector}").html("= escape_javascript(paginate(records, :remote => true).to_s)");
+
+

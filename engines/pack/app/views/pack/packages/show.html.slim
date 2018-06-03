@@ -1,0 +1,28 @@
+doctype html    
+html
+	br
+	br
+	br
+	
+
+	table  class="table"
+		-["name","description"].each do |a|
+			tr 
+				td class="col-xs-3" = Pack::Package.human_attribute_name a
+				td class="col-xs-9"#{@package.public_send a}
+		tr
+			td class="col-xs-3" = Pack::Package.human_attribute_name :deleted
+			td class="col-xs-9" = t("#{@package.deleted}")
+		
+
+	br
+	br 
+
+	div id="table_records"
+		=render 'versions_table',records: @versions
+	
+	div id="ajax_paginator" 
+		=paginate(@versions, :remote => true).to_s
+
+	= javascript_tag do 
+    	= render(:partial => 'show', :formats => [:js]) 

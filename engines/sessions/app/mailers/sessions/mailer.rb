@@ -57,7 +57,7 @@ module Sessions
 
     def notify_exerts_about_submitted_reports(session_id)
       @session = Sessions::Session.find(session_id)
-      @submitted_reports = @session.reports.with_state(:submitted)
+      @submitted_reports = @session.reports.where(:state=>:submitted)
       expert_emails = Sessions.user_class.experts.map(&:email)
       mail to: expert_emails, subject: t(".subject", count: @submitted_reports.count)
     end

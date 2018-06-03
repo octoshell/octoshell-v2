@@ -1,0 +1,20 @@
+main_element.on("click",'span.tag-container > button.show-extra',function(e){
+	var elem = $(this).parent().find('.extra-info');
+	var hidden = elem.prop('hidden');
+	var hidden_res = hidden  ? false : true;
+	elem.prop('hidden',hidden_res)
+});
+main_element.on("click",'button.remove-extra',function(e){
+	 $(this).parent().parent().parent().prop('hidden',true);
+	 e.stopPropagation();
+});
+main_element.on("click",'button.delete-button',function(e){
+	main_element.find('#table').find('button').attrProp('disabled',true);
+	var id = $(this).parents(".tag-container").attr('tag-id');
+	$.ajax({
+	  url: `/comments/tags/${id}`,
+		method: "DELETE"
+	}).done(function() {
+		pageClick();
+	});
+});

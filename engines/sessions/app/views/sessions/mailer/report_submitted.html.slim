@@ -1,6 +1,6 @@
 = render "header"
 
-p Руководитель проекта «#{@report.project.title}» подготовил отчёт к оценке.
-p = link_to "Приступить к оценке отчёта.", sessions.admin_report_url(@report)
+p #{t('.msg_report_ready', id: @report.id, pid: @report.project.id, title: @report.project.title, session: @report.session.description)}
+p = link_to t('.assess_report'), sessions.admin_report_url(@report)
 
 = render "footer"

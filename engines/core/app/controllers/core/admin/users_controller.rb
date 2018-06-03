@@ -7,6 +7,7 @@ module Core
     def block
       user = User.find(params[:id])
       user.block!
+      user.save
 
       redirect_to admin_users_path
     end
@@ -14,6 +15,7 @@ module Core
     def reactivate
       user = User.find(params[:id])
       user.reactivate!
+      user.save
 
       redirect_to admin_users_path
     end

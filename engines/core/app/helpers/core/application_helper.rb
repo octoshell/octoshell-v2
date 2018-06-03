@@ -1,5 +1,31 @@
 module Core
   module ApplicationHelper
+
+    def no_name_c c
+      c.title_ru.blank? ? t('core_no_name') : c.title_ru
+    end
+
+    def provide_cities_hash
+      @countries_meth = Country.all.order(:title_ru).includes(:cities).to_a
+      @countries = @countries_meth
+      @cities = {}
+      @countries = @countries.map do |c|
+        @cities[c.id] = c.cities.to_a.map(&:to_json_with_titles)
+        c.to_json_with_titles
+      end
+    end
+
+    def organizations_admin_submenu_items
+      menu = Face::Menu.new
+      menu.items.clear
+      menu.add_item(Face::MenuItem.new({name: t("engine_submenu.organizations_list"),
+                                        url: [:admin, :organizations],
+                                        regexp: /organizations/}))
+      menu.add_item(Face::MenuItem.new({name: t("engine_submenu.merge_edit"),
+                                        url: [:merge_edit, :admin, :organizations],
+                                        regexp: /merge_edit/}))
+      menu.items
+    end
     def mark_project_state(project)
       label_class = case project.state
                     when "active"

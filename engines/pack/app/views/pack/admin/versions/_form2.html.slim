@@ -1,0 +1,74 @@
+div class="row"
+  div class="col-xs-12"
+    -if @stale_message
+      h3
+        font color="red"
+          =@stale_message
+        p
+          =link_to (t "mailer_messages.show_vers" ), admin_package_version_path(@package,@version)
+    = bootstrap_form_for [:admin,@package,@version] do |f|
+      -@f=f
+      div class="row"
+        div class="col-xs-9"
+          
+          = f.text_field :name
+          = f.text_area :description,rows:3
+          = f.text_field :folder
+          = f.number_field :cost
+         
+          -if @package.deleted
+            =t 'notice.pack_deleted' 
+          -else
+            =f.form_group :deleted
+              = f.check_box :deleted
+          =f.form_group :service 
+            = f.check_box :service
+         
+          =f.form_group :delete_on_expire 
+            = f.check_box :delete_on_expire
+         
+            
+
+          = f.hidden_field :lock_col
+    
+     
+          =t "versions.state"
+          = f.radio_button :state_select ,  "forever" ,label: t("versions.forever"),id: "disable_id"  
+          = f.radio_button :state_select , "not_forever",label: t("versions.not_forever"),id: "enable_id"  
+          = f.text_field :end_lic ,class: 'form-control my_datepicker',id: "item_id"
+         
+          h3 = t("Clusters")
+      div class="row"
+        div class="col-xs-6"
+          = f.fields_for :clustervers do |ff|
+            p
+             div style="margin:20px;"
+                =ff.object.name
+                =ff.hidden_field :core_cluster_id
+                =ff.form_group :active
+                  =ff.radio_button  :action,"_destroy", label: t("versions.not_exist")  
+                  =ff.radio_button  :action,"not_active", label: t("versions.not_active")
+                  =ff.radio_button  :action,"active" , label: t("versions.active")  
+                
+       
+        div class="col-xs-12"
+          h3 =t "options_list"
+          = f.fields_for :version_options do |ff|
+            =render partial: "version_opts_fields",locals: {ff: ff,new: false}
+        
+          div id="new_options"
+      div class="row"
+        button class="btn btn-primary btn_access" type="button" id="options" =t(".new") 
+        br
+        br
+        br
+
+
+      	
+     
+        
+        = f.submit t("buttons.save", default: "Save")
+= javascript_tag do 
+  = render(:partial => 'form', :formats => [:js]) 
+
+     

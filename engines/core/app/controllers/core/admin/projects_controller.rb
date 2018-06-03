@@ -31,6 +31,7 @@ module Core
     def update
       @project = current_user.owned_projects.find(params[:id])
       if @project.update(project_params)
+        @project.save
         redirect_to [:admin, @project], notice: t("flash.project_updated")
       else
         render :edit
@@ -40,12 +41,14 @@ module Core
     def activate
       @project = Project.find(params[:id])
       @project.activate!
+      @project.save
       redirect_to [:admin, @project]
     end
 
     def block
       @project = Project.find(params[:id])
       @project.block!
+      @project.save
       redirect_to [:admin, @project]
     end
 
@@ -58,12 +61,14 @@ module Core
     def resurrect
       @project = Project.find(params[:id])
       @project.resurrect!
+      @project.save
       redirect_to [:admin, @project]
     end
 
     def finish
       @project = Project.find(params[:id])
       @project.finish!
+      @project.save
       redirect_to [:admin, @project]
     end
 
@@ -77,6 +82,7 @@ module Core
     def toggle_member_access_state
       member = Member.find(params[:member_id])
       member.toggle_project_access_state!
+      member.save
 
       head :ok
     end

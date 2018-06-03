@@ -1,24 +1,31 @@
 # encoding: utf-8
 module Core
   class Employment < ActiveRecord::Base
+
     belongs_to :user, class_name: Core.user_class, foreign_key: :user_id, inverse_of: :employments
     belongs_to :organization
     belongs_to :organization_department
 
-    has_many :positions, class_name: "Core::EmploymentPosition", inverse_of: :employment
+    has_many :positions, class_name: "Core::EmploymentPosition", inverse_of: :employment,dependent: :destroy
     accepts_nested_attributes_for :positions, reject_if: proc { |a| a['value'].blank? }
 
     before_save :check_primacy
 
-    state_machine :state, initial: :active do
-      state :active
+    include AASM
+    include ::AASM_Additions
+    aasm(:state, :column => :state) do
+      state :active, :initial => true
       state :closed
 
       event :deactivate do
-        transition :active => :closed
+        transitions :from => :active, :to => :closed
       end
     end
 
+    def self.joins_active_users
+      joins("INNER JOIN users AS u ON
+            u.id = core_employments.user_id AND u.activation_state = 'active'")
+    end
     def full_name
       if organization_department.present?
         "#{organization.short_name}, #{organization_department.name}"
@@ -73,6 +80,10 @@ module Core
     private
 
     def check_primacy
+      # unless user
+      #   puts "User  with id=#{user_id} doesn't exist".red
+      #   return
+      # end
       if user.employments.where(primary: true).any?
         if primary_changed? && (primary_was == false)
           user.employments.update_all(primary: false)

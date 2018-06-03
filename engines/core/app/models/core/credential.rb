@@ -1,5 +1,6 @@
 module Core
   class Credential < ActiveRecord::Base
+
     belongs_to :user, class_name: Core.user_class,
                       foreign_key: :user_id, inverse_of: :credentials
 
@@ -9,16 +10,18 @@ module Core
 
     after_save :synchronize_user_projects
 
-    state_machine initial: :active do
-      state :active
+    include AASM
+    include ::AASM_Additions
+    aasm(:state, :column => :state) do
+      state :active, :initial => true
       state :deactivated
 
       event :reactivate do
-        transition :deactivated => :active
+        transitions :from => :deactivated, :to => :active
       end
 
       event :deactivate do
-        transition :active => :deactivated
+        transitions :from => :active, :to => :deactivated
       end
     end
 

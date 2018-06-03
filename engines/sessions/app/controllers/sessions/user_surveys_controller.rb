@@ -8,21 +8,25 @@ module Sessions
     end
 
     def accept
-      us = get_survey(params[:user_survey_id])
-      if us.accept
-        redirect_to us
+      @survey = get_survey(params[:user_survey_id])
+      if @survey.accept
+        @survey.save
+        redirect_to @survey
       else
-        redirect_to user_surveys_path, alert: us.errors.full_messages.to_sentence
+        redirect_to user_surveys_path, alert: @survey.errors.full_messages.join('; ')
       end
     end
 
     def show
       @survey = get_survey(params[:id])
+      #warn "=== #{@survey.values.map { |e| "#{e.value}/#{e.field.name}/#{e.id};" }}"
     end
 
     def update
       @survey = get_survey(params[:id])
       if @survey.fill_values(survey_fields)
+        @survey.save
+        #warn "==========================survey updated (#{survey_fields})"
         redirect_to @survey
       else
         render :show
@@ -32,12 +36,14 @@ module Sessions
     def edit
       @survey = get_survey(params[:id])
       @survey.edit!
+      @survey.save
       redirect_to @survey
     end
 
     def submit
       @survey = get_survey(params[:user_survey_id])
       if @survey.fill_values_and_submit(survey_fields)
+        @survey.save
         redirect_to @survey
       else
         render :show

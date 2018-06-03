@@ -1,0 +1,62 @@
+doctype html    
+html
+	
+		
+	
+	 
+	div class="row well btn-toolbar"
+		- edit= t("edit", default: "Edit")
+		- delete= t("delete", default: "Delete")
+				
+		= link_to edit , edit_admin_access_path(@access.id),class: "btn btn-success"         
+		= link_to delete, admin_access_path(@access.id), :method => 'delete',:data => {:confirm => t("confirm", default: "Are you sure")},class: "btn btn-success"  
+
+	
+		
+	-[:end_lic_readable,:status_readable,:who_name_with_type,:new_end_lic].each do |key|
+		div class="col-xs-12"
+			div class="col-xs-3"
+  				h5 = Pack::Access.human_attribute_name key
+  			div class="col-xs-9"
+  				h5 = @access.send key
+
+	-[:allowed_by,:created_by].each do |key|
+		div class="col-xs-12"
+			div class="col-xs-3"
+  				h5 = @access.class.human_attribute_name key
+  			div class="col-xs-9"
+  				h5 = (@access.send key).email if @access.send key
+	div class="col-xs-12"
+		div class="col-xs-3"
+			h5 = Pack::Access.human_attribute_name :version_name
+		div class="col-xs-9"
+			h5 = link_to @access.version_name,admin_package_version_path(@access.version.package,@access.version)
+
+
+  				
+  	
+	
+	table
+		tr
+ 			td rec_id=@access.id
+              =render "manage_access",item: @access
+		
+	
+
+
+	h3 =t 'tickets'		
+	-if @access.tickets
+
+		-@access.tickets.each do |ticket|
+				p = link_to ticket,support.admin_ticket_path(ticket) 	
+	-else 
+		=t 'no_records_found'
+
+
+
+
+
+
+			
+
+		

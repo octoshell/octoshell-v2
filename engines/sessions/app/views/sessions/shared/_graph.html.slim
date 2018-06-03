@@ -8,9 +8,9 @@ div class="row"
   div class="col-xs-8"
     ul class="nav nav-tabs"
       li class="active"
-        a href="#graph-#{type}-pie" data-toggle="tab" Пирог
+        a href="#graph-#{type}-pie" data-toggle="tab" #{t('.pie_chart')}
       li
-        a href="#graph-#{type}-column" data-toggle="tab" Колонки
+        a href="#graph-#{type}-column" data-toggle="tab" #{t('.columns')}
     div class="tab-content"
       div class="tab-pane active" id="graph-#{type}-pie"
         div class="graph graph-pie" data-source="#{data.to_json}" data-title="#{stat.title}"
@@ -20,7 +20,7 @@ div class="row"
     div class="graph-table-download text-center"
       = link_to [:admin, stat, :download] do
         i class="icon-cloud-download"
-        |  Загрузить .csv
+        |  #{t('.download_csv')}
     div class="graph-table"
       table class="table table-condensed table-striped"
         - data.each do |array|
@@ -28,4 +28,4 @@ div class="row"
             - array.each do |item|
               td = item
             td style="width: 10px"
-              small = link_to "раскрыть", admin_stat_detail_path(stat, value: array.first), class: "muted"
+              small = link_to t('.show'), admin_stat_detail_path(stat, value: array.first), class: "muted"

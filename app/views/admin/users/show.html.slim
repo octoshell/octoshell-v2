@@ -1,5 +1,5 @@
 h3
-  - state = { closed: "danger", active: "success" }[@user.access_state_name]
+  - state = { closed: "danger", active: "success" }[@user.access_state_name.to_sym]
   span class="label label-#{state}" = @user.human_access_state_name
 
 - if may? :manage, :users
@@ -15,15 +15,15 @@ div class="row"
   div class="page-header"
     h1 = @user.full_name
     h4 = @user.email
-    h4 #{User.human_attribute_name(:credentials)}: #{@user.credentials.with_state(:active).any? ? "есть" : "нет"}
-    h4 Дата регистрации: #{l @user.created_at.to_date} (#{(Date.current - @user.created_at.to_date).to_i} дн.)
+    h4 #{User.human_attribute_name(:credentials)}: #{@user.credentials.where(state: :active).any? ? t('.present') : t('.none')}
+    h4 t('.reg_date'): #{l @user.created_at.to_date} (#{(Date.current - @user.created_at.to_date).to_i} t('.days_short'))
 
 h4 = User.human_attribute_name(:groups)
 ul class="list-unstyled"
   - @user.groups.each do |group|
     li = group.name
 
-= render "core/employments/list", employments: @user.employments.with_state(:active).order(primary: :desc, created_at: :desc)
+= render "core/employments/list", employments: @user.employments.where(state: :active).order(primary: :desc, created_at: :desc)
 
 h4 = User.human_attribute_name(:projects)
 = render "projects_list", projects: @user.projects.order(created_at: :desc)

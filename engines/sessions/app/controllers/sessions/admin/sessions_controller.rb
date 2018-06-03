@@ -42,6 +42,7 @@ module Sessions
     def start
       @session = get_session(params[:session_id])
       if @session.start
+        @session.save
         redirect_to [:admin, @session]
       else
         redirect_to [:admin, @session], alert: @session.errors.full_messages.to_sentence
@@ -51,6 +52,7 @@ module Sessions
     def stop
       @session = get_session(params[:session_id])
       if @session.stop
+        @session.save
         redirect_to [:admin, @session]
       else
         redirect_to [:admin, @session], alert: @session.errors.full_messages.to_sentence

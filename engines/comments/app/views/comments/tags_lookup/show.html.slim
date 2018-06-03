@@ -1,0 +1,37 @@
+-if @taggings.any?
+  h2
+    =@tag.name
+
+= bootstrap_form_for @q, url: tags_lookup_path(@tag), method: :get, layout: :horizontal do |f|
+  = f.select :attachable_type_eq, @models_list, label:  Comments::Tagging.human_attribute_name("attachable_class_name"), include_blank: true
+  = f.text_field :attachable_id_eq, label:  Comments::Tagging.human_attribute_name("attachable_id"), include_blank: true
+  = f.collection_select :context_id_eq, @contexts, :id, :name, label:  Comments::Tagging.human_attribute_name("context"), include_blank: true
+  = f.form_group do
+    = f.submit t("actions.find"), class: "btn btn-primary"
+-if @taggings.any?
+  table   class="table table-hover"  cellspacing="30"
+    tr
+      th = Comments::Tagging.human_attribute_name :attachable_class_name
+      th = Comments::Tagging.human_attribute_name :attachable_name
+      th = User.human_attribute_name :email
+      th = Comments::Tagging.human_attribute_name :first_name
+      th = Comments::Tagging.human_attribute_name :last_name
+      th = Comments::Tagging.human_attribute_name :context
+
+    -@taggings.each do |tagging|
+      tr
+        td = tagging.attachable_class_name
+        td = tagging.attachable_name
+        td = tagging.user.email
+        td = tagging.user.profile.first_name
+        td = tagging.user.profile.last_name
+        td = tagging.context ? tagging.context.name : ''
+        td
+          -if tagging.can_update?(current_user.id)
+            - name = t("actions.delete", default: "delete")
+            - confirm = t("core_confirm", default: "Are You sure?")
+            - data = {confirm: confirm }
+            = button_to name, tags_lookup_path(tagging),method: :delete, data: data, class: "btn btn-primary"
+  =paginate @taggings
+-if @taggings.empty?
+  = t('.no_tags')

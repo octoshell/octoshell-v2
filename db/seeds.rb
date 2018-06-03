@@ -4,53 +4,45 @@
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
 
-# users = []
-# 3.times do |i|
-#   user = User.create!(email: "user#{i.next}@octoshell.ru",
-#                       password: "123456")
-#   user.activate!
-#   users << user
-# end
+Group.superadmins
+Group.authorized
+
+users = []
+3.times do |i|
+  user = User.create!(email: "user#{i.next}@octoshell.ru",
+                      password: "123456", password_confirmation: '123456')
+  user.activate!
+  user.activate!
+  user.access_state='active'
+  user.save
+  users << user
+end
 
 admin = User.create!(email: "admin@octoshell.ru",
-                     password: "123456")
+                     password: "123456", password_confirmation: '123456')
 admin.activate!
-
-# add admin to superadmins group
-grp=Group.create(name: "superadmins")
-grp.save
-admin.groups << grp
-admin.save
-
-#create default groups
-["faults_managers","experts","support",
-  "authorized","reregistrators"].each do |g|
-    grp=Group.create(name: g)
-    grp.save
-  end
+admin.activate!
 
 Group.default!
 
+admin.groups << Group.superadmins
+admin.access_state='active'
+admin.save!
+
+
 # create projects prerequisites
 
-c=Core::Country.create(title_en: 'Russia', title_ru: 'Россия')
-c.save
+Core::Country.create!(title_en: 'Russia', title_ru: 'Россия')
 
-c=Core::City.create(title_en: 'Moscow', title_ru: "Москва")
-c.save
+Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country)
 
-c=Core::Cluster.create(host: 'localhost', admin_login: 'octo', name: 'test')
-c.save
+Core::Cluster.create!(host: 'localhost', admin_login: 'octo', name: 'test')
 
-c=Core::OrganizationKind(name: 'Российская коммерческая организация')
-c.save
+Core::OrganizationKind.create!(name: 'Российская коммерческая организация')
+Core::CriticalTechnology.create!(name: 'Робототехника')
 
-c=Core::CriticalTechnology(name: 'Робототехника')
-c.save
+Core::DirectionOfScience.create!(name: 'Информационно-телекоммуникационные системы')
 
-c=Core::DirectionOfScience(name: 'Информационно-телекоммуникационные системы')
-c.save
+Core::ResearchArea.create!(name: 'Математика')
 
-c=Core::ResearchArea(name: 'Математика')
-c.save
-
+Core::ProjectKind.create!(name: 'Исследовательский')

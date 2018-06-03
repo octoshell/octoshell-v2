@@ -5,50 +5,50 @@ div class="page-header"
 
 - if @report.rejected? && @report.expert == current_user
   div class="well"
-    = link_to "Возобновить оценку", [:admin, @report, :pick], class: "btn btn-success", method: :patch
+    = link_to t('.continue_expertise'), [:admin, @report, :pick], class: "btn btn-success", method: :patch
 
-legend = link_to "Открыть профиль автора отчёта", main_app.admin_user_path(@report.author)
-legend = link_to "Перейти к карточке проекта", core.admin_project_path(@report.project)
+legend = link_to t('.open_report_author_profile'), main_app.admin_user_path(@report.author)
+legend = link_to t('.open_project_card'), core.admin_project_path(@report.project)
 
 - if @report.can_not_be_submitted?
   div class="well"
-    = link_to "Вернуть пользователю", [:admin, @report, :reject], class: "btn btn-danger", method: :patch
+    = link_to t('.recommit'), [:admin, @report, :reject], class: "btn btn-danger", method: :patch
 
-  h3 Причина отказа
+  h3 #{t('.report_submit_denial_reason')}
   div class="col-xs-offset-1"
     = @report.submit_denial_reason.present? ? @report.submit_denial_reason.name : "N/A"
-  h3 Обоснование сохранения проекта
+  h3 #{t('.motivation_to_keep_the_project')}
   div class="col-xs-offset-1"
     = @report.submit_denial_description
 - else
   div class="panel"
-    h3 Материалы отчёта
+    h3 #{t('.report_file')}
     - if @report.materials.present?
       table class="table table-bordered"
         tr
-          th Обновлён
-          th Размер
+          th #{t('.report_file_updated')}
+          th #{t('.report_file_size')}
           th
         tr
           td class="col-xs-5" = l @report.updated_at, format: :long
           td class="col-xs-1" = number_to_human_size(@report.materials.size)
-          td class="col-xs-2" = link_to "Скачать материалы", @report.materials.url, class: "btn btn-primary"
+          td class="col-xs-2" = link_to t('.download_report_file'), @report.materials.url, class: "btn btn-primary"
     - else
-      h4 class="text-danger" Нет материалов
+      h4 class="text-danger" #{t('.no_report_file')}
 
 
   - if User.superadmins.include?(current_user)
     div class="panel"
       - if @report.expert.nil?
-        h3 Назначение эксперта
+        h3 #{t('.expert_assignment')}
         = bootstrap_form_for @report, url: admin_report_change_expert_path(@report), layout: :inline do |f|
-          = f.collection_select :expert_id, Sessions.user_class.experts.eager_load(:profile), :id, :full_name, label: "Назначить эксперта"
+          = f.collection_select :expert_id, Sessions.user_class.experts.eager_load(:profile), :id, :full_name, label: t('.assign_expert')
           = f.primary t("actions.save")
       - else
         h3 Эксперт: #{link_to_if may?(:manage, :users), @report.expert.full_name, main_app.admin_user_path(@report.expert)}
 
   div class="panel"
-    h3 Оценки
+    h3 #{t('.report_evaluation')}
     - if @report.assessing? && (current_user == @report.expert)
       = bootstrap_form_for @report, url: [:admin, @report, :assess], layout: :horizontal do |f|
         = f.collection_radio_buttons :illustration_points, (1..5), :inspect, :inspect, inline: true
@@ -56,35 +56,35 @@ legend = link_to "Перейти к карточке проекта", core.admin
         = f.collection_radio_buttons :summary_points, (1..5), :inspect, :inspect, inline: true
         = f.form_group do
           div class="btn-toolbar"
-            = f.submit t("actions.assess", default: "Оценить")
-            = link_to "Вернуть пользователю", [:admin, @report, :reject], class: "btn btn-danger", data: { confirm: "Вы уверены?" }, method: :patch
-    - elsif may?(:manage, :reports) && @report.can_pick? && @report.expert.nil?
-      = link_to "Взять на оценку", [:admin, @report, :pick], method: :patch, class: "btn btn-info btn-lg"
+            = f.submit t("actions.assess", default: t('.evaluate'))
+            = link_to t('.recommit'), [:admin, @report, :reject], class: "btn btn-danger", data: { confirm: t('.are_you_sure')}, method: :patch
+    - elsif may?(:manage, :reports) && @report.may_pick? && @report.expert.nil?
+      = link_to t('.take_for_evaluation')"Взять на оценку", [:admin, @report, :pick], method: :patch, class: "btn btn-info btn-lg"
     - else
       table class="table table-striped"
         tr
           th class="col-xs-3" = Sessions::Report.human_attribute_name(:illustration_points)
-          td = @report.illustration_points || "Не оценивалось"
+          td = @report.illustration_points || t('.not_evaluated')
         tr
           th class="col-xs-3" = Sessions::Report.human_attribute_name(:statement_points)
-          td = @report.statement_points || "Не оценивалось"
+          td = @report.statement_points || t('.not_evaluated')
         tr
           th class="col-xs-3" = Sessions::Report.human_attribute_name(:summary_points)
-          td = @report.summary_points || "Не оценивалось"
+          td = @report.summary_points || t('.not_evaluated')
         - if (may?(:manage, :reports) || @report.expert == current_user) && @report.assessed?
           tr
             td colspan="2" = link_to t("actions.edit"), [:admin, @report, :edit], method: :put, class: "muted"
 
   - if @reports_for_other_sessions.present?
     div class="panel"
-      h3 Отчёты по проекту на предыдущих перерегистрациях
+      h3 #{t('.previous_sessions_reports')}
       ul class="list-group"
         - @reports_for_other_sessions.each do |other_report|
           li class="list-group-item"
             h4 = link_to t(".other_report_title", id: other_report.id, session_name: other_report.session.description), [:admin, other_report]
 
 div class="panel"
-  h3 Переписка
+  h3 #{t('.conversation')}
 
   - replies = @report.replies.order(:created_at).find_all(&:persisted?)
   - if replies.any?
@@ -97,18 +97,18 @@ div class="panel"
           - else
             = r.user.full_name
             |  
-            span class="label label-info" Эксперт
+            span class="label label-info" #{t('.expert')}
         = markdown r.message
 
   div class="row"
     div class="well well-small col-xs-6"
       = bootstrap_form_for @reply, url: admin_report_replies_path(@report) do |f|
-        = f.text_area :message, rows: 3, hide_label: true, placeholder: "Сообщение"
+        = f.text_area :message, rows: 3, hide_label: true, placeholder: t('.message')
         div class="text-right"
           = f.submit t("actions.send")
 
 div class="panel"
-  h3 Опросы в рамках проекта
+  h3 #{t('.project_surveys')}
 
   - surveys = @report.author.surveys.where(session_id: @report.session_id, project_id: @report.project_id).distinct
   - if surveys.any?
@@ -117,5 +117,5 @@ div class="panel"
         li class="list-group-item"
           h4 = link_to survey, admin_user_survey_path(survey)
   - else
-    p Нет присланных опросов
+    p #{t('.no_completed_surveys')}
 

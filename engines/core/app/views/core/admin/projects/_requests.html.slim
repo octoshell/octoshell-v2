@@ -1,12 +1,12 @@
 div class="row" id="requests"
   div class="panel panel-default"
     div class="panel-heading"
-      | Заявки на доступ к ресурсам СКЦ МГУ
+      | #{t('.access_request')}
     table class="table table-hover"
       tr
         th class="col-xs-2" #
         th #{Core::Cluster.human_attribute_name("name")} (#{Core::Cluster.human_attribute_name("host")})
-        th = "Запрошено ресурсов"
+        th = #{t('.resources_requested')}
         th = Core::Request.human_attribute_name("created_at")
       - requests.each do |request|
         tr class=(request.pending? ? "warning" : "danger")

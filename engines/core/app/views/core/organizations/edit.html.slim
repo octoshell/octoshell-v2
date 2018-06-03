@@ -5,8 +5,7 @@ div class="page-header"
   = f.text_field :name
   = f.text_field :abbreviation
   = f.collection_select :kind_id, Core::OrganizationKind.order(:name), :id, :name
-  = f.collection_select :country_id, Core::Country.order(:title_ru), :id, :title_ru
-  = autocomplete f, name: :city_id, label: Core::Organization.human_attribute_name("city"), source: country_cities_path(1)
+  = render partial: 'core/admin/organizations/city_form', locals: {f: f},formats: :html
   = f.form_group do
     legend = Core::Organization.human_attribute_name(:departments)
     = f.link_to_add t(".add_department"), :departments
@@ -15,4 +14,5 @@ div class="page-header"
       = d_form.link_to_remove t(".remove_department"), class: "fa fa-times text-danger"
 
   = f.form_group do
-    = f.submit t("actions.submit")
+    = f.submit
+      = t("actions.submit")

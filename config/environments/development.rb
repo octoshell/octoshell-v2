@@ -4,6 +4,8 @@ Octoshell::Application.configure do
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
+  config.active_record.raise_in_transactional_callbacks = true
+
   config.cache_classes = false
 
   # Do not eager load code on boot.
@@ -19,9 +21,16 @@ Octoshell::Application.configure do
   config.base_host = "localhost"
   config.action_mailer.default_options = { from: "info@localhost" }
   config.action_mailer.default_url_options = { host: "localhost:3000" }
+  config.serve_static_files = false
+
+  # Compress JavaScripts and CSS.
+  # config.assets.js_compressor = Uglifier.new(harmony: true)
+
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
+  config.middleware.insert(0, Rack::Sendfile, config.action_dispatch.x_sendfile_header)
 
   # Raise an error on page load if there are pending migrations
   config.active_record.migration_error = :page_load

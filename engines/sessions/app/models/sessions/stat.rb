@@ -41,7 +41,7 @@ module Sessions
     def graph_data_for_count_in_org
       hash = {}
       organization.departments.each do |department|
-        user_surveys = UserSurvey.select(:id).with_state(:submitted).
+        user_surveys = UserSurvey.select(:id).where(:state=>:submitted).
           where(session_id: session.id).to_sql
         values = SurveyValue.includes(:field).
           joins(user_survey: { user: :employments }).
@@ -70,7 +70,7 @@ module Sessions
 
     def raw_survey_values
       @raw_survey_values ||= begin
-                               user_survey_ids = UserSurvey.with_state(:submitted).where(session_id: session.id).pluck(:id)
+                               user_survey_ids = UserSurvey.where(:state=>:submitted).where(session_id: session.id).pluck(:id)
                                SurveyValue.where(user_survey_id: user_survey_ids, survey_field_id: survey_field_id).distinct
                              end
     end

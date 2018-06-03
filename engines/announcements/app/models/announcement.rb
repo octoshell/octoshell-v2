@@ -1,4 +1,5 @@
 class Announcement < ActiveRecord::Base
+
   has_many :announcement_recipients
   has_many :recipients, class_name: "User", source: :user, through: :announcement_recipients
 
@@ -6,15 +7,17 @@ class Announcement < ActiveRecord::Base
 
   validates :title, :body, presence: true
 
-  state_machine :state, initial: :pending do
-    state :pending
+  include AASM
+  include ::AASM_Additions
+  aasm :state, :column => :state do
+    state :pending, :initial => true
     state :delivered
 
     event :deliver do
-      transition :pending => :delivered
+      transitions :from => :pending, :to => :delivered, :after => :send_mails
     end
 
-    inside_transition on: :deliver, &:send_mails
+    #after_transition on: :deliver, &:send_mails #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FIX
   end
 
   def send_mails

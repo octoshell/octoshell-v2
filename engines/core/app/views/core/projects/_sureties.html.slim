@@ -10,7 +10,7 @@ div class="row" id="sureties"
         th = Core::Surety.human_attribute_name(:scans)
         th = Core::Surety.human_attribute_name(:created_at)
       - @project.sureties.preload(members: :profile).each do |surety|
-        - state = { generated: "primary", filling: "primary", confirmed: "warning", active: "success", closed: "danger" }[surety.state_name]
+        - state = { generated: "primary", filling: "primary", confirmed: "warning", active: "success", closed: "danger" }[surety.state]
         tr
           td = link_to_if @user_can_manage_project, surety, surety
           td
@@ -26,14 +26,14 @@ div class="row" id="sureties"
               i class="fa fa-times"
           td = l surety.created_at.to_date
       - if @user_can_manage_project
-        - if @project.sureties.without_state(:closed).empty?
+        - if @project.sureties.where.not(state: :closed).empty?
           tr class="warning"
             td colspan="5" = t(".no_active_sureties_found")
           tr
             td colspan="5"
               strong
                 small = link_to t(".add_surety"), new_surety_path(project_id: @project.id)
-        - elsif @project.members.with_project_access_state(:engaged).any?
+        - elsif @project.members.where(:project_access_state=>:engaged).any?
           tr class="warning"
             td colspan="5" = t(".no_sureties_found")
           tr

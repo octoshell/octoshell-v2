@@ -60,7 +60,7 @@ ru:
         subject: Заголовок
         message: Сообщение
 
-    state_machines:
+    aaaasm:
       support/ticket:
         state:
           states:
@@ -88,18 +88,35 @@ ru:
 
   support:
     mailer:
+      _header:
+        hello_known_name: Здравствуйте, %{name}!
+        hello_unknown: Здравствуйте!
       new_ticket:
         subject: Новая заявка в техподдержку
+        user_created_request: Пользователь %{full_name} создал заявку в поддержку.
+        ticket: Вопрос
+        topic: Тема
+        show_ticket_details: Перейти к заявке
       new_ticket_reply:
         subject: Новый ответ в заявке №%{number}
+        show_request_details: Перейти к заявке
       answered_tickets_notifications:
         subject: Напоминание о зависших заявках в техподдержке
-
+      _footer:
+        octo_regards: С уважением, Octoshell.
+        maintained_by: Лаборатория Параллельных информационных технологий НИВЦ МГУ.
     admin:
       tickets:
         index:
           title: Список заявок в поддержку
           new_ticket_on_user: Создать тикет на пользователя
+          project: Проект
+          reporter: Автор
+          created_after: Создан после
+          created_before: Создан до
+          updated_after: Обновлён после
+          updated_before: Обновлён до
+
         table:
           no_tickets: Нет тикетов
         edit:
@@ -166,10 +183,15 @@ ru:
       index:
         title: Поддержка
         new_ticket: Новая заявка
+        created_after: Создан после
+        created_before: Создан до
+        updated_after: Обновлен после
+        updated_before: Обновлен до
       show:
         title: Заявка №%{id}
-        problem_solved: "Проблема решена? Нажмите: "
+        problem_solved: "Проблема решена? Нажмите "
         new_reply: Новое сообщение
+        if_not: "Если нет, нажмите "
       new:
         title: Новая заявка
       edit:

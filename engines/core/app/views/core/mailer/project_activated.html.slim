@@ -1,18 +1,18 @@
 = render "header"
 
 p
-  | Проект «#{@project.title}» активирован! Вы можете приступать к работе.
+  | #{t('.msg_project_activated', pid: @project.id, title: @project.title)}
 p
-  | Руководитель проекта: #{@project.owner.full_name}
+  | #{t('.msg_project_head', full_name: @project.owner.full_name)}
 p
-  | На данный момент доступ предоставлен к кластерам:
+  | #{t('.msg_access')}:
   ul
-    - @project.accesses.with_state(:opened).each do |access|
-      li = "#{access.cluster.name} (#{access.cluster.host}). Квоты: #{access.quota_resources_info}"
+    - @project.accesses.where(:state=>:opened).each do |access|
+      li = "#{access.cluster.name} (#{access.cluster.host}). #{t('.msg_quotas')}: #{access.quota_resources_info}"
 p
-  | Логины участников проекта:
+  | #{t('.msg_project_members_logins')}:
   ul
-    - @project.members.with_project_access_state(:allowed).each do |member|
+    - @project.members.where(:project_access_state=>:allowed).each do |member|
       li = member.login
 
 = render "footer"

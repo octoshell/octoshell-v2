@@ -1,7 +1,7 @@
 = render "header"
 p
-  | Заявка №#{@request.id} для доступа к кластеру #{@request.cluster.name} одобрена! Для вашего проекта «#{@request.project.title}» выделен доступ со следующими квотами: #{@request.requested_resources_info}.
+  | #{t('.msg_request_accepted', id: @request.id, name: @request.cluster.name, pid: @request.project.id, title: @request.project.title, info: @request.requested_resources_info)}
 p
-  | Желаем вам плодотворной работы и успехов в исследовании!
+  | #{t('.msg_comment')}
 
 = render "footer"

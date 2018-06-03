@@ -17,65 +17,84 @@ module Core
     validates :project, presence: true
     validates :surety_members, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }
 
+    validates :scans, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }, 
+              :if => -> {aasm(:state).current_state == :confirmed}
+
     accepts_nested_attributes_for :scans, allow_destroy: true, :reject_if => ->(attr){ attr["image"].blank?  }
 
     mount_uploader :document, SuretyDocumentUploader
 
     after_create :save_rft_document
 
-    state_machine initial: :generated do
-      state :generated
-      state :confirmed do
-        validates :scans, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }
-      end
+    include AASM
+    include ::AASM_Additions
+    aasm(:state, :column => :state) do
+      state :generated, :initial => true
+      state :confirmed
+      #!!!  FIXIT!
+      #do
+      #  validates :scans, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }
+      #end
       state :rejected
       state :active
       state :closed
 
       event :confirm do
-        transition [:generated, :rejected] => :confirmed
+        transitions :from => [:generated, :rejected], :to => :confirmed, :after => :prepare_for_approvement
       end
 
       event :reject do
-        transition :confirmed => :rejected
+        transitions :from => :confirmed, :to => :rejected, :after => :notify_onwer_about_rejection
       end
 
       event :activate do
-        transition [:confirmed, :generated] => :active
+        transitions :from => [:confirmed, :generated], :to => :active, :after => :activate_project_accounts
       end
 
       event :close do
-        transition [:generated, :confirmed, :rejected, :active] => :closed
+        transitions :from => [:generated, :confirmed, :rejected, :active], :to => :closed, :after => :substract_project_accounts
       end
 
-      inside_transition :on => :confirm, &:prepare_for_approvement
-      inside_transition :on => :reject, &:notify_onwer_about_rejection
-      inside_transition :on => :activate, &:activate_project_accounts
-      inside_transition :on => :close, &:substract_project_accounts
+      # inside_transition :on => :confirm, &:prepare_for_approvement
+      # inside_transition :on => :reject, &:notify_onwer_about_rejection
+      # inside_transition :on => :activate, &:activate_project_accounts
+      # inside_transition :on => :close, &:substract_project_accounts
     end
 
     def prepare_for_approvement
       self.save_rft_document
-      Core::MailerWorker.perform_async(:surety_confirmed, id)
+      ::Core::MailerWorker.perform_async(:surety_confirmed, id)
     end
 
     def activate_project_accounts
-      Core::MailerWorker.perform_async(:surety_accepted, id)
-      Core::Member.where(project_id: project_id, user_id: member_ids).with_project_access_state([:unsured, :suspended]).map(&:activate!)
+      ::Core::MailerWorker.perform_async(:surety_accepted, id)
+      ::Core::Member.where(project_id: project_id, user_id: member_ids).where(:project_access_state=>[:unsured, :suspended]).map(&:activate!)
       project.synchronize! if project.active?
     end
 
     def notify_onwer_about_rejection
-      Core::MailerWorker.perform_async(:surety_rejected, id)
+      ::Core::MailerWorker.perform_async(:surety_rejected, id)
     end
 
     def substract_project_accounts
-      Core::Member.where(project_id: project_id, user_id: member_ids).map(&:substract_from_surety!)
+      ::Core::Member.where(project_id: project_id, user_id: member_ids).map(&:substract_from_surety!)
     end
 
     def name
       "#{Surety.model_name.human} #{I18n.t("util.number")}#{id}"
     end
+
+    # def human_state_name
+    #   state.to_s
+    # end
+
+    # def self.human_state_event_name e
+    #   e.to_s
+    # end
+
+    # def state_name
+    #   state.to_s
+    # end
 
     def to_s
       name

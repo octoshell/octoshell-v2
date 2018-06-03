@@ -1,9 +1,16 @@
 module Core
   class Admin::CriticalTechnologiesController < Admin::ApplicationController
-    def critical_technology_params
+    private
+    def critical_technology_params #FIXIT does not work... WHY?????
       params.require(:critical_technology).permit(:name)
     end
+    
+    public
 
+    def crit_tech_params
+      params.require(:critical_technology).permit(:name)
+    end
+    
     def index
       @critical_technologies = CriticalTechnology.order(:name)
     end
@@ -13,7 +20,7 @@ module Core
     end
 
     def create
-      @critical_technology = CriticalTechnology.new(critical_technology_params)
+      @critical_technology = CriticalTechnology.new(self.crit_tech_params)
       if @critical_technology.save
         redirect_to admin_critical_technologies_path
       else
@@ -27,7 +34,8 @@ module Core
 
     def update
       @critical_technology = CriticalTechnology.find(params[:id])
-      if @critical_technology.update_attributes(critical_technology_params)
+      if @critical_technology.update_attributes(self.crit_tech_params)
+        @critical_technology.save
         redirect_to admin_critical_technologies_path
       else
         render :edit

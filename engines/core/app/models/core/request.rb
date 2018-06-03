@@ -1,5 +1,6 @@
 module Core
   class Request < ActiveRecord::Base
+
     # TODO: remove creator, delegate owner to project
     belongs_to :creator, class_name: Core.user_class, foreign_key: :creator_id
     delegate :owner, to: :project
@@ -12,29 +13,29 @@ module Core
 
     validates :project, :cluster, presence: true
 
-    state_machine :state, initial: :pending do
-      state :pending
+    include AASM
+    include ::AASM_Additions
+    aasm(:state, :column => :state) do
+      state :pending, :initial => true
       state :active
       state :closed
 
       event :approve do
-        transition :pending => :active
-      end
-
-      event :reject do
-        transition :pending => :closed
-      end
-
-      after_transition :pending => :active do |request, _|
-        Core::MailerWorker.perform_async(:request_accepted, request.id)
-        Request.create_access_for(request)
-        if request.project.members.with_project_access_state(:allowed).any? && request.project.pending?
-          request.project.activate!
+        transitions :from => :pending, :to => :active
+        after do
+          ::Core::MailerWorker.perform_async(:request_accepted, id)
+          Request.create_access_for(self)
+          if project.members.where(:project_access_state=>:allowed).any? && project.pending?
+            project.activate!
+          end
         end
       end
 
-      after_transition :pending => :closed do |request, _|
-        Core::MailerWorker.perform_async(:request_rejected, request.id)
+      event :reject do
+        transitions :from => :pending, :to => :closed
+        after do
+          ::Core::MailerWorker.perform_async(:request_rejected, id)
+        end
       end
     end
 

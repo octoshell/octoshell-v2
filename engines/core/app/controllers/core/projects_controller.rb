@@ -41,6 +41,7 @@ module Core
     def update
       @project = current_user.owned_projects.find(params[:id])
       if @project.update(project_params)
+        @project.save
         redirect_to @project, notice: t("flash.project_updated")
       else
         render :edit
@@ -56,12 +57,14 @@ module Core
     def suspend
       @project = Project.find(params[:id])
       @project.suspend!
+      @project.save
       redirect_to @project
     end
 
     def reactivate
       @project = Project.find(params[:id])
       @project.reactivate!
+      @project.save
       redirect_to @project
     end
 
@@ -74,18 +77,21 @@ module Core
     def resurrect
       @project = Project.find(params[:id])
       @project.resurrect!
+      @project.save
       redirect_to @project
     end
 
     def finish
       @project = Project.find(params[:id])
       @project.finish!
+      @project.save
       redirect_to @project
     end
 
     def invite_member
       @project = current_user.owned_projects.find(params[:id])
       @project.invite_member(params.fetch(:member)[:id])
+      @project.save
 
       unless @project.errors.empty?
         flash[:alert] = @project.errors.full_messages.to_sentence
@@ -97,6 +103,7 @@ module Core
     def drop_member
       @project = current_user.owned_projects.find(params[:id])
       @project.drop_member(params.fetch(:user_id))
+      @project.save
 
       redirect_to @project
     end
@@ -104,23 +111,32 @@ module Core
     def toggle_member_access_state
       member = Member.find(params[:member_id])
       member.toggle_project_access_state!
+      member.save
 
       head :ok
     end
 
     def invite_users_from_csv
       @project = current_user.owned_projects.find(params[:id])
-      file = params[:invitation][:csv_file]
-      CSV.foreach(file.path) do |row|
-        email = row.first
-        initials = row.last
-        user = User.find_by_email(email)
-        if user.present?
-          @project.invite_member(user.id) unless @project.users.exists?(id: user.id)
-        else
-          @project.invitations.find_or_create_by!(user_email: email, user_fio: initials)
-        end
+      if params[:invitation].nil?
+        return redirect_to @project, notice: t("flash.no_file_selected")
       end
+      file = params[:invitation][:csv_file]
+      begin
+        CSV.foreach(file.path) do |row|
+          email = row.first.downcase
+          initials = row.last
+          user = User.find_by_email(email)
+          if user.present?
+            @project.invite_member(user.id) unless @project.users.exists?(id: user.id)
+          else
+            @project.invitations.find_or_create_by!(user_email: email, user_fio: initials)
+          end
+        end
+      rescue => e
+        return redirect_to @project, notice: t("flash.bad_csv_file")+e.message
+      end
+      @project.save
       redirect_to @project
     end
 

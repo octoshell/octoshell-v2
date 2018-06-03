@@ -1,49 +1,85 @@
 ru:
   authentication:
+    signup: "Регистрация"
+    signin: "Вход"
+    logout: "Выход"
+    users:
+      new:
+        title: "Регистрация"
+        minimum_password_length: "Минимум 6 символов"
+        sign_up: "Зарегистрироваться"
+        cond_accepted: Я разрешаю МГУ им.М.В.Ломоносова обработку моих персональных данных
+      confirmation:
+        title: "Подтвердите свой email"
+        message: "На ваш email %{email} отправлена инструкция по активации аккаунта."
+    sessions:
+      new:
+        title: "Авторизация"
+        forgot_password: "Забыли пароль?"
+        or: "или"
+        sign_in: "Войти"
+        have_not_received_confirmation_instructions: "Не получили инструкции по подтверждению?"
+    passwords:
+      new:
+        title: "Восстановление пароля"
+        send: "Отправить"
+    activations:
+      new:
+        title: "Инструкции по активации"
+        send: "Отправить"
     mailer:
       activation_needed:
-        subject: Активация аккаунта
-        text: |-
+        subject: "Активация аккаунта"
+        activate: "активировать"
+        text: |
           <p> Для активации аккаунта пройдите по ссылке %{activate_user_link}.</p>
           <p> Если у Вас возникли проблемы с переходом по ссылке скопируйте и вставьте её в браузер %{activate_user_link_plain}.</p>
       activation_success:
-        subject: Активация в прошла успешно
-        text: Вы успешно активировали свой аккаунт.
+        subject: "Активация в прошла успешно"
+        text: "Вы успешно активировали свой аккаунт."
       reset_password:
-        subject: Восстановление пароля
-        text: |-
+        subject: "Восстановление пароля"
+        change_password: "Сменить пароль"
+        text: |
           <p> Были запрошены инструкции по восстановлению пароля аккаунта Octoshell.</p>
           <p> Для смены пароля проследуйте по ссылке %{change_password_link}.</p>
           <p> Если у Вас возникли проблемы с переходом по ссылке, скопируйте и вставьте её в браузер %{change_password_link_plain}.</p>
     flash:
-      user_is_activated: Пользователь активирован.
-      user_is_not_registered: Пользователь не зарегистрирован.
-      activation_instructions_are_sent: Инструкции по активации высланы.
-      password_reset_instructions_are_sent: Инструкции по смене пароля отправлены
-      user_is_not_activated: Пользователь еще не активирован
-      user_is_already_activated: Пользователь уже активирован.
+      user_is_activated: "Пользователь активирован."
+      user_is_not_registered: "Пользователь не зарегистрирован."
+      activation_instructions_are_sent: "Инструкции по активации высланы."
+      password_reset_instructions_are_sent: "Инструкции по смене пароля отправлены"
+      user_is_not_activated: "Пользователь еще не активирован"
+      user_is_already_activated: "Пользователь уже активирован."
+      conditions_must_be_accepted: "Для регистрации необходимо принять условия."
     helpers:
       submit:
-        create: Создать
-        update: Сохранить
+        create: "Создать"
+        update: "Сохранить"
         user:
-          create: Зарегистрироваться
+          create: "Зарегистрироваться"
 
   activerecord:
     models:
-      user: Пользователь
+      user: "Пользователь"
     attributes:
       user:
-        email: Email
-        password: Пароль
-        password_confirmation: Подтверждение пароля
-        created_at: Зарегистрирован
-        last_login_at: Последний раз заходил
+        email: "Email"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+        created_at: "Зарегистрирован"
+        last_login_at: "Последний раз заходил"
     errors:
       models:
         user:
           attributes:
             base:
-              user_is_not_registered: Пользователь не зарегистрирован.
-              user_is_not_activated: Пользователь еще не активирован. Пройдите по ссылке в письме об активации.
-              wrong_password: Неверный пароль.
+              user_is_not_registered: "Пользователь не зарегистрирован."
+              user_is_not_activated: "Пользователь еще не активирован. Пройдите по ссылке в письме об активации."
+              wrong_password: "Неверный пароль."
+
+  layouts:
+    authentication:
+      mailer:
+        hello: "Здравствуйте!"
+        regards: "С уважением, Octoshell."

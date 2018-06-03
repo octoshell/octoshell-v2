@@ -10,12 +10,14 @@ module Sessions
     def accept
       @report = get_report(params[:report_id])
       @report.accepted? || @report.accept!
+      @report.save
       redirect_to @report
     end
 
     def decline_submitting
       @report = get_report(params[:report_id])
       @report.can_not_be_submitted? || @report.decline_submitting!
+      @report.save
       render :edit
     end
 
@@ -26,6 +28,7 @@ module Sessions
     def update
       @report = get_report(params[:id])
       if @report.update(report_params[:report])
+        @report.save
         redirect_to reports_path
       else
         render :edit, alert: @report.errors.full_messages
@@ -53,6 +56,7 @@ module Sessions
       if report_params[:report].present? && report_params[:report][:materials].present?
         @report.update(report_params[:report])
         @report.submit! unless @report.submitted?
+        @report.save
         redirect_to @report
       else
         redirect_to @report, alert: t("flash.you_must_provide_report_materials")
@@ -64,6 +68,7 @@ module Sessions
       if report_params[:report].present? && report_params[:report][:materials].present?
         @report.update(report_params[:report])
         @report.resubmit if @report.rejected?
+        @report.save
         redirect_to @report
       else
         redirect_to @report, alert: t("flash.you_must_provide_report_materials")

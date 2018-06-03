@@ -104,7 +104,7 @@ class Synchronizer
     (state == "active") ||
       ((state == "blocked") ? unblock_member(member) : add_member(member))
 
-    member.credentials.with_state(:active).each do |credential|
+    member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
       add_credential(member, path) unless credential_exists_on_cluster?(member, path)
     end
@@ -113,7 +113,7 @@ class Synchronizer
   def deactivate_member(member, state)
     (state == "blocked") || block_member(member)
 
-    member.credentials.with_state(:active).each do |credential|
+    member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
       drop_credential(member, path) unless credential_exists_on_cluster?(member, path)
     end
@@ -126,7 +126,7 @@ class Synchronizer
   def drop_member(member, state)
     (state != "closed") && close_member(member)
 
-    member.credentials.with_state(:active).each do |credential|
+    member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
       drop_credential(member, path) unless credential_exists_on_cluster?(member, path)
     end
