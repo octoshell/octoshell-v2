@@ -259,26 +259,20 @@ module Pack
     def create_temp_clusterver(cluster_id)
       clustervers.new(core_cluster_id: cluster_id).mark_for_destruction
     end
+
     def create_temp_clustervers
       if new_record?
-        cl= ::Core::Cluster.all
+        cl = ::Core::Cluster.all
         cl.each do |t|
-
-            create_temp_clusterver t.id
-
+          create_temp_clusterver t.id
         end
       else
-        cl= ::Core::Cluster.select('core_clusters.id ,pack_clustervers.id as ex').uniq.joins("LEFT JOIN pack_clustervers ON  (core_clusters.id = pack_clustervers.core_cluster_id AND pack_clustervers.version_id=#{self.id})")
-
+        cl = ::Core::Cluster.select('core_clusters.id ,pack_clustervers.id as ex').uniq.joins("LEFT JOIN pack_clustervers ON  (core_clusters.id = pack_clustervers.core_cluster_id AND pack_clustervers.version_id=#{self.id})")
         cl.each do |t|
-          if !t.ex
-            create_temp_clusterver t.id
-          end
+          !t.ex && create_temp_clusterver(t.id)
         end
       end
-
     end
-
 
     def edit_opts
       hash = @params.delete(:version_options_attributes)
@@ -291,7 +285,6 @@ module Pack
           hash.delete_if { |key, val| val[:id].to_i == opt_id }
       end
       self.version_options_attributes = hash
-
     end
 
 
@@ -303,7 +296,8 @@ module Pack
       assign_attributes(version_params @params)
     end
 
-    def update_clustervers hash
+    def update_clustervers(hash)
+      puts hash
       return unless hash
       hash.each_value do |h|
         method_name = h.delete(:action)
@@ -319,10 +313,10 @@ module Pack
           raise "incorrect attribute in clustervers"
         end
         needed_cl = clustervers.detect { |cl| cl.core_cluster_id == h[:core_cluster_id].to_i }
-        needed_cl ||= clustervers.new
+        needed_cl ||= clustervers.new h
         if destroy
           needed_cl.mark_for_destruction
-        else
+        elsif !needed_cl.new_record?
           needed_cl.assign_attributes(h)
         end
       end

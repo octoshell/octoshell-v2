@@ -7,7 +7,6 @@ div class="row"
         p
           =link_to (t "mailer_messages.show_vers" ), admin_package_version_path(@package,@version)
     = bootstrap_form_for [:admin,@package,@version] do |f|
-      -@f=f
       div class="row"
         div class="col-xs-9"
           = f.text_field :name
@@ -21,7 +20,6 @@ div class="row"
               = f.check_box :deleted
           =f.form_group :service
             = f.check_box :service
-
           =f.form_group :delete_on_expire
             = f.check_box :delete_on_expire
           = f.hidden_field :lock_col
@@ -55,5 +53,5 @@ div class="row"
         br
 
         = f.submit t("buttons.save", default: "Save")
-= javascript_tag do
-  = render(:partial => 'form', :formats => [:js])
+        = javascript_tag do
+          = render(:partial => 'form', :formats => [:js],locals: {f: f})
