@@ -3,6 +3,7 @@ require_dependency "jobstat/application_controller"
 module Jobstat
   class JobController < ApplicationController
     include JobHelper
+
     def show
       @job = Job.find(params["id"])
       @job_perf = @job.get_performance
@@ -24,6 +25,7 @@ module Jobstat
                    command: params["command"],
                    state: params["state"],
                    num_cores: params["num_cores"],
+                   num_nodes: params["num_nodes"],
                   })
     end
 

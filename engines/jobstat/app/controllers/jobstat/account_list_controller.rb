@@ -66,38 +66,5 @@ module Jobstat
         .offset(params[:offset].to_i)
         .limit(@PER_PAGE)
     end
-
-    def load_defaults
-      #FIXME!
-      #TODO: load defaults from file
-      @PER_PAGE = 100
-
-      @clusters_options = [
-          ["Lomonosov-1", "lomonosov-1"],
-          ["Lomonosov-2", "lomonosov-2"],
-      ]
-
-      @states_options = [["All", "ALL"],
-                         ["Completed", "COMPLETED"],
-                         ["Failed", "FAILED"],
-                         ["Cancelled", "CANCELLED"],
-                         ["Timeout", "TIMEOUT"],
-                         ["Node failed", "NODE_FAIL"],
-      ]
-
-      @partitions_options = [["All", "ALL"],
-                             ["compute", "compute"],
-                             ["gpu", "gpu"],
-                             ["regular4", "regular4"],
-                             ["regular6", "regular6"],
-                             ["test", "test"],
-                             ["gputest", "gputest"],
-                             ["hdd4", "hdd4"],
-                             ["hdd6", "hdd6"],
-                             ["smp", "smp"],
-      ]
-
-      @default_cluster = "lomonosov-2"
-    end
   end
 end

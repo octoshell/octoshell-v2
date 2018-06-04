@@ -2,8 +2,6 @@ module Jobstat
   class ApplicationController < ActionController::Base
     layout "layouts/application"
 
-    before_filter :require_login
-
     def root_path
       main_app.root_path
     end
@@ -97,8 +95,8 @@ module Jobstat
       "thr_low_l2_cache_miss" => "l2 miss < 3 * 10 ** 6 misses/s",
       "thr_high_llc_cache_miss" => "llc miss > 2 * 10 ** 6 misses/s",
       "thr_low_llc_cache_miss" => "llc miss < 1 * 10 ** 3 misses/s",
-      "thr_high_network_locality" => "network locality > 5",
-      "thr_low_network_locality" => "network locality < 2",
+      "thr_high_network_sparsity" => "network sparcity > 5",
+      "thr_low_network_sparsity" => "network sparcity < 2",
     }
 
     def get_thresholds_conditions(job)
@@ -170,6 +168,40 @@ module Jobstat
     helper_method :get_primary_conditions
     helper_method :get_smart_conditions
 
+    def load_defaults
+      #FIXME!
+      #TODO: load defaults from file
+      @PER_PAGE = 100
+
+      @clusters_options = [
+          ["Lomonosov-1", "lomonosov-1"],
+          ["Lomonosov-2", "lomonosov-2"],
+      ]
+
+      @states_options = [["All", "ALL"],
+                         ["Completed", "COMPLETED"],
+                         ["Failed", "FAILED"],
+                         ["Cancelled", "CANCELLED"],
+                         ["Timeout", "TIMEOUT"],
+                         ["Node failed", "NODE_FAIL"],
+      ]
+
+      @partitions_options = [["All", "ALL"],
+                             ["compute", "compute"],
+                             ["low_io", "low_io"],
+                             ["pascal", "pascal"],
+                             ["gpu", "gpu"],
+                             ["regular4", "regular4"],
+                             ["regular6", "regular6"],
+                             ["test", "test"],
+                             ["gputest", "gputest"],
+                             ["hdd4", "hdd4"],
+                             ["hdd6", "hdd6"],
+                             ["smp", "smp"],
+      ]
+
+      @default_cluster = "lomonosov-2"
+    end
 
   end
 end

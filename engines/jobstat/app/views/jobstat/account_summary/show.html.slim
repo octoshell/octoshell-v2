@@ -4,20 +4,40 @@ div
   = render "form"
 
   br
+  h1 = "Total"
 
   table class="table table-bordered table-striped"
     thead
       tr
         td = "cluster"
-        td = "partition"
-        td = "state"
         td = "count"
-        td = "total CPU time"
+        td = "cores * hours"
+        td = "gpus * hours"
     tbody
-      - @jobs.each do |job|
+      - @total_data.keys.each do|cluster|
         tr
-          td = job.cluster
-          td = job.partition
-          td = job.state
-          td = job.count
-          td = job.sum
+          td = cluster
+          td = @total_data[cluster][0]
+          td = @total_data[cluster][1]
+          td = @total_data[cluster][2]
+
+
+
+  - @data.keys.each do |cluster|
+    h1 = "#{cluster}"
+    table class="table table-bordered table-striped"
+      thead
+        tr
+          td = "partition"
+          td = "state"
+          td = "count"
+          td = "allocated nodes * job hours"
+      tbody
+        - @data[cluster].keys.each do |partition|
+          - @data[cluster][partition].keys.each_with_index do |state, index|
+            tr
+              - if index == 0
+                td rowspan = @data[cluster][partition].keys.length #{partition}
+              td = "#{state}"
+              td = @data[cluster][partition][state][0]
+              td = @data[cluster][partition][state][1]

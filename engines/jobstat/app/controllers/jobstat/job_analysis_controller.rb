@@ -2,6 +2,9 @@ require_dependency "jobstat/application_controller"
 
 module Jobstat
   class JobAnalysisController < ApplicationController
+    before_filter :require_login
+
+    rescue_from MayMay::Unauthorized, with: :not_authorized
 
     def show
       @job = Job.find(params["id"])

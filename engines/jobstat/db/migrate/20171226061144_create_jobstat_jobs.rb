@@ -13,6 +13,7 @@ class CreateJobstatJobs < ActiveRecord::Migration
       t.string :command, :limit => 1024
       t.string :state, :limit => 32, :index => true
       t.bigint :num_cores
+      t.bigint :num_nodes
 
       t.timestamps null: false
     end
