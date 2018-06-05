@@ -2,10 +2,6 @@ require_dependency "jobstat/application_controller"
 
 module Jobstat
   class JobAnalysisController < ApplicationController
-    before_filter :require_login
-
-    rescue_from MayMay::Unauthorized, with: :not_authorized
-
     def show
       @job = Job.find(params["id"])
 
@@ -14,9 +10,9 @@ module Jobstat
       @smart_conditions = get_smart_conditions(@job)
 
       res = {}
-      res = res.merge(@@thresholds_conditions)
-      res = res.merge(@@primary_conditions)
-      res = res.merge(@@smart_conditions)
+      res = res.merge(@thresholds_conditions)
+      res = res.merge(@primary_conditions)
+      res = res.merge(@smart_conditions)
       @condition_descriptions = res
     end
   end

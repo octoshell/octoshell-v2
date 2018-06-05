@@ -4,13 +4,9 @@ module Jobstat
   class AccountListController < ApplicationController
     include JobHelper
 
-    before_filter :require_login
-
-    rescue_from MayMay::Unauthorized, with: :not_authorized
-
     def index
-      fill_owned_logins
-      fill_involved_logins
+      @owned_logins = get_owned_logins
+      @involved_logins = get_involved_logins
       @params = get_defaults.merge(params.symbolize_keys)
 
       query_logins = (@params[:involved_logins] | @params[:owned_logins]) & (@involved_logins | @owned_logins)
@@ -35,8 +31,6 @@ module Jobstat
     protected
 
     def get_defaults
-      load_defaults unless @clusters_options
-
       {:start_time => Date.today.beginning_of_month.strftime("%d.%m.%Y"),
        :end_time => Date.today.strftime("%d.%m.%Y"),
        :cluster => @default_cluster,

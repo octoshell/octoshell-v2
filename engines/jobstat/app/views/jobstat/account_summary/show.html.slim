@@ -1,37 +1,43 @@
+== '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/css/theme.blue.min.css"></script>'
+
 div
   h1 = "Statistics on all submitted jobs"
 
   = render "form"
 
   br
-  h1 = "Total"
+  h1 = "Всего"
 
-  table class="table table-bordered table-striped"
+  table class="tablesorter-blue"
     thead
       tr
-        td = "cluster"
-        td = "count"
-        td = "cores * hours"
-        td = "gpus * hours"
+        td style="width: 50%" = "Суперкомпьютер"
+        td = "Количество"
+        td = "ЦПУ ядро * час"
+        td = "ГПУ * час"
     tbody
-      - @total_data.keys.each do|cluster|
+      - @total_cluster_data.each do |key, value|
         tr
-          td = cluster
-          td = @total_data[cluster][0]
-          td = @total_data[cluster][1]
-          td = @total_data[cluster][2]
-
-
+          td = "#{@clusters[key].name}"
+          td = value[0]
+          td = value[1]
+          td = value[2]
+      tr
+        td = "Всего"
+        td = @total_data[0]
+        td = @total_data[1]
+        td = @total_data[2]
 
   - @data.keys.each do |cluster|
-    h1 = "#{cluster}"
-    table class="table table-bordered table-striped"
+    h1 = "#{@clusters[cluster].name}"
+    table class="tablesorter-blue"
       thead
         tr
-          td = "partition"
-          td = "state"
-          td = "count"
-          td = "allocated nodes * job hours"
+          td style="width: 25%" = "Раздел"
+          td style="width: 25%" = "Статус"
+          td = "Количество"
+          td = "ЦПУ ядро * час"
+          td = "ГПУ * час"
       tbody
         - @data[cluster].keys.each do |partition|
           - @data[cluster][partition].keys.each_with_index do |state, index|
@@ -41,3 +47,4 @@ div
               td = "#{state}"
               td = @data[cluster][partition][state][0]
               td = @data[cluster][partition][state][1]
+              td = @data[cluster][partition][state][2]

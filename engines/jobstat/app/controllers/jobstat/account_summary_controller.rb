@@ -2,10 +2,6 @@ require_dependency "jobstat/application_controller"
 
 module Jobstat
   class AccountSummaryController < ApplicationController
-    before_filter :require_login
-
-    rescue_from MayMay::Unauthorized, with: :not_authorized
-
     def show
       year = Time.new.year
       defaults = {:start_time => "01.01.#{year - 1}",
@@ -14,8 +10,8 @@ module Jobstat
                   :owned_logins => []
       }
 
-      fill_owned_logins()
-      fill_involved_logins()
+      @owned_logins = get_owned_logins
+      @involved_logins = get_involved_logins
 
       @params = defaults.merge(params.symbolize_keys)
 
@@ -29,57 +25,31 @@ module Jobstat
       @jobs = @jobs.select('EXTRACT( hours from SUM(num_nodes * (end_time - start_time))) as sum, count(*) as count, cluster, partition, state')
       @jobs = @jobs.group(:cluster, :partition, :state).order(:cluster, :partition, :state)
 
+# compresss data list to hash
       @data = {}
+      @total_cluster_data = {}
+      @total_data = [0, 0, 0]
 
       @jobs.each do |job|
+        cluster = @clusters[job.cluster]
+        partition = cluster.partitions[job.partition]
+
+
         cluster_data = @data.fetch(job.cluster, {})
         partition_data = cluster_data.fetch(job.partition, {})
 
-        partition_data[job.state] = [job.count, job.sum]
+        entry = [job.count,
+          job.sum * partition["cores"],
+          job.sum * partition["gpus"]]
+
+        partition_data[job.state] = entry
         cluster_data[job.partition] = partition_data
-
         @data[job.cluster] = cluster_data
-      end
 
-      @queue_settings = {
-        "lomonosov-2" => {
-          "compute" => [14, 1],
-          "low_io" => [14, 1],
-          "compute_prio" => [14, 1],
-          "test" => [14, 1],
-          "pascal" => [12, 2],
-        },
-        "lomonosov-1" => {
-          "regular-4" => [8, 0],
-          "regular-6" => [12, 0],
-          "hdd-4" => [8, 0],
-          "hdd-6" => [12, 0],
-          "test" => [8, 0],
-          "gpu" => [8, 2],
-          "gputest" => [8, 2],
-        }
-      }
+        val = @total_cluster_data.fetch(cluster.id, [0, 0, 0])
 
-      @total_data = {}
-
-      @jobs.each do |job|
-        val = @total_data.fetch(job.cluster, [0, 0, 0])
-
-        begin
-          val[0] += job.count
-        rescue Exception
-        end
-
-        begin
-          val[1] += job.sum * @queue_settings[job.cluster][job.partition][0]
-        rescue Exception
-        end
-
-        begin
-          val[2] += job.sum * @queue_settings[job.cluster][job.partition][1]
-        rescue Exception
-        end
-        @total_data[job.cluster] = val
+        @total_cluster_data[job.cluster] = [val, entry].transpose.map {|x| x.reduce(:+)}
+        @total_data = [@total_data, entry].transpose.map {|x| x.reduce(:+)}
       end
     end
   end

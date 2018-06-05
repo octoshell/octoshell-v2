@@ -1,5 +1,7 @@
 module Jobstat
   class Job < ActiveRecord::Base
+    include JobHelper
+
     def get_performance
       cpu_user = FloatDatum.where(job_id: id, name: "cpu_user").take
       instructions = FloatDatum.where(job_id: id, name: "instructions").take
@@ -28,114 +30,6 @@ module Jobstat
       StringDatum.where(job_id: id, name: "tag").pluck(:value)
     end
 
-    def get_cpu_user_ranking(value)
-      if value.nil?
-        ""
-      elsif value < 20
-        "low"
-      elsif value < 80
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_instructions_ranking(value)
-      if value.nil?
-        ""
-      elsif value < 100000000
-        "low"
-      elsif value < 400000000
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_loadavg_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if cluster == "lomonosov-1"
-        if value < 2
-          "low"
-        elsif value < 7
-          "average"
-        elsif value < 15
-          "good"
-        else
-          "low"
-        end
-      elsif cluster == "lomonosov-2"
-        if value < 2
-          "low"
-        elsif value < 7
-          "average"
-        elsif value < 29
-          "good"
-        else
-          "low"
-        end
-      end
-    end
-
-    def get_ipc_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if value < 0.5
-        "low"
-      elsif value < 1.0
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_gpu_load_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if value < 20
-        "low"
-      elsif value < 80
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_ib_rcv_data_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if value < 10
-        "low"
-      elsif value < 100
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_ib_xmit_data_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if value < 10
-        "low"
-      elsif value < 100
-        "average"
-      else
-        "good"
-      end
-    end
-
     def get_ranking
       performance = get_performance
 
@@ -148,6 +42,23 @@ module Jobstat
           ib_xmit_data: get_ib_xmit_data_ranking(performance[:ib_xmit_data]),
           ib_rcv_data: get_ib_rcv_data_ranking(performance[:ib_rcv_data]),
       }
-    end 
+    end
+
+    def get_thresholds_conditions
+      get_tags & Conditions::THRESHOLDS_CONDITIONS.keys
+    end
+  
+    def get_primary_conditions
+      get_tags & Conditions::PRIMARY_CONDITIONS.keys
+    end
+
+    def get_smart_conditions
+      get_tags & Conditions::SMART_CONDITIONS.keys
+    end
+
+    #helper_method :get_thresholds_conditions
+    #helper_method :get_primary_conditions
+    #helper_method :get_smart_conditions
+
   end
 end

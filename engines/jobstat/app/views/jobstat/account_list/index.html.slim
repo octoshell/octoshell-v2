@@ -1,16 +1,18 @@
 == '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.2/js/jquery.tablesorter.min.js"></script> '
 
+== '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/css/theme.blue.min.css"></script>'
+
 css:
   .job_metric_low {
-    background-color: #ff8080
+    background-color: #ff8080 !important;
   }
 
   .job_metric_average {
-    background-color: #ffff80
+    background-color: #ffff80 !important;
   }
 
   .job_metric_good {
-    background-color: #80ff80
+    background-color: #80ff80 !important;
   }
 
   .task_state_COMPLETED {
@@ -46,7 +48,7 @@ h3 = "Job table query interface"
 
 div
   h3 = "Results (limited to 100)"
-  table id="jobs" class="table table-bordered table-striped"
+  table id="jobs" class="table table-bordered tablesorter-blue"
     thead
       tr
         td = "job issues"
@@ -70,7 +72,7 @@ div
       - @jobs.each do |job|
         - job_performance = job.get_performance
         - job_ranking = job.get_ranking
-        - job_cond = get_smart_conditions(job)
+        - job_cond = job.get_smart_conditions
         tr
           td
             - if job_cond.size() > 0
