@@ -86,7 +86,6 @@ function AccessViewer(ids) {
               control.domEl.find(".alpaca-form-button-submit").text('<%=t('.cancel')%>');
               break;
             case "denied":
-              console.log(control.domEl.find('.accesses-messages').length);
               control.domEl.find('.accesses-messages').html('<font color="red"> <%= t("mailer_messages.denied") %> </font>')
               break;
           }
@@ -127,7 +126,7 @@ function AccessViewer(ids) {
                                                                     minDate: 0
                                                                   });
             //Alpaca не фурычит с динамическими полями
-            //Сделать две формы                                                       
+            //Сделать две формы
         }
       }
     });

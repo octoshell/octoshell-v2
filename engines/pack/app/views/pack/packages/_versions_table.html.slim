@@ -44,10 +44,8 @@
             td
               =render "clustervers",clustervers: version.clustervers
 
-            td id="accesses_#{version.id}"  class="col-xs-3"
+            td class="accesses-info" version_id=version.id  class="col-xs-3"
 
-
-              =render "accesses",accesses: version.user_accesses
             td
               - if version.available_for_user?
                 font color="green"

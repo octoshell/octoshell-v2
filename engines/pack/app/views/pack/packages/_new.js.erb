@@ -27,6 +27,7 @@ bottomForm.alpaca({
   },
   "options":{
     "focus":"",
+    "hideInitValidationError":true,
     "fields":{
       "forever":{
         "optionLabels": labels,
@@ -64,6 +65,7 @@ bottomForm.alpaca({
                      var promise = this.ajaxSubmit();
                      promise.done(function(arg){
                        viewer.accesses = arg.accesses;
+                       console.log(arg.accesses);
                        viewer.renderFormForVersion(version_id,sel_value);
                        $(`.btn_access[version_id='${version_id}']`).parents('tr')
                        .next().find('p.server-messages').html('<font color="green"><%=t(".success")%></font>');

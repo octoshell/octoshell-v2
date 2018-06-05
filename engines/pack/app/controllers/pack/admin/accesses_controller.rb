@@ -2,58 +2,37 @@ require_dependency "pack/application_controller"
 
 module Pack
   class Admin::AccessesController < Admin::ApplicationController
-     
     rescue_from ActiveRecord::RecordNotFound do |ex|
       render "not_found"
     end
     before_action :access_init, only: [:edit, :show,:update,:destroy]
-
     def access_init
      @access = Access.preload_who.find(params[:id])
-     
-
     end
-
-    
-
-
     def index
-
-      
-           
       @q = Access.ransack(params[:q])
-                  
-     
-      
-       @accesses = @q.result(distinct: true).order(:id).page(params[:page]).per(20).preload_who.includes(:version)
-      respond_to do |format|
-        format.html
-        format.js{
-          render_paginator(@accesses)
-          }
-      end
-      
+      @accesses = @q.result(distinct: true).order(:id).page(params[:page]).per(1).preload_who.includes(:version)
     end
-    
+
     def show
-    
+
     end
 
     def manage_access
-      
-      
+
+
       begin
         access_init
         if access_params[:action]=='edit_by_hand'
-          @access.attributes= access_params.slice(:lock_version,:forever,:end_lic) 
+          @access.attributes= access_params.slice(:lock_version,:forever,:end_lic)
         else
           @access.attributes= access_params.slice(:lock_version,:action)
-        end 
+        end
         @access.new_end_lic= nil unless ["expired","allowed"].include?(@access.status)
 
         @access.allowed_by_id=current_user.id if @access.changes[:status] && @access.status=='allowed'
         if @access.save
-        
+
           @to='successful'
 
         else
@@ -63,12 +42,12 @@ module Pack
 
         rescue ActiveRecord::StaleObjectError
           @to='manage_access'
-          @message=t("stale_message") 
+          @message=t("stale_message")
           @access.restore_attributes
         rescue ActiveRecord::RecordNotFound
           @to='manage_access'
           @message= t("exception_messages.not_found") + t("exception_messages.not_found")
-        
+
       end
     end
 
@@ -77,13 +56,13 @@ module Pack
       @access.who_type="User"
     end
 
-    
+
 
     def create
-      
+
       @access = Access.new access_params
       @access.created_by_id=current_user.id
-      @access.allowed_by_id=current_user.id if @access.status=='allowed' 
+      @access.allowed_by_id=current_user.id if @access.status=='allowed'
       if @access.save
         redirect_to admin_access_path(@access)
       else
@@ -92,13 +71,13 @@ module Pack
     end
 
     def edit
-    
-     
+
+
     end
 
     def update
-     
-      @access.allowed_by_id=current_user.id if @access.changes[:status] && @access.status=='allowed' 
+
+      @access.allowed_by_id=current_user.id if @access.changes[:status] && @access.status=='allowed'
       if @access.update(access_params)
         redirect_to admin_access_path(@access.id)
       else
@@ -110,8 +89,8 @@ module Pack
       respond_to do |format|
       format.json do
 
-        
-        @records = Group.where("lower(name) like lower(:q)", q: "%#{params[:q].mb_chars}%") 
+
+        @records = Group.where("lower(name) like lower(:q)", q: "%#{params[:q].mb_chars}%")
         render json: { records: @records.page(params[:page])
           .per(params[:per]).map{ |v|  {text: v.name, id: v.id}  }, total: @records.count }
       end
@@ -120,21 +99,21 @@ module Pack
 
 
     def destroy
-      
-      
+
+
         @access.destroy
-      
+
       redirect_to admin_accesses_path
     end
 
-    private	
-   
+    private
 
 
-  
+
+
   	def access_params
-      params.require(:access).permit(:who_id,:forever,:action,:lock_version,:proj_or_user, :version_id, 
-        :new_end_lic,:end_lic,:from,:status,:user_id,:project_id,:who_type)   
+      params.require(:access).permit(:who_id,:forever,:action,:lock_version,:proj_or_user, :version_id,
+        :new_end_lic,:end_lic,:from,:status,:user_id,:project_id,:who_type)
     end
 
   end

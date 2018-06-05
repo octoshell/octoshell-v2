@@ -18,15 +18,18 @@ bottomForm.alpaca({
       },
       "versions_ids":{
       },
+      "lock_version":{
+      },
       "new_end_lic":{
-        "title": '<%=raw Pack::Access.human_attribute_name("end_lic")%>',
+        "title": '<%=raw Pack::Access.human_attribute_name("new_end_lic")%>',
         "required": true,
-        "dependencies": ["forever"]
+        "dependencies": ["new_end_lic_forever"]
       }
     }
   },
   "options":{
     "focus":"",
+    "hideInitValidationError":true,
     "fields":{
       "new_end_lic_forever":{
         "optionLabels": labels,
@@ -34,7 +37,7 @@ bottomForm.alpaca({
       },
       "new_end_lic":{
         "dependencies":{
-          "forever": "false"
+          "new_end_lic_forever": "false"
         }
       },
       "status":{
@@ -48,7 +51,11 @@ bottomForm.alpaca({
       },
       "versions_ids":{
         "type": "hidden"
+      },
+      "lock_version":{
+        "type": "hidden"
       }
+
     },
     "form": {
           "attributes": {
@@ -74,27 +81,26 @@ bottomForm.alpaca({
                        $(`.btn_access[version_id='${version_id}']`).parents('tr')
                        .next().find('p.server-messages').html(`<font color="red">${arg.responseJSON.error}</font>`);
                      });
-
-                    //  viewer.load();
-                    //  viewer.load
                    }
                 }
               },
     }
   },
   "data":{
-    "forever": false,
-    "status": "new",
+    "new_end_lic_forever": access.new_end_lic_forever || false,
+    "new_end_lic": access.new_end_lic,
+    "status": access.status,
     "version_id": version_id,
     "type": sel_value,
-    "versions_ids": viewer.ids
+    "versions_ids": viewer.ids,
+    "lock_version": access.lock_version,
   },
   "postRender": function(control) {
-    control.getControlByPath('end_lic')
+    control.getControlByPath('new_end_lic')
            .getControlEl()
            .datepicker({
                         dateFormat: 'mm-dd-yy',
-                        minDate: 0
+                        minDate: access.end_lic
                       });
   }
 });

@@ -3,7 +3,7 @@ module Pack
 
     def self.expired_accesses
       Access.transaction do
-       where("end_lic < ? and status='allowed'", Date.today).each{ |ac| ac.update!(status: 'expired') }
+        where("end_lic < ? and status='allowed'", Date.today).each{ |ac| ac.update!(status: 'expired') }
       end
     end
     include AASM
@@ -18,19 +18,22 @@ module Pack
       state :expired
       state :deleted
       event :to_expired do
-        transitions :from =>  :allowed, :to => :expired,:guard => :check_expired?
+        transitions from:  :allowed, to: :expired, guard: :check_expired?
       end
       event :to_allowed do
-        transitions :from =>  :expired, :to => :allowed,:guard => :check_allowed?,success: :allowed_callback
+        transitions from:  :expired, to: :allowed,
+                    guard: :check_allowed?, success: :allowed_callback
       end
       event :allow do
-        transitions :from =>  [:requested,:denied], :to => :allowed,guard: :check_allowed?
+        transitions from:  %i[requested denied],
+                    to: :allowed, guard: :check_allowed?
       end
-      event :expire do
-        transitions :from =>  [:denied], :to => :expired,guard: :check_expired?
-      end
+      # event :expire do
+      #   transitions :from =>  [:denied], :to => :expired, guard: :check_expired?
+      # end
       event :deny do
-        transitions :from =>  [:requested,:expired,:allowed], :to => :denied
+        transitions from:  %i[requested expired allowed],
+                    to: :denied
       end
     end
 
@@ -57,8 +60,6 @@ module Pack
         )
         }
 
-    after_find :init_find
-    after_initialize :init_init
     after_commit :send_email,if: Proc.new{( who_type == 'User' ||
                                       who_type == 'Core::Project') && !user_edit}
     after_save :create_ticket, if: Proc.new { user_edit && (new_end_lic &&
@@ -69,16 +70,6 @@ module Pack
       self.new_end_lic = nil unless ["expired","allowed"].include?(status)
       to_expired if may_to_expired?
       to_allowed if may_to_allowed?
-    end
-
-    def init_find
-      @forever = end_lic == nil
-    end
-
-    def init_init
-      if @forever == nil
-        @forever = false
-      end
     end
 
     def send_email
@@ -153,23 +144,6 @@ module Pack
 
     end
 
-    def forever=(arg)
-
-      if arg==true || arg==false
-        @forever = arg
-      else
-        @forever= (arg=='false' ? false : true )
-      end
-      if forever
-
-        self.end_lic= self.new_end_lic= nil
-      end
-    end
-    def forever
-      @forever
-    end
-
-
     def actions
       st=(aasm.states(:permitted => true).map(&:to_s) )<<'edit_by_hand'
 
@@ -202,16 +176,17 @@ module Pack
       (aasm.states.map(&:to_s)-["expired"] ).map{ |st| [I18n.t( "access_states.#{st}" ),st ]  }
 
     end
+
     def self.ransackable_scopes(auth_object = nil)
-      [:user_access,:user_access_without_select]
+      %i[user_access user_access_without_select requests]
     end
 
-
-
-
-    def action
-
+    def self.requests
+      where("new_end_lic IS NOT NULL OR new_end_lic_forever = 't'")
     end
+
+    def action; end
+
     def action= arg
 
       if arg == 'make_longer'
@@ -221,7 +196,7 @@ module Pack
            @date_err=true
         end
 
-        self.end_lic= new_end_lic
+        self.end_lic = new_end_lic
         self.new_end_lic= nil
       elsif arg=='deny_longer'
         self.new_end_lic= nil
@@ -232,32 +207,8 @@ module Pack
       end
     end
 
-
-
-
-
-
-    def get_color
-      case status
-      when 'allowed'
-        'green'
-      when 'requested'
-        'blue'
-      when 'denied'
-        'red'
-      when 'expired'
-        'brown'
-
-      when 'deleted'
-        'black'
-      end
-
-
-    end
-
-
     def check_expired?
-       end_lic && ( end_lic < Date.current )
+      end_lic && (end_lic < Date.current)
     end
 
     def check_allowed?
@@ -265,34 +216,30 @@ module Pack
     end
 
     validate do
-     if  version.deleted && status!='deleted'
-       errors.add(:status,:version_deleted)
-     end
+      if version.deleted && status != 'deleted'
+        errors.add(:status, :version_deleted)
+      end
+      if new_end_lic_forever && new_end_lic
+        errors.add(:new_end_lic, :incorrect)
+      end
     end
 
+    validate :new_end_lic_correct
 
-    # def end_lic_correct
-    #   if !forever && !end_lic
-    #     self.errors.add(:end_lic,:blank)
-    #   end
-    # end
+    def new_end_lic_uncorrect_status?
+      end_lic && new_end_lic && %w[expired allowed].include?(status)
+    end
 
+    def new_end_lic_correct
+      # if @date_err || end_lic && new_end_lic && ( end_lic >= new_end_lic )
+      #   self.errors.add(:new_end_lic,:incorect_date)
+      # end
 
-    # def new_end_lic_correct_status?
-    #   end_lic && new_end_lic && ( !["expired","allowed"].include?(status))
-    # end
-
-    # def new_end_lic_correct
-    #
-    #   if @date_err || end_lic && new_end_lic && ( end_lic >= new_end_lic )
-    #     self.errors.add(:new_end_lic,:incorect_date)
-    #   end
-    #
-    #     self.errors.add(:new_end_lic,:status_only) if new_end_lic_correct_status?
-    #   if new_end_lic && !end_lic
-    #     self.errors.add(:new_end_lic,'must be blank')
-    #   end
-    # end
+      errors.add(:new_end_lic, :status_only) if new_end_lic_uncorrect_status?
+      if new_end_lic && !end_lic
+        errors.add(:new_end_lic, 'must be blank')
+      end
+    end
 
     def end_lic_readable
       end_lic || Access.human_attribute_name(:forever)
@@ -331,7 +278,7 @@ module Pack
       if access_params[:type] == 'user'
         access.assign_attributes(who_id: user_id, who_type: 'User')
       elsif access_params[:type].scan(/\D/).empty?
-        access.assign_attributes(who_id: params[:type], who_type: 'Core::Project')
+        access.assign_attributes(who_id: access_params[:type], who_type: 'Core::Project')
       else
         raise ArgumentError, "Invalid params[:type]"
       end
@@ -356,7 +303,21 @@ module Pack
         end
       end
 
+      if access_params[:status] == 'allowed'
+        if !access || access.lock_version_updated?(access_params[:lock_version])
+          return { access: access, error: '.updated_during_edit' }
+        else
+          if access_params[:new_end_lic_forever] == 'true'
+            access.new_end_lic_forever = true
+            access.new_end_lic = nil
+          else
+            access.new_end_lic_forever = false
+            access.new_end_lic = access_params[:new_end_lic]
+          end
+        end
+      end
       return access if access.is_a?(Hash)
+      access.user_edit = true
       access.save!
       access
     end

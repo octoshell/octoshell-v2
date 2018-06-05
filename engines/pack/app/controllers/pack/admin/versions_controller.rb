@@ -10,7 +10,7 @@ module Pack
           @versions = Version.finder(params[:q]).page(params[:page]).per(params[:per]).includes(:package)
           @hash = []
           @versions.each do |item|
-          @hash << { text: item.name + "   #{t('Package_name')}: #{item.package.name}", id: item.id }
+            @hash << { text: item.name + "   #{t('Package_name')}: #{item.package.name}", id: item.id }
           end
           render json: { records: @hash, total: @versions.count }
         end

@@ -1,27 +1,20 @@
 module Pack
-	
 	require "spec_helper"
-	
-
 	describe PackagesController,type: :controller do
 		routes { Pack::Engine.routes }
-		
-		describe "#index" do 
-			describe "options_for_select" do 
+		describe "#index" do
+			describe "options_for_select" do
 				it "1" do
-
-					
 					user = create(:user)
-					project = create_project(owner: user)		
+					project = create_project(owner: user)
 					login_user(user)
-
 					get :index,{q: {type: 'versions',user_access: user.id}}
 					expect(assigns(:options_for_select)).to eq( [[I18n.t('project') + ' ' + project.title,project.id],[I18n.t('user'),"user"] ] )
 					expect(response).to render_template("index")
 				end
 				it "2" do
 
-					
+
 					user = create(:user)
 					project = create_project
 					project.members.create!(user: user )
@@ -35,7 +28,7 @@ module Pack
 
 				it "3" do
 
-					
+
 					user = create(:user)
 					project = create_project
 
@@ -47,12 +40,12 @@ module Pack
 				end
 
 
-			
+
 			end
 			describe "shows versions with {user_access: current_user.id}" do
 				it "user has not got access, associated with  version" do
 
-					
+
 					user = create(:user)
 					package = create(:package)
 					create(:version,package: package)
@@ -64,12 +57,12 @@ module Pack
 				end
 				it "user has  got access, associated with  version" do
 
-					
+
 					user = create(:user)
 					package = create(:package)
 					version = create(:version,package: package)
 					access_with_status( {who: user,version: version} )
-		
+
 					login_user(user)
 
 					get :index,{q: {type: 'versions',user_access: user.id}}
@@ -118,7 +111,7 @@ module Pack
 					expect(assigns(:records)).to eq( [] )
 					expect(response).to render_template("index")
 
-					
+
 				end
 				it "user's project  has  got   requested access, associated with package's version, but searches  allowed access" do
 					owner = create(:user)
@@ -133,8 +126,8 @@ module Pack
 					get :index,{q: {type: 'versions',user_access: user.id,accesses_who_type_in: "allowed"}}
 					expect(assigns(:records)).to eq( [] )
 					expect(response).to render_template("index")
-				
-					
+
+
 				end
 
 				it "user's project  has  got   allowed access, associated with package's version, but searches  allowed access" do
@@ -149,8 +142,8 @@ module Pack
 					get :index,{q: {type: 'versions',user_access: user.id,accesses_status_in: "allowed"}}
 					expect(assigns(:records)).to eq( [version] )
 					expect(response).to render_template("index")
-				
-					
+
+
 				end
 
 
@@ -200,8 +193,8 @@ module Pack
 
 		end
 	end
-		
-		
+
+
 
 
 end

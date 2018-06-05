@@ -17,9 +17,57 @@ function AccessViewer(ids) {
       accesses = result;
     });
     this.accesses = accesses;
+    this.renderAccessesInfo();
   };
 
+  this.renderAccessesInfo = function(){
+    var keys = Object.keys(this.accesses);
+    var source   = $('#accesses-template').html();
+    var template = Handlebars.compile(source);
+    for(var i=0; i < keys.length; i++)
+    {
+      var td = $(`td.accesses-info[version_id='${keys[i]}']`);
+      td.empty();
+      for(var j=0; j < this.accesses[keys[i]].length; j++)
+      {
+        var readable_name,end_lic,result;
+        access = this.accesses[keys[i]][j];
+        if(access.who_type == 'User'){
+          readable_name= '<%= t(".user")%>';
+        }
+        else if (access.who_type == 'Core::Project'){
+          readable_name=`<%= Core::Project.model_name.human %> "${access.who_name_from_union}"`
+        }
+        else {
+          readable_name=`<%= ::Group.model_name.human %> "${access.who_name_from_union}"`
+        }
+        if(access.end_lic){
+          end_lic = access.end_lic;
+        }
+        else{
+          end_lic = '<%= Pack::Access.human_attribute_name(:forever)%>'
+        }
+         result = template({color: this.accessColor(access),who: readable_name, end_lic: end_lic});
+        td.append(result);
+      }
+    }
+  }
+  this.accessColor = function(access){
+    switch(access.status){
+      case 'allowed':
+        return 'green';
+      case 'requested':
+        return 'blue';
+      case 'denied':
+        return 'red';
+      case 'expired':
+        return 'brown';
+      case 'deleted':
+        return 'black';
+      }
+  }
   this.renderFormForVersion = function(version_id,form_data = 'user') {
+
     $( `.btn_access[version_id='${version_id}']`).parents('tr').next().find('p').empty();
     var topForm= $( `.btn_access[version_id='${version_id}']`).parents('tr').next().find('div.top-alpaca-form');
     topForm.alpaca('destroy');
@@ -32,7 +80,10 @@ function AccessViewer(ids) {
         "label": "",
         "type": "select",
         "optionLabels": <%=raw @options_for_select_labels.to_json%>,
-        "validate": false
+        "validate": false,
+        "onFieldChange": function(e) {
+            viewer.renderBottomForm(version_id, this.getValue());
+        }
       },
       "data": form_data,
       "postRender": function(control) {
@@ -46,7 +97,6 @@ function AccessViewer(ids) {
   }
   this.renderBottomForm = function(version_id, sel_value) {
     var accesses = viewer.accesses[version_id] || [];
-    console.log(sel_value);
     var access = null;
     if(sel_value == 'user')
     {
@@ -106,14 +156,33 @@ function AccessViewer(ids) {
           .next().find('p.accesses-messages').html('<font color="red"> <%= t("mailer_messages.denied") %> </font>');
           break;
         case "allowed":
+          var message = $(`.btn_access[version_id='${version_id}']`).parents('tr')
+          .next().find('p.accesses-messages');
+          if(!access.end_lic){
+            message.html('<font color="green"> <%= t(".end_lic_null") %> </font>');
+          }
+
+          if(access.new_end_lic_forever)
+          {
+            message.append('<font color="green"> <%= t(".new_end_lic_forever") %> </font>');
+          }
+          else if(access.new_end_lic) {
+            message.append(`<font color="green"> <%= t(".new_end_lic") %> </font>`);
+          }
+
+          if(access.end_lic){
+            <%= render partial: 'allowed', formats: :js%>
+          }
+
           // messages.find('.accesses-messages').html('<font color="red"> <%= t("mailer_messages.denied") %> </font>')
-          // break;
+          break;
 
       }
     }
     else{
       <%= render partial: 'new', formats: :js%>
     }
+    this.renderAccessesInfo();
   }
 };
 

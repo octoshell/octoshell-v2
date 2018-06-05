@@ -157,7 +157,11 @@ module Pack
 
     end
 
-    def self.join_accesses relation,user_id,join_type
+    def name_with_package
+      "#{name}   #{I18n.t('Package_name')}: #{package.name}"
+    end
+
+    def self.join_accesses(relation,user_id,join_type)
 
       project_accesses =  relation.joins(
           <<-eoruby
@@ -166,8 +170,6 @@ module Pack
           AND core_members.project_id = pack_accesses.who_id)
           eoruby
          )
-
-
       group_accesses = relation.joins(
           <<-eoruby
          LEFT JOIN "user_groups" ON ("user_groups"."user_id" = #{user_id}  )
@@ -177,15 +179,11 @@ module Pack
           )
       user_accesses  = relation.joins(
           <<-eoruby
-
           #{join_type} JOIN  pack_accesses ON (pack_accesses.version_id = pack_versions.id AND "pack_accesses"."who_type" = 'User'
           AND #{user_id} = pack_accesses.who_id)
           eoruby
             )
        (project_accesses.union group_accesses).union user_accesses
-
-
-      #sql_array.map{ |r| '(' + r.to_sql + ')' }.join(" UNION ")
     end
 
 
@@ -195,9 +193,6 @@ module Pack
     end
 
     def available_for_user?
-
-
-
       user_accesses &&  user_accesses.detect{ |a| a.status=='allowed'}!=nil && ( state=='available' || state=='forever') && !deleted?
     end
 
