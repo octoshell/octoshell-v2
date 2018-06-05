@@ -30,17 +30,24 @@ module Jobstat
       @total_cluster_data = {}
       @total_data = [0, 0, 0]
 
+      @skipped = 0
+
       @jobs.each do |job|
-        cluster = @clusters[job.cluster]
-        partition = cluster.partitions[job.partition]
+        ebtry = [0,0,0]
 
+        begin
+          cluster = @clusters[job.cluster]
+          partition = cluster.partitions[job.partition]
 
-        cluster_data = @data.fetch(job.cluster, {})
-        partition_data = cluster_data.fetch(job.partition, {})
+          cluster_data = @data.fetch(job.cluster, {})
+          partition_data = cluster_data.fetch(job.partition, {})
 
-        entry = [job.count,
-          job.sum * partition["cores"],
-          job.sum * partition["gpus"]]
+          entry = [job.count,
+            job.sum * partition["cores"],
+            job.sum * partition["gpus"]]
+        rescue Exception
+          @skipped +=1
+        end
 
         partition_data[job.state] = entry
         cluster_data[job.partition] = partition_data
