@@ -38,6 +38,5 @@ module Pack
         yield block
       end
     end
-
   end
 end

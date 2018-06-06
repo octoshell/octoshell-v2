@@ -1,7 +1,6 @@
 ru:
     "false": "нет"
     "true": "да"
-
     send: Отправить
     destroy: удалить
     legend: Легенда
@@ -196,7 +195,7 @@ ru:
         show_service: Показать служебные
     access_states:
       allowed: разрешен
-      denied: отказан
+      denied: отказано
       expired:  истек
       requested:  запрошен
       deleted: удален
@@ -213,7 +212,9 @@ ru:
         email_vers_state_changed:
           subject: "Изменилась информация о лицензии  версии  «%{version_name}»"
           body: "У версии «%{vers}» изменилась информации о лицензии.%{message}."
-
+      access:
+        created_during_edit: Невозможно отправить заявку. Скорее всего, во время заполнения формы администратор выдал Вам доступ к версии.
+        updated_during_edit_static: Нельзя выполнить действие. С заявкой на доступ или доступом во время заполнения формы что-то произошло. Введите данные заново
     activerecord:
       models:
         pack/version: Версия
@@ -266,6 +267,7 @@ ru:
             status_readable: Статус
             end_lic: Дата окончания
             new_end_lic: Дата окончания заявки на продление(если есть)
+            new_end_lic_readable: Дата окончания заявки на продление(если есть)
             end_lic_if_exists: Дата окончания (если она конечна)
             end_lic_readable: Дата окончания
             created_by: Доступ создан

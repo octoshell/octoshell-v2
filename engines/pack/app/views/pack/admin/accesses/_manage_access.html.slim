@@ -3,7 +3,7 @@
         font color="red"
           =@message
 -if item
-  =bootstrap_form_for item,:url => manage_access_admin_access_path(item),method: :post,remote: true do |f|
+  =bootstrap_form_for item,:url => manage_access_admin_access_path(item),method: :post do |f|
     =f.hidden_field :who_id
     =f.hidden_field :who_type
     =f.hidden_field :lock_version
@@ -15,19 +15,18 @@
     =f.submit t("buttons.save", default: "Send")
 
 javascript:
+  function licUtils(){
+    $('#hid').html("#{escape_javascript(render :partial => 'hidden_fields',locals: {f: @f})}");
+    bind_func_disable("[enab='enable']","[enab='disable']","[enab='item']");
+  }
   if ($("#actions").val() == 'edit_by_hand')
   {
-      $('#hid').html("#{escape_javascript(render :partial => 'hidden_fields',locals: {f: @f})}");
+    licUtils();
   }
   $(document).on('change','#actions',function(){
     $("#hid").empty();
     if ($("#actions").val() == 'edit_by_hand')
     {
-      $('#hid').html("#{escape_javascript(render :partial => 'hidden_fields',locals: {f: @f})}");
+      licUtils();
     }
   });
-
-
-
-
-  bind_func_disable("[enab='enable']","[enab='disable']","[enab='item']");

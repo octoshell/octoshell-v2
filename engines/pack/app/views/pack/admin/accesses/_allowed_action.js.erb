@@ -1,0 +1,24 @@
+var topForm= $('div.top-alpaca-form');
+topForm.alpaca({
+  "schema": {
+    "enum": <%=raw @options_for_select.to_json%>,
+    "required": true
+  },
+  "options":{
+    "label": "",
+    "type": "select",
+    "optionLabels": <%=raw @options_for_select_labels.to_json%>,
+    "validate": false,
+    "onFieldChange": function(e) {
+        // viewer.renderBottomForm(version_id, this.getValue());
+    }
+  },
+  // "data": form_data,
+  "postRender": function(control) {
+    apply_select();
+    // var accesses = viewer.accesses[version_id] || [];
+    // viewer.renderBottomForm(version_id, control.getValue());
+    control.getControlEl().next().attr('style','width: 400px;');
+
+  }
+});

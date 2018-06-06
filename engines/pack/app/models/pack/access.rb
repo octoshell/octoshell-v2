@@ -1,18 +1,17 @@
 module Pack
   class Access < ActiveRecord::Base
-
+    include AASM
+    include AccessValidator
+    american_date_proccess
     def self.expired_accesses
       Access.transaction do
         where("end_lic < ? and status='allowed'", Date.today).each{ |ac| ac.update!(status: 'expired') }
       end
     end
-    include AASM
-    american_date_proccess
-    validates :version, :created_by,:who,:status,presence: true
-    validates_uniqueness_of :who_id,:scope => [:version_id,:who_type]
+    validates_uniqueness_of :who_id, scope: [:version_id,:who_type]
     attr_accessor :user_edit
-    aasm :column => :status  do
-      state :requested,:initial => true
+    aasm column: :status  do
+      state :requested, initial: true
       state :allowed
       state :denied
       state :expired
@@ -28,9 +27,9 @@ module Pack
         transitions from:  %i[requested denied],
                     to: :allowed, guard: :check_allowed?
       end
-      # event :expire do
-      #   transitions :from =>  [:denied], :to => :expired, guard: :check_expired?
-      # end
+      event :expire do
+        transitions from:  [:denied], to: :expired, guard: :check_expired?
+      end
       event :deny do
         transitions from:  %i[requested expired allowed],
                     to: :denied
@@ -38,16 +37,16 @@ module Pack
     end
 
     def allowed_callback
-      if forever
-        self.end_lic = self.new_end_lic = nil
-      end
+      # if forever
+      #   self.end_lic = self.new_end_lic = nil
+      # end
     end
 
 
     belongs_to :version
     belongs_to :created_by,class_name: '::User',foreign_key: :created_by_id
     belongs_to :allowed_by,class_name: '::User',foreign_key: :allowed_by_id
-    belongs_to :who, :polymorphic => true
+    belongs_to :who, polymorphic: true
     has_and_belongs_to_many :tickets, join_table: 'pack_access_tickets', class_name: "Support::Ticket",
                                       foreign_key: "access_id",
                                       association_foreign_key: "ticket_id"
@@ -60,16 +59,21 @@ module Pack
         )
         }
 
-    after_commit :send_email,if: Proc.new{( who_type == 'User' ||
+    after_commit :send_email, if: Proc.new{( who_type == 'User' ||
                                       who_type == 'Core::Project') && !user_edit}
     after_save :create_ticket, if: Proc.new { user_edit && (new_end_lic &&
                                               changes[:new_end_lic] &&
                                               !changes[:new_end_lic][0] ||
                                               status=='requested')}
     before_validation do
-      self.new_end_lic = nil unless ["expired","allowed"].include?(status)
+      unless ["expired","allowed"].include?(status)
+        self.new_end_lic_forever = false
+        self.new_end_lic = nil
+      end
       to_expired if may_to_expired?
       to_allowed if may_to_allowed?
+      # self.new_end_lic = nil if new_end_lic && (!end_lic || new_end_lic <= end_lic)
+      # self.new_end_lic_forever = false unless end_lic
     end
 
     def send_email
@@ -77,11 +81,11 @@ module Pack
         if previous_changes["status"]
           ::Pack::PackWorker.perform_async(:access_changed, id)
         end
-        if previous_changes["new_end_lic"] && ["expired","allowed"].include?(status)
+        if previous_changes["new_end_lic"] && previous_changes["new_end_lic_forever"] && ["expired","allowed"].include?(status)
           if previous_changes["end_lic"]
-            ::Pack::PackWorker.perform_async(:access_changed, [id,"made_longer"])
+            ::Pack::PackWorker.perform_async(:access_changed, [id, "made_longer"])
           else
-            ::Pack::PackWorker.perform_async(:access_changed, [id,"denied_longer"])
+            ::Pack::PackWorker.perform_async(:access_changed, [id, "denied_longer"])
           end
         end
       end
@@ -144,10 +148,14 @@ module Pack
 
     end
 
-    def actions
-      st=(aasm.states(:permitted => true).map(&:to_s) )<<'edit_by_hand'
 
-      if end_lic && new_end_lic
+    def permitted_states_with_own
+      aasm.states(:permitted => true).map(&:to_s) + [status]
+    end
+
+    def actions
+      st = permitted_states_with_own
+      if end_lic && (new_end_lic || new_end_lic_forever)
         st + ['make_longer','deny_longer']
       else
         st
@@ -156,25 +164,20 @@ module Pack
 
     end
 
-    def actions_for_select
-      actions.map{ |a| [I18n.t("access_actions.#{a}"),a]  }
+    def actions_labels
+      actions.map{ |a| I18n.t("access_states.#{a}")  }
     end
 
     def self.states_list
-
       aasm.states.map(&:to_s)
-
     end
+
     def self.states_list_readable
-
       aasm.states.map{ |st| [I18n.t( "access_states.#{st}" ),st ]  }
-
     end
+
     def self.states_list_for_form
-
-
       (aasm.states.map(&:to_s)-["expired"] ).map{ |st| [I18n.t( "access_states.#{st}" ),st ]  }
-
     end
 
     def self.ransackable_scopes(auth_object = nil)
@@ -187,63 +190,23 @@ module Pack
 
     def action; end
 
-    def action= arg
-
-      if arg == 'make_longer'
-
-        if !new_end_lic
-
-           @date_err=true
-        end
-
-        self.end_lic = new_end_lic
-        self.new_end_lic= nil
-      elsif arg=='deny_longer'
-        self.new_end_lic= nil
-
-      else
-
-        self.status= arg
-      end
-    end
-
     def check_expired?
       end_lic && (end_lic < Date.current)
     end
 
+
     def check_allowed?
-       end_lic && end_lic >= Date.current || !end_lic || forever
-    end
-
-    validate do
-      if version.deleted && status != 'deleted'
-        errors.add(:status, :version_deleted)
-      end
-      if new_end_lic_forever && new_end_lic
-        errors.add(:new_end_lic, :incorrect)
-      end
-    end
-
-    validate :new_end_lic_correct
-
-    def new_end_lic_uncorrect_status?
-      end_lic && new_end_lic && %w[expired allowed].include?(status)
-    end
-
-    def new_end_lic_correct
-      # if @date_err || end_lic && new_end_lic && ( end_lic >= new_end_lic )
-      #   self.errors.add(:new_end_lic,:incorect_date)
-      # end
-
-      errors.add(:new_end_lic, :status_only) if new_end_lic_uncorrect_status?
-      if new_end_lic && !end_lic
-        errors.add(:new_end_lic, 'must be blank')
-      end
+      end_lic && end_lic >= Date.current || !end_lic
     end
 
     def end_lic_readable
       end_lic || Access.human_attribute_name(:forever)
     end
+
+    def new_end_lic_readable
+      new_end_lic || Access.human_attribute_name(:forever)
+    end
+
     def status_readable
       I18n.t("access_states.#{status}")
     end
@@ -255,15 +218,11 @@ module Pack
     def self.search_access(params, user_id)
       find_params =  case params[:type]
                      when 'user'
-                        { who_id: user_id, who_type: 'User' }
+                       { who_id: user_id, who_type: 'User' }
                      else
-                         { who_id: params[:type], who_type: 'Core::Project' }
+                       { who_id: params[:type], who_type: 'Core::Project' }
                      end
       find_params.merge! params.slice(:version_id)
-      # params.slice!(:end_lic,:new_end_lic)
-      # params.merge! find_params
-      # params.permit!
-      # Access.find_by(find_params)   || Access.new(params)
       Access.find_by(find_params)
     end
 
@@ -287,7 +246,86 @@ module Pack
       access
     end
 
+    # t.integer  "version_id"
+    # t.integer  "who_id"
+    # t.string   "who_type"
+    # t.string   "status"
+    # t.integer  "created_by_id"
+    # t.datetime "created_at"
+    # t.datetime "updated_at"
+    # t.date     "end_lic"
+    # t.date     "new_end_lic"
+    # t.integer  "allowed_by_id"
+    # t.integer  "lock_version",        default: 0,     null: false
+    # t.boolean  "new_end_lic_forever", default: false
+    def action= arg
+      if arg == 'make_longer'
+        if !new_end_lic
+           @date_err=true
+        end
+        self.end_lic = new_end_lic
+        self.new_end_lic= nil
+      elsif arg == 'deny_longer'
+        self.new_end_lic = nil
+      else
+        self.status = arg
+      end
+    end
+
+
+
+    def admin_update_requested_access(params, admin_id)
+      if permitted_states_with_own.include? params[:status]
+        assign_attributes(status: params[:action], end_lic: params[:end_lic])
+      else
+        raise "Incorrect access status"
+      end
+      save_success = save
+      self.status = backup_status unless save_success
+      save_success
+    end
+
+    def admin_update(params, admin_id)
+      backup_status = status
+      case status
+      when 'requested'
+        admin_update_requested_access(params, admin_id)
+      when 'allowed', 'expired'
+        # Если сохранение при продлении или отказе от продления не произошло, все атрибуты восстанавливаем
+        if permitted_states_with_own.include? params[:action]
+          assign_attributes(status: params[:action], end_lic: params[:end_lic])
+          save
+        elsif params[:action] == 'make_longer'
+          if new_end_lic_forever
+            self.end_lic = nil
+          elsif new_end_lic
+            self.end_lic = new_end_lic
+            self.new_end_lic = nil
+          else
+            raise "NO new_end_lic or new_end_lic_forever specified"
+          end
+          save_success = #save
+          restore_attributes unless save_success
+          save_success
+        elsif params[:action] == 'deny_longer'
+          self.new_end_lic = nil
+          self.new_end_lic_forever = false
+          save_success = save
+          restore_attributes unless save_success
+          save_success
+        end
+      end
+      # self.new_end_lic = nil unless %w[expired allowed].include?(status)
+      # if changes[:status] && status == 'allowed'
+      #   self.allowed_by_id = admin_id
+      # end
+      save_success
+    end
+
     def self.user_update(access_params, user_id)
+      access_params[:end_lic] = nil if access_params[:forever]
+      access_params[:new_end_lic] = nil if access_params[:new_end_lic_forever]
+
       if access_params[:status] == 'new'
         access = new_user_access(access_params, user_id)
       else
@@ -332,7 +370,7 @@ module Pack
 
 
     def who_name
-      try(:who_name_from_union) ||  try(:who_project) || try(:who_group) || try(:who_user) || who_name_without_preload
+      try(:who_name_from_union) || try(:who_project) || try(:who_group) || try(:who_user) || who_name_without_preload
     end
     def who_name_without_preload
 

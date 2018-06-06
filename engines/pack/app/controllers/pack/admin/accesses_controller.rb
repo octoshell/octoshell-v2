@@ -1,5 +1,5 @@
 require_dependency "pack/application_controller"
-
+# require "#{Pack::Engine.root}/app/services/pack/admin_access_updater"
 module Pack
   class Admin::AccessesController < Admin::ApplicationController
     rescue_from ActiveRecord::RecordNotFound do |ex|
@@ -7,20 +7,34 @@ module Pack
     end
     before_action :access_init, only: [:edit, :show,:update,:destroy]
     def access_init
-     @access = Access.preload_who.find(params[:id])
+      @access = Access.preload_who.find(params[:id])
     end
+
     def index
       @q = Access.ransack(params[:q])
-      @accesses = @q.result(distinct: true).order(:id).page(params[:page]).per(1).preload_who.includes(:version)
+      @accesses = @q.result(distinct: true).order(:id).page(params[:page]).per(10).preload_who.includes(:version)
     end
 
     def show
-
+      @options_for_select = @access.actions
+      @options_for_select_labels = @access.actions_labels
     end
 
+
     def manage_access
+      access_init
+      @options_for_select = @access.actions
+      @options_for_select_labels = @access.actions_labels
+      if @access.lock_version_updated?(params[:lock_version])
+        flash[:error] = t('pack.access.updated_during_edit_static')
+      else
+        AdminAccessUpdater.update @access, current_user, params_without_hash
+      end
+      render :show
+    end
 
-
+    def manage_access_old
+      return
       begin
         access_init
         if access_params[:action]=='edit_by_hand'
@@ -29,7 +43,6 @@ module Pack
           @access.attributes= access_params.slice(:lock_version,:action)
         end
         @access.new_end_lic= nil unless ["expired","allowed"].include?(@access.status)
-
         @access.allowed_by_id=current_user.id if @access.changes[:status] && @access.status=='allowed'
         if @access.save
 
@@ -109,7 +122,10 @@ module Pack
     private
 
 
-
+    def params_without_hash
+      params.permit(:who_id,:forever,:action,:lock_version,:proj_or_user, :version_id,
+        :new_end_lic,:end_lic,:from,:status,:user_id,:project_id,:who_type)
+    end
 
   	def access_params
       params.require(:access).permit(:who_id,:forever,:action,:lock_version,:proj_or_user, :version_id,

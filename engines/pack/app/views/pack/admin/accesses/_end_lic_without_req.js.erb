@@ -1,0 +1,90 @@
+function endLicWithoutReq(){
+  var bottomForm = $('div.bottom-alpaca-form');
+  var labels= <%=raw [Pack::Access.human_attribute_name("forever"),Pack::Access.human_attribute_name("not_forever")].to_json%>;
+  bottomForm.alpaca('destroy');
+  bottomForm.alpaca({
+    "schema":{
+      // "title": '<%= t ".new_access" %>',
+      "type":"object",
+      "properties":{
+        "forever":{
+          "type": "radio",
+          "enum": ['true','false'],
+          "required": true
+        },
+        "status":{
+        },
+        "lock_version":{
+        },
+        // "version_id":{
+        // },
+        // "versions_ids":{
+        // },
+        "end_lic":{
+          "title": '<%=raw Pack::Access.human_attribute_name("end_lic")%>',
+          "required": true,
+          "dependencies": ["forever"]
+        }
+      }
+    },
+    "options":{
+      "focus":"",
+      "hideInitValidationError":true,
+      "fields":{
+        "forever":{
+          "optionLabels": labels,
+          "sort": false
+        },
+        "end_lic":{
+          "dependencies":{
+            "forever": "false"
+          }
+        },
+        "status":{
+          "type": "hidden"
+        },
+        "lock_version":{
+          "type": "hidden"
+        }
+        // "version_id":{
+        //   "type": "hidden"
+        // },
+        // "versions_ids":{
+        //   "type": "hidden"
+        // }
+      },
+      "form": {
+            "attributes": {
+                "method": "post",
+                "action": "/pack/admin/accesses/<%=@access.id%>/manage_access"
+            },
+            "buttons": {
+                "submit": {
+                    "title": '<%= t("buttons.save") %>',
+                    "click": function(){
+                      this.validate(true);
+                      this.refreshValidationState(true);
+                      var control = bottomForm.alpaca('get');
+                      if (control.getControlByPath('forever').getValue())
+                      {
+                        control.getControlByPath('end_lic').setValue('');
+                      }
+                      this.submit();
+                    }
+                  }
+                }
+      }
+    },
+    "data": data,
+    "postRender": function(control) {
+      var endLicElem = control.getControlByPath('end_lic').getControlEl();
+      endLicElem.datepicker({
+                               dateFormat: 'mm-dd-yy',
+                             });
+      if(access.end_lic)
+      {
+        endLicElem.datepicker("setDate", endLicDate);
+      }
+    }
+  });
+}

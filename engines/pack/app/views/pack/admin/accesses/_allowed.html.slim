@@ -1,0 +1,18 @@
+/-if @message
+/      h3
+/        font color="red"
+/          =@message
+=bootstrap_form_for @access,:url => manage_access_admin_access_path(@access),method: :post do |f|
+  =f.hidden_field :lock_version
+  =select :access,:action, @access.actions_for_select
+  p
+    =label 'access[forever]',Pack::Access.human_attribute_name("forever")
+    = radio_button_tag 'access[forever]', true, !@access.end_lic, enab: "disable"
+  p
+    =label 'access[forever]',Pack::Access.human_attribute_name("not_forever")
+    = radio_button_tag 'access[forever]',false, @access.end_lic, enab: "enable"
+  = f.text_field :end_lic,label: Pack::Access.human_attribute_name('end_lic'), class: 'form-control my_datepicker',enab: "item",placeholder: "mm-dd-yy"
+  =f.submit t("buttons.save", default: "Send")
+
+javascript:
+    bind_func_disable("[enab='enable']","[enab='disable']","[enab='item']");

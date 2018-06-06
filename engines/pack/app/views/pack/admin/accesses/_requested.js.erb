@@ -1,0 +1,50 @@
+function getDate(dateString)
+{
+  var endLicArr = dateString.split('-');
+  return new Date(endLicArr[0],endLicArr[1],endLicArr[2]);
+}
+
+var access = <%=raw @access.to_json%>;
+var data;
+var endLicDate;
+var nowDate;
+if(access.end_lic){
+  endLicDate = getDate(access.end_lic);
+  nowDate = getDate(new Date().toISOString().split('T')[0]);
+  if(endLicDate.getTime() < nowDate.getTime()){
+    $('p.alpaca-messages').html('<font color="red"><%=t(".expired_date")%></font>');
+  }
+  data = { forever: false };
+}else{
+  data = { forever: true };
+}
+data.lock_version= access.lock_version;
+
+var topForm= $('div.top-alpaca-form');
+topForm.alpaca({
+  "schema": {
+    "title": '<%= Pack::Access.human_attribute_name(:status) %>',
+    "enum": <%=raw @options_for_select.to_json%>,
+    "required": true
+  },
+  "options":{
+    "label": "",
+    "type": "select",
+    "optionLabels": <%=raw @options_for_select_labels.to_json%>,
+    "validate": false,
+    "onFieldChange": function(e) {
+        $('div.bottom-alpaca-form').alpaca('get').getControlByPath('status').setValue(this.getValue());
+    }
+  },
+  // "data": form_data,
+  "postRender": function(control) {
+    apply_select();
+    data.status = control.getValue();
+    endLicWithoutReq();
+    // var accesses = viewer.accesses[version_id] || [];
+    // viewer.renderBottomForm(version_id, control.getValue());
+    control.getControlEl().next().attr('style','width: 400px;');
+
+  }
+});
+<%= render 'end_lic_without_req' %>

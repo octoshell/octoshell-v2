@@ -283,16 +283,15 @@ module Pack
     end
 
 
-    def vers_update params
-      @params= params.require(:version)
+    def vers_update(params)
+      @params = params.require(:version)
       edit_opts
       update_clustervers @params.delete(:clustervers_attributes)
-      edit_state_and_lic( @params.delete(:state_select),@params.delete(:end_lic) )
+      edit_state_and_lic(@params.delete(:state_select), @params.delete(:end_lic))
       assign_attributes(version_params @params)
     end
 
     def update_clustervers(hash)
-      puts hash
       return unless hash
       hash.each_value do |h|
         method_name = h.delete(:action)
@@ -303,7 +302,7 @@ module Pack
         when "not_active"
           h[:active]="0"
         when "_destroy"
-         destroy = true
+          destroy = true
         else
           raise "incorrect attribute in clustervers"
         end

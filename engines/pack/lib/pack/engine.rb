@@ -11,7 +11,11 @@ module Pack
        g.assets false
        g.helper false
     end
-
+    config.autoload_paths << File.expand_path("../app/services", __FILE__)
+    puts config.autoload_paths.inspect
+    # initializer "pack.add_middleware" do |app|
+    #   app.middleware.use Pack::Middleware
+    # end
   end
-  
+
 end
