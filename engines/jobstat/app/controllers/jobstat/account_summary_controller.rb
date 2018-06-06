@@ -33,7 +33,7 @@ module Jobstat
       @skipped = 0
 
       @jobs.each do |job|
-        ebtry = [0,0,0]
+        entry = [0,0,0]
 
         begin
           cluster = @clusters[job.cluster]
@@ -46,7 +46,9 @@ module Jobstat
             job.sum * partition["cores"],
             job.sum * partition["gpus"]]
         rescue Exception
-          @skipped +=1
+          @skipped += 1
+          Rails.logger.error("error in statistics for job: #{job.drms_job_id}")
+          next
         end
 
         partition_data[job.state] = entry

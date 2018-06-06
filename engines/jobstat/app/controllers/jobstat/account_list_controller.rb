@@ -11,8 +11,6 @@ module Jobstat
 
       query_logins = (@params[:involved_logins] | @params[:owned_logins]) & (@involved_logins | @owned_logins)
 
-      @JobAnalysisController = JobAnalysisController
-
       if @params[:states].length == 0 or
           @params[:partitions].length == 0 or
           query_logins.length == 0
@@ -25,7 +23,15 @@ module Jobstat
       end
 
       @jobs = get_jobs(@params, query_logins)
-	    warn "Controller done!"
+      @descr = Conditions::SMART_CONDITIONS
+      @pictures = {
+        "rule_mpi_small_packets" => "packets.png",
+        "rule_mpi_packets" => "packets.png",
+        "rule_wrong_partition_gpu" => "gpu.png",
+        "rule_disbalance_la" => "disbalance.png",
+        "rule_disaster" => "error.png",
+        "rule_anomaly" => "error.png",
+      }
     end
 
     protected
