@@ -44,7 +44,7 @@ module Jobstat
             job.sum * partition["cores"],
             job.sum * partition["gpus"]]
         rescue Exception
-          Rails.logger.error("error in statistics for job: #{job.drms_job_id}")
+          Rails.logger.error("error in statistics for job: #{job.cluster} #{job.state} #{job.partition}")
           next
         end
 

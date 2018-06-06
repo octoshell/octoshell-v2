@@ -32,7 +32,7 @@ module Jobstat
       end
     end
 
-    def get_loadavg_ranking(value)
+    def get_loadavg_ranking(value, cluster)
       if value.nil?
         return ""
       end

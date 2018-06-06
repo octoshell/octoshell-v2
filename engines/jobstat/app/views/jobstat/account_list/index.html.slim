@@ -52,16 +52,15 @@ div
     thead
       tr
         td = "job issues"
-        td = "cluster"
         td = "job id"
         td = "login"
         td = "partition"
         td = "start time"
         td = "end time"
         td = "state"
-        td = "num cores"
+        td = "num nodes"
         td = "duration (hours)"
-        td = "cores* hours"
+        td = "cores * hours"
         td = "job_size rank"
         td = "cpu load"
         td = "gpu load"
@@ -76,26 +75,28 @@ div
         - job_cond = job.get_smart_conditions
         tr
           td
-            - if job_cond.size() > 0
-              - job_cond.each do |cond|
-                = image_tag @pictures.fetch(cond, "other.png"), size: "20", alt: @descr[cond][0], title: @descr[cond][0], style: "margin: 1px"
-            - else
-              = image_tag "ok.png", size: "20", border: 2
+            - if !job_performance[:cpu_user].nil?
+              - if job_cond.size() > 0
+                - job_cond.each do |cond|
+                  = image_tag @pictures.fetch(cond, "other.png"), size: "20", alt: @descr[cond][0], title: @descr[cond][0], style: "margin: 1px"
+              - else
+                = image_tag "ok.png", size: "20", border: 2
 
-            = link_to("Analysis", job_analysis_path(job.id))
-          td style="white-space: nowrap" = job.cluster
+              = link_to("Analysis", job_analysis_path(job.id))
+            - else
+              p = "no_data"
           td = link_to(job.drms_job_id, job)
           td = job.login
           td = job.partition
           td = job.start_time.strftime('%D %T')
           td = job.end_time.strftime('%D %T')
           td class="task_state_#{job.state}" = job.state
-          td = job.num_cores
+          td = job.num_nodes
           td = number_with_precision((job.end_time - job.start_time) / 3600, :precision => 1)
 
           td = number_with_precision((job.end_time - job.start_time) / 3600 * job.num_cores, :precision => 1)
 
-          td = "🎖" * Math.log(job.num_nodes * (job.end_time - job.start_time) / 86400 + 1, 2).to_i
+          td = "🎖" * Math.log(job.num_nodes * (job.end_time - job.start_time) / 86400 + 2, 2).to_i
 
           td class="job_metric_#{job_ranking[:cpu_user]}" = number_with_precision(job_performance[:cpu_user], :precision => 1)
 

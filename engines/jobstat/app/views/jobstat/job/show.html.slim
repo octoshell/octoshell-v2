@@ -52,6 +52,11 @@ div class="row"
           = @job[:num_cores]
       tr
         td
+          | Num nodes
+        td
+          = @job[:num_nodes]
+      tr
+        td
           | Submit time
         td
           = @job[:submit_time].strftime("%D %T")
@@ -65,6 +70,12 @@ div class="row"
           | End time
         td
           = @job[:end_time].strftime("%D %T")
+      tr
+        td
+          | Duration (hours)
+        td
+          = number_with_precision((@job.end_time - @job.start_time) / 3600, :precision => 1)
+
   div class="col-md-4"
     h3 = "Job performance"
     table class="table table-bordered table-striped"

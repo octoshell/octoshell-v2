@@ -48,6 +48,11 @@ div class="row"
           = @job[:num_cores]
       tr
         td
+          | Num nodes
+        td
+          = @job[:num_nodes]
+      tr
+        td
           | Submit time
         td
           = @job[:submit_time].strftime("%D %T")
@@ -61,26 +66,46 @@ div class="row"
           | End time
         td
           = @job[:end_time].strftime("%D %T")
-  
+      tr
+        td
+          | Duration (hours)
+        td
+          = number_with_precision((@job.end_time - @job.start_time) / 3600, :precision => 1)
+
   div class="col-md-4"
     h3 = "Значения по порогам"
     table class="table table-bordered table-striped"
-      - @thresholds_conditions.each do |cond|
+      - if @no_data
         tr
-          - if cond.include? "low"
-            td class="metric_low"
-              = @condition_descriptions[cond]
-          - else 
-            td class="metric_high"
-              = @condition_descriptions[cond]
+          td
+            = "Отсутсвуют данные мониторинга"
+      - else
+        - @thresholds_conditions.each do |cond|
+          tr
+            - if cond.include? "low"
+              td class="metric_low"
+                = @condition_descriptions[cond]
+            - else 
+              td class="metric_high"
+                = @condition_descriptions[cond]
  
   div class="col-md-4"
     h3 = "Базовые свойства"
     table class="table table-bordered table-striped"
-      - @primary_conditions.each do |cond|
+      - if @no_data
         tr
           td
-            = @condition_descriptions[cond]
+            = "Отсутсвуют данные мониторинга"
+      - else
+        - if @primary_conditions.length > 0
+          - @primary_conditions.each do |cond|
+            tr
+              td
+                = @condition_descriptions[cond]
+        - else
+          tr
+            td
+              = "Свойств не обнаружено"
 
 h3 = "Найденные признаки неэффективности"
 
@@ -95,13 +120,30 @@ table class="table table-bordered table-striped"
     td
       = "Рекомендация"
 
-  - @smart_conditions.each do |cond|
+  - if @no_data
     tr
       td
-        = cond
+        = "Отсутсвуют данные мониторинга"
       td
-        = @condition_descriptions[cond][0]
       td
-        = @condition_descriptions[cond][1]
       td
-        = @condition_descriptions[cond][2]
+
+  - else
+    - if @smart_conditions.length > 0
+      - @smart_conditions.each do |cond|
+        tr
+          td
+            = cond
+          td
+            = @condition_descriptions[cond][0]
+          td
+            = @condition_descriptions[cond][1]
+          td
+            = @condition_descriptions[cond][2]
+    - else
+      tr
+        td
+          = "Признаков не найдено"
+        td
+        td
+        td

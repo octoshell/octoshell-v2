@@ -14,6 +14,9 @@ module Jobstat
       res = res.merge(Conditions::PRIMARY_CONDITIONS)
       res = res.merge(Conditions::SMART_CONDITIONS)
       @condition_descriptions = res
+
+      cpu_user = FloatDatum.where(job_id: @job.id, name: "cpu_user").take
+      @no_data = cpu_user.nil? || cpu_user.value.nil?
     end
   end
 end
