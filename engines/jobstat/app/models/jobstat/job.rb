@@ -37,7 +37,7 @@ module Jobstat
           cpu_user: get_cpu_user_ranking(performance[:cpu_user]),
           instructions: get_instructions_ranking(performance[:instructions]),
           gpu_load: get_gpu_load_ranking(performance[:gpu_load]),
-          loadavg: get_loadavg_ranking(performance[:loadavg]),
+          loadavg: get_loadavg_ranking(performance[:loadavg], cluster),
           ipc: get_ipc_ranking(performance[:ipc]),
           ib_xmit_data: get_ib_xmit_data_ranking(performance[:ib_xmit_data]),
           ib_rcv_data: get_ib_rcv_data_ranking(performance[:ib_rcv_data]),
@@ -55,10 +55,5 @@ module Jobstat
     def get_smart_conditions
       get_tags & Conditions::SMART_CONDITIONS.keys
     end
-
-    #helper_method :get_thresholds_conditions
-    #helper_method :get_primary_conditions
-    #helper_method :get_smart_conditions
-
   end
 end

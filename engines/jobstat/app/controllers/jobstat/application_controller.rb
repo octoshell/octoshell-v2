@@ -68,6 +68,9 @@ module Jobstat
     def load_defaults
       #FIXME!
       #TODO: load defaults from file
+
+      return if @PER_PAGE
+
       @PER_PAGE = 100
 
       lom1 = ClusterConfig.new("Ломоносов-1", "lomonosov-1")

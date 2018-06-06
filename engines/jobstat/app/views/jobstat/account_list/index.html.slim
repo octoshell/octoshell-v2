@@ -62,7 +62,7 @@ div
         td = "num cores"
         td = "duration (hours)"
         td = "cores* hours"
-        td = "job size rank"
+        td = "job_size rank"
         td = "cpu load"
         td = "gpu load"
         td = "loadavg (processes)"
@@ -95,7 +95,7 @@ div
 
           td = number_with_precision((job.end_time - job.start_time) / 3600 * job.num_cores, :precision => 1)
 
-          td = " 🎖 " * (job.num_nodes * (job.end_time - job.start_time) / 86400 + 1).to_i
+          td = "🎖" * Math.log(job.num_nodes * (job.end_time - job.start_time) / 86400 + 1, 2).to_i
 
           td class="job_metric_#{job_ranking[:cpu_user]}" = number_with_precision(job_performance[:cpu_user], :precision => 1)
 
