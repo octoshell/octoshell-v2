@@ -1,0 +1,15 @@
+var access = <%=raw @access.to_json%>;
+var data;
+var endLicDate;
+var nowDate;
+if(access.end_lic){
+  endLicDate = getDate(access.end_lic);
+  nowDate = getDate(new Date().toISOString().split('T')[0]);
+  data = { forever: false };
+}else{
+  data = { forever: true };
+}
+data.lock_version= access.lock_version;
+data.status = access.status;
+endLicWithReq();
+<%= render 'end_lic_with_req' %>

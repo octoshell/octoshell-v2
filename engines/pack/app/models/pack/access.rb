@@ -2,15 +2,16 @@ module Pack
   class Access < ActiveRecord::Base
     include AASM
     include AccessValidator
+    include AdminAccessUpdate
     american_date_proccess
     def self.expired_accesses
       Access.transaction do
         where("end_lic < ? and status='allowed'", Date.today).each{ |ac| ac.update!(status: 'expired') }
       end
     end
-    validates_uniqueness_of :who_id, scope: [:version_id,:who_type]
+
     attr_accessor :user_edit
-    aasm column: :status  do
+    aasm column: :status do
       state :requested, initial: true
       state :allowed
       state :denied
@@ -21,7 +22,7 @@ module Pack
       end
       event :to_allowed do
         transitions from:  :expired, to: :allowed,
-                    guard: :check_allowed?, success: :allowed_callback
+                    guard: :check_allowed?
       end
       event :allow do
         transitions from:  %i[requested denied],
@@ -36,16 +37,9 @@ module Pack
       end
     end
 
-    def allowed_callback
-      # if forever
-      #   self.end_lic = self.new_end_lic = nil
-      # end
-    end
-
-
     belongs_to :version
-    belongs_to :created_by,class_name: '::User',foreign_key: :created_by_id
-    belongs_to :allowed_by,class_name: '::User',foreign_key: :allowed_by_id
+    belongs_to :created_by, class_name: '::User', foreign_key: :created_by_id
+    belongs_to :allowed_by, class_name: '::User', foreign_key: :allowed_by_id
     belongs_to :who, polymorphic: true
     has_and_belongs_to_many :tickets, join_table: 'pack_access_tickets', class_name: "Support::Ticket",
                                       foreign_key: "access_id",
@@ -59,12 +53,28 @@ module Pack
         )
         }
 
-    after_commit :send_email, if: Proc.new{( who_type == 'User' ||
-                                      who_type == 'Core::Project') && !user_edit}
-    after_save :create_ticket, if: Proc.new { user_edit && (new_end_lic &&
-                                              changes[:new_end_lic] &&
-                                              !changes[:new_end_lic][0] ||
-                                              status=='requested')}
+    after_commit :send_email, if: :admin_update?
+    after_save :create_ticket, if: :user_request?
+
+    def admin_update?
+      (who_type == 'User' || who_type == 'Core::Project') && !user_edit
+    end
+
+    def user_request?
+      user_edit && (new_end_lic_changed? || new_end_lic_forever_changed? ||
+        status == 'requested')
+    end
+
+    def new_end_lic_changed?
+      new_end_lic && changes[:new_end_lic] &&
+      !changes[:new_end_lic][0]
+    end
+
+    def new_end_lic_forever_changed?
+      new_end_lic_forever && changes[:new_end_lic_forever]
+    end
+
+
     before_validation do
       unless ["expired","allowed"].include?(status)
         self.new_end_lic_forever = false
@@ -92,11 +102,12 @@ module Pack
     end
 
     def create_ticket
-      subject= if new_end_lic
-        I18n.t('tickets_access.subject.new_end_lic',who_name: who_name_with_type,user: created_by.email)
+      subject = if new_end_lic
+        I18n.t('tickets_access.subject.new_end_lic', who_name: who_name_with_type, user: created_by.email)
       elsif status == 'requested'
-        I18n.t('tickets_access.subject.requested',who_name: who_name_with_type,user: created_by.email)
+        I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.email)
       end
+      puts subject
       Pack.support_access_topic_id ||= Support::Topic.find_by(name: I18n.t('integration.support_theme_name')).id
       tickets.create!(subject: subject, reporter: created_by, message: subject,topic_id: Pack.support_access_topic_id)
     end
@@ -109,43 +120,34 @@ module Pack
         user_access_without_select(user_id)
     end
 
-
-
-
-
     def self.joins_projects_groups(user_id)
-
-       if user_id==true
-        user_id=1
+      if user_id == true
+        user_id = 1
       end
-
-        select('pack_accesses.*,groups.name as who_name_from_union').joins(
-        <<-eoruby
-        INNER JOIN "user_groups" ON ( "pack_accesses"."who_id" = "user_groups"."group_id"
-        AND "user_groups"."user_id" = #{user_id}   AND "pack_accesses"."who_type" = 'Group' )
-        LEFT JOIN "groups" ON ( "user_groups"."group_id" = "groups"."id"  )
-        eoruby
-        ).union(  select('pack_accesses.*,core_projects.title as who_name_from_union').joins(
-        <<-eoruby
-        INNER JOIN "core_members" ON ( "pack_accesses"."who_id" = "core_members"."project_id"
-        AND "core_members"."user_id" = #{user_id} AND "pack_accesses"."who_type" = 'Core::Project'   )
-        LEFT JOIN core_projects ON core_projects.id= core_members.project_id
-        eoruby
-        )).union  select("pack_accesses.*,'User' as who_name_from_union").where(
-         <<-eoruby
-         "pack_accesses"."who_type" = 'User' AND "pack_accesses"."who_id" = #{user_id}
-         eoruby
-         )
+      select('pack_accesses.*,groups.name as who_name_from_union').joins(
+      <<-eoruby
+      INNER JOIN "user_groups" ON ( "pack_accesses"."who_id" = "user_groups"."group_id"
+      AND "user_groups"."user_id" = #{user_id}   AND "pack_accesses"."who_type" = 'Group' )
+      LEFT JOIN "groups" ON ( "user_groups"."group_id" = "groups"."id"  )
+      eoruby
+      ).union(  select('pack_accesses.*,core_projects.title as who_name_from_union').joins(
+      <<-eoruby
+      INNER JOIN "core_members" ON ( "pack_accesses"."who_id" = "core_members"."project_id"
+      AND "core_members"."user_id" = #{user_id} AND "pack_accesses"."who_type" = 'Core::Project'   )
+      LEFT JOIN core_projects ON core_projects.id= core_members.project_id
+      eoruby
+      )).union  select("pack_accesses.*,'User' as who_name_from_union").where(
+       <<-eoruby
+       "pack_accesses"."who_type" = 'User' AND "pack_accesses"."who_id" = #{user_id}
+       eoruby
+       )
     end
 
     def self.user_access_without_select(user_id)
-
-        if user_id==true
-          user_id=1
-        end
-
-        joins_projects_groups(user_id).order(:id)
-
+      if user_id == true
+        user_id = 1
+      end
+      joins_projects_groups(user_id).order(:id)
     end
 
 
@@ -160,8 +162,6 @@ module Pack
       else
         st
       end
-
-
     end
 
     def actions_labels
@@ -204,14 +204,20 @@ module Pack
     end
 
     def new_end_lic_readable
-      new_end_lic || Access.human_attribute_name(:forever)
+      if new_end_lic
+        new_end_lic
+      elsif new_end_lic_forever
+        Access.human_attribute_name(:forever)
+      else
+        ''
+      end
     end
 
     def status_readable
       I18n.t("access_states.#{status}")
     end
 
-    def lock_version_updated? lock_version
+    def lock_version_updated?(lock_version)
       self.lock_version != lock_version.to_i
     end
 
@@ -246,91 +252,15 @@ module Pack
       access
     end
 
-    # t.integer  "version_id"
-    # t.integer  "who_id"
-    # t.string   "who_type"
-    # t.string   "status"
-    # t.integer  "created_by_id"
-    # t.datetime "created_at"
-    # t.datetime "updated_at"
-    # t.date     "end_lic"
-    # t.date     "new_end_lic"
-    # t.integer  "allowed_by_id"
-    # t.integer  "lock_version",        default: 0,     null: false
-    # t.boolean  "new_end_lic_forever", default: false
-    def action= arg
-      if arg == 'make_longer'
-        if !new_end_lic
-           @date_err=true
-        end
-        self.end_lic = new_end_lic
-        self.new_end_lic= nil
-      elsif arg == 'deny_longer'
-        self.new_end_lic = nil
-      else
-        self.status = arg
-      end
-    end
-
-
-
-    def admin_update_requested_access(params, admin_id)
-      if permitted_states_with_own.include? params[:status]
-        assign_attributes(status: params[:action], end_lic: params[:end_lic])
-      else
-        raise "Incorrect access status"
-      end
-      save_success = save
-      self.status = backup_status unless save_success
-      save_success
-    end
-
-    def admin_update(params, admin_id)
-      backup_status = status
-      case status
-      when 'requested'
-        admin_update_requested_access(params, admin_id)
-      when 'allowed', 'expired'
-        # Если сохранение при продлении или отказе от продления не произошло, все атрибуты восстанавливаем
-        if permitted_states_with_own.include? params[:action]
-          assign_attributes(status: params[:action], end_lic: params[:end_lic])
-          save
-        elsif params[:action] == 'make_longer'
-          if new_end_lic_forever
-            self.end_lic = nil
-          elsif new_end_lic
-            self.end_lic = new_end_lic
-            self.new_end_lic = nil
-          else
-            raise "NO new_end_lic or new_end_lic_forever specified"
-          end
-          save_success = #save
-          restore_attributes unless save_success
-          save_success
-        elsif params[:action] == 'deny_longer'
-          self.new_end_lic = nil
-          self.new_end_lic_forever = false
-          save_success = save
-          restore_attributes unless save_success
-          save_success
-        end
-      end
-      # self.new_end_lic = nil unless %w[expired allowed].include?(status)
-      # if changes[:status] && status == 'allowed'
-      #   self.allowed_by_id = admin_id
-      # end
-      save_success
-    end
-
     def self.user_update(access_params, user_id)
       access_params[:end_lic] = nil if access_params[:forever]
-      access_params[:new_end_lic] = nil if access_params[:new_end_lic_forever]
+      access_params[:new_end_lic] = nil if access_params[:new_end_lic_forever] == 'true'
 
-      if access_params[:status] == 'new'
-        access = new_user_access(access_params, user_id)
-      else
-        access = search_access(access_params, user_id)
-      end
+      access = if access_params[:status] == 'new'
+                 new_user_access(access_params, user_id)
+               else
+                 search_access(access_params, user_id)
+               end
 
       if access_params[:status] == 'requested' && access_params[:delete] == 'true'
         if !access || access.lock_version_updated?(access_params[:lock_version])
@@ -354,24 +284,25 @@ module Pack
           end
         end
       end
+
       return access if access.is_a?(Hash)
       access.user_edit = true
       access.save!
       access
     end
 
+    def collect_errors
 
-    def who_name_with_type
-
-
-
-      "#{I18n.t('who_types.'+who_type)} \"#{who_name}\""
     end
 
+    def who_name_with_type
+      "#{I18n.t('who_types.' + who_type)} \"#{who_name}\""
+    end
 
     def who_name
       try(:who_name_from_union) || try(:who_project) || try(:who_group) || try(:who_user) || who_name_without_preload
     end
+
     def who_name_without_preload
 
       case who_type

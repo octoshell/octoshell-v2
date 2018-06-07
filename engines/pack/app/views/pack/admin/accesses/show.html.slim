@@ -24,8 +24,11 @@ div class="col-xs-12"
 table
   tr
      td
+        div class="alert alert-info"
+          strong
+            = t '.transitions'
+        p class='alpaca-messages'
         div class='top-alpaca-form'
-				p class='alpaca-messages'
         div class='bottom-alpaca-form'
 h3 =t 'tickets'
 -if @access.tickets
@@ -34,5 +37,7 @@ h3 =t 'tickets'
 -else
   =t 'no_records_found'
 =javascript_tag do
-	-puts @access.status
-	=render partial: @access.status,formats: [:js]
+  -if  %w[expired allowed].include? @access.status
+    =render partial: 'allowed_and_expired',formats: [:js]
+  -else
+    =render partial: 'requested',formats: [:js]

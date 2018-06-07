@@ -67,7 +67,6 @@ function AccessViewer(ids) {
       }
   }
   this.renderFormForVersion = function(version_id,form_data = 'user') {
-
     $( `.btn_access[version_id='${version_id}']`).parents('tr').next().find('p').empty();
     var topForm= $( `.btn_access[version_id='${version_id}']`).parents('tr').next().find('div.top-alpaca-form');
     topForm.alpaca('destroy');
@@ -82,13 +81,14 @@ function AccessViewer(ids) {
         "optionLabels": <%=raw @options_for_select_labels.to_json%>,
         "validate": false,
         "onFieldChange": function(e) {
+            var serverMessages= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('p.server-messages');
+            serverMessages.empty();
             viewer.renderBottomForm(version_id, this.getValue());
         }
       },
       "data": form_data,
       "postRender": function(control) {
         apply_select();
-        // var accesses = viewer.accesses[version_id] || [];
         viewer.renderBottomForm(version_id, control.getValue());
         control.getControlEl().next().attr('style','width: 400px;');
 
@@ -122,6 +122,8 @@ function AccessViewer(ids) {
     var bottomForm= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('div.bottom-alpaca-form');
     bottomForm.alpaca('destroy');
     var messages= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('p.accesses-messages');
+    messages.empty();
+
     if (access){
       switch(access.status){
         case "requested":
@@ -171,12 +173,12 @@ function AccessViewer(ids) {
           }
 
           if(access.end_lic){
-            <%= render partial: 'allowed', formats: :js%>
+            <%= render partial: 'allowed_expired', formats: :js%>
           }
-
-          // messages.find('.accesses-messages').html('<font color="red"> <%= t("mailer_messages.denied") %> </font>')
           break;
-
+        case "expired":
+          <%= render partial: 'allowed_expired', formats: :js%>
+        break;
       }
     }
     else{

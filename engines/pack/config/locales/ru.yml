@@ -194,6 +194,8 @@ ru:
         show_deleted: Показать удаленные
         show_service: Показать служебные
     access_states:
+      make_longer: продлить доступ
+      deny_longer: отказать в продлении
       allowed: разрешен
       denied: отказано
       expired:  истек
@@ -256,6 +258,7 @@ ru:
         pack/access:
             who_type: Тип доступа
             version_name: Имя версии
+            new_end_lic_forever: Заявка на бесконечный доступ
             new_end_lic_not_null: Показать только заявки на продление
             versions: Версии
             version: Версия
@@ -287,7 +290,10 @@ ru:
                     version_deleted: Версия удалена. Статус доступа может быть только "удален".
                   new_end_lic:
                     incorect_date: Дата заявки на продление должна быть больше текущей даты
-                    status_only: "Дата заявки на продление доступна только для доступов со статусом 'запрошен' или 'истек'"
+                    status_only: "Дата заявки на продление доступна только для доступов со статусом 'разрешен' или 'истек'"
+                  new_end_lic_forever:
+                    status_only: "Дата заявки на продление доступна только для доступов со статусом 'разрешен' или 'истек'"
+
               pack/clusterver:
                 attributes:
                   action:

@@ -9,11 +9,20 @@ module Pack
     end
 
     def update_accesses
+      @project_ids = Core::Project.joins(members: :user)
+                                  .where(core_members: { user_id: current_user.id,
+                                                         owner: true }).map(&:id)
+      who_id = params[:type] != 'user' && params[:type].to_i
+      if who_id && @project_ids.exclude?(who_id)
+        render status: 400, json: { error: t('.not_owned_project') }
+        return
+      end
       version = Version.find(params[:version_id])
       if version.service || version.deleted
         render status: 400, json: { error: t('.unable to_create') }
         return
       end
+
       @access = Access.user_update(access_params, current_user.id)
       accesses(params[:versions_ids].split(','))
       if @access.is_a?(Access)

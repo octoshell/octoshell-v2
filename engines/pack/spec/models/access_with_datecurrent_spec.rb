@@ -1,19 +1,18 @@
 module Pack
   require "initial_create_helper"
   describe "Pack::Access with date current" do
-    {"requested" => ['denied','allowed'],"allowed" => ["denied"],"denied" => ["allowed"]}.each do |key,value|
+    {"requested" => %w[denied  allowed],"allowed" => %w[denied],"denied" => ["allowed"]}.each do |key,value|
       describe "acesses_actions_for_#{key}_status" do
         before(:each) { @access = access_with_status(status: key, end_lic: AmericanDate.current.to_s) }
         describe "date" do
           it "shows actions for access with date" do
-            expect(@access.actions).to match_array(value << 'edit_by_hand')
+            expect(@access.actions).to match_array(value << @access.status)
           end
         end
         value.each do |a|
           describe "changes status  to #{a}" do
             it "saves correctly" do
-              @access.action= a
-              expect(@access.save).to be(true)
+              @access.admin_update  a
               expect(@access.status).to eq a
             end
           end

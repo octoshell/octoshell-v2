@@ -1,4 +1,4 @@
-function endLicWithoutReq(){
+function endLicWithReq(){
   var bottomForm = $('div.bottom-alpaca-form');
   var labels= <%=raw [Pack::Access.human_attribute_name("forever"),Pack::Access.human_attribute_name("not_forever")].to_json%>;
   bottomForm.alpaca('destroy');
@@ -6,20 +6,29 @@ function endLicWithoutReq(){
     "schema":{
       "type":"object",
       "properties":{
+        "status":{
+          "title": '<%= Pack::Access.human_attribute_name(:status) %>',
+          "enum": <%=raw @options_for_select.to_json%>,
+          "required": true,
+        },
         "forever":{
           "type": "radio",
           "enum": ['true','false'],
-          "required": true
-        },
-        "status":{
+          "required": true,
+          "dependencies": ["status"]
         },
         "lock_version":{
         },
         "end_lic":{
           "title": '<%=raw Pack::Access.human_attribute_name("end_lic")%>',
           "required": true,
-          "dependencies": ["forever"]
-        }
+          "dependencies": ["forever", "status"]
+        },
+        "delete_request":{
+          "default": true,
+          "dependencies": ["status"]
+        },
+
       }
     },
     "options":{
@@ -28,15 +37,28 @@ function endLicWithoutReq(){
       "fields":{
         "forever":{
           "optionLabels": labels,
-          "sort": false
+          "sort": false,
+          "dependencies":{
+            "status": ["allowed", "expired","deleted","denied"]
+          }
         },
         "end_lic":{
           "dependencies":{
-            "forever": "false"
+            "status": ["allowed", "expired","deleted","denied"],
+            "forever": false
+          }
+        },
+        "delete_request":{
+          "type": "checkbox",
+          "rightLabel": '<%= t ".delete_request" %>',
+          "dependencies":{
+            "status": ["allowed", "expired"]
           }
         },
         "status":{
-          "type": "hidden"
+          "type": "select",
+          "optionLabels": <%=raw @options_for_select_labels.to_json%>,
+          "validate": false
         },
         "lock_version":{
           "type": "hidden"
@@ -61,7 +83,8 @@ function endLicWithoutReq(){
                       this.submit();
                     }
                   }
-                }
+                },
+
       }
     },
     "data": data,
@@ -69,11 +92,14 @@ function endLicWithoutReq(){
       var endLicElem = control.getControlByPath('end_lic').getControlEl();
       endLicElem.datepicker({
                                dateFormat: 'mm-dd-yy',
-                             });
+                            });
       if(access.end_lic)
       {
+        console.log(endLicDate);
         endLicElem.datepicker("setDate", endLicDate);
       }
+      apply_select();
+
     }
   });
 }

@@ -1,7 +1,9 @@
 function getDate(dateString)
 {
   var endLicArr = dateString.split('-');
-  return new Date(endLicArr[0],endLicArr[1],endLicArr[2]);
+  var date = new Date(endLicArr[0],endLicArr[1],endLicArr[2]);
+  date = date.setHours(0,0,0,0);
+  return date;
 }
 
 var access = <%=raw @access.to_json%>;
