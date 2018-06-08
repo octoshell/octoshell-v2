@@ -8,6 +8,9 @@ module Jobstat
       @owned_logins = get_owned_logins
       @involved_logins = get_involved_logins
       @params = get_defaults.merge(params.symbolize_keys)
+      @jobs = []
+      @total_count = 0
+      @shown = 0
 
       query_logins = (@params[:involved_logins] | @params[:owned_logins]) & (@involved_logins | @owned_logins)
 
@@ -16,13 +19,11 @@ module Jobstat
           query_logins.length == 0
 
         @notice = "Choose all query parameters"
-        @jobs = []
         return
       else
         @notice = nil
       end
 
-      @jobs = get_jobs(@params, query_logins)
       @descr = Conditions::SMART_CONDITIONS
       @pictures = {
         "rule_mpi_small_packets" => "packets.png",
@@ -32,6 +33,17 @@ module Jobstat
         "rule_disaster" => "error.png",
         "rule_anomaly" => "error.png",
       }
+
+      begin
+        @jobs = get_jobs(@params, query_logins)
+        @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
+
+        @total_count = @jobs.count
+        @shown = @jobs.length
+      rescue Exception
+        @jobs = []
+      end
+
     end
 
     protected
@@ -63,8 +75,6 @@ module Jobstat
 
       jobs.where(login: query_logins, cluster: params[:cluster])
         .order(:drms_job_id)
-        .offset(params[:offset].to_i)
-        .limit(@PER_PAGE)
     end
   end
 end

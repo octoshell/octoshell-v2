@@ -2,6 +2,14 @@ module Jobstat
   class Job < ActiveRecord::Base
     include JobHelper
 
+    def get_duration_hours
+      (end_time - start_time) / 3600
+    end
+
+    def get_cpuh
+      get_duration_hours * num_cores
+    end
+
     def get_performance
       cpu_user = FloatDatum.where(job_id: id, name: "cpu_user").take
       instructions = FloatDatum.where(job_id: id, name: "instructions").take

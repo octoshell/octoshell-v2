@@ -1,3 +1,5 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 css:
   .job_metric_low {
     background-color: #ff8080
@@ -11,18 +13,17 @@ css:
     background-color: #80ff80
   }
 
-h1
-  = "Job info for #{@job[:drms_job_id]}"
+h1 = "Информация о задаче #{@job[:drms_job_id]}"
 
 = @job[:command]
 
 div class="row"
   div class="col-md-4"
-    h3 = "General info"
+    h3 = "Общая информация"
     table class="table table-bordered table-striped"
       tr
         td
-          | cluster
+          | Cluster
         td
           = @job[:cluster]
       tr
@@ -74,10 +75,10 @@ div class="row"
         td
           | Duration (hours)
         td
-          = number_with_precision((@job.end_time - @job.start_time) / 3600, :precision => 1)
+          = number_with_precision(@job.get_duration_hours, :precision => 1)
 
   div class="col-md-4"
-    h3 = "Job performance"
+    h3 = "Производительность"
     table class="table table-bordered table-striped"
       tr
         td
@@ -128,3 +129,123 @@ div class="row"
           = format_float_or_nil(@job_perf[:ib_xmit_data])
         td class="job_metric_#{@ranking[:ib_xmit_data]}"
           = @ranking[:ib_xmit_data]
+
+  div class="col-md-4"
+    h3 = "Базовые свойства"
+    table class="table table-bordered table-striped"
+      - if @no_data
+        tr
+          td
+            = "Отсутсвуют данные мониторинга"
+      - else
+        - if @primary_conditions.length > 0
+          - @primary_conditions.each do |cond|
+            tr
+              td
+                = @condition_descriptions[cond]
+        - else
+          tr
+            td
+              = "Свойств не обнаружено"
+
+h3 = "Найденные признаки неэффективности"
+
+table class="table table-bordered table-striped"
+  tr
+    td
+      = "id"
+    td
+      = "Описание"
+    td
+      = "Предположение"
+    td
+      = "Рекомендация"
+
+  - if @no_data
+    tr
+      td
+        = "Отсутсвуют данные мониторинга"
+      td
+      td
+      td
+
+  - else
+    - if @smart_conditions.length > 0
+      - @smart_conditions.each do |cond|
+        tr
+          td
+            = cond
+          td
+            = @condition_descriptions[cond][0]
+          td
+            = @condition_descriptions[cond][1]
+          td
+            = @condition_descriptions[cond][2]
+    - else
+      tr
+        td
+          = "Признаков не найдено"
+        td
+        td
+        td
+
+h3 = "Динамика поведения датчиков"
+
+a href="full jd" Полный jd
+
+div class="row"
+  div id="g1" class="col-md-4" style="height: 200px"
+  div id="g2" class="col-md-4" style="height: 200px"
+  div id="g3" class="col-md-4" style="height: 200px"
+
+div class="row"
+  div id="g4" class="col-md-4" style="height: 200px"
+  div id="g5" class="col-md-4" style="height: 200px"
+  div id="g6" class="col-md-4" style="height: 200px"
+
+h3 = "Текст"
+
+div id="g7" style="height: 200px"
+div id="g8" style="height: 300px"
+
+javascript:
+  $(document).ready(function(){
+
+  google.charts.load('current', {packages: ['corechart', 'line']});
+  google.charts.setOnLoadCallback(drawLineColors);
+
+  function drawLineColors() {
+    for(var ch = 1; ch <= 8; ch++)
+    {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'X');
+        data.addColumn('number', 'max');
+        data.addColumn('number', 'avg');
+        data.addColumn('number', 'min');
+
+        var vals = [];
+
+        for(var i = 0; i < ch * 10; i++)
+        {
+          var r = Math.floor(Math.random() * 10);
+
+          vals.push([i, r, r/2, r/3])
+        }
+
+        data.addRows(vals);
+
+        var options = {
+          hAxis: {
+            title: 'Time'
+          },
+          colors: ['#a52714', '#25a714', '#2527a4'],
+          'chartArea': {'width': '100%', 'height': '80%'},
+         'legend': {'position': 'bottom'},
+
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('g' + ch));
+        chart.draw(data, options);
+      }
+      }
+    });

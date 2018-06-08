@@ -44,10 +44,10 @@ h3 = "Job table query interface"
 = render "form"
 
 - if @notice
-  p[ style = 'color:#FF0000;' ] = @notice
+  p style = 'color:#FF0000;' = @notice
 
 div
-  h3 = "Results (limited to 100)"
+  h3 ="Results: #{@params[:offset]}..#{@params[:offset].to_i + @shown} of #{@total_count}"
   table id="jobs" class="table table-bordered tablesorter-blue"
     thead
       tr
@@ -81,8 +81,6 @@ div
                   = image_tag @pictures.fetch(cond, "other.png"), size: "20", alt: @descr[cond][0], title: @descr[cond][0], style: "margin: 1px"
               - else
                 = image_tag "ok.png", size: "20", border: 2
-
-              = link_to("Analysis", job_analysis_path(job.id))
             - else
               p = "no_data"
           td = link_to(job.drms_job_id, job)
@@ -92,9 +90,9 @@ div
           td = job.end_time.strftime('%D %T')
           td class="task_state_#{job.state}" = job.state
           td = job.num_nodes
-          td = number_with_precision((job.end_time - job.start_time) / 3600, :precision => 1)
+          td = number_with_precision(job.get_duration_hours, :precision => 1)
 
-          td = number_with_precision((job.end_time - job.start_time) / 3600 * job.num_cores, :precision => 1)
+          td = number_with_precision(job.get_cpuh, :precision => 1)
 
           td = "🎖" * Math.log(job.num_nodes * (job.end_time - job.start_time) / 86400 + 2, 2).to_i
 
