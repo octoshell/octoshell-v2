@@ -12,7 +12,7 @@ $("#options ").click(function()
    	var new_id = new Date().getTime();
 	 	$('#new_options').append(content.replace(regexp, new_id));
 	 	$(".select-auto[por='" +new_id + "']").not("[checked]").next().find("select, input[type='text']").prop('disabled',true);
-	 	apply_select2();
+	 	apply_select();
 	 	$(".select-auto").not(":checked").next().find("select, input").prop('disabled',true);
 	 	return false;
 });

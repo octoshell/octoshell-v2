@@ -29,47 +29,22 @@ module Pack
       end
     end
 
-    def manage_access_old
-      return
-      begin
-        access_init
-        if access_params[:action]=='edit_by_hand'
-          @access.attributes= access_params.slice(:lock_version,:forever,:end_lic)
-        else
-          @access.attributes= access_params.slice(:lock_version,:action)
-        end
-        @access.new_end_lic= nil unless ["expired","allowed"].include?(@access.status)
-        @access.allowed_by_id=current_user.id if @access.changes[:status] && @access.status=='allowed'
-        if @access.save
-
-          @to='successful'
-
-        else
-
-          @to='manage_access'
-        end
-
-        rescue ActiveRecord::StaleObjectError
-          @to='manage_access'
-          @message=t("stale_message")
-          @access.restore_attributes
-        rescue ActiveRecord::RecordNotFound
-          @to='manage_access'
-          @message= t("exception_messages.not_found") + t("exception_messages.not_found")
-
-      end
-    end
-
     def new
       @access = Access.new
       @access.who_type="User"
     end
 
-
-
     def create
-
-      @access = Access.new access_params
+      @access = Access.new access_params.except(:forever)
+      if access_params[:forever] == 'true'
+        @access.end_lic = nil
+        @access.new_end_lic = nil
+        @access.new_end_lic_forever = false
+      elsif access_params[:end_lic] == ''
+        @access.errors.add(:end_lic,:blank_not_forever)
+        render :new
+        return
+      end
       @access.created_by_id = current_user.id
       @access.allowed_by_id = current_user.id if @access.status=='allowed'
       if @access.save
@@ -79,12 +54,18 @@ module Pack
       end
     end
 
-    def edit
-
-
-    end
+    def edit; end
 
     def update
+      if access_params[:forever] == 'true'
+        @access.end_lic = nil
+        @access.new_end_lic = nil
+        @access.new_end_lic_forever = false
+      elsif access_params[:end_lic] == ''
+        @access.errors.add(:end_lic,:blank_not_forever)
+        render :new
+        return
+      end
       @access.allowed_by_id = current_user.id if @access.changes[:status] && @access.status=='allowed'
       if @access.update(access_params)
         redirect_to admin_access_path(@access.id)
@@ -125,7 +106,7 @@ module Pack
 
   	def access_params
       params.require(:access).permit(:who_id,:forever,:action,:lock_version,:proj_or_user, :version_id,
-        :new_end_lic,:end_lic,:from,:status,:user_id,:project_id,:who_type)
+        :new_end_lic, :new_end_lic_forever, :end_lic,:status,:user_id,:project_id,:who_type)
     end
 
   end

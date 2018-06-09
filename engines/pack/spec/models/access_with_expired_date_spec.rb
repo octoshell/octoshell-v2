@@ -23,7 +23,7 @@ module Pack
           it "edits and save correctly with end_lic" do
             @access.update!(end_lic: AmericanDate.current.to_s)
             date = Date.current
-            expect(@access.end_lic.to_s).to  eq(AmericanDate.new(date.year ,date.month, date.day).to_s)
+            expect(@access.end_lic.to_s).to eq(AmericanDate.new(date.year ,date.month, date.day).to_s)
             expect(@access.save).to be true
             if key == "expired"
               expect(@access.status).to eq "allowed"

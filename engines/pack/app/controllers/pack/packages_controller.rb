@@ -13,8 +13,6 @@ module Pack
         end
         @options_for_select<<[t('user'),"user"]
       end
-
-
       @records=search.get_results(search.table_relation.allowed_for_users).page(params[:page]).per(15)
 
 
@@ -49,11 +47,9 @@ module Pack
     end
 
     def show
-      @projects = Core::Project.joins(members: :user).where(core_members: {user_id: current_user.id,owner: true}).to_a
       @options_for_select = []
       @options_for_select_labels = []
       Core::Project.joins(members: :user).where(core_members: {user_id: current_user.id,owner: true}).each do |item|
-
         @options_for_select << item.id
         @options_for_select_labels << t('project') + ' ' + item.title
       end

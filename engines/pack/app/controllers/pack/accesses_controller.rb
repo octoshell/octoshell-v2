@@ -22,7 +22,6 @@ module Pack
         render status: 400, json: { error: t('.unable to_create') }
         return
       end
-
       @access = Access.user_update(access_params, current_user.id)
       accesses(params[:versions_ids].split(','))
       if @access.is_a?(Access)

@@ -5,53 +5,35 @@
     {
       if (  $("input[name='q[type]']:checked").val() == 'packages' )
       {
-
         $('#type_aim').html("<%=j f.autocomplete_field :id_in,{label: t('pack_search.packages.packages_name'), source:  json_packages_path},multiple: true %>");
-
       }
       else
       {
         $('#type_aim').html("<%=j f.autocomplete_field :id_in,{label: t('pack_search.packages.versions_name'), source: versions_path},multiple: true %>");
-
       }
 
     }
     check_input();
-
-     $(document).on('change',"input[name='q[type]']",function()
-    {
-     
-       
+     $(document).on('change',"input[name='q[type]']",function(){
       check_input();
-      
-       
-
-       	apply_select2();
-       	//var temp= $(this).find('option:selected');
-        
-      
-     
-      
+       apply_select2();
     });
 
-$(document).on('change','#q_user_access',function()
-    {
-     
+$(document).on('change','#q_user_access',function(){
       if ($(this).prop('checked'))
       {
 
         $(".change_user_access").prop('disabled', false);
-        
+
       }
       else
       {
           $(".change_user_access").prop('disabled', true);
-        
+
       }
-    });
+});
 
 $("input[name='commit']").click(function(){
- 
   $("#ajax_paginator").empty();
   $("#table_records").empty();
 });

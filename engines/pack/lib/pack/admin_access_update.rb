@@ -9,6 +9,7 @@
       hash = hash.to_h
       hash.symbolize_keys!
       raise "incorrect action" if actions.exclude?(hash[:status])
+      raise "LOCK VERSION UPDATED" if lock_version_updated?(hash[:lock_version])
       case status
       when 'requested', 'denied', 'deleted'
         requested_update hash
@@ -30,8 +31,8 @@
     def requested_update(hash)
       self.status = hash[:status]
       assign_end_lic(hash)
-      return unless status == 'allowed'
-      allowed_by = admin
+      return if status != 'allowed' || allowed_by
+      self.allowed_by = admin
     end
 
     def approve_access
@@ -56,14 +57,10 @@
       elsif hash[:status] == 'deny_longer'
         delete_request_info
       elsif %w[allowed expired].include?(hash[:status])
-        delete_request_info if hash[:delete_request]
+        delete_request_info if hash[:delete_request] == 'true' 
         assign_end_lic(hash)
       else
         self.status =  hash[:status]
       end
-
-    end
-
-    def proccess
     end
   end

@@ -62,15 +62,14 @@ module Pack
     end
 
     def delete_accesses
-      if deleted == true || package.deleted==true
+      if deleted == true || package.deleted == true
         self.deleted = true
       end
-      if deleted == true || state=='expired' && delete_on_expire
+      if deleted == true || state == 'expired' && delete_on_expire
         accesses.load
         accesses.each do |a|
           a.status='deleted'
           a.save
-
         end
       end
     end
@@ -188,12 +187,11 @@ module Pack
 
 
     def deleted?
-
-        deleted || package.deleted
+      deleted || package.deleted
     end
 
     def available_for_user?
-      user_accesses &&  user_accesses.detect{ |a| a.status=='allowed'}!=nil && ( state=='available' || state=='forever') && !deleted?
+      %w[available forever].include?(state) && !deleted?
     end
 
     def readable_state
@@ -320,11 +318,9 @@ module Pack
 
 
        accesses=Access.user_access(user_id).where(version_id: versions.map(&:id) )
-        versions.each do |vers|
-
-          vers.user_accesses= accesses.select{|ac| ac.version_id==vers.id}
-
-        end
+       versions.each do |vers|
+         vers.user_accesses= accesses.select{ |ac| ac.version_id == vers.id}
+       end
 
 
 

@@ -2,17 +2,21 @@ require_dependency "pack/application_controller"
 
 module Pack
   class VersionsController < ApplicationController
-  	def show
-  		@options_for_select=Core::Project.joins(members: :user).where(core_members:{user_id: current_user.id,owner: true}).map do |item|
-        [t('project') + ' ' + item.title,item.id]
-        end
-      @options_for_select<<[t('user'),"user"]
-  		@version = Version.includes(:version_options,:accesses,clustervers: :core_cluster).order(:id).find(params[:id])
-  		@version.user_accesses=@version.accesses.user_access(current_user.id)
+    def show
+      @options_for_select = []
+      @options_for_select_labels = []
+      Core::Project.joins(members: :user).where(core_members: {user_id: current_user.id,owner: true}).each do |item|
+        @options_for_select << item.id
+        @options_for_select_labels << t('project') + ' ' + item.title
+      end
+      @options_for_select << "user"
+      @options_for_select_labels << t("user")
+      @version = Version.includes(:version_options,:accesses,clustervers: :core_cluster).order(:id).find(params[:id])
+      @versions = [@version]
       if @version.service &&  @version.user_accesses.select{|a| a.status=="allowed"} && !may?(:manage, :packages)
         raise MayMay::Unauthorized
       end
-  	end
+    end
 
     def index
       respond_to do |format|

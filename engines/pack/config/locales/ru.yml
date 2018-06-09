@@ -248,6 +248,7 @@ ru:
           access_user: Мои доступы
           clusters: Кластеры
           available_for_user?: Доступна
+          accesses: Доступы
 
         pack/version_option:
             name: Название опции
@@ -289,11 +290,12 @@ ru:
                   status:
                     version_deleted: Версия удалена. Статус доступа может быть только "удален".
                   new_end_lic:
-                    incorect_date: Дата заявки на продление должна быть больше текущей даты
+                    incorrect_forever: Нельзя создавать заявки на бесконечный доступ с датой 
                     status_only: "Дата заявки на продление доступна только для доступов со статусом 'разрешен' или 'истек'"
                   new_end_lic_forever:
                     status_only: "Дата заявки на продление доступна только для доступов со статусом 'разрешен' или 'истек'"
-
+                  end_lic:
+                    blank_not_forever: Укажите дату для конечного доступа
               pack/clusterver:
                 attributes:
                   action:

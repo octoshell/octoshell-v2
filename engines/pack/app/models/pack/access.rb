@@ -29,7 +29,7 @@ module Pack
                     to: :allowed, guard: :check_allowed?
       end
       event :expire do
-        transitions from:  [:denied], to: :expired, guard: :check_expired?
+        transitions from:  %i[denied requested], to: :expired, guard: :check_expired?
       end
       event :deny do
         transitions from:  %i[requested expired allowed],
@@ -75,17 +75,6 @@ module Pack
     end
 
 
-    before_validation do
-      unless ["expired","allowed"].include?(status)
-        self.new_end_lic_forever = false
-        self.new_end_lic = nil
-      end
-      to_expired if may_to_expired?
-      to_allowed if may_to_allowed?
-      # self.new_end_lic = nil if new_end_lic && (!end_lic || new_end_lic <= end_lic)
-      # self.new_end_lic_forever = false unless end_lic
-    end
-
     def send_email
       if status != 'requested'
         if previous_changes["status"]
@@ -107,9 +96,8 @@ module Pack
       elsif status == 'requested'
         I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.email)
       end
-      puts subject
-      Pack.support_access_topic_id ||= Support::Topic.find_by(name: I18n.t('integration.support_theme_name')).id
-      tickets.create!(subject: subject, reporter: created_by, message: subject,topic_id: Pack.support_access_topic_id)
+      support_access_topic = Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
+      tickets.create!(subject: subject, reporter: created_by, message: subject, topic: support_access_topic)
     end
 
     def version_name
@@ -165,7 +153,7 @@ module Pack
     end
 
     def actions_labels
-      actions.map{ |a| I18n.t("access_states.#{a}")  }
+      actions.map { |a| I18n.t("access_states.#{a}") }
     end
 
     def self.states_list
@@ -235,6 +223,7 @@ module Pack
     def self.new_user_access(access_params, user_id)
       access = search_access(access_params, user_id)
       return { access: access, error: '.created_during_edit' } if access
+      access_params[:forever] == 'true'
       access = if access_params[:forever] == 'true'
                 Access.new(end_lic: nil)
                else
@@ -253,7 +242,7 @@ module Pack
     end
 
     def self.user_update(access_params, user_id)
-      access_params[:end_lic] = nil if access_params[:forever]
+      access_params[:end_lic] = nil if access_params[:forever] == 'true'
       access_params[:new_end_lic] = nil if access_params[:new_end_lic_forever] == 'true'
 
       access = if access_params[:status] == 'new'
@@ -271,7 +260,7 @@ module Pack
         end
       end
 
-      if access_params[:status] == 'allowed'
+      if %w[allowed expired].include? access_params[:status]
         if !access || access.lock_version_updated?(access_params[:lock_version])
           return { access: access, error: '.updated_during_edit' }
         else
@@ -289,10 +278,6 @@ module Pack
       access.user_edit = true
       access.save!
       access
-    end
-
-    def collect_errors
-
     end
 
     def who_name_with_type
@@ -315,12 +300,6 @@ module Pack
       else
         raise 'unrecognizable who_type'
       end
-
-
     end
-
-
-
-
   end
 end

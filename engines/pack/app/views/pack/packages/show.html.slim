@@ -17,5 +17,7 @@ html
   =paginate(@versions)
   = handlebars_tag(id: 'accesses-template') do
     = render 'access'
+  = handlebars_tag(id: 'availability-template') do
+    = render 'pack/packages/availability'
   = javascript_tag do
       = render(:partial => 'show', :formats => [:js])

@@ -11,6 +11,7 @@ function getJSONSyncWithData(url,data,success)
 
 function AccessViewer(ids) {
   this.ids = ids;
+  this.versions = <%= raw(@versions.map{  |v| {available: v.available_for_user?, id: v.id} }.group_by { |v| v[:id] }.to_json)%>;
   this.load = function() {
     accesses = null;
     getJSONSyncWithData('/pack/accesses/load_for_versions',{versions_ids: ids},function(result){
@@ -21,17 +22,32 @@ function AccessViewer(ids) {
   };
 
   this.renderAccessesInfo = function(){
-    var keys = Object.keys(this.accesses);
+    var keys = <%=raw @versions.map(&:id)%>;
     var source   = $('#accesses-template').html();
     var template = Handlebars.compile(source);
+    var sourceAvailability   = $('#availability-template').html();
+    var templateAvailability = Handlebars.compile(sourceAvailability);
+
     for(var i=0; i < keys.length; i++)
     {
+      var available = false;
       var td = $(`td.accesses-info[version_id='${keys[i]}']`);
+      <% if @version %>
+        var availabilityTd = $('td.version-availability');
+      <% else %>
+      var availabilityTd = td.parents('tr').find('.version-availability');
+      <% end %>
       td.empty();
+      availabilityTd.empty();
+      if(this.accesses[keys[i]])
       for(var j=0; j < this.accesses[keys[i]].length; j++)
       {
+        // user_accesses && user_accesses.detect{ |a| a.status=='allowed'}!=nil && ( state=='available' || state=='forever') && !deleted?
         var readable_name,end_lic,result;
         access = this.accesses[keys[i]][j];
+        if(access.status == 'allowed' && this.versions[keys[i]][0].available){
+          available = true;
+        }
         if(access.who_type == 'User'){
           readable_name= '<%= t(".user")%>';
         }
@@ -47,9 +63,17 @@ function AccessViewer(ids) {
         else{
           end_lic = '<%= Pack::Access.human_attribute_name(:forever)%>'
         }
-         result = template({color: this.accessColor(access),who: readable_name, end_lic: end_lic});
+        result = template({color: this.accessColor(access),who: readable_name, end_lic: end_lic});
         td.append(result);
       }
+      if(available == true)
+      {
+        result = templateAvailability({available: true});
+      }
+      else {
+        result = templateAvailability({});
+      }
+      availabilityTd.html(result);
     }
   }
   this.accessColor = function(access){
@@ -163,7 +187,6 @@ function AccessViewer(ids) {
           if(!access.end_lic){
             message.html('<font color="green"> <%= t(".end_lic_null") %> </font>');
           }
-
           if(access.new_end_lic_forever)
           {
             message.append('<font color="green"> <%= t(".new_end_lic_forever") %> </font>');
@@ -173,16 +196,26 @@ function AccessViewer(ids) {
           }
 
           if(access.end_lic){
-            <%= render partial: 'allowed_expired', formats: :js%>
+            <%= render partial: 'pack/packages/allowed_expired', formats: :js%>
           }
           break;
         case "expired":
-          <%= render partial: 'allowed_expired', formats: :js%>
+          var message = $(`.btn_access[version_id='${version_id}']`).parents('tr')
+          .next().find('p.accesses-messages');
+          message.html(`<font color="brown"> <%= t(".end_lic_expired") %> </font>`);
+          if(access.new_end_lic_forever)
+          {
+            message.append('<font color="brown"> <%= t(".new_end_lic_forever") %> </font>');
+          }
+          else if(access.new_end_lic) {
+            message.append(`<font color="brown"> <%= t(".new_end_lic") %> </font>`);
+          }
+          <%= render partial: 'pack/packages/allowed_expired', formats: :js%>
         break;
       }
     }
     else{
-      <%= render partial: 'new', formats: :js%>
+      <%= render partial: 'pack/packages/new', formats: :js%>
     }
     this.renderAccessesInfo();
   }

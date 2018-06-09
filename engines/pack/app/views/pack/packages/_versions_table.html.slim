@@ -36,7 +36,6 @@
             th =Pack::Version.human_attribute_name str
           th   #{t("actions_pack")}
         - for version in records
-
           tr
             td  =link_to version.name,version
             td  #{version.description}
@@ -45,15 +44,7 @@
               =render "clustervers",clustervers: version.clustervers
 
             td class="accesses-info" version_id=version.id  class="col-xs-3"
-
-            td
-              - if version.available_for_user?
-                font color="green"
-                  =t "#{version.available_for_user?}"
-
-              -else
-                font color="red"
-                  =t "#{version.available_for_user?}"
+            td class='version-availability'
             td
               -if !version.deleted && !version.service
                  button class="btn btn-primary btn_access" version_id= version.id  = t("want",default:"want this")
@@ -65,6 +56,5 @@
                  p class='server-messages'
                  p class='accesses-messages'
                  div class='bottom-alpaca-form'
-
    -else
      p = t("no_records_found")
