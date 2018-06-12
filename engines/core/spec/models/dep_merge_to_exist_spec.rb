@@ -19,8 +19,8 @@ module Core
 
       it "creates DepartmentMerger" do
         @department3 = create(:organization_department, organization: @organization2)
-        @department1 = create(:organization_department,organization: @organization)
-        @department2 = create(:organization_department,organization: @organization)
+        @department1 = create(:organization_department, organization: @organization)
+        @department2 = create(:organization_department, organization: @organization)
         @user = create(:user)
         @user_with_many_employments = create(:user)
 

@@ -5,6 +5,14 @@ module Pack
       controller.class.name.split("::").include? "Admin"
     end
 
+    def add_version(t, version)
+      if version
+        t
+      else
+        "version_#{t}"
+      end
+    end
+
     def show_errors(f, attr)
       if f.object.errors[attr]!=[]
         errors=f.object.errors[attr].join(" ")
@@ -22,6 +30,9 @@ module Pack
       menu.add_item(Face::MenuItem.new(name: t("engine_submenu.packages_list"),
                                         url: [:admin, :packages],
                                         regexp: /packages/))
+      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.versions_list"),
+                                        url: [:admin, :versions],
+                                        regexp: /versions/))
       menu.add_item(Face::MenuItem.new(name: t("engine_submenu.accesses_list"),
                                         url: [:admin, :accesses],
                                         regexp: /accesses/))
@@ -30,6 +41,19 @@ module Pack
                                         regexp: /options_categories/))
       menu.items
     end
+
+    def pack_submenu_items
+      menu = Face::Menu.new
+      menu.items.clear
+      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.packages_list"),
+                                        url: [:packages],
+                                        regexp: /packages/))
+      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.versions_list"),
+                                        url: [:versions],
+                                        regexp: /versions/))
+      menu.items
+    end
+
 
     def handlebars_tag(html_options = {}, &block)
       html_options = html_options.dup

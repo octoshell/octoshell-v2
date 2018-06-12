@@ -6,14 +6,14 @@ module Pack
     has_many :versions,:dependent => :destroy,inverse_of: :package
     scope :finder, ->(q) { where("lower(name) like lower(:q)", q: "%#{q.mb_chars}%") }
 
-    def as_json(options)
+    def as_json(_options)
     { id: id, text: name }
     end
 
     before_save do
       if deleted == true
         versions.load
-       versions.each do |v|
+        versions.each do |v|
           v.deleted = true
           v.save
         end
@@ -23,6 +23,12 @@ module Pack
     def self.allowed_for_users
       all.merge(Version.allowed_for_users)
     end
+
+    def self.allowed_for_users_with_joins(user_id)
+      all.merge(Version.allowed_for_users).joins(:versions)
+         .user_access(user_id, "LEFT")
+    end
+
 
     def self.user_access user_id,join_type
       if user_id == true

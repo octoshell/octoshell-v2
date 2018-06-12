@@ -2,59 +2,23 @@ require_dependency "pack/application_controller"
 
 module Pack
   class Admin::PackagesController < Admin::ApplicationController
-
-  
-    
     def index
-    
-      
-      @q_form=OpenStruct.new(params[:q] || {type:'packages'})
-      search=Pack::PackSearch.new(@q_form.to_h)
-
-      @model_table=search.model_table
-
-      @records=search.get_results(nil).page(params[:page]).per(15)
-      
-
-        
-      
-    
       respond_to do |format|
-
-
         format.html{
-          
+          @q_form = OpenStruct.new(params[:q])
+          search = PackSearch.new(@q_form.to_h, 'packages')
+          @packages = search.get_results(nil).page(params[:page]).per(15)
         } # index.html.erb
-        format.js { 
-            
-            render_paginator(@records,"#{@model_table}_table")
-        }
         format.json do
-          @packages = Package.finder(params[:q])    
-          render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count } 
+          @packages = Package.finder(params[:q]).allowed_for_users_with_joins(current_user.id)
+          render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count }
         end
-
       end
-      
     end
-    
-
 
     def show
-    
-
-
-
       @package = Package.find(params[:id])
-
-
-
-
-      @versions=@package.versions.page(params[:page]).per(@per).includes(clustervers: :core_cluster)
-
-      
-      
-      
+      @versions = @package.versions.page(params[:page]).per(@per).includes(clustervers: :core_cluster)
     end
 
     def new
@@ -72,39 +36,29 @@ module Pack
 
     def edit
       @package = Package.find(params[:id])
-
     end
 
     def update
-      
       @package = Package.find(params[:id])
-      
       if @package.update(package_params)
         redirect_to admin_package_path(@package.id)
       else
-      
         render :edit
       end
     end
 
     def destroy
       @package = Package.find(params[:id])
-      if @package.deleted
-        @package.destroy
-      else
-        @package.deleted =  true
-        @package.save
-      end
+      @package.destroy
       redirect_to admin_packages_path
     end
 
     private
 
-   
-
     def package_params
-      params.require(:package).permit(:name, :folder, :cost,:description,:deleted,:lock_version)   
+      params.require(:package).permit(:name, :folder, :cost,:description,:deleted,:lock_version)
     end
+
     def search_params
       params.require(:search).permit(:deleted)
     end

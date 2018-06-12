@@ -23,7 +23,7 @@ ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 RSpec.configure do |config|
   config.include Sorcery::TestHelpers::Rails::Controller, type: :controller
   config.include Sorcery::TestHelpers::Rails::Integration, type: :feature
-
+  config.include PackHelpers
   # ## Mock Framework
   # config.mock_with :rr
   config.treat_symbols_as_metadata_keys_with_true_values = true
@@ -53,5 +53,7 @@ RSpec.configure do |config|
     end
     puts "Seeding data"
     Seed.all
+    Pack::Seed.all
+
   end
 end

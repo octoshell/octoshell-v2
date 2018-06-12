@@ -25,10 +25,13 @@ ru:
 
 
         index:
-          title: Список пакетов и версий
+          title: Список пакетов
     versions:
         show:
           title: Версия
+        index:
+          title: Список версий
+
     admin:
       options_categories:
         new:
@@ -82,3 +85,5 @@ ru:
           title: Информация о версии
         form2:
           new: Добавить опцию
+        index:
+          title: Список версий

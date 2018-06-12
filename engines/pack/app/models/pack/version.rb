@@ -5,33 +5,31 @@ module Pack
     attr_accessor :user_accesses
 
 
-  	validates :name, :description,:package, presence: true
-    validates_uniqueness_of :name,:scope => :package_id
-  	belongs_to :package,inverse_of: :versions
-  	has_many :clustervers,inverse_of: :version, :dependent => :destroy
-    has_many :version_options,inverse_of: :version,:dependent => :destroy
-  	has_many :accesses,:dependent => :destroy
+    validates :name, :description, :package, presence: true
+    validates_uniqueness_of :name, scope: :package_id
+    belongs_to :package,inverse_of: :versions
+    has_many :clustervers,inverse_of: :version, :dependent => :destroy
+    has_many :version_options, inverse_of: :version,:dependent => :destroy
+    has_many :accesses, dependent: :destroy
     accepts_nested_attributes_for :version_options,:clustervers, allow_destroy: true
     validates_associated :version_options,:clustervers
     scope :finder, ->(q) { where("lower(name) like lower(:q)", q: "%#{q.mb_chars}%").limit(10) }
-    validate :date_and_state,:work_with_stale,:pack_deleted
+    validate :date_and_state, :work_with_stale, :pack_deleted
 
-    aasm :column => :state  do
-
-      state :forever,:available,:expired
+    aasm :column => :state do
+      state :forever, :available, :expired
       event :to_expired do
-        transitions :from =>  :available, :to => :expired
+        transitions from: :available, to: :expired
       end
-
     end
+
     def add_errors(to)
       if to != self && to.changes != {}
-
         errors.add(:stale,"stale_error_nested")
       end
       to.changes.except("lock_col","updated_at").each do  |key,val|
-          to.errors.add(key.to_sym,I18n.t("stale_error"))
-        end
+        to.errors.add(key.to_sym, I18n.t("stale_error"))
+      end
     end
 
     def work_with_stale
@@ -112,48 +110,33 @@ module Pack
     end
 
     def self.allowed_for_users
-
-     where("pack_versions.service= 'f' OR pack_accesses.status='allowed'")
-
+      where("pack_versions.service= 'f' OR pack_accesses.status='allowed'")
     end
+
+    def self.allowed_for_users_with_joins(user_id)
+      allowed_for_users.user_access(user_id, "LEFT")
+    end
+
 
     def self.left_join_user_accesses user_id
       joins(
         <<-eoruby
         LEFT JOIN "core_members" ON ( "core_members"."user_id" = #{user_id}   )
-
         LEFT JOIN "user_groups" ON ( "user_groups"."user_id" = #{user_id}   )
-
          LEFT JOIN pack_accesses ON (pack_accesses.version_id = pack_versions.id
         AND (pack_accesses.who_type='User' AND pack_accesses.who_id=#{user_id} OR
          pack_accesses.who_type='Core::Project' AND pack_accesses.who_id=core_members.project_id OR
          pack_accesses.who_type='Group' AND pack_accesses.who_id="user_groups"."group_id"  ))
-
-
-
-
         eoruby
         )
 
     end
 
-
-
-
     def self.user_access user_id,join_type
       if user_id==true
         user_id=1
       end
-
       self.join_accesses self,user_id,join_type
-
-
-
-
-
-
-
-
     end
 
     def name_with_package
@@ -161,11 +144,11 @@ module Pack
     end
 
     def self.join_accesses(relation,user_id,join_type)
-
       project_accesses =  relation.joins(
           <<-eoruby
           LEFT JOIN "core_members" ON ( "core_members"."user_id" = #{user_id}   )
-          #{join_type} JOIN  pack_accesses ON (pack_accesses.version_id = pack_versions.id AND "pack_accesses"."who_type" = 'Core::Project'
+          #{join_type} JOIN  pack_accesses ON (pack_accesses.version_id = pack_versions.id
+          AND "pack_accesses"."who_type" = 'Core::Project'
           AND core_members.project_id = pack_accesses.who_id)
           eoruby
          )
@@ -182,7 +165,7 @@ module Pack
           AND #{user_id} = pack_accesses.who_id)
           eoruby
             )
-       (project_accesses.union group_accesses).union user_accesses
+      (project_accesses.union group_accesses).union user_accesses
     end
 
 
@@ -195,59 +178,41 @@ module Pack
     end
 
     def readable_state
-
       I18n.t "versions.#{state}"
     end
 
-
     def date_and_state
-
-      if state!= "forever" && !end_lic
-        self.errors.add(:end_lic,:blank)
+      if state != "forever" && !end_lic
+        errors.add(:end_lic, :blank)
       end
     end
 
-
-
-
-
-
     def state_select
-
-       state == "forever" ? "forever" :  "not_forever"
+       state == "forever" ? "forever" : "not_forever"
     end
-
 
     def edit_state_and_lic(state,date)
       if state=="forever"
         date=""
       end
       self.end_lic=(date)
-
-       case state
-       when "forever"
-        self.state="forever"
-       when "not_forever"
-
-        if !self.end_lic
+      case state
+      when "forever"
+      self.state="forever"
+      when "not_forever"
+        unless end_lic
           self.state = "available"
           return false
         end
-        if  self.end_lic   >= Date.current
+        if  end_lic >= Date.current
           self[:state] = "available"
         else
           self[:state] = "expired"
         end
       else
         raise "incorrect state argument"
-
-       end
+      end
     end
-
-
-
-
-
 
     def create_temp_clusterver(cluster_id)
       clustervers.new(core_cluster_id: cluster_id).mark_for_destruction
@@ -279,7 +244,6 @@ module Pack
       end
       self.version_options_attributes = hash
     end
-
 
     def vers_update(params)
       @params = params.require(:version)
@@ -314,25 +278,20 @@ module Pack
       end
     end
 
-     def self.preload_and_to_a user_id,versions
-
-
-       accesses=Access.user_access(user_id).where(version_id: versions.map(&:id) )
-       versions.each do |vers|
+    def self.preload_and_to_a(user_id,versions)
+      accesses = Access.user_access(user_id).where(version_id: versions.map(&:id))
+      versions.each do |vers|
          vers.user_accesses= accesses.select{ |ac| ac.version_id == vers.id}
-       end
-
-
-
+      end
     end
 
-
-
-    def as_json(options)
+    def as_json(_options)
     { id: id, text: (name + self.package_id) }
     end
-    def version_params params
-      params.permit(:delete_on_expire,:name, :description,:version,:folder,:cost,:deleted,:lock_col,:service)
+
+    def version_params(params)
+      params.permit(:delete_on_expire, :name, :description, :version, :folder,
+                    :cost, :deleted, :lock_col, :service)
     end
 
   end

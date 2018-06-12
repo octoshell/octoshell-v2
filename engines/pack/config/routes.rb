@@ -12,11 +12,10 @@ Pack::Engine.routes.draw do
     resources :versions
     resources :accesses
     resources :options_categories
-    get 'get_groups',to: 'accesses#get_groups',as: 'get_groups'
   end
   root "packages#index"
-  get 'get_clusters', controller: 'json_lists'
-  resources :versions,only: [:show,:index]
+  get "/docs/:page" => "docs#show"
+  resources :versions, only: [:show,:index]
   resources :packages do
     collection do
       get 'json'

@@ -4,46 +4,15 @@ require_dependency "pack/application_controller"
 module Pack
   class PackagesController < ApplicationController
     def index
-      @q_form=OpenStruct.new(params[:q] || {type:'packages',user_access: current_user.id})
-      search=Pack::PackSearch.new(@q_form.to_h,current_user.id)
-      @model_table=search.model_table
-      if search.model_table=='versions'
-        @options_for_select=Core::Project.joins(members: :user).where(core_members: {user_id: current_user.id,owner: true}).map do |item|
-              [t('project') + ' ' + item.title,item.id]
-        end
-        @options_for_select<<[t('user'),"user"]
-      end
-      @records=search.get_results(search.table_relation.allowed_for_users).page(params[:page]).per(15)
-
-
-      Version.preload_and_to_a(current_user.id,@records)  if @model_table=='versions'
-
-
-
-
-
-      respond_to do |format|
-
-
-        format.html{
-
-        } # index.html.erb
-        format.js {
-
-            render_paginator(@records,"#{@model_table}_table")
-        }
-        format.json do
-          @packages = Package.finder(params[:q])
-          render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count }
-        end
-
-      end
-
+      @q_form = OpenStruct.new(params[:q] || { user_access: current_user.id,
+                                               id_in: nil } )
+      search = PackSearch.new(@q_form.to_h, 'packages', current_user.id)
+      @packages = search.get_results(search.table_relation.allowed_for_users).page(params[:page]).per(15)
     end
-    def json
-        @packages = Package.finder(params[:q])
-        render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count }
 
+    def json
+      @packages = Package.finder(params[:q]).allowed_for_users_with_joins(current_user.id)
+      render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count }
     end
 
     def show
@@ -55,7 +24,6 @@ module Pack
       end
       @options_for_select << "user"
       @options_for_select_labels << t("user")
-
       @package = Package.find(params[:id])
       @versions = @package.versions
                           .allowed_for_users
@@ -63,17 +31,7 @@ module Pack
                           .page(params[:page]).per(6)
                           .includes({ clustervers: :core_cluster }, :package)
                           .uniq
-      Version.preload_and_to_a(current_user.id, @versions)
     end
-
-
-
-
-
-
-
-
-
 
     private
       def package_params

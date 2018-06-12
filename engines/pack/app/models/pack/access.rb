@@ -54,7 +54,7 @@ module Pack
         }
 
     after_commit :send_email, if: :admin_update?
-    after_save :create_ticket, if: :user_request?
+    after_commit :create_ticket, if: :user_request?
 
     def admin_update?
       (who_type == 'User' || who_type == 'Core::Project') && !user_edit
@@ -74,19 +74,23 @@ module Pack
       new_end_lic_forever && changes[:new_end_lic_forever]
     end
 
-
     def send_email
       if status != 'requested'
         if previous_changes["status"]
           ::Pack::PackWorker.perform_async(:access_changed, id)
+        elsif %w[expired allowed].include?(status) && previous_changes["end_lic"]
+          ::Pack::PackWorker.perform_async(:access_changed, [id, "end_lic_changed"])
+        elsif @status_from_params == 'deny_longer'
+          ::Pack::PackWorker.perform_async(:access_changed, [id, "denied_longer"])
         end
-        if previous_changes["new_end_lic"] && previous_changes["new_end_lic_forever"] && ["expired","allowed"].include?(status)
-          if previous_changes["end_lic"]
-            ::Pack::PackWorker.perform_async(:access_changed, [id, "made_longer"])
-          else
-            ::Pack::PackWorker.perform_async(:access_changed, [id, "denied_longer"])
-          end
-        end
+        # if (previous_changes["new_end_lic"] || previous_changes["new_end_lic_forever"]) &&
+        # %w[expired allowed].include?(status)
+        #   if previous_changes["end_lic"]
+        #     ::Pack::PackWorker.perform_async(:access_changed, [id, "made_longer"])
+        #   else
+        #     ::Pack::PackWorker.perform_async(:access_changed, [id, "denied_longer"])
+        #   end
+        # end
       end
     end
 

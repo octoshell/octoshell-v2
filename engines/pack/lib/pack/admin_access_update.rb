@@ -10,6 +10,7 @@
       hash.symbolize_keys!
       raise "incorrect action" if actions.exclude?(hash[:status])
       raise "LOCK VERSION UPDATED" if lock_version_updated?(hash[:lock_version])
+      @status_from_params = hash[:status]
       case status
       when 'requested', 'denied', 'deleted'
         requested_update hash
@@ -57,7 +58,7 @@
       elsif hash[:status] == 'deny_longer'
         delete_request_info
       elsif %w[allowed expired].include?(hash[:status])
-        delete_request_info if hash[:delete_request] == 'true' 
+        delete_request_info if hash[:delete_request] == 'true'
         assign_end_lic(hash)
       else
         self.status =  hash[:status]

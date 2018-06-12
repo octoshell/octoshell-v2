@@ -5,8 +5,8 @@ module Pack
 
     def perform(template, args = 'default')
       if template == "expired"
-        Pack::Access.expired_accesses
         Pack::Version.expired_versions
+        Pack::Access.expired_accesses
       else
         Pack::Mailer.send(template, *args).deliver_now!
       end

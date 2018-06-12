@@ -11,11 +11,11 @@ function remove_extra_spaces(){
 function getJSONSync(url,success)
 {
   $.ajax({
-  dataType: "json",
-  url: url,
-  success: success,
-  async: false
-});
+    dataType: "json",
+    url: url,
+    success: success,
+    async: false
+  });
 }
 
 function apply_select(){

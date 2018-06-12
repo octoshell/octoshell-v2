@@ -55,8 +55,10 @@ table
       td class="col-xs-3"
         =Pack::Version.human_attribute_name "package"
       td class="col-xs-9"
-        =t("#{@version.package.name}")
-
+        -if admin?
+          =link_to @version.package.name, [:admin, @package]
+        -else
+          =link_to @version.package.name, @package
   -unless admin?
     tr
       td class="col-xs-3"

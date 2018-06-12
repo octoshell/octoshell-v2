@@ -6,6 +6,11 @@ module Pack
 
     def index
       respond_to do |format|
+        format.html do
+          @q_form = OpenStruct.new(params[:q])
+          search = PackSearch.new(@q_form.to_h, 'versions', current_user.id)
+          @versions = search.get_results(nil).page(params[:page]).per(15)
+        end
         format.json do
           @versions = Version.finder(params[:q]).page(params[:page]).per(params[:per]).includes(:package)
           @hash = []
@@ -26,10 +31,6 @@ module Pack
       @version = Version.new
       @version.package = @package
       @version.vers_update(params)
-      puts "ZZZZZ!!!"
-      puts @version.inspect
-      puts @version.clustervers.inspect
-
       if @version.save
         redirect_to admin_package_version_path(@package,@version)
       else
@@ -45,9 +46,9 @@ module Pack
     def update
       @version = Version.find(params[:id])
       @version.vers_update params
-      @stale_message=t("stale_message") if @version.changes["lock_col"]
+      @stale_message = t("stale_message") if @version.changes["lock_col"]
       if @version.save
-        redirect_to admin_package_version_path(@package,@version)
+        redirect_to admin_package_version_path(@package, @version)
       else
         render :edit
       end
@@ -71,8 +72,5 @@ module Pack
      @package = Package.find(params[:package_id])
      @categories = OptionsCategory.all.map(&:category)
     end
-
-
-
   end
 end

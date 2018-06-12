@@ -64,6 +64,7 @@ ru:
       support_theme_name: Заявка на доступ к версиям пакетов
     engine_submenu:
         packages_list: Пакеты
+        versions_list: Версии
         accesses_list: Доступы
         options_list: Опции
     options_list: Опции
@@ -80,12 +81,12 @@ ru:
       denied: Вам отказано в доступе
       allowed: Вам разрешен доступ
       expired: У Вас истек доступ
-      made_longer: Вам продлили доступ
+      end_lic_changed: Изменилась дата окончания Вашего доступа
       version_ended: Вам продлили доступ
-      denied_longer: Вам отказали в продлении
+      denied_longer: Вам отказали в продлении доступа
       deleted: Ваш доступ удален
       subject: Изменено состояние вашего доступа к версии  %{version_name}
-      body: "%{status_info} к версии  %{version_name}. Для подробностей напишите нам или просмотрите ответы администраторов на ваши заявки"
+      body: "%{status_info} к версии  %{version_name}. Для подробностей напишите нам или просмотрите ответы администраторов на Ваши заявки"
     access_actions:
       denied: отказать
       requested: запросить
@@ -188,8 +189,8 @@ ru:
         active_cl: Показать только активные на кластере
         versions: Версии
         packages: Пакеты
-        versions_name: Имена версий
-        packages_name: Имена пакетов
+        versions_name: Названия версий
+        packages_name: Названия пакетов
         my_packs: Версии и пакеты, к которым у меня есть доступ/заявка на доступ
         show_deleted: Показать удаленные
         show_service: Показать служебные
@@ -220,6 +221,7 @@ ru:
     activerecord:
       models:
         pack/version: Версия
+        pack/package: Пакет
         pack/access: Доступ
       attributes:
         pack/package:
@@ -290,7 +292,7 @@ ru:
                   status:
                     version_deleted: Версия удалена. Статус доступа может быть только "удален".
                   new_end_lic:
-                    incorrect_forever: Нельзя создавать заявки на бесконечный доступ с датой 
+                    incorrect_forever: Нельзя создавать заявки на бесконечный доступ с датой
                     status_only: "Дата заявки на продление доступна только для доступов со статусом 'разрешен' или 'истек'"
                   new_end_lic_forever:
                     status_only: "Дата заявки на продление доступна только для доступов со статусом 'разрешен' или 'истек'"

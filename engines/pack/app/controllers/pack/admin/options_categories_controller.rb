@@ -7,7 +7,6 @@ module Pack
       @records = OptionsCategory.order(:id).page(params[:page]).per(20)
       respond_to do |format|
         format.html
-        format.js { render_paginator(@records) }
         format.json do
         @records = OptionsCategory.where("lower(category) like lower(:q)", q: "%#{params[:q].mb_chars}%")
         render json: { records: @records.page(params[:page])
@@ -32,11 +31,11 @@ module Pack
     end
 
     def edit
-        @option = OptionsCategory.find(params[:id])
+      @option = OptionsCategory.find(params[:id])
     end
 
     def show
-       @option = OptionsCategory.find(params[:id])
+      @option = OptionsCategory.find(params[:id])
     end
 
     def update
