@@ -23,7 +23,6 @@ div class="well"
 = safe_paginate @organizations
 = render "table", organizations: @organizations
 = safe_paginate @organizations
-=render_attachments(@organizations, "tags")
 
 =javascript_tag do
   =render partial: 'index',formats: :js

@@ -28,6 +28,9 @@ module Comments
         if arg == :all
           { ids: 'all',
             class_name: 'all' }
+        elsif arg.is_a?(Class) && arg < ActiveRecord::Base && !arg.is_a?(ActiveRecord::Relation)
+          { class_name: arg.to_s,
+            ids: 'all' }
         else
           { ids: Array(arg).map(&:id),
             class_name: Array(arg).first.class.name }

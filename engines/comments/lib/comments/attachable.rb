@@ -42,7 +42,11 @@ module Comments
           ids = arg.map(&:id)
           where(attachable_type: arg.first.class.name, attachable_id: ids)
         elsif arg.instance_of? Hash
-          where(attachable_type: arg[:class_name], attachable_id: arg[:ids])
+          if arg[:ids] == 'all'
+            where(attachable_type: arg[:class_name])
+          else
+            where(attachable_type: arg[:class_name], attachable_id: arg[:ids])
+          end
         elsif arg.respond_to? :id
           get_items [arg]
         else

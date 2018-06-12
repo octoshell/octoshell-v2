@@ -1,6 +1,6 @@
 module Comments
   class Tagging < ActiveRecord::Base
-    DEFAUlT_PER = 2
+    DEFAUlT_PER = 10
     include Attachable
     validates :tag, presence: true
     validates_uniqueness_of :tag_id, scope: [:attachable_id, :attachable_type,:context_id]

@@ -44,4 +44,3 @@ table class="table table-hover"
       td = department.users.where(users: { access_state: "active" }).distinct.count
       td = department.projects.where(core_projects: { state: "active" }).distinct.count
       td = department.checked ? t('answers.yess') : t('answers.noo')
-=render_attachments(@organization, "tags")

@@ -22,8 +22,10 @@ module Comments
           @records, @pages = model_obj.all_records_to_json_view(user_id: current_user.id)
         else
           @records, @pages = model_obj.to_json_view(attach_to: @attach_to, user_id: current_user.id)
-          @with_context = Comments::Permissions
-                          .create_permissions(@attach_to.merge(user: user))
+          unless @attach_to[:ids] == 'all'
+            @with_context = Comments::Permissions
+                            .create_permissions(@attach_to.merge(user: user))
+          end
         end
         @attachable_ids = @attach_to[:ids] == 'all' ? 'all' : @attach_to[:ids].join(',')
         @contexts = Comments::Context.allow(current_user.id)

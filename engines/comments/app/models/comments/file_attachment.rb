@@ -2,7 +2,7 @@ module Comments
   class FileAttachment < ActiveRecord::Base
     mount_uploader :file, FileUploader
     include Attachable
-    DEFAUlT_PER = 1
+    DEFAUlT_PER = 10
     validates :description,:file, presence: true
 
     def self.all_records_to_json_view(hash)

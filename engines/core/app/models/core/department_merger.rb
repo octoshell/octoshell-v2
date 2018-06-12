@@ -24,6 +24,7 @@ module Core
         raise StandardError, 'Invalid to arg'
       end
     end
+    
     def complete_merge!(project_ids, surety_members_ids, core_members)
       transaction do
         Project.where(id: project_ids,organization_id: source_department.organization_id).each do |project|
