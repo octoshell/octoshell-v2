@@ -7,7 +7,7 @@ Base application for modular version of Octoshell.
 1. install jdk (oracle is better).
 1. install jruby, actual version see in Gemfile (`rbenv install jruby-9.0.5.0`; `rbenv local jruby-9.0.5.0`)
 1. `gem install bundler`
-1. `bundle install`
+1. `bundle install; for i in engines/*; do (cd $i; bundle install); done`
 1. install redis
 1. install postgresql
 1. `git clone`
@@ -30,7 +30,7 @@ Base application for modular version of Octoshell.
 1. установить jdk (желательно oracle).
 1. установить jruby версию смотрите в Gemfile (`rbenv install jruby-9.0.5.0`; `rbenv local jruby-9.0.5.0`)
 1. `gem install bundler`
-1. `bundle install`
+1. `bundle install; for i in engines/*; do (cd $i; bundle install); done`
 1. установить redis
 1. установить postgresql
 1. `git clone`
