@@ -1,21 +1,21 @@
 module Core
   require "initial_create_helper"
   describe OrganizationDepartment do
-    describe "#merge_to_new_department" do
+    describe "#merge_with_new_department" do
       before(:each) do
         @organization = create(:organization)
         @department = create(:organization_department, organization: @organization)
         @organization2 = create(:organization)
       end
       it "1" do
-        @res, @message = @department.merge_to_new_department(@organization2.id)
+        @res, @message = @department.merge_with_new_department(@organization2.id)
         expect(@message).to eq nil
         expect(@organization2.departments.first.id).to eq @department.id
         expect(OrganizationDepartment.count).to eq 1
       end
 
       it "doesn't create  department with empty name" do
-        @res, @message = @department.merge_to_new_department(@organization2.id, '')
+        @res, @message = @department.merge_with_new_department(@organization2.id, '')
         puts @message
         expect(OrganizationDepartment.all).to eq [@department]
       end
@@ -30,7 +30,7 @@ module Core
         @member = @project.members.create!(user: @user,
                                            organization: @organization,
                                            organization_department: @department)
-        @res, @message = @department.merge_to_new_department(@organization2.id)
+        @res, @message = @department.merge_with_new_department(@organization2.id)
 
         @department.reload
         puts @message

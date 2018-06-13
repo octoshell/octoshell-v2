@@ -16,6 +16,9 @@ module Core
 
     def create_organization!(attributes)
       organization = Organization.create!(attributes)
+      if can_not_be_automerged?
+        return DepartmentMerger.prepare_merge!(self, organization)
+      end
       merge_associations({ organization_id: organization_id,
                            organization_department_id: id },
                          { organization_department_id: nil,
@@ -36,12 +39,14 @@ module Core
       return false, exception.message
     end
 
-    def merge_to_existing_department!(to_organization_id, to_department_id)
+    def merge_with_existing_department_without_check!(to_organization_id, to_department_id,avoid_merger = false)
       department = OrganizationDepartment.find(to_department_id)
       if to_organization_id != department.organization_id
         raise MergeError, 'stale_organization_id'
       end
-      raise MergeError, 'same_object' if to_department_id == id
+      if !avoid_merger && can_not_be_automerged?
+        return DepartmentMerger.prepare_merge!(self, department)
+      end
       merge_associations({ organization_id: organization_id,
                            organization_department_id: id },
                          { organization_department: department,
@@ -49,9 +54,14 @@ module Core
       destroy!
     end
 
-    def merge_to_existing_department(to_organization_id, to_department_id)
+    def merge_with_existing_department!(to_organization_id, to_department_id)
+      raise MergeError, 'same_object' if to_department_id == id
+      merge_with_existing_department_without_check!(to_organization_id, to_department_id)
+    end
+
+    def merge_with_existing_department(to_organization_id, to_department_id)
       transaction do
-        merge_to_existing_department!(to_organization_id, to_department_id)
+        merge_with_existing_department!(to_organization_id, to_department_id)
       end
     rescue ActiveRecord::RecordInvalid => exception
       return false, "#{exception.record.class}  #{exception.message}"
@@ -59,17 +69,31 @@ module Core
       return false, exception.message
     end
 
-    def merge_to_new_department!(to_id, name = self.name)
+    def merge_with_new_department_with_merger!(to_id)
       organization_id = self.organization_id
-      update! organization_id: to_id, name: name, checked: true
+      update! organization_id: to_id, checked: true
+      merge_associations({ organization_id: organization_id,
+                           organization_department_id: id },
+                         { organization_id: to_id })
+
+    end
+
+    def merge_with_new_department!(to_id, name = self.name)
+      organization_id = self.organization_id
+      if can_not_be_automerged?
+        update! name: name
+        return DepartmentMerger.prepare_merge!(self, self, to_id)
+      else
+        update! organization_id: to_id, name: name, checked: true
+      end
       merge_associations({ organization_id: organization_id,
                            organization_department_id: id },
                          { organization_id: to_id })
     end
 
-    def merge_to_new_department(to_id, name = self.name)
+    def merge_with_new_department(to_id, name = self.name)
       transaction do
-        merge_to_new_department!(to_id, name)
+        merge_with_new_department!(to_id, name)
       end
       self
     rescue ActiveRecord::RecordInvalid => exception
@@ -78,8 +102,11 @@ module Core
       return self, exception.message
     end
 
-    def merge_to_organization!(to_id)
-      Organization.find(to_id)
+    def merge_with_organization!(to_id, avoid_merger = false)
+      organization = Organization.find(to_id)
+      if  !avoid_merger && can_not_be_automerged?
+        return DepartmentMerger.prepare_merge!(self, organization)
+      end
       merge_associations({ organization_id: organization_id,
                            organization_department_id: id},
                          { organization_id: to_id,
@@ -88,9 +115,9 @@ module Core
       destroy!
     end
 
-    def merge_to_organization(to_id)
+    def merge_with_organization(to_id)
       transaction do
-        merge_to_organization! to_id
+        merge_with_organization! to_id
       end
       true
     rescue ActiveRecord::RecordInvalid => exception
@@ -99,19 +126,34 @@ module Core
       return false, exception.message
     end
 
-    private
+    def can_not_be_automerged?
+      Member.can_not_be_automerged?(self) ||
+        SuretyMember.can_not_be_automerged?(self) ||
+        Project.can_not_be_automerged?(self)
+
+    end
 
     def merge_associations(where_hash, update_hash)
+      # member_hash = where_hash.slice(:organization_id)
+      # Core::Member.where(member_hash)
+      #             .where(users: users, organization: organization).each do |rec|
+      #               rec.update!(update_hash)
+      #             end
+      Member.can_be_automerged(self).each do |rec|
+        rec.update!(update_hash)
+      end
+
+      SuretyMember.can_be_automerged(self).each do |rec|
+        rec.update!(update_hash)
+      end
+
       Organization::MERGED_ASSOC.each do |model_class|
-        # puts model_class.to_s
-        # puts where_hash
-        # puts update_hash
         model_class.where(where_hash)
                    .each do |rec|
-                    #  puts rec.inspect
                      rec.update!(update_hash)
         end
       end
     end
+
   end
 end

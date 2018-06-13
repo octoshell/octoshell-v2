@@ -20,7 +20,6 @@ module Comments
       private
 
       def att_view_paths
-
         ActionController::Base.view_paths +
           [Comments::Engine.root + "app/views/comments/#{@attachment_type}"]
       end
@@ -29,18 +28,14 @@ module Comments
         if arg == :all
           { ids: 'all',
             class_name: 'all' }
+        elsif arg.is_a?(Class) && arg < ActiveRecord::Base && !arg.is_a?(ActiveRecord::Relation)
+          { class_name: arg.to_s,
+            ids: 'all' }
         else
           { ids: Array(arg).map(&:id),
             class_name: Array(arg).first.class.name }
         end
       end
-
-      #
-      # def array_correct!
-      #   return if @attach_to[:ids].empty?
-      #   return if @attach_to[:ids].all? { |x| x.is_a? @attach_to[:ids].first.class }
-      #   raise ArgumentError, 'Argument must be an array of elements of the same class'
-      # end
 
       def attachment_type_correct!
         unless A_TYPES.include? @attachment_type.singularize.capitalize

@@ -1,7 +1,7 @@
 module Comments
   class Comment < ActiveRecord::Base
     include Attachable
-    DEFAUlT_PER = 2
+    DEFAUlT_PER = 10
     validates :text, presence: true
 
     def self.all_records_to_json_view(hash)

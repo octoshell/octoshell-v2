@@ -1,7 +1,7 @@
 module Core
   require "initial_create_helper"
   describe OrganizationDepartment do
-    describe "#merge_to_organization" do
+    describe "#merge_with_organization" do
       before (:each) do
         @organization = create(:organization)
         @department = create(:organization_department, organization: @organization)
@@ -9,7 +9,7 @@ module Core
       end
 
       it "works successfully" do
-        @result, @message = @department.merge_to_organization(@organization2.id)
+        @result, @message = @department.merge_with_organization(@organization2.id)
         expect(@result).to eq true
         expect(@message).to eq nil
         expect(OrganizationDepartment.all).to eq []
@@ -26,7 +26,7 @@ module Core
         @member = @project.members.create!(user: @user,
                                            organization: @organization,
                                            organization_department: @department)
-        @result, @message = @department.merge_to_organization(@organization2.id)
+        @result, @message = @department.merge_with_organization(@organization2.id)
         expect(@result).to eq true
         expect(@message).to eq nil
         expect(OrganizationDepartment.all).to eq []

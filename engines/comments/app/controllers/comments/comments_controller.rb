@@ -26,6 +26,7 @@ module Comments
                     .symbolize_keys
                     .merge(user_id: current_user.id)
         arg[:attach_to].symbolize_keys!
+        arg[:attach_to][:ids] ||= 'all'
         records, pages, page = Comments::Comment.to_json_view(arg)
       end
       render json: {records: records, pages: pages, page: page}

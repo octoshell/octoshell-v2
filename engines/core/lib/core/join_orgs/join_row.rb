@@ -30,22 +30,22 @@ module Core
             OrganizationDepartment.find(@rep_dep_id)
                                   .update!(name: @rep_dep_name, checked: true)
           end
-          [:merge_to_existing_department!, to_org_x_nil, @rep_dep_id]
+          [:merge_with_existing_department!, to_org_x_nil, @rep_dep_id]
         when 'x'
           if @rep_dep_name
             raise ArgumentError,
                   "При слияние с организацией имя подразделения замены
                    должно быть пустым: #{@row.inspect}"
           end
-          [:merge_to_organization!, to_org_x_nil]
+          [:merge_with_organization!, to_org_x_nil]
         when nil
           if @rep_dep_name
-            [:merge_to_new_department!, @rep_org_id, @rep_dep_name]
+            [:merge_with_new_department!, @rep_org_id, @rep_dep_name]
           elsif @rep_org_id.is_a? Integer
-            [:merge_to_new_department!, @rep_org_id]
+            [:merge_with_new_department!, @rep_org_id]
           elsif @rep_org_id == 'x'
             unknown = Organization.create_or_find_unknown
-            [:merge_to_organization!, unknown.id]
+            [:merge_with_organization!, unknown.id]
           else
             puts "Strange input #{@row}".red
             :"don't update"

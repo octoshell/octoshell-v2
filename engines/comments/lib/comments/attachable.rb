@@ -42,7 +42,11 @@ module Comments
           ids = arg.map(&:id)
           where(attachable_type: arg.first.class.name, attachable_id: ids)
         elsif arg.instance_of? Hash
-          where(attachable_type: arg[:class_name], attachable_id: arg[:ids])
+          if arg[:ids] == 'all'
+            where(attachable_type: arg[:class_name])
+          else
+            where(attachable_type: arg[:class_name], attachable_id: arg[:ids])
+          end
         elsif arg.respond_to? :id
           get_items [arg]
         else
@@ -70,25 +74,6 @@ module Comments
           u_c_g.group_id = u_g.group_id AND u_c_g.type_ab = #{ContextGroup.type_abs[:update_ab]}")
         .group(:id)
       end
-
-      # def join_user_groups_without_context_old(user_id)
-      #   select("#{table_name}.*,CAST(#{table_name}.id AS BOOLEAN ) AS upd")
-      #     .joins("LEFT JOIN user_groups AS u_g ON u_g.user_id=#{user_id}")
-      #     .joins("LEFT JOIN comments_group_classes AS null_g_c ON
-      #       null_g_c.class_name = #{table_name}.attachable_type AND
-      #       (null_g_c.obj_id IS NULL OR
-      #         null_g_c.obj_id = #{table_name}.attachable_id)
-      #         AND null_g_c.group_id IS NULL
-      #         AND null_g_c.type_ab =  #{GroupClass.type_abs[:read_ab]} ")
-      #     .joins("LEFT JOIN comments_group_classes AS g_c ON
-      #       g_c.class_name = #{table_name}.attachable_type AND
-      #       (g_c.obj_id IS NULL OR g_c.obj_id = #{table_name}.attachable_id)
-      #       AND g_c.group_id = u_g.group_id
-      #       AND g_c.type_ab =  #{GroupClass.type_abs[:read_ab]}")
-      #     .where("( null_g_c.allow = 'f' AND g_c.allow = 't' OR
-      #       null_g_c.allow = 't' AND (g_c.id IS NULL OR g_c.allow = 't' )  ) AND #{table_name}.context_id IS NULL")
-      # end
-
 
       def join_user_groups_without_context(user_id)
         g_c = 'up_g_c'

@@ -5,7 +5,7 @@ div class="row"
 
       = f.collection_select :kind_id, Core::ProjectKind.all, :id, :name
       - @organizations = current_user.checked_active_organizations(@project)
-      - @departments = current_user.checked_active_organization_departments_to_hash(@project,@organizations)
+      - @departments = current_user.checked_active_organization_departments_to_hash(@organizations, @project)
       /- primary_organization = current_user.primary_organization || current_user.organizations.first
       = f.collection_select :organization_id, @organizations, :id, :name
       /= f.collection_select :organization_department_id,[],:id,:name
