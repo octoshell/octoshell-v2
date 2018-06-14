@@ -1,18 +1,13 @@
 function getDate(dateString)
 {
-  console.log(dateString);
   var endLicArr = dateString.split('-');
   for(var i=0;i<3;i++)
   {
     endLicArr[i] = parseInt(endLicArr[i]);
   }
   endLicArr[1] = endLicArr[1] - 1;
-  // endLicArr[2] = endLicArr[2] + 1;
-  console.log(endLicArr);
   var date = new Date(endLicArr[0],endLicArr[1],endLicArr[2]);
   date.setHours(0,0,0,0);
-  console.log("BEFORE END");
-  console.log(date);
   return date;
 }
 
@@ -24,7 +19,6 @@ function getAmericanDate(dateString)
     endLicArr[i] = parseInt(endLicArr[i]);
   }
   endLicArr[0] = endLicArr[0] - 1;
-  // endLicArr[1] = endLicArr[1] + 1;
   var date = new Date(endLicArr[2],endLicArr[0],endLicArr[1]);
   date.setHours(0,0,0,0);
   return date;

@@ -42,7 +42,6 @@ function AccessViewer(ids) {
       if(this.accesses[keys[i]])
       for(var j=0; j < this.accesses[keys[i]].length; j++)
       {
-        // user_accesses && user_accesses.detect{ |a| a.status=='allowed'}!=nil && ( state=='available' || state=='forever') && !deleted?
         var readable_name,end_lic,result;
         access = this.accesses[keys[i]][j];
         if(access.status == 'allowed' && this.versions[keys[i]][0].available){

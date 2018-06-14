@@ -83,14 +83,6 @@ module Pack
         elsif @status_from_params == 'deny_longer'
           ::Pack::PackWorker.perform_async(:access_changed, [id, "denied_longer"])
         end
-        # if (previous_changes["new_end_lic"] || previous_changes["new_end_lic_forever"]) &&
-        # %w[expired allowed].include?(status)
-        #   if previous_changes["end_lic"]
-        #     ::Pack::PackWorker.perform_async(:access_changed, [id, "made_longer"])
-        #   else
-        #     ::Pack::PackWorker.perform_async(:access_changed, [id, "denied_longer"])
-        #   end
-        # end
       end
     end
 
@@ -158,6 +150,10 @@ module Pack
 
     def actions_labels
       actions.map { |a| I18n.t("access_states.#{a}") }
+    end
+
+    def self.states_labels
+      states_list.map { |a| I18n.t("access_states.#{a}") }
     end
 
     def self.states_list

@@ -39,6 +39,9 @@ module Pack
       menu.add_item(Face::MenuItem.new(name: t("engine_submenu.options_list"),
                                         url: [:admin, :options_categories],
                                         regexp: /options_categories/))
+      menu.add_item(Face::MenuItem.new(name: t("pack.docs.docs_ru.header"),
+                                        url: { controller: "/pack/docs", action: "show", page: 'docs_ru' },
+                                        regexp: /docs/))
       menu.items
     end
 
@@ -51,6 +54,10 @@ module Pack
       menu.add_item(Face::MenuItem.new(name: t("engine_submenu.versions_list"),
                                         url: [:versions],
                                         regexp: /versions/))
+      menu.add_item(Face::MenuItem.new(name: t("pack.docs.docs_ru.header"),
+                                        url: { controller: "docs", action: "show", page: 'docs_ru' },
+                                        regexp: /docs/))
+
       menu.items
     end
 

@@ -27,15 +27,15 @@ module Pack
       if to != self && to.changes != {}
         errors.add(:stale,"stale_error_nested")
       end
-      to.changes.except("lock_col","updated_at").each do  |key,val|
-        to.errors.add(key.to_sym, I18n.t("stale_error"))
+      unless to.new_record?
+        to.changes.except("lock_col","updated_at").each_key do |key|
+          to.errors.add(key.to_sym, I18n.t("stale_error"))
+        end
       end
     end
 
     def work_with_stale
-
       if changes["lock_col"]
-
         add_errors(self)
         version_options.each do |opt|
           add_errors(opt)
@@ -97,10 +97,7 @@ module Pack
               ::Pack::PackWorker.perform_async(:email_vers_state_changed, ac.id)
             end
         end
-
     end
-
-
 
     def self.expired_versions
       Version.transaction do
@@ -116,7 +113,6 @@ module Pack
     def self.allowed_for_users_with_joins(user_id)
       allowed_for_users.user_access(user_id, "LEFT")
     end
-
 
     def self.left_join_user_accesses user_id
       joins(
@@ -278,19 +274,12 @@ module Pack
       end
     end
 
-    def self.preload_and_to_a(user_id,versions)
-      accesses = Access.user_access(user_id).where(version_id: versions.map(&:id))
-      versions.each do |vers|
-         vers.user_accesses= accesses.select{ |ac| ac.version_id == vers.id}
-      end
-    end
-
     def as_json(_options)
     { id: id, text: (name + self.package_id) }
     end
 
     def version_params(params)
-      params.permit(:delete_on_expire, :name, :description, :version, :folder,
+      params.permit(:delete_on_expire, :name, :description, :version,
                     :cost, :deleted, :lock_col, :service)
     end
 

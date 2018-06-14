@@ -258,6 +258,7 @@ ru:
         pack/clusterver:
             status: Статус
             name: Кластер
+            path: Путь
         pack/access:
             who_type: Тип доступа
             version_name: Имя версии

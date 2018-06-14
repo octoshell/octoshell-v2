@@ -1,6 +1,8 @@
 ru:
-
   pack:
+    docs:
+      docs_ru:
+        header: Справка по модулю пакетов
     accesses:
       update_accesses:
         not_owned_project: Проект не принадлежит вам. Нельзя работать с доступом

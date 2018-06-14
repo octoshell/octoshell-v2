@@ -35,7 +35,7 @@ module Pack
 
     private
       def package_params
-        params.require(:package).permit(:name, :folder, :cost,:description,:deleted)
+        params.require(:package).permit(:name,:description,:deleted)
       end
       def prop_params
         params.require(:pref).permit(:proj_or_user,:def_date)
