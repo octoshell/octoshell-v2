@@ -1,3 +1,4 @@
+
 # encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
@@ -11,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180429080452) do
+ActiveRecord::Schema.define(version: 20180613075330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -495,7 +496,8 @@ ActiveRecord::Schema.define(version: 20180429080452) do
     t.date     "end_lic"
     t.date     "new_end_lic"
     t.integer  "allowed_by_id"
-    t.integer  "lock_version",  default: 0, null: false
+    t.integer  "lock_version",        default: 0,     null: false
+    t.boolean  "new_end_lic_forever", default: false
   end
 
   add_index "pack_accesses", ["version_id"], name: "index_pack_accesses_on_version_id", using: :btree
@@ -507,6 +509,7 @@ ActiveRecord::Schema.define(version: 20180429080452) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "active"
+    t.string   "path"
   end
 
   add_index "pack_clustervers", ["core_cluster_id"], name: "index_pack_clustervers_on_core_cluster_id", using: :btree
@@ -543,7 +546,6 @@ ActiveRecord::Schema.define(version: 20180429080452) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "cost"
-    t.string   "folder"
     t.date     "end_lic"
     t.string   "state"
     t.integer  "lock_col",         default: 0,     null: false
