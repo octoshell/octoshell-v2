@@ -16,20 +16,26 @@ module Jobstat
       gpu_load = FloatDatum.where(job_id: id, name: "gpu_load").take
       loadavg = FloatDatum.where(job_id: id, name: "loadavg").take
       ipc = FloatDatum.where(job_id: id, name: "ipc").take
-      ib_rcv_data = FloatDatum.where(job_id: id, name: "ib_rcv_data").take
-      ib_xmit_data = FloatDatum.where(job_id: id, name: "ib_xmit_data").take
+      ib_rcv_data_fs = FloatDatum.where(job_id: id, name: "ib_rcv_data_fs").take
+      ib_xmit_data_fs = FloatDatum.where(job_id: id, name: "ib_xmit_data_fs").take
+      ib_rcv_data_mpi = FloatDatum.where(job_id: id, name: "ib_rcv_data_mpi").take
+      ib_xmit_data_mpi = FloatDatum.where(job_id: id, name: "ib_xmit_data_mpi").take
 
       data = { cpu_user: if !cpu_user.nil? then cpu_user.value else nil end,
         instructions: if !instructions.nil? then instructions.value else nil end,
         gpu_load: if !gpu_load.nil? then gpu_load.value else nil end,
         loadavg: if !loadavg.nil? then loadavg.value else nil end,
         ipc: if !ipc.nil? then ipc.value else nil end,
-        ib_rcv_data: if !ib_rcv_data.nil? then ib_rcv_data.value else nil end,
-        ib_xmit_data: if !ib_xmit_data.nil? then ib_xmit_data.value else nil end,
+        ib_rcv_data_fs: if !ib_rcv_data_fs.nil? then ib_rcv_data_fs.value else nil end,
+        ib_xmit_data_fs: if !ib_xmit_data_fs.nil? then ib_xmit_data_fs.value else nil end,
+        ib_rcv_data_mpi: if !ib_rcv_data_mpi.nil? then ib_rcv_data_mpi.value else nil end,
+        ib_xmit_data_mpi: if !ib_xmit_data_mpi.nil? then ib_xmit_data_mpi.value else nil end,
       }
 
-      unless data[:ib_rcv_data].nil? then data[:ib_rcv_data] /= 1024 * 1024 end
-      unless data[:ib_xmit_data].nil? then data[:ib_xmit_data] /= 1024 * 1024 end
+      unless data[:ib_rcv_data_fs].nil? then data[:ib_rcv_data_fs] /= 1024 * 1024 end
+      unless data[:ib_xmit_data_fs].nil? then data[:ib_xmit_data_fs] /= 1024 * 1024 end
+      unless data[:ib_rcv_data_mpi].nil? then data[:ib_rcv_data_mpi] /= 1024 * 1024 end
+      unless data[:ib_xmit_data_mpi].nil? then data[:ib_xmit_data_mpi] /= 1024 * 1024 end
 
       return data
     end
@@ -47,8 +53,10 @@ module Jobstat
           gpu_load: get_gpu_load_ranking(performance[:gpu_load]),
           loadavg: get_loadavg_ranking(performance[:loadavg], cluster),
           ipc: get_ipc_ranking(performance[:ipc]),
-          ib_xmit_data: get_ib_xmit_data_ranking(performance[:ib_xmit_data]),
-          ib_rcv_data: get_ib_rcv_data_ranking(performance[:ib_rcv_data]),
+          ib_xmit_data_fs: get_ib_xmit_data_fs_ranking(performance[:ib_xmit_data_fs]),
+          ib_rcv_data_fs: get_ib_rcv_data_fs_ranking(performance[:ib_rcv_data_fs]),
+          ib_xmit_data_mpi: get_ib_xmit_data_mpi_ranking(performance[:ib_xmit_data_mpi]),
+          ib_rcv_data_mpi: get_ib_rcv_data_mpi_ranking(performance[:ib_rcv_data_mpi]),
       }
     end
 

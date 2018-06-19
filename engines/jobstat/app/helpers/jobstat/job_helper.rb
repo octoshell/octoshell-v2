@@ -88,7 +88,7 @@ module Jobstat
       end
     end
 
-    def get_ib_rcv_data_ranking(value)
+    def get_ib_rcv_data_fs_ranking(value)
       if value.nil?
         return ""
       end
@@ -102,7 +102,35 @@ module Jobstat
       end
     end
 
-    def get_ib_xmit_data_ranking(value)
+    def get_ib_xmit_data_fs_ranking(value)
+      if value.nil?
+        return ""
+      end
+
+      if value < 10
+        "low"
+      elsif value < 100
+        "average"
+      else
+        "good"
+      end
+    end
+
+    def get_ib_rcv_data_mpi_ranking(value)
+      if value.nil?
+        return ""
+      end
+
+      if value < 10
+        "low"
+      elsif value < 100
+        "average"
+      else
+        "good"
+      end
+    end
+
+    def get_ib_xmit_data_mpi_ranking(value)
       if value.nil?
         return ""
       end

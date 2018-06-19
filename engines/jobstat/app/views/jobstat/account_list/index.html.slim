@@ -66,8 +66,8 @@ div
         td = "gpu load"
         td = "loadavg (processes)"
         td = "IPC"
-        td = "ib_receive (MB)"
-        td = "ib_sent (MB)"
+        td = "ib_receive_MPI (MB)"
+        td = "ib_sent_MPI (MB)"
     tbody
       - @jobs.each do |job|
         - job_performance = job.get_performance
@@ -104,9 +104,9 @@ div
 
           td class="job_metric_#{job_ranking[:ipc]}" = number_with_precision(job_performance[:ipc] && job_performance[:ipc], :precision => 2)
 
-          td class="job_metric_#{job_ranking[:ib_rcv_data]}" = number_with_precision(job_performance[:ib_rcv_data], :precision => 1)
+          td class="job_metric_#{job_ranking[:ib_rcv_data_mpi]}" = number_with_precision(job_performance[:ib_rcv_data_mpi], :precision => 1)
 
-          td class="job_metric_#{job_ranking[:ib_xmit_data]}" = number_with_precision(job_performance[:ib_xmit_data], :precision => 1)
+          td class="job_metric_#{job_ranking[:ib_xmit_data_mpi]}" = number_with_precision(job_performance[:ib_xmit_data_mpi], :precision => 1)
 
 table
   tr

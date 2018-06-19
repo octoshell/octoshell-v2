@@ -58,16 +58,15 @@ module Jobstat
       FloatDatum.where(job_id: job.id, name: "ipc").first_or_create
           .update({value: params["avg"]["ipc"]})
 
-      if params["avg"].key?("ib_rcv_data")
-        FloatDatum.where(job_id: job.id, name: "ib_rcv_data").first_or_create
-            .update({value: params["avg"]["ib_rcv_data"]})
-        FloatDatum.where(job_id: job.id, name: "ib_xmit_data").first_or_create
-            .update({value: params["avg"]["ib_xmit_data"]})
-      elsif params["avg"].key?("ib_rcv_data_mpi")
-        FloatDatum.where(job_id: job.id, name: "ib_rcv_data").first_or_create
-            .update({value: params["avg"]["ib_rcv_data_mpi"] + params["avg"]["ib_rcv_data_fs"]})
-        FloatDatum.where(job_id: job.id, name: "ib_xmit_data").first_or_create
-            .update({value: params["avg"]["ib_xmit_data_mpi"] + params["avg"]["ib_xmit_data_fs"]})
+      FloatDatum.where(job_id: job.id, name: "ib_rcv_data_fs").first_or_create
+          .update({value: params["avg"]["ib_rcv_data_fs"]})
+      FloatDatum.where(job_id: job.id, name: "ib_xmit_data_fs").first_or_create
+          .update({value: params["avg"]["ib_xmit_data_fs"]})
+
+      FloatDatum.where(job_id: job.id, name: "ib_rcv_data_mpi").first_or_create
+          .update({value: params["avg"]["ib_rcv_data_mpi"]})
+      FloatDatum.where(job_id: job.id, name: "ib_rcv_data_mpi").first_or_create
+          .update({value: params["avg"]["ib_xmit_data_mpi"]})
       end
     end
 

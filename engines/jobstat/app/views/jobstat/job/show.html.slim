@@ -117,18 +117,32 @@ div class="row"
           = @ranking[:gpu_load]
       tr
         td
-          | Average IB receive data (MB/s, total MPI + FS)
+          | Average IB receive data MPI (MB/s)
         td
-          = format_float_or_nil(@job_perf[:ib_rcv_data])
-        td class="job_metric_#{@ranking[:ib_rcv_data]}"
-          = @ranking[:ib_rcv_data]
+          = format_float_or_nil(@job_perf[:ib_rcv_data_mpi])
+        td class="job_metric_#{@ranking[:ib_rcv_data_mpi]}"
+          = @ranking[:ib_rcv_data_mpi]
       tr
         td
-          | Average IB send data (MB/s)
+          | Average IB send data MPI (MB/s)
         td
-          = format_float_or_nil(@job_perf[:ib_xmit_data])
-        td class="job_metric_#{@ranking[:ib_xmit_data]}"
-          = @ranking[:ib_xmit_data]
+          = format_float_or_nil(@job_perf[:ib_xmit_data_mpi])
+        td class="job_metric_#{@ranking[:ib_xmit_data_mpi]}"
+          = @ranking[:ib_xmit_data_mpi]
+      tr
+        td
+          | Average IB receive data FS (MB/s)
+        td
+          = format_float_or_nil(@job_perf[:ib_rcv_data_fs])
+        td class="job_metric_#{@ranking[:ib_rcv_data_fs]}"
+          = @ranking[:ib_rcv_data_fs]
+      tr
+        td
+          | Average IB send data FS (MB/s)
+        td
+          = format_float_or_nil(@job_perf[:ib_xmit_data_fs])
+        td class="job_metric_#{@ranking[:ib_xmit_data_fs]}"
+          = @ranking[:ib_xmit_data_fs]
 
   div class="col-md-4"
     h3 = "Базовые свойства"

@@ -35,10 +35,10 @@ module Jobstat
       }
 
       begin
+        @total_count = get_jobs(@params, query_logins).count
+
         @jobs = get_jobs(@params, query_logins)
         @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
-
-        @total_count = @jobs.count
         @shown = @jobs.length
       rescue Exception
         @jobs = []
