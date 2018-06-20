@@ -65,9 +65,8 @@ module Jobstat
 
       FloatDatum.where(job_id: job.id, name: "ib_rcv_data_mpi").first_or_create
           .update({value: params["avg"]["ib_rcv_data_mpi"]})
-      FloatDatum.where(job_id: job.id, name: "ib_rcv_data_mpi").first_or_create
+      FloatDatum.where(job_id: job.id, name: "ib_xmit_data_mpi").first_or_create
           .update({value: params["avg"]["ib_xmit_data_mpi"]})
-      end
     end
 
     #before_filter :parse_request, :authenticate_from_token!, only: [:push]

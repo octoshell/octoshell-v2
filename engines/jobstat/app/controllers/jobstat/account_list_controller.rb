@@ -24,7 +24,6 @@ module Jobstat
         @notice = nil
       end
 
-      @descr = Conditions::SMART_CONDITIONS
       @pictures = {
         "rule_mpi_small_packets" => "packets.png",
         "rule_mpi_packets" => "packets.png",

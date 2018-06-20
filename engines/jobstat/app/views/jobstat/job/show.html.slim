@@ -147,20 +147,15 @@ div class="row"
   div class="col-md-4"
     h3 = "Базовые свойства"
     table class="table table-bordered table-striped"
-      - if @no_data
-        tr
-          td
-            = "Отсутсвуют данные мониторинга"
-      - else
-        - if @primary_conditions.length > 0
-          - @primary_conditions.each do |cond|
-            tr
-              td
-                = @condition_descriptions[cond]
-        - else
+      - if @job.get_classes.length > 0
+        - @job.get_classes.each do |cond|
           tr
             td
-              = "Свойств не обнаружено"
+              = cond.description
+      - else
+        tr
+          td
+            = "Необычных свойств не обнаружено"
 
 h3 = "Найденные признаки неэффективности"
 
@@ -175,91 +170,112 @@ table class="table table-bordered table-striped"
     td
       = "Рекомендация"
 
-  - if @no_data
-    tr
-      td
-        = "Отсутсвуют данные мониторинга"
-      td
-      td
-      td
-
-  - else
-    - if @smart_conditions.length > 0
-      - @smart_conditions.each do |cond|
-        tr
-          td
-            = cond
-          td
-            = @condition_descriptions[cond][0]
-          td
-            = @condition_descriptions[cond][1]
-          td
-            = @condition_descriptions[cond][2]
-    - else
+  - if @job.get_rules.length > 0
+    - @job.get_rules.each do |cond|
       tr
         td
-          = "Признаков не найдено"
+          = cond.name
         td
+          = cond.description
         td
+          = cond.suggestion
         td
+          = cond.text_recommendation
+  - else
+    tr
+      td colspan="4"
+        = "Признаков не найдено"
 
 h3 = "Динамика поведения датчиков"
 
 a href="full jd" Полный jd
 
 div class="row"
-  div id="g1" class="col-md-4" style="height: 200px"
-  div id="g2" class="col-md-4" style="height: 200px"
-  div id="g3" class="col-md-4" style="height: 200px"
+  div class="col-md-4" style="height: 250px"
+    h4 = "Загрузка ЦПУ %"
+    div id="g_cpu"
+  div class="col-md-4" style="height: 250px"
+    h4 = "loadavg (link)"
+    div id="g_loadavg"
+  div class="col-md-4" style="height: 250px"
+    h4 = "Использование MPI IB MB/s"
+    div id="g_ib_mpi"
 
 div class="row"
-  div id="g4" class="col-md-4" style="height: 200px"
-  div id="g5" class="col-md-4" style="height: 200px"
-  div id="g6" class="col-md-4" style="height: 200px"
-
-h3 = "Текст"
-
-div id="g7" style="height: 200px"
-div id="g8" style="height: 300px"
+  div class="col-md-4" style="height: 250px"
+    h4 = "Загрузка ГПУ %"
+    div id="g_gpu"
+  div class="col-md-4" style="height: 250px"
+    h4 = "IPC (link)"
+    div id="g_ipc"
+  div class="col-md-4" style="height: 250px"
+    h4 = "Использование FS IB MB/s"
+    div id="g_ib_fs"
 
 javascript:
+  function DrawSingleGraph(target, sensor_data, max)
+  {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'время');
+      data.addColumn('number', 'среднее %');
+
+      data.addRows(sensor_data);
+
+      var options = {
+        hAxis: {
+          title: 'Время',
+        },
+        vAxis: {
+        },
+        colors: ['#8080ff'],
+        'chartArea': {'width': '90%', 'height': '80%'},
+        'legend': {'position': 'bottom'},
+      };
+
+      if(max) {
+        options.vAxis.viewWindow = {
+          min: 0,
+          max: max
+          }
+      }
+
+      var chart = new google.visualization.LineChart(document.getElementById(target));
+      chart.draw(data, options);
+  }
+
+  function DrawSendRecvGraph(target, sensor_data)
+  {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'время');
+      data.addColumn('number', 'передано MB/s');
+      data.addColumn('number', 'получено MB/s');
+
+      data.addRows(sensor_data);
+
+      var options = {
+        hAxis: {
+          title: 'Время'
+        },
+        colors: ['#8080ff', '#ff8080'],
+        'chartArea': {'width': '90%', 'height': '80%'},
+       'legend': {'position': 'bottom'},
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById(target));
+      chart.draw(data, options);
+  }
+
+  function DrawGraphs()
+  {
+    DrawSingleGraph("g_cpu", [[0, 0], [1, 10], [2, 30]], 100);
+    DrawSingleGraph("g_gpu", [[0, 0], [1, 10], [2, 30]], 100);
+    DrawSingleGraph("g_loadavg", [[0, 0], [1, 10], [2, 30]]);
+    DrawSingleGraph("g_ipc", [[0, 0], [1, 10], [2, 30]]);
+    DrawSendRecvGraph("g_ib_mpi", [[0, 0, 0], [1, 2, 3], [2, 4, 2]]);
+    DrawSendRecvGraph("g_ib_fs", [[0, 0, 0], [1, 2, 3], [2, 4, 2]]);
+  }
+
   $(document).ready(function(){
-
-  google.charts.load('current', {packages: ['corechart', 'line']});
-  google.charts.setOnLoadCallback(drawLineColors);
-
-  function drawLineColors() {
-    for(var ch = 1; ch <= 8; ch++)
-    {
-        var data = new google.visualization.DataTable();
-        data.addColumn('number', 'X');
-        data.addColumn('number', 'max');
-        data.addColumn('number', 'avg');
-        data.addColumn('number', 'min');
-
-        var vals = [];
-
-        for(var i = 0; i < ch * 10; i++)
-        {
-          var r = Math.floor(Math.random() * 10);
-
-          vals.push([i, r, r/2, r/3])
-        }
-
-        data.addRows(vals);
-
-        var options = {
-          hAxis: {
-            title: 'Time'
-          },
-          colors: ['#a52714', '#25a714', '#2527a4'],
-          'chartArea': {'width': '100%', 'height': '80%'},
-         'legend': {'position': 'bottom'},
-
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById('g' + ch));
-        chart.draw(data, options);
-      }
-      }
-    });
+    google.charts.load('current', {packages: ['corechart', 'line']});
+    google.charts.setOnLoadCallback(DrawGraphs);
+  });

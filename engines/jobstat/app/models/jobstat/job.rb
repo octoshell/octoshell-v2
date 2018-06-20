@@ -60,16 +60,27 @@ module Jobstat
       }
     end
 
-    def get_thresholds_conditions
-      get_tags & Conditions::THRESHOLDS_CONDITIONS.keys
-    end
-  
-    def get_primary_conditions
-      get_tags & Conditions::PRIMARY_CONDITIONS.keys
+    def slice(dict, vals)
+      res = []
+      vals.each do |val|
+        begin
+          res.push(dict.fetch(val))
+        rescue KeyError
+        end
+      end
+      res
     end
 
-    def get_smart_conditions
-      get_tags & Conditions::SMART_CONDITIONS.keys
+    def get_thresholds
+      slice(Conditions.instance.thresholds, get_tags)
+    end
+
+    def get_classes
+      slice(Conditions.instance.classes, get_tags)
+    end
+
+    def get_rules
+      slice(Conditions.instance.rules, get_tags)
     end
   end
 end
