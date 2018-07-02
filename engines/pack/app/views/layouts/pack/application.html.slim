@@ -1,6 +1,8 @@
-
-  
-  = stylesheet_link_tag    "pack/pack", media: "all"
-  = render "layouts/application"
-  
-
+- content_for :user_engine_submenu do
+  br
+  ul class="nav nav-pills"
+    - pack_submenu_items.each do |item|
+      li class="#{"active" if item.active?(request.fullpath)}"
+        = link_to item.name, item.url
+= stylesheet_link_tag    "pack/pack", media: "all"
+= render template: "layouts/application"

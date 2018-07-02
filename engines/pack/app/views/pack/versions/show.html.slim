@@ -1,144 +1,131 @@
-
-
-
-	
 div class="page-header"
   h1 = t(".title")
-
 -unless admin?
-	div class="row" style="border:1px solid #cecece;"
+  div class="row" style="border:1px solid #cecece;"
 
-			div class="col-xs-6" 
-				h4 =t('accesses.title')
-				table class="table" 
-					-['red','blue','green','brown','black'].each do |col|
-						tr
-							td 
-								font color=col
-									=t "colors.#{col}"
-							td 
-								=t "accesses.#{col}"
+      div class="col-xs-6"
+        h4 =t('accesses.title')
+        table class="table"
+          -['red','blue','green','brown','black'].each do |col|
+            tr
+              td
+                font color=col
+                  =t "colors.#{col}"
+              td
+                =t "accesses.#{col}"
 div class="panel  panel-heading clearfix"
-	
-	-if admin?
-	
-		=link_to t("edit"), edit_admin_package_version_path(@version.package_id,@version.id), class: "btn btn-default" 
-		=link_to t("delete"), admin_package_version_path(@version.package_id,@version.id), :method => 'delete',:data => {:confirm => t("ver_confirm")},class: "btn btn-default"  
 
-	-if admin?
-		=link_to t("return_to_pack"), admin_package_path(@version.package_id),class: "btn btn-default"  
-	-else
-		=link_to t("return_to_pack"), package_path(@version.package_id),class: "btn btn-default"  
+  -if admin?
+
+    =link_to t("edit"), edit_admin_package_version_path(@version.package_id,@version.id), class: "btn btn-default"
+    =link_to t("delete"), admin_package_version_path(@version.package_id,@version.id), :method => 'delete',:data => {:confirm => t("ver_confirm")},class: "btn btn-default"
+
+  -if admin?
+    =link_to t("return_to_pack"), admin_package_path(@version.package_id),class: "btn btn-default"
+  -else
+    =link_to t("return_to_pack"), package_path(@version.package_id),class: "btn btn-default"
 
 
 
 table
-	-@version.attributes.except("delete_on_expire","end_lic","lock_col","service","deleted","state","created_at","updated_at","package_id","id","deleted").each do |key,value|
-		tr
-			td class="col-xs-3"
-				=Pack::Version.human_attribute_name key
-			td class="col-xs-9"
-				=@version.send key
-	tr 
-			td class="col-xs-3" 
-				=Pack::Version.human_attribute_name "state"
-			td class="col-xs-9"
-				-col = ( @version.state=="expired") ? "red" : "green"
-				font color=col =@version.readable_state
-	tr 
-			td class="col-xs-3" 
-				=Pack::Version.human_attribute_name "deleted"
-			td class="col-xs-9"
-				=t("#{@version.deleted}")
-	tr 
-			td class="col-xs-3" 
-				=Pack::Version.human_attribute_name "service"
-			td class="col-xs-9"
-				= t("#{@version.service}")
-		
-	tr 
-			td class="col-xs-3" 
-				=Pack::Version.human_attribute_name "package"
-			td class="col-xs-9"
-				=t("#{@version.package.name}")
+  -@version.attributes.except("delete_on_expire","end_lic","lock_col","service","deleted","state","created_at","updated_at","package_id","id","deleted").each do |key,value|
+    tr
+      td class="col-xs-3"
+        =Pack::Version.human_attribute_name key
+      td class="col-xs-9"
+        =@version.send key
+  tr
+      td class="col-xs-3"
+        =Pack::Version.human_attribute_name "state"
+      td class="col-xs-9"
+        -col = ( @version.state=="expired") ? "red" : "green"
+        font color=col =@version.readable_state
+  tr
+      td class="col-xs-3"
+        =Pack::Version.human_attribute_name "deleted"
+      td class="col-xs-9"
+        =t("#{@version.deleted}")
+  tr
+      td class="col-xs-3"
+        =Pack::Version.human_attribute_name "service"
+      td class="col-xs-9"
+        = t("#{@version.service}")
 
-	-unless admin?
-		tr
-			td class="col-xs-3" 
-					=Pack::Version.human_attribute_name "available_for_user?"
+  tr
+      td class="col-xs-3"
+        =Pack::Version.human_attribute_name "package"
+      td class="col-xs-9"
+        -if admin?
+          =link_to @version.package.name, [:admin, @package]
+        -else
+          =link_to @version.package.name, @package
+  -unless admin?
+    tr
+      td class="col-xs-3"
+          =Pack::Version.human_attribute_name "available_for_user?"
+      td class="version-availability col-xs-9"
 
-			td class="col-xs-9"									
-				- if @version.available_for_user?
-					font color="green"
-						=t "#{@version.available_for_user?}"
+p
+  h4 =t "versions.options"
+  p
+    table
+      tr
+          th class="col-xs-3"
+            =Pack::VersionOption.human_attribute_name "name"
+          th class="col-xs-9"
+            =Pack::VersionOption.human_attribute_name "value"
+      -@version.version_options.each do |opt|
 
-				-else 
-					font color="red"							
-						=t "#{@version.available_for_user?}"
 
+
+        tr
+          td class="col-xs-3"
+            =opt.name
+          td class="col-xs-9"
+            =opt.value
 
 
 p
-	h4 =t "versions.options"
-	p	
-		table  
-			tr 
-					th class="col-xs-3"
-						=Pack::VersionOption.human_attribute_name "name"
-					th class="col-xs-9"
-						=Pack::VersionOption.human_attribute_name "value"
-			-@version.version_options.each do |opt|	
-		
-				
-						
-				tr 
-					td class="col-xs-3"
-						=opt.name
-					td class="col-xs-9"
-						=opt.value
-
-
-p
-	h4 =t "versions.clusters"
-	-@version.clustervers.each do |cl|	
-		p
-			table		
-				tr 
-					td class="col-xs-3" 
-						=Pack::Clusterver.human_attribute_name "name"
-					td  class="col-xs-9" 
-						=cl.core_cluster.name
-				tr 
-					td class="col-xs-3" 
-						 =Pack::Clusterver.human_attribute_name  "status"
-					td class="col-xs-9" 
-						= t "versions.cl_status.#{cl.action}"	
-
-
-	
-	-unless admin?
-		div class='margin' 
-			p
-				h4 =t"versions.my_accesses"
-				div id="accesses_#{@version.id}"	
-					=render "pack/packages/accesses",accesses: @version.user_accesses
-		-if !@version.deleted? && !@version.service
-			div class='margin' 
-				P
-					h4 =t "versions.my_accesses_edit"
-					=select_tag :proj_or_user,options_for_select( @options_for_select ), {class: :select_ajax_access,vers_id: @version.id }
-		 			div class='form_for_access'  vers_id=@version.id 
-
-
- 		=javascript_tag do
- 			=render(:partial => 'pack/versions/show',formats: [:js])
- 
+  h4 =t "versions.clusters"
+  -@version.clustervers.each do |cl|
+    p
+      table
+        tr
+          td class="col-xs-3"
+            =Pack::Clusterver.human_attribute_name "name"
+          td  class="col-xs-9"
+            =cl.core_cluster.name
+        tr
+          td class="col-xs-3"
+             =Pack::Clusterver.human_attribute_name  "status"
+          td class="col-xs-9"
+            = t "versions.cl_status.#{cl.action}"
+        tr
+          td class="col-xs-3"
+            =Pack::Clusterver.human_attribute_name "path"
+          td  class="col-xs-9"
+            =cl.path
 
 
 
-		
-
-		
-
-
- 
+  -unless admin?
+    h3 = Pack::Version.human_attribute_name(:accesses)
+    table   class="table table-hover" cols="6" cellspacing="30"
+      tr
+          td class="accesses-info" version_id=@version.id  class="col-xs-9"
+          td class="col-xs-3"
+            -if !@version.deleted && !@version.service
+               button class="btn btn-primary btn_access" version_id= @version.id  = t("want",default:"want this")
+      tr
+         td colspan='6'
+           div class='accesses_form_container col-xs-6' hidden=""
+             div class='top-alpaca-form'
+             p class='server-messages'
+             p class='accesses-messages'
+             div class='bottom-alpaca-form'
+    = handlebars_tag(id: 'accesses-template') do
+      = render 'pack/packages/access'
+    = handlebars_tag(id: 'availability-template') do
+      = render 'pack/packages/availability'
+    =javascript_tag do
+      =render(:partial => 'pack/packages/show',formats: [:js])

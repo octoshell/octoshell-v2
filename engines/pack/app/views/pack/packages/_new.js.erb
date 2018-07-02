@@ -1,0 +1,101 @@
+
+var labels= <%=raw [Pack::Access.human_attribute_name("forever"),Pack::Access.human_attribute_name("not_forever")].to_json%>;
+bottomForm.alpaca({
+  "schema":{
+    "title": '<%= t ".new_access" %>',
+    "type":"object",
+    "properties":{
+      "forever":{
+        "type": "radio",
+        "enum": ['true','false'],
+        "required": true
+      },
+      "status":{
+      },
+      "type":{
+      },
+      "version_id":{
+      },
+      "versions_ids":{
+      },
+      "end_lic":{
+        "title": '<%=raw Pack::Access.human_attribute_name("end_lic")%>',
+        "required": true,
+        "dependencies": ["forever"]
+      }
+    }
+  },
+  "options":{
+    "focus":"",
+    "hideInitValidationError":true,
+    "fields":{
+      "forever":{
+        "optionLabels": labels,
+        "sort": false
+      },
+      "end_lic":{
+        "dependencies":{
+          "forever": "false"
+        }
+      },
+      "status":{
+        "type": "hidden"
+      },
+      "type":{
+        "type": "hidden"
+      },
+      "version_id":{
+        "type": "hidden"
+      },
+      "versions_ids":{
+        "type": "hidden"
+      }
+    },
+    "form": {
+          "attributes": {
+              "method": "post",
+              "action": "/pack/accesses/update_accesses"
+          },
+          "buttons": {
+              "submit": {
+                  "title": '<%= t("buttons.save") %>',
+                  "click": function() {
+                     this.validate(true);
+                     this.refreshValidationState(true);
+                     var promise = this.ajaxSubmit();
+                     promise.done(function(arg){
+                       viewer.accesses = arg.accesses;
+                       viewer.renderFormForVersion(version_id,sel_value);
+                       $(`.btn_access[version_id='${version_id}']`).parents('tr')
+                       .next().find('p.server-messages').html('<font color="green"><%=t(".success")%></font>');
+                     });
+                     promise.fail(function(arg) {
+                       viewer.accesses = arg.responseJSON.accesses;
+                       viewer.renderFormForVersion(version_id,sel_value);
+                       $(`.btn_access[version_id='${version_id}']`).parents('tr')
+                       .next().find('p.server-messages').html(`<font color="red">${arg.responseJSON.error}</font>`);
+                     });
+
+                    //  viewer.load();
+                    //  viewer.load
+                   }
+                }
+              },
+    }
+  },
+  "data":{
+    "forever": false,
+    "status": "new",
+    "version_id": version_id,
+    "type": sel_value,
+    "versions_ids": viewer.ids
+  },
+  "postRender": function(control) {
+    control.getControlByPath('end_lic')
+           .getControlEl()
+           .datepicker({
+                        dateFormat: 'mm-dd-yy',
+                        minDate: 0
+                      });
+  }
+});

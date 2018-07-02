@@ -1,55 +1,253 @@
+function getJSONSyncWithData(url,data,success)
+{
+  $.ajax({
+    dataType: "json",
+    data: data,
+    url: url,
+    success: success,
+    async: false
+  });
+}
 
+function AccessViewer(ids) {
+  this.ids = ids;
+  this.versions = <%= raw(@versions.map{  |v| {available: v.available_for_user?, id: v.id} }.group_by { |v| v[:id] }.to_json)%>;
+  this.load = function() {
+    accesses = null;
+    getJSONSyncWithData('/pack/accesses/load_for_versions',{versions_ids: ids},function(result){
+      accesses = result;
+    });
+    this.accesses = accesses;
+    this.renderAccessesInfo();
+  };
 
+  this.renderAccessesInfo = function(){
+    var keys = <%=raw @versions.map(&:id)%>;
+    var source   = $('#accesses-template').html();
+    var template = Handlebars.compile(source);
+    var sourceAvailability   = $('#availability-template').html();
+    var templateAvailability = Handlebars.compile(sourceAvailability);
 
-  $(document ).on('click',".btn_access",function()
- {
-   
-    var my_id=$(this).attr('vers_id');
-   var el= $(".select_for_access[vers_id='" + my_id + "']");
+    for(var i=0; i < keys.length; i++)
+    {
+      var available = false;
+      var td = $(`td.accesses-info[version_id='${keys[i]}']`);
+      <% if @version %>
+        var availabilityTd = $('td.version-availability');
+      <% else %>
+      var availabilityTd = td.parents('tr').find('.version-availability');
+      <% end %>
+      td.empty();
+      availabilityTd.empty();
+      if(this.accesses[keys[i]])
+      for(var j=0; j < this.accesses[keys[i]].length; j++)
+      {
+        var readable_name,end_lic,result;
+        access = this.accesses[keys[i]][j];
+        if(access.status == 'allowed' && this.versions[keys[i]][0].available){
+          available = true;
+        }
+        if(access.who_type == 'User'){
+          readable_name= '<%= t(".user")%>';
+        }
+        else if (access.who_type == 'Core::Project'){
+          readable_name=`<%= Core::Project.model_name.human %> "${access.who_name_from_union}"`
+        }
+        else {
+          readable_name=`<%= ::Group.model_name.human %> "${access.who_name_from_union}"`
+        }
+        if(access.end_lic){
+          end_lic = access.end_lic;
+        }
+        else{
+          end_lic = '<%= Pack::Access.human_attribute_name(:forever)%>'
+        }
+        result = template({color: this.accessColor(access),who: readable_name, end_lic: end_lic});
+        td.append(result);
+      }
+      if(available == true)
+      {
+        result = templateAvailability({available: true});
+      }
+      else {
+        result = templateAvailability({});
+      }
+      availabilityTd.html(result);
+    }
+  }
+  this.accessColor = function(access){
+    switch(access.status){
+      case 'allowed':
+        return 'green';
+      case 'requested':
+        return 'blue';
+      case 'denied':
+        return 'red';
+      case 'expired':
+        return 'brown';
+      case 'deleted':
+        return 'black';
+      }
+  }
+  this.renderFormForVersion = function(version_id,form_data = 'user') {
+    $( `.btn_access[version_id='${version_id}']`).parents('tr').next().find('p').empty();
+    var topForm= $( `.btn_access[version_id='${version_id}']`).parents('tr').next().find('div.top-alpaca-form');
+    topForm.alpaca('destroy');
+    topForm.alpaca({
+      "schema": {
+        "enum": <%=raw @options_for_select.to_json%>,
+        "required": true
+      },
+      "options":{
+        "label": "",
+        "type": "select",
+        "optionLabels": <%=raw @options_for_select_labels.to_json%>,
+        "validate": false,
+        "onFieldChange": function(e) {
+            var serverMessages= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('p.server-messages');
+            serverMessages.empty();
+            viewer.renderBottomForm(version_id, this.getValue());
+        }
+      },
+      "data": form_data,
+      "postRender": function(control) {
+        apply_select();
+        viewer.renderBottomForm(version_id, control.getValue());
+        control.getControlEl().next().attr('style','width: 400px;');
+
+      }
+    });
+  }
+  this.renderBottomForm = function(version_id, sel_value) {
+    var accesses = viewer.accesses[version_id] || [];
+    var access = null;
+    if(sel_value == 'user')
+    {
+      for(i=0; i< accesses.length; i++)
+      {
+        if(accesses[i].who_type == 'User')
+        {
+          access = accesses[i];
+          break;
+        }
+      }
+    }
+    else {
+      for(i=0; i< accesses.length; i++)
+      {
+        if(accesses[i].who_type == 'Core::Project' && accesses[i].who_id == sel_value )
+        {
+          access = accesses[i];
+          break;
+        }
+      }
+    }
+    var bottomForm= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('div.bottom-alpaca-form');
+    bottomForm.alpaca('destroy');
+    var messages= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('p.accesses-messages');
+    messages.empty();
+
+    if (access){
+      switch(access.status){
+        case "requested":
+          messages.html('<font color="blue"> <%= t(".can_delete_requested") %> </font>');
+          messages.append('<button class="btn btn-default"><%= t("actions.delete")%></button>');
+          messages.find('button').click(function(){
+            $.ajax({
+              url: '/pack/accesses/update_accesses',
+              data: {version_id: version_id, type: sel_value,
+                     status: "requested", delete: true,
+                     lock_version: access.lock_version,
+                     versions_ids: viewer.ids},
+              method: "POST",
+              async: false,
+              success: function(data){
+                viewer.accesses = data.accesses;
+                viewer.renderFormForVersion(version_id, sel_value);
+                $(`.btn_access[version_id='${version_id}']`).parents('tr')
+                .next().find('p.server-messages').html('<font color="green"><%=t(".success_delete")%></font>');
+              },
+              error: function(data){
+                viewer.accesses = data.responseJSON.accesses;
+                viewer.renderFormForVersion(version_id,sel_value);
+                $(`.btn_access[version_id='${version_id}']`).parents('tr')
+                .next().find('p.server-messages').html(`<font color="red">${data.responseJSON.error}</font>`);
+              }
+            });
+          });
+          break;
+        case "denied":
+          $(`.btn_access[version_id='${version_id}']`).parents('tr')
+          .next().find('p.accesses-messages').html('<font color="red"> <%= t("mailer_messages.denied") %> </font>');
+          break;
+        case "allowed":
+          var message = $(`.btn_access[version_id='${version_id}']`).parents('tr')
+          .next().find('p.accesses-messages');
+          if(!access.end_lic){
+            message.html('<font color="green"> <%= t(".end_lic_null") %> </font>');
+          }
+          if(access.new_end_lic_forever)
+          {
+            message.append('<font color="green"> <%= t(".new_end_lic_forever") %> </font>');
+          }
+          else if(access.new_end_lic) {
+            message.append(`<font color="green"> <%= t(".new_end_lic") %> </font>`);
+          }
+
+          if(access.end_lic){
+            <%= render partial: 'pack/packages/allowed_expired', formats: :js%>
+          }
+          break;
+        case "expired":
+          var message = $(`.btn_access[version_id='${version_id}']`).parents('tr')
+          .next().find('p.accesses-messages');
+          message.html(`<font color="brown"> <%= t(".end_lic_expired") %> </font>`);
+          if(access.new_end_lic_forever)
+          {
+            message.append('<font color="brown"> <%= t(".new_end_lic_forever") %> </font>');
+          }
+          else if(access.new_end_lic) {
+            message.append(`<font color="brown"> <%= t(".new_end_lic") %> </font>`);
+          }
+          <%= render partial: 'pack/packages/allowed_expired', formats: :js%>
+        break;
+      }
+    }
+    else{
+      <%= render partial: 'pack/packages/new', formats: :js%>
+    }
+    this.renderAccessesInfo();
+  }
+};
+
+var viewer = new AccessViewer(<%=@versions.map(&:id)%>);
+viewer.load();
+
+$(document ).on('click',".btn_access",function()
+{
+  var version_id= $(this).attr('version_id');
+  var el= $(this).parents('tr').next().find('div.accesses_form_container')
    if (el.attr('hidden'))
    {
+     var elem = this;
+     $('.btn_access').each(function(index){
+       if(this != elem)
+       {
+         var el= $(this).parents('tr').next().find('div.accesses_form_container');
+         el.attr('hidden','');
+         $(this).html('<%=t("want")%>');
+       }
+     });
+
       $(this).html("<%=t('disable')%>");
+      viewer.renderFormForVersion(version_id);
+      // $(".select_ajax_access[vers_id='" + version_id + "']").each(make_form);
       el.removeProp('hidden');
-      $(".select_ajax_access[vers_id='" + my_id + "']").each(make_form);
    }
    else
    {
       el.attr('hidden','');
       $(this).html('<%=t("want")%>');
-   } 
-  
- });
+   }
 
-function make_form(){
-
- 
-  $(".form_for_access[vers_id='" + $(this).attr('vers_id') +  "']").empty();
-
-  $.ajax({
-        url : "<%=form_accesses_path%>", // the endpoint
-        dataType : "script", 
-        type: "GET",
-        data:
-        {
-          proj_or_user: $(this).val(),
-          version_id: $(this).attr('vers_id'),
-          
-        }
-       
-        
-    });
-  
-}
-
-
-  $(document).on('change','.select_ajax_access',make_form);
-  
-
-
-
-
-
-
-
- 
- 
+});
