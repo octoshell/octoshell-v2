@@ -1,5 +1,0 @@
-	= bootstrap_form_for @access,  :url => { :controller => "accesses", :action => "destroy" }, :html => {:method => :post}, layout: :horizontal,remote: true do |f|		
-		= f.hidden_field :id
-		= f.hidden_field :version_id
-		= f.hidden_field :lock_version
-		= f.submit t("delete", default: "delete") 

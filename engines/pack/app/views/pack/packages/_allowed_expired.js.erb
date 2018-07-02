@@ -1,0 +1,110 @@
+
+var labels= <%=raw [Pack::Access.human_attribute_name("forever"),Pack::Access.human_attribute_name("not_forever")].to_json%>;
+bottomForm.alpaca({
+  "schema":{
+    "title": '<%= t ".title" %>',
+    "type":"object",
+    "properties":{
+      "new_end_lic_forever":{
+        "type": "radio",
+        "enum": ['true','false'],
+        "required": true
+      },
+      "status":{
+      },
+      "type":{
+      },
+      "version_id":{
+      },
+      "versions_ids":{
+      },
+      "lock_version":{
+      },
+      "new_end_lic":{
+        "title": '<%=raw Pack::Access.human_attribute_name("new_end_lic")%>',
+        "required": true,
+        "dependencies": ["new_end_lic_forever"]
+      }
+    }
+  },
+  "options":{
+    "focus":"",
+    "hideInitValidationError":true,
+    "fields":{
+      "new_end_lic_forever":{
+        "optionLabels": labels,
+        "sort": false
+      },
+      "new_end_lic":{
+        "dependencies":{
+          "new_end_lic_forever": "false"
+        }
+      },
+      "status":{
+        "type": "hidden"
+      },
+      "type":{
+        "type": "hidden"
+      },
+      "version_id":{
+        "type": "hidden"
+      },
+      "versions_ids":{
+        "type": "hidden"
+      },
+      "lock_version":{
+        "type": "hidden"
+      }
+
+    },
+    "form": {
+          "attributes": {
+              "method": "post",
+              "action": "/pack/accesses/update_accesses"
+          },
+          "buttons": {
+              "submit": {
+                  "title": '<%= t("buttons.save") %>',
+                  "click": function() {
+                     this.validate(true);
+                     this.refreshValidationState(true);
+                     var promise = this.ajaxSubmit();
+                     promise.done(function(arg){
+                       viewer.accesses = arg.accesses;
+                       viewer.renderFormForVersion(version_id,sel_value);
+                       $(`.btn_access[version_id='${version_id}']`).parents('tr')
+                       .next().find('p.server-messages').html('<font color="green"><%=t(".success")%></font>');
+                     });
+                     promise.fail(function(arg) {
+                       viewer.accesses = arg.responseJSON.accesses;
+                       viewer.renderFormForVersion(version_id,sel_value);
+                       $(`.btn_access[version_id='${version_id}']`).parents('tr')
+                       .next().find('p.server-messages').html(`<font color="red">${arg.responseJSON.error}</font>`);
+                     });
+                   }
+                }
+              },
+    }
+  },
+  "data":{
+    "new_end_lic_forever": access.new_end_lic_forever || false,
+    "new_end_lic": access.new_end_lic,
+    "status": access.status,
+    "version_id": version_id,
+    "type": sel_value,
+    "versions_ids": viewer.ids,
+    "lock_version": access.lock_version,
+  },
+  "postRender": function(control) {
+    var d = new Date(getAmericanDate(access.end_lic));
+    var tomorrowDate = d.getDate() + 1;
+    d.setDate(tomorrowDate);
+    d.setHours(0,0,0,0);
+    control.getControlByPath('new_end_lic')
+           .getControlEl()
+           .datepicker({
+                        dateFormat: 'mm-dd-yy',
+                        minDate: d
+                      });
+  }
+});

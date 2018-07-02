@@ -1,0 +1,104 @@
+function endLicWithReq(){
+  var bottomForm = $('div.bottom-alpaca-form');
+  var labels= <%=raw [Pack::Access.human_attribute_name("forever"),Pack::Access.human_attribute_name("not_forever")].to_json%>;
+  bottomForm.alpaca('destroy');
+  bottomForm.alpaca({
+    "schema":{
+      "type":"object",
+      "properties":{
+        "status":{
+          "title": '<%= Pack::Access.human_attribute_name(:status) %>',
+          "enum": <%=raw @options_for_select.to_json%>,
+          "required": true,
+        },
+        "forever":{
+          "type": "radio",
+          "enum": ['true','false'],
+          "required": true,
+          "dependencies": ["status"]
+        },
+        "lock_version":{
+        },
+        "end_lic":{
+          "title": '<%=raw Pack::Access.human_attribute_name("end_lic")%>',
+          "required": true,
+          "dependencies": ["forever", "status"]
+        },
+        "delete_request":{
+          "default": true,
+          "dependencies": ["status"]
+        },
+
+      }
+    },
+    "options":{
+      "focus":"",
+      "hideInitValidationError":true,
+      "fields":{
+        "forever":{
+          "optionLabels": labels,
+          "sort": false,
+          "dependencies":{
+            "status": ["allowed", "expired","deleted","denied"]
+          }
+        },
+        "end_lic":{
+          "dependencies":{
+            "status": ["allowed", "expired","deleted","denied"],
+            "forever": false
+          }
+        },
+        "delete_request":{
+          "type": "checkbox",
+          "rightLabel": '<%= t ".delete_request" %>',
+          "dependencies":{
+            "status": ["allowed", "expired"]
+          }
+        },
+        "status":{
+          "type": "select",
+          "optionLabels": <%=raw @options_for_select_labels.to_json%>,
+          "validate": false
+        },
+        "lock_version":{
+          "type": "hidden"
+        }
+      },
+      "form": {
+            "attributes": {
+                "method": "post",
+                "action": "/pack/admin/accesses/<%=@access.id%>/manage_access"
+            },
+            "buttons": {
+                "submit": {
+                    "title": '<%= t("buttons.save") %>',
+                    "click": function(){
+                      this.validate(true);
+                      this.refreshValidationState(true);
+                      var control = bottomForm.alpaca('get');
+                      if (control.getControlByPath('forever').getValue() == 'true')
+                      {
+                        control.getControlByPath('end_lic').setValue('');
+                      }
+                      this.submit();
+                    }
+                  }
+                },
+
+      }
+    },
+    "data": data,
+    "postRender": function(control) {
+      var endLicElem = control.getControlByPath('end_lic').getControlEl();
+      endLicElem.datepicker({
+                               dateFormat: 'mm-dd-yy',
+                            });
+      if(access.end_lic)
+      {
+        endLicElem.datepicker("setDate", endLicDate);
+      }
+      apply_select();
+
+    }
+  });
+}

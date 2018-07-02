@@ -1,0 +1,16 @@
+div class="package-header"
+  h1 = t(".title", default: "Packages list")
+  div id="qq"
+    =render 'pack/packages/q'
+  br
+  br
+  br
+    =render("pack/packages/versions_table", records: @versions)
+    =paginate(@versions)
+= handlebars_tag(id: 'accesses-template') do
+  = render 'pack/packages/access'
+= handlebars_tag(id: 'availability-template') do
+  = render 'pack/packages/availability'
+= javascript_tag do
+      = render(:partial => 'pack/packages/show', :formats => [:js])
+      = render(:partial => 'pack/packages/index', :formats => [:js])
