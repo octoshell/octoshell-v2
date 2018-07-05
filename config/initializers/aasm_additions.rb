@@ -1,1 +1,1 @@
-require "aasm_additions.rb"
+# require "aasm_additions.rb"

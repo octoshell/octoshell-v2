@@ -67,9 +67,9 @@ module Core
 
     def human_project_access_state_name st=nil
       if st.nil?
-        project_access_state.to_s
+        human_state_name
       else
-        st
+        self.class.human_state_name st
       end
     end
 

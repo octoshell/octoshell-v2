@@ -1,0 +1,16 @@
+div id="lang_pref"
+  li
+    button type="button" lang="ru" class="btn btn-default"  Russian
+  li
+    button type="button" lang="en" class="btn btn-default"  English
+javascript:
+  $('div#lang_pref button').click(function(){
+    var lang = $(this).attr('lang');
+    console.log(lang);
+    $('<form action="#{main_app.change_lang_prefs_path}" method="POST"/>')
+        .append($('<input type="hidden" name="language" value="' + lang + '">'))
+        .append($('<input type="hidden" name="authenticity_token" value="#{form_authenticity_token}">'))
+        .appendTo($(document.body))
+        .submit();
+  });
+//    console.log($(this).attr('lang'));

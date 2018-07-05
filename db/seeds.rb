@@ -23,26 +23,26 @@ admin = User.create!(email: "admin@octoshell.ru",
 admin.activate!
 admin.activate!
 
-Group.default!
-
+# Group.default!
+#
 admin.groups << Group.superadmins
 admin.access_state='active'
 admin.save!
-
-
-# create projects prerequisites
-
-country = Core::Country.create!(title_en: 'Russia', title_ru: 'Россия')
-
-Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country)
-
-Core::Cluster.create!(host: 'localhost', admin_login: 'octo', name: 'test')
-
-Core::OrganizationKind.create!(name: 'Российская коммерческая организация')
-Core::CriticalTechnology.create!(name: 'Робототехника')
-
-Core::DirectionOfScience.create!(name: 'Информационно-телекоммуникационные системы')
-
-Core::ResearchArea.create!(name: 'Математика')
-
-Core::ProjectKind.create!(name: 'Исследовательский')
+#
+#
+# # create projects prerequisites
+#
+# country = Core::Country.create!(title_en: 'Russia', title_ru: 'Россия')
+#
+# Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country)
+#
+# Core::Cluster.create!(host: 'localhost', admin_login: 'octo', name: 'test')
+#
+# Core::OrganizationKind.create!(name: 'Российская коммерческая организация')
+# Core::CriticalTechnology.create!(name: 'Робототехника')
+#
+# Core::DirectionOfScience.create!(name: 'Информационно-телекоммуникационные системы')
+#
+# Core::ResearchArea.create!(name: 'Математика')
+#
+# Core::ProjectKind.create!(name: 'Исследовательский')

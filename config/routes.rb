@@ -36,6 +36,13 @@ Octoshell::Application.routes.draw do
     get :login_as, on: :member
     get :return_to_self, on: :member
   end
+
+  resources :lang_prefs, only: {} do
+    collection do
+      post :change
+    end
+  end
+
   resource :profile
 
   namespace :admin do

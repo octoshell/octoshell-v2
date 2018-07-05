@@ -2,7 +2,7 @@ module Core
   class ApplicationController < ActionController::Base
     layout "layouts/application"
 
-    before_filter :require_login,:set_current_user
+    before_filter :require_login,:set_current_userz
 
     rescue_from MayMay::Unauthorized, with: :not_authorized
 
