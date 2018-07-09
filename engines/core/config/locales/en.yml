@@ -391,7 +391,7 @@ en:
         msg_recommendation: "To find out the cause and to ask other questions you can visit our technical support section."
         open_support: "The technical support section."
       new_organization:
-        subject: "A new organization has been created"
+        subject: "New organization has been created"
         msg_new_organization: "A new organization has been created."
       new_organization_department:
         subject: "A new departent has been created in organization %{org_title}"
@@ -448,7 +448,7 @@ en:
           send_email_to_member: "Send email to member"
           has_surety: "Surety exists"
           project_access_state: "project access is allowed"
-          cluster_access_state: "resource access  is allowed"
+          cluster_access_state: "resource access is allowed"
         sureties:
           title: "Sureties"
       requests:
@@ -480,7 +480,7 @@ en:
           title: "Project kind"
           new_project_kind: "New project kind"
         new:
-          title: "The new project kind"
+          title: "New project kind"
         edit:
           title: "The project kind editing"
       quota_kinds:
@@ -490,11 +490,11 @@ en:
         edit:
           title: "The quota kind editing"
         new:
-          title: "The new qouta"
+          title: "New quota"
       clusters:
         index:
           title: "Clusters"
-          quotas_info: "Resource qouta"
+          quotas_info: "Resource quota"
           new_cluster: "Create a new cluster"
           no_clusters_found: "No clusters have been found"
           delete: "Delete"
@@ -502,16 +502,16 @@ en:
           confirm: "Are you sure?"
         show:
           info: "Cluster information"
-          quotas_info: "Resource qouta"
+          quotas_info: "Resource quota"
           pub_key_help_html: "To make an application work with the cluster  copy the key в <code>/home/%{admin_login}/.ssh/authorized_keys</code>"
           show_logs: "Show logs"
         new:
-          title: "The new cluster"
+          title: "New cluster"
         edit:
           title: "Cluster editing"
         form:
-          help: "You can set default resource quotas values by clicking on \"+ add qouta\". These values will be used by users to create resource quota request."
-          add_quota: "+ add qouta"
+          help: "You can set default resource quotas values by clicking on \"+ add quota\". These values will be used by users to create resource quota request."
+          add_quota: "+ add quota"
           remove_quota: "remove quouta"
       cluster_logs:
         index:
@@ -532,7 +532,7 @@ en:
           new_direction_of_science: "Add a direction of research"
           no_direction_of_sciences_found: "No directions of research have been found"
         new:
-          title: "The new direction of research"
+          title: "New direction of research"
         edit:
           title: "New research direction editing"
       critical_technologies:
@@ -541,7 +541,7 @@ en:
           new_critical_technology: "Add critical technology"
           no_critical_technologies_found: "No critical technologies have been found"
         new:
-          title: "The new critical technology"
+          title: "New critical technology"
         edit:
           title: "Critical technology editing"
       research_areas:
@@ -550,7 +550,7 @@ en:
           new_research_area: "Add a research area"
           no_research_areas_found: "No research areas have been found"
         new:
-          title: "The new research area"
+          title: "New research area"
         edit:
           title: "Research area editing"
       organizations:
@@ -567,14 +567,13 @@ en:
           automerged: The following project memberships will be merged automically
           not_automerged: The following project memberships won't be merged automically
           not_automerged_projects:  Projects merger
-
           merge?: Merge?
           with_surety: With surety?
           automerged_surety_members_without_core_members: The following sureties will be merged automically
           not_automerged_surety_members_without_core_members: The following sureties won't be merged automically
       countries:
         new:
-          title: The new country
+          title: New country
         index:
           find_by_name: Find by name
           title: Countries
@@ -617,7 +616,7 @@ en:
           title: "Create a new organization"
         edit:
           title: "Organization editing"
-          help: "You can set default resource quotas values by clicking on \"+ add qouta\". These values will be used by users to create resource quota request."
+          help: "You can set default resource quotas values by clicking on \"+ add quota\". These values will be used by users to create resource quota request."
           add_department: "+ add a department"
           remove_department: "delete the department"
         show:
@@ -630,7 +629,7 @@ en:
           forbidden: Do not merge organizations with departments.
           stale_organization_id: You are trying to merge source object with the "%{dep_name}" department, which  is not in the  "%{org_name}" organization now.
           stale_organization_id_source: You are trying to merge  "%{dep_name}" department, which  is not in the  "%{org_name}" organization now.
-          update: Please update page.
+          update: Please update the page.
         merge_edit:
           preview: Preview
           new_record: New record
@@ -661,165 +660,165 @@ en:
           title: "Organization kinds"
           new_organization_kind: "new organization kind"
         new:
-          title: "a new organization kind"
+          title: "New organization kind"
         edit:
           title: "Organization kind editing"
       sureties:
         index:
-          title: "Поручительства"
-          template: "Редактировать шаблон поручительств"
+          title: "Sureties"
+          template: "Edit surety template"
         edit_template:
-          title: "Шаблон поручительства"
-          surety_rtf_template: "RTF шаблон"
-          download_surety_template: "Скачать текущий шаблон"
-          save: "Сохранить"
-          surety_id: "Номер поручительства"
-          organization: "Название организации"
-          user_name: "Имя пользователя"
-          if_issues: "Если все сломалось"
-          surety_recover: "Вернуть rtf шаблон по умолчанию"
-          confirm: "Вы уверены?"
+          title: "Surety template"
+          surety_rtf_template: "RTF template"
+          download_surety_template: "Download the current template"
+          save: "Save"
+          surety_id: "Surety id"
+          organization: "Organization name"
+          user_name: "Username"
+          if_issues: "If everything is broken"
+          surety_recover: "Return the default rtf template"
+          confirm: "Are you sure?"
         table:
-          no_sureties: "Ничего не найдено."
+          no_sureties: "No sureties have been found."
 
     credentials:
       _list:
-        msg_help_sshkey: "Если Вы не знаете как добавить публичый ssh-ключ, перейдите по ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Добавление публичного ssh-ключа</a>."
+        msg_help_sshkey: "If u don't know how to add public ssh-key, follow the link: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Public ssh-key addition</a>."
 
     projects:
       members:
-        invite_member: " добавить участника"
+        invite_member: " add a member"
       invited_users:
-        send_invitations: "Отправить приглашения новым участникам"
-        msg_if_member_unregistered: "Если некоторые пользователи не зарегистрированы в octoshell, Вы можете выслать им приграшения. "
-        msg_invitation_csv: "Для этого вам надо сформировать .csv документ с колонками"
-        msg_intitation_csv_col: "email, Фамилия Имя Отчество"
-        msg_invitation_csv_example: "Пример"
-        msg_invitation_csv_example_body1: "gav@abyrvalg.com,Шариков Полиграф Полиграфович"
-        msg_invitation_csv_example_body2: "filipp@mail.ru,Преображенский Филипп Филиппович"
-        invitation_csv_file: "Файл формата .csv в кодировке UTF-8."
-        invitation_upload: "Загрузить"
-        members_invited: "Приглашенные пользователи"
-        resend_invitations: "Выслать приглашения еще раз"
+        send_invitations: "Send invitations to new members"
+        msg_if_member_unregistered: "If users are not registered in Octoshell, you can send them invitations "
+        msg_invitation_csv: "You have to form the .csv document with the following columns"
+        msg_intitation_csv_col: "email, Surname Name Middle name"
+        msg_invitation_csv_example: "Example"
+        msg_invitation_csv_example_body1: "gav@abyrvalg.com,Sharikov Polygraph Polygraphovich"
+        msg_invitation_csv_example_body2: "filipp@mail.ru,Preobrazhensky Filipp Filippovich"
+        invitation_csv_file: ".csv file in UTF-8 encoding."
+        invitation_upload: "Upload"
+        members_invited: "Invited members"
+        resend_invitations: "Resend invitation"
       new:
-        title: "Создание нового проекта"
+        title: "Create a new project"
       edit:
-        title: "Редактирование профиля проекта"
+        title: "Edit project profile"
       form:
-        nothing: "без подразделения"
-        card: "Карточка проекта"
+        nothing: "Without department"
+        card: "Project card"
         card_help:
-          html: "<a href=\"http://parallel.ru/cluster/reregistration/project_card\", target=\"_blank\">Пример оформления карточки проекта</a>"
-        card_name_help: "Здесь следует ввести реальное название исследовательского проекта"
-        card_driver_help: "Описание задачи, на решение которой направлен проект"
-        card_strategy_help: "Описание идеи подхода к решению задачи"
-        card_objective_help: "Описание цели на которую нацелено решение конкретной задачи"
-        card_impact_help: "Ожидаемый эффект от успешного решения задачи (научный / коммерческий / социальный)"
-        card_usage_help: "Отрасли промышленности, сектора экономики, области науки, где могут быть использованы результаты проекта"
+          html: "<a href=\"http://parallel.ru/cluster/reregistration/project_card\", target=\"_blank\">Project card example</a>"
+        card_name_help: "You should fill the real name of your research project"
+        card_driver_help: "Description of the task for which the project is directed"
+        card_strategy_help: "the idea description of the approach to solving the problem"
+        card_objective_help: "Description of the purpose for which the specific task is aimed"
+        card_impact_help: "The expected effect of a successful solution of the problem (scientific / commercial / social)"
+        card_usage_help: "The industries, the economic sectors, the areas of science, where the results of the project can be used"
       index:
-        title: "Проекты"
+        title: "Projects"
         your_access_is_closed:
           html: "По результатам анализа отчетов о работе за 2014 год было обнаружено, что Вами не заполнены опросы (по каждому проекту - для руководителей проектов, персональные - для каждого пользователя СКЦ), что по правилам СКЦ МГУ (http://parallel.ru/cluster/reregistration) является обязательным.<br /> <br />До заполнения этих форм Ваш доступ заблокирован. <br /><br />Формы опросов доступны в Вашем личном кабинете (http://users.parallel.ru). Вкладка “Перерегистрация”, подраздел “Опросы”."
+          html: "Based on the results of the analysis of the work reports for 2014, it was found that you did not complete the surveys (for each project - for project managers, personal - for each  SCC user). This action  is required by the MSU SCC rules (http://parallel.ru/cluster/reregistration).<br /> <br />Your access is blocked before you fill these forms. <br /><br />Forms of polls are available in your personal account(http://users.parallel.ru). Re-registration tab, surveys subsection."
         user_has_not_access_to_projects:
-          html: "<p> Вы не можете участвовать в проектах, так как Вы не заполнили \"Место работы\" и не прикрепили Ваш публичный ssh-ключ. Пожалуйста, перейдите в ваш профиль и заполните требуемые поля.</p>"
-        goto_profile: "Перейти в профиль."
-        owned_projects: "Мои проекты"
-        projects_with_participation: "Проекты с моим участием"
-        projects_with_invitation: "Проекты, к которым есть приглашение присоединиться"
-        new_project: "Создать проект"
+          html: "<p> You can't take part in Вы не можете участвовать в проектах, так как Вы не заполнили \"Место работы\" и не прикрепили Ваш публичный ssh-ключ. Пожалуйста, перейдите в ваш профиль и заполните требуемые поля.</p>"
+          html: "<p> You can not participate in projects, since you haven't filled out job place and haven't attached your public ssh-key. Please go to your profile and fill required fields.</p>"
+        goto_profile: "Go to profile."
+        owned_projects: "My projects"
+        projects_with_participation: "Projects with my participation"
+        projects_with_invitation: "Projects with invitations to join"
+        new_project: "Create a project"
       projects_with_invitation:
-        join_project: "Принять приглашение"
+        join_project: "Accept invitation"
       show:
-        edit_project: "Редактировать профиль проекта"
-        description: "Описание"
+        edit_project: "Edit the project profile"
+        description: "Description"
       accesses:
-        title: "Доступ к ресурсам СКЦ МГУ"
-        quota_resources_info: "Выделено ресурсов"
+        title: "Access to the MSU SCC resources"
+        quota_resources_info: "Available resources"
       requests:
-        title: "Заявки на доступ к ресурсам СКЦ МГУ"
-        requested_resources_info: "Запрошенные ресурсы"
+        title: "Requests for access to MSU SCC resources"
+        requested_resources_info: "Requested resources"
       members:
-        title: "Участники данного проекта"
+        title: "Members of this project"
         email: "email"
-        send_email_to_member: "Отправить email участнику"
-        has_surety: "Есть поручительство"
-        project_access_state: "Есть доступ к проекту"
-        cluster_access_state: "Есть доступ к ресурсам"
-        drop_member: "Удалить участника из проекта"
+        send_email_to_member: "Send email to member"
+        has_surety: "Surety exists"
+        project_access_state: "project access is allowed"
+        cluster_access_state: "resource access is allowed"
+        drop_member: "Remove the member of the project"
       spare_clusters:
-        title: "Свободные ресурсы"
-        new_request: "Запросить доступ"
+        title: "Available resources"
+        new_request: "Request an access"
       sureties:
-        title: "Поручительства"
-        no_active_sureties_found: "Для проекта нет активных поручительств. Добавьте новое!"
-        no_sureties_found: "Нет поручительства для некоторых участников!"
-        add_surety: "Создать поручительство"
+        title: "Sureties"
+        no_active_sureties_found: "There aren't active sureties for this project. Add a new surety!"
+        no_sureties_found: "There isn't a surety for some members!"
+        add_surety: "Create a surety"
       new_member_form:
-        new_member_email: "введите email нового участника"
-        submit: "Добавить участника"
+        new_member_email: "Enter a new member email"
+        submit: "Add a member"
     members:
       form:
-        nothing: "без подразделения"
+        nothing: "Without department"
       edit:
-        title: "Прилашение в проект \"%{project_title}\""
-        choose_organization: "Выберите организацию, от лица которой вы будете участвовать в проекте"
-        accept_invitation: "Присоединиться к проекту"
+        title: "Invitation to the  \"%{project_title}\" project"
+        choose_organization: "Choose the organization on behalf of which you will participate in the project"
+        accept_invitation: "Join the project"
         no_employments: |
-          <strong>Вы не указали в своём профиле место работы.</strong>
-          <p>Пожалуйста, добавьте место работы, после чего можно будет подтвердить участие в проекте.</p>
-        add_employment: "Добавить место работы."
+          <strong>You haven't filled your job place in your profile.</strong>
+          <p>Please add your job place, then you will be able to confirm your project membership.</p>
+        add_employment: "Add a job place."
     organizations:
       new:
-        title: "Новая организация"
-        no_city: "Не нашли свой город?"
-        new_city: "Добавить город"
+        title: "New organization"
+        no_city: "Have you not found your city?"
+        new_city: "Add a city"
       edit:
-        title: "Редактирование организации"
-        add_department: "+ добавить подразделение"
-        remove_department: "удалить подразделение"
+        title: "Organization edition"
+        add_department: "+ add a department"
+        remove_department: "remove the department"
     requests:
       new:
-        title: "Создание запроса на ресурсы"
+        title: "Create a resource request"
       form:
-        help: "Заполните поля формы количеством ресурсов, которые будут необходимы вам в процессе работы проекта. Сейчас указаны размеры квот по-умолчанию."
+        help: "Fill the form fields with the amount of resources that you will need during the project work. Currently, the quota sizes are set by default."
     credentials:
       list:
-        credentials: "ssh-ключи"
-        no_credentials_found: "Добавьте свой публичный ssh-ключ!"
-        add_credential: "Добавить публичный ключ"
-        confirm: "Вы действительно хотите деактивировать ключ?"
+        credentials: "ssh-keys"
+        no_credentials_found: "Add your public ssh-key!"
+        add_credential: "Add public key"
+        confirm: "Do you really want to deactivate the key?"
       new:
-        title: "Новый ssh-ключ"
-        help: "скопируйте сюда содержимое файла .ssh/*.pub"
+        title: "New ssh-key"
+        help: "copy the contents of the .ssh/*.pub file here"
     employments:
       list:
-        edit_organization: "Редактировать организацию"
-        employments: "Места работы"
-        no_employments_created: "Добавьте место работы!"
-        add_employment: "Добавить место работы"
-        employments: Места работы
-        no_employments_created: Добавьте место работы!
-        add_employment: Добавить место работы
+        edit_organization: "Edit the organization"
+        employments: "Job places"
+        no_employments_created: "Add a new job place!"
+        add_employment: "Add a job place"
+        employments: Job places
       form:
-        add_organization: "Добавить организацию"
-        no_department: "Не нашли своё подразделение?"
-        new_organization_department: "Добавить подразделение"
+        add_organization: "Add organization"
+        no_department: "Have you not found your department?"
+        new_organization_department: "Add a department"
       new:
-        title: "Новое место работы"
+        title: "New job place"
       show:
-        title: "Место работы"
+        title: "The job place"
     sureties:
       new:
-        title: "Создание поручительства"
+        title: "Surety creation"
       show:
-        print_reminder: "На бланке организации распечатайте поручительство, подпишите и поставьте печать."
-        download_surety_document: "Скачать поручительство"
-        send_reminder: "Отправьте по адресу: 119234 Москва, Ленинские горы, 1, стр.4, Дирекция НИВЦ МГУ"
-        upload_scans: "Прикрепить сканы подписанных документов для ускорения получения доступа"
-        edit_scans: "Редактировать прикреплённые сканы"
-        confirm_message: "Вы закончили оформление поручительства?"
-        close_message: "Поручительство утратило актуальность?"
+        print_reminder: "Print the surety on your organization letterhead, sign and seal it."
+        download_surety_document: "Download the surety"
+        send_reminder: "Send to: 119234 Moscow, Leninskiye Gory, 1, str.4,MSU SRCC direction"
+        upload_scans: "Attach scans of signed documents to gain access access faster"
+        edit_scans: "Edit attached scans"
+        confirm_message: "Have you completed the surety?"
+        close_message: "Has the surety lost its relevance?"
       edit:
-        help: "Поддерживаются форматы: pdf, png, jpeg, jpg."
-        remove_scan: "Удалить скан"
-        add_scan: "Добавить скан"
+        help: "Supported formats: pdf, png, jpeg, jpg."
+        remove_scan: "Remove the scan"
+        add_scan: "Add a scan"

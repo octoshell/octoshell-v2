@@ -122,7 +122,6 @@ ru:
             reject: "Отклонить"
             edit: "Редактировать"
             resubmit: "Отправить еще раз"
-
       sessions/session:
         state:
           states:
@@ -132,8 +131,7 @@ ru:
           events:
             start: "Начать"
             stop: "Остановить"
-
-      sessions/user_survey:
+      sessions/usersurvey:
         state:
           states:
             pending: "Не заполнен"

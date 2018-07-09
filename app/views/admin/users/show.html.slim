@@ -16,7 +16,7 @@ div class="row"
     h1 = @user.full_name
     h4 = @user.email
     h4 #{User.human_attribute_name(:credentials)}: #{@user.credentials.where(state: :active).any? ? t('.present') : t('.none')}
-    h4 t('.reg_date'): #{l @user.created_at.to_date} (#{(Date.current - @user.created_at.to_date).to_i} t('.days_short'))
+    h4 #{t('.reg_date')}: #{l @user.created_at.to_date} (#{(Date.current - @user.created_at.to_date).to_i} #{t('.days_short')})
 
 h4 = User.human_attribute_name(:groups)
 ul class="list-unstyled"

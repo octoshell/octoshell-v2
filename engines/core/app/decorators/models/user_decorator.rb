@@ -106,7 +106,7 @@ Core.user_class.class_eval do
   end
 
   def human_access_state_name
-    access_state
+    human_state_name
   end
 
   def access_state_name
@@ -114,7 +114,7 @@ Core.user_class.class_eval do
   end
 
   def self.human_access_state_names
-    Hash[User.aasm(:access_state).states.map {|s| [s.human_name, s.name] }]
+    Hash[User.aasm(:access_state).states.map { |s| [human_state_name(s.name), s.name] } ]
   end
 
   def check_project_invitations

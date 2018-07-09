@@ -25,11 +25,9 @@ html
         div class="navbar-collapse collapse"
           ul class="nav navbar-nav"
             = render "face/shared/main_menu"
+          = render "face/shared/lang_pref"
           ul class="nav navbar-nav navbar-right"
             = right_bar
-        div class="navbar-collapse collapse"
-          ul class="nav navbar-nav navbar-right"
-            = render "face/shared/lang_pref"
 
     div class="container"
       - if may?(:access, :admin) && request.fullpath =~ /admin/
