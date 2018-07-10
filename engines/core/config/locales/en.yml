@@ -482,13 +482,13 @@ en:
         new:
           title: "New project kind"
         edit:
-          title: "The project kind editing"
+          title: "Edit the project kind"
       quota_kinds:
         index:
           title: "Resource quota kinds"
           new_quota_kind: "Add a new quota kind"
         edit:
-          title: "The quota kind editing"
+          title: "Edit the quota kind"
         new:
           title: "New quota"
       clusters:
@@ -508,7 +508,7 @@ en:
         new:
           title: "New cluster"
         edit:
-          title: "Cluster editing"
+          title: "Edit cluster"
         form:
           help: "You can set default resource quotas values by clicking on \"+ add quota\". These values will be used by users to create resource quota request."
           add_quota: "+ add quota"
@@ -534,7 +534,7 @@ en:
         new:
           title: "New direction of research"
         edit:
-          title: "New research direction editing"
+          title: "Edit research direction"
       critical_technologies:
         index:
           title: "Critical technologies"
@@ -543,7 +543,7 @@ en:
         new:
           title: "New critical technology"
         edit:
-          title: "Critical technology editing"
+          title: "Edit critical technology"
       research_areas:
         index:
           title: "Research area"
@@ -552,7 +552,7 @@ en:
         new:
           title: "New research area"
         edit:
-          title: "Research area editing"
+          title: "Edit research area"
       organizations:
         index:
           title: "Organizations"
@@ -615,7 +615,7 @@ en:
         new:
           title: "Create a new organization"
         edit:
-          title: "Organization editing"
+          title: "Edit organization"
           help: "You can set default resource quotas values by clicking on \"+ add quota\". These values will be used by users to create resource quota request."
           add_department: "+ add a department"
           remove_department: "delete the department"
@@ -662,7 +662,7 @@ en:
         new:
           title: "New organization kind"
         edit:
-          title: "Organization kind editing"
+          title: "Edit organization kind"
       sureties:
         index:
           title: "Sureties"
@@ -775,7 +775,7 @@ en:
         no_city: "Have you not found your city?"
         new_city: "Add a city"
       edit:
-        title: "Organization edition"
+        title: "Edit organization"
         add_department: "+ add a department"
         remove_department: "remove the department"
     requests:
