@@ -8,6 +8,7 @@ class LangPrefsController < ApplicationController
     else
       session[:locale] = language_param
     end
+    session[:locale] = language_param
     redirect_to :back
   end
 

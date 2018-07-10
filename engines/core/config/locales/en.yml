@@ -342,7 +342,7 @@ en:
         hello_unknown: "Hello!"
       _footer:
         octo_regards: "Yours faithfully, Octoshell."
-        maintained_by: "Parallel information technologies laboratory, SRCC MSU."
+        maintained_by: "Parallel information technologies laboratory, RCC MSU."
       invitation_to_project:
         subject: "Invitatation to the \"%{title}\" project "
         msg_project_invitation: "The manager of the %{pid}:\"%{title}\" project  has invited you to participate in the project work." #
@@ -813,7 +813,7 @@ en:
       show:
         print_reminder: "Print the surety on your organization letterhead, sign and seal it."
         download_surety_document: "Download the surety"
-        send_reminder: "Send to: 119234 Moscow, Leninskiye Gory, 1, str.4,MSU SRCC direction"
+        send_reminder: "Send to: 119234 Moscow, Leninskiye Gory, 1, str.4,MSU RCC direction"
         upload_scans: "Attach scans of signed documents to gain access access faster"
         edit_scans: "Edit attached scans"
         confirm_message: "Have you completed the surety?"

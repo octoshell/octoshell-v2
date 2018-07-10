@@ -1,7 +1,7 @@
 module MultipleLocales
   extend ActiveSupport::Concern
   def set_locale
-    if logged_in?
+    if !session[:locale] && logged_in?
       @lang_pref = LangPref.find_by(user_id: current_user.id)
       session[:locale] = @lang_pref.language if @lang_pref
     end

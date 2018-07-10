@@ -72,7 +72,7 @@ en:
         first_name: "Name"
         middle_name: "Middle name"
         last_name: "Surname"
-        receive_info_mails: "Use my email for newsletters"
+        receive_info_mails: "Use my email for info newsletters"
         receive_special_mails: "Use my email for service newsletters"
       group:
         name: "Name"

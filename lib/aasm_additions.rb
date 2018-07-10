@@ -32,7 +32,7 @@ module AASM_Additions
     end
 
     def human_state_name(st = nil)
-      st.nil? ? 'none' : aasm_translate('states', s).to_s
+      st.nil? ? 'none' : aasm_translate('states', st).to_s
     end
 
     def human_state_names(st = :state)
