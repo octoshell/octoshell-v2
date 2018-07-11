@@ -84,103 +84,103 @@ module Jobstat
     end
 
     def get_rules
-      filters=get_filters()
+      filters=get_filters
       tags=get_tags
       tags=tags - filters
       slice(Conditions.instance.rules, tags)
     end
-  end
 
-  def get_cached data
+    def get_cached data
 
-    Rails.cache.fetch(data) do
-      result=yield
-      cache_db.transaction do
-        if result
-          cache_db[data]=result
-        else
-          result=cache_db[data]
+      Rails.cache.fetch(data) do
+        result=yield
+        cache_db.transaction do
+          if result
+            cache_db[data]=result
+          else
+            result=cache_db[data]
+          end
         end
+        result
       end
-      result
     end
-  end
 
-  def cache_db
-    return @@cache_db_singleton if @@cache_db_singleton
+    def cache_db
+      return @@cache_db_singleton if @@cache_db_singleton
 
-    @@cache_db_singleton=YAML::Store.new "engines/jobstat/cache.yaml"
-  end
-
-  def get_user
-    member=Core::Member.all.where(login: login)
-    if member
-      member.user
-    else
-      nil
+      @@cache_db_singleton=YAML::Store.new "engines/jobstat/cache.yaml"
     end
-  end
 
-  def get_filters
+    def get_user
+      member=Core::Member.all.where(login: login)
+      if member
+        member.user
+      else
+        nil
+      end
+    end
 
-    user=get_user
-    user_id=nil
-    if user
+    def get_filters
+
+      user=get_user
+      user_id=nil
+      if user
+        user_id=user.id
+      else
+        return nil
+      end
+      get_cached("jobstat:filters:#{user_id}") do
+        #FIXME! move address to config
+        uri="http://graphit.parallel.ru:8124/api/filters"
+        Net::HTTP.start(uri.host, uri.port,
+                        :use_ssl => uri.scheme == 'https', 
+                        :verify_mode => OpenSSL::SSL::VERIFY_NONE,
+                        :read_timeout => 5,
+                        :opentimeout => 5,
+                       ) do |http|
+          request = Net::HTTP::Get.new uri.request_uri
+          #request.basic_auth 'username', 'password'
+
+          response = http.request request
+
+          if response.body.nil?
+            nil
+          else
+            response.body.split ','
+          end
+        end      
+      end
+    end
+
+    def post_filters(user,filters)
       user_id=user.id
-    else
-      return nil
-    end
-    get_cached("jobstat:filters:#{user_id}") do
-      #FIXME! move address to config
+      projects=get_involved_projects(user)
+      accesses=projects.map{|p| p.accesses}
       uri="http://graphit.parallel.ru:8124/api/filters"
       Net::HTTP.start(uri.host, uri.port,
-                      :use_ssl => uri.scheme == 'https', 
-                      :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-                      :read_timeout => 5,
-                      :opentimeout => 5,
-                     ) do |http|
-        request = Net::HTTP::Get.new uri.request_uri
-        #request.basic_auth 'username', 'password'
-
+                        :use_ssl => uri.scheme == 'https', 
+                        :verify_mode => OpenSSL::SSL::VERIFY_NONE,
+                        :read_timeout => 5,
+                        :opentimeout => 5,
+                       ) do |http|
+        request = Net::HTTP::post_form(
+          uri.request_uri,
+          user: user_id,
+          #FIXME! title -> RNF id
+          cluster: accesses.map{|a| a.cluster}.flatten.uniq.map { |c| c.title }.join(','),
+          account: projects.map { |p| p.members.map { |m| m.login } }.flatten.uniq.join(','),
+          filters: filters.join(','),
+        )
         response = http.request request
 
-        if response.body.nil?
-          nil
-        else
-          response.body.split ','
-        end
-      end      
+        # return true if success
+        response.code === Net::HTTPSuccess
+
+        # FIXME! retry post later!
+
+      end
     end
+
   end
-
-  def post_filters(user,filters)
-    user_id=user.id
-    projects=get_involved_projects(user)
-    accesses=projects.map{|p| p.accesses}
-    uri="http://graphit.parallel.ru:8124/api/filters"
-    Net::HTTP.start(uri.host, uri.port,
-                      :use_ssl => uri.scheme == 'https', 
-                      :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-                      :read_timeout => 5,
-                      :opentimeout => 5,
-                     ) do |http|
-      request = Net::HTTP::post_form(
-        uri.request_uri,
-        user: user_id,
-        #FIXME! title -> RNF id
-        cluster: accesses.map{|a| a.cluster}.flatten.uniq.map { |c| c.title }.join(','),
-        account: projects.map { |p| p.members.map { |m| m.login } }.flatten.uniq.join(','),
-        filters: filters.join(','),
-      )
-      response = http.request request
-
-      # return true if success
-      response.code === Net::HTTPSuccess
-
-      # FIXME! retry post later!
-
-    end
-  end
-
 
 end
