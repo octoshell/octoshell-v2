@@ -31,6 +31,7 @@ module Jobstat
 
       StringDatum.where(job_id: job.id).destroy_all
 
+      return if tags.nil?
       tags.each do |name|
         StringDatum.where(job_id: job.id, name: "tag", value: name).first_or_create()
       end

@@ -84,7 +84,7 @@ module Jobstat
     end
 
     def get_rules
-      filters=get_filters
+      filters=get_filters()
       tags=get_tags
       tags=tags - filters
       slice(Conditions.instance.rules, tags)
@@ -112,8 +112,24 @@ module Jobstat
     @@cache_db_singleton=YAML::Store.new "engines/jobstat/cache.yaml"
   end
 
-  def get_filters(user)
-    user_id=user.id
+  def get_user
+    member=Core::Member.all.where(login: login)
+    if member
+      member.user
+    else
+      nil
+    end
+  end
+
+  def get_filters
+
+    user=get_user
+    user_id=nil
+    if user
+      user_id=user.id
+    else
+      return nil
+    end
     get_cached("jobstat:filters:#{user_id}") do
       #FIXME! move address to config
       uri="http://graphit.parallel.ru:8124/api/filters"
