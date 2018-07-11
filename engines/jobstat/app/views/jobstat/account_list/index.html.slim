@@ -2,43 +2,6 @@
 
 == '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/css/theme.blue.min.css"></script>'
 
-css:
-  .job_metric_low {
-    background-color: #ff8080 !important;
-  }
-
-  .job_metric_average {
-    background-color: #ffff80 !important;
-  }
-
-  .job_metric_good {
-    background-color: #80ff80 !important;
-  }
-
-  .task_state_COMPLETED {
-    background-color: #80FF80 !important;
-  }
-
-  .task_state_COMPLETING {
-    background-color: #FFA580 !important;
-  }
-
-  .task_state_CANCELLED {
-    background-color: #80EEFF !important;
-  }
-
-  .task_state_FAILED {
-    background-color: #FF8080 !important;
-  }
-
-  .task_state_TIMEOUT {
-    background-color: #FF00FF !important;
-  }
-
-  .task_state_NODE_FAIL {
-    background-color: #BB0000 !important;
-  }
-
 h3 = "Job table query interface"
 
 = render "form"
@@ -122,3 +85,41 @@ javascript:
   $(document).ready(function(){
     $("table").tablesorter();
   });
+
+css:
+  .job_metric_low {
+    background-color: #ff8080 !important;
+  }
+
+  .job_metric_average {
+    background-color: #ffff80 !important;
+  }
+
+  .job_metric_good {
+    background-color: #80ff80 !important;
+  }
+
+  .task_state_COMPLETED {
+    background-color: #80FF80 !important;
+  }
+
+  .task_state_COMPLETING {
+    background-color: #FFA580 !important;
+  }
+
+  .task_state_CANCELLED {
+    background-color: #80EEFF !important;
+  }
+
+  .task_state_FAILED {
+    background-color: #FF8080 !important;
+  }
+
+  .task_state_TIMEOUT {
+    background-color: #FF00FF !important;
+  }
+
+  .task_state_NODE_FAIL {
+    background-color: #BB0000 !important;
+  }
+

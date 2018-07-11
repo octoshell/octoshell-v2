@@ -22,7 +22,7 @@ module Jobstat
     end
   end
 
-  class Class
+  class Klass
     attr_accessor :name, :description, :group, :priority
 
     def initialize(name, description, group, priority)
@@ -66,7 +66,7 @@ module Jobstat
     def loadClasses
       CSV.foreach("engines/jobstat/config/classes.csv") do |row|
         if row[1].to_i == 1
-          @classes[row[0]] = Class.new(row[0], row[2], row[4], row[5])
+          @classes[row[0]] = Klass.new(row[0], row[2], row[4], row[5])
         end
       end
     end

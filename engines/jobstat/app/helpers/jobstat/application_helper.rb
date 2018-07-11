@@ -1,3 +1,7 @@
+require 'net/http'
+require 'net/https'
+require 'uri'
+
 module Jobstat
   module ApplicationHelper
     def jobstat_admin_submenu_items
@@ -23,5 +27,10 @@ module Jobstat
         "#{link_to File.basename(record.attachment.url), record.attachment.url, target: :blank} #{number_to_human_size(record.attachment.size)}".html_safe
       end
     end
+
+    def root_path
+      main_app.root_path
+    end
+
   end
 end

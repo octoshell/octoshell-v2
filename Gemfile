@@ -11,6 +11,8 @@ group :development do
   gem "letter_opener"
   gem "quiet_assets"
   gem "pry-rails"
+  gem "rails-erd"
+  gem 'railroady'
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil
