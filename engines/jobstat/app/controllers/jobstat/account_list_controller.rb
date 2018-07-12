@@ -39,6 +39,12 @@ module Jobstat
         @jobs = get_jobs(@params, query_logins)
         @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
         @shown = @jobs.length
+
+        @js_cond=@jobs.map { |j|
+          j.get_rules.map { |r| 
+            "#{j.drms_job_id}:{\"name\":\"#{r.name}\"},{\"description\":\"#{r.description}\",\"picture\":\"#{@pictures.fetch(r.name) || 'other.png'}\"}" }
+        }.join(',')
+        @js_cond="var rules={#{@js_cond}};"
       rescue Exception
         @jobs = []
       end

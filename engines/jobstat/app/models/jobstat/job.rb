@@ -125,7 +125,7 @@ module Jobstat
 
     def get_filters
 
-      user=get_user
+      user=get_user loginZ
       user_id=nil
       if user
         user_id=user.id
@@ -169,7 +169,8 @@ module Jobstat
                         :use_ssl => uri.scheme == 'https', 
                         :verify_mode => OpenSSL::SSL::VERIFY_NONE,
                         :read_timeout => 5,
-                        :opentimeout => 5,
+                        :open_timeout => 5,
+                        :ssl_timeout => 5,
                        ) do |http|
         request = Net::HTTP::post_form(
           uri.request_uri,
