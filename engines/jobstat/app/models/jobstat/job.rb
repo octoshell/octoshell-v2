@@ -1,4 +1,7 @@
 require 'yaml/store'
+require "uri"
+require "net/http"
+require "net/https"
 
 module Jobstat
   class Job < ActiveRecord::Base
@@ -84,7 +87,7 @@ module Jobstat
     end
 
     def get_rules
-      filters=get_filters
+      filters=get_filters || []
       tags=get_tags
       tags=tags - filters
       slice(Conditions.instance.rules, tags)
@@ -106,13 +109,13 @@ module Jobstat
     end
 
     def cache_db
-      return @@cache_db_singleton if @@cache_db_singleton
 
-      @@cache_db_singleton=YAML::Store.new "engines/jobstat/cache.yaml"
+      # FIXME! change path...
+      @@cache_db_singleton ||= YAML::Store.new "engines/jobstat/cache.yaml"
     end
 
-    def get_user
-      member=Core::Member.all.where(login: login)
+    def get_user login
+      member=Core::Member.all.where(login: login).last
       if member
         member.user
       else
@@ -127,28 +130,33 @@ module Jobstat
       if user
         user_id=user.id
       else
-        return nil
+        #!!!!!! DEBUG ONLY! return nil
+        user_id=4
       end
       get_cached("jobstat:filters:#{user_id}") do
         #FIXME! move address to config
-        uri="http://graphit.parallel.ru:8124/api/filters"
-        Net::HTTP.start(uri.host, uri.port,
-                        :use_ssl => uri.scheme == 'https', 
-                        :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-                        :read_timeout => 5,
-                        :opentimeout => 5,
-                       ) do |http|
-          request = Net::HTTP::Get.new uri.request_uri
-          #request.basic_auth 'username', 'password'
+        uri=URI("http://graphit.parallel.ru:8124/api/filters")
+        begin
+          Net::HTTP.start(uri.host, uri.port,
+                          :use_ssl => uri.scheme == 'https', 
+                          :verify_mode => OpenSSL::SSL::VERIFY_NONE,
+                          :read_timeout => 5,
+                          :opentimeout => 5,
+                         ) do |http|
+            request = Net::HTTP::Get.new uri.request_uri
+            #request.basic_auth 'username', 'password'
 
-          response = http.request request
+            response = http.request request
 
-          if response.body.nil?
-            nil
-          else
-            response.body.split ','
+            if response.body.nil?
+              nil
+            else
+              response.body.split ','
+            end
           end
-        end      
+        rescue Net::ReadTimeout, Net::OpenTimeout
+          nil
+        end
       end
     end
 
@@ -156,7 +164,7 @@ module Jobstat
       user_id=user.id
       projects=get_involved_projects(user)
       accesses=projects.map{|p| p.accesses}
-      uri="http://graphit.parallel.ru:8124/api/filters"
+      uri=URI("http://graphit.parallel.ru:8124/api/filters")
       Net::HTTP.start(uri.host, uri.port,
                         :use_ssl => uri.scheme == 'https', 
                         :verify_mode => OpenSSL::SSL::VERIFY_NONE,
