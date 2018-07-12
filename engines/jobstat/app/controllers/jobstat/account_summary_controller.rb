@@ -2,6 +2,7 @@ require_dependency "jobstat/application_controller"
 
 module Jobstat
   class AccountSummaryController < ApplicationController
+    include JobHelper
     def show
       year = Time.new.year
       defaults = {:start_time => "01.01.#{year - 1}",

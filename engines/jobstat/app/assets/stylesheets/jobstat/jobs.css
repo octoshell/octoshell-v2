@@ -2,3 +2,270 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+
+.job_metric_low {
+  background-color: #ff8080 !important;
+}
+
+.job_metric_average {
+  background-color: #ffff80  !important;
+}
+
+.job_metric_good {
+  background-color: #80ff80  !important;
+}
+
+.task_state_COMPLETED {
+  background-color: #80FF80  !important;
+}
+
+.task_state_COMPLETING {
+  background-color: #FFA580  !important;
+}
+
+.task_state_CANCELLED {
+  background-color: #80EEFF  !important;
+}
+
+.task_state_FAILED {
+  background-color: #FF8080  !important;
+}
+
+.task_state_TIMEOUT {
+  background-color: #FF00FF  !important;
+}
+
+.task_state_NODE_FAIL {
+  background-color: #BB0000  !important;
+}
+
+ /* Popup container */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+    visibility: hidden;
+    width: 260px;
+    background-color: #ccc;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #ccc transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
+.hidden_box {
+  visibility: hidden;
+  display: none; 
+}
+
+.hidden_box .show {
+  visibility: visible;
+  display: table-row; 
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+}
+
+@font-face {
+    font-family: 'signals';
+    src: url('/fonts/signals-font.woff') format('woff'),
+         url('/fonts/signals-font.ttf') format('truetype'),
+         url('/fonts/signals-font.svg#signals') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+[class*='icon-signal-']:before{
+  display: inline-block;
+   font-family: 'signals';
+   font-style: normal;
+   font-weight: normal;
+   line-height: 1;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+}
+.icon-signal-0:before{content:'a';}
+.icon-signal-1:before{content:'b';}
+.icon-signal-2:before{content:'c';}
+.icon-signal-3:before{content:'d';}
+.icon-signal-4:before{content:'e';}
+
+.em2 {
+  font-size: 2em;
+}  
+.em15 {
+  font-size: 1.5em;
+}  
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 400px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+    opacity: 0;
+}
+
+@media screen and (width: (479px,600px)) {
+  .dropdown-content {
+    min-width: 420px;
+  }
+}
+
+@media screen and (width: (601px,768px)) {
+  .dropdown-content {
+    min-width: 550px;
+  }
+}
+
+@media screen and (width: (769px,1024px)){
+  .dropdown-content {
+    min-width: 700px;
+  }
+}
+
+@media screen and (width: (1025px,1200px)) {
+  .dropdown-content {
+    min-width: 1000px;
+  }
+}
+
+@media screen and (min-width: 1201px) {
+  .dropdown-content {
+    min-width: 1100px;
+  }
+}
+
+.show {
+  display: block;
+  opacity: 1;
+  transition: opacity 1000ms;
+}
+.dropdown-content .close {
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  text-decoration: none;
+  color: #333;
+}
+.dropdown-content .close:hover {
+  color: #08D060;
+}
+
+.inline {
+  display: inline;
+}
+
+.centered-popup {
+  position: absolute;
+  width:  90%;
+  height: 90%;
+  top: 5%;
+  bottom:  5%;
+  left:  5%;
+  z-index: 5;
+  opacity: 0;
+}
+
+@media (width: (479px,1024px) {
+  .centered-popup {
+    width:  50%;
+    height: 50%;
+    top: 25%;
+    bottom:  25%;
+    left:  25%;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .centered-popup {
+    position: absolute;
+    width:  20%;
+    height: 20%;
+    top: 40%;
+    bottom:  40%;
+    left:  40%;
+    z-index: 5;
+    opacity: 0;
+  }
+}
+
+.centered-popup .popuptext {
+    visibility: visible; /*hidden;*/
+    width: 100%;
+    background-color: #ccc;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+}
+
+/* Popup arrow * /
+.centered-popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #ccc transparent transparent transparent;
+}
+*/
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.centered-popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}

@@ -144,6 +144,21 @@ module Jobstat
       end
     end
 
+    def get_one_rank(value, *arr)
+      if value.nil?
+        return ""
+      end
+
+      while arr.size>0
+        name=arr.shift
+        if arr.size==0
+          return name
+        else
+          return name if value < arr.shift
+        end
+      end
+    end
+
     def get_involved_projects(user)
       # get hash with projects and logins for user
       # include all personal logins for projects, where user is involved

@@ -3,4 +3,13 @@
   They will automatically be included in application.css.
 
  *= require bootstrap-datepicker3
+
 */
+
+.feedback_div {
+  background: #ccc;
+}
+
+.feedback_list {
+  background: #8c8;
+}

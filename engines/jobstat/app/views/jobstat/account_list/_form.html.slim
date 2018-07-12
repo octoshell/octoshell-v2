@@ -26,5 +26,8 @@ div class="container"
       = f.select("states", ["ALL"] + @states_options, {selected: @params[:states]}, {multiple: true, wrapper: {class: 'col-md-3'}})
       = f.select("partitions", ["ALL"] + @partitions_options, {selected: @params[:partitions]}, {multiple: true, wrapper: {class: 'col-md-3'}})
     div class="row"
-      = f.check_box :only_long, name: :only_long, label: 'Jobs longer than 15 minutes', checked: true
       = f.submit "Show", class: 'col-md-1'
+      span class='col-md-1'
+        | &nbsp;
+      = f.check_box :only_long, name: :only_long, label: 'Jobs longer than 15 minutes', checked: true
+      

@@ -33,6 +33,6 @@ $(function(){
         },
       }
     }
-    select.select2(options)
+    select.select2 && select.select2(options)
   })
 });

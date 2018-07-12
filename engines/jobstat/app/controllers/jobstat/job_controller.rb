@@ -9,6 +9,7 @@ module Jobstat
 
       @job_perf = @job.get_performance
       @ranking = @job.get_ranking
+      @current_user = current_user
 
       cpu_user = FloatDatum.where(job_id: @job.id, name: "cpu_user").take
 

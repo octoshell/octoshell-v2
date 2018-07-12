@@ -164,8 +164,9 @@ table class="table table-bordered table-striped"
       //fixme! translate
       = "Рекомендация"
 
-  - if @job.get_rules.length > 0
-    - @job.get_rules.each do |cond|
+  - rules=@job.get_rules(@current_user)
+  - if rules.length > 0
+    - rules.each do |cond|
       tr
         td
           = cond.name

@@ -1,6 +1,23 @@
-== '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.2/js/jquery.tablesorter.min.js"></script> '
+- @js_jobs='var jobs={'+@jobs_plus.map{|i,j| "'#{i}':{'login':'#{j["login"]}', 'cluster':'#{j["cluster"]}', 'state':'#{j["state"]}', 'rules':#{j["rules"]}}"}.join(',')+'};'
+- @rule_pictures=(@pictures || {}).map{|name,value| "rule_pictures['#{name}']='<i class=\"#{value} typewritter\"></i>';"}.join("\n")
+- @finish_states={'COMPLETED'=>'far fa-grin-beam','NODE_FAIL'=>'far fa-grimace','FAILED'=>'far fa-frown','CANCELLED'=>'far fa-meh-rolling-eyes','TIMEOUT'=>'far fa-flushed'} 
+// pass ruby variables to js
+javascript:
+  #{{@js_jobs}}
 
-== '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/css/theme.blue.min.css"></script>'
+  var rule_pictures={}
+  #{{@rule_pictures}}
+  var jobs_feedback=#{@jobs_feedback}
+  var current_user=#{@current_user.id}
+
+  var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
+  // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
+
+//script type="text/javascript" src="https://raw.githubusercontent.com/Mottie/tablesorter/master/js/jquery.tablesorter.js"
+//script type="text/javascript" src="/jquery.tablesorter.js"
+
+link rel="stylesheet" type="text/css" href="/theme.blue.css"
+link rel="stylesheet" type="text/css" href="/assets/jobstat/jobs.css"
 
 h3 = "Job table query interface"
 
@@ -10,72 +27,181 @@ h3 = "Job table query interface"
   p style = 'color:#FF0000;' = @notice
 
 div
-  h3 ="Results: #{@params[:offset]}..#{@params[:offset].to_i + @shown} of #{@total_count}"
+  button onClick='agree_all()' id='agree_all'
+    | Я согласен с оценками моих запусков
+  | Не согласны с оценкой запусков?  
+  div id='disagree_reason_box' style="display: none; width: 100%" class="feedback_div"
+    br
+    | Выберите задачи в списке ниже (левый столбец), и правила, которые сработали неверно (в списке ниже):
+    div style="width: 100%" id="disagree_rules" class="feedback_list"
+      | - Пока не выбраны задачи, поэтому в списке нет правил...
+    br
+    | Поясните, почему Вы не согласны с этими правилами?
+    input type='text' id='disagree_reason' style="right: 0px; width: 99%"
+    br
+  button id="disagree_button" onClick="multi_job_feedback()" alt="Не согласен!"
+    | Жмите тут!
+  div
+    | Чтобы посмотреть описание проблем задания, скрыть их видимость или прокомментировать их применимость к заданию, нажмите на первой ячейке строки таблицы.
+    br
+    a href='/jobstat/rules_summary' Вот здесь
+    | полная информация по возможным проблемам и настройки их видимости.
+div
+  /p
+    | Sort by &nbsp;
+    a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="0" num nodes
+    | &nbsp;
+    a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="1" duration
+    | &nbsp;
+    a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="2" core*hours
+  h3 Results: #{@params[:offset]}..#{@params[:offset].to_i + @shown} of #{@total_count}
   table id="jobs" class="table table-bordered tablesorter-blue"
     thead
       tr
-        td = "job issues"
-        td = "ok?"
-        td = "job id"
-        td = "login"
-        td = "partition"
-        td = "start time"
-        td = "end time"
-        td = "state"
-        td = "num nodes"
-        td = "duration (hours)"
-        td = "cores * hours"
-        td = "job_size rank"
-        td = "cpu load"
-        td = "gpu load"
-        td = "loadavg (processes)"
-        td = "IPC"
-        td = "ib_receive_MPI (MB)"
-        td = "ib_sent_MPI (MB)"
-    tbody
-      - index=1
-      - @jobs.each do |job|
-        - index+=1
-        - job_performance = job.get_performance
-        - job_ranking = job.get_ranking
-        - job_cond = job.get_rules
-        tr id="job_row_#{index}"
-          td
-            - if !job_performance[:cpu_user].nil?
-              - if job_cond.size() > 0
-                - job_cond.each do |cond|
-                  = image_tag @pictures.fetch(cond.name, "other.png"), size: "20", alt: cond.description, title: cond.description, style: "margin: 1px"
+        th data-sorter="false"
+          |
+        th data-sorter="false"
+          | job issues
+        th
+          | job id
+        th
+          | login
+        th
+          | partition
+        th
+          | start
+        th
+          | end
+        th
+          | state
+        th
+          / class="triplesort"
+          | nodes
+        th
+          | hours
+        th class='rank'
+          | job size
+        th
+          | cpu load
+        th
+          | gpu load
+        th
+          | LA
+        th
+          | IPC
+        th
+          | MPI in (MB)
+        th
+          | MPI out (MB)
+    - index=1
+    - @jobs.each do |job|
+      - index+=1
+      - job_performance = job.get_performance
+      - job_ranking = job.get_ranking
+      - job_cond = job.get_rules @current_user
+      - perf_data_present=!job_performance[:cpu_user].nil?
+      tr id="job_row_#{index}" data-jobid="#{job.drms_job_id}" data-info-state="#{perf_data_present ? 0 : -1}"
+        td
+          input type="checkbox" class="job_check" style="display: none;" data-job-id="#{job.drms_job_id}" onChange="job_check_clicked(#{job.drms_job_id})"
+          a class="button" onClick="toggle_dropdown('#job_info_#{index}');"
+            i class="fas fa-bars"
+          // feedback dropdown window
+          div class="dropdown"
+            div id="job_info_#{index}" class="dropdown-content"
+              button class="close" onClick="toggle_dropdown('#job_info_#{index}');" &times;
+              - if perf_data_present
+                - if job_cond.size() > 0
+                  - job_cond.each do |cond|
+                    i class="fa-fw align-left #{@pictures.fetch(cond.name, 'far fa-exclamation-triangle')}" title="#{cond.description}"
+                    
+                    i class='fa-ok agreed-flag' style='display: none;' 
+                    
+                    a class="btn-danger" onClick="event.stopPropagation();$(this).prop('disabled','true');popup_show('hide#{job.drms_job_id}','#{cond.name}');"
+                      i class="far fa-bell-slash" title="Скрыть правило"
+                    
+                    div class="centered-popup"
+                      span class="popuptext" id="popup_hide#{job.drms_job_id}_#{cond.name}"
+                        | Поясните, почему?
+                        input type="text" id="question_hide#{job.drms_job_id}_#{cond.name}" style="width: 90%; align: center;"
+                        button class="btn-info" onClick="hide_rule('#{job.drms_job_id}','#{cond.name}');"
+                          | Отправить!
+                        button onClick="popup_hide('hide#{job.drms_job_id}','#{cond.name}');"
+                          | Передумал
+
+                    a class="btn-warning disagree-button" onClick="event.stopPropagation();popup_show('disagree#{job.drms_job_id}','#{cond.name}');"
+                      i class="far fa-angry" title="Не согласен!"
+                    
+                    div class="popup"
+                      span class="popuptext" id="popup_disagree#{job.drms_job_id}_#{cond.name}"
+                        | Поясните, почему?
+                        input type="text" id="question_#{job.drms_job_id}_#{cond.name}" style="width: 90%"
+                        button class="btn-info" onClick="disagree('#{job.drms_job_id}','#{cond.name}')"
+                          | Отправить!
+                        button onClick="popup_hide('disagree#{job.drms_job_id}','#{cond.name}');"
+                          | Передумал
+                    | #{cond.description}
+                    br
+                - else
+                  i class="fas fa-fw fa-check"
               - else
-                = image_tag "ok.png", size: "20", border: 2
+                p 
+                  | Нет данных о задаче :(
+        td onClick="process_response(#{index},#{job.drms_job_id})"
+          - if perf_data_present
+            - if job_cond.size() > 0
+              - job_cond.each do |cond|
+                /= image_tag @pictures.fetch(cond.name, "other.png"), size: "20", alt: cond.description, title: cond.description, style: "margin: 1px"
+                i class="fa-fw #{@pictures.fetch(cond.name, 'fas fa-exclamation-triangle')} inline em12" title="#{cond.description}"
             - else
-              p = "no_data"
-          td
-            button onClick="process_response(#{index},#{job.drms_job_id})"
-              = ok
-          td = link_to(job.drms_job_id, job)
-          td = job.login
-          td = job.partition
-          td = job.start_time.strftime('%D %T')
-          td = job.end_time.strftime('%D %T')
-          td class="task_state_#{job.state}" = job.state
-          td = job.num_nodes
-          td = number_with_precision(job.get_duration_hours, :precision => 1)
+              /= image_tag "ok.png", size: "20", border: 2
+              i class="fas fa-fw fa-check em12"
+          - else
+            p 
+              | no data
+        /td
+          button class='btn' onClick="ok_task(#{job.drms_job_id})"
+            i class='fas fa-fw fa-check'
+          button class='btn' onClick="notok_task(#{job.drms_job_id})"
+            i class='fas fa-fw fa-times'
+        td = link_to(job.drms_job_id, job)
+        td = job.login
+        td = job.partition
+        td = job.start_time.strftime('%D %T')
+        td = job.end_time.strftime('%D %T')
+        td class="task_state_#{job.state} centered"
+          i class="em15 #{@finish_states.fetch(job.state, 'fas fa-meh-blank')}" title="#{job.state}"
+        td
+          / class="sorter-metrics1"
+          /| #{job.num_nodes}/#{number_with_precision(job.get_duration_hours, :precision => 1)}/#{number_with_precision(job.get_cpuh, :precision => 1)}
+          = job.num_nodes
+        td
+          = number_with_precision(job.get_duration_hours, :precision => 1)
+        /td = number_with_precision(job.get_duration_hours, :precision => 1)
 
-          td = number_with_precision(job.get_cpuh, :precision => 1)
+        /td = number_with_precision(job.get_cpuh, :precision => 1)
 
-          td = "🎖" * Math.log(job.num_nodes * (job.end_time - job.start_time) / 86400 + 2, 2).to_i
+        /td = "🎖" * Math.log(job.num_nodes * (job.end_time - job.start_time) / 86400 + 2, 2).to_i
 
-          td class="job_metric_#{job_ranking[:cpu_user]}" = number_with_precision(job_performance[:cpu_user], :precision => 1)
+        - stars=Math.log(job.num_nodes * (job.end_time - job.start_time) / 86400 + 2, 2)
+        - stars=4 if stars>4
+        td
+          i class="icon-signal-#{stars.to_i} em2 centered" data-stars="#{stars}"
+          br
+          = number_with_precision(job.get_cpuh, :precision => 1)
+          /== '<i class="fas fa-star"></i>' * stars.to_i
+          /== '<i class="fas fa-star-half-alt"></i>' * (stars-stars.to_i > 0.5 ? 1 : 0)
 
-          td class="job_metric_#{job_ranking[:gpu_load]}" = number_with_precision(job_performance[:gpu_load], :precision => 1)
+        td class="job_metric_#{job_ranking[:cpu_user]}" = number_with_precision(job_performance[:cpu_user], :precision => 1)
 
-          td class="job_metric_#{job_ranking[:loadavg]}" = number_with_precision(job_performance[:loadavg], :precision => 1)
+        td class="job_metric_#{job_ranking[:gpu_load]}" = number_with_precision(job_performance[:gpu_load], :precision => 1)
 
-          td class="job_metric_#{job_ranking[:ipc]}" = number_with_precision(job_performance[:ipc] && job_performance[:ipc], :precision => 2)
+        td class="job_metric_#{job_ranking[:loadavg]}" = number_with_precision(job_performance[:loadavg], :precision => 1)
 
-          td class="job_metric_#{job_ranking[:ib_rcv_data_mpi]}" = number_with_precision(job_performance[:ib_rcv_data_mpi], :precision => 1)
+        td class="job_metric_#{job_ranking[:ipc]}" = number_with_precision(job_performance[:ipc] && job_performance[:ipc], :precision => 2)
 
-          td class="job_metric_#{job_ranking[:ib_xmit_data_mpi]}" = number_with_precision(job_performance[:ib_xmit_data_mpi], :precision => 1)
+        td class="job_metric_#{job_ranking[:ib_rcv_data_mpi]}" = number_with_precision(job_performance[:ib_rcv_data_mpi], :precision => 1)
+
+        td class="job_metric_#{job_ranking[:ib_xmit_data_mpi]}" = number_with_precision(job_performance[:ib_xmit_data_mpi], :precision => 1)
 
 table
   tr
@@ -87,69 +213,26 @@ table
       - if @jobs.length == 100
         a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" next >>>
 
-javascript:
-  $(document).ready(function(){
-    $("table").tablesorter();
-  });
-
-  #{{@js_cond}}
-
-  function processes_response(index,jobid){
-    // var table = document.getElementById("jobs");
-    // var row = table.insertRow(index);
-    // var cell1 = row.insertCell(0);
-    // cell1.colSpan="18";
-    var row=$("#job_row_"+index);
-    var rules=js_cond[jobid];
-    var text="<tr><td colSpan=\"18\">Hello! Jobid="+jobid+"  &nbsp; ";
-
-    Object.keys(rules).forEach(function(i){
-      text=text+"<img src=\""+rules[i]['picture']+"\">"+
-           rules[i]['description']+"<br>";
-    });
-
-    row.after(text+" &nbsp; <button>close</button> </td></tr>");
-    row.hide().slideDown(1000);
-    // row.id="process_row_"+index
-    // cell1.innerHTML="Hello! Jobid="+jobid+"<button>close</button>";
-
-    // $("#"+row.id).hide().slideDown();
-  }
-
-css:
-  .job_metric_low {
-    background-color: #ff8080 !important;
-  }
-
-  .job_metric_average {
-    background-color: #ffff80 !important;
-  }
-
-  .job_metric_good {
-    background-color: #80ff80 !important;
-  }
-
-  .task_state_COMPLETED {
-    background-color: #80FF80 !important;
-  }
-
-  .task_state_COMPLETING {
-    background-color: #FFA580 !important;
-  }
-
-  .task_state_CANCELLED {
-    background-color: #80EEFF !important;
-  }
-
-  .task_state_FAILED {
-    background-color: #FF8080 !important;
-  }
-
-  .task_state_TIMEOUT {
-    background-color: #FF00FF !important;
-  }
-
-  .task_state_NODE_FAIL {
-    background-color: #BB0000 !important;
-  }
-
+div style="display: none"
+  // disagree with rule on a job
+  form id="feedback_job_rule" action="feedback_job" method="post"
+    input id="user" name="user" type="text"
+    //input id="account" name="account" type="text"
+    input id="cluster" name="cluster" type="text"
+    input id="job_id" name="job_id" type="text"
+    input id="task_id" name="task_id" type="text"
+    input id="condition" name="condition" type="text"
+    input id="feedback" name="feedback" type="text"
+  // hide rule
+  form id="feedback_rule" action="feedback_rule" method="post"
+    input id="user" name="user" type="text"
+    input id="account" name="account" type="text"
+    input id="cluster" name="cluster" type="text"
+    input id="condition" name="condition" type="text"
+    input id="feedback" name="feedback" type="text"
+  // disagree with multiple jobs
+  form id="feedback_jobs" action="feedback_jobs" method="post"
+    input id="user" name="user" type="text"
+    input id="jobs" name="jobs" type="text"
+    input id="rules" name="rules" type="text"
+    input id="feedback" name="feedback" type="text"
