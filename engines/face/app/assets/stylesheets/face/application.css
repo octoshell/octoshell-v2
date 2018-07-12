@@ -1,7 +1,7 @@
 /*
  *= require_self
  *= require bootstrap
- *= require disable_bootstrap_responsive
+ *NOT require disable_bootstrap_responsive
  *= require select2
  *= require select2-bootstrap
  *= require bootstrap-datepicker3
