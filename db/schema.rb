@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180705105734) do
+ActiveRecord::Schema.define(version: 20180711085214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,15 +36,18 @@ ActiveRecord::Schema.define(version: 20180705105734) do
   add_index "announcement_recipients", ["user_id"], name: "index_announcement_recipients_on_user_id", using: :btree
 
   create_table "announcements", force: :cascade do |t|
-    t.string   "title",      limit: 255
-    t.string   "reply_to",   limit: 255
+    t.string   "title",         limit: 255
+    t.string   "reply_to",      limit: 255
     t.text     "body"
-    t.string   "attachment", limit: 255
+    t.string   "attachment",    limit: 255
     t.boolean  "is_special"
-    t.string   "state",      limit: 255
+    t.string   "state",         limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "created_by_id"
   end
+
+  add_index "announcements", ["created_by_id"], name: "index_announcements_on_created_by_id", using: :btree
 
   create_table "comments_comments", force: :cascade do |t|
     t.text     "text"
@@ -475,6 +478,15 @@ ActiveRecord::Schema.define(version: 20180705105734) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "lang_prefs", force: :cascade do |t|
+    t.string   "language"
+    t.integer  "user_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "lang_prefs", ["user_id"], name: "index_lang_prefs_on_user_id", using: :btree
 
   create_table "pack_access_tickets", id: false, force: :cascade do |t|
     t.integer "access_id"

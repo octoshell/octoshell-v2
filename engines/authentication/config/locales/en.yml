@@ -5,7 +5,7 @@ en:
     logout: "Log out"
     users:
       new:
-        title: "Registation"
+        title: "Registration"
         minimum_password_length: "6 characters min"
         sign_up: "Sign up"
         cond_accepted: I permit for Lomonosov Moscow State University to process my personal data

@@ -1,5 +1,24 @@
 module Face
   module ApplicationHelper
+    def admin_user_short_link(user)
+      return '' unless user
+      profile = user.profile
+      puts profile.last_name.class
+      if profile.last_name
+        name = initials profile
+      else
+        name = user.email
+      end
+      link_to name, main_app.admin_user_path(profile.user_id)
+    end
+
+    def initials profile
+       string = profile.last_name.dup
+       string << " #{profile.first_name.first}." if profile.first_name.present?
+       string << " #{profile.middle_name.first}." if profile.middle_name.present?
+       string
+    end
+
     def bootstrap_class_for(flash_type)
       case flash_type
       when "success"

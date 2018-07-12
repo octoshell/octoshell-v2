@@ -1,0 +1,454 @@
+en:
+  engine_submenu:
+    reports: "Reports"
+    surveys: "Surveys"
+
+  survey_field_kinds:
+    radio: "Radio"
+    select: "Select"
+    mselect: "Multiselect"
+    aselect: "Association"
+    uselect: "User select"
+    text: "Text"
+    string: "Short text"
+    number: "Number"
+    scientometrics: "Scientometrics (numbers)"
+    string_scientometrics: "Scientometrics (strings)"
+  survey_field_entities:
+    organization: "Active organization"
+    positions: "Position"
+
+  abilities:
+    sessions:
+      manage: "Ability to run a re-registration"
+    reports:
+      access: "Access to reports section"
+      manage: "Reports expert"
+    user_surveys:
+      access: "User reports browsing"
+
+
+  activerecord:
+    models:
+      sessions/session: "Re-registration"
+      sessions/report: "Report"
+      sessions/survey_value: "Value"
+      sessions/survey: "Survey"
+      sessions/user_survey: "Filled survey"
+      sessions/report_submit_denial_reason: "Reason for refusal to submit a project report"
+    attributes:
+      user:
+        reports: "Reports"
+        surveys: "Surveys"
+        assessing_reports: "Report is being rated"
+      sessions/stat:
+        survey_field_id: "Survey field"
+        organization: "Organization"
+        organization_id: "Organization"
+        weight: "Weight"
+      sessions/session:
+        description: "Name"
+        motivation: "Description"
+        receiving_to: "Be in by" #
+        started_at: "Started at"
+        ended_at: "Ended at"
+        state: "State"
+        surveys: "Surveys"
+        stats: "Statistics"
+      sessions/survey:
+        name: "Name"
+        state: "State"
+        only_for_project_owners: "Only for project managers"
+        project: "Project"
+        project_id: "Project"
+      sessions/user_survey:
+        state: "State"
+        project: "Project"
+        project_id: "Project"
+      sessions/report_reply:
+        message: "Message"
+      sessions/report:
+        submit_denial_reason: "Reason for refusing report submission"
+        submit_denial_description: "Describe in detail why it is necessary to save the project"
+        project: "Project"
+        project_id: "Project"
+        author: "Author"
+        author_id: "Author"
+        materials: "Archive with report materials"
+        state: "State"
+        submitted_at: "Submitted at"
+        superviser_comment: "Comments"
+        allow_state: "Permission"
+        illustration_points: "Illustration"
+        statement_points: "Statement"
+        summary_points: "Summary points"
+        materials_file_name: "Materials file name"
+        materials_file_size: "Materials file size"
+        materials_updated_at: "Materials were updated at"
+      sessions/survey_field:
+        name: "Name"
+        kind: "Kind"
+        hint: "Hint"
+        collection: "List values"
+        regexp: "Regular expression for checking values"
+        entity: "Entity"
+        strict_collection: "Strict list"
+        max_values: "The maximum number of values"
+        required: "Required"
+        weight: "Weight"
+      sessions/survey_field_value:
+        value: "Answer"
+      sessions/report_submit_denial_reason:
+        name: "Name"
+
+    aasm:
+      sessions/report:
+        state:
+          states:
+            rejected: "Rejected"
+            pending: "Not started"
+            accepted: "Not accepted"
+            can_not_be_submitted: "Refusal to report"
+            submitted: "Submitted"
+            assessing: "Is being rated"
+            assessed: "Is rated"
+            exceeded: "Exceeded"
+          events:
+            accept: "Start filling"
+            decline_submitting: "I can not provide an adequate report text"
+            submit: "Submit"
+            pick: "Take on the mark"
+            assess: "Rate"
+            reject: "Reject"
+            edit: "Edit"
+            resubmit: "Resubmit"
+      sessions/session:
+        state:
+          states:
+            active: "Active"
+            ended: "Finished"
+            pending: "Created"
+          events:
+            start: "Start"
+            stop: "Stop"
+      sessions/usersurvey:
+        state:
+          states:
+            pending: "Not filled"
+            filling: "Is filling"
+            submitted: "Submitted"
+            exceeded: "exceeded"
+          events:
+            fill: "Answer the questions"
+            submit: "Submit"
+  cant_submit_report_because_of_errors: "The report is incomplete or contains errors. Please check all the fields marked with a red box at all stages of the report"
+  report_submitted: "The report is submitted for review"
+  reports_draft_saved: "The draft report has been saved"
+  reply: "Reply"
+  report_returned_to_user_for_edit: "The report has been return  to the user for editing"
+  report_successfuly_assessed: "The report has been successfully rated"
+
+  flash:
+    fill_out_report_and_surveys: "You have not completed and / or not submitted reports and questionnaires as part of the  \"%{session_name}\" re-registration. Please fill in and send it to %{receiving_date}."
+    you_must_provide_report_materials: "You must provide report materials file!"
+
+  sessions:
+
+    mailer:
+      _header:
+        hello_known_name: "Hello, %{name}!"
+        hello_unknown: "Hello!"
+      _footer:
+        octo_regards: "Yours faithfully, Octoshell."
+        maintained_by: "Parallel information technologies laboratory, RCC MSU."
+      new_report:
+        subject: "You have to fill the \"%{title}\" project report"
+        session_started: "Re-registration has been started"
+        session_deadline: "You must provide a report on your work to %{to_date} on your %{pid}:\"%{title}\" project in the re-registration."
+        report_form: "The report must be submitted in the following form:"
+        report_form10: "Project/research name."
+        report_form20: "Authors, their job places and  e-mail."
+        report_form30: "A popular annotation to the description of the project: 1-2 paragraphs."
+        report_form40: "Brief description of the project / study (plain text, volume - about 5000 characters) in an accessible form."
+        report_form41: "The text of the report should indicate: MSU  supercomputer systems  involved in the course of work on the project, to what extent."
+        report_form50: "2-3 bright, illustrative pictures / charts / graphics / photos are required. They must reflect your work."
+        report_form51: "They must be presented in the form of separate files of high quality, suitable for printing quality."
+        report_form60: "A complete list of articles since the very beginning of the project. "
+        report_form61: "You have to provide only works with the explicit references indicating that the works have being carried on the MSU supercomputer centre systems (\"Chebyshev\",\"Lomonosov\", \"Lomonosov-2\") according to the access rules." #
+        if_decline_submitting1: "If you can't provide a report, press the button «"
+        if_decline_submitting2: "Choose the appropriate reason and describe in detail the reason why you need to save the project."
+        decline_submitting: "I can not provide an adequate report text"
+        complete_report: "Proceed to fill out the report."
+        attention: "ATTENTION"
+        attention1: "If you delay the sending of the report, the project will be blocked."
+        attention2: "If the report is rated as \"unsatisfactory\", the project will be closed."
+        surveys_notification: "Also, as part of the re-registration, surveys were created for you and other project members, which must be completed and sent to %{to_date}. If the survey is overdue, the user's account will be blocked. You can open the \"Re-registration\" tab and go to the \"Polls\" section to fill out the questionnaires"
+      notify_expert_about_assessing_reports:
+        subject: "You have %{count} unrated reports"
+        msg_num_reports: "You should rate the %{reports} unrated reports."
+        msg_speedup_assessment: "Please rate them as quickly as possible."
+      notify_exerts_about_submitted_reports:
+        subject: " %{count} reports are awaiting evaluation"
+        msg_num_reports: "The \"%{session}\" Re-registration is nearing completion, but %{reports} reports have not taken for evaluation yet and are awaiting consideration."
+        msg_speedup_assessment: "Please rate them as quickly as possible."
+      postdated_report_on_project:
+        subject: "Вы просрочили предоставление отчета №%{id}"
+        msg_postdated: "Вы просрочили предоставление отчета №%{id} по проекту %{pid}:«%{title}» в рамках перерегистрации «%{session}»."
+        msg_project_blocked: "Согласно правилам, ваш проект заблокирован. Разблокировать его можно, заполнив отчет."
+        if_decline_submitting1: "В случае, если вы не можете предоставить отчет, нажмите на кнопку «"
+        if_decline_submitting2: "выберите подходящую причину и подробно опишите причину, по которой необходимо сохранить проект."
+        decline_submitting: "Не могу предоставить адекватный текст отчета"
+        complete_report: "Приступить к заполнению отчета."
+      project_failed_session:
+        subject: "Ваш отчет %{id} не прошел перерегистрацию"
+        msg_report_failed: "Ваш отчет %{id} по проекту %{pid}:«%{title}» не прошел перерегистрацию «%{session}» и закрыт."
+      report_assessed:
+        subject: "Ваш отчет №%{id} оценен экспертом."
+        msg_report_assessed: "Ваш отчет %{id} по проекту %{pid}:«%{title}» в рамках перерегистрации «%{session}» оценен экспертом."
+        assessment: "Оценки (по пятибальной шкале от 2 до 5):"
+        assessment_bad: "К сожалению, ваш отчет имеет как минимум одну оценку «неудовлетворительно», что влечет за собой закрытие проекта по окончанию перерегистрации."
+        assessment_ok: "Ваш отчет успешно прошел перерегистрацию!"
+        msg_future_note: "Пожалуйста, учтите замечания и пожелания эксперта (если таковые были) в последующей работе над проектом."
+        illustration_points: "Иллюстрации"
+        statement_points: "Изложение"
+        summary_points: "Общая оценка"
+      report_picked:
+        subject: "Отчет №%{id} взят на оценку"
+        msg_report_picked: "Ваш отчет %{id} по проекту %{pid}:«%{title}» в рамках перерегистрации «%{session}» взят экспертом на оценку."
+        msg_follow_comments: "Пожалуйста, следите за обновлениями в отчёте: своевременно отвечайте на комментарии эксперта и исправляйте ошибки."
+      report_rejected:
+        subject: "Отчет №%{id} отклонен, необходима доработка"
+        msg_report_rejected: "Эксперт вернул Вам отчет %{id} по проекту %{pid}:«%{title}» в рамках перерегистрации «%{session}» на доработку."
+        msg_report_update: "Пожалуйста, исправьте недочеты как можно скорее. Иначе, при окончании перерегистрации Ваш проект будет заблокирован."
+        proceed_to_report: "Приступить к доработке отчета."
+      report_reply:
+        subject: "Новое сообщение в отчете №%{id}"
+        msg_report_reply: "Новое сообщение в отчете №%{id} по проекту %{pid}:«%{title}» в рамках перерегистрации «%{session}»."
+        expert: "Эксперт"
+        open_report: "Открыть отчет"
+      report_resubmitted:
+        subject: "Отчет №%{id} обновлен"
+        msg_report_updated: "Отчет №%{id} по проекту %{pid}:«%{title}» в рамках перерегистрации «%{session}» обновлен и готов к повторной оценке."
+        assess_report: "Перейти к оценке отчета."
+      report_submitted:
+        subject: "Отчет №%{id} подготовлен для оценки"
+        msg_report_ready: "Руководитель проекта %{pid}:«%{title}» в рамках перерегистрации «%{session}» подготовил отчет №%{id} к оценке."
+        assess_report: "Перейти к оценке отчета."
+      user_postdated_survey_and_blocked:
+        subject: "Ваш аккаунт заблокирован: просрочено заполнение опроса №%{name}"
+        msg_survey_postdated: "Вы просрочили заполнение опроса «%{survey_name}» в рамках перерегистрации «%{session}»."
+        msg_account_blocked: "Согласно правилам, ваш аккаунт заблокирован. Для разблокировки необходимо заполнить все просроченные опросы и после этого обратиться в поддержку."
+        proceed_to_survey: "Приступить к заполнению опроса."
+
+    admin:
+      sessions:
+        create:
+          session_is_successfully_created: "Перерегистрация создана. Выберите проекты, которые будут участвовать в перерегистрации."
+        index:
+          title: "Список перерегистраций"
+          new_session: "Создать перерегистрацию"
+        new:
+          title: "Создание перерегистрации"
+        show:
+          started_at: "Началась %{date}"
+          ended_at: "Закончилась %{date}"
+          edit_projects: "Отобрать проекты-участники"
+          title: "Перерегистрация «%{name}»"
+          new_survey: "Добавить опросник"
+          show_graphs: "Показать статистику"
+          start_session: "Начать"
+          end_session: "Закончить"
+          session_arcvhive: "Архив данных перерегистрации"
+          session_archive_link_msg: "Ссылка на загрузку придет по email."
+          session_archive_create: "Создать архив"
+          graphs_alert:
+            html: "<h3>Внимание!</h3> <p> Отображение графиков может занять существенное время. Ваш браузер может выдать сообщение о слишком долгой работе скрипта. Пожалуйста, не прерывайте работу скрипта. Иначе, графики не будут отображены.</p>"
+        show_projects:
+          title: "Выбор проектов-участников перерегистрации"
+          created_after: "Создан после"
+          created_before: "Создан до"
+          activated_after: "Активирован после"
+          activated_before: "Активирован до"
+
+      stats:
+        new:
+          title: "Добавление графика"
+        index:
+          title: "Статистика по перерегистрации %{session_name}"
+          back_to_session: "Вернуться к перерегистрации"
+          add_graph: "Добавить график"
+          edit: "Редактировать"
+
+      surveys:
+        new:
+          title: "Создание опросника"
+          use_survey_as_template: "Взять за образец опросник"
+        show:
+          only_for_project_owners: "Только для руководителя проекта"
+          for_all_users: "Для всех активных участников проекта"
+          back_to_session: "Вернуться к перерегистрации"
+          new_field: "Добавить поле"
+          delete_survey: "Удалить опросник"
+          no_fields: "В опроснике еще нет полей."
+          compulsive: "Обязательное"
+          weight: "Вес"
+      survey_fields:
+        new:
+          title: "Новое поле для опросника"
+        _form:
+          collection_help: "Только для Радио, Списков и Наукометрии"
+          strict_collection_help: "Не позволяет сохранять значения не из списка"
+          regexp_help: "Тестировать регекспы можно здесь: http://rubular.com/ В качестве ruby version выбирать 1.9.3"
+          max_values_help: "Только для Множественного и Пользовательского списков"
+          weight_help: "Чем больше значение, тем ниже в списке"
+      reports:
+        index:
+          title: "Список отчетов по проектам"
+          session: "Перерегистрация"
+          expert: "Эксперт"
+          figures: "Иллюстрации"
+          presentation: "Изложение"
+          overall_assessment: "Общая оценка"
+        show:
+          title: "Отчет №%{id} по проекту «%{project_title}» в рамках перерегистрации «%{session_name}»"
+          other_report_title: "Отчет №%{id} в рамках перерегистрации «%{session_name}»"
+          continue_expertise: "Возобновить оценку"
+          open_report_author_profile: "Открыть профиль автора отчета"
+          open_project_card: "Перейти к карточке проекта"
+          recommit: "Вернуть пользователю"
+          report_submit_denial_reason: "Причина отказа"
+          motivation_to_keep_the_project: "Обоснование сохранения проекта"
+          report_file: "Материалы отчета"
+          report_file_updated: "Обновлен"
+          report_file_size: "Размер"
+          download_report_file: "Скачать материалы"
+          no_report_file: "Нет материалов"
+          expert_assignment: "Назначение эксперта"
+          assign_expert: "Назначить эксперта"
+          report_evaluation: "Оценки"
+          evaluate: "Оценить"
+          are_you_sure: "Вы уверены?"
+          take_for_evaluation: "Взять на оценку"
+          not_evaluated: "Не оценивалось"
+          previous_sessions_reports: "Отчеты по проекту на предыдущих перерегистрациях"
+          conversation: "Переписка"
+          expert: "Эксперт"
+          message: "Сообщение"
+          project_surveys: "Опросы в рамках проекта"
+          no_completed_surveys: "Нет присланных опросов"
+        _table:
+          report: "Отчет"
+          status: "Статус"
+          updated: "Обновлен"
+          expert: "Эксперт"
+          report_id: "Отчет №%{id}"
+          take_for_evaluation: "Взять на оценку"
+          not_evaluated: "Не оценивалось"
+          no_reports: "Нет отчетов"
+      report_submit_denial_reasons:
+        index:
+          title: "Причины отказа предоставления отчета"
+          new_reason: "Добавить причину"
+        new:
+          title: "Создание причины отказа предоставления отчета"
+        edit:
+          title: "Редактирование причины отказа предоставления отчета"
+      user_surveys:
+        show:
+          created: "Создан"
+          updated: "Обновлен"
+          author: "Автор"
+
+    shared:
+      _graph:
+        pie_chart: "Пирог"
+        columns: "Колонки"
+        download_csv: "Загрузить .csv"
+        show: "раскрыть"
+
+    surveys:
+      _teaser:
+        session: "Перерегистрация"
+        msg_incomplete: "У Вас есть неотправленные или отклонённые опросы и/или отчёт."
+        msg_submit: "Опросы и отчет нужно сдать"
+        msg_not_later: "не позднее"
+        msg_block: "Не прошедшим перерегистрацию закроется доступ на кластеры!"
+        msg_surveys_to_complete: "Вам нужно пройти опросы для прохождения перерегистрации:"
+        msg_report_to_complete: "Вам нужно прислать отчет по вашим проектам:"
+        complete_survey: "Пройти"
+        complete_report: "Прислать отчет"
+        open: "Открыть"
+
+    user_survey_fields:
+      _mselect_field:
+        user_value: "Свой вариант"
+      _show_uselect_field:
+        msg_no_data: "Нет данных"
+      _uselect_field:
+        msg_input_value: "Введите значение"
+      _show_mselect_field:
+        msg_no_data: "Нет данных"
+      _show_uselect_field:
+        msg_no_data: "Нет данных"
+
+    user_surveys:
+      _list:
+        title: "Наименование"
+        project: "Проект"
+        status: "Статус"
+        session: "Перерегистрация"
+        no_surveys: "Нет опросников"
+      _table:
+        title: "Наименование"
+        project: "Проект"
+        status: "Статус"
+        session: "Перерегистрация"
+        no_surveys: "Нет опросников"
+      show:
+        complete: "Пройти"
+        compulsive: "Обязательный"
+        submit: "Отправить"
+        edit: "Редактировать"
+      index:
+        title: "Список опросников"
+        session: "Перерегистрация"
+
+    reports:
+      index:
+        title: "Список отчетов по проектам"
+        session: "Перерегистрация"
+      show:
+        title: "Отчет по проекту «%{project_title}» в рамках перерегистрации «%{session_name}»"
+        report_submit_denial_reason: "Причина отказа"
+        motivation_to_keep_the_project: "Обоснование сохранения проекта"
+        start_report_completion: "Начать заполнение отчета"
+        decline_submitting: "Не могу предоставить адекватный текст отчета"
+        updated: "Обновлен"
+        size: "Размер"
+        download_report_file: "Скачать материалы"
+        if_decline_submitting: "Если Вы не можете предоставить отчет, нажмите:"
+        attach_report_file: "Прикрепить материалы отчета"
+        update_report_file: "Обновить материалы"
+        report_file_help: "Aрхив zip, не более 20Мб, в архиве - помимо текста отчета, минимум один с расширением графического типа файла (минимум одна иллюстрация)"
+        report_evaluation: "Оценки"
+        not_evaluated: "Не оценивалось"
+        conversation: "Переписка"
+        administration: "Администрация"
+        expert: "Эксперт"
+        message: "Сообщение"
+      _list:
+        report: "Отчет"
+        project: "Проект"
+        status: "Статус"
+        complete_by: "Сдать до"
+        session: "Перерегистрация"
+        report_id: "Отчет №%{id}"
+        no_reports: "Нет отчетов"
+      _table:
+        report: "Отчет"
+        project: "Проект"
+        status: "Статус"
+        complete_by: "Сдать до"
+        session: "Перерегистрация"
+        report_id: "Отчет №%{id}"
+        no_reports: "Нет отчетов"

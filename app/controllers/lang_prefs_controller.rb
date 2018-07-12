@@ -5,8 +5,6 @@ class LangPrefsController < ApplicationController
       lang_pref = LangPref.find_or_create_by(user_id: current_user.id)
       lang_pref.language = language_param
       lang_pref.save!
-    else
-      session[:locale] = language_param
     end
     session[:locale] = language_param
     redirect_to :back

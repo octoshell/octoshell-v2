@@ -1,9 +1,9 @@
 module Announcements
   class Admin::AnnouncementsController < Admin::ApplicationController
     before_filter { authorize! :manage, :announcements }
-
+    helper Face::ApplicationHelper
     def index
-      @announcements = Announcement.order("id desc")
+      @announcements = Announcement.order("id desc").includes(created_by: :profile)
     end
 
     def show
@@ -16,6 +16,7 @@ module Announcements
 
     def create
       @announcement = Announcement.new(announcement_params)
+      @announcement.created_by = current_user
       if @announcement.save
         redirect_to admin_announcement_show_users_path(@announcement)
       else

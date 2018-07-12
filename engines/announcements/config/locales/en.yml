@@ -23,13 +23,12 @@ en:
     admin:
       announcements:
         index:
-          title: "Announcement list"
+          title: "Announcements list"
           special: "Special"
           informative: "informative"
           new: "New announcement"
         form:
-          markdown_help: ". Описание синтаксиса <a href=\"http://vstarkov.ru/markdown-basics/\", target=\"_blank\">здесь</a>."
-          markdown_help: "Markdown is used as a markup. Syntax description is  <a href=\"http://vstarkov.ru/markdown-basics/\", target=\"_blank\">здесь</a>."
+          markdown_help: "Markdown is used as a markup. Syntax description is  <a href=\"http://vstarkov.ru/markdown-basics/\", target=\"_blank\">here</a>."
         new:
           title: "New announcement"
         edit:
@@ -40,7 +39,7 @@ en:
           edit: "Edit"
           attachment: "Attachment"
           test: "Test"
-          change_rec_list: "Change destination list"
+          change_rec_list: "Change destinations list"
           send_to_n_users: "Send the letter to %{num} users"
           recipients: "Receivers"
         show_users:

@@ -2,6 +2,8 @@ div class="page-header"
   h3 №#{@announcement.id}
   h5 class="text-muted" = @announcement.is_special? ? t('.special') : t('.informative')
   h5 = l @announcement.created_at.to_date
+  h5  #{Announcement.human_attribute_name(:created_by)} #{admin_user_short_link(@announcement.created_by)}
+
   h3
     - state = { pending: "info", delivered: "success" }[@announcement.state_name.to_sym]
     span class="label label-#{state}" = @announcement.human_state_name
@@ -38,5 +40,3 @@ div class="well"
         ul class="list-unstyled"
           - group.each do |email|
             li = email
-
-

@@ -59,7 +59,7 @@ legend = link_to t('.open_project_card'), core.admin_project_path(@report.projec
             = f.submit t("actions.assess", default: t('.evaluate'))
             = link_to t('.recommit'), [:admin, @report, :reject], class: "btn btn-danger", data: { confirm: t('.are_you_sure')}, method: :patch
     - elsif may?(:manage, :reports) && @report.may_pick? && @report.expert.nil?
-      = link_to t('.take_for_evaluation')"Взять на оценку", [:admin, @report, :pick], method: :patch, class: "btn btn-info btn-lg"
+      = link_to t('.take_for_evaluation'), [:admin, @report, :pick], method: :patch, class: "btn btn-info btn-lg"
     - else
       table class="table table-striped"
         tr
@@ -96,7 +96,7 @@ div class="panel"
             = r.user.full_name
           - else
             = r.user.full_name
-            |  
+            |
             span class="label label-info" #{t('.expert')}
         = markdown r.message
 
@@ -118,4 +118,3 @@ div class="panel"
           h4 = link_to survey, admin_user_survey_path(survey)
   - else
     p #{t('.no_completed_surveys')}
-

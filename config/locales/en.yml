@@ -12,9 +12,10 @@ en:
     sessions_warning:
       html: "Re-registrations <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
     profile: Profile
-    job_stat: Run statistics
+    job_stat: Runs statistics
     job_table: Runs
     comments: Comments
+    packages: Packages
   admin_submenu:
     comments: "Comments"
     cities: "Cities"

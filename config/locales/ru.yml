@@ -15,6 +15,7 @@ ru:
     job_stat: Статистика запусков
     job_table: Запуски
     comments: Комментарии
+    packages: Пакеты
   admin_submenu:
     comments: "Комментарии"
     cities: "Города"

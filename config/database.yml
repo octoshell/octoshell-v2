@@ -1,7 +1,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: octoshell_big_devel
+  database: july_octoshell
   user: octo
   password: 1234
 
@@ -15,7 +15,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: octoshell_big_devel
+  database: july_octoshell
   pool: 10
   min_messages: warning
   user: octo

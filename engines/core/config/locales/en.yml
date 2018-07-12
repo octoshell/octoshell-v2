@@ -80,8 +80,8 @@ en:
         title_en: English title
         checked: Checked
         country: Country
-        country_title_ru: Country names in russian
-        country_title_en: Country names in english
+        country_title_ru: Country name in russian
+        country_title_en: Country name in english
 
       user:
         access_state: "Access"
@@ -713,12 +713,11 @@ en:
         card_driver_help: "Description of the task for which the project is directed"
         card_strategy_help: "the idea description of the approach to solving the problem"
         card_objective_help: "Description of the purpose for which the specific task is aimed"
-        card_impact_help: "The expected effect of a successful solution of the problem (scientific / commercial / social)"
+        card_impact_help: "The expected impact of a successful solution of the problem (scientific / commercial / social)"
         card_usage_help: "The industries, the economic sectors, the areas of science, where the results of the project can be used"
       index:
         title: "Projects"
         your_access_is_closed:
-          html: "По результатам анализа отчетов о работе за 2014 год было обнаружено, что Вами не заполнены опросы (по каждому проекту - для руководителей проектов, персональные - для каждого пользователя СКЦ), что по правилам СКЦ МГУ (http://parallel.ru/cluster/reregistration) является обязательным.<br /> <br />До заполнения этих форм Ваш доступ заблокирован. <br /><br />Формы опросов доступны в Вашем личном кабинете (http://users.parallel.ru). Вкладка “Перерегистрация”, подраздел “Опросы”."
           html: "Based on the results of the analysis of the work reports for 2014, it was found that you did not complete the surveys (for each project - for project managers, personal - for each  SCC user). This action  is required by the MSU SCC rules (http://parallel.ru/cluster/reregistration).<br /> <br />Your access is blocked before you fill these forms. <br /><br />Forms of polls are available in your personal account(http://users.parallel.ru). Re-registration tab, surveys subsection."
         user_has_not_access_to_projects:
           html: "<p> You can't take part in Вы не можете участвовать в проектах, так как Вы не заполнили \"Место работы\" и не прикрепили Ваш публичный ssh-ключ. Пожалуйста, перейдите в ваш профиль и заполните требуемые поля.</p>"
