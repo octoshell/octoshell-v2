@@ -1,7 +1,7 @@
-ru:
+en:
   activerecord:
     models:
-      support/ticket: Заявка в поддержку
+      support/ticket: Support ticketsЗаявка в поддержку
       support/topic: Тема заявки
       support/tag: Тег
       support/field: Дополнительное поле

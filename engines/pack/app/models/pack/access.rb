@@ -3,7 +3,6 @@ module Pack
     include AASM
     include AccessValidator
     include AdminAccessUpdate
-    american_date_proccess
     def self.expired_accesses
       Access.transaction do
         where("end_lic < ? and status='allowed'", Date.today).each{ |ac| ac.update!(status: 'expired') }
@@ -188,12 +187,12 @@ module Pack
     end
 
     def end_lic_readable
-      end_lic || Access.human_attribute_name(:forever)
+      I18n.l end_lic || Access.human_attribute_name(:forever)
     end
 
     def new_end_lic_readable
       if new_end_lic
-        new_end_lic
+        I18n.l new_end_lic
       elsif new_end_lic_forever
         Access.human_attribute_name(:forever)
       else

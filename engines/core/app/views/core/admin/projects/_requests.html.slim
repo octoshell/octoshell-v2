@@ -6,7 +6,7 @@ div class="row" id="requests"
       tr
         th class="col-xs-2" #
         th #{Core::Cluster.human_attribute_name("name")} (#{Core::Cluster.human_attribute_name("host")})
-        th = #{t('.resources_requested')}
+        th #{t('.resources_requested')}
         th = Core::Request.human_attribute_name("created_at")
       - requests.each do |request|
         tr class=(request.pending? ? "warning" : "danger")

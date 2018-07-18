@@ -48,9 +48,9 @@ en:
     - Friday
     - Saturday
     formats:
-      default: "%d.%m.%Y"
-      long: "%d %B %Y"
-      short: "%d %b"
+      default: "%Y.%m.%d"
+      long: "%Y %B %d"
+      short: "%b %d"
     month_names:
     -
     - January
@@ -141,7 +141,7 @@ en:
       invalid_transition: 'It is impossible to "%{event}". "%{model}" in "%{state}" state.'
       accepted: needs to be accepted"
       blank: "can not be empty"
-      confirmation: "doesn't match with confirmation"
+      confirmation: "does not match with confirmation"
       empty: "can not be empty"
       equal_to: "can be only equal to %{count}"
       even: "can be only even"
@@ -158,15 +158,15 @@ en:
       record_invalid: "! 'Errors occured: %{errors}'"
       taken: "already exists"
       too_long:
-        few: "too long (can't be shorter than  %{count} characters)"
-        many: "too long (can't be shorter than  %{count} characters)"
-        one: "too long (can't be shorter than  %{count} character)"
-        other: "too long (can't be shorter than  %{count} characters)"
+        few: "too long (can not be shorter than  %{count} characters)"
+        many: "too long (can not be shorter than  %{count} characters)"
+        one: "too long (can not be shorter than  %{count} character)"
+        other: "too long (can not be shorter than  %{count} characters)"
       too_short:
-        few: "too short (can't be less than  %{count} characters)"
-        many: "too short (can't be less than  %{count} characters)"
-        one: "too short (can't be less than  %{count} character)"
-        other: "too short (can't be less than  %{count} characters)"
+        few: "too short (can not be less than  %{count} characters)"
+        many: "too short (can not be less than  %{count} characters)"
+        one: "too short (can not be less than  %{count} character)"
+        other: "too short (can not be less than  %{count} characters)"
       wrong_length:
         few: "invalid length (length can be only equal to %{count} characters)"
         many: "invalid length (length can be only equal to %{count} characters)"

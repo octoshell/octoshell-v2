@@ -49,9 +49,10 @@ ru:
     - пятница
     - суббота
     formats:
-      default: "%d.%m.%Y"
-      long: "%d %B %Y"
-      short: "%d %b"
+      default: "%Y.%m.%d"
+      long: "%Y %B %d"
+      short: "%b %d"
+
     month_names:
     -
     - января

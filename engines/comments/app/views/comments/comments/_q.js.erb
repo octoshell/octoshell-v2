@@ -112,11 +112,7 @@
 				apply_select();
 				var array = [ 'created_at_gt', 'created_at_lt', 'updated_at_lt','updated_at_gt'];
 				$.each(array, function( index, value ) {
-					control.getControlByPath(value).getControlEl().datepicker({
-						format: "dd.mm.yyyy",
-						language: "ru",
-						autoclose: true
-					});
+					control.getControlByPath(value).getControlEl().datepicker();
 				});
 
 			}

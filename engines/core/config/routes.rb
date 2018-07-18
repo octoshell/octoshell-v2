@@ -30,6 +30,9 @@ Core::Engine.routes.draw do
       put :close
       put :confirm
       put :reject
+      put :activate_or_reject
+      # put 'activate?:reason', action: 'activate'
+      # put 'reject?:reason', action: 'reject'
     end
 
     resources :project_kinds

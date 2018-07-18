@@ -1,7 +1,6 @@
 module Pack
   class Version < ActiveRecord::Base
     include AASM
-    american_date_proccess
     attr_accessor :user_accesses
 
 

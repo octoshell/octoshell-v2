@@ -12,13 +12,11 @@
  *
  *= require_tree .
  *= require_self
- *= require jquery-ui
-
  */
 
 
 .margin {
-    
+
     margin: 10px; /* Отступы вокруг */
 }
 
@@ -31,5 +29,3 @@
 table.vtop td, th {
   vertical-align: top;
 }
-
-

@@ -1,9 +1,9 @@
-ru:
+en:
   types_labels:
-    create_ab: Создание
-    read_ab: Чтение
-    update_ab: Редактирование
-    create_with_context_ab: Создание с контекстом
+    create_ab: Create
+    read_ab: Read
+    update_ab: Update
+    create_with_context_ab: Сreate with context
   comments:
     rake:
       regexp: '^# Правила доступа к заметкам'
@@ -12,160 +12,159 @@ ru:
       short_name: 'Правила доступа к заметкам'
     comments:
       create:
-        success_message: 'Ваш комментарий добавлен'
-        errors_message: 'При отправке данных произошла ошибка'
-        write_comment: 'Оставьте комментарий'
-        no_context: Без контекста
+        success_message: 'Your coment has been added'
+        errors_message: 'An error occurred while sending the data'
+        write_comment: 'Leave a comment'
+        no_context: No context
       q:
-        all: Не имеет значения
+        all: Does not matter
       index:
-        object: Объект
-        context: Контекст
-        loading: Идет загрузка
-        group_l: 'Группы:'
-        list: Комментарии
-        empty: Нет доступных для отображения комментариев
-        created_at_gt: Создан после
-        created_at_lt: Создан до
-        updated_at_gt: Обновлен после
-        updated_at_lt: Обновлен до
+        object: Object
+        context: Context
+        loading: 'Loading...'
+        group_l: 'Groups:'
+        list: Comments
+        empty: No comments available
+        created_at_gt: Created after
+        created_at_lt: Created before
+        updated_at_gt: Updated after
+        updated_at_lt: Updated before
 
       edit:
-        success_message: Комментарий изменен
-        errors_message: При отправке данных произошла ошибка
-        discard_title: Отмена
+        success_message: Comment has been updated
+        errors_message: 'An error occurred while sending the data'
+        discard_title: Cancel
     tags_lookup:
       show:
-        no_tags: Нет записей, доступных для отображения
+        no_tags: No records available
     tags:
       create:
-        success_message: 'Ваш тег добавлен'
-        errors_message: 'При отправке данных произошла ошибка'
-        write_tag: Оставьте теги
-        tags: Теги(через ;)
-        no_context: Без контекста
+        success_message: 'Your tag has been added'
+        errors_message: 'An error occurred while sending the data'
+        write_tag: Leave tags
+        tags: Tags (';' is delimiter )
+        no_context: No context
       q:
-        all: Не имеет значения
-        without_context: Нет контекста
+        all: No records available
+        without_context: Without context
       index:
-        object: Объект
-        context: Контекст
-        loading: Идет загрузка
-        group_l: 'Группы:'
-        list: Теги
-        empty: Нет доступных для отображения тегов
-        context: Контекст
-        hide: Скрыть
+        object: Object
+        context: Context
+        loading: 'Loading...'
+        group_l: 'Groups:'
+        list: Tags
+        empty: No tags available
+        context: Context
+        hide: Hide
       edit:
-        success_message: Тег изменен
-        errors_message: При отправке данных произошла ошибка
-        discard_title: Отмена
+        success_message: Tag has been updated
+        errors_message: 'An error occurred while sending the data'
+        discard_title: Cancel
     files:
       create:
-        success_message: 'Ваш файл добавлен'
-        errors_message: 'При отправке данных произошла ошибка'
-        load_file: Загрузите файл
-        no_context: Без контекста
+        success_message: 'Your file has been added'
+        errors_message: 'An error occurred while sending the data'
+        load_file: Upload file
+        no_context: Without context
       q:
-        all: Не имеет значения
+        all: Does not matter
       index:
-        object: Объект
-        context: Контекст
-        loading: Идет загрузка
-        group_l: 'Группы:'
-        list: Файлы
-        empty: Нет доступных для отображения файлов
-        context: Контекст
-        hide: Скрыть
+        object: Object
+        context: Context
+        loading: Loading...
+        group_l: 'Groups:'
+        list: Files
+        empty: No files available
+        hide: Hide
       edit:
-        success_message: Файл изменен
-        errors_message: При отправке данных произошла ошибка
-        discard_title: Отмена
+        success_message: File has been changed
+        errors_message: 'An error occurred while sending the data'
+        discard_title: Cancel
 
 
     admin:
       contexts:
         index:
-          title: Контексты
-          new: Новый контекст
+          title: Context
+          new: New context
         edit:
-          title: Редактировать контекст
+          title: Edit context
         new:
-          title: Создать контекст
+          title: Create context
       context_groups:
         edit:
-          not_created: Пока не создано ни запрета, ни права
-          loading: Идет загрузка
-          success_message: Редактирование прошло успешно
-          errors_message: На сервере произошла ошибка
-          context_groups_title: Права группы для контекста
+          not_created: neither a ban nor a right has not been created yet
+          loading: Loading...
+          success_message: Editing has been successful
+          errors_message: An error occurred on the server
+          context_groups_title: Group abilities for the context
       group_classes:
         edit:
-          "true": Разрешить
-          "false": Запретить
-          "none": Не создавать ни права,ни запрета
-          no_obj_id: Не для всего класса
-          y_obj_id: Для всего класса
-          obj_type_title: Тип объекта
-          class_defaults_title: Стандартные права для объекта
-          class_groups_title: Права группы для объекта
-          not_created: Пока не создано ни запрета, ни права
-          loading: Идет загрузка
-          success_message: Редактирование прошло успешно
-          errors_message: На сервере произошла ошибка
-          validator_message: Выберите объект
+          "true": Allow
+          "false": Ban
+          "none": Do not create any abilities or prohibitions
+          no_obj_id: Not for the whole class
+          y_obj_id: For the whole class
+          obj_type_title: Object type
+          class_defaults_title: Default object abilities
+          class_groups_title: Group abilitites for object
+          not_created: neither a ban nor a right has not been created yet
+          loading: Loading...
+          success_message: Editing has been successful
+          errors_message: An error occurred on the server
+          validator_message: Choose an object
 
   responses:
-    forbidden: У вас нет прав для данного действия
-    not_found: Одна из редактируемых записей была удалена
+    forbidden: You do not have permissions for this action
+    not_found: One of the edited entries has been deleted
   actions:
-    cancel_edit: отменить редактирование
-  are_u_sure_delete: Вы уверены,что хотите удалить запись?
-  levels_list: Уровни
-  permissions_fail: У вас нет прав для данного действия
+    cancel_edit: Cancel edition
+  are_u_sure_delete: Are you sure you want to delete the post?
+  levels_list: Levels
+  permissions_fail: You do not have permissions for this action
   engine_submenu:
-    group_classes_links: Связи классов и групп
-    contexts: Контексты
-    context_groups_links: Связи контекстов и групп
+    group_classes_links: Class-group relationships
+    contexts: Contexts
+    context_groups_links: Context-group relationships
 
   activerecord:
     models:
-      comments/file_attachment: Файлы
-      comments/comment: Комментарии
-      comments/tag: Теги
+      comments/file_attachment: Files
+      comments/comment: Comments
+      comments/tag: Tags
     errors:
       models:
         comments/level_class:
           attributes:
             class_name:
-              not_exist: Такой модели не существует
+              not_exist: This model does not exist
             conflict:
-              exists_similar: Нельзя  связать один объект(список объектов) с разными уровнями
+              exists_similar: You can not associate one object (a list of objects) with different levels
     attributes:
       comments/comment:
-        text: Текст
-        context: Контекст
-        attachable_type: Тип объекта
-        attachable_id: ID объекта
+        text: Text
+        context: Context
+        attachable_type: Object type
+        attachable_id: Object id
       comments/file_attachment:
-        description: Описание
-        context: Контекст
-        attachable_type: Тип объекта
-        attachable_id: ID объекта
+        description: Description
+        context: Context
+        attachable_type: Object type
+        attachable_id: Object ID
       comments/tagging:
-        attachable_type: Тип объекта
-        attachable_id: ID объекта
-        attachable_class_name: Название класса
-        attachable_name: Имя объекта
-        first_name: Имя
-        last_name: Фамилия
-        context: Контекст
+        attachable_type: Object type
+        attachable_id: Object ID
+        attachable_class_name: Class name
+        attachable_name: Object name
+        first_name: Name
+        last_name: Surname
+        context: Context
       comments/tag:
-        name: Тег
+        name: Tag
       comments/group_class:
-        class_name: Класс
-        obj_id: Объект
+        class_name: Class
+        obj_id: Object
       comments/context:
-        name: Название
+        name: Name
       comments/context_group:
-        context: Контекст
+        context: Context

@@ -91,7 +91,6 @@ function endLicWithReq(){
     "postRender": function(control) {
       var endLicElem = control.getControlByPath('end_lic').getControlEl();
       endLicElem.datepicker({
-                               dateFormat: 'mm-dd-yy',
                             });
       if(access.end_lic)
       {

@@ -96,15 +96,14 @@ bottomForm.alpaca({
     "lock_version": access.lock_version,
   },
   "postRender": function(control) {
-    var d = new Date(getAmericanDate(access.end_lic));
+    var d = getDate(access.end_lic);
     var tomorrowDate = d.getDate() + 1;
     d.setDate(tomorrowDate);
     d.setHours(0,0,0,0);
     control.getControlByPath('new_end_lic')
            .getControlEl()
            .datepicker({
-                        dateFormat: 'mm-dd-yy',
-                        minDate: d
+                        startDate: d
                       });
   }
 });

@@ -20,6 +20,7 @@ PATH
       sidekiq-failures
       slim
       sshkey
+      write_xlsx
 
 GEM
   remote: https://rubygems.org/
@@ -197,6 +198,11 @@ GEM
     tilt (2.0.8)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    write_xlsx (0.85.5)
+      rubyzip (>= 1.0.0)
+      zip-zip
+    zip-zip (0.3)
+      rubyzip (>= 1.0.0)
 
 PLATFORMS
   java

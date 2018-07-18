@@ -12,11 +12,11 @@ html
     = stylesheet_link_tag "application", media: "all"
     - if @extra_css
       = stylesheet_link_tag @extra_css, media: "all"
-    = javascript_include_tag "application"
-    = csrf_meta_tags
     javascript:
       window.env = "#{Rails.env}"
       window.locale = "#{I18n.locale}"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
   body
     div class="navbar navbar-default navbar-static-top" role="navigation"
       div class="container"

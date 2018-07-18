@@ -75,9 +75,6 @@ bottomForm.alpaca({
                        $(`.btn_access[version_id='${version_id}']`).parents('tr')
                        .next().find('p.server-messages').html(`<font color="red">${arg.responseJSON.error}</font>`);
                      });
-
-                    //  viewer.load();
-                    //  viewer.load
                    }
                 }
               },
@@ -94,8 +91,7 @@ bottomForm.alpaca({
     control.getControlByPath('end_lic')
            .getControlEl()
            .datepicker({
-                        dateFormat: 'mm-dd-yy',
-                        minDate: 0
+                        startDate: "0d"
                       });
   }
 });

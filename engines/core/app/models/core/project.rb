@@ -206,6 +206,5 @@ module Core
     def self.can_not_be_automerged?(department)
       can_not_be_automerged(department).exists?
     end
-
   end
 end

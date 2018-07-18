@@ -14,7 +14,7 @@ div class="row"
 
       /= autocomplete f, name: :organization_department_id, label: Core::Project.human_attribute_name("organization_department"), layout: :regular, source: organization_organization_departments_path(primary_organization)
 
-      = f.text_field :estimated_finish_date, start_year: Date.current.year, class: "datepicker"
+      = f.text_field :estimated_finish_date, 'data-date-start-date': '0d', class: "datepicker"
 
       = f.fields_for :card do |card_form|
         legend = t(".card")

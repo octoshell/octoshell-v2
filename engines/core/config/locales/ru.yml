@@ -95,6 +95,7 @@ ru:
         card: "Карточка проекта"
         member: "Участник"
         members: "Участники данного проекта"
+        allowed_members: "Участники данного проекта c доступом на кластеры"
         sureties: "Поручительства"
         title: "Наименование"
         state: "Статус"
@@ -225,6 +226,7 @@ ru:
         state: "Статус"
         created_at: "Создано"
         human_name: "Поручительство №%{id}"
+        reason: "Причина одобрения/ отклонения"
       core/surety_member:
         full_name: "ФИО"
         organization: "Организация"
@@ -670,6 +672,9 @@ ru:
         index:
           title: "Поручительства"
           template: "Редактировать шаблон поручительств"
+          created_after: "Создано после"
+          created_before: "Создано до"
+
         edit_template:
           title: "Шаблон поручительства"
           surety_rtf_template: "RTF шаблон"
@@ -683,6 +688,8 @@ ru:
           confirm: "Вы уверены?"
         table:
           no_sureties: "Ничего не найдено."
+        activate_or_reject:
+          reason_empty: Пустая причина одобрения/ отклонения
 
     credentials:
       _list:

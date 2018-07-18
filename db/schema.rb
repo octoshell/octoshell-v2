@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180711085214) do
+ActiveRecord::Schema.define(version: 20180712114420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -432,6 +432,7 @@ ActiveRecord::Schema.define(version: 20180711085214) do
     t.datetime "updated_at"
     t.string   "document",       limit: 255
     t.integer  "author_id"
+    t.text     "reason"
   end
 
   add_index "core_sureties", ["author_id"], name: "index_core_sureties_on_author_id", using: :btree

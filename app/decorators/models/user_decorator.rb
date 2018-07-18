@@ -6,6 +6,8 @@ User.class_eval do
   has_many :user_groups, dependent: :destroy
   has_many :groups, through: :user_groups
 
+  has_one :lang_pref
+  delegate :language, to: :lang_pref
   delegate :initials, :full_name, to: :profile
 
   after_create :create_profile!

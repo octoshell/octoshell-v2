@@ -17,7 +17,7 @@ module Core
     validates :project, presence: true
     validates :surety_members, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }
 
-    validates :scans, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }, 
+    validates :scans, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") },
               :if => -> {aasm(:state).current_state == :confirmed}
 
     accepts_nested_attributes_for :scans, allow_destroy: true, :reject_if => ->(attr){ attr["image"].blank?  }
@@ -31,10 +31,6 @@ module Core
     aasm(:state, :column => :state) do
       state :generated, :initial => true
       state :confirmed
-      #!!!  FIXIT!
-      #do
-      #  validates :scans, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }
-      #end
       state :rejected
       state :active
       state :closed

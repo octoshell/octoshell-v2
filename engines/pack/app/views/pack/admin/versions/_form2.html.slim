@@ -25,7 +25,7 @@ div class="row"
           =t "versions.state"
           = f.radio_button :state_select ,  "forever" ,label: t("versions.forever"),id: "disable_id"
           = f.radio_button :state_select , "not_forever",label: t("versions.not_forever"),id: "enable_id"
-          = f.text_field :end_lic ,class: 'form-control my_datepicker',id: "item_id"
+          = f.text_field :end_lic ,class: 'form-control datepicker',id: "item_id"
 
           h3 = t("Clusters")
       div class="row"

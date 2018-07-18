@@ -47,6 +47,9 @@ ru:
     statistics: "Статистика"
     announcements: "Рассылка"
     sidekiq: "Мониторинг очередей выполнения задач"
+  without_pagination:
+    displaying_all_records: Показаны все записи
+    display_all_records: Показать все записи сразу на одной странице(может быть ДОЛГО)
 
   flash:
     password_updated: "Пароль обновлён."

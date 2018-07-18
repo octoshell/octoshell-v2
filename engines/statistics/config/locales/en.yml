@@ -1,0 +1,42 @@
+en:
+  engine_submenu:
+    projects: "Projects"
+    organizations: "Organizations"
+    users: "Users"
+    sessions: "Sessions"
+
+  statistics:
+    by_kind: "By kind"
+    by_organization_kind: "By organization kind"
+    by_organization_city: "By organization city"
+    by_msu_subdivisions: "By MSU subdivsions"
+    by_directions_of_science: "By research directions"
+    by_critical_technologies: "By critical directions"
+    by_research_areas: "By research areas"
+    by_city: "By cities"
+    by_state: "By status"
+
+    projects:
+      index:
+        title: "Projects stat"
+        refresh_rate: "Data is updated every 3 months"
+        calculate_now: "Calculate now"
+    organizations:
+      index:
+        title: "Organizations stats"
+        refresh_rate: "Data is updated every 3 months"
+        calculate_now: "Calculate now"
+    users:
+      index:
+        title: "User stats"
+        refresh_rate: "Data is updated every 3 months"
+        calculate_now: "Calculate now"
+    sessions:
+      index:
+        title: "Re-registrations stats"
+        refresh_rate: "Data is updated every 3 months"
+        calculate_now: "Calculate now"
+    shared:
+      _stats:
+        graph: "Chart"
+        table: "Table        "

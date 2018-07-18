@@ -34,12 +34,16 @@ module Pack
 
     private
 
+    def localized_date date
+      date.present? ? l(date) : date
+    end
+
     def accesses(versions_ids)
       @accesses = Access.where(version_id: versions_ids)
                         .user_access(current_user.id)
                         .map do |a|
-                          a.attributes.merge('end_lic' => a.end_lic.to_s,
-                                             'new_end_lic' => a.new_end_lic.to_s)
+                          a.attributes.merge('end_lic' => localized_date(a.end_lic),
+                                             'new_end_lic' => localized_date(a.new_end_lic))
                         end
       @accesses_hash = @accesses.group_by { |a| a['version_id'] }
       @accesses_hash

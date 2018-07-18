@@ -14,11 +14,3 @@
 //= require_directory .
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui
-
-
-
-
-
-
-

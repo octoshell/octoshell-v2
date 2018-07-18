@@ -95,6 +95,7 @@ en:
         card: "Project card"
         member: "Member"
         members: "Project members"
+        allowed_members: "Project members with clusters access"
         sureties: "Sureties"
         title: "Title"
         state: "Status"
@@ -225,6 +226,7 @@ en:
         state: "Status"
         created_at: "Created at"
         human_name: "Surety №%{id}"
+        reason: "Reason for approval / rejection"
       core/surety_member:
         full_name: "Full name"
         organization: "Organization"
@@ -247,7 +249,7 @@ en:
       core/member:
         project_access_state:
           states:
-            invited: "didn't confirm project membership"
+            invited: "did not confirm project membership"
             engaged: "confirmed project membership"
             unsured: "no certified surety"
             allowed: "allowed"
@@ -412,7 +414,7 @@ en:
         open_support: "The technical support section."
       user_access_suspended:
         subject: "Your account has been blocked"
-        msg_access_suspended: "Your account has been blocked because you didn't pass re-registration (you didn't send us filled questionnaire or project report) or violated the work rules  of MSU Supercomputing Center. If u correct your mistakes, your access can be resurrected."
+        msg_access_suspended: "Your account has been blocked because you did not pass re-registration (you did not send us filled questionnaire or project report) or violated the work rules  of MSU Supercomputing Center. If u correct your mistakes, your access can be resurrected."
         msg_recommendation: "To find out the cause and to ask other questions you can visit our technical support section."
         open_support: "The technical support section."
       user_access_activated:
@@ -565,12 +567,12 @@ en:
         edit:
           title: Merger
           automerged: The following project memberships will be merged automically
-          not_automerged: The following project memberships won't be merged automically
+          not_automerged: The following project memberships will not be merged automically
           not_automerged_projects:  Projects merger
           merge?: Merge?
           with_surety: With surety?
           automerged_surety_members_without_core_members: The following sureties will be merged automically
-          not_automerged_surety_members_without_core_members: The following sureties won't be merged automically
+          not_automerged_surety_members_without_core_members: The following sureties will not be merged automically
       countries:
         new:
           title: New country
@@ -586,7 +588,7 @@ en:
         show:
           cities_title: Cities
         destroy:
-          org_exist: You can't delete country with an existing organization in it
+          org_exist: You ca not delete country with an existing organization in it
       cities:
         new:
           title: New city
@@ -600,7 +602,7 @@ en:
         edit:
           title: Edit the city
         destroy:
-          org_exist: You can't delete city with an existing organization in it
+          org_exist: You can not delete city with an existing organization in it
         show:
           cities_title: Cities
       organizations:
@@ -624,7 +626,7 @@ en:
         merge_update:
           here: here
           not_auto: |
-            <p>Can't be merged automically. Further instructions  %{link}</p>
+            <p>Can not be merged automically. Further instructions  %{link}</p>
           same_object: You are not allowed to merge object with itself
           forbidden: Do not merge organizations with departments.
           stale_organization_id: You are trying to merge source object with the "%{dep_name}" department, which  is not in the  "%{org_name}" organization now.
@@ -667,6 +669,9 @@ en:
         index:
           title: "Sureties"
           template: "Edit surety template"
+          created_after: "Created after"
+          created_before: "Created before"
+
         edit_template:
           title: "Surety template"
           surety_rtf_template: "RTF template"
@@ -680,10 +685,13 @@ en:
           confirm: "Are you sure?"
         table:
           no_sureties: "No sureties have been found."
+        activate_or_reject:
+          reason_empty: The reason for approval / rejection is empty
+
 
     credentials:
       _list:
-        msg_help_sshkey: "If u don't know how to add public ssh-key, follow the link: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Public ssh-key addition</a>."
+        msg_help_sshkey: "If u do not know how to add public ssh-key, follow the link: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Public ssh-key addition</a>."
 
     projects:
       members:
@@ -720,8 +728,8 @@ en:
         your_access_is_closed:
           html: "Based on the results of the analysis of the work reports for 2014, it was found that you did not complete the surveys (for each project - for project managers, personal - for each  SCC user). This action  is required by the MSU SCC rules (http://parallel.ru/cluster/reregistration).<br /> <br />Your access is blocked before you fill these forms. <br /><br />Forms of polls are available in your personal account(http://users.parallel.ru). Re-registration tab, surveys subsection."
         user_has_not_access_to_projects:
-          html: "<p> You can't take part in Вы не можете участвовать в проектах, так как Вы не заполнили \"Место работы\" и не прикрепили Ваш публичный ssh-ключ. Пожалуйста, перейдите в ваш профиль и заполните требуемые поля.</p>"
-          html: "<p> You can not participate in projects, since you haven't filled out job place and haven't attached your public ssh-key. Please go to your profile and fill required fields.</p>"
+          html: "<p> You can not take part in Вы не можете участвовать в проектах, так как Вы не заполнили \"Место работы\" и не прикрепили Ваш публичный ssh-ключ. Пожалуйста, перейдите в ваш профиль и заполните требуемые поля.</p>"
+          html: "<p> You can not participate in projects, since you have not filled out job place and have not attached your public ssh-key. Please go to your profile and fill required fields.</p>"
         goto_profile: "Go to profile."
         owned_projects: "My projects"
         projects_with_participation: "Projects with my participation"
@@ -751,8 +759,8 @@ en:
         new_request: "Request an access"
       sureties:
         title: "Sureties"
-        no_active_sureties_found: "There aren't active sureties for this project. Add a new surety!"
-        no_sureties_found: "There isn't a surety for some members!"
+        no_active_sureties_found: "There are not active sureties for this project. Add a new surety!"
+        no_sureties_found: "There is not a surety for some members!"
         add_surety: "Create a surety"
       new_member_form:
         new_member_email: "Enter a new member email"
@@ -765,7 +773,7 @@ en:
         choose_organization: "Choose the organization on behalf of which you will participate in the project"
         accept_invitation: "Join the project"
         no_employments: |
-          <strong>You haven't filled your job place in your profile.</strong>
+          <strong>You have not filled your job place in your profile.</strong>
           <p>Please add your job place, then you will be able to confirm your project membership.</p>
         add_employment: "Add a job place."
     organizations:

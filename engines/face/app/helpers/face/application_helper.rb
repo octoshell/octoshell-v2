@@ -3,7 +3,6 @@ module Face
     def admin_user_short_link(user)
       return '' unless user
       profile = user.profile
-      puts profile.last_name.class
       if profile.last_name
         name = initials profile
       else
@@ -18,6 +17,27 @@ module Face
        string << " #{profile.middle_name.first}." if profile.middle_name.present?
        string
     end
+
+    def common_datepicker_options
+    {
+      include_blank: true, label_col: "col-sm-4", control_col: "col-sm-8",
+      :'data-date-start-date' => '2012.01.01',
+      :'data-date-end-date' => '0d', class: "datepicker"
+    }
+    end
+
+    def display_all_tag
+      content_tag(:div, class: "col-xs-12") do
+        check_box_tag('q[display_all]', '1', display_all_applied?) +
+        label_tag(t('without_pagination.display_all_records'))
+      end
+    end
+
+    def page_entries_info(collection, options = {})
+      return t 'without_pagination.displaying_all_records'  unless collection.arel.ast.cores.any? { |item| item.public_send(:top) }
+      super
+    end
+
 
     def bootstrap_class_for(flash_type)
       case flash_type
