@@ -6,8 +6,8 @@ User.class_eval do
   has_many :user_groups, dependent: :destroy
   has_many :groups, through: :user_groups
 
-  has_one :lang_pref
-  delegate :language, to: :lang_pref
+  validates :language, inclusion: { in: I18n.available_locales.map(&:to_s) }
+
   delegate :initials, :full_name, to: :profile
 
   after_create :create_profile!
@@ -15,6 +15,10 @@ User.class_eval do
 
   accepts_nested_attributes_for :profile
   accepts_nested_attributes_for :groups
+
+  before_validation do
+    self.language ||= I18n.default_locale.to_s
+  end
 
   # TODO: Переписать
   scope :finder, (lambda do |q|

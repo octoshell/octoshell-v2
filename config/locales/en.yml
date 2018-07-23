@@ -47,6 +47,10 @@ en:
     statistics: "Statistics"
     announcements: "Announcements"
     sidekiq: "Monitoring task queues"
+  without_pagination:
+    displaying_all_records: All records are displayed
+    display_all_records: Display all records on single page(may be long)
+
 
   flash:
     password_updated: "The password has been updated."

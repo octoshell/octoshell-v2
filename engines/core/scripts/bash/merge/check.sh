@@ -5,4 +5,4 @@ function do_task
   (cd $RAILS_DIR && bundle exec rake RAILS_ENV=production  core:"$1")
 }
 
-do_task check_employments && do_task check_projects && do_task check_cities && do_task check_organizations
+do_task check_employments && do_task check_projects && do_task fix_cities && do_task check_cities && do_task fix_organizations && do_task check_organizations

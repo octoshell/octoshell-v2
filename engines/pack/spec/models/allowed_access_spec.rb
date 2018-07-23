@@ -11,12 +11,10 @@ module Pack
       @project.members.create!(user: @user,
                               organization: @organization)
       @current_date = Date.current
-      @old_usual_date = Date.yesterday
-      @tomorrow_usual_date = Date.current + 1
-      @tomorrow_date = AmericanDate.new(@tomorrow_usual_date.year, @tomorrow_usual_date.month, @tomorrow_usual_date.day)
-      @old_date = AmericanDate.new(@old_usual_date.year, @old_usual_date.month, @old_usual_date.day)
+      @old_date = Date.yesterday
+      @tomorrow_date = Date.current + 1
       @access = access_with_status(version: @version, who: @user,
-                                   status: 'allowed', end_lic: AmericanDate.current.to_s,
+                                   status: 'allowed', end_lic: Date.current.to_s,
                                    created_by: @user, allowed_by: @admin)
     end
 
@@ -32,7 +30,7 @@ module Pack
       expect(@access.actions).to match_array %w[allowed denied deny_longer make_longer]
       @access.admin_update(@admin, forever: 'true',
                                     status: 'allowed',
-                                    end_lic: AmericanDate.current.to_s,
+                                    end_lic: Date.current.to_s,
                                     lock_version: @access.lock_version.to_s,
                                     delete_request: 'false')
       expect(@access.status).to eq 'allowed'
@@ -72,7 +70,7 @@ module Pack
       expect(@access.actions).to match_array %w[allowed denied deny_longer make_longer]
       @access.admin_update(@admin, forever: 'false',
                                     status: 'make_longer',
-                                    end_lic: AmericanDate.current.to_s,
+                                    end_lic: Date.current.to_s,
                                     lock_version: @access.lock_version.to_s,
                                     delete_request: 'true')
       expect(@access.status).to eq 'allowed'
@@ -96,7 +94,7 @@ module Pack
                                     lock_version: @access.lock_version.to_s,
                                     delete_request: 'true')
       expect(@access.status).to eq 'allowed'
-      expect(@access.end_lic).to eq AmericanDate.current
+      expect(@access.end_lic).to eq Date.current
       expect(@access.new_end_lic_forever).to eq false
       expect(@access.new_end_lic).to eq nil
     end
@@ -115,11 +113,11 @@ module Pack
       expect(@access.actions).to match_array %w[allowed denied deny_longer make_longer]
       @access.admin_update(@admin, forever: 'false',
                                           status: 'denied',
-                                          end_lic: AmericanDate.current.to_s,
+                                          end_lic: Date.current.to_s,
                                           lock_version: @access.lock_version.to_s,
                                           delete_request: 'false')
       expect(@access.status).to eq 'denied'
-      expect(@access.end_lic).to eq AmericanDate.current
+      expect(@access.end_lic).to eq Date.current
       expect(@access.new_end_lic_forever).to eq false
       expect(@access.new_end_lic).to eq nil
     end

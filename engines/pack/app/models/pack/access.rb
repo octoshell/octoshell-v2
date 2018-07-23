@@ -187,7 +187,7 @@ module Pack
     end
 
     def end_lic_readable
-      I18n.l end_lic || Access.human_attribute_name(:forever)
+      end_lic.blank? ? Access.human_attribute_name(:forever) : I18n.l(end_lic)
     end
 
     def new_end_lic_readable

@@ -23,7 +23,8 @@ ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 RSpec.configure do |config|
   config.include Sorcery::TestHelpers::Rails::Controller, type: :controller
   config.include Sorcery::TestHelpers::Rails::Integration, type: :feature
-
+  config.include(Shoulda::Matchers::ActiveModel, type: :model)
+  config.include(Shoulda::Matchers::ActiveRecord, type: :model)
   # ## Mock Framework
   # config.mock_with :rr
   config.treat_symbols_as_metadata_keys_with_true_values = true

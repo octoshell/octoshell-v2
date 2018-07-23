@@ -5,7 +5,7 @@ module Core
         @row = row
         @org_id, @org_name, @dep_id, @dep_name,
         @rep_org_id, @rep_dep_id, @rep_org_name, @rep_dep_name = *row
-        puts "Proccessing #{row}"
+        puts "Processing #{row}"
       end
 
       def find
@@ -57,9 +57,9 @@ module Core
       end
 
       def choose_method
-        if @rep_org_id && @model_instance.is_a?(Organization)
-
-        end
+        # if @rep_org_id && @model_instance.is_a?(Organization)
+        #
+        # end
         # if @model_instance.is_a?(Organization) && !@model_instance.city ||
         #    @model_instance.is_a?(OrganizationDepartment) && !@model_instance.organization.city
         #   puts "NO CITY IN organization with id=#{@model_instance.id}".red

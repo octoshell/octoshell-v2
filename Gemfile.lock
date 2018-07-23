@@ -119,6 +119,7 @@ PATH
       sidekiq-failures
       slim
       sshkey
+      write_xlsx
 
 PATH
   remote: engines/face
@@ -661,8 +662,13 @@ GEM
     websocket-extensions (0.1.2)
     whenever (0.9.7)
       chronic (>= 0.6.3)
+    write_xlsx (0.85.5)
+      rubyzip (>= 1.0.0)
+      zip-zip
     xpath (2.1.0)
       nokogiri (~> 1.3)
+    zip-zip (0.3)
+      rubyzip (>= 1.0.0)
 
 PLATFORMS
   java
@@ -707,7 +713,7 @@ DEPENDENCIES
   rspec-rails
   rspec-sidekiq
   sessions!
-  shoulda-matchers
+  shoulda-matchers (~> 3.1)
   sinatra (>= 1.3.0)
   statistics!
   support!

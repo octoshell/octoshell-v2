@@ -4,7 +4,6 @@ FactoryGirl.define do
     version
     association :who, factory: :user
     association :created_by, factory: :user
-    end_lic AmericanDate.current.to_s
-    
+    end_lic Date.current.to_s
   end
 end

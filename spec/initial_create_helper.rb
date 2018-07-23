@@ -6,7 +6,7 @@ ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
 require "rspec/rails"
 require "rspec/autorun"
-require "shoulda-matchers"
+require 'shoulda-matchers'
 require "database_cleaner"
 require "factory_girl_rails"
 require "capybara/rspec"
@@ -14,7 +14,14 @@ require "capybara/poltergeist"
 require "sidekiq/testing"
 require "contexts/user_abilities"
 require "common_helper"
-  Sidekiq::Testing.inline!
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
+Sidekiq::Testing.inline!
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 # Checks for pending migrations before tests are run.
@@ -24,6 +31,9 @@ RSpec.configure do |config|
   config.include Sorcery::TestHelpers::Rails::Controller, type: :controller
   config.include Sorcery::TestHelpers::Rails::Integration, type: :feature
   config.include PackHelpers
+  config.include(Shoulda::Matchers::ActiveModel, type: :model)
+  config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+
   # ## Mock Framework
   # config.mock_with :rr
   config.treat_symbols_as_metadata_keys_with_true_values = true
@@ -54,6 +64,5 @@ RSpec.configure do |config|
     puts "Seeding data"
     Seed.all
     Pack::Seed.all
-
   end
 end

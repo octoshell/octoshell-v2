@@ -76,7 +76,7 @@ en:
       denied: You have been denied access to the version
       allowed: You have been allowed access to the version
       expired: Your access has expired to the version
-      end_lic_changed: Изменилась дата окончания Вашего доступа
+      end_lic_changed: Your access expiration date has been changed
       version_ended: Вам продлили доступ
       denied_longer: Вам отказали в продлении доступа
       deleted: Ваш доступ удален

@@ -1,11 +1,11 @@
 var access = <%=raw @access.to_json(methods: [:end_lic_readable,:new_end_lic_readable])%>;
-access.end_lic = access.end_lic_readable;
-access.new_end_lic = access.new_end_lic_readable;
+// access.end_lic = access.end_lic_readable;
+// access.new_end_lic = access.new_end_lic_readable;
 var data;
 var endLicDate;
 var nowDate;
 if(access.end_lic){
-  endLicDate = getDate(access.end_lic);
+  endLicDate = getDate(access.end_lic_readable);
   nowDate = getDate(new Date().toISOString().split('T')[0]);
   data = { forever: false };
 }else{

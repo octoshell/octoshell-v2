@@ -11,8 +11,7 @@ module Pack
       @project.members.create!(user: @user,
                               organization: @organization)
       @current_date = Date.current
-      @old_usual_date = Date.yesterday
-      @old_date = AmericanDate.new(@old_usual_date.year, @old_usual_date.month, @old_usual_date.day)
+      @old_date = Date.yesterday
       unless Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
         Support::Topic.create!(name: I18n.t('integration.support_theme_name'))
       end

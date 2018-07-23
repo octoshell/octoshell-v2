@@ -1,53 +1,53 @@
 en:
   activerecord:
     models:
-      support/ticket: Support ticketsЗаявка в поддержку
-      support/topic: Тема заявки
-      support/tag: Тег
-      support/field: Дополнительное поле
-      support/reply: Ответ
-      support/reply_template: Шаблон ответа
+      support/ticket: Support requests
+      support/topic: Request topic
+      support/tag: Tag
+      support/field: Extra field
+      support/reply: Reply
+      support/reply_template: Reply template
     attributes:
       support/ticket:
-        name: Название
-        topic: Тема
-        topic_id: Тема
-        reporter: Автор
-        reporter_id: Автор
-        reporter_logins: Логины автора
-        responsible: Ответственный
-        responsible_id: Ответственный
-        project: Проект
-        project_id: Проект
-        cluster: Кластер
-        cluster_id: Кластер
-        surety: Поручительство
-        surety_id: Поручительство
-        tags: Теги
-        tag_ids: Теги
-        subscribers: Подписчики
-        subscriber_ids: Подписчики
-        replies: Переписка
-        state: Статус
-        created_at: Создана
-        updated_at: Последняя активность
+        name: Name
+        topic: Topic
+        topic_id: Topic
+        reporter: Author
+        reporter_id: Author
+        reporter_logins: Author logins
+        responsible: Responsible
+        responsible_id: Responsible
+        project: Project
+        project_id: Project
+        cluster: Cluster
+        cluster_id: Cluster
+        surety: Surety
+        surety_id: Surety
+        tags: Tags
+        tag_ids: Tags
+        subscribers: Subscribers
+        subscriber_ids: Subscribers
+        replies: Replies
+        state: Status
+        created_at: Created at
+        updated_at: Last activity at
         url: url
-        subject: Проблема
-        message: Описание проблемы
-        attachment: Приложенный файл
+        subject: Problem
+        message: Problem description
+        attachment: Attachment
       support/topic:
-        name: Наименование
-        parent: Родительская тема
-        parent_id: Родительская тема
-        tags: Теги по-умолчанию
-        tag_ids: Теги по-умолчанию
-        fields: Дополнительные поля
-        field_ids: Дополнительные поля
+        name: Name
+        parent: Parent topic
+        parent_id: Parent topic
+        tags: Default tags
+        tag_ids: Default tags
+        fields: Extra fields
+        field_ids: Extra fields
       support/tag:
-        name: Название
+        name: Name
       support/field:
-        name: Название
-        required: Обязательное поле
+        name: Name
+        required: required
         url: Содержимое оформить как ссылку
         contains_source_code: Поле будет содержать исходный код (логи)
         hint: "Подсказка пользователю: что вводить в качестве значения поля"

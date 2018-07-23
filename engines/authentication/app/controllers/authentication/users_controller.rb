@@ -9,8 +9,8 @@ class Authentication::UsersController < Authentication::ApplicationController
       redirect_back_or_to(root_url)
     else
       @user = User.new(user_params)
+      @user.language = session[:locale]
       if @user.save
-        LangPref.create!(user_id: @user.id, language: session[:locale])
         redirect_to confirmation_users_path(email: @user.email)
       else
         render :new

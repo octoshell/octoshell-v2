@@ -61,7 +61,7 @@ module Core
         if city.country
           puts "#{self.inspect} Organization city #{city.inspect.green} isn't located in organization country #{country.inspect.blue}. Solve this problem before merge and run this script again"
         else
-          puts "Country is not specified for #{city.inspect}"
+          puts "Country is not specified for #{city.inspect}".red
         end
         return
       end

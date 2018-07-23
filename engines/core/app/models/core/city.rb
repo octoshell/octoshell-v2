@@ -17,33 +17,25 @@ module Core
 
     scope :finder, ->(q){ where("title_ru like :q OR title_en like :q", q: "%#{q.mb_chars}%").order(:title_ru) }
 
-    #console only
-    def check_country
+    def bad
       return if country
-      input = ''
+      puts "---------------------------"
+      puts inspect
+      puts organizations.inspect
       if Organization.where(city: self).distinct.count(:country_id) == 1
         country = Organization.where(city: self).first.country
-        loop do
-          STDOUT.puts "Is city #{self.inspect} in #{country.inspect}? (y/n)"
-          input = STDIN.gets.strip.downcase
-          break if  %w(y n).include?(input)
-        end
-        if input == 'y'
-          self.country = country
-        else
-          STDOUT.puts "Print country's title_en for #{self.inspect}"
-          input = STDIN.gets.strip
-          country = Country.find_or_create_by!(title_en: input)
-          self.country = country
-        end
-        puts "Country for  #{self.inspect} #{'is modified to'.yellow} #{country.inspect}"
+        puts "single country= #{country.inspect}"
       else
-        STDOUT.puts "Print country's title_en for #{self.inspect}"
-        input = STDIN.gets.strip
-        country = Country.find_or_create_by!(title_en: input)
-        self.country = country
+        puts 'not single country'
+        Country.all.joins(:organizations).where("core_organizations.city_id = #{id}").each do |c|
+          puts c.inspect
+        end
       end
-      save!
+      puts "---------------------------"
+    end
+
+    def check_country
+      raise "ERROR in #{inspect}" unless country
     end
 
     def simple_readable_attributes

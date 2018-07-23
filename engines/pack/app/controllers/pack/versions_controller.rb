@@ -8,6 +8,14 @@ module Pack
       if @version.service &&  @version.user_accesses.select{|a| a.status=="allowed"} && !may?(:manage, :packages)
         raise MayMay::Unauthorized
       end
+      @options_for_select = []
+      @options_for_select_labels = []
+      Core::Project.joins(members: :user).where(core_members: {user_id: current_user.id,owner: true}).each do |item|
+        @options_for_select << item.id
+        @options_for_select_labels << t('project') + ' ' + item.title
+      end
+      @options_for_select << "user"
+      @options_for_select_labels << t("user")
     end
 
     def index
