@@ -106,4 +106,11 @@ namespace :core do
 
     end
   end
+
+  task :fix_everything => :environment do
+    list = %w[check_employments check_projects fix_cities check_cities fix_organizations check_organizations]
+    list.each do |elem|
+      Rake::Task["core:#{elem}"].invoke
+    end
+  end
 end
