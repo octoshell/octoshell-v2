@@ -30,9 +30,14 @@ table class="table table-bordered"
   tr
     th = Core::Surety.human_attribute_name(:document)
     td = link_to @surety.document.file.filename, @surety.document.url if @surety.document.present?
-  tr
-    th = Core::Surety.human_attribute_name(:reason)
-    td =  @surety.reason
+  -if @surety.reason.present?
+    tr
+      th = Core::Surety.human_attribute_name(:reason)
+      td =  @surety.reason
+  -if @surety.changed_by
+      tr
+        th = Core::Surety.human_attribute_name(:changed_by)
+        td =  @surety.changed_by.full_name
 
 
 - if @surety.scans.any?
@@ -40,4 +45,5 @@ table class="table table-bordered"
     h3 = Core::Surety.human_attribute_name(:scans)
     - @surety.scans.each do |scan|
       div class="col-xs-4"
+        -puts scan.image.class
         = link_to image_tag(scan.image.path), scan.image.url, target: :blank, class: "thumbnail"

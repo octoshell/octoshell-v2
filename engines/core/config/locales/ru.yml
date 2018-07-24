@@ -227,6 +227,8 @@ ru:
         created_at: "Создано"
         human_name: "Поручительство №%{id}"
         reason: "Причина одобрения/ отклонения"
+        changed_by: "Одобрил/отклонил"
+
       core/surety_member:
         full_name: "ФИО"
         organization: "Организация"

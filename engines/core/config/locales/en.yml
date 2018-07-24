@@ -57,7 +57,7 @@ en:
       core/cluster: "Кластер"
       core/cluster_log: "Cluster log"
       core/quota_kind: "quota kind for resources"
-      core/cluster_quota: "Quota for a cluster resource"
+      core/cluster_quota: "Quota for a cluster resources"
       core/surety: "Surety"
       core/project_invitation: "Invitation to project"
       core/country: Country
@@ -227,6 +227,8 @@ en:
         created_at: "Created at"
         human_name: "Surety №%{id}"
         reason: "Reason for approval / rejection"
+        changed_by: "Approved/rejected by"
+
       core/surety_member:
         full_name: "Full name"
         organization: "Organization"
@@ -450,12 +452,12 @@ en:
           send_email_to_member: "Send email to member"
           has_surety: "Surety exists"
           project_access_state: "project access is allowed"
-          cluster_access_state: "resource access is allowed"
+          cluster_access_state: "resources access is allowed"
         sureties:
           title: "Sureties"
       requests:
         index:
-          title: "Resource requests"
+          title: "Resources requests"
           pending_requests: "Pending requests"
           project_title: "Project"
           cluster_name: "Cluster"
@@ -465,9 +467,9 @@ en:
           no_pending_requests_found: "No pending requests have been found"
           no_other_requests_found: "No requests have been found"
         edit:
-          title: "Edit the resource request"
+          title: "Edit the resources request"
         show:
-          title: "The resource request №%{id} for the %{pid}:\"%{title}\" project"
+          title: "The resources request №%{id} for the %{pid}:\"%{title}\" project"
           active_projects: "Active projects"
           reg_date: "Reqistration date"
           days_short: "d."
@@ -487,7 +489,7 @@ en:
           title: "Edit the project kind"
       quota_kinds:
         index:
-          title: "Resource quota kinds"
+          title: "Resources quota kinds"
           new_quota_kind: "Add a new quota kind"
         edit:
           title: "Edit the quota kind"
@@ -496,7 +498,7 @@ en:
       clusters:
         index:
           title: "Clusters"
-          quotas_info: "Resource quota"
+          quotas_info: "Resources quota"
           new_cluster: "Create a new cluster"
           no_clusters_found: "No clusters have been found"
           delete: "Delete"
@@ -504,7 +506,7 @@ en:
           confirm: "Are you sure?"
         show:
           info: "Cluster information"
-          quotas_info: "Resource quota"
+          quotas_info: "Resources quota"
           pub_key_help_html: "To make an application work with the cluster  copy the key в <code>/home/%{admin_login}/.ssh/authorized_keys</code>"
           show_logs: "Show logs"
         new:
@@ -512,7 +514,7 @@ en:
         edit:
           title: "Edit cluster"
         form:
-          help: "You can set default resource quotas values by clicking on \"+ add quota\". These values will be used by users to create resource quota request."
+          help: "You can set default resources quotas values by clicking on \"+ add quota\". These values will be used by users to create resource quota request."
           add_quota: "+ add quota"
           remove_quota: "remove quouta"
       cluster_logs:
@@ -522,7 +524,7 @@ en:
           created_before: "Created before"
       users:
         index:
-          title: "Resource user access management"
+          title: "Resources user access management"
           email: "email"
           access_state: "Access state"
           block: "Block"
@@ -618,7 +620,7 @@ en:
           title: "Create a new organization"
         edit:
           title: "Edit organization"
-          help: "You can set default resource quotas values by clicking on \"+ add quota\". These values will be used by users to create resource quota request."
+          help: "You can set default resources quotas values by clicking on \"+ add quota\". These values will be used by users to create resources quota request."
           add_department: "+ add a department"
           remove_department: "delete the department"
         show:
@@ -752,7 +754,7 @@ en:
         send_email_to_member: "Send email to member"
         has_surety: "Surety exists"
         project_access_state: "project access is allowed"
-        cluster_access_state: "resource access is allowed"
+        cluster_access_state: "resources access is allowed"
         drop_member: "Remove the member of the project"
       spare_clusters:
         title: "Available resources"
@@ -787,7 +789,7 @@ en:
         remove_department: "remove the department"
     requests:
       new:
-        title: "Create a resource request"
+        title: "Create a resources request"
       form:
         help: "Fill the form fields with the amount of resources that you will need during the project work. Currently, the quota sizes are set by default."
     credentials:

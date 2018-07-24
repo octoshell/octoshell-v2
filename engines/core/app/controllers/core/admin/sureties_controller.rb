@@ -40,19 +40,21 @@ module Core
 
     def activate_or_reject
       @surety = find_surety(params[:surety_id])
+      unless params[:surety][:reason].present?
+        flash[:error] = t('.reason_empty')
+        redirect_to_surety @surety
+        return
+      end
       if params[:commit] == Core::Surety.human_state_event_name(:activate)
         @surety.activate
       else
         @surety.reject
       end
       @surety.reason = params[:surety][:reason]
-      if params[:surety][:reason].present?
-        @surety.save
-        redirect_to_surety @surety
-      else
-        flash[:error] = t('.reason_empty')
-        redirect_to_surety @surety
-      end
+      @surety.changed_by = current_user
+      @surety.save
+      redirect_to_surety @surety
+
     end
 
     def close
