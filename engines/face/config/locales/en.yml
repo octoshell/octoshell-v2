@@ -5,7 +5,7 @@ en:
         more: "More "
       admin_submenu:
         more: "More "
-      _submenu:
+      submenu:
         more: "More "
     home:
       show:
@@ -192,4 +192,4 @@ en:
   layouts:
     face:
       application:
-        maintaining_organization: "SRCC, Lomonosov Moscow State University"
+        maintaining_organization: "RCC, Lomonosov Moscow State University"

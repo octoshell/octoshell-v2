@@ -339,10 +339,10 @@ ru:
 
   core:
     mailer:
-      _header:
+      header:
         hello_known_name: "Здравствуйте, %{name}!"
         hello_unknown: "Здравствуйте!"
-      _footer:
+      footer:
         octo_regards: "С уважением, Octoshell."
         maintained_by: "Лаборатория Параллельных информационных технологий НИВЦ МГУ."
       invitation_to_project:
@@ -423,7 +423,7 @@ ru:
 
     admin:
       projects:
-        _requests:
+        requests:
           access_request: "Заявки на доступ к ресурсам СКЦ МГУ"
           resources_requested: "Запрошено ресурсов"
         index:
@@ -692,7 +692,7 @@ ru:
           reason_empty: Пустая причина одобрения/ отклонения
 
     credentials:
-      _list:
+      list:
         msg_help_sshkey: "Если Вы не знаете как добавить публичый ssh-ключ, перейдите по ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Добавление публичного ssh-ключа</a>."
 
     projects:

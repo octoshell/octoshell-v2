@@ -155,10 +155,10 @@ en:
   sessions:
 
     mailer:
-      _header:
+      header:
         hello_known_name: "Hello, %{name}!"
         hello_unknown: "Hello!"
-      _footer:
+      footer:
         octo_regards: "Yours faithfully, Octoshell."
         maintained_by: "Parallel information technologies laboratory, RCC MSU."
       new_report:
@@ -297,7 +297,7 @@ en:
       survey_fields:
         new:
           title: "New survey fields"
-        _form:
+        form:
           collection_help: "Only for radio-buttons, lists and scientometrics"
           strict_collection_help: "Does not allow to save values not from the list"
           regexp_help: "You can test regexps here: http://rubular.com/ Choose 1.9.3 ruby version"
@@ -338,7 +338,7 @@ en:
           message: "Message"
           project_surveys: "Project surveys"
           no_completed_surveys: "No completed surveys"
-        _table:
+        table:
           report: "Report"
           status: "Status"
           updated: "Updated"
@@ -362,14 +362,14 @@ en:
           author: "Author"
 
     shared:
-      _graph:
+      graph:
         pie_chart: "Pie chart"
         columns: "Columns"
         download_csv: "Download .csv"
         show: "show"
 
     surveys:
-      _teaser:
+      teaser:
         session: "Re-registration"
         msg_incomplete: "You have unsent or rejected surveys and / or a report."
         msg_submit: "You have to submit a report"
@@ -382,25 +382,25 @@ en:
         open: "Open"
 
     user_survey_fields:
-      _mselect_field:
+      mselect_field:
         user_value: "Custom option"
-      _show_uselect_field:
+      show_uselect_field:
         msg_no_data: "No data"
-      _uselect_field:
+      uselect_field:
         msg_input_value: "Enter value"
-      _show_mselect_field:
+      show_mselect_field:
         msg_no_data: "No data"
-      _show_uselect_field:
+      show_uselect_field:
         msg_no_data: "No data"
 
     user_surveys:
-      _list:
+      list:
         title: "Title"
         project: "Project"
         status: "Status"
         session: "Re-registration"
         no_surveys: "No surveys"
-      _table:
+      table:
         title: "Title"
         project: "Project"
         status: "Status"
@@ -438,7 +438,7 @@ en:
         administration: "Administration"
         expert: "Exper"
         message: "Message"
-      _list:
+      list:
         report: "Report"
         project: "Project"
         status: "Status"
@@ -446,7 +446,7 @@ en:
         session: "Re-registration"
         report_id: "Report No.%{id}"
         no_reports: "No reports"
-      _table:
+      table:
         report: "Report"
         project: "Project"
         status: "Status"

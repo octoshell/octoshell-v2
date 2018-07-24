@@ -3,12 +3,9 @@ namespace :core do
     # Core::JoinOrgs.merge_from_table(args[:table_path])
     ActiveRecord::Base.transaction do
       Core::Organization.all.each do |o|
-        puts o.inspect
         o.update!(checked: true)
       end
       Core::OrganizationDepartment.all.each do |o|
-        puts o.inspect
-        next if o.organization_id == 939
         o.update!(checked: true)
       end
     end
@@ -109,8 +106,10 @@ namespace :core do
 
   task :fix_everything => :environment do
     list = %w[check_employments check_projects fix_cities check_cities fix_organizations check_organizations]
-    list.each do |elem|
-      Rake::Task["core:#{elem}"].invoke
+    ActiveRecord::Base.transaction do
+      list.each do |elem|
+        Rake::Task["core:#{elem}"].invoke
+      end
     end
   end
 end

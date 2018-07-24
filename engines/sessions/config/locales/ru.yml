@@ -156,10 +156,10 @@ ru:
   sessions:
 
     mailer:
-      _header:
+      header:
         hello_known_name: "Здравствуйте, %{name}!"
         hello_unknown: "Здравствуйте!"
-      _footer:
+      footer:
         octo_regards: "С уважением, Octoshell."
         maintained_by: "Лаборатория Параллельных информационных технологий НИВЦ МГУ."
       new_report:
@@ -296,7 +296,7 @@ ru:
       survey_fields:
         new:
           title: "Новое поле для опросника"
-        _form:
+        form:
           collection_help: "Только для Радио, Списков и Наукометрии"
           strict_collection_help: "Не позволяет сохранять значения не из списка"
           regexp_help: "Тестировать регекспы можно здесь: http://rubular.com/ В качестве ruby version выбирать 1.9.3"
@@ -337,7 +337,7 @@ ru:
           message: "Сообщение"
           project_surveys: "Опросы в рамках проекта"
           no_completed_surveys: "Нет присланных опросов"
-        _table:
+        table:
           report: "Отчет"
           status: "Статус"
           updated: "Обновлен"
@@ -361,14 +361,14 @@ ru:
           author: "Автор"
 
     shared:
-      _graph:
+      graph:
         pie_chart: "Пирог"
         columns: "Колонки"
         download_csv: "Загрузить .csv"
         show: "раскрыть"
 
     surveys:
-      _teaser:
+      teaser:
         session: "Перерегистрация"
         msg_incomplete: "У Вас есть неотправленные или отклонённые опросы и/или отчёт."
         msg_submit: "Опросы и отчет нужно сдать"
@@ -381,25 +381,25 @@ ru:
         open: "Открыть"
 
     user_survey_fields:
-      _mselect_field:
+      mselect_field:
         user_value: "Свой вариант"
-      _show_uselect_field:
+      show_uselect_field:
         msg_no_data: "Нет данных"
-      _uselect_field:
+      uselect_field:
         msg_input_value: "Введите значение"
-      _show_mselect_field:
+      show_mselect_field:
         msg_no_data: "Нет данных"
-      _show_uselect_field:
+      show_uselect_field:
         msg_no_data: "Нет данных"
 
     user_surveys:
-      _list:
+      list:
         title: "Наименование"
         project: "Проект"
         status: "Статус"
         session: "Перерегистрация"
         no_surveys: "Нет опросников"
-      _table:
+      table:
         title: "Наименование"
         project: "Проект"
         status: "Статус"
@@ -437,7 +437,7 @@ ru:
         administration: "Администрация"
         expert: "Эксперт"
         message: "Сообщение"
-      _list:
+      list:
         report: "Отчет"
         project: "Проект"
         status: "Статус"
@@ -445,7 +445,7 @@ ru:
         session: "Перерегистрация"
         report_id: "Отчет №%{id}"
         no_reports: "Нет отчетов"
-      _table:
+      table:
         report: "Отчет"
         project: "Проект"
         status: "Статус"

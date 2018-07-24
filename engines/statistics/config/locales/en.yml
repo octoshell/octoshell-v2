@@ -37,6 +37,6 @@ en:
         refresh_rate: "Data is updated every 3 months"
         calculate_now: "Calculate now"
     shared:
-      _stats:
+      stats:
         graph: "Chart"
         table: "Table        "

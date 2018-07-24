@@ -1,7 +1,7 @@
 module LocalizedEmails
   module MessageDeliveryLocalization
     extend ActiveSupport::Concern
-    DEFAULT_LOCALE = 'ru'.freeze
+    DEFAULT_LOCALE = 'en'.freeze
 
     def new_message
       @mailer.send(:new, @mail_method, *@args).message

@@ -1,6 +1,6 @@
-= render "header"
+= render "core/mailer/header"
 -vers=@access.version
 p =t('.body',vers: vers.name,message: t("mailer_version_messages.#{vers.state}",date: vers.end_lic)    )
 
 
-= render "footer"
+= render "core/mailer/footer"

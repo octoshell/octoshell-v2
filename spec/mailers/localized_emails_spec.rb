@@ -7,7 +7,8 @@ describe LocalizedEmails, type: :mailer do
     @users << create(:user)
     @users << create(:user, email: 'eng_2@octoshell.uk', language: 'en')
     @collection = TestMailer.test_mail(@users.map(&:email) + ['vasya@mail.ru']).message
-    expect(@collection.mails.map(&:to)).to match_array([ [@users[0], @users[2]].map(&:email) + ['vasya@mail.ru'], [@users[1],@users[3]].map(&:email) ] )
+    puts @collection.inspect
+    expect(@collection.mails.map(&:to)).to match_array([ [@users[0], @users[2]].map(&:email), [@users[1],@users[3]].map(&:email) + ['vasya@mail.ru'] ] )
     expect { TestMailer.test_mail(@users.map(&:email) + ['vasya@mail.ru']).deliver! }.to change { ActionMailer::Base.deliveries.count }.by(2)
   end
   it 'delivers Core::Mailer.project_activated mail' do

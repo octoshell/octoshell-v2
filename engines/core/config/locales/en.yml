@@ -339,10 +339,10 @@ en:
 
   core:
     mailer:
-      _header:
+      header:
         hello_known_name: "Hello, %{name}!"
         hello_unknown: "Hello!"
-      _footer:
+      footer:
         octo_regards: "Yours faithfully, Octoshell."
         maintained_by: "Parallel information technologies laboratory, RCC MSU."
       invitation_to_project:
@@ -423,7 +423,7 @@ en:
 
     admin:
       projects:
-        _requests:
+        requests:
           access_request: "Request to access to MSU Supercomputing Center resouces"
           resources_requested: "Requested resources"
         index:
@@ -690,7 +690,7 @@ en:
 
 
     credentials:
-      _list:
+      list:
         msg_help_sshkey: "If u do not know how to add public ssh-key, follow the link: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Public ssh-key addition</a>."
 
     projects:

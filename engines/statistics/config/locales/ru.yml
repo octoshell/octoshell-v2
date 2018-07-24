@@ -38,6 +38,6 @@ ru:
         refresh_rate: "Данные обновляются каждые 3 месяца"
         calculate_now: "Посчитать сейчас"
     shared:
-      _stats:
+      stats:
         graph: "График"
         table: "Таблица        "
