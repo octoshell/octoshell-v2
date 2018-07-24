@@ -53,7 +53,7 @@ table
         =Pack::Version.human_attribute_name "package"
       td class="col-xs-9"
         -if admin?
-          =link_to @version.package.name, [:admin, @@version.package]
+          =link_to @version.package.name, [:admin, @version.package]
         -else
           =link_to @version.package.name, @version.package
   -unless admin?

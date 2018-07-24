@@ -2,8 +2,11 @@ div class="page-header"
   h1 = t(".title")
 = bootstrap_form_for @search, method: :get, url: admin_sureties_path, layout: :horizontal, role: "autosubmit" do |f|
   = f.text_field :id_eq, label: "#", autofocus: true
-  = f.autocomplete_field :author_id_eq,{label: Core::Surety.human_attribute_name(:author), source:  main_app.users_path},include_blank: true
-  = f.autocomplete_field :members_id_in,{label: Core::Surety.human_attribute_name(:members), source:  main_app.users_path},include_blank: true
+  - puts f.object.author_id_eq.inspect
+  = f.autocomplete_field :author_id_eq,{label: Core::Surety.human_attribute_name(:author), source:  main_app.users_path},include_blank: true do |val|
+    -puts val.inspect
+    =User.find(val).full_name
+  /= f.autocomplete_field :members_id_in,{label: Core::Surety.human_attribute_name(:members), source:  main_app.users_path} ,include_blank: true, multiple: true
   = f.select :project_organization_id_eq, Core::Organization.all.map{ |o| [o.name, o.id] },{label: Core::Organization.model_name.human,include_blank: true},id: "project_id_select"
   = f.select :project_id_eq, Core::Project.all.map{ |pr| ["#{pr.id}|#{pr.title}", pr.id] },{label: Core::Project.model_name.human,include_blank: true},id: "project_id_select"
   = f.select :state_in, Core::Surety.human_state_names_with_original, {label: Core::Surety.human_attribute_name(:state)}, multiple: true
