@@ -25,3 +25,6 @@ div class="page-header"
 = safe_paginate @projects
 = render "table", projects: @projects
 = safe_paginate @projects
+= render_attachments(Core::Project,:files)
+= render_attachments(Core::Project,:tags)
+= render_attachments(Core::Project,:comments)

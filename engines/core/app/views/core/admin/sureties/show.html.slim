@@ -11,12 +11,6 @@ div class="page-header"
           =f.text_area :reason
     - else
       = link_to Core::Surety.human_state_event_name(:close), admin_surety_close_path(@surety), class: "btn btn-danger", method: :put, data: { confirm: t("actions.confirm") }
-  -if @surety.confirmed?
-     div.row
-       div.col-xs-1
-        =label :reason, Core::Surety.human_attribute_name(:reason)
-       div.col-xs-11
-        =text_area :reason,rows: 3, id: 'reason-field'
 table class="table table-bordered"
   tr
     th = Core::Project.model_name.human
@@ -36,6 +30,10 @@ table class="table table-bordered"
   tr
     th = Core::Surety.human_attribute_name(:document)
     td = link_to @surety.document.file.filename, @surety.document.url if @surety.document.present?
+  tr
+    th = Core::Surety.human_attribute_name(:reason)
+    td =  @surety.reason
+
 
 - if @surety.scans.any?
   div class="row"
