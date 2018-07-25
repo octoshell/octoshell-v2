@@ -9,7 +9,8 @@
 
   div class="row"
     div class="col-md-4"
-      =f.autocomplete_field :user_access,{label: t("pack_search.packages.user_access"), source:  main_app.users_path},include_blank: true
+      =f.autocomplete_field :user_access,{label: t("pack_search.packages.user_access"), source:  main_app.users_path},include_blank: true do |val|
+        -User.find(val).full_name_with_email
     div class="col-md-4"
       =f.select :accesses_who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } )  , { label: t("pack_search.packages.who_type_admin") },{class: "change_user_access", multiple: true}
     div class="col-md-4"

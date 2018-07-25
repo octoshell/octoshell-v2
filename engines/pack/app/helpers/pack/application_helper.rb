@@ -1,10 +1,6 @@
 module Pack
   module ApplicationHelper
 
-    def admin?
-      controller.class.name.split("::").include? "Admin"
-    end
-
     def add_version(t, version)
       if version
         t

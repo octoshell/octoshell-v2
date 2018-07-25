@@ -9,10 +9,14 @@ module CustomAutocompleteField
     html_options[:class] = 'select2-ajax'
     data = { source: options.delete(:source), url: options.delete(:url) }
     html_options[:data] = data
-    sel_opts = []
+    sel_opts = [[]]
     value = object.send method
-    sel_opts = options_for_select([[yield(value), value]]) if value.present?
-    select(method, sel_opts, options, html_options, &block)
+    if value.present? && block_given?
+      sel_opts = Array(value).compact.map do |v|
+        [yield(v), v]
+      end
+    end
+    select(method, sel_opts, options, html_options)
   end
 end
 

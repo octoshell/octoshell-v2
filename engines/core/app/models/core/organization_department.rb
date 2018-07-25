@@ -8,7 +8,8 @@ module Core
 
     has_many :employments, inverse_of: :organization_department
     has_many :users, class_name: Core.user_class, through: :employments
-
+    has_many :members, inverse_of: :organization_department
+    has_many :surety_members, inverse_of: :organization_department
     after_create :notify_admins
 
     scope :finder, ->(q){ where("name like :q", q: "%#{q.mb_chars}%").order(:name) }

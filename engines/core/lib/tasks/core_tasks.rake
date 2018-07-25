@@ -1,6 +1,6 @@
 namespace :core do
   task :merge, [:table_path] => :environment  do |t,args|
-    # Core::JoinOrgs.merge_from_table(args[:table_path])
+    Core::JoinOrgs.merge_from_table(args[:table_path])
     ActiveRecord::Base.transaction do
       Core::Organization.all.each do |o|
         o.update!(checked: true)
@@ -106,10 +106,8 @@ namespace :core do
 
   task :fix_everything => :environment do
     list = %w[check_employments check_projects fix_cities check_cities fix_organizations check_organizations]
-    ActiveRecord::Base.transaction do
-      list.each do |elem|
-        Rake::Task["core:#{elem}"].invoke
-      end
+    list.each do |elem|
+      Rake::Task["core:#{elem}"].invoke
     end
   end
 end

@@ -9,7 +9,6 @@ div class="row"  style="border:1px solid black;margin:10px;"
     =label_tag rad_name,t('versions.cl_autocomplete')
     = radio_button rad_name,"to_s","auto",class: "select-auto"
     =ff.select :name,@categories
-    /= ff.autocomplete_field :name, {source: admin_options_categories_path,display: "name"},{id: "select"+ uniq}
     =label_tag rad_name, t('versions.cl_byhand')
     = radio_button rad_name,"to_s","no",class: "select-auto",checked: true
     = ff.text_field :name

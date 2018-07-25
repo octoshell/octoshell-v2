@@ -11,6 +11,10 @@ module Face
       link_to name, main_app.admin_user_path(profile.user_id)
     end
 
+    def admin?
+      controller.class.name.split("::").include? "Admin"
+    end
+
     def initials profile
        string = profile.last_name.dup
        string << " #{profile.first_name.first}." if profile.first_name.present?

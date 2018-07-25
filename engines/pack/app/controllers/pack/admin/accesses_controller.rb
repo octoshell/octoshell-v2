@@ -36,7 +36,7 @@ module Pack
 
     def create
       @access = Access.new access_params.except(:forever)
-      if access_params[:forever] == 'true'
+      if not_access_params[:forever] == 'true'
         @access.end_lic = nil
         @access.new_end_lic = nil
         @access.new_end_lic_forever = false
@@ -57,7 +57,7 @@ module Pack
     def edit; end
 
     def update
-      if access_params[:forever] == 'true'
+      if not_access_params[:forever] == 'true'
         @access.end_lic = nil
         @access.new_end_lic = nil
         @access.new_end_lic_forever = false
@@ -104,8 +104,12 @@ module Pack
                     :end_lic)
     end
 
+    def not_access_params
+      params[:access]
+    end
+
   	def access_params
-      params.require(:access).permit(:who_id,:forever,:action,:lock_version,:proj_or_user, :version_id,
+      params.require(:access).permit(:who_id,:lock_version, :version_id,
         :new_end_lic, :new_end_lic_forever, :end_lic,:status,:user_id,:project_id,:who_type)
     end
 

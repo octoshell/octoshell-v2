@@ -85,6 +85,7 @@ module Core
       def apply_method
         find
         args = choose_method
+        puts "chosen method: #{args}"
         @model_instance.send(*args) unless args == :"don't update"
       end
     end

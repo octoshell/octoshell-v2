@@ -5,11 +5,11 @@ function renderWhoId(){
    var temp= $('#q_who_type_in').find('option:selected');
    if(temp.val()=='User')
    {
-     $('#who_type_aim').html("<%=j f.autocomplete_field :who_id_eq,label: t('user'), source:  main_app.users_path, display: 'User.find_by_id(who_id_eq).full_name_with_email' %>");
+     $('#who_type_aim').html("<%=j f.autocomplete_field :who_id_eq,label: t('user'), source:  main_app.users_path %>");
    }
    if(temp.val()=='Core::Project')
    {
-     $('#who_type_aim').html("<%=j f.autocomplete_field :who_id_eq,label: t('project'), source:  core.projects_path, display: 'Core::Project.find_by_id(who_id_eq).title' %>");
+     $('#who_type_aim').html("<%=j f.autocomplete_field :who_id_eq,label: t('project'), source:  core.projects_path %>");
    }
    if(temp.val()=='Group')
    {
