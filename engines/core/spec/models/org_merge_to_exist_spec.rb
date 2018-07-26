@@ -17,15 +17,19 @@ module Core
       it "doesn't destroy  organization with existing departments" do
         create(:organization_department, organization: @organization)
         @res, @message = @organization.merge_with_existing_department(@department2.organization_id,@department2.id)
-        expect(@res).to eq false
-        puts @message
-        expect(Organization.all).to match_array [@organization, @organization2]
+        expect(@res).to eq true
+        expect(Organization.all).to match_array [@organization2]
       end
       it "changes associated objects " do
         @project = create_project(organization: @organization)
         @user = create_admin
         @organization.employments.create! user: @user,
                                           organization: @organization
+        @department = create(:organization_department, organization: @organization)
+        @organization.employments.create! user: @user,
+                                          organization: @organization,
+                                          organization_department: @department
+
         @member = @project.members.create!(user: @user,
                                            organization: @organization)
        @res, @message = @organization.merge_with_existing_department(@department2.organization_id,@department2.id)
@@ -36,6 +40,9 @@ module Core
         expect(OrganizationDepartment.all).to eq [@department2]
         expect(Employment.first.organization_department).to eq @department2
         expect(Employment.first.organization).to eq @organization2
+        expect(Employment.second.organization_department).to eq @department2
+        expect(Employment.second.organization).to eq @organization2
+
         expect(Member.find_by(user_id: @user.id).organization).to eq @organization2
         expect(Member.find_by(user_id: @user.id).organization_department)
           .to eq @department2

@@ -45,5 +45,4 @@ table class="table table-bordered"
     h3 = Core::Surety.human_attribute_name(:scans)
     - @surety.scans.each do |scan|
       div class="col-xs-4"
-        -puts scan.image.class
         = link_to image_tag(scan.image.path), scan.image.url, target: :blank, class: "thumbnail"

@@ -1,5 +1,4 @@
 h4 = t(".employments")
--puts "HEADER"
 table class="table table-condensed"
   - if employments.any?
     - employments.each do |employment|
@@ -17,6 +16,7 @@ table class="table table-condensed"
         td
           -if employment.organization.can_edit?(current_user)
             =link_to t('.edit_organization'),core.edit_organization_path(employment.organization)
+
         td class="col-xs-1" = link_to "", core.employment_path(employment), class: "fa fa-pencil"
   - else
     tr class="warning"
@@ -24,8 +24,4 @@ table class="table table-condensed"
   tr
     td colspan="4"
       strong
-        =unless admin?
-          -puts 'ssss'
-          p
-           | ddddddddddddddddddddddddddd
-          small = link_to t(".add_employment"), core.new_employment_path
+        small = link_to t(".add_employment"), core.new_employment_path

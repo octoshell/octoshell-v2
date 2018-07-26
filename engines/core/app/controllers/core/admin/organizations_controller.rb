@@ -191,7 +191,6 @@ module Core
                      end
       if @res.instance_of?(DepartmentMerger)
         @link = view_context.link_to t('.here'), edit_admin_prepare_merge_path(@res).to_s
-        puts @link
         @error = t('.not_auto', link: @link)
       end
       @error

@@ -23,6 +23,8 @@ server {
       stub_status on;
   }
 
+  #Важный Кусок
+
   location /secured_uploads/{
         alias   /var/www/octoshell2/current/;  # Append the path with /
         internal;   # Can't access this directory from direct access from the web
@@ -36,6 +38,7 @@ server {
     proxy_pass http://octo2;
   }
 
+  # Конец важного куска
   location ~ \.(php|cgi) {
     deny all;
   }

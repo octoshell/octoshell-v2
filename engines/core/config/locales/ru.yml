@@ -692,11 +692,6 @@ ru:
           no_sureties: "Ничего не найдено."
         activate_or_reject:
           reason_empty: Пустая причина одобрения/ отклонения
-
-    credentials:
-      list:
-        msg_help_sshkey: "Если Вы не знаете как добавить публичый ssh-ключ, перейдите по ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Добавление публичного ssh-ключа</a>."
-
     projects:
       members:
         invite_member: " добавить участника"
@@ -799,6 +794,8 @@ ru:
         no_credentials_found: "Добавьте свой публичный ssh-ключ!"
         add_credential: "Добавить публичный ключ"
         confirm: "Вы действительно хотите деактивировать ключ?"
+        msg_help_sshkey: "Если Вы не знаете как добавить публичый ssh-ключ, перейдите по ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Добавление публичного ssh-ключа</a>."
+
       new:
         title: "Новый ssh-ключ"
         help: "скопируйте сюда содержимое файла .ssh/*.pub"

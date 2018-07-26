@@ -21,8 +21,8 @@ module Core
       it "doesn't destroy  organization with existing departments" do
         create(:organization_department, organization: @organization)
         @department, @message = @organization.merge_with_new_department(@organization2.id)
-        expect(@organization2.departments.exists?).to eq false
-        expect(@message).not_to eq nil
+        expect(@organization2.departments.exists?).to eq true
+        expect(@message).to eq  nil
       end
       it "creates  department  and changes associated objects " do
         @project = create_project(organization: @organization)

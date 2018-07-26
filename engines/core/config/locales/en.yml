@@ -416,7 +416,7 @@ en:
         open_support: "The technical support section."
       user_access_suspended:
         subject: "Your account has been blocked"
-        msg_access_suspended: "Your account has been blocked because you did not pass re-registration (you did not send us filled questionnaire or project report) or violated the work rules  of MSU Supercomputing Center. If u correct your mistakes, your access can be resurrected."
+        msg_access_suspended: "Your account has been blocked because you did not pass re-registration (you did not send us filled questionnaire or project report) or violated the work rules  of MSU Supercomputing Center. If you correct your mistakes, your access can be resurrected."
         msg_recommendation: "To find out the cause and to ask other questions you can visit our technical support section."
         open_support: "The technical support section."
       user_access_activated:
@@ -690,11 +690,6 @@ en:
         activate_or_reject:
           reason_empty: The reason for approval / rejection is empty
 
-
-    credentials:
-      list:
-        msg_help_sshkey: "If u do not know how to add public ssh-key, follow the link: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Public ssh-key addition</a>."
-
     projects:
       members:
         invite_member: " add a member"
@@ -798,6 +793,8 @@ en:
         no_credentials_found: "Add your public ssh-key!"
         add_credential: "Add public key"
         confirm: "Do you really want to deactivate the key?"
+        msg_help_sshkey: "If you do not know how to add public ssh-key, follow the link: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Public ssh-key addition</a>."
+
       new:
         title: "New ssh-key"
         help: "copy the contents of the .ssh/*.pub file here"

@@ -37,7 +37,7 @@ module Core
                   "При слияние с организацией имя подразделения замены
                    должно быть пустым: #{@row.inspect}"
           end
-          [:merge_with_organization!, to_org_x_nil]
+          [:merge_with_organization!, to_org_x_nil, true]
         when nil
           if @rep_dep_name
             [:merge_with_new_department!, @rep_org_id, @rep_dep_name]

@@ -80,10 +80,6 @@ module Core
     private
 
     def check_primacy
-      # unless user
-      #   puts "User  with id=#{user_id} doesn't exist".red
-      #   return
-      # end
       if user.employments.where(primary: true).any?
         if primary_changed? && (primary_was == false)
           user.employments.update_all(primary: false)

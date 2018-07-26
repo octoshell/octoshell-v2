@@ -102,7 +102,7 @@ module Core
       return self, exception.message
     end
 
-    def merge_with_organization!(to_id, avoid_merger = false)
+    def merge_with_organization!(to_id, avoid_merger = false, _destroy_departments = false)
       organization = Organization.find(to_id)
       if  !avoid_merger && can_not_be_automerged?
         return DepartmentMerger.prepare_merge!(self, organization)

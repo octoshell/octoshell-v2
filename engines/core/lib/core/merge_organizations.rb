@@ -50,15 +50,22 @@ module Core
       merge_with_department!(department)
     end
 
-    def merge_with_organization!(to_id)
+    def merge_with_organization!(to_id, destroy_departments = false)
       # raise MergeError, 'forbidden' if departments.exists?
       raise MergeError, 'same_object' if to_id == id
       Organization.find(to_id)
-      merge_associations({ organization_id: id },
-                         { organization_id: to_id },
-                         Organization::MERGED_ASSOC +
-                           [OrganizationDepartment])
-
+      if destroy_departments
+        merge_associations({ organization_id: id },
+                            organization_id: to_id,
+                            organization_department_id: nil
+                           )
+                           departments.destroy_all
+      else
+        merge_associations({ organization_id: id },
+                           { organization_id: to_id },
+                           Organization::MERGED_ASSOC +
+                             [OrganizationDepartment])
+      end
       destroy!
     end
 
@@ -75,16 +82,13 @@ module Core
 
     private
 
-    # def skip_country_city_validations
-    #
-    # end
-
     def merge_with_department!(department)
-      raise MergeError, 'forbidden' if departments.exists?
+      # raise MergeError, 'forbidden' if departments.exists?
       department.save!
       merge_associations({ organization_id: id},
                          { organization_department: department,
                            organization_id: department.organization_id })
+      departments.destroy_all
       destroy!
       department
     end
