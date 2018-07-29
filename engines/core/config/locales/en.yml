@@ -148,6 +148,8 @@ en:
         group: "Group"
         name: "Name"
       core/request:
+        changed_by: "Approved/rejected by"
+        reason: "Reason for approval/rejection"
         state: "Status"
         project: "Project"
         project_id: "Project"
@@ -197,6 +199,7 @@ en:
         department: "Department"
         departments: "Departments"
         users_count: "Active users"
+        users_with_access_count: "Users with access to clusters"
         projects_count: "Active projects"
         checked: Checked
       core/organization_department:
@@ -456,6 +459,8 @@ en:
         sureties:
           title: "Sureties"
       requests:
+        activate_or_reject:
+          reason_empty: The reason for approval / rejection is empty
         index:
           title: "Resources requests"
           pending_requests: "Pending requests"
@@ -474,7 +479,8 @@ en:
           reg_date: "Reqistration date"
           days_short: "d."
           quotas_ammount: "Quota overall ammount"
-          cpu_hours: "hours"
+          cpu_hours: "CPU hours"
+          gpu_hours: "GPU hours"
           users_num: "Users"
           projects_num: "Projects"
           surety: "Surety"

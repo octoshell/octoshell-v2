@@ -13,6 +13,7 @@ module Sessions
 
     has_many :fields, class_name: "Sessions::SurveyField"
     has_many :user_surveys
+    validates :name, presence: true
 
     def to_s
       kind.name

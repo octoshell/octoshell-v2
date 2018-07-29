@@ -11,6 +11,7 @@ h4 = link_to t(".back_to_session"), [:admin, @survey.session]
 - if @survey.session.pending?
   div class="well btn-toolbar"
     = link_to t(".new_field"), [:new, :admin, @survey, :survey_field], class: "btn btn-default"
+    = link_to t(".edit_name"), [:edit, :admin, @survey.session,@survey], class: "btn btn-info"
     = link_to t(".delete_survey"), [:admin, @survey], method: :delete, class: "btn btn-danger"
 
 - fields = @survey.fields.sorted
@@ -21,7 +22,7 @@ h4 = link_to t(".back_to_session"), [:admin, @survey.session]
         = field.name
         - if field.required?
           abbr title=t('.compulsive') *
-        |  
+        |
         small title=t('.weight') (#{field.weight})
       div class="control-group"
         = render field
@@ -29,7 +30,7 @@ h4 = link_to t(".back_to_session"), [:admin, @survey.session]
         small
           em
             = link_to t("actions.edit"), [:edit, :admin, @survey, field]
-            |  / 
+            |  /
             = link_to t("actions.delete"), [:admin, @survey, field], class: "text-danger", data: { confirm: t("actions.confirm")}, method: :delete
 - else
   p = t(".no_fields")

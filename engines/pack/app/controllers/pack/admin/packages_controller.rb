@@ -7,7 +7,8 @@ module Pack
         format.html{
           @q_form = OpenStruct.new(params[:q])
           search = PackSearch.new(@q_form.to_h, 'packages')
-          @packages = search.get_results(nil).page(params[:page]).per(15)
+          @packages = search.get_results(nil)
+          without_pagination(:packages)
         } # index.html.erb
         format.json do
           @packages = Package.finder(params[:q]).allowed_for_users_with_joins(current_user.id)

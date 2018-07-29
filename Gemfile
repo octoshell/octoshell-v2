@@ -12,6 +12,8 @@ group :development do
   gem "pry-rails"
   gem "better_errors"
   gem 'rails_db'
+  gem 'i18n-tasks', '~> 0.9.21'
+  gem 'localer'
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil

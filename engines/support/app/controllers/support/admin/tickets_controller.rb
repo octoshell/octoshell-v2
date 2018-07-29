@@ -10,8 +10,7 @@ module Support
       @tickets = @search.result(distinct: true)
                         .includes({reporter: :profile}, {responsible: :profile})
                         .order("id DESC, updated_at DESC")
-                        .page(params[:page])
-
+      without_pagination(:tickets)
       # записываем отрисованные тикеты в куки, для перехода к следующему тикету после ответа
       cookies[:tickets_list] = @tickets.map(&:id).join(',')
     end

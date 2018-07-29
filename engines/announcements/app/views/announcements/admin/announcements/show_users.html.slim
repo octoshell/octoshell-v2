@@ -3,12 +3,12 @@ div class="page-header"
 
 = bootstrap_form_for @search, url: admin_announcement_show_users_path(@announcement), method: :get, layout: :horizontal do |f|
   = autocomplete f, name: :id_eq, label: t('.user'), source: main_app.users_path
-  = f.select :owned_projects_state_in, Core::Project.human_state_names, { label: t('.managed_project_statuses'), include_blank: true }, { multiple: true }
-  = f.select :projects_state_in, Core::Project.human_state_names, { label: t('.participated_project_statuses'), include_blank: true }, { multiple: true }
+  = f.select :owned_projects_state_in, Core::Project.human_state_names_with_original, { label: t('.managed_project_statuses'), include_blank: true }, { multiple: true }
+  = f.select :projects_state_in, Core::Project.human_state_names_with_original, { label: t('.participated_project_statuses'), include_blank: true }, { multiple: true }
   = f.collection_select :available_projects_avaliable_clusters_id_eq, Core::Cluster.all, :id, :name, label: t('.has_account_on_clusters'), include_blank: true
   = f.collection_select :sessions_id_in, Sessions::Session.all, :id, :description, { label: t('.rereg_participated'), include_blank: true }, { multiple: true }
-  = f.select :reports_state_in, Sessions::Report.human_state_names, { label: t('.has_rereg_report_statuses'), include_blank: true }, { multiple: true }
-  = f.select :surveys_state_in, Sessions::UserSurvey.human_state_names, { label: t('.has_survey_statuses'), include_blank: true }, { multiple: true }
+  = f.select :reports_state_in, Sessions::Report.human_state_names_with_original, { label: t('.has_rereg_report_statuses'), include_blank: true }, { multiple: true }
+  = f.select :surveys_state_in, Sessions::UserSurvey.human_state_names_with_original, { label: t('.has_survey_statuses'), include_blank: true }, { multiple: true }
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
 

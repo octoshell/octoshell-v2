@@ -29,7 +29,7 @@ div class="page-header"
       - unless @report.assessed?
         - if @report.rejected?
           div class="well"
-            p #{t('.decline_submitting')} 
+            p #{t('.decline_submitting')}
             = link_to t('.decline_submitting'), [@report, :decline_submitting], method: :put, class: "btn btn-warning"
         - if @report.accepted?
           legend #{t('.attach_report_file')}
@@ -44,13 +44,13 @@ div class="page-header"
   table class="table table-striped"
     tr
       th class="col-xs-3" = Sessions::Report.human_attribute_name(:illustration_points)
-      td = @report.illustration_points || t('.not_evaluated')
+      td = report_points(@report,:illustration_points)
     tr
       th class="col-xs-3" = Sessions::Report.human_attribute_name(:statement_points)
-      td = @report.statement_points || t('.not_evaluated')
+      td = report_points(@report,:statement_points)
     tr
       th class="col-xs-3" = Sessions::Report.human_attribute_name(:summary_points)
-      td = @report.summary_points || t('.not_evaluated')
+      td = report_points(@report,:summary_points)
 
 
 
@@ -68,7 +68,7 @@ legend #{t('.conversation')}
           span class="label label-info" #{t('.expert')}
         - else
           = r.user.full_name
-          |  
+          |
           span class="label label-danger" #{t('.administration')}
 
       = markdown r.message
@@ -79,4 +79,3 @@ div class="row"
       = f.text_area :message, rows: 3, hide_label: true, placeholder: t('.message')
       = f.form_group
         = f.submit t("actions.send")
-

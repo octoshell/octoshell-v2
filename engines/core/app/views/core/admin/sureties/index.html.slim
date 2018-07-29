@@ -14,7 +14,7 @@ div class="page-header"
   = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
   = f.form_group :scans_id_not_null,label: {text: Core::Surety.human_attribute_name(:scans)} do
     = f.check_box :scans_id_not_null,label: ''
-
+  = display_all_tag
   = f.form_group
     = f.submit t("actions.find"), class: "btn btn-primary"
 

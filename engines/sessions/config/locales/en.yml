@@ -153,7 +153,9 @@ en:
     you_must_provide_report_materials: "You must provide report materials file!"
 
   sessions:
-
+    evaluate_helper:
+      not_evaluated: "Not rated"
+      without_mark: "0 (without mark)"
     mailer:
       header:
         hello_known_name: "Hello, %{name}!"
@@ -285,6 +287,8 @@ en:
         new:
           title: "Survey creation"
           use_survey_as_template: "Use survey as template"
+        edit:
+          title: "Edit survey"
         show:
           only_for_project_owners: "Only for project managers"
           for_all_users: "For all active project members"
@@ -294,6 +298,7 @@ en:
           no_fields: "There are not any fields in this survey."
           compulsive: "Required"
           weight: "Weight"
+          edit_name: "Edit name"
       survey_fields:
         new:
           title: "New survey fields"
@@ -391,6 +396,8 @@ en:
       show_mselect_field:
         msg_no_data: "No data"
       show_uselect_field:
+        msg_no_data: "No data"
+      show_field:
         msg_no_data: "No data"
 
     user_surveys:

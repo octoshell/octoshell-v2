@@ -18,7 +18,7 @@
       tr
         td = report.id
         td
-          strong = link_to t('.report_id', id: @report.id), sessions.report_path(report)
+          strong = link_to t('.report_id', id: report.id), sessions.report_path(report)
         td
           = link_to report.project.title, core.project_path(report.project) if report.project
         td

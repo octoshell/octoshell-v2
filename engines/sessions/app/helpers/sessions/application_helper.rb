@@ -12,6 +12,13 @@ module Sessions
       menu.items
     end
 
+    def report_points(access, method)
+      result = access.send method
+      return t('sessions.evaluate_helper.not_evaluated') unless result
+      return t('sessions.evaluate_helper.without_mark') if result.zero?
+      result
+    end
+
     def session_state_label(session)
       case session.state_name
       when :pending then

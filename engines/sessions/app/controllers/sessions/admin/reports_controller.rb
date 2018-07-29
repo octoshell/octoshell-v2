@@ -5,12 +5,13 @@ module Sessions
     def index
       @search = Report.search(params[:q] || default_index_params)
       @reports = if (User.superadmins | User.reregistrators).include? current_user
-                   @search.result(distinct: true).page(params[:page])
+                   @search.result(distinct: true)
                  elsif User.experts.include? current_user
                    @search.result(distinct: true).
-                     where(expert_id: [nil, current_user.id]).
-                     page(params[:page])
+                     where(expert_id: [nil, current_user.id])
+
                  end
+    without_pagination :reports
     end
 
     def edit

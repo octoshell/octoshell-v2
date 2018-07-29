@@ -154,7 +154,9 @@ ru:
     you_must_provide_report_materials: "Вы не выбрали файл с материалами!"
 
   sessions:
-
+    evaluate_helper:
+      not_evaluated: "Не оценивалось"
+      without_mark: "0 (без оценки)"
     mailer:
       header:
         hello_known_name: "Здравствуйте, %{name}!"
@@ -284,6 +286,9 @@ ru:
         new:
           title: "Создание опросника"
           use_survey_as_template: "Взять за образец опросник"
+        edit:
+          title: "Редактирование опросника"
+
         show:
           only_for_project_owners: "Только для руководителя проекта"
           for_all_users: "Для всех активных участников проекта"
@@ -293,6 +298,7 @@ ru:
           no_fields: "В опроснике еще нет полей."
           compulsive: "Обязательное"
           weight: "Вес"
+          edit_name: "Редактировать название"
       survey_fields:
         new:
           title: "Новое поле для опросника"
@@ -390,6 +396,8 @@ ru:
       show_mselect_field:
         msg_no_data: "Нет данных"
       show_uselect_field:
+        msg_no_data: "Нет данных"
+      show_field:
         msg_no_data: "Нет данных"
 
     user_surveys:

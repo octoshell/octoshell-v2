@@ -148,6 +148,8 @@ ru:
         group: "Группа"
         name: "Наименование"
       core/request:
+        changed_by: "Одобрил/отклонил"
+        reason: "Причина одобрения/отклонения"
         state: "Статус"
         project: "Проект"
         project_id: "Проект"
@@ -197,6 +199,7 @@ ru:
         department: "Подразделение"
         departments: "Подразделения"
         users_count: "Активных пользователей"
+        users_with_access_count: 'Пользователи с доступом на кластеры'
         projects_count: "Активных проектов"
         checked: Проверена
       core/organization_department:
@@ -456,6 +459,8 @@ ru:
         sureties:
           title: "Поручительства"
       requests:
+        activate_or_reject:
+          reason_empty: Пустая причина одобрения/ отклонения
         index:
           title: "Заявки на ресурсы"
           pending_requests: "Ожидающие подтверждения"
@@ -474,7 +479,8 @@ ru:
           reg_date: "Дата регистрации"
           days_short: "дн."
           quotas_ammount: "Общий объем квот"
-          cpu_hours: "часов"
+          cpu_hours: "CPU часов"
+          gpu_hours: "GPU часов"
           users_num: "Пользователей"
           projects_num: "Проектов"
           surety: "Поручительство"

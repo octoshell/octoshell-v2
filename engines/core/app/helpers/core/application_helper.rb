@@ -5,7 +5,7 @@ module Core
       c.title_ru.blank? ? t('core_no_name') : c.title_ru
     end
 
-    def provide_cities_hash
+    def provide_cities_hash_view
       @countries_meth = Country.all.order(:title_ru).includes(:cities).to_a
       @countries = @countries_meth
       @cities = {}

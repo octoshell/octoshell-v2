@@ -9,6 +9,7 @@ div class="well"
   = f.radio_button :checked_eq, nil, label: t('.none')
   = f.radio_button :checked_eq, true, label: t('.yess')
   = f.radio_button :checked_eq, false, label: t('.noo')
+ = display_all_tag
  = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
  = autocomplete f, name: :country_name, label: t('.find_by_name'), source: admin_countries_path

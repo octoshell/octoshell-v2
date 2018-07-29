@@ -5,7 +5,8 @@ div class="page-header"
   = autocomplete f, name: :project_id_eq, label: Core::Request.human_attribute_name(:project), source: core.projects_path
   = f.collection_select :creator_id_eq, User.joins(:account_owners).preload(:profile).distinct, :id, :full_name_with_email, label: Core::Request.human_attribute_name(:creator), include_blank: true
   = f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name, label: Core::Request.human_attribute_name(:cluster), include_blank: true
-  = f.select :state_in, Core::Request.human_state_names, { label: Core::Request.human_attribute_name(:state), include_blank: true }, { multiple: true }
+  = f.select :state_in, Core::Request.human_state_names_with_original, { label: Core::Request.human_attribute_name(:state), include_blank: true }, { multiple: true }
+  = display_all_tag
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
 

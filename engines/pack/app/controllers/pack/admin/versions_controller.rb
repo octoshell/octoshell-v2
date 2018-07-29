@@ -9,7 +9,8 @@ module Pack
         format.html do
           @q_form = OpenStruct.new(params[:q])
           search = PackSearch.new(@q_form.to_h, 'versions', current_user.id)
-          @versions = search.get_results(nil).page(params[:page]).per(15)
+          @versions = search.get_results(nil)
+          without_pagination(:versions)
         end
         format.json do
           @versions = Version.finder(params[:q]).page(params[:page]).per(params[:per]).includes(:package)

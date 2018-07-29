@@ -5,7 +5,8 @@ module Core
         format.html do
           @search = Country.search(params[:q])
           search_result = @search.result(distinct: true).order(id: :desc)
-          @countries = search_result.page(params[:page]).per(10)
+          @countries = search_result
+          without_pagination :countries
         end
         format.json do
           @countries = Country.finder(params[:q])

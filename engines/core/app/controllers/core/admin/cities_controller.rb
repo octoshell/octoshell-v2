@@ -5,7 +5,8 @@ module Core
         format.html do
           @search = City.search(params[:q])
           search_result = @search.result(distinct: true).order(:title_ru)
-          @cities = search_result.includes(:country).page(params[:page]).per(10)
+          @cities = search_result.includes(:country)
+          without_pagination :cities
         end
         format.json do
           @cities = City.finder(params[:q]).order(:title_ru)

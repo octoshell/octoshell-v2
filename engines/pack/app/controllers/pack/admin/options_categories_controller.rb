@@ -4,7 +4,8 @@ module Pack
   class Admin::OptionsCategoriesController < Admin::ApplicationController
 
     def index
-      @records = OptionsCategory.order(:id).page(params[:page]).per(20)
+      @records = OptionsCategory.order(:id)
+      without_pagination(:records)
       respond_to do |format|
         format.html
         format.json do

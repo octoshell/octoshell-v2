@@ -14,7 +14,7 @@ div class="page-header"
           td class="col-xs-2" = user.human_access_state_name
           td class="col-xs-2 btn-toolbar"
             = link_to t(".block"), block_admin_user_path(user), class: "btn btn-danger btn-sm" if user.active?
-            = link_to t(".reactivate"), reactivate_admin_user_path(user), class: "btn btn-success btn-sm" if user.blocked?
+            = link_to t(".reactivate"), reactivate_admin_user_path(user), class: "btn btn-success btn-sm" if user.closed?
 - else
   div class="panel-body"
     p = t(".no_users_found")

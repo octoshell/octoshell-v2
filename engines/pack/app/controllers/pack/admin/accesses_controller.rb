@@ -12,7 +12,8 @@ module Pack
 
     def index
       @q = Access.ransack(params[:q])
-      @accesses = @q.result(distinct: true).order(:id).page(params[:page]).per(10).preload_who.includes(:version)
+      @accesses = @q.result(distinct: true).order(:id).preload_who.includes(:version)
+      without_pagination(:accesses)
     end
 
     def show

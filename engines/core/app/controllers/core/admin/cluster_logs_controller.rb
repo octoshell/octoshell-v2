@@ -6,7 +6,7 @@ module Core
       respond_to do |format|
         format.html do
           @search = ClusterLog.search(params[:q])
-          @logs = @search.result(distinct: true).order(:created_at).page(params[:page])
+          @logs = @search.result(distinct: true).order(:created_at)
         end
         format.json do
           @logs = ClusterLog.finder(params[:q])

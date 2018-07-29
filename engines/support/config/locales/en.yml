@@ -48,157 +48,157 @@ en:
       support/field:
         name: Name
         required: required
-        url: Содержимое оформить как ссылку
-        contains_source_code: Поле будет содержать исходный код (логи)
-        hint: "Подсказка пользователю: что вводить в качестве значения поля"
+        url: Content as a link
+        contains_source_code: The field will contain the source code (logs)
+        hint: "Tip to the user: what to enter as the field value"
       support/reply:
-        author: Автор
-        author_id: Автор
-        message: Сообщение
-        attachment: Приложенный файл
+        author: Author
+        author_id: Author
+        message: Message
+        attachment: Attachment
       support/reply_template:
-        subject: Заголовок
-        message: Сообщение
+        subject: Subject
+        message: Message
 
     aasm:
       support/ticket:
         state:
           states:
-            pending: Ожидает обработки
-            answered_by_reporter: Есть ответ от автора
-            answered_by_support: Есть ответ от поддержки
-            resolved: Решена
-            closed: Закрыта
+            pending: Pending
+            answered_by_reporter: Answered by reporter
+            answered_by_support: Answered by support
+            resolved: Resolved
+            closed: Closed
           events:
-            resolve: Вопрос решён!
-            close: Закрыть
-            reopen: Заново открыть
+            resolve: Problem is solved!
+            close: Close
+            reopen: Reopen
 
   engine_submenu:
-    tickets_list: Список заявок
-    reply_templates: Шаблоны ответов
-    tags: Теги
-    topics: Темы заявок
-    fields: Доп. Поля для заявок
+    tickets_list: Requests list
+    reply_templates: Reply templates
+    tags: Tags
+    topics: Support topics
+    fields: Requests extra field
 
   actions:
-    show_empty_fields: Показать пустые поля
-    show_as_text: показать как текст
-    ticket_accepted: Заявка принята в работу
+    show_empty_fields: Show empty fields
+    show_as_text: Show as text
+    ticket_accepted: Ticket is accepted
 
   support:
     mailer:
       header:
-        hello_known_name: Здравствуйте, %{name}!
-        hello_unknown: Здравствуйте!
+        hello_known_name: Hello, %{name}!
+        hello_unknown: Hello!
       new_ticket:
-        subject: Новая заявка в техподдержку
-        user_created_request: Пользователь %{full_name} создал заявку в поддержку.
-        ticket: Вопрос
-        topic: Тема
-        show_ticket_details: Перейти к заявке
+        subject: New request for technical support
+        user_created_request: User %{full_name} has created the request for techincal support.
+        ticket: Question
+        topic: Topic
+        show_ticket_details: Show request
       new_ticket_reply:
-        subject: Новый ответ в заявке №%{number}
-        show_request_details: Перейти к заявке
+        subject: New reply in request No%{number}
+        show_request_details: Show request
       answered_tickets_notifications:
-        subject: Напоминание о зависших заявках в техподдержке
+        subject: Answered tickets notifications
       footer:
-        octo_regards: С уважением, Octoshell.
-        maintained_by: Лаборатория Параллельных информационных технологий НИВЦ МГУ.
+        octo_regards: "Yours faithfully, Octoshell."
+        maintained_by: "Parallel information technologies laboratory, RCC MSU."
     admin:
       tickets:
         index:
-          title: Список заявок в поддержку
-          new_ticket_on_user: Создать тикет на пользователя
-          project: Проект
-          reporter: Автор
-          created_after: Создан после
-          created_before: Создан до
-          updated_after: Обновлён после
-          updated_before: Обновлён до
+          title: List of requests for support
+          new_ticket_on_user: Create request for user
+          project: Project
+          reporter: Author
+          created_after: Сreated after
+          created_before: Created before
+          updated_after: Updated after
+          updated_before: Updated before
 
         table:
-          no_tickets: Нет тикетов
+          no_tickets: No tickets found
         edit:
-          title: Редактирование заявки
+          title: Edit request
         new:
-          title: Новая заявка на пользователя
+          title: Create request for user
         show:
-          title: Заявка №%{id}
-          accept: Принять в работу
-          no_replies: Нет сообщений
-          new_reply: Новое сообщение
-          create_reply_template: Создать шаблон из текущего сообщения
+          title: Request No%{id}
+          accept: Accept
+          no_replies: No replies
+          new_reply: New reply
+          create_reply_template: Create reply template from current reply
 
-          send: Отправить
-          send_and_show_result: Отправить и показать результат
-          send_and_show_next: Отправить и открыть следующий
+          send: Send
+          send_and_show_result: Send and show result
+          send_and_show_next: Send and show next ticket
 
       tags:
         index:
-          title: Теги
-          new_tag: Создать тег
+          title: Tags
+          new_tag: Create tag
         new:
-          title: Создание тега
+          title: Create tag
         edit:
-          title: Редактирование тега
+          title: Edit tag
         show:
-          merge_with: Объединить с
-          help: Выбранный тег будет объединен с текущим.
-          tickets_with_tag: Заявки в поддержку с тегом
+          merge_with: Merge with
+          help: Selected tag will be merged with current tag.
+          tickets_with_tag: New tagged request for support
         remote_form:
-          add_tag: Добавить тег
+          add_tag: Add tag
 
       reply_templates:
         index:
-          title: Шаблоны ответов
-          new_reply_template: Создать шаблон
+          title: Reply templates
+          new_reply_template: New reply template
         new:
-          title: Создание шаблона
+          title: Create reply template
         edit:
-          title: Редактирование шаблона
+          title: Edit reply template
 
       fields:
         index:
-          title: Дополнительные поля для заявок
-          new_field: Создать дополнительное поле
+          title: Extra fields for requests
+          new_field: Create extra field
         new:
-          title: Создание доп. поля
+          title: Create extra field
         edit:
-          title: Редактирование доп. поля
+          title: Edit extra field
 
       topics:
         index:
-          title: Темы заявок
-          new_topic: Создать тему
+          title: Requests topics
+          new_topic: Create topic
         new:
-          title: Создание темы заявок
+          title: Create support topic
         edit:
-          title: Редактирование темы заявок
+          title: Edit support topic
         show:
-          title: Тема заявок
-          new_subtopic: Новая подтема
+          title: Support topic
+          new_subtopic: New support subtopic
 
     tickets:
       index:
-        title: Поддержка
-        new_ticket: Новая заявка
-        created_after: Создан после
-        created_before: Создан до
-        updated_after: Обновлен после
-        updated_before: Обновлен до
+        title: Support
+        new_ticket: New support request
+        created_after: Created after
+        created_before: Created before
+        updated_after: Updated after
+        updated_before: Updated before
       show:
-        title: Заявка №%{id}
-        problem_solved: "Проблема решена? Нажмите "
-        new_reply: Новое сообщение
-        if_not: "Если нет, нажмите "
+        title: Request No%{id}
+        problem_solved: "Have your problem been solved? Press "
+        new_reply: New reply
+        if_not: "If not, press "
       new:
-        title: Новая заявка
+        title: New request
       edit:
-        title: Редактирование заявки
+        title: Edit request
 
   errors:
     messages:
-      wrong_size: "размер файла некорректен (должен быть %{file_size})"
-      size_too_small: "файл слишком малого размера (должен быть как минимум %{file_size})"
-      size_too_big: "файл слишком большой (максимальный размер: %{file_size})"
+      wrong_size: "File size is incorrect (must be %{file_size})"
+      size_too_small: "File size is too small (must be %{file_size} at least)"
+      size_too_big: "File size is too big (maximum size: %{file_size})"

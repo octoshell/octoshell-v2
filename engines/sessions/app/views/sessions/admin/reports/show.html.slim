@@ -45,15 +45,15 @@ legend = link_to t('.open_project_card'), core.admin_project_path(@report.projec
           = f.collection_select :expert_id, Sessions.user_class.experts.eager_load(:profile), :id, :full_name, label: t('.assign_expert')
           = f.primary t("actions.save")
       - else
-        h3 Эксперт: #{link_to_if may?(:manage, :users), @report.expert.full_name, main_app.admin_user_path(@report.expert)}
+        h3 #{t('.expert')}: #{link_to_if may?(:manage, :users), @report.expert.full_name, main_app.admin_user_path(@report.expert)}
 
   div class="panel"
     h3 #{t('.report_evaluation')}
     - if @report.assessing? && (current_user == @report.expert)
       = bootstrap_form_for @report, url: [:admin, @report, :assess], layout: :horizontal do |f|
-        = f.collection_radio_buttons :illustration_points, (1..5), :inspect, :inspect, inline: true
-        = f.collection_radio_buttons :statement_points, (1..5), :inspect, :inspect, inline: true
-        = f.collection_radio_buttons :summary_points, (1..5), :inspect, :inspect, inline: true
+        = f.collection_radio_buttons :illustration_points, Sessions::Report::POINT_RANGE, :inspect, :inspect, inline: true
+        = f.collection_radio_buttons :statement_points, Sessions::Report::POINT_RANGE, :inspect, :inspect, inline: true
+        = f.collection_radio_buttons :summary_points, Sessions::Report::POINT_RANGE, :inspect, :inspect, inline: true
         = f.form_group do
           div class="btn-toolbar"
             = f.submit t("actions.assess", default: t('.evaluate'))
@@ -64,13 +64,13 @@ legend = link_to t('.open_project_card'), core.admin_project_path(@report.projec
       table class="table table-striped"
         tr
           th class="col-xs-3" = Sessions::Report.human_attribute_name(:illustration_points)
-          td = @report.illustration_points || t('.not_evaluated')
+          td = report_points(@report,:illustration_points)
         tr
           th class="col-xs-3" = Sessions::Report.human_attribute_name(:statement_points)
-          td = @report.statement_points || t('.not_evaluated')
+          td = report_points(@report,:statement_points)
         tr
           th class="col-xs-3" = Sessions::Report.human_attribute_name(:summary_points)
-          td = @report.summary_points || t('.not_evaluated')
+          td = report_points(@report,:summary_points)
         - if (may?(:manage, :reports) || @report.expert == current_user) && @report.assessed?
           tr
             td colspan="2" = link_to t("actions.edit"), [:admin, @report, :edit], method: :put, class: "muted"
@@ -118,3 +118,6 @@ div class="panel"
           h4 = link_to survey, admin_user_survey_path(survey)
   - else
     p #{t('.no_completed_surveys')}
+= render_attachments(@report,:comments)
+= render_attachments(@report,:tags)
+= render_attachments(@report,:files)

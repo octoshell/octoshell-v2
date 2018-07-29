@@ -45,9 +45,9 @@
           - if report.assessed?
             hr
             ul class="list-unstyled"
-              li #{Sessions::Report.human_attribute_name(:illustration_points)}: #{report.illustration_points || t('.not_evaluated')}
-              li #{Sessions::Report.human_attribute_name(:statement_points)}: #{report.statement_points || t('.not_evaluated')}
-              li #{Sessions::Report.human_attribute_name(:summary_points)}: #{report.summary_points || t('.not_evaluated')}
+              li #{Sessions::Report.human_attribute_name(:illustration_points)}: #{report_points(report,:illustration_points)}
+              li #{Sessions::Report.human_attribute_name(:statement_points)}: #{report_points(report,:statement_points)}
+              li #{Sessions::Report.human_attribute_name(:summary_points)}: #{report_points(report,:summary_points)}
         td
           = report.session.description
 - else

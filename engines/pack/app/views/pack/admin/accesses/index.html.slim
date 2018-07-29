@@ -11,6 +11,6 @@ div class="package-header"
   div id="table_records"
     =render 'table',records: @accesses
   div id="ajax_paginator"
-    =paginate(@accesses)
+    =safe_paginate(@accesses)
 = javascript_tag do
     = render(:partial => 'pack/admin/accesses/index', :formats => [:js])

@@ -6,4 +6,4 @@ div class="package-header"
   br
   br
       =render(:partial => "table",locals: { records: @packages } )
-      =paginate(@packages).to_s
+      =safe_paginate(@packages)

@@ -1,20 +1,32 @@
 div class="page-header"
   h1 = t(".title", default: "Users")
-
 = bootstrap_form_for @search, method: :get, url: admin_users_path, layout: :horizontal do |f|
-  = autocomplete f, name: 'q[id_in]', label: User.model_name.human, source: main_app.users_path
-  = autocomplete f, name: :employments_organization_id_eq, label: Core::Employment.model_name.human, source: core.organizations_path
-  = f.select :user_groups_group_name_in, Group.pluck(:name), {label: User.human_attribute_name(:groups), include_blank: true}, {multiselect: true}
-  = f.select :owned_projects_state_in, Core::Project.human_state_names, { label: t('.managed_project_statuses'), include_blank: true }, { multiple: true }
-  = f.select :projects_state_in, Core::Project.human_state_names, { label: t('.participated_project_statuses'), include_blank: true }, { multiple: true }
-  = f.collection_select :available_projects_avaliable_clusters_id_eq, Core::Cluster.all, :id, :name, label: t('.has_account_on_clusters'), include_blank: true
-  = f.collection_select :sessions_id_in, Sessions::Session.all, :id, :description, { label: t('.rereg_participated'), include_blank: true }, { multiple: true }
-  = f.select :reports_state_in, Sessions::Report.human_state_names, { label: t('.has_rereg_report_statuses'), include_blank: true }, { multiple: true }
-  = f.select :surveys_state_in, Sessions::UserSurvey.human_state_names, { label: t('.has_survey_statuses'), include_blank: true }, { multiple: true }
-  = f.select :access_state_in, User.human_access_state_names, { label: t('.access_state'), include_blank: true }, { multiple: true }
+  /= autocomplete f, name: 'q[id_in]', label: User.model_name.human, source: main_app.users_path
+  = f.autocomplete_field :id_in,{ label: User.model_name.human, source: main_app.users_path, include_blank: true} do |val|
+    -User.find(val).full_name_with_email
+  = f.collection_select :employments_organization_id_in,Core::Organization.all, :id, :name_with_id,{label: Core::Employment.model_name.human}, include_blank: true, multiple: true
+  = f.select :user_groups_group_name_in, Group.pluck(:name), {label: User.human_attribute_name(:groups)},{include_blank: true, multiple: true}
+  = f.select :owned_projects_state_in, Core::Project.human_state_names_with_original, { label: t('.managed_project_statuses')},include_blank: true,  multiple: true
+  = f.select :projects_state_in, Core::Project.human_state_names_with_original, { label: t('.participated_project_statuses')}, include_blank: true,  multiple: true
+  = f.collection_select :available_projects_avaliable_clusters_id_eq, Core::Cluster.all, :id, :name,{ label: t('.has_account_on_clusters'),include_blank: true}, multiple: true
+  = f.collection_select :sessions_id_in, Sessions::Session.all, :id, :description, { label: t('.rereg_participated')}, include_blank: true,  multiple: true
+  = f.select :reports_state_in, Sessions::Report.human_state_names_with_original, { label: t('.has_rereg_report_statuses')}, include_blank: true,  multiple: true
+  = f.select :surveys_state_in, Sessions::UserSurvey.human_state_names_with_original, { label: t('.has_survey_statuses')}, include_blank: true,  multiple: true
+  = f.select :access_state_in, User.human_access_state_names, { label: t('.access_state')}, include_blank: true ,  multiple: true
+  = f.form_group :cluster_access_state_present, label: { text: t(".cluster_access_state_present") } do
+   = f.check_box :cluster_access_state_present,label: ''
+  = display_all_tag
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
 
 = safe_paginate @users
 = render "table", users: @users
 = safe_paginate @users
+javascript:
+  $('#q_cluster_access_state_present').change(function() {
+    if($(this).is(":checked")) {
+        $('#q_projects_state_in').val('active').trigger('change');
+        $('#q_access_state_in').val('active').trigger('change');
+
+    }
+  }).trigger('change');

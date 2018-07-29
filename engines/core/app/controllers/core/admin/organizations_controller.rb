@@ -7,14 +7,18 @@ module Core
           provide_cities_hash
           @search = Organization.search(params[:q])
           search_result = @search.result(distinct: true).includes(:kind, :city, :country).order(id: :desc)
-          @organizations = search_result.page(params[:page])
+          @organizations = search_result
+          without_pagination :organizations
           @projects_count = Project.group(:organization_id)
                                    .where(organization_id: @organizations
-                                   .to_a.map(&:id)).count
-          @users_count = Employment.group(:organization_id).joins_active_users
-                                   .where(state: 'active')
-                                   .where(organization_id: @organizations
-                                     .to_a.map(&:id)).count
+                                   .to_a.map(&:id), state: 'active').count
+          @users_count = User.group('core_employments.organization_id').joins(:organizations)
+                             .where(core_employments: {organization_id: @organizations.map(&:id)})
+                             .where(activation_state: :active).distinct.count('users.id')
+          @users_with_access_count = User.cluster_access_state_present
+                                         .group('core_employments.organization_id').joins(:organizations)
+                                         .where(core_employments: {organization_id: @organizations.map(&:id)})
+                                         .distinct.count('users.id')
         end
         format.json do
           @organizations = Organization.finder(params[:q])

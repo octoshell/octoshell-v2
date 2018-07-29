@@ -16,6 +16,10 @@ Core.user_class.class_eval do
     source: :project,
     inverse_of: :owner
 
+  def requests
+    Core::Request.joins(project: :owner).where('core_members.user_id = ?', current_user.id )
+  end
+
   has_many :invitational_account, ->{ where(project_access_state: "invited") },
     class_name: "::Core::Member",
     foreign_key: :user_id
@@ -105,6 +109,15 @@ Core.user_class.class_eval do
     a && b && c
   end
 
+  def self.cluster_access_state_present(_arg = nil)
+    User.joins([:employments, :credentials, { accounts: :project }])
+        .where(core_members: { project_access_state: 'allowed' })
+        .where(core_projects: { state: 'active' })
+        .where(access_state: :active)
+        .distinct
+
+  end
+
   def human_access_state_name
     human_state_name
   end
@@ -155,6 +168,10 @@ Core.user_class.class_eval do
     rel2 = Core::Organization
            .where(id: project.organization_id)
     rel1.union rel2
+  end
+
+  def self.ransackable_scopes(_auth_object = nil)
+    %i[cluster_access_state_present]
   end
 
 end if Core.user_class

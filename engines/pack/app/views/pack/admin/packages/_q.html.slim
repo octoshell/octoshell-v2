@@ -22,6 +22,7 @@
       =f.check_box :clustervers_active_in,{label: t("pack_search.packages.active_cl")},"1",""
       =f.check_box :deleted_eq,{label: t("pack_search.packages.only_deleted") },"1",""
       =f.check_box :service_eq,{label: t("pack_search.packages.only_service") },"1",""
-
+  div class="row"
+    =display_all_tag
   = f.form_group do
       = f.submit t("actions.find")

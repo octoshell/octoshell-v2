@@ -21,10 +21,10 @@ table class="table table-bordered table-striped"
         = User.human_attribute_name(:last_login_at)
   - users.each do |user|
     tr
-      td = user.id
+      td = link_to user.id, [:admin, user]
       td
         ul class="list-unstyled"
-          li = link_to user, [:admin, user]
+          li = user
           li = user.email
       td
         - state = { active: "success", closed: "danger" }[user.access_state_name.to_sym]

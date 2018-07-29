@@ -5,10 +5,15 @@ div class="page-header"
 
 div class="well btn-toolbar"
   = link_to t("actions.edit"), [:edit, :admin, @request], class: "btn btn-default" unless @request.closed?
-  - if @request.may_approve?
-    = link_to Core::Request.human_state_event_name(:approve), approve_admin_request_path(@request), class: "btn btn-success"
-  - if @request.may_reject?
-    = link_to Core::Request.human_state_event_name(:reject), reject_admin_request_path(@request), class: "btn btn-danger"
+  /- if @request.may_approve?
+  /  = link_to Core::Request.human_state_event_name(:approve), approve_admin_request_path(@request), class: "btn btn-success"
+  /- if @request.may_reject?
+  /  = link_to Core::Request.human_state_event_name(:reject), reject_admin_request_path(@request), class: "btn btn-danger"
+  -if @request.may_reject? || @request.may_approve?
+    = bootstrap_form_for @request,url: activate_or_reject_admin_request_path(@request),method: :put,layout: :inline do |f|
+      =f.submit Core::Request.human_state_event_name(:approve),class: "btn btn-success" if @request.may_approve?
+      =f.submit Core::Request.human_state_event_name(:reject),class: "btn btn-primary" if @request.may_reject?
+      =f.text_area :reason
 
 
 table class="table table-bordered"
@@ -25,16 +30,26 @@ table class="table table-bordered"
         tr
           th #{t('.active_projects')}
           td = @request.owner.projects.where(:state=>:active).count
+        -if @request.reason.present?
+          tr
+            th = Core::Request.human_attribute_name(:reason)
+            td =  @request.reason
+        -if @request.changed_by
+            tr
+              th = Core::Request.human_attribute_name(:changed_by)
+              td =  @request.changed_by.full_name
         tr
           th #{t('.reg_date')}
           td
             = @request.owner.created_at.to_date
             |  (#{(Date.current - @request.owner.created_at.to_date).to_i} #{t('.days_short')})
-        /tr
-          th Общий объем квот
-          td
-            = "#{@request.user.requests.sum(:cpu_hours)} #{t('.cpu_hours')} | "
-            = "#{@request.user.requests.sum(:size)} Gb"
+        -if @request.owner
+          tr
+            th = t '.quotas_ammount'
+            td
+              = "#{@request.owner.requests.sum(:cpu_hours)} #{t('.cpu_hours')} | "
+              = "#{@request.owner.requests.sum(:gpu_hours)} #{t('.gpu_hours')} | "
+              = "#{@request.owner.requests.sum(:hdd_size)} Gb"
   tr
     th = Core::Organization.model_name.human
     td

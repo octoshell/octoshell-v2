@@ -31,8 +31,6 @@ Core::Engine.routes.draw do
       put :confirm
       put :reject
       put :activate_or_reject
-      # put 'activate?:reason', action: 'activate'
-      # put 'reject?:reason', action: 'reject'
     end
 
     resources :project_kinds
@@ -63,6 +61,7 @@ Core::Engine.routes.draw do
     resources :requests, only: [:index, :show, :edit, :update] do
       get :approve, on: :member
       get :reject, on: :member
+      put :activate_or_reject, on: :member
     end
 
     resources :quota_kinds, except: :show

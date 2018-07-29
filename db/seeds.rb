@@ -28,6 +28,11 @@ admin.activate!
 admin.groups << Group.superadmins
 admin.access_state='active'
 admin.save!
+
+
+
+
+
 #
 #
 # # create projects prerequisites

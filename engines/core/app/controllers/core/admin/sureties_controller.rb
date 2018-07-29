@@ -8,7 +8,7 @@ module Core
                                                             members: :profile,
                                                             project: [:card, :organization] },
                                                             :scans)
-                                                 .page(params[:page])
+      without_pagination(:sureties)
     end
 
     def show
@@ -54,7 +54,6 @@ module Core
       @surety.changed_by = current_user
       @surety.save
       redirect_to_surety @surety
-
     end
 
     def close

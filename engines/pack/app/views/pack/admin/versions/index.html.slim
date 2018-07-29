@@ -6,4 +6,4 @@ div class="package-header"
   br
   br
 =render("pack/admin/packages/versions_table", records: @versions )
-=paginate(@versions).to_s
+=safe_paginate(@versions)

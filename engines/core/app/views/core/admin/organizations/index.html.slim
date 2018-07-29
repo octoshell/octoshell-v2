@@ -7,18 +7,20 @@ div class="well"
 = bootstrap_form_for @search, url: admin_organizations_path, method: :get, layout: :horizontal do |f|
   = f.text_field :abbreviation_cont, label: Core::Organization.human_attribute_name("abbreviation")
   = f.collection_select :kind_id_eq, Core::OrganizationKind.order(:name), :id, :name, label: Core::Organization.human_attribute_name("kind"), include_blank: true
+  = f.autocomplete_field :users_id_eq,{label: Core.user_class.model_name.human ,source:  main_app.users_path},include_blank: true do |id|
+    -User.find(id).full_name_with_email
   = f.collection_select :country_id_eq, @countries_meth, :id, :titles,{label: Core::Organization.human_attribute_name("country"),include_blank: true},{id: 'country_select'}
   = f.collection_select :city_id_eq, [], :id, :titles, { label: Core::Organization.human_attribute_name("city") },class: 'select2-custom', id: 'city_select'
   =f.form_group :checked_eq, label: { text: Core::Organization.human_attribute_name(:checked) } do
    = f.radio_button :checked_eq, nil, label: t('.none')
    = f.radio_button :checked_eq, true, label: t('.yess')
    = f.radio_button :checked_eq, false, label: t('.noo')
+  = display_all_tag
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
     button#empty_cities_countries #{t('.empty_cities_countries')}
 = bootstrap_form_tag  do |f|
   = f.collection_select :name, ::Core::Organization.all, :id, :name_with_id, label: t('.find_by_name'), include_blank: true
-  /= autocomplete f, name: :org_name, label: t('.find_by_name'), source: admin_organizations_path
 
 = safe_paginate @organizations
 = render "table", organizations: @organizations

@@ -32,9 +32,9 @@
             - organization = project.organization
             = organization.present? ? organization.name : t(".no_organization.html")
           td
-            = @count_all_members.detect{ |m| m.project_id == project.id  }&.count_p || 0
+            = @count_all_members[project.id] || 0
           td
-            = @count_allowed_members.detect{ |m| m.project_id == project.id  }&.count_p || 0
+            = @count_allowed_members[project.id] || 0
           td  = l project.created_at.to_date
 - else
   div class="panel-body"

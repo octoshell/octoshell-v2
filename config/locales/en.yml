@@ -12,8 +12,8 @@ en:
     sessions_warning:
       html: "Re-registrations <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
     profile: Profile
-    job_stat: Runs statistics
-    job_table: Runs
+    job_stat: Jobs statistics
+    job_table: Jobs
     comments: Comments
     packages: Packages
   admin_submenu:
@@ -219,6 +219,8 @@ en:
         has_rereg_report_statuses: "Has re-registration reports in state"
         has_survey_statuses: "Has polls in the state"
         access_state: "Status"
+        cluster_access_state_present: "Show only with access to clusters"
+
       table:
         no_employment:
           html: "<span class='fa fa-exclamation-triangle text-danger'> no job place is filled</span>"
@@ -242,7 +244,7 @@ en:
       one_page:
         display_entries:
           zero: "Shown <b>0</b>"
-          one: "Shwown <b>1</b>"
+          one: "Shown <b>1</b>"
           few: "Shown <b>%{count}</b>"
           many: "Shown <b>%{count}</b>"
           other: "Shown <b>все %{count}</b>"
