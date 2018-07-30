@@ -4,12 +4,14 @@
   div class="panel-body"
     table class="table table-hover"
       tr
-        th #
-        th class="col-xs-4" = Core::Project.human_attribute_name(:title)
-        th = Core::Project.human_attribute_name(:state)
-        th class="col-xs-4" = Core::Project.human_attribute_name(:owner)
-        th class="col-xs-4" = Core::Project.human_attribute_name(:organization)
-        th
+        th class="col-xs-1"
+        th class="col-xs-3" = Core::Project.human_attribute_name(:title)
+        th class = Core::Project.human_attribute_name(:state)
+        th class="col-xs-2" = Core::Project.human_attribute_name(:owner)
+        th class="col-xs-3" = Core::Project.human_attribute_name(:organization)
+        th class="col-xs-1" = Core::Project.human_attribute_name(:members)
+        th class="col-xs-1" = Core::Project.human_attribute_name(:allowed_members)
+        th class="col-xs-1"
           - th_title = Core::Project.human_attribute_name(:created_at)
           - if @search
             = sort_link @search, :created_at, th_title, default_order: :desc
@@ -21,15 +23,19 @@
           td = project.id
           td = link_to project.title, admin_project_path(project)
           td = mark_project_state(project)
-          td class="col-xs-2"
+          td
             - owner = project.owner
             ul class="list-unstyled"
               li = link_to owner.full_name, main_app.admin_user_path(owner)
               li = owner.email
-          td class="col-xs-3"
+          td
             - organization = project.organization
             = organization.present? ? organization.name : t(".no_organization.html")
-          td class="col-xs-2" = l project.created_at.to_date
+          td
+            = @count_all_members[project.id] || 0
+          td
+            = @count_allowed_members[project.id] || 0
+          td  = l project.created_at.to_date
 - else
   div class="panel-body"
     p = t(".no_projects_found", default: "No Projects Found")

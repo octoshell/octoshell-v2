@@ -4,11 +4,13 @@ module Announcements
       recipient = AnnouncementRecipient.find(recipient_id)
       @user = recipient.user
       @announcement = recipient.announcement
-      attachments[@announcement.attachment.file.filename] = File.read(@announcement.attachment.current_path) if @announcement.attachment.present?
+      if @announcement.attachment.present?
+        attachments[@announcement.attachment.file.filename] = File.read(@announcement.attachment.current_path)
+      end
       mail to: @user.email, subject: @announcement.title
     end
 
-  private
+    private
 
     def markdown(text)
       Kramdown::Document.new(text, filter_html: true).to_html.html_safe

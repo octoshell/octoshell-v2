@@ -1,12 +1,12 @@
 = render "header"
 
-p Пользователь #{@ticket.reporter.full_name} создал заявку в поддержку.
+p #{t('.user_created_request', full_name: @ticket.reporter.full_name)}
 
-h4 Вопрос: #{@ticket}
-h5 style="color: 666;" Тема: #{@ticket.topic.name_with_parents}
+h4 #{t('.ticket')}: #{@ticket}
+h5 style="color: 666;" #{t('.topic')}: #{@ticket.topic.name_with_parents}
 p
   strong = @ticket.subject
 
-p = link_to "Перейти к заявке", support.admin_ticket_url(@ticket)
+p = link_to t('.show_ticket_details'), support.admin_ticket_url(@ticket)
 
 = render "footer"

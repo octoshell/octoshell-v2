@@ -7,15 +7,16 @@ require "authentication/version"
 Gem::Specification.new do |s|
   s.name        = "authentication"
   s.version     = Authentication::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Authentication."
-  s.description = "TODO: Description of Authentication."
+  s.authors     = ["Dmitry Koprov"]
+  s.email       = ["dmitry.koprov@gmail.com"]
+  s.homepage    = "https://github.com/octoshell/octoshell-v2"
+  s.summary     = "An engine for octoshell users authentication"
+  s.description = "Adds functionality for users registration and signin"
+  s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 4.1.0"
+  s.add_dependency "rails", "~> 4.2"
   s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "sorcery"
   s.add_dependency "sidekiq"

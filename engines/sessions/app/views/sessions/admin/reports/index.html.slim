@@ -2,15 +2,16 @@ div class="page-header"
   h1 = t(".title")
 
 = bootstrap_form_for @search, method: :get, url: admin_reports_path, layout: :horizontal do |f|
-  = f.collection_select :session_id_in, Sessions::Session.all, :id, :description, { label: "Перерегистрация", include_blank: true }, { multiple: true }
+  = f.collection_select :session_id_in, Sessions::Session.all, :id, :description, { label: t('.session'), include_blank: true }, { multiple: true }
   = f.collection_select :author_id_eq, Sessions.user_class.joins(:owned_projects).includes(:profile).distinct.all, :id, :full_name_with_email, label: Sessions::Report.human_attribute_name(:author), include_blank: true
   = autocomplete f, name: :project_id_eq, label: Sessions::Report.human_attribute_name(:project), source: core.projects_path
-  = f.select :state_in, Sessions::Report.state_names.map { |n| [Sessions::Report.human_state_name(n), n] }, { label: Sessions::Report.human_attribute_name(:state), include_blank: true }, { multiple: true }
+  = f.select :state_in, Sessions::Report.state_names(:state).map { |n| [Sessions::Report.human_state_name(n), n] }, { label: Sessions::Report.human_attribute_name(:state), include_blank: true }, { multiple: true }
   - if Sessions.user_class.superadmins.include? current_user
-    = f.collection_select :expert_id_eq, Sessions.user_class.experts, :id, :full_name, priority: [current_user], label: "Эксперт", include_blank: true
-  /* = search_check_boxes(f, :illustration_points_in, "Иллюстрации") */
-  /* = search_check_boxes(f, :statement_points_in, "Изложение") */
-  /* = search_check_boxes(f, :summary_points_in, "Общая оценка") */
+    = f.collection_select :expert_id_eq, Sessions.user_class.experts, :id, :full_name, priority: [current_user], label: t('.expert'), include_blank: true
+  = display_all_tag
+  /* = search_check_boxes(f, :illustration_points_in, t('.figures')) */
+  /* = search_check_boxes(f, :statement_points_in, t('presentation')) */
+  /* = search_check_boxes(f, :summary_points_in, t('.overall_assessment')) */
 
   = f.form_group do
     = f.primary t("actions.find")

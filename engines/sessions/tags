@@ -1,0 +1,28 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	Development	/7760835/
+Engine	lib/sessions/engine.rb	/^  class Engine < ::Rails::Engine$/;"	c	module:Sessions
+FileSizeValidator	lib/file_size_validator.rb	/^class FileSizeValidator < ActiveModel::EachValidator$/;"	c
+Generators	lib/generators/sessions/install_generator.rb	/^  module Generators$/;"	m	module:Sessions
+Helper	lib/file_size_validator.rb	/^  class Helper$/;"	c	class:FileSizeValidator
+InstallGenerator	lib/generators/sessions/install_generator.rb	/^    class InstallGenerator < Rails::Generators::Base$/;"	c	module:Sessions.Generators
+Sessions	lib/generators/sessions/install_generator.rb	/^module Sessions$/;"	m
+Sessions	lib/sessions.rb	/^module Sessions$/;"	m
+Sessions	lib/sessions/engine.rb	/^module Sessions$/;"	m
+Sessions	lib/sessions/version.rb	/^module Sessions$/;"	m
+UserClassAbsenceError	lib/sessions.rb	/^  class UserClassAbsenceError < StandardError; end$/;"	c	module:Sessions
+add_projects_initializer	lib/generators/sessions/install_generator.rb	/^      def add_projects_initializer$/;"	f	class:Sessions.Generators.InstallGenerator
+check_validity!	lib/file_size_validator.rb	/^  def check_validity!$/;"	f	class:FileSizeValidator
+determine_user_class	lib/generators/sessions/install_generator.rb	/^      def determine_user_class$/;"	f	class:Sessions.Generators.InstallGenerator
+finished	lib/generators/sessions/install_generator.rb	/^      def finished$/;"	f	module:Sessions.Generators
+help	lib/file_size_validator.rb	/^  def help$/;"	f	class:FileSizeValidator
+initialize	lib/file_size_validator.rb	/^  def initialize(options)$/;"	f	class:FileSizeValidator
+install_migrations	lib/generators/sessions/install_generator.rb	/^      def install_migrations$/;"	f	class:Sessions.Generators.InstallGenerator
+mount_engine	lib/generators/sessions/install_generator.rb	/^      def mount_engine$/;"	f	class:Sessions.Generators.InstallGenerator
+run_migrations	lib/generators/sessions/install_generator.rb	/^      def run_migrations$/;"	f	class:Sessions.Generators.InstallGenerator
+user_class	lib/generators/sessions/install_generator.rb	/^      def user_class$/;"	f	module:Sessions.Generators
+user_class	lib/sessions.rb	/^    def user_class$/;"	f	module:Sessions
+validate_each	lib/file_size_validator.rb	/^  def validate_each(record, attribute, value)$/;"	f	class:FileSizeValidator

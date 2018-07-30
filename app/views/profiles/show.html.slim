@@ -3,7 +3,7 @@ div class="page-header"
 
 = render "form", profile: @profile
 
-= render "core/employments/list", employments: @profile.user.employments.with_state(:active).order( primary: :desc, created_at: :desc )
-= render "core/credentials/list", credentials: @profile.user.credentials.with_state(:active)
+= render "core/employments/list", employments: @profile.user.employments.where(state: :active).order( primary: :desc, created_at: :desc )
+= render "core/credentials/list", credentials: @profile.user.credentials.where(state: :active)
 
 = link_to t(".change_password"), edit_user_path(@profile.user)

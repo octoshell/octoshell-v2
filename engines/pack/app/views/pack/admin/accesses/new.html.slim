@@ -1,0 +1,36 @@
+div class="page-header"
+  h1 = t(".title", default: "Access Creation")
+= bootstrap_form_for [:admin,@access] do |f|
+
+  div id="enab"
+    =f.radio_button  "who_type", "User", label: t("user"),class: 'hid-decision'
+    = f.autocomplete_field :who_id,label: t("user"), source:  main_app.users_path
+      -f.object.who.full_name_with_email if f.object.who.is_a? ::User
+  br
+    =f.radio_button  "who_type", "Core::Project",label: t("project"),class: 'hid-decision'
+    = f.autocomplete_field :who_id, label: t("project"), source:  core.projects_path do
+      -f.object.who.title if f.object.who.is_a? Core::Project
+  br
+    =f.radio_button  "who_type", "Group", label: t("group"),class: 'hid-decision'
+    = f.collection_select :who_id, Group.all, :id, :name, label: t("group")
+  br
+  = f.collection_select :version_id, Pack::Version.all, :id, :name,label: Pack::Version.model_name.human
+  = label_tag 'd',Pack::Access.human_attribute_name(:forever)
+  = radio_button_tag 'access[forever]',true , !@access.end_lic,enab: "disable"
+  = label_tag 'd2',Pack::Access.human_attribute_name(:not_forever)
+  = radio_button_tag 'access[forever]',false, @access.end_lic, enab: "enable"
+  = f.text_field :end_lic,{ class: 'form-control datepicker',enab: "item",placeholder: "mm-dd-yy"}
+  = f.text_field :new_end_lic,{ class: 'form-control datepicker',enab: "item",placeholder: "mm-dd-yy"}
+  = f.check_box :new_end_lic_forever,enab: "item"
+  = f.select :status, Pack::Access.states_list_readable
+  = f.form_group do
+      = f.submit t("buttons.save", default: "Save")
+javascript:
+  bind_func_disable("[enab='enable']","[enab='disable']","[enab='item']");
+  $(".hid-decision").not("[checked]").parents(".radio").next().removeClass('has-error').find("select").prop('disabled',true);
+  $(".hid-decision").not("[checked]").parents(".radio").next().find("span").remove(".help-block");
+
+  $(".hid-decision").change(function(i,e){
+    $(".hid-decision").parents(".radio").next().find("select").prop('disabled',true);
+    $(this).parents(".radio").next().find("select").prop('disabled',false);
+    });

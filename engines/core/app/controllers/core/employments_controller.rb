@@ -30,6 +30,7 @@ module Core
     def update
       @employment = current_user.employments.find(params[:id])
       if @employment.update(employment_params)
+        @employment.save
         redirect_to main_app.profile_path
       else
         @employment.build_default_positions
@@ -40,6 +41,7 @@ module Core
     def destroy
       @employment = current_user.employments.find(params[:id])
       @employment.deactivate!
+      @employment.save
       redirect_to main_app.profile_path
     end
 

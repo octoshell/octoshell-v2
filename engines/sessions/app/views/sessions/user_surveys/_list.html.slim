@@ -4,10 +4,10 @@
   table class="table table-hover table-striped"
     tr
       th class="col-xs-1" #
-      th Наименование
-      th Проект
-      th Статус
-      th Перерегистрация
+      th #{t('.title')}
+      th #{t('.project')}
+      th #{t('.status')}
+      th #{t('.session')}
 
     - surveys.each do |survey|
       tr
@@ -21,4 +21,4 @@
         td
           strong = survey.session
 - else
-  p Нет опросников
+  p #{t('.no_surveys')}

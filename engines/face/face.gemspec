@@ -7,17 +7,17 @@ require "face/version"
 Gem::Specification.new do |s|
   s.name        = "face"
   s.version     = Face::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Face."
-  s.description = "TODO: Description of Face."
+  s.authors     = ["Dmitry Koprov"]
+  s.email       = ["dmitry.koprov@gmail.com"]
+  s.homepage    = "https://github.com/octoshell/octoshell-v2"
+  s.summary     = "An engine for octoshell front-end customization"
+  s.description = "Does all settings for an octoshell front-end presentation"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", "~> 4.1.0"
-  s.add_dependency "activerecord-jdbcpostgresql-adapter"
+  s.add_dependency "rails", "~> 4.2"
+  # s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "bootstrap_form"
   s.add_dependency "nested_form"
   s.add_dependency "slim"
@@ -30,6 +30,8 @@ Gem::Specification.new do |s|
   s.add_dependency "underscore-rails"
   s.add_dependency "bootstrap-datepicker-rails"
   s.add_dependency "kramdown"
+  s.add_dependency "rails-jquery-autocomplete"
+  s.add_dependency "jquery-fileupload-rails"
 
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "capybara"

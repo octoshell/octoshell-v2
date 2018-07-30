@@ -33,7 +33,7 @@ Sessions::Engine.routes.draw do
       post :select_projects
 
       resources :stats, expect: [:index, :show]
-      resources :surveys, only: [:new, :create]
+      resources :surveys, only: [:new, :create, :edit, :update]
     end
 
     get "/stats/:stat_id/download" => "stats#download", as: :stat_download

@@ -1,16 +1,16 @@
 module ActiveRecord
   class Base
-    class << self
-      def human_state_names
-        Hash[state_machine.states.map do |state|
-          [state.human_name, state.name]
-        end]
-      end
-
-      def state_names
-        state_machine.states.map &:name
-      end
-    end
+#    class << self
+#      def human_state_names(n)
+#        Hash[aasm(n).states.map do |state|
+#          [state.human_name, state.name]
+#        end]
+#      end
+#
+#      def state_names(n)
+#        aasm(n).states.map &:name
+#      end
+#    end
 
     def errors_sentence
       errors.full_messages.to_sentence

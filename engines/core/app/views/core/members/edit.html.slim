@@ -7,7 +7,11 @@ div class="panel panel-info"
   div class="panel-body"
     - if current_user.employments.any?
       = bootstrap_form_for [@project, @member] do |f|
-        = f.collection_select :organization_id, current_user.organizations, :id, :name, hide_label: true
+        - @organizations = current_user.checked_active_organizations
+        - @departments = current_user.checked_active_organization_departments_to_hash(@organizations)
+        = f.collection_select :organization_id, @organizations, :id, :name, hide_label: true
+        = f.collection_select :organization_department_id,[],:id,:name
+
         = f.form_group do
           = f.submit t(".accept_invitation")
     - else
@@ -17,3 +21,5 @@ div class="panel panel-info"
           = link_to t(".add_employment"), new_employment_path
 
 = render "/core/projects/card", project: @project
+=javascript_tag do
+  =render partial: 'form',formats: [:js]

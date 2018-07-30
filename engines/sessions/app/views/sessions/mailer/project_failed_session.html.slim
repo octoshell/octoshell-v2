@@ -1,5 +1,5 @@
 = render "header"
 
-h5 Ваш отчёт по проекту «#{@report.project.title}» не прошёл перерегистрацию «#{@report.session.description}» и был закрыт.
+h5 #{t('.msg_report_failed', id: @report.id, pid: @report.project.id, title: @report.project.title, session: @report.session.description)}
 
 = render "footer"

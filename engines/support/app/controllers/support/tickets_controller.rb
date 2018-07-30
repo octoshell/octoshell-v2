@@ -45,6 +45,7 @@ module Support
     def close
       @ticket = find_ticket(params[:ticket_id])
       if @ticket.close
+        @ticket.save
         redirect_to @ticket
       else
         redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
@@ -54,6 +55,18 @@ module Support
     def resolve
       @ticket = find_ticket(params[:ticket_id])
       if @ticket.resolve
+        @ticket.save
+        redirect_to @ticket
+      else
+        @ticket.save
+        redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
+      end
+    end
+
+    def reopen
+      @ticket = Ticket.find(params[:ticket_id])
+      if @ticket.reopen
+        @ticket.save
         redirect_to @ticket
       else
         redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')

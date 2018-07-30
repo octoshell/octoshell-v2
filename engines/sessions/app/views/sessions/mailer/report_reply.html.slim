@@ -1,7 +1,7 @@
 = render "header"
 
 p
-  strong = "Новое сообщение в отчете №#{@report.id} по проекту #{@report.project.title} в рамках перерегистрации #{@report.session.description}"
+  strong = #{t('.msg_report_reply', id: @report.id, pid: @report.project.id,  title: @report.project.title, session: @report.session.description)}
 
 - @report.replies.order(:created_at).last(3).each do |reply|
   blockquote
@@ -10,12 +10,12 @@ p
         - if reply.user == @report.author
           = reply.user.full_name
         - else
-          | Эксперт
+          | #{t('.expert')}
     = reply.message
 
 - if @user == @report.author
-  p = link_to "Открыть отчёт", sessions.report_url(@report)
+  p = link_to t('.open_report'), sessions.report_url(@report)
 - else
-  p = link_to "Открыть отчёт", sessions.admin_report_url(@report)
+  p = link_to t('.open_report'), sessions.admin_report_url(@report)
 
 = render "footer"

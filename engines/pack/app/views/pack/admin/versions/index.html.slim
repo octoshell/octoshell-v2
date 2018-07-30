@@ -1,0 +1,9 @@
+div class="package-header"
+  h1 = t(".title")
+  div id="qq"
+    = render 'pack/admin/packages/q'
+  br
+  br
+  br
+=render("pack/admin/packages/versions_table", records: @versions )
+=safe_paginate(@versions)

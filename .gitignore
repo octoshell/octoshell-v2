@@ -28,3 +28,5 @@ config/dumps/
 public/uploads/
 public/system/
 public/system_archive.tar.gz
+
+vendor/

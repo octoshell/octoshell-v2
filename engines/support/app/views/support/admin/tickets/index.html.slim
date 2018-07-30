@@ -1,25 +1,29 @@
 div class="page-header"
   h1 = t(".title")
 
-div class="well"
-  = link_to t(".new_ticket_on_user"), new_admin_ticket_path, class: "btn btn-primary"
-
 = bootstrap_form_for @search, url: admin_tickets_path, method: :get, layout: :horizontal do |f|
-  = autocomplete f, name: :project_id_eq, label: Support::Ticket.human_attribute_name(:project), source: core.projects_path
-  = autocomplete f, name: :reporter_id_eq, label: Support::Ticket.human_attribute_name(:reporter), source: main_app.users_path
-  = f.collection_select :responsible_id_eq, (Support.user_class.support | Support.user_class.superadmins), :id, :full_name, label: Support::Ticket.human_attribute_name(:responsible), include_blank: true
-  = f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
-  = f.collection_select :topic_id_eq, Support::Topic.leaf_topics, :id, :name_with_parents, label: Support::Ticket.human_attribute_name(:topic), include_blank: true
-  = f.select :state_in, Support::Ticket.human_state_names, { label: Support::Ticket.human_attribute_name(:state), include_blank: true }, { multiple: true }
-  = f.select :tags_name_in, Support::Tag.pluck(:name), { label: Support::Ticket.human_attribute_name(:tags), include_blank: true }, { multiple: true }
-  - options = { include_blank: true, label_col: "col-sm-4", control_col: "col-sm-8", start_year: 2012, end_year: Date.current.year, class: "datepicker" }
-  div class="col-md-6"
-    = f.text_field :created_at_gt, options.merge(label: "Создан после")
-    = f.text_field :created_at_lt, options.merge(label: "Создан до")
-  div class="col-md-6"
-    = f.text_field :updated_at_gt, options.merge(label: "Обновлен после")
-    = f.text_field :updated_at_lt, options.merge(label: "Обновлен до")
-
+  div class="col-md-12"
+    div class="col-md-4"
+      = link_to t(".new_ticket_on_user"), new_admin_ticket_path, class: "btn btn-primary"
+      = f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
+      = f.select :state_in, Support::Ticket.human_state_names_with_original, { label: Support::Ticket.human_attribute_name(:state), include_blank: true  }, { multiple: true  }
+    div class="col-md-4"
+      = f.collection_select :reporter_id_eq, ::User.all.includes(:profile), :id, :full_name, label: t('.reporter'), include_blank: true
+      = f.collection_select :project_id_eq, Core::Project.all, :id, :title, label: t('.project'), include_blank: true
+    div class="col-md-4"
+      = f.select :tags_name_in, Support::Tag.pluck(:name), { label: Support::Ticket.human_attribute_name(:tags), include_blank: true  }, { multiple: true  }
+      = f.collection_select :topic_id_eq, Support::Topic.leaf_topics, :id, :name_with_parents, label: Support::Ticket.human_attribute_name(:topic), include_blank: true
+      = f.collection_select :responsible_id_eq, (Support.user_class.support | Support.user_class.superadmins), :id, :full_name, label: Support::Ticket.human_attribute_name(:responsible), include_blank: true
+  - options = common_datepicker_options
+  div class="col-md-12"
+    div class="col-md-6"
+      = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
+      = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
+    div class="col-md-6"
+      = f.text_field :updated_at_gt, options.merge(label: t('.updated_after'))
+      = f.text_field :updated_at_lt, options.merge(label: t('.updated_before'))
+  div class="col-md-12"
+      =display_all_tag
   = f.form_group do
     = f.primary t("actions.find")
 

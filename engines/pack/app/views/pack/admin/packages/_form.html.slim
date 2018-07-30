@@ -1,0 +1,9 @@
+div class="row"
+  div class="col-xs-8"
+    = bootstrap_form_for [:admin,@package] do |f|
+      = f.text_field :name
+      = f.text_field :description
+      = f.check_box :deleted
+      
+      = f.form_group do
+        = f.submit t("buttons.save", default: "Save")

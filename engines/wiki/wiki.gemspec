@@ -7,16 +7,17 @@ require "wiki/version"
 Gem::Specification.new do |s|
   s.name        = "wiki"
   s.version     = Wiki::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Wiki."
-  s.description = "TODO: Description of Wiki."
+  s.authors     = ["Dmitry Koprov"]
+  s.email       = ["dmitry.koprov@gmail.com"]
+  s.homepage    = "https://github.com/octoshell/octoshell-v2"
+  s.summary     = "A wiki engine for octoshell"
+  s.description = "Provides a wiki engine with markdown support"
+  s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 4.1.0"
-  s.add_dependency "activerecord-jdbcpostgresql-adapter"
+  s.add_dependency "rails", "~> 4.2"
+  # s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "slim"
   s.add_dependency "bootstrap_form"
   s.add_dependency "maymay"

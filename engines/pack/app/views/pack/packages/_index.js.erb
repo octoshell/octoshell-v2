@@ -1,0 +1,11 @@
+
+$(document).on('change','#q_user_access',function(){
+  if ($(this).prop('checked'))
+  {
+    $(".change_user_access").prop('disabled', false);
+  }
+  else
+  {
+    $(".change_user_access").prop('disabled', true);
+  }
+});

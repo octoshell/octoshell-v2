@@ -1,8 +1,8 @@
 = render "header"
 
 p
-  | Руководитель проекта «#{@user.project.title}» закрыл вам доступ к проекту.
+  | #{t('.msg_project_acc_denied', pid: @user.project.id, title: @user.project.title)}
 p
-  | Для выяснения причины, пожалуйста, свяжитесь с руководителем проекта.
+  | #{t('.msg_recommendation')}
 
 = render "footer"

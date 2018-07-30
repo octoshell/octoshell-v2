@@ -5,12 +5,13 @@ module Sessions
     def index
       @search = Report.search(params[:q] || default_index_params)
       @reports = if (User.superadmins | User.reregistrators).include? current_user
-                   @search.result(distinct: true).page(params[:page])
+                   @search.result(distinct: true)
                  elsif User.experts.include? current_user
                    @search.result(distinct: true).
-                     where(expert_id: [nil, current_user.id]).
-                     page(params[:page])
+                     where(expert_id: [nil, current_user.id])
+
                  end
+    without_pagination :reports
     end
 
     def edit
@@ -35,6 +36,7 @@ module Sessions
       @report = Report.find(params[:report_id])
       @report.assign_attributes(report_params[:report])
       @report.pick!
+      @report.save
 
       redirect_to [:admin, @report]
     end
@@ -50,6 +52,7 @@ module Sessions
         @report.pick!
         @report.assign_attributes(report_params)
         @report.assess!
+        @report.save
         redirect_to [:admin, @report]
       else
         raise MayMay::Unauthorized
@@ -79,6 +82,7 @@ module Sessions
       @report = Report.find(params[:report_id])
       @report.update(submit_denial_reason_id: nil) if @report.submit_denial_reason.present?
       @report.reject!
+      @report.save
       redirect_to admin_report_path(@report, anchor: "start-page")
     end
 

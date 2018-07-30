@@ -24,6 +24,7 @@ module Core
     def update
       @research_area = ResearchArea.find(params[:id])
       if @research_area.update_attributes(research_area_params)
+        @research_area.save
         redirect_to admin_research_areas_path
       else
         render :edit

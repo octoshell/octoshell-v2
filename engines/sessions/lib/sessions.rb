@@ -1,7 +1,7 @@
 require "sessions/engine"
 require "maymay"
 require "decorators"
-require "state_machine"
+#require "state_machine"
 require "sidekiq"
 require "ransack"
 require "kaminari"

@@ -1,0 +1,60 @@
+   - if records.any?
+    div class="row" style="border:1px solid #cecece;"
+      h3 =t('legend')
+      div class="col-xs-6"
+        h4 =t('clvers.title')
+        table class='table'
+          tr
+            td
+              font color='red'
+                =t 'colors.red'
+
+            td
+                =t 'clvers.red'
+          tr
+            td
+              font color='green'
+                =t 'colors.green'
+            td
+                =t 'clvers.green'
+        h5 =t 'clvers.note'
+      div class="col-xs-6"
+        h4 =t('accesses.title')
+        table class="table"
+          -['red','blue','green','brown','black'].each do |col|
+            tr
+              td
+                font color=col
+                  =t "colors.#{col}"
+              td
+                =t "accesses.#{col}"
+    h3 =t("Versions")
+    div class="panel-body"
+      table   class="table table-hover" cols="6" cellspacing="30"
+        tr
+          -['name','description','clusters','access_user',"available_for_user?"].each do |str|
+            th =Pack::Version.human_attribute_name str
+          th   #{t("actions_pack")}
+        - for version in records
+          tr
+            td  =link_to version.name,version
+            td  #{version.description}
+
+            td
+              =render "pack/packages/clustervers",clustervers: version.clustervers
+
+            td class="accesses-info" version_id=version.id  class="col-xs-3"
+            td class='version-availability'
+            td
+              -if !version.deleted && !version.service
+                 button class="btn btn-primary btn_access" version_id= version.id  = t("want",default:"want this")
+
+          tr
+             td colspan='6'
+               div class='accesses_form_container col-xs-6' hidden=""
+                 div class='top-alpaca-form'
+                 p class='server-messages'
+                 p class='accesses-messages'
+                 div class='bottom-alpaca-form'
+   -else
+     p = t("no_records_found")

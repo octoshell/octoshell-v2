@@ -1,0 +1,2 @@
+ENV=development
+bundle exec bin/rails server -e $ENV -p 5000 -b 0.0.0.0 &

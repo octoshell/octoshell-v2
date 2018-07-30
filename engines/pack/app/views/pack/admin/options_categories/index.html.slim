@@ -1,0 +1,20 @@
+div class="package-header"
+  h1 = t(".title", default: "Options list")
+
+
+
+
+
+
+  br
+  br
+  br
+  div class="panel panel-default"
+    div class="panel-heading clearfix"
+      = link_to t(".new"), new_admin_options_category_path, class: "btn btn-default"
+
+  div id="table_records"
+     = render(:partial => 'table',locals: {records: @records})
+
+  div id="ajax_paginator"
+    = paginate(@records, :remote => true).to_s

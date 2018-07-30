@@ -25,6 +25,7 @@ module Core
     def update
       @quota_kind = QuotaKind.find(params[:id])
       if @quota_kind.update_attributes(quota_kind_params)
+        @quota_kind.save
         redirect_to admin_quota_kinds_path
       else
         render :edit

@@ -1,0 +1,13 @@
+br
+= bootstrap_form_for @q, url: tags_lookup_index_path, method: :get, layout: :horizontal do |f|
+  = f.select :attachable_type_eq, @models_list, label:  Comments::Tagging.human_attribute_name("attachable_class_name"), include_blank: true
+  = f.text_field :attachable_id_eq, label:  Comments::Tagging.human_attribute_name("attachable_id"), include_blank: true
+  = f.collection_select :context_id_eq, @contexts, :id, :name, label:  Comments::Tagging.human_attribute_name("context"), include_blank: true
+  = f.form_group do
+    = f.submit t("actions.find"), class: "btn btn-primary"
+br
+div
+  -@taggings.each do |tagging|
+    form action=url_for(action: 'show',id: tagging.tag_id) style= 'display:inline-block;' method='get'
+      input type="submit" value=tagging.tag.name class='btn-primary'
+=paginate @taggings

@@ -6,4 +6,6 @@
 //= require underscore
 //= require bootstrap-datepicker/core
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.ru.js
-//= require_tree .
+//=require jquery-fileupload/basic
+//= require_directory ./dep
+//= require_directory .

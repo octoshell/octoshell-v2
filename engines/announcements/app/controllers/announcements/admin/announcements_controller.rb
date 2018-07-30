@@ -1,9 +1,9 @@
 module Announcements
   class Admin::AnnouncementsController < Admin::ApplicationController
     before_filter { authorize! :manage, :announcements }
-
+    helper Face::ApplicationHelper
     def index
-      @announcements = Announcement.order("id desc")
+      @announcements = Announcement.order("id desc").includes(created_by: :profile)
     end
 
     def show
@@ -16,6 +16,7 @@ module Announcements
 
     def create
       @announcement = Announcement.new(announcement_params)
+      @announcement.created_by = current_user
       if @announcement.save
         redirect_to admin_announcement_show_users_path(@announcement)
       else
@@ -30,6 +31,7 @@ module Announcements
     def update
       @announcement = Announcement.find(params[:id])
       if @announcement.update_attributes(announcement_params)
+        @announcement.save
         redirect_to admin_announcement_show_users_path(@announcement)
       else
         render :edit
@@ -39,6 +41,7 @@ module Announcements
     def deliver
       @announcement = Announcement.find(params[:announcement_id])
       @announcement.deliver
+      @announcement.save
       redirect_to admin_announcements_path
     end
 
@@ -57,7 +60,7 @@ module Announcements
     def show_users
       @announcement = Announcement.find(params[:announcement_id])
       @search = User.search(params[:q])
-      @users = @search.result(distinct: true).with_access_state(:active).includes(:profile).order(:id)
+      @users = @search.result(distinct: true).where(:access_state=>:active).includes(:profile).order(:id)
       @users = if @announcement.is_special?
                  @users.where(profiles: {receive_special_mails: true})
                else

@@ -1,6 +1,6 @@
 = render "header"
 
-У вас на оценке ещё #{@users.assessing_reports.count} отчётов.
-p Пожалуйста, оцените их как можно быстрее.
+p #{t('.msg_num_reports', reports: @users.assessing_reports.count)}
+p #{t('.msg_speedup_assessment')}
 
 = render "footer"

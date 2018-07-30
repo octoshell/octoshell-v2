@@ -1,0 +1,22 @@
+=bootstrap_form_for @q, url: admin_accesses_path, method: :get do |f|
+  div class='row'
+      div class='col-md-3'
+        = f.select :who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } )  , { label: Pack::Access.human_attribute_name(:who_type) },{multiple: true}
+      div id='who_type_aim' class='col-md-9'
+  div class='row'
+    div class='col-md-4'
+      = f.select :status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{multiple: true}
+    div class='col-md-4'
+        = f.autocomplete_field :user_access_without_select,{label: Pack::Access.human_attribute_name(:con_to_user), source:  main_app.users_path},include_blank: true do |val|
+          -User.find(val).full_name_with_email
+  div class='row'
+    div class='col-md-3'
+       = f.check_box :requests, {label: t('.show_requests_only')},"1",""
+    div class='col-md-9'
+      = f.collection_select :version_id_in,Pack::Version.all.includes(:package), :id, :name_with_package, {label: Pack::Access.human_attribute_name(:versions)},multiple: true
+    div class='row'
+      = display_all_tag
+    = f.form_group do
+          = f.submit t("actions.find"), class: "btn btn-primary"
+
+    -@f=f

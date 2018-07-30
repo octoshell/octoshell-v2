@@ -3,12 +3,14 @@ module Support
   class Admin::TicketsController < Admin::ApplicationController
     before_filter :setup_default_filter, only: :index
 
+    #autocomplete :ticket, :project
+
     def index
       @search = Ticket.search(params[:q])
       @tickets = @search.result(distinct: true)
+                        .includes({reporter: :profile}, {responsible: :profile})
                         .order("id DESC, updated_at DESC")
-                        .page(params[:page])
-
+      without_pagination(:tickets)
       # записываем отрисованные тикеты в куки, для перехода к следующему тикету после ответа
       cookies[:tickets_list] = @tickets.map(&:id).join(',')
     end
@@ -36,6 +38,7 @@ module Support
     def close
       @ticket = Ticket.find(params[:ticket_id])
       if @ticket.close
+        @ticket.save
         redirect_to [:admin, @ticket]
       else
         redirect_to [:admin, @ticket], alert: @ticket.errors.full_messages.to_sentence
@@ -45,6 +48,7 @@ module Support
     def reopen
       @ticket = Ticket.find(params[:ticket_id])
       if @ticket.reopen
+        @ticket.save
         redirect_to [:admin, @ticket]
       else
         redirect_to [:admin, @ticket], alert: @ticket.errors.full_messages.to_sentence
@@ -61,6 +65,7 @@ module Support
       respond_to do |format|
         format.html do
           if @ticket.update(ticket_params)
+            @ticket.save
             redirect_to [:admin, @ticket]
           else
             render :edit, alert: @ticket.errors.full_messages.to_sentence
@@ -69,6 +74,7 @@ module Support
 
         format.json do
           @ticket.update(ticket_params)
+          @ticket.save
           head :ok
         end
       end
@@ -77,6 +83,7 @@ module Support
     def accept
       @ticket = Ticket.find(params[:ticket_id])
       @ticket.accept(current_user)
+      @ticket.save
       redirect_to [:admin, @ticket]
     end
 

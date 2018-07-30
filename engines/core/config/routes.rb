@@ -30,12 +30,27 @@ Core::Engine.routes.draw do
       put :close
       put :confirm
       put :reject
+      put :activate_or_reject
     end
 
     resources :project_kinds
     resources :organization_kinds
 
-    resources :organizations, only: [:new, :create, :index, :show, :edit, :update] do
+    resources :countries
+    resources :cities
+    resources :prepare_merge,only: [:index,:update,:edit] do
+      member do
+        delete :destroy
+      end
+    end
+    resources :organizations do
+      member do
+        get :index_for_organization
+      end
+      collection do
+        get :merge_edit
+        post :merge_update
+      end
       resources :departments, except: :show
     end
 
@@ -46,6 +61,7 @@ Core::Engine.routes.draw do
     resources :requests, only: [:index, :show, :edit, :update] do
       get :approve, on: :member
       get :reject, on: :member
+      put :activate_or_reject, on: :member
     end
 
     resources :quota_kinds, except: :show
@@ -93,13 +109,20 @@ Core::Engine.routes.draw do
 
   resources :organization_kinds, only: :index
 
-  resources :organizations, except: :destroy do
+  resources :organizations, except: [:destroy] do
+    collection do
+      get :all_organizations
+    end
     resources :organization_departments, path: :departments, only: [:index, :new, :create]
   end
 
   resources :countries, only: :index do
     resources :cities, only: [:index, :show]
   end
-
+  resources :cities do
+    collection do
+      get :index_for_country
+    end
+  end
   root "projects#index"
 end

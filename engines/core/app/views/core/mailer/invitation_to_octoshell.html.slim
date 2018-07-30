@@ -1,13 +1,13 @@
 p style="padding-bottom: 16px;"
-  | Здравствуйте, #{@invitation.user_fio}!
+  | #{t('.hello_known_name', name: @invitation.user_fio)}
 p
-  | Руководитель проекта «#{@invitation.project.title}» приглашает вас принять участие в работе над проектом.
+  | #{t('.msg_project_invitation', pid: @invitation.project.id, title: @invitation.project.title)}
 p
-  | Для начала работы над проектом, пожалуйста, зарегистрируйтесь, перейдя по ссылке: #{link_to "Регистрация в Octoshell", authentication.new_user_url}. 
+  | #{t('.msg_register')}: #{link_to "Регистрация в Octoshell", authentication.new_user_url}. 
 p
-  | После регистрации вам надо будет заполнить свой Профиль, указав ваши инициалы, место работы или учёбы, а также публичный ssh-ключ (на странице профиле есть ссылка на описание как это сделать). 
-  | После этого вам надо будет подтвердить участие в проекте. Сделать это можно на вкладке «Проекты».
+  | #{t('.msg_first_step')}
+  | #{t('.msg_accept_invitation')}
 p
-  | Пожалуйста, имейте в виду, что зарегистрироваться вы должны используя email, на который пришло письмо: #{@invitation.user_email}.
+  | #{t('.msg_register_email')}: #{@invitation.user_email}.
 
 = render "footer"

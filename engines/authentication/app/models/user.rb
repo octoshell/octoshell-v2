@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   validates :password, confirmation: true, length: { minimum: 6 }, on: :create
   validates :password, confirmation: true, length: { minimum: 6 }, on: :update, if: :password?
   validates :email, presence: true, uniqueness: true
+  before_validation :downcase_email
 
   def activated?
     activation_state == "active"
@@ -33,5 +34,9 @@ class User < ActiveRecord::Base
 
   def last_login_from_ip_address=(arg)
     # stub
+  end
+
+  def downcase_email
+    self.email.downcase! unless self.email.nil?
   end
 end

@@ -11,6 +11,8 @@ module Core
 
     validates :host, :admin_login, presence: true
 
+    scope :finder, lambda { |q| where("lower(name) like :q", q: "%#{q.mb_chars.downcase}%").order("name asc") }
+
     # state_machine initial: :active do
     #   state :active
     #   state :inactive
@@ -43,6 +45,10 @@ module Core
 
     def to_s
       name
+    end
+
+    def as_json(options)
+      { id: id, text: name }
     end
 
     def generate_ssh_keys

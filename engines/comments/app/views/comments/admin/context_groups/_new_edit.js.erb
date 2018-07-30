@@ -1,0 +1,390 @@
+var group_title = "<%= Group.model_name.human %>";
+var class_title = "<%= Comments::GroupClass.human_attribute_name(:class_name) %>";
+var obj_id_title = "<%= Comments::GroupClass.human_attribute_name(:obj_id) %>";
+var class_defaults_title = '<%= t(".class_defaults_title") %>';
+var class_groups_title = '<%= t(".class_groups_title") %>';
+var save = "<%=j t 'buttons.save'%>";
+var action = "<%=url_for(action: 'update')%>";
+var success_message = "<%=j t '.success_message'%>";
+var errors_message = "<%=j t '.errors_message'%>";
+var obj_type_title = '<%=j t(".obj_type_title") %>';
+var form;
+var init_org_id_twbs = false;
+var properties = <%= raw @properties.to_json%>;
+<% @alpaca_raw_json.each do |key, value| %>
+  var <%= key %> =  <%= raw value.to_json %>;
+<% end %>
+var alpaca_style;
+var array = ["class_name", "group_id"];
+function disableForm(){
+  submit_button().prop('disabled',true);
+  var obj_type_elem = form.getControlByPath('obj_type').getControlEl();
+  obj_type_elem.find('input').prop('disabled',true);
+  form.domEl.find("input[type='checkbox']").prop('disabled',true);
+  var obj_id_elem = form.getControlByPath('obj_id').getControlEl();
+  obj_id_elem.find('input').prop('disabled',true);
+  for(var i in array){
+    var elem = form.getControlByPath(array[i]);
+    elem.options.disabled = true;
+    elem.refresh();
+  }
+}
+function enableForm(){
+  submit_button().prop('disabled',false);
+  var obj_type_elem = form.getControlByPath('obj_type').getControlEl();
+  obj_type_elem.find('input').prop('disabled',false);
+  var obj_id_elem = form.getControlByPath('obj_id').getControlEl();
+  obj_id_elem.find('input').prop('disabled',false);
+  form.domEl.find("input[type='checkbox']").prop('disabled',false);
+  for(var i in array){
+    var elem = form.getControlByPath(array[i]);
+    elem.options.disabled = false;
+    elem.refresh();
+  }
+  apply_select();
+}
+
+function add_loading_elem(elem)
+{
+  var loading = `<div id="load_elem"class="alert alert-info"> <strong><%= t('.loading')%></strong></div>`;
+  var load_elem =   $(loading);
+  load_elem.insertBefore(elem);
+  return load_elem;
+}
+
+function render_class_defaults(){
+  var twbs = $("#pagination-obj_id");
+  twbs.twbsPagination('destroy');
+  var class_name = form.getControlByPath('class_name').getValue();
+  var params = {class_name: class_name};
+  var obj_id_control = form.getControlByPath('obj_id');
+  var obj_id_elem = obj_id_control.getControlEl();
+  var obj_id_ex = form.getControlByPath('obj_type').getValue() == 'no_obj_id';
+  if (!obj_id_ex)
+  {
+    return;
+  }
+  var parent = $("[data-alpaca-field-id='alpaca5']");
+  var load_elem = add_loading_elem(parent);
+  var url = '/comments/admin/group_classes/list_objects';
+  disableForm();
+  disableForm();
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    async: false,
+    data: params,
+    success: function(data) {
+      load_elem.remove();
+      enableForm();
+      var records = data.records;
+      var ids = [];
+      var labels = [];
+      for (var elem in records) {
+        ids[elem] = records[elem].id;
+        labels[elem] = JSON.stringify(records[elem]);
+      }
+      obj_id_control.options.hideNone = true;
+      obj_id_control.schema.enum = ids;
+      obj_id_control.options.optionLabels = labels;
+      if (ids.length == 0){
+        obj_id_control.refresh();
+        return;
+      }
+      var totalPages = data.pages;
+      var twbs = $("#pagination-obj_id");
+      init_org_id_twbs = true;
+      twbs.twbsPagination({
+        totalPages: totalPages,
+        onPageClick: function (event, page) {
+              ObjIdPageClick(page,class_name);
+        }
+      });
+      init_org_id_twbs = false;
+      obj_id_control.refresh();
+    }
+  });
+
+  // $.getJSON( url,params, function( data ) {
+  // });
+}
+
+function ObjIdPageClick(page, class_name)
+{
+  if(init_org_id_twbs)
+  {
+    return;
+  }
+  var twbs = $("#pagination-obj_id");
+  twbs.twbsPagination('destroy');
+  var params = {class_name: class_name,page: page};
+  var obj_id_control = form.getControlByPath('obj_id');
+  var obj_id_elem = obj_id_control.getControlEl();
+  var parent = $("[data-alpaca-field-id='alpaca6']");
+  var load_elem = add_loading_elem(parent);
+  var url = '/comments/admin/group_classes/list_objects';
+  disableForm();
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    async: false,
+    data: params,
+    success: function(data) {
+      load_elem.remove();
+      enableForm();
+      var records = data.records;
+      var ids = [];
+      var labels = [];
+      for (var elem in records) {
+        ids[elem] = records[elem].id;
+        labels[elem] = JSON.stringify(records[elem]);
+      }
+      obj_id_control.options.hideNone = true;
+      obj_id_control.schema.enum = ids;
+      obj_id_control.options.optionLabels = labels;
+      if (ids.length == 0){
+        obj_id_control.refresh();
+        return;
+      }
+      var totalPages = data.pages;
+      var twbs = $("#pagination-obj_id");
+      init_org_id_twbs = true;
+      twbs.twbsPagination({
+        totalPages: totalPages,
+        startPage: page,
+        onPageClick: function (event, page) {
+              ObjIdPageClick(page,class_name);
+        }
+      });
+      init_org_id_twbs = false;
+      obj_id_control.refresh();
+    }
+  });
+  // $.getJSON( url,params, function( data ) {
+  // });
+}
+function loadClassData(funct = null){
+  var class_name = form.getControlByPath("class_name").getValue();
+  var group_id = form.getControlByPath("group_id").getValue();
+  var obj_type_value = form.getControlByPath("obj_type").getValue();
+  if(obj_type_value == 'y_obj_id'){
+    var obj_id = null;
+  }
+  else{
+    var obj_id = form.getControlByPath("obj_id").getValue();
+    if(obj_id == null){
+      // if(funct != null)
+      // {
+      //   funct();
+      // }
+      return;
+    }
+  }
+  var params = {class_name: class_name,obj_id: obj_id,group_id: group_id};
+  var url = '/comments/admin/group_classes/type_abs';
+  disableForm();
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    async: false,
+    data: params,
+    success: function(data) {
+      enableForm();
+      loadCheckboxData(data.defaults,'class_defaults');
+      loadCheckboxData(data.groups,'class_groups');
+    }
+  });
+  // $.getJSON( url,params, function( data ) {
+  // });
+}
+
+function loadCheckboxData(data,field)
+{
+  for (var p in data) {
+    if( data.hasOwnProperty(p) ) {
+      var control_elem = form.getControlByPath(`${field}/${p}`)
+                  .getControlEl();
+      var elem = control_elem.find('input');
+      if(data[p] == true){
+        elem.prop('checked',true);
+      }
+      else{
+        elem.prop('checked',false);
+      }
+      if (data[p] == null){
+        var notCreated = (`<font color='blue'><%= t('.not_created')%></font>`);
+        control_elem.find('font').remove();
+        control_elem.find('label').append(notCreated);
+      }
+    }
+  }
+}
+
+function submit_button()
+{
+  return form.domEl.find(".alpaca-form-button-submit");
+}
+
+$("#group_classes_form").alpaca({
+    "schema": {
+        "type": "object",
+        "properties": {
+              "class_name":{
+                "title": class_title,
+                "enum": class_options,
+                "required": true
+              },
+              "obj_type":{
+                "default": 'y_obj_id',
+                "title": obj_type_title,
+                "enum": obj_type_options,
+                "required": true
+              },
+              "obj_id":{
+                "title": obj_id_title,
+                "requred": true,
+                "dependencies":["obj_type"]
+              },
+              "group_id":{
+                "title": group_title,
+                "enum": group_options,
+                "required": true
+              },
+              "class_defaults": {
+                "type": "object",
+                "properties": properties,
+                "title": class_defaults_title
+              },
+              "class_groups": {
+                "type": "object",
+                "properties": properties,
+                "title": class_groups_title
+              }
+
+        }
+    },
+    "options":{
+      "focus":"",
+      "hideInitValidationError":true,
+      "fields":{
+            "group_id":{
+              "type": "select",
+              "optionLabels": group_labels,
+              "validate": false
+            },
+            "class_name":{
+              "type": "select",
+              "optionLabels": class_labels
+            },
+            "obj_type":{
+              "type": "radio",
+              "optionLabels": obj_type_labels
+            },
+            "obj_id":{
+              "type": "radio",
+              "validate": false,
+              "dependencies":{
+                "obj_type": "not_obj_id"
+              }
+              },
+              "class_defaults": {
+                "type": "object",
+                "fields": options
+              },
+              "class_groups": {
+                "type": "object",
+                "fields": options
+              }
+
+
+      },
+      "form": {
+            "attributes": {
+                "method": "post",
+                "action": action
+            },
+            "buttons": {
+                "submit": {
+                    "title": save,
+                    "click": function() {
+                       this.validate(true);
+                       this.refreshValidationState(true);
+                       if (!this.isValid(true)) {
+                           empty_preview();
+                           return;
+                       }
+                       var value = this.getValue();
+                       disableForm();
+                       var obj_id = form.getControlByPath('obj_id')
+                       .getControlEl().find('input:checked').val();
+                       if(value['obj_type'] == 'no_obj_id')
+                       {
+                         value['obj_id'] = obj_id;
+
+                       }
+                       var elem = $("#messages");
+                       elem.empty();
+                       $.ajax({
+                            url: action,
+                            method: "POST",
+                            data: value,
+                            dataType: "json",
+                            success: function(){
+                              elem.html('<div class="alert alert-success" id="success_div"></div>');
+                              $("#success_div").text(success_message);
+                            },
+                            error: function(){
+                              elem.html('<div class="alert alert-danger" id="errors_div"></div>');
+                              $("#errors_div").text(errors_message);
+                            },
+                            complete: enableForm
+                       });
+                    }
+                }
+        }
+    },
+    "view": {
+      "layout": {
+          "template": "<%=j render partial: 'form_layout' %>",
+          "bindings": {
+            "group_id": "column-1",
+            "class_name" : "column-1",
+            "obj_id" : "column-1",
+            "obj_type" : "column-1",
+            "class_defaults": "column-2",
+            "class_groups": "column-2",
+
+          }
+        }
+    }
+  },
+  "postRender": function(control) {
+    apply_select();
+    form = control;
+    control.getControlByPath('obj_type').on('change',function(){
+      loadClassData();
+      render_class_defaults();
+    });
+    bind_select2('class_name',function(){
+      loadClassData();
+      render_class_defaults();
+    });
+    bind_select2('group_id',function(){
+      loadClassData();
+    });
+    control.getControlByPath('obj_id').on('change',function(){
+      loadClassData();
+    });
+
+
+    var twbs = $('<ul id="pagination-obj_id" class="pagination-sm"></ul>');
+    var obj_id_parent = control.getControlByPath('obj_id').getControlEl().parent();
+    obj_id_parent.after(twbs);
+    loadClassData();
+  }
+});
+function bind_select2(path,func)
+{
+  var id = form.getControlByPath(path).getControlEl().prop('id');
+  $(document).on( "select2:select", ('#' + id),func);
+}

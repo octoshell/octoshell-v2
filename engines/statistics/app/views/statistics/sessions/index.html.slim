@@ -3,8 +3,8 @@ div class="page-header"
 
 div class="well"
   blockquote
-    p Данные обновляются каждые 3 месяца
-  = link_to "Посчитать сейчас", [:calculate_stats, :sessions], class: "btn btn-info", method: :post, remote: true
+    p #{t('.refresh_rate')}
+  = link_to t('.calculate_now'), [:calculate_stats, :sessions], class: "btn btn-info", method: :post, remote: true
 
 - Statistics::SessionStat::KINDS.each do |kind|
   - stats = Statistics::SessionStat.send(kind)

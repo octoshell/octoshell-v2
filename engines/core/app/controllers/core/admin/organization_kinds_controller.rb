@@ -29,6 +29,7 @@ module Core
     def update
       @organization_kind = OrganizationKind.find(params[:id])
       if @organization_kind.update_attributes(organization_kind_params)
+        @organization_kind.save
         redirect_to [:admin, @organization_kind]
       else
         render :edit

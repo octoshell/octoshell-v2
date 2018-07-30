@@ -1,0 +1,26 @@
+<%f=@f%>
+function renderWhoId(){
+  if ($('#q_who_type_in').find('option:selected').length == 1)
+  {
+   var temp= $('#q_who_type_in').find('option:selected');
+   if(temp.val()=='User')
+   {
+     $('#who_type_aim').html("<%=j f.autocomplete_field :who_id_eq,label: t('user'), source:  main_app.users_path %>");
+   }
+   if(temp.val()=='Core::Project')
+   {
+     $('#who_type_aim').html("<%=j f.autocomplete_field :who_id_eq,label: t('project'), source:  core.projects_path %>");
+   }
+   if(temp.val()=='Group')
+   {
+     $('#who_type_aim').html("<%=j f.collection_select :who_id_eq, Group.all,:id, :name, label: t('group')%>");
+   }
+   apply_select();
+  }
+  else
+  {
+   $('#who_type_aim').empty();
+  }
+}
+$(document).on('change','#q_who_type_in',renderWhoId);
+renderWhoId();

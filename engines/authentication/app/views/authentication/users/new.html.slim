@@ -7,6 +7,7 @@ div class="row"
       = f.email_field :email
       = f.password_field :password, help: t(".minimum_password_length", default: "at least 6 simbols")
       = f.password_field :password_confirmation
-
+      = check_box :cond, :cond_accepted
+      = label :cond, :cond_accepted, t(".cond_accepted")
       = f.form_group do
         = f.submit t(".sign_up", default: "Sign Up")

@@ -1,0 +1,27 @@
+div class="page-header"
+  h1 = t(".title", default: "Organizations")
+
+div class="well"
+  = link_to t(".new_country"), new_admin_country_path, class: "btn btn-default"
+
+= bootstrap_form_for @search,url: admin_countries_path , method: :get, layout: :horizontal do |f|
+ =f.form_group :checked_eq, label: { text: Core::Country.human_attribute_name(:checked) } do
+  = f.radio_button :checked_eq, nil, label: t('.none')
+  = f.radio_button :checked_eq, true, label: t('.yess')
+  = f.radio_button :checked_eq, false, label: t('.noo')
+ = display_all_tag
+ = f.form_group do
+    = f.submit t("actions.find"), class: "btn btn-primary"
+ = autocomplete f, name: :country_name, label: t('.find_by_name'), source: admin_countries_path
+
+
+= safe_paginate @countries
+= render "table", countries: @countries
+= safe_paginate @countries
+javascript:
+  var  country_name = $("[name='country_name']");
+  country_name.on("select2:select", function(e) {
+    var value = e.params.data.id;
+    var url = '/core/admin/countries/' + value;
+    window.location.href = url;
+  });

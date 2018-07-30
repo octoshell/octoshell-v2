@@ -1,0 +1,47 @@
+<% if @project.organization_id %>
+  var organization_id = <%= @project.organization_id %>;
+<% else %>
+  var organization_id = null;
+<% end%>
+<% if @project.organization_department_id %>
+  var department_id = <%= @project.organization_department_id %>;
+<% else %>
+  var department_id = null;
+<% end%>
+
+var departments = <%=raw @departments.to_json%>;
+var nothing = '<%= t '.nothing' %>';
+var org_select = $('#project_organization_id');
+var dep_select = $('#project_2organization_department_id');
+var style =  org_select.next().attr('style');
+if(organization_id)
+{
+  var array = departments[organization_id].slice(0);
+  array.unshift({id: ' ', text: nothing});
+  dep_select.select2({
+    data: array
+  });
+}
+else {
+  var array = departments[Object.keys(departments)[0]].slice(0);
+  array.unshift({id: ' ', text: nothing});
+  dep_select.select2({
+    data: array
+  });
+}
+if(department_id && organization_id)
+{
+  dep_select.val(department_id).trigger('change');
+}
+
+$(document).on("select2:select","#project_organization_id", function(e) {
+  var id = e.params.data.id;
+  var array = departments[id].slice(0);
+  array.unshift({id: ' ', text: nothing});
+  dep_select.select2('destroy');
+  dep_select.empty();
+  dep_select.select2({
+    data: array
+  });
+  dep_select.next().attr('style',style);
+});

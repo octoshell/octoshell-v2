@@ -23,8 +23,11 @@ legend = Core::Project.human_attribute_name :card
 - if @project.accesses.any?
   = render "core/projects/accesses", accesses: @project.accesses
 
-- if @project.requests.with_state([:pending, :closed]).any?
-  = render "requests", requests: @project.requests.with_state([:pending, :closed])
+- if @project.requests.where(:state=>[:pending, :closed]).any?
+  = render "requests", requests: @project.requests.where(:state=>[:pending, :closed])
 
 = render "core/admin/projects/members"
 = render "core/admin/projects/sureties"
+= render_attachments(@project,:files)
+= render_attachments(@project,:tags)
+= render_attachments(@project,:comments)

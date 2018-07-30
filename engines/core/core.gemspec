@@ -7,20 +7,20 @@ require "core/version"
 Gem::Specification.new do |s|
   s.name        = "core"
   s.version     = Core::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Core."
-  s.description = "TODO: Description of Core."
+  s.authors     = ["Dmitry Koprov"]
+  s.email       = ["dmitry.koprov@gmail.com"]
+  s.homepage    = "https://github.com/octoshell/octoshell-v2"
+  s.summary     = "A core engine for octoshell"
+  s.description = "Basic logic and bisuness models for an octoshell"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 4.1.4"
+  s.add_dependency "rails", "~> 4.2"
 
-  s.add_dependency "activerecord-jdbcpostgresql-adapter"
+  # s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "decorators", "~> 1.0.2"
-  s.add_dependency "state_machine"
+  s.add_dependency "aasm"
   s.add_dependency "slim"
   s.add_dependency "sidekiq"
   s.add_dependency "sidekiq-failures"
@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.add_dependency "clbustos-rtf"
   s.add_dependency "mini_magick"
   s.add_dependency "carrierwave"
-
+  s.add_dependency "roo"
   s.test_files = Dir["spec/**/*"]
 
   s.add_development_dependency "rspec-rails"

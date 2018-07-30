@@ -4,21 +4,21 @@
     - reports = Report.where(project_id: current_user.owned_project_ids, session_id: session.id)
     - if surveys.any? || reports.any?
       div class="well well-collapseble #{'well-collapsed' if cookies[:hide_session] == '1'}"
-        h3 Перерегистрация: #{session.description}
+        h3 #{t('.session')}: #{session.description}
         div class="alert alert-danger"
           - if session.motivation?
             strong = session.motivation
             br
-          | У Вас есть неотправленные или отклонённые опросы и/или отчёт.
+          | #{t('.msg_incomplete')}
           br
-          | Опросы и отчет нужно сдать 
-          strong не позднее #{l session.receiving_to}
-          | . Не прошедшим перерегистрацию закроется доступ на кластеры!
+          | #{t('.msg_submit')} 
+          strong #{t('.msg_not_later')} #{l session.receiving_to}
+          | . #{t('.msg_block')}
 
         div class="well-body"
           - if surveys.any?
             p
-              strong Вам нужно пройти опросы для прохождения перерегистрации:
+              strong #{t('.msg_surveys_to_complete')}
             table class="table table-condensed"
               - surveys.each do |us|
                 tr
@@ -33,13 +33,13 @@
                     - else
                       span class="label" = us.human_state_name
                   td
-                    - if us.can_accept?
-                      = link_to "Пройти", [us, :accept], method: :put, class: 'btn btn-mini btn-success'
+                    - if us.may_accept?
+                      = link_to t('.complete_survey'), [us, :accept], method: :put, class: 'btn btn-mini btn-success'
                     - else
-                      small = link_to "Открыть", user_survey_path(us, anchor: 'start-page')
+                      small = link_to t('.open'), user_survey_path(us, anchor: 'start-page')
           - if reports.any?
             p
-              strong Вам нужно прислать отчет по вашим проектам:
+              strong #{t('.msg_report_to_complete')}
             table class="table table-condensed"
               - reports.each do |report|
                 tr
@@ -54,8 +54,8 @@
                     - else
                       span class="label" = report.human_state_name
                   td
-                    - if report.can_accept?
-                      = link_to "Прислать отчет", [report, :accept], method: :put, class: 'btn btn-mini btn-success'
+                    - if report.may_accept?
+                      = link_to t('.complete_report'), [report, :accept], method: :put, class: 'btn btn-mini btn-success'
                     - else
-                      small = link_to "Открыть", report_path(report, anchor: "start-page")
+                      small = link_to t('.open'), report_path(report, anchor: "start-page")
         div class="well-close" ●

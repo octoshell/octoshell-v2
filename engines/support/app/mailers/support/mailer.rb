@@ -15,7 +15,7 @@ module Support
     # TODO
     def answered_tickets_notification(user_id)
       @user = Support.user_class.find(user_id)
-      @tickets = @user.tickets.with_state(:answered_by_support).where("updated_at < ?", 2.weeks.from.now)
+      @tickets = @user.tickets.where(:state=>:answered_by_support).where("updated_at < ?", 2.weeks.from.now)
       mail to: @user.email, subject: t(".subject")
     end
   end
