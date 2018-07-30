@@ -16,11 +16,11 @@ module Core
       state :closed
 
       event :close do
-        transitions :opened => :closed
+        transitions :from => :opened, :to => :closed
       end
 
       event :reopen do
-        transitions :closed => :opened
+        transitions :from => :closed, :to => :opened
       end
     end
 

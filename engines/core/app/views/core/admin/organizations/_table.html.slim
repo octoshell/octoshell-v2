@@ -17,15 +17,18 @@
       th = Core::Organization.human_attribute_name(:kind)
       th = Core::Organization.human_attribute_name(:country)
       th = Core::Organization.human_attribute_name(:city)
-      th = Core::Organization.human_attribute_name(:users_count)
       th = Core::Organization.human_attribute_name(:projects_count)
+      th = Core::Organization.human_attribute_name(:users_count)
+      th = Core::Organization.human_attribute_name(:users_with_access_count)
       th
     tr class="info"
       td colspan=6 class="text-right"
       td class="text-center"
+        = Core::Project.joins(:organization).where(organization_id: organizations.map(&:id)).where(state: :active).distinct.count
+      td class="text-center"
         = User.joins(:organizations).where(core_employments: {organization_id: organizations.map(&:id)}).where(activation_state: :active).distinct.count
       td class="text-center"
-        = Core::Project.joins(:organization).where(organization_id: organizations.map(&:id)).where(state: :active).distinct.count
+        = User.joins(:organizations).where(core_employments: {organization_id: organizations.map(&:id)}).where(activation_state: :active).joins(:accounts).where(core_members: {project_access_state: 'allowed'}).distinct.count
 
     - organizations.each do |organization|
       tr
@@ -33,8 +36,9 @@
         td = link_to organization.short_name, [:admin, organization]
         td = organization.name
         td = organization.kind
-        td = organization.country
-        td = organization.city
+        td = organization.country.to_s
+        td = organization.city.to_s
         / TODO: заменить сбор статистики на rake задачу. Обсудить.
-        td class="text-center" = organization.users.where(users: { :activation_state => "active" }).count
-        td class="text-center" = organization.projects.where(core_projects: { :state => "active" }).count
+        td class="text-center" = @projects_count[organization.id] || 0
+        td class="text-center" = link_to(@users_count[organization.id] || 0, main_app.admin_users_path(q: {employments_organization_id_in: organization.id}))
+        td class="text-center" = link_to(@users_with_access_count[organization.id] || 0, main_app.admin_users_path(q: {employments_organization_id_in: organization.id, cluster_access_state_present: '1'}))

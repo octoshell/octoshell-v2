@@ -8,7 +8,7 @@ module Core
 
     belongs_to :author, class_name: Core.user_class, foreign_key: :author_id, inverse_of: :authored_sureties
     belongs_to :project, inverse_of: :sureties
-
+    belongs_to :changed_by, class_name: ::User
     has_many :surety_members, inverse_of: :surety, dependent: :destroy
     has_many :members, class_name: Core.user_class, through: :surety_members, source: :user
 
@@ -17,7 +17,7 @@ module Core
     validates :project, presence: true
     validates :surety_members, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }
 
-    validates :scans, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }, 
+    validates :scans, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") },
               :if => -> {aasm(:state).current_state == :confirmed}
 
     accepts_nested_attributes_for :scans, allow_destroy: true, :reject_if => ->(attr){ attr["image"].blank?  }
@@ -31,10 +31,6 @@ module Core
     aasm(:state, :column => :state) do
       state :generated, :initial => true
       state :confirmed
-      #!!!  FIXIT!
-      #do
-      #  validates :scans, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }
-      #end
       state :rejected
       state :active
       state :closed

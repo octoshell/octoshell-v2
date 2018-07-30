@@ -2,7 +2,7 @@
   = bootstrap_nested_form_for @employment, layout: :horizontal do |f|
     = f.text_field :organization, readonly: true
     = f.hidden_field :organization_id
-    = f.collection_select :organization_department_id, @employment.organization.departments, :id, :name
+    = f.collection_select :organization_department_id, @employment.organization.departments, :id, :name,include_blank: true
     = f.form_group do
       p = t(".no_department")
       = link_to t(".new_organization_department"), "#", id: "new_department_adder"

@@ -1,0 +1,170 @@
+en:
+  types_labels:
+    create_ab: Create
+    read_ab: Read
+    update_ab: Update
+    create_with_context_ab: Сreate with context
+  comments:
+    rake:
+      regexp: '^# Правила доступа к заметкам'
+      url: comments_guide
+      name: 'Модуль комментариев: Правила доступа к заметкам'
+      short_name: 'Правила доступа к заметкам'
+    comments:
+      create:
+        success_message: 'Your coment has been added'
+        errors_message: 'An error occurred while sending the data'
+        write_comment: 'Leave a comment'
+        no_context: No context
+      q:
+        all: Does not matter
+      index:
+        object: Object
+        context: Context
+        loading: 'Loading...'
+        group_l: 'Groups:'
+        list: Comments
+        empty: No comments available
+        created_at_gt: Created after
+        created_at_lt: Created before
+        updated_at_gt: Updated after
+        updated_at_lt: Updated before
+
+      edit:
+        success_message: Comment has been updated
+        errors_message: 'An error occurred while sending the data'
+        discard_title: Cancel
+    tags_lookup:
+      show:
+        no_tags: No records available
+    tags:
+      create:
+        success_message: 'Your tag has been added'
+        errors_message: 'An error occurred while sending the data'
+        write_tag: Leave tags
+        tags: Tags (';' is delimiter )
+        no_context: No context
+      q:
+        all: No records available
+        without_context: Without context
+      index:
+        object: Object
+        context: Context
+        loading: 'Loading...'
+        group_l: 'Groups:'
+        list: Tags
+        empty: No tags available
+        context: Context
+        hide: Hide
+      edit:
+        success_message: Tag has been updated
+        errors_message: 'An error occurred while sending the data'
+        discard_title: Cancel
+    files:
+      create:
+        success_message: 'Your file has been added'
+        errors_message: 'An error occurred while sending the data'
+        load_file: Upload file
+        no_context: Without context
+      q:
+        all: Does not matter
+      index:
+        object: Object
+        context: Context
+        loading: Loading...
+        group_l: 'Groups:'
+        list: Files
+        empty: No files available
+        hide: Hide
+      edit:
+        success_message: File has been changed
+        errors_message: 'An error occurred while sending the data'
+        discard_title: Cancel
+
+
+    admin:
+      contexts:
+        index:
+          title: Context
+          new: New context
+        edit:
+          title: Edit context
+        new:
+          title: Create context
+      context_groups:
+        edit:
+          not_created: neither a ban nor a right has not been created yet
+          loading: Loading...
+          success_message: Editing has been successful
+          errors_message: An error occurred on the server
+          context_groups_title: Group abilities for the context
+      group_classes:
+        edit:
+          "true": Allow
+          "false": Ban
+          "none": Do not create any abilities or prohibitions
+          no_obj_id: Not for the whole class
+          y_obj_id: For the whole class
+          obj_type_title: Object type
+          class_defaults_title: Default object abilities
+          class_groups_title: Group abilitites for object
+          not_created: neither a ban nor a right has not been created yet
+          loading: Loading...
+          success_message: Editing has been successful
+          errors_message: An error occurred on the server
+          validator_message: Choose an object
+
+  responses:
+    forbidden: You do not have permissions for this action
+    not_found: One of the edited entries has been deleted
+  actions:
+    cancel_edit: Cancel edition
+  are_u_sure_delete: Are you sure you want to delete the post?
+  levels_list: Levels
+  permissions_fail: You do not have permissions for this action
+  engine_submenu:
+    group_classes_links: Class-group relationships
+    contexts: Contexts
+    context_groups_links: Context-group relationships
+
+  activerecord:
+    models:
+      comments/file_attachment: Files
+      comments/comment: Comments
+      comments/tag: Tags
+    errors:
+      models:
+        comments/level_class:
+          attributes:
+            class_name:
+              not_exist: This model does not exist
+            conflict:
+              exists_similar: You can not associate one object (a list of objects) with different levels
+    attributes:
+      comments/comment:
+        text: Text
+        context: Context
+        attachable_type: Object type
+        attachable_id: Object id
+      comments/file_attachment:
+        description: Description
+        context: Context
+        attachable_type: Object type
+        attachable_id: Object ID
+      comments/tagging:
+        attachable_type: Object type
+        attachable_id: Object ID
+        attachable_class_name: Class name
+        attachable_name: Object name
+        first_name: Name
+        last_name: Surname
+        context: Context
+      comments/tag:
+        name: Tag
+      comments/group_class:
+        class_name: Class
+        obj_id: Object
+      comments/context:
+        name: Name
+      comments/context_group:
+        context: Context

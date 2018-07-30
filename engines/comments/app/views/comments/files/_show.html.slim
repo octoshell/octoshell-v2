@@ -1,0 +1,43 @@
+article.row file-id='{{id}}' context-id='{{context_id}}'
+  .col-md-4.col-sm-4.hidden-xs
+    figure.thumbnail
+      figcaption.text-left
+        |{{email}}
+        br
+        |{{first_name}} {{last_name}}
+        br
+          strong
+            =t('.index.object') + ': '
+          |{{attachable_class}} {{attachable_name}}
+        |{{#if context_name}}
+        strong
+          =t('.index.context') + ': '
+        |{{context_name}}
+        |{{/if}}
+        ul.list-unstyled
+          li
+            strong
+              = t('.index.group_l')
+            |{{#each user_groups}}
+                <li>{{this}}</li>
+            |{{/each}}
+  .col-md-8.col-sm-8
+    .panel.panel-default.arrow.left
+      .panel-body
+        header.text-left
+          i.fa.fa-clock-o
+            |{{updated_at}}
+        div#messages
+        .alpaca-container
+          p
+            |{{description}}
+          a href='{{file_url}}' {{file_name}}
+          br
+        |{{#if can_update}}
+        button type="button" class="btn btn-default edit-button"
+          span class="glyphicon glyphicon-edit"
+            = t 'actions.edit'
+        button type="button" class="btn btn-default delete-button"
+          span class="glyphicon glyphicon-erase"
+            = t 'actions.delete'
+        |{{/if}}

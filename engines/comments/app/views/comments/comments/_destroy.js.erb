@@ -1,0 +1,13 @@
+
+main_element.on("click",'.delete-button',onDestroy);
+function onDestroy()
+{
+	main_element.find('#table').find('button').attrProp('disabled',true);
+	var id = $(this).parents("article").attr('comment-id');
+	$.ajax({
+	  url: `/comments/comments/${id}`,
+		method: "DELETE"
+	}).done(function() {
+		pageClick();
+	});
+}

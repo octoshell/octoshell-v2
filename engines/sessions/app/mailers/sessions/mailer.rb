@@ -1,5 +1,6 @@
 module Sessions
   class Mailer < ActionMailer::Base
+    add_template_helper(ApplicationHelper)
     def project_failed_session(report_id)
       @report = Sessions::Report.find(report_id)
       @user = @report.author

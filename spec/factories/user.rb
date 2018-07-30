@@ -6,10 +6,6 @@ FactoryGirl.define do
     after(:create) do |user|
       user.update(activation_state: "active")
     end
-
-    factory :admin do
-      admin_user { seed(:admin_user) }
-    end
   end
 
   factory :unactivated_user, :class => "User" do

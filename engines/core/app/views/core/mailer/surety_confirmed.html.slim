@@ -1,11 +1,11 @@
 = render "header"
 
 p
-  | Пользователь #{@surety.author.full_name} завершил заполнение Поручительства №#{@surety.id}.
+  | #{t('.msg_surety_confirmed', full_name: @surety.author.full_name, id: @surety.id)}
 p
-  | Пожалуйста, проверьте корректность заполнения поручительства, активируйте или отклоните его.
+  | #{t('.msg_surety_process')}
 p
-  = link_to "Приступить к рассмотрению.", core.admin_surety_url(@surety)
+  = link_to t('.process_surety'), core.admin_surety_url(@surety)
 
 
 = render "footer"

@@ -4,11 +4,13 @@ div class="page-header"
 - if may? :manage, :sureties
   div class="well btn-toolbar"
     - if @surety.confirmed?
-      = link_to Core::Surety.human_state_event_name(:activate), admin_surety_activate_path(@surety), class: "btn btn-success", method: :put
-      = link_to Core::Surety.human_state_event_name(:reject), admin_surety_reject_path(@surety), class: "btn btn-primary", method: :put
+      div class='row'
+        = bootstrap_form_for @surety,url: admin_surety_activate_or_reject_path(@surety),method: :put,layout: :inline do |f|
+          =f.submit Core::Surety.human_state_event_name(:activate),class: "btn btn-success"
+          =f.submit Core::Surety.human_state_event_name(:reject),class: "btn btn-primary"
+          =f.text_area :reason
     - else
       = link_to Core::Surety.human_state_event_name(:close), admin_surety_close_path(@surety), class: "btn btn-danger", method: :put, data: { confirm: t("actions.confirm") }
-
 table class="table table-bordered"
   tr
     th = Core::Project.model_name.human
@@ -28,6 +30,15 @@ table class="table table-bordered"
   tr
     th = Core::Surety.human_attribute_name(:document)
     td = link_to @surety.document.file.filename, @surety.document.url if @surety.document.present?
+  -if @surety.reason.present?
+    tr
+      th = Core::Surety.human_attribute_name(:reason)
+      td =  @surety.reason
+  -if @surety.changed_by
+      tr
+        th = Core::Surety.human_attribute_name(:changed_by)
+        td =  @surety.changed_by.full_name
+
 
 - if @surety.scans.any?
   div class="row"

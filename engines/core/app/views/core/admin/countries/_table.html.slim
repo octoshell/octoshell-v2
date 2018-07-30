@@ -1,0 +1,24 @@
+- if countries.any?
+  table class="table table-hover"
+    tr
+      th = Core::Country.human_attribute_name(:title_ru)
+      th = Core::Country.human_attribute_name(:title_en)
+      th = Core::Country.human_attribute_name(:checked)
+    - countries.each do |c|
+        tr
+          td = link_to no_name_c(c), [:admin, c]
+          td = c.title_en
+          td = c.checked ? t('answers.yess',default: 'yes') : t('answers.noo',default: 'no')
+          td
+            div class="btn-group pull-right"
+              = link_to t("actions.edit", default: "edit"), [:edit, :admin, c], class: "btn btn-default btn-sm"
+              button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                span class="caret"
+              ul class="dropdown-menu" role="menu"
+                - name = t("actions.delete", default: "delete")
+                - confirm = t("core_confirm", default: "Are You sure?")
+                - data = { method: :delete, confirm: confirm }
+                li class="text-left"
+                  = link_to name, [:admin, c], data: data, class: "text-danger"
+                li class="text-left"
+                  = link_to t('countries.new_city'), new_admin_city_path(params: {country_id: c.id}), class: "btn btn-default"

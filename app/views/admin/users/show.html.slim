@@ -15,8 +15,8 @@ div class="row"
   div class="page-header"
     h1 = @user.full_name
     h4 = @user.email
-    h4 #{User.human_attribute_name(:credentials)}: #{@user.credentials.where(state: :active).any? ? "есть" : "нет"}
-    h4 Дата регистрации: #{l @user.created_at.to_date} (#{(Date.current - @user.created_at.to_date).to_i} дн.)
+    h4 #{User.human_attribute_name(:credentials)}: #{@user.credentials.where(state: :active).any? ? t('.present') : t('.none')}
+    h4 #{t('.reg_date')}: #{l @user.created_at.to_date} (#{(Date.current - @user.created_at.to_date).to_i} #{t('.days_short')})
 
 h4 = User.human_attribute_name(:groups)
 ul class="list-unstyled"
@@ -37,3 +37,6 @@ h4 = User.human_attribute_name(:reports)
 
 h4 = User.human_attribute_name(:surveys)
 = render "sessions/user_surveys/list", surveys: @user.surveys.order(updated_at: :desc).page(1)
+= render_attachments(@user,:comments)
+= render_attachments(@user,:tags)
+= render_attachments(@user,:files)

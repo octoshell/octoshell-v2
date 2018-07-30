@@ -16,6 +16,10 @@ Core.user_class.class_eval do
     source: :project,
     inverse_of: :owner
 
+  def requests
+    Core::Request.joins(project: :owner).where('core_members.user_id = ?', current_user.id )
+  end
+
   has_many :invitational_account, ->{ where(project_access_state: "invited") },
     class_name: "::Core::Member",
     foreign_key: :user_id
@@ -37,8 +41,20 @@ Core.user_class.class_eval do
     class_name: "::Core::Organization",
     through: :employments,
     inverse_of: :users
-
   has_many :organization_departments, through: :employments
+
+  has_many :active_employments, -> { where(state: 'active') },
+    class_name: "::Core::Employment",
+    foreign_key: :user_id, dependent: :destroy
+  has_many :active_organizations,
+    class_name: "::Core::Organization",
+    through: :active_employments,
+    source: :organization
+  has_many :active_organization_departments,
+           class_name: "::Core::OrganizationDepartment",
+           through: :active_employments,
+           source: :organization_department
+
 
   has_one :primary_employment, ->{ where(primary: true) },
     class_name: "::Core::Employment",
@@ -93,8 +109,17 @@ Core.user_class.class_eval do
     a && b && c
   end
 
+  def self.cluster_access_state_present(_arg = nil)
+    User.joins([:employments, :credentials, { accounts: :project }])
+        .where(core_members: { project_access_state: 'allowed' })
+        .where(core_projects: { state: 'active' })
+        .where(access_state: :active)
+        .distinct
+
+  end
+
   def human_access_state_name
-    access_state
+    human_state_name
   end
 
   def access_state_name
@@ -102,7 +127,7 @@ Core.user_class.class_eval do
   end
 
   def self.human_access_state_names
-    Hash[User.aasm(:access_state).states.map {|s| [s.human_name, s.name] }]
+    Hash[User.aasm(:access_state).states.map { |s| [human_state_name(s.name), s.name] } ]
   end
 
   def check_project_invitations
@@ -112,4 +137,41 @@ Core.user_class.class_eval do
       invitation.destroy!
     end
   end
+
+  def checked_active_organization_departments(project = nil)
+    rel1 = active_organization_departments
+           .joins(:organization)
+           .where(checked: true)
+           .where("core_organizations.checked = 't'")
+    return rel1 unless project
+    rel2 = Core::OrganizationDepartment
+           .where(id: project.organization_department_id)
+    rel1.union rel2
+  end
+
+  def checked_active_organization_departments_to_hash(organizations, project = nil)
+    rel = checked_active_organization_departments(project)
+    hash = rel.to_a.group_by(&:organization_id)
+    hash.each do |key, value|
+      hash[key] = value.map { |i| i.as_json(:nothing) }
+    end
+    organizations.each do |o|
+      hash[o.id] = [{}] unless hash[o.id]
+    end
+    hash
+  end
+
+  def checked_active_organizations(project = :no_project)
+    rel1 = active_organizations
+           .where(checked: true)
+    return rel1 if project == :no_project
+    rel2 = Core::Organization
+           .where(id: project.organization_id)
+    rel1.union rel2
+  end
+
+  def self.ransackable_scopes(_auth_object = nil)
+    %i[cluster_access_state_present]
+  end
+
 end if Core.user_class

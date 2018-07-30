@@ -1,0 +1,293 @@
+en:
+    "false": "no"
+    "true": "Yes"
+    send: Send
+    destroy: Destroy
+    legend: legend
+    denied: denied
+    no_records_found: No records found
+    new_package: New package
+    tickets: Requests for support
+    return_to_pack: Return to package
+    for_ever: Forever
+    not_for_ever: Not forever
+    Package_name: Package name
+    status: Status
+    from: From
+    user: User
+    from_user: From user
+    from_project:  From project
+    name: Name
+    available: Available
+    not available: Not available
+    description: Description
+    cost: Cost
+    folder: Folder
+    edit: Edit
+    delete: Delete
+    add_v: Add version
+    confirm: Are you sure you want to delete this entry?
+    ver_confirm: Are you sure you want to delete this version?
+    Versions: Versions
+    active: Is it active on the cluster?
+    deleted:  Show only removed
+    remain_deleted:  Do you want to leave it removed?
+    deleted?:  removed/active
+    not_deleted: Show existing
+    show_active: Show active only
+    actions_pack: Actions
+    pack_list: Packages list
+    active_y: active
+    clusters: Clusters
+    Clusters: Clusters
+    active_n: inactive
+    exist: Does it exists on a cluster?
+    edit_access: Package permissions
+    Choose package: Choose package
+    Choose user: Choose user
+    user(me): For user(myself)
+    project:  Project
+    group: Users group
+    for_whom?: For whom?
+    want: send request
+    no_packages_found: No packages have been found
+    package: Package
+    disable: Hide
+    buttons:
+      save: Save
+    integration:
+      support_theme_name: Заявка на доступ к версиям пакетов
+    engine_submenu:
+        packages_list: Packages
+        versions_list: Versions
+        accesses_list: Accesses
+        options_list: Options
+    options_list: Options
+    who_types:
+      User: User
+      Group: Group
+      'Core::Project': Project
+    mailer_version_messages:
+      expired: The License has expired
+      forever: The license does not have an end date
+      available: The license is valid until "%{date}"
+    mailer_messages:
+      show_vers: Show version
+      denied: You have been denied access
+      allowed: You have been allowed access
+      expired: Your access has expired
+      end_lic_changed: Your access expiration date has been changed
+      denied_longer: You have been denied in access prolongation
+      deleted: Your access has been removed
+      subject: Изменено состояние вашего доступа к версии  %{version_name}
+      body: "%{status_info} for the %{version_name} version. For details, write to us or check the responses of the administrators for your requests"
+    access_actions:
+      denied: Deny
+      requested: Request
+      allowed: Allow
+      expired: To expired
+      make_longer: Prolong
+      deny_longer: Deny in prolongation
+      edit_by_hand: Edit by hand
+    notice:
+      pack_deleted: The package that includes this version is removed. Version will be removed by defuault
+
+    actions:
+      edit_access: Edit access
+    tickets_access:
+      subject:
+        requested: "Request for %{who_name} created by %{user}"
+        new_end_lic: "Request for prolongation for %{who_name} created by %{user}"
+
+    exception_messages:
+      not_found: Record has not been found. It has been deleted probably.
+      refresh_page: Please, refresh thr page.
+    packages or versions: Packages or versions
+
+    project: Project
+    group: Group
+    version: Version
+    all: All
+    colors:
+      red: red
+      blue: blue
+      green: green
+      yellow: yellow
+      brown: brown
+      black: black
+    clvers:
+      title: Clusters activity
+      note: "Note: if the cluster is not listed, the version is not installed on it!"
+      red: Version is installed on cluster,but it is inactive at the moment
+      green: Version is active and ready for usage
+    accesses:
+      sucess: Action succeeded
+      title: Accesses
+      red: Denied
+      blue: Your access in requested
+      green: You are authorized to access
+      brown: Your access is expired
+      black: Your access has been deleted
+      success: "Action succeeded.Access state: \"%{status}\". If you have questions, you can write us."
+      messages:
+        deleted: Your access for this version has been removed
+        denied: You are denied access to this version
+      delete_success: Request has been deleted successfully
+      status:
+        denied: Denied
+        requested: Requested
+        allowed: Allowed
+        expired: Expired
+        deleted: Removed
+    stale_error: "There is another value in the database. Please check this field for inconsistencies"
+    stale_error_nested: "This entry was deleted by another user"
+    stale_message: another user changed the data in the database during editing.
+    versions:
+      not_available: no access
+      exp_mes: The license of this version has expired. You can not use the expired version.
+      my_accesses: My accesses
+      my_accesses_edit: Edit my accesses
+      active: Version is active on the cluster
+      not_active: Version is inactive on the cluster
+      not_exist: Version does not exist on cluster
+      cl_autocomplete: fill using autocomplete
+      cl_byhand: fill using manual input
+      state: expiration date
+      forever: without expiration date
+      not_forever: with expiration date
+      available: active
+      expired: expired
+      clusters: "Installed on clusters:"
+      options: "Options:"
+      cl_status:
+        active: active
+        not_active: inactive
+    pack_search:
+      packages:
+        only_deleted: only removed
+        only_service: only service
+        clusters: Clusters
+        who_type: My access type
+        who_type_admin: Access type
+        user_access: "Packages and versions associated with the user"
+        active_cl: Show only active on cluster
+        versions: Versions
+        packages: Packages
+        versions_name: Versions names
+        packages_name: Packages names
+        my_packs: Packages and versions associated with me
+        show_deleted: Show removed
+        show_service: Show service
+    access_states:
+      make_longer: Prolonger access
+      deny_longer: Deny prolongation
+      allowed: allowed
+      denied: denied
+      expired:  expired
+      requested:  requested
+      deleted: deleted
+
+    version_states:
+      expired: expired
+      forever: without expiration date
+      available: available
+
+
+
+    pack:
+      mailer:
+        email_vers_state_changed:
+          subject: "Information about the \"%{version_name}\" version license has changed"
+          body: "The license information for the \"%{vers}\" version has changed.%{message}."
+      access:
+        created_during_edit: Unable to send an request. At the time of filling out the form  administrator most likely  granted u access to the version.
+        updated_during_edit_static: You can not perform an action. Something happened At the time of filling out the form. Re-enter the data
+    activerecord:
+      models:
+        pack/version: Version
+        pack/package: Package
+        pack/access: Access
+      attributes:
+        pack/package:
+          deleted:  Removed
+          deleted?:  Removed/active
+          not_deleted: Show only active
+          name: Name
+          description: Description
+        pack/options_category:
+          category: Category
+        pack/version:
+          version_name: Version name
+          delete_on_expire: Mark accesses removed when the license expires
+          package: Package
+          state: License state
+          name: Name
+          service: Service
+          end_lic: Expiration date
+          description: Description
+          active: Actual
+          cost: Cost
+          folder: Folder
+          edit: Edit
+          delete: Remove
+          deleted: Removed
+          access_user: My accesses
+          clusters: Clusters
+          available_for_user?: Available for user
+          accesses: Accesses
+
+        pack/version_option:
+            name: Option name
+            value: Value
+        pack/clusterver:
+            status: Status
+            name: Cluster
+            path: Path
+        pack/access:
+            who_type: Access type
+            version_name: Version name
+            new_end_lic_forever: Request for endless access
+            new_end_lic_not_null: Show only requests for prolongation
+            versions: Versions
+            version: Version
+            forever: Without expiration date
+            not_forever: With expiration date
+            ac_forever: With expiration date
+            status: Status
+            con_to_user: Accesses,associated with user
+            status_readable: Status
+            end_lic: Expiration date
+            new_end_lic: The end date of the renewal request (if any)
+            new_end_lic_readable: The end date of the renewal request (if any)
+            end_lic_if_exists: Expiration date (if expires)
+            end_lic_readable: Expiration date
+            created_by: Created by
+            allowed_by: Allowed by
+            who_name_with_type: Whose
+      errors:
+          messages:
+              uniq_access: The user / project already has access / request for this version
+              deleted_record: "This record (%{value}) has been deleted while u have been editing the form "
+
+          models:
+              pack/version_option:
+                taken: The option for this version with this name already exists (option names must be unique)
+              pack/access:
+                attributes:
+                  status:
+                    version_deleted: Version is removed. The access status can only be "removed".
+                  new_end_lic:
+                    incorrect_forever: You can not create endless access requests with a date
+                    status_only: "The renewal request date is only available for accesses with the status \"authorized\" or \"expired\""
+                  new_end_lic_forever:
+                    status_only: "The renewal request date is only available for accesses with the status \"authorized\" or \"expired\""
+                  end_lic:
+                    blank_not_forever: Specify a date for the access
+              pack/clusterver:
+                attributes:
+                  action:
+                    not_active: The removed version can not be active on the cluster
+              pack/version:
+                attributes:
+                  deleted:
+                    pack_deleted: The package with this version was removed. The version must has  'removed' state too.

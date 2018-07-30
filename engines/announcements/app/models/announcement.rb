@@ -2,7 +2,7 @@ class Announcement < ActiveRecord::Base
 
   has_many :announcement_recipients
   has_many :recipients, class_name: "User", source: :user, through: :announcement_recipients
-
+  belongs_to :created_by, class_name: 'User'
   mount_uploader :attachment, Announcements::AttachmentUploader
 
   validates :title, :body, presence: true

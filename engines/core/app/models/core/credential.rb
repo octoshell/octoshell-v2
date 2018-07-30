@@ -17,11 +17,11 @@ module Core
       state :deactivated
 
       event :reactivate do
-        transitions :deactivated => :active
+        transitions :from => :deactivated, :to => :active
       end
 
       event :deactivate do
-        transitions :active => :deactivated
+        transitions :from => :active, :to => :deactivated
       end
     end
 

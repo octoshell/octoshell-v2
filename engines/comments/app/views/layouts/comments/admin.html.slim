@@ -1,0 +1,9 @@
+- content_for :admin_engine_submenu do
+  br
+  ul class="nav nav-pills"
+    - comments_admin_submenu_items.each do |item|
+      li class="#{"active" if item.active?(request.fullpath)}"
+        = link_to item.name, item.url
+    li
+      = link_to t('comments.rake.short_name'), Wiki::Engine.routes.url_helpers.page_path(Comments.wiki_id)
+= render template: "layouts/application"

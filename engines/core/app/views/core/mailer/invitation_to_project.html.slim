@@ -1,9 +1,9 @@
 = render "header"
 p
-  | Руководитель проекта «#{@project.title}» приглашает вас принять участие в работе над проектом.
+  | #{t('.msg_project_invitation', pid: @project.id, title: @project.title)}
 p
-  | Пожалуйста, подтвердите участие в проекте. Сделать это можно на вкладке «Проекты».
+  | #{t('.msg_confirm_invitation')}
 p
-  = link_to "Открыть список проектов.", core.projects_url
+  = link_to t('.open_projects_list'), core.projects_url
 
 = render "footer"

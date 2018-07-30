@@ -13,6 +13,10 @@ table class="table table-condensed"
             ul class="list-unstyled"
               li #{p.name}: #{p.value}
         td = employment.post_in_organization
+        td
+          -if employment.organization.can_edit?(current_user)
+            =link_to t('.edit_organization'),core.edit_organization_path(employment.organization)
+
         td class="col-xs-1" = link_to "", core.employment_path(employment), class: "fa fa-pencil"
   - else
     tr class="warning"

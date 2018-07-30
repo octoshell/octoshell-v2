@@ -9,7 +9,4 @@ every 2.hours do
 end
 every 1.day do
 	rake "pack:expired"
-   
 end
-
-

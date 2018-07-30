@@ -8,15 +8,15 @@
           = sort_link @search, :id, "#", default_order: :desc
         - else
           | #
-      th Отчет
+      th #{t('.report')}
       th = Core::Project.human_attribute_name(:research_areas)
-      th Статус
+      th #{t('.status')}
       th class="col-xs-2"
         - if @search
-          = sort_link @search, :updated_at, 'Обновлён', default_order: :desc
+          = sort_link @search, :updated_at, t('.updated'), default_order: :desc
         - else
-          | Обновлён
-      th class="col-xs-2" Эксперт
+          | t('.updated')
+      th class="col-xs-2" #{t('.expert')}
       th class="col-xs-1"
 
     - @reports.each do |report|
@@ -25,7 +25,7 @@
         td
           ul class="list-unstyled"
             li
-              strong = link_to_if (may?(:review, :reports) || report.expert), "Отчет ##{report.id}", [:admin, report]
+              strong = link_to_if (may?(:review, :reports) || report.expert), t('.report_id', id: report.id), [:admin, report]
             li = link_to_if may?(:review, :projects), report.project.title, core.admin_project_path(report.project)
             li = link_to report.author.full_name, main_app.admin_user_path(report.author), class: "text-muted"
         td
@@ -45,10 +45,10 @@
           - if report.assessed?
             hr
             ul class="list-unstyled"
-              li #{Sessions::Report.human_attribute_name(:illustration_points)}: #{report.illustration_points || "Не оценивалось"}
-              li #{Sessions::Report.human_attribute_name(:statement_points)}: #{report.statement_points || "Не оценивалось"}
-              li #{Sessions::Report.human_attribute_name(:summary_points)}: #{report.summary_points || "Не оценивалось"}
+              li #{Sessions::Report.human_attribute_name(:illustration_points)}: #{report_points(report,:illustration_points)}
+              li #{Sessions::Report.human_attribute_name(:statement_points)}: #{report_points(report,:statement_points)}
+              li #{Sessions::Report.human_attribute_name(:summary_points)}: #{report_points(report,:summary_points)}
         td
           = report.session.description
 - else
-  p Нет отчетов
+  p #{t('.no_reports')}

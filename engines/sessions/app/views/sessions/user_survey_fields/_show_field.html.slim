@@ -2,4 +2,4 @@
   blockquote
     = render "sessions/user_survey_fields/show_#{field.kind}_field", field: field, value: value
 - else
-  p Нет данных
+  p #{t('.msg_no_data')}

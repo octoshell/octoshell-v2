@@ -1,4 +1,8 @@
 require "core/engine"
+require "core/merge_organizations"
+require "core/merge_departments"
+require "core/merge_error"
+require "core/checkable"
 require "maymay"
 require "decorators"
 require "aasm"
@@ -10,6 +14,13 @@ require "ransack"
 require "kaminari"
 require "rtf"
 require "carrierwave"
+require "roo"
+require 'colorize'
+require "core/join_orgs"
+require "core/join_orgs/join_row"
+require 'active_record_union'
+require 'core/remove_spaces'
+
 
 module Core
   mattr_accessor :user_class

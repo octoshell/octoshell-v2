@@ -1,0 +1,74 @@
+function renderJS()
+{
+	var initTwbs;
+	var attachment_type = 'comments';
+	var attachable_type =   "<%=@attach_to[:class_name]%>";
+	var attachable_ids =   "<%=@attachable_ids%>";
+	var main_element =  $(`div[attachable_type='${attachable_type}'][attachable_ids='${attachable_ids}'][attachment_type=${attachment_type}]`);
+	var index_template = Handlebars.compile(main_element.find("#index_template").html());
+	var attach_to = <%=raw @attach_to.to_json %>;
+	var twbs = main_element.find("#pagination");
+	var q = {};
+	var form;
+
+	function renderIndex()
+	{
+		var records = <%=raw @records.to_json%>;
+		var totalPages = <%=@pages%>;
+		var index_template = Handlebars.compile(main_element.find("#index_template").html());
+		var html    =  index_template({comments: records});
+		main_element.find('#table').html(html);
+		initTwbs = true;
+		if(totalPages != 0)
+		{
+			twbs.ruTwbsPagination({
+				totalPages: totalPages,
+				startPage: 1,
+				onPageClick: function (event, page) {
+							pageClick(page);
+				}
+			});
+		}
+		initTwbs = false;
+	}
+
+	function pageClick(page = twbs.twbsPagination('getCurrentPage'))
+	{
+		if(initTwbs){
+			return;
+		}
+		initTwbs = true;
+		var loading_html =`<div class="alert alert-success"><%=t('.index.loading')%></div>`;
+		main_element.find('#table').html(loading_html);
+		var url = '/comments/comments/index';
+		var params = {attach_to: attach_to, page: page,q: q};
+		$.getJSON( url,params, function( data ) {
+			var html    =  index_template({comments: data.records});
+			main_element.find('#table').html(html);
+			var totalPages = data.pages;
+			var currentPage = Number(data.page);
+			twbs.twbsPagination('destroy');
+			if(totalPages != 0)
+			{
+				twbs.ruTwbsPagination({
+						startPage: currentPage,
+						totalPages: totalPages,
+						onPageClick: function (event, page) {
+									pageClick(page);
+						}
+				});
+			}
+			initTwbs = false;
+		});
+	}
+
+	<% if all?%>
+		<%=render partial: 'q',formats: :js%>
+	<% else %>
+		<%=render partial: 'create',formats: :js%>
+	<% end %>
+	<%=render partial: 'update',formats: :js%>
+	<%=render partial: 'destroy',formats: :js%>
+	renderIndex();
+}
+renderJS();

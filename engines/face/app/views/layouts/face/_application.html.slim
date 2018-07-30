@@ -12,14 +12,12 @@ html
     = stylesheet_link_tag "application", media: "all"
     - if @extra_css
       = stylesheet_link_tag @extra_css, media: "all"
-    = javascript_include_tag "application"
-    = csrf_meta_tags
     javascript:
       window.env = "#{Rails.env}"
       window.locale = "#{I18n.locale}"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
   body
-    div
-      | dev
     div class="navbar navbar-default navbar-static-top" role="navigation"
       div class="container"
         div class="navbar-header"
@@ -27,8 +25,10 @@ html
         div class="navbar-collapse collapse"
           ul class="nav navbar-nav"
             = render "face/shared/main_menu"
+          = render "face/shared/lang_pref"
           ul class="nav navbar-nav navbar-right"
             = right_bar
+
     div class="container"
       - if may?(:access, :admin) && request.fullpath =~ /admin/
         ul class="nav nav-tabs submenu"
@@ -43,6 +43,6 @@ html
       = content
 
       div id="footer"
-        = link_to 'НИВЦ МГУ имени М.В. Ломоносова', 'http://parallel.ru/cluster', target: '_blank'
+        = link_to t('.maintaining_organization'), 'http://parallel.ru/cluster', target: '_blank'
         br
         | Created by #{link_to('Evrone', 'http://evrone.ru')}

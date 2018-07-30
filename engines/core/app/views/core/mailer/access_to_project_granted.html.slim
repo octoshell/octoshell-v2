@@ -1,8 +1,8 @@
 = render "header"
 
 p
-  | Вам предоставили доступ к проекту «#{@user.project.title}».
+  | #{t('.msg_project_acc_granted', pid: @user.project.id, title: @user.project.title)}
 p
-  | Руководитель проекта: #{@user.project.owner.full_name}
+  | #{t('.msg_project_head', full_name: @user.project.owner.full_name)}
 
 = render "footer"

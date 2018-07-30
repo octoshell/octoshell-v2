@@ -1,12 +1,12 @@
-doctype html    
+doctype html
 html
 	br
 	br
 	br
-	
+
 	table  class="table"
 		-["name","description"].each do |a|
-			tr 
+			tr
 				td class="col-xs-3" =Pack::Package.human_attribute_name a
 				td class="col-xs-9"#{@package.public_send a}
 		tr
@@ -15,20 +15,13 @@ html
 	br
 	br
 	div class="panel  panel-heading clearfix"
-
-      		 
-		= link_to t("edit") , edit_admin_package_path(@package.id),class: "btn btn-default"	        
-		= link_to t("add_v"), new_admin_package_version_path(@package.id),class: "btn btn-default"	
-		= link_to t("delete"), admin_package_path(@package.id), :method => 'delete',:data => {:confirm => t("confirm", default: "Are you sure")},class: "btn btn-default"	 
-	
-	
-	
-
+		= link_to t("edit") , edit_admin_package_path(@package.id),class: "btn btn-default"
+		= link_to t("add_v"), new_admin_package_version_path(@package.id),class: "btn btn-default"
+		= link_to t("delete"), admin_package_path(@package.id), :method => 'delete',:data => {:confirm => t("confirm", default: "Are you sure")},class: "btn btn-default"
 	div id="versions_table"
 		=render 'versions_table',records: @versions
-	
-	div id="ajax_paginator" 
+	div id="ajax_paginator"
 		=paginate(@versions, :remote => true).to_s
-		
-			
- 
+=render_attachments @package,:comments
+=render_attachments @package,:tags
+=render_attachments @package,:files

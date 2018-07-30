@@ -4,10 +4,18 @@ module Core
       respond_to do |format|
         format.html do
           @search = Project.search(params[:q])
-          @projects = @search.result(distinct: true).preload(owner: [:profile]).
-                                                     preload(:organization).
-                                                     order(created_at: :desc).
-                                                     page(params[:page])
+          @projects = @search.result(distinct: true).preload(owner: [:profile])
+                             .preload(:organization).order(created_at: :desc)
+          @count_all_members = Member.group(:project_id)
+          @count_allowed_members = User.group('core_projects.id')
+                                       .cluster_access_state_present
+          unless display_all_applied?
+            @projects = @projects.page(params[:page])
+            @count_all_members = @count_all_members.where(project_id: @projects.map(&:id))
+            @count_allowed_members = @count_allowed_members.where(core_projects: { id: @projects.map(&:id) } )
+          end
+          @count_all_members = Hash[@count_all_members.count('id')]
+          @count_allowed_members = Hash[@count_allowed_members.count('users.id')]
         end
         format.json do
           @projects = Project.finder(params[:q]).order('projects.name asc')

@@ -1,7 +1,9 @@
 div class="page-header"
   h3 №#{@announcement.id}
-  h5 class="text-muted" = @announcement.is_special? ? "Специальная" : "Информационная"
+  h5 class="text-muted" = @announcement.is_special? ? t('.special') : t('.informative')
   h5 = l @announcement.created_at.to_date
+  h5  #{Announcement.human_attribute_name(:created_by)} #{admin_user_short_link(@announcement.created_by)}
+
   h3
     - state = { pending: "info", delivered: "success" }[@announcement.state_name.to_sym]
     span class="label label-#{state}" = @announcement.human_state_name
@@ -13,24 +15,24 @@ div class="well"
       strong
         = link_to [:edit, :admin, @announcement] do
           i class="fa fa-pencil-square"
-          |  Редактировать
+          |  #{t('.edit')}
   p = markdown @announcement.body
 
   - if @announcement.attachment.present?
-    h5 Вложение: #{link_to @announcement.attachment.file.filename, @announcement.attachment.url}
+    h5 #{t('.attachment')}: #{link_to @announcement.attachment.file.filename, @announcement.attachment.url}
 
 div class="well"
   = form_tag [:admin, @announcement, :test], method: :put do
     div class="input-group"
       span class="form-control uneditable-input" = current_user.email
       span class="input-group-btn"
-        = submit_tag "Протестировать", class: "btn btn-default"
+        = submit_tag t('.test'), class: "btn btn-default"
 
 - if @announcement.pending?
-  p = link_to "Изменить список адресатов", [:admin, @announcement, :show_recipients], class: "btn btn-primary"
-  p = link_to "Отправить письмо #{@announcement.recipients.size} пользователям", [:admin, @announcement, :deliver], class: "btn btn-primary", method: :put
+  p = link_to t('.change_rec_list'), [:admin, @announcement, :show_recipients], class: "btn btn-primary"
+  p = link_to t('.send_to_n_users', num: @announcement.recipients.size), [:admin, @announcement, :deliver], class: "btn btn-primary", method: :put
 - else
-  legend Получатели
+  legend #{t('.recipients')}
   div class="row"
     - email_groups = @announcement.recipients.pluck(:email).in_groups(3, false)
     - email_groups.each do |group|
@@ -38,5 +40,3 @@ div class="well"
         ul class="list-unstyled"
           - group.each do |email|
             li = email
-
-
