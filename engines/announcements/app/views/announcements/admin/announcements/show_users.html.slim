@@ -14,7 +14,7 @@ div class="page-header"
 
 = form_tag admin_announcement_select_recipients_path(@announcement) do
   - if @users.any?
-    h3 t('.users_found'): #{@users.count}
+    h3 #{t('.users_found')}: #{@users.count}
     div class="panel-body"
       table class="table table-hover"
         tr
