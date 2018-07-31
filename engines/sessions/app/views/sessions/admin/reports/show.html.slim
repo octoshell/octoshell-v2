@@ -56,16 +56,8 @@ legend = link_to t('.open_project_card'), core.admin_project_path(@report.projec
         = f.collection_radio_buttons :summary_points, Sessions::Report::POINT_RANGE, :inspect, :inspect, inline: true
         = f.form_group do
           div class="btn-toolbar"
-<<<<<<< HEAD
-            = f.submit t("actions.assess", default: t('.evaluate'))
-            = link_to t('.recommit'), [:admin, @report, :reject], class: "btn btn-danger", data: { confirm: t('.are_you_sure')}, method: :patch
-||||||| merged common ancestors
-            = f.submit t("actions.assess", default: "Оценить")
-            = link_to "Вернуть пользователю", [:admin, @report, :reject], class: "btn btn-danger", data: { confirm: "Вы уверены?" }, method: :patch
-=======
             = f.submit t('.evaluate')
             = link_to t('.recommit'), [:admin, @report, :reject], class: "btn btn-danger", data: { confirm: t('.are_you_sure')}, method: :patch
->>>>>>> 3f496e3b9e7c8ea08f4d2b71bd686626bf2852b6
     - elsif may?(:manage, :reports) && @report.may_pick? && @report.expert.nil?
       = link_to t('.take_for_evaluation'), [:admin, @report, :pick], method: :patch, class: "btn btn-info btn-lg"
     - else

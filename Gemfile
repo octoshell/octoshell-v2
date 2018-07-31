@@ -8,7 +8,6 @@ gem "bootstrap_form", github: "bootstrap-ruby/rails-bootstrap-forms"
 gem "activerecord-jdbcpostgresql-adapter", platform: :jruby
 gem "pg", "~> 0.18", platform: :ruby
 
-
 group :development do
   gem "letter_opener"
   gem "quiet_assets"

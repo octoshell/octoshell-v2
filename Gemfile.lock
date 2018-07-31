@@ -87,6 +87,7 @@ PATH
   remote: engines/face
   specs:
     face (0.0.1)
+      activerecord-jdbcpostgresql-adapter
       bootstrap-datepicker-rails
       bootstrap_form
       coffee-rails

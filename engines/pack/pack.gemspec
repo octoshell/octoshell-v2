@@ -18,13 +18,13 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 4.2"
-
-  # s.add_dependency "activerecord-jdbcpostgresql-adapter"
+ 
+  s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "slim"
   s.add_dependency "decorators"
 
   s.add_dependency "bootstrap_form"
-
+  
   s.add_dependency "jquery-ui-rails"
   s.add_dependency "aasm"
   s.add_dependency "sidekiq"
@@ -38,9 +38,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'factory_girl_rails'
   s.test_files = Dir["spec/**/*"]
-
-
-
-
 
 end
