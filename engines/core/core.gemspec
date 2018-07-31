@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 4.2"
-
   # s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "decorators", "~> 1.0.2"
   s.add_dependency "aasm"
@@ -33,7 +32,11 @@ Gem::Specification.new do |s|
   s.add_dependency "clbustos-rtf"
   s.add_dependency "mini_magick"
   s.add_dependency "carrierwave"
+
   s.add_dependency "roo"
+  s.add_dependency "colorize"
+  s.add_dependency 'write_xlsx'
+
   s.test_files = Dir["spec/**/*"]
 
   s.add_development_dependency "rspec-rails"

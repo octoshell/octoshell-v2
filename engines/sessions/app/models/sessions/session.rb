@@ -132,10 +132,10 @@ module Sessions
     end
 
     def notify_experts_about_submitted_reports
-      Sessions::MailerWorker.perform_async(:notify_exerts_about_submitted_reports, id)
+      Sessions::MailerWorker.perform_async(:notify_experts_about_submitted_reports, id)
     end
 
-    def notify_exports_about_assessing_reports
+    def notify_experts_about_assessing_reports
       Sessions.user_class.experts.each do |expert|
         if expert.assesing_reports.any?
           Sessions::MailerWorker.perform_async(:notify_expert_about_assessing_reports, expert.id)

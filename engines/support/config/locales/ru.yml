@@ -187,10 +187,13 @@ ru:
         created_before: Создан до
         updated_after: Обновлен после
         updated_before: Обновлен до
+      table:
+        no_tickets: Нет заявок в поддержку
       show:
         title: Заявка №%{id}
         problem_solved: "Проблема решена? Нажмите "
         new_reply: Новое сообщение
+        no_replies: Нет ответов
         if_not: "Если нет, нажмите "
       new:
         title: Новая заявка

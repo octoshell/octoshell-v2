@@ -41,31 +41,11 @@ PATH
       ransack
       sidekiq
       slim
-    announcements (0.0.1-java)
-      aasm
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      decorators (~> 1.0.2)
-      kaminari
-      kramdown
-      maymay
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
 
 PATH
   remote: engines/authentication
   specs:
     authentication (0.0.1)
-      activerecord-jdbcpostgresql-adapter
-      bootstrap_form
-      rails (~> 4.2)
-      sidekiq
-      slim
-      sorcery
-    authentication (0.0.1-java)
-      activerecord-jdbcpostgresql-adapter
       bootstrap_form
       rails (~> 4.2)
       sidekiq
@@ -85,24 +65,6 @@ PATH
   specs:
     core (0.0.1)
       aasm
-      carrierwave
-      clbustos-rtf
-      decorators (~> 1.0.2)
-      kaminari
-      maymay
-      mini_magick
-      net-scp
-      net-ssh
-      rails (~> 4.2)
-      ransack
-      roo
-      sidekiq
-      sidekiq-failures
-      slim
-      sshkey
-    core (0.0.1-java)
-      aasm
-      activerecord-jdbcpostgresql-adapter
       carrierwave
       clbustos-rtf
       colorize
@@ -125,22 +87,6 @@ PATH
   remote: engines/face
   specs:
     face (0.0.1)
-      bootstrap-datepicker-rails
-      bootstrap_form
-      coffee-rails
-      jquery-fileupload-rails
-      jquery-rails
-      kramdown
-      nested_form
-      rails (~> 4.2)
-      rails-jquery-autocomplete
-      russian
-      sass-rails
-      select2-rails
-      slim
-      therubyrhino
-      underscore-rails
-    face (0.0.1-java)
       activerecord-jdbcpostgresql-adapter
       bootstrap-datepicker-rails
       bootstrap_form
@@ -170,7 +116,6 @@ PATH
     pack (0.0.1)
       aasm
       active_record_union
-      activerecord-jdbcpostgresql-adapter
       bootstrap_form
       carrierwave
       decorators
@@ -184,22 +129,8 @@ PATH
       slim
 
 PATH
-  remote: engines/sessions
-  specs:
     sessions (0.0.1)
       aasm
-      carrierwave
-      decorators (~> 1.0.2)
-      kaminari
-      maymay
-      mini_magick
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
-    sessions (0.0.1-java)
-      aasm
-      activerecord-jdbcpostgresql-adapter
       carrierwave
       decorators (~> 1.0.2)
       kaminari
@@ -214,14 +145,6 @@ PATH
   remote: engines/statistics
   specs:
     statistics (0.0.1)
-      kaminari
-      maymay
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
-    statistics (0.0.1-java)
-      activerecord-jdbcpostgresql-adapter
       kaminari
       maymay
       rails (~> 4.2)
@@ -243,29 +166,11 @@ PATH
       ransack
       sidekiq
       slim
-    support (0.0.1-java)
-      aasm
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      decorators (~> 1.0.2)
-      kaminari
-      maymay
-      mini_magick
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
 
 PATH
   remote: engines/wiki
   specs:
     wiki (0.0.1)
-      bootstrap_form
-      maymay
-      rails (~> 4.2)
-      slim
-    wiki (0.0.1-java)
-      activerecord-jdbcpostgresql-adapter
       bootstrap_form
       maymay
       rails (~> 4.2)
@@ -380,6 +285,7 @@ GEM
     dry-equalizer (0.2.0)
     dry-initializer (2.3.0)
     dry-logic (0.4.2)
+    dry-logic (0.4.2)
       dry-container (~> 0.2, >= 0.2.6)
       dry-core (~> 0.2)
       dry-equalizer (~> 0.2)
@@ -469,9 +375,6 @@ GEM
       spoon (~> 0.0.1)
     letter_opener (1.4.1)
       launchy (~> 2.2)
-    localer (0.1.1)
-      dry-initializer (~> 2.3.0)
-      thor (~> 0.20.0)
     loofah (2.1.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -508,6 +411,7 @@ GEM
     open4 (1.3.4)
     parser (2.5.1.2)
       ast (~> 2.4.0)
+    pg (0.21.0)
     poltergeist (1.16.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -702,6 +606,7 @@ PLATFORMS
 DEPENDENCIES
   active_record_union
   activerecord-import (>= 0.2.0)
+  activerecord-jdbcpostgresql-adapter
   announcements!
   authentication!
   better_errors
@@ -727,6 +632,7 @@ DEPENDENCIES
   mina!
   mina-systemd
   pack!
+  pg (~> 0.18)
   phantomjs!
   poltergeist
   pry-rails

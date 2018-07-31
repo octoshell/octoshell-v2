@@ -5,7 +5,7 @@ module Core
     def index
       @search = Request.search(params[:q])
       @requests = @search.result(distinct: true).order(created_at: :desc).preload(:project)
-      without_pagination(:request)
+      without_pagination(:requests)
     end
 
     def show

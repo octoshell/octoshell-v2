@@ -1,839 +1,563 @@
 ru:
-  "yes": да
-  "no": нет
-  engine_submenu:
-    organizations_list: Список организаций
-    merge_edit: Слияние
-    prepare_merge: Неслитые организации
-  answers:
-    yess: да
-    noo: нет
-  core_no_name: Нет названия
-  choose_value: Выберите значение
-  core_confirm: Вы уверены?
-  countries:
-    new_city: Новый город
-  merge:
-    show: Перейти на страницу записи
-    support:
-      subject: "Создана новая запись. %{model_name} : %{to_s}"
-      theme_name: Проверить новую запись
   activerecord:
-    errors:
-      models:
-        core/country:
-          attributes:
-            title_ru:
-              name_required: Необходимо ввести название или название на английском
-        core/city:
-          attributes:
-            title_ru:
-              name_required: Необходимо ввести название или название на английском
-        core/project:
-          attributes:
-            organization_department:
-              dif: Подразделение должно входить в организацию
-        core/organization:
-          attributes:
-            city_id:
-              dif: Город не является частью страны, указанной в организации
-
-
     models:
-      core/credential: "SSH-ключ"
-      core/project: "Проект"
-      core/project_card: "Карточка проекта"
-      core/project_kind: "Тип проекта"
-      core/organization: "Организация"
-      core/organization_department: "Подразделение организации"
-      core/organization_kind: "Тип организации"
-      core/employment: "Место работы"
-      core/direction_of_science: "Направление исследования"
-      core/critical_technology: "Критическая технология"
-      core/research_area: "Область науки"
-      core/member: "Участник проекта"
-      core/request: "Запрос на доступ к кластеру"
-      core/access: "Доступ к кластеру"
-      core/cluster: "Кластер"
-      core/cluster_log: "Логи кластера"
-      core/quota_kind: "Вид квоты на ресурсы"
-      core/cluster_quota: "Квота на ресурс кластера"
-      core/surety: "Поручительство"
-      core/project_invitation: "Приглашение в проект"
-      core/country: Страна
-      core/city: Город
+      core/credential: SSH-ключ
+      core/project: Проект
+      core/project_card: Карточка проекта
+      core/project_kind: Тип проекта
+      core/organization: Организация
+      core/organization_department: Подразделение организации
+      core/organization_kind: Тип организации
+      core/employment: Место работы
+      core/direction_of_science: Направление исследования
+      core/critical_technology: Критическая технология
+      core/research_area: Область науки
+      core/member: Участник проекта
+      core/request: Запрос на доступ к кластеру
+      core/access: Доступ к кластеру
+      core/cluster: Кластер
+      core/cluster_log: Логи кластера
+      core/quota_kind: Вид квоты на ресурсы
+      core/cluster_quota: Квота на ресурс кластера
+      core/surety: Поручительство
+      core/project_invitation: Приглашение в проект
     attributes:
-      core/department_merger:
-        source_organization: Исходная организация
-        source_department: Исходное подразделение
-        to_organization: Организация назначения
-        to_department: Подразделение назначения
-
-      core/country:
-        title_ru: Название
-        title_en: Название на английском
-        checked: Проверена
-      core/city:
-        country_id: Страна
-        link_to_show: Просмотреть
-        title_ru: Название
-        title_en: Название на английском
-        checked: Проверена
-        country: Страна
-        country_title_ru: Название страны
-        country_title_en: Название страны на английском
-
       user:
-        access_state: "Доступ"
+        access_state: Доступ
         credentials: "ssh *.pub ключи для доступа на кластеры"
-        has_surety: "Есть поручительство"
+        has_surety: Есть поручительство
       core/credential:
-        name: "Наименование"
-        public_key: "Публичный ssh-ключ"
-        state: "Статус"
+        name: Наименование
+        public_key: Публичный ssh-ключ
+        state: Статус
       core/project:
-        card: "Карточка проекта"
-        member: "Участник"
-        members: "Участники данного проекта"
-        allowed_members: "Участники данного проекта c доступом на кластеры"
-        sureties: "Поручительства"
-        title: "Наименование"
-        state: "Статус"
-        kind_id: "Тип"
-        kind: "Тип"
-        estimated_finish_date: "Примерная дата окончания работ над проектом"
-        direction_of_sciences: "Направления исследований"
-        direction_of_science_ids: "Направления исследований"
-        research_areas: "Область науки"
-        research_area_ids: "Область науки"
-        critical_technologies: "Критические технологии"
-        critical_technology_ids: "Критические технологии"
-        organization: "Организация"
-        organization_id: "Организация"
-        organization_department_id: "Подразделение организации"
-        organization_department: "Подразделение организации"
-        owner: "Руководитель"
-        created_at: "Создан"
-        finished_at: "Окончен"
-        first_activation_at: "Активирован"
+        card: Карточка проекта
+        member: Участник
+        members: Участники данного проекта
+        sureties: Поручительства
+        title: Наименование
+        state: Статус
+        kind_id: Тип
+        kind: Тип
+        estimated_finish_date: Примерная дата окончания работ над проектом
+        direction_of_sciences: Направления исследований
+        direction_of_science_ids: Направления исследований
+        research_areas: Область науки
+        research_area_ids: Область науки
+        critical_technologies: Критические технологии
+        critical_technology_ids: Критические технологии
+        organization: Организация
+        organization_id: Организация
+        organization_department_id: Подразделение организации
+        organization_department: Подразделение организации
+        owner: Руководитель
+        created_at: Создан
+        finished_at: Окончен
+        first_activation_at: Активирован
       core/member:
-        project_access_state: "Статус доступа к проекту"
-        project: "Проект"
-        project_id: "Проект"
-        organization: "Организация"
-        organization_id: "Организация"
-        organization_department: "Подразделение организации"
-        organization_department_id: "Подразделение организации"
-        login: "Логин"
+        project_access_state: Статус доступа к проекту
+        project: Проект
+        project_id: Проект
+        organization: Организация
+        organization_id: Организация
+        organization_department: Подразделение организации
+        organization_department_id: Подразделение организации
+        login: Логин
       core/project_kind:
-        name: "Наименование"
+        name: Наименование
       core/project_card:
-        name: "Полное название"
-        en_name: "Project title"
-        driver: "Задача"
-        en_driver: "Driver"
-        strategy: "Стратегия"
-        en_strategy: "Strategy"
-        objective: "Цель"
-        en_objective: "Objective"
-        impact: "Эффект"
-        en_impact: "Impact"
-        usage: "Использование"
-        en_usage: "Usage"
+        name: Полное название
+        en_name: Project title
+        driver: Задача
+        en_driver: Driver
+        strategy: Стратегия
+        en_strategy: Strategy
+        objective: Цель
+        en_objective: Objective
+        impact: Эффект
+        en_impact: Impact
+        usage: Использование
+        en_usage: Usage
       core/direction_of_science:
-        name: "Наименование"
+        name: Наименование
       core/critical_technology:
-        name: "Наименование"
+        name: Наименование
       core/research_area:
-        group: "Группа"
-        name: "Наименование"
+        group: Группа
+        name: Наименование
       core/request:
-        changed_by: "Одобрил/отклонил"
-        reason: "Причина одобрения/отклонения"
-        state: "Статус"
-        project: "Проект"
-        project_id: "Проект"
-        creator: "Заявитель"
-        creator_id: "Заявитель"
-        cluster: "Кластер"
-        cluster_id: "Кластер"
-        created_at: "Подана"
-        requested_resources: "Запрошенные ресурсы"
+        state: Статус
+        project: Проект
+        project_id: Проект
+        creator: Заявитель
+        creator_id: Заявитель
+        cluster: Кластер
+        cluster_id: Кластер
+        created_at: Подана
+        requested_resources: Запрошенные ресурсы
       core/access:
-        state: "Статус"
-        project: "Проект"
-        project_id: "Проект"
-        cluster: "Кластер"
-        cluster_id: "Кластер"
-        created_at: "Выдан"
-        updated_at: "Последняя синхронизация"
+        state: Статус
+        project: Проект
+        project_id: Проект
+        cluster: Кластер
+        cluster_id: Кластер
+        created_at: Выдан
+        updated_at: Последняя синхронизация
       core/cluster:
-        name: "Наименование"
-        host: "Хост"
-        admin_login: "Логин администратора"
-        available_for_work: "Доступен для работы"
-        state: "Статус"
+        name: Наименование
+        host: Хост
+        admin_login: Логин администратора
+        available_for_work: Доступен для работы
+        state: Статус
       core/cluster_log:
-        cluster_id: "Кластер"
-        cluster: "Кластер"
-        project_id: "Проект"
-        project: "Проект"
-        created_at: "Создан"
-        message: "Сообщение"
+        cluster_id: Кластер
+        cluster: Кластер
+        project_id: Проект
+        project: Проект
+        created_at: Создан
+        message: Сообщение
       core/cluster_quota:
-        name: "Название"
-        value: "Значение"
+        name: Название
+        value: Значение
       core/quota_kind:
-        name: "Наименование"
-        measurement: "Единица измерения"
+        name: Наименование
+        measurement: Единица измерения
       core/organization:
-        name: "Название"
-        abbreviation: "Аббревиатура"
-        kind: "Тип"
-        kind_id: "Тип"
-        country: "Страна"
-        country_id: "Страна"
-        city: "Город"
-        city_id: "Город"
-        city_title: "Город"
-        department: "Подразделение"
-        departments: "Подразделения"
-        users_count: "Активных пользователей"
-        users_with_access_count: 'Пользователи с доступом на кластеры'
-        projects_count: "Активных проектов"
-        checked: Проверена
+        name: Название
+        abbreviation: Аббревиатура
+        kind: Тип
+        kind_id: Тип
+        country: Страна
+        country_id: Страна
+        city: Город
+        city_title: Город
+        department: Подразделение
+        departments: Подразделения
+        users_count: Активных пользователей
+        projects_count: Активных проектов
       core/organization_department:
-        name: "Наименование"
-        users_count: "Активных пользователей"
-        projects_count: "Активных проектов"
-        checked: "Проверена"
+        name: Наименование
+        users_count: Активных пользователей
+        projects_count: Активных проектов
       core/organization_kind:
-        name: "Название"
-        departments_required: "Требуется наличие подразделений"
+        name: Название
+        departments_required: Требуется наличие подразделений
       core/employment:
-        organization_id: "Организация"
-        organization: "Организация"
-        organization_department_id: "Подразделение организации"
-        organization_department: "Подразделение организации"
-        primary: "Основное место работы"
+        organization_id: Организация
+        organization: Организация
+        organization_department_id: Подразделение организации
+        organization_department: Подразделение организации
+        primary: Основное место работы
       core/surety:
-        project: "Проект"
-        organization: "Организация-поручитель"
-        author: "Автор"
-        document: "Сгенерированный RTF-документ"
-        boss_full_name: "ФИО руководителя организации-поручителя"
-        boss_position: "Должность руководителя"
-        members: "Участники данного проекта"
-        users: "Участники"
-        scans: "Сканы подписанного поручительства"
-        state: "Статус"
-        created_at: "Создано"
-        human_name: "Поручительство №%{id}"
-        reason: "Причина одобрения/ отклонения"
-        changed_by: "Одобрил/отклонил"
-
+        project: Проект
+        organization: Организация-поручитель
+        author: Автор
+        document: Сгенерированный RTF-документ
+        boss_full_name: ФИО руководителя организации-поручителя
+        boss_position: Должность руководителя
+        members: Участники данного проекта
+        users: Участники
+        scans: Сканы подписанного поручительства
+        state: Статус
+        created_at: Создано
+        human_name: Поручительство №%{id}
       core/surety_member:
-        full_name: "ФИО"
-        organization: "Организация"
+        full_name: ФИО
+        organization: Организация
       core/project_invitation:
-        user_email: "Email"
-        user_fio: "Инициалы"
-        updated_at: "Приглашение выслано"
+        user_email: Email
+        user_fio: Инициалы
+        updated_at: Приглашение выслано
 
-    aasm:
+    state_machines:
       user:
         access_state:
           states:
-            active: "активен"
-            closed: "заблокирован"
+            active: активен
+            closed: заблокирован
       core/credential:
         state:
           states:
-            active: "активен"
-            deactivated: "деактивирован"
+            active: активен
+            deactivated: деактивирован
       core/member:
         project_access_state:
           states:
-            invited: "не подтвердил участие"
-            engaged: "подтвердил участие в проекте"
-            unsured: "нет заверенного поручительства"
-            allowed: "разрешён"
-            denied: "запрещён"
-            suspended: "приостановлен"
+            invited: не подтвердил участие
+            engaged: подтвердил участие в проекте
+            unsured: нет заверенного поручительства
+            allowed: разрешён
+            denied: запрещён
+            suspended: приостановлен
       core/project:
         state:
           states:
-            active: "активен"
-            suspended: "приостановлен"
-            blocked: "заблокирован"
-            cancelled: "отменён"
-            pending: "формируется"
-            closed: "закрыт"
-            closing: "подготовлен к закрытию"
-            finished: "завершён"
+            active: активен
+            suspended: приостановлен
+            blocked: заблокирован
+            cancelled: отменён
+            pending: формируется
+            closed: закрыт
+            closing: подготовлен к закрытию
+            finished: завершён
           events:
-            activate: "Активировать"
-            reactivate: "Заново активировать"
-            block: "Заблокировать"
-            unblock: "Разблокировать"
-            cancel: "Отменить проект"
-            finish: "Завершить проект"
-            suspend: "Приостановить проект"
-            resurrect: "Восстановить проект"
+            activate: Активировать
+            reactivate: Заново активировать
+            block: Заблокировать
+            unblock: Разблокировать
+            cancel: Отменить проект
+            finish: Завершить проект
+            suspend: Приостановить проект
+            resurrect: Восстановить проект
       core/request:
         state:
           states:
-            pending: "ожидает рассмотрения"
-            active: "подтверждена"
-            closed: "отклонена"
+            pending: ожидает рассмотрения
+            active: подтверждена
+            closed: отклонена
           events:
-            approve: "Подтвердить"
-            reject: "Отклонить"
+            approve: Подтвердить
+            reject: Отклонить
       core/access:
         state:
           states:
-            opened: "открыт"
-            closed: "закрыт"
+            opened: открыт
+            closed: закрыт
           events:
-            open: "Открыть"
-            close: "Закрыть"
+            open: Открыть
+            close: Закрыть
       core/surety:
         state:
           states:
-            generated: "сгенерировано"
-            confirmed: "отправлено на рассмотрение"
-            rejected: "отклонено"
-            active: "одобрено"
-            closed: "аннулировано"
+            generated: сгенерировано
+            confirmed: отправлено на рассмотрение
+            rejected: отклонено
+            active: одобрено
+            closed: аннулировано
           events:
-            confirm: "Отправить на рассмотрение"
-            reject: "Отклонить"
-            activate: "Одобрить"
-            close: "Аннулировать"
+            confirm: Отправить на рассмотрение
+            reject: Отклонить
+            activate: Одобрить
+            close: Аннулировать
 
   errors:
-    user_is_already_in_members: "c email %{email} уже участвует в проекте."
-    user_is_not_registered: "не зарегистрирован в octoshell! Воспользуйтесь пришлашением незарегистрированных пользователей."
-    private_key_supplied: "указан private ssh-ключ!"
-    wrong_key: "некорректный ключ"
-    must_be_in_english: "должно быть на английском языке"
-    must_be_in_russian: "должно быть на русском языке"
-    choose_at_least: "выберите не менее %{count}"
+    user_is_already_in_members: c email %{email} уже участвует в проекте.
+    user_is_not_registered: не зарегистрирован в octoshell! Воспользуйтесь пришлашением незарегистрированных пользователей.
+    private_key_supplied: указан private ssh-ключ!
+    wrong_key: некорректный ключ
+    must_be_in_english: должно быть на английском языке
+    must_be_in_russian: должно быть на русском языке
+    choose_at_least: выберите не менее %{count}
 
     user:
       employment:
         organization_was_incorrect_and_deleted:
-          html: "<span class=\"fa fa-exclamation-triangle text-danger\"> организация была удалена администрацией</span>"
+          html: "<span class='fa fa-exclamation-triangle text-danger'> организация была удалена администрацией</span>"
 
   flash:
-    project_created: "Проект создан"
-    project_updated: "Проект обновлён"
-    request_created: "Заявка создана"
-    request_updated: "Заявка обновлена"
-    cluster_created: "Кластер создан"
-    cluster_updated: "Кластер обновлён"
-    organization_created: "Организация создана"
-    you_have_to_fill_departments: "Вы должны создать подразделения для организации!"
+    project_created: Проект создан
+    project_updated: Проект обновлён
+    request_created: Заявка создана
+    request_updated: Заявка обновлена
+    cluster_created: Кластер создан
+    cluster_updated: Кластер обновлён
+    organization_created: Организация создана
+    you_have_to_fill_departments: Вы должны создать подразделения для организации!
 
-    template_saved: "Шаблон сохранён"
-    template_loaded: "Шаблон загружен"
-    template_recreated_from_default: "Шаблон восстановлен"
-
-    no_file_selected: Вы забыли приложить CSV-файл
-    bad_csv_file: "Ой, не получается разобрать файл... Возможно, неверный формат или кодировка (должна быть UTF-8)"
+    template_saved: Шаблон сохранён
+    template_loaded: Шаблон загружен
+    template_recreated_from_default: Шаблон восстановлен
 
   core:
     mailer:
-      header:
-        hello_known_name: "Здравствуйте, %{name}!"
-        hello_unknown: "Здравствуйте!"
-      footer:
-        octo_regards: "С уважением, Octoshell."
-        maintained_by: "Лаборатория Параллельных информационных технологий НИВЦ МГУ."
       invitation_to_project:
         subject: "Приглашение в проект «%{title}»"
-        msg_project_invitation: "Руководитель проекта %{pid}:«%{title}» приглашает Вас принять участие в работе над проектом."
-        msg_confirm_invitation: "Пожалуйста, подтвердите участие в проекте. Сделать это можно на вкладке «Проекты»."
-        open_projects_list: "Открыть список проектов."
       invitation_to_octoshell:
         subject: "Приглашение в проект «%{title}» в системе Octoshell"
-        hello_known_name: "Здравствуйте, %{name}!"
-        msg_project_invitation: "Руководитель проекта %{pid}:«%{title}» приглашает Вас принять участие в работе над проектом."
-        msg_register: "Для начала работы над проектом, пожалуйста, зарегистрируйтесь, перейдя по ссылке"
-        msg_first_step: "После регистрации Вам необходимо заполнить свой Профиль, указав Ваши инициалы, место работы или учебы, а также публичный ssh-ключ (на странице Профиля есть ссылка на описание того, как это сделать правильно)."
-        msg_accept_invitation: "После этого Вам необходимо подтвердить участие в проекте. Сделать это можно на вкладке «Проекты»."
-        msg_register_email: "Пожалуйста, имейте в виду, что зарегистрироваться Вы должны используя именно тот email, на который пришло письмо"
       access_to_project_granted:
-        subject: "Вам разрешен доступ к проекту «%{title}»"
-        msg_project_acc_granted: "Вам предоставили доступ к проекту %{pid}:«%{title}»."
-        msg_project_head: "Руководитель проекта: %{full_name}"
+        subject: "Вам разрешён доступ к проекту «%{title}»"
       access_to_project_denied:
         subject: "Вам закрыли доступ к проекту «%{title}»"
-        msg_project_acc_denied: "Руководитель проекта %{pid}:«%{title}» закрыл Вам доступ к проекту."
-        msg_recommendation: "Для выяснения причины, пожалуйста, свяжитесь с руководителем проекта."
       project_activated:
         subject: "Проект «%{title}» активирован"
-        msg_project_activated: "Проект %{pid}:«%{title}» активирован! Вы можете приступать к работе."
-        msg_project_head: "Руководитель проекта: %{full_name}"
-        msg_access: "На данный момент доступ предоставлен к кластерам"
-        msg_quotas: "Квоты"
-        msg_project_members_logins: "Логины участников проекта"
       project_closed:
-        subject: "Проект «%{title}» завершен"
-        msg_project_closed: "Проект %{pid}:«%{@title}» завершен. Доступы на кластеры закрыты."
-        msg_recommendation: "Выяснить причину, а также задать другие вопросы Вы можете, перейдя в раздел Техподдержки."
-        open_support: "Открыть раздел техподдержки."
+        subject: "Проект «%{title}» завершён"
       project_suspended:
         subject: "Проект «%{title}» приостановлен"
-        msg_project_suspended: "Проект %{pid}:«%{@title}» приостановлен. Доступы на кластеры закрыты."
-        msg_recommendation: "Выяснить причину, а также задать другие вопросы Вы можете, перейдя в раздел Техподдержки."
-        open_support: "Открыть раздел техподдержки."
       request_accepted:
-        subject: "Заявка №%{number} одобрена"
-        msg_request_accepted: "Заявка №%{id} для доступа к кластеру %{name} одобрена! Для вашего проекта %{pid}:«%{title}» выделен доступ со следующими квотами: %{info}."
-        msg_comment: "Желаем Вам плодотворной работы и успехов в исследовании!"
+        subject: Заявка №%{number} одобрена
       request_rejected:
-        subject: "Заявка №%{number} отклонена"
-        msg_request_rejected: "Заявка №%{id} для доступа к кластеру %{name} в рамках проекта %{pid}:«%{title}» отклонена."
-        msg_recommendation: "Выяснить причину, а также задать другие вопросы Вы можете, перейдя в раздел Техподдержки."
-        open_support: "Открыть раздел техподдержки."
+        subject: Заявка №%{number} отклонена
       new_organization:
-        subject: "Создана новая организация"
-        msg_new_organization: "Создана новая организация."
+        subject: Создана новая организация
       new_organization_department:
-        subject: "Создано подразделение для %{org_title}"
-        msg_new_department: "Создано новое подразделение организации."
+        subject: Создано подразделение для %{org_title}
       surety_confirmed:
-        subject: "Поручительство №%{number} готово к рассмотрению"
-        msg_surety_process: "Пожалуйста, проверьте корректность заполнения поручительства, активируйте или отклоните его."
-        msg_surety_confirmed: "Пользователь %{full_name} завершил заполнение Поручительства №%{id}."
-        process_surety: "Приступить к рассмотрению."
+        subject: Поручительство №%{number} готово к рассмотрению
       surety_accepted:
-        subject: "Поручительство №%{number} одобрено"
-        msg_surety_accepted: "Поручительство №%{id} в рамках проекта %{pid}:«%{title}» одобрено!"
-        msg_comment: "Желаем Вам плодотворной работы и успехов в исследовании!"
+        subject: Поручительство №%{number} одобрено
       surety_rejected:
-        subject: "Поручительство №%{number} отклонено"
-        msg_surety_rejected: "Поручительство №%{id} в рамках проекта %{pid}:«%{title}» отклонено."
-        msg_recommendation: "Выяснить причину, а также задать другие вопросы Вы можете, перейдя в раздел Техподдержки."
-        open_support: "Открыть раздел техподдержки."
+        subject: Поручительство №%{number} отклонено
       user_access_suspended:
-        subject: "Ваш аккаунт заблокирован"
-        msg_access_suspended: "Ваш аккаунт заблокирован, так как Вы не прошли перерегистрацию (не прислали заполненный опросник или отчет по проекту) или нарушили правила работы в рамках суперкомпьютерного комплекса МГУ. После исправления Вами всех недочетов доступ может быть возобновлен."
-        msg_recommendation: "Выяснить причину, а также задать другие вопросы Вы можете, перейдя в раздел Техподдержки."
-        open_support: "Открыть раздел техподдержки."
+        subject: Ваш аккаунт заблокирован
       user_access_activated:
-        subject: "Ваш аккаунт активирован"
-        msg_activated: "Ваш аккаунт снова активен. Вы можете продолжать работу в системе."
+        subject: Ваш аккаунт активирован
 
     admin:
       projects:
-        requests:
-          access_request: "Заявки на доступ к ресурсам СКЦ МГУ"
-          resources_requested: "Запрошено ресурсов"
         index:
-          title: "Проекты"
-          created_after: "Создан после"
-          created_before: "Создан до"
-          activated_after: "Активирован после"
-          activated_before: "Активирован до"
-          updated_after: "Обновлен после"
-          updated_before: "Обновлен до"
+          title: Проекты
         table:
           no_organization:
-            html: "<span class=\"fa fa-exclamation-triangle text-danger\"> не заполнена</span>"
-          no_projects_found: "Нет проектов"
+            html: "<span class='fa fa-exclamation-triangle text-danger'> не заполнена</span>"
+          no_projects_found: Нет проектов
         show:
-          synchronize_project: "Синхронизовать с кластерами"
-          description: "Описание"
-          reactivate: "Активировать"
-          suspend: "Приостановить"
-          close: "Закрыть"
+          synchronize_project: Синхронизовать с кластерами
+          description: Описание
+          reactivate: Активировать
+          suspend: Приостановить
+          close: Закрыть
         members:
-          title: "Участники"
-          email: "email"
-          send_email_to_member: "Отправить email участнику"
-          has_surety: "Есть поручительство"
-          project_access_state: "Есть доступ к проекту"
-          cluster_access_state: "Есть доступ к ресурсам"
+          title: Участники
+          email: email
+          send_email_to_member: Отправить email участнику
+          has_surety: Есть поручительство
+          project_access_state: Есть доступ к проекту
+          cluster_access_state: Есть доступ к ресурсам
         sureties:
-          title: "Поручительства"
+          title: Поручительства
       requests:
-        activate_or_reject:
-          reason_empty: Пустая причина одобрения/ отклонения
         index:
-          title: "Заявки на ресурсы"
-          pending_requests: "Ожидающие подтверждения"
-          project_title: "Проект"
-          cluster_name: "Кластер"
-          requested_resources_info: "Запрошенные ресурсы"
-          other_requests: "Обработанные"
-          request_state: "Статус заявки"
-          no_pending_requests_found: "Нет заявок"
-          no_other_requests_found: "Нет заявок"
+          title: Заявки на ресурсы
+          pending_requests: Ожидающие подтверждения
+          project_title: Проект
+          cluster_name: Кластер
+          requested_resources_info: Запрошенные ресурсы
+          other_requests: Обработанные
+          request_state: Статус заявки
+          no_pending_requests_found: Нет заявок
+          no_other_requests_found: Нет заявок
         edit:
-          title: "Редактирование заявки на ресурсы"
-        show:
-          title: "Заявка на ресурсы №%{id} в рамках проекта %{pid}:«%{title}»"
-          active_projects: "Активных проектов"
-          reg_date: "Дата регистрации"
-          days_short: "дн."
-          quotas_ammount: "Общий объем квот"
-          cpu_hours: "CPU часов"
-          gpu_hours: "GPU часов"
-          users_num: "Пользователей"
-          projects_num: "Проектов"
-          surety: "Поручительство"
-          surety_text: "Текст поручительства"
+          title: Редактирование заявки на ресурсы
       project_kinds:
         index:
-          title: "Типы проектов"
-          new_project_kind: "Новый тип проектов"
+          title: Типы проектов
+          new_project_kind: Новый тип проектов
         new:
-          title: "Новый тип проектов"
+          title: Новый тип проектов
         edit:
-          title: "Редактирование типа проектов"
+          title: Редактирование типа проектов
       quota_kinds:
         index:
-          title: "Виды квот на ресурсы"
-          new_quota_kind: "Добавить новый вид квоты"
+          title: Виды квот на ресурсы
+          new_quota_kind: Добавить новый вид квоты
         edit:
-          title: "Редактирование квоты на ресурсы"
+          title: Редактирование квоты на ресурсы
         new:
-          title: "Создание квоты на ресурсы"
+          title: Создание квоты на ресурсы
       clusters:
         index:
-          title: "Кластеры"
-          quotas_info: "Квоты на ресурсы"
-          new_cluster: "Создать кластер"
-          no_clusters_found: "Кластеры не найдены"
-          delete: "Удалить"
-          edit: "Редактировать"
-          confirm: "Вы уверены?"
+          title: Кластеры
+          quotas_info: Квоты на ресурсы
+          new_cluster: Создать кластер
+          no_clusters_found: Кластеры не найдены
+          delete: Удалить
+          edit: Редактировать
+          confirm: Вы уверены?
         show:
-          info: "Информация о кластере"
-          quotas_info: "Квоты на ресурсы"
-          pub_key_help_html: "Для работы приложения с кластером скопируйте ключ в <code>/home/%{admin_login}/.ssh/authorized_keys</code>"
-          show_logs: "Просмотреть логи"
+          info: Информация о кластере
+          quotas_info: Квоты на ресурсы
+          pub_key_help_html: Для работы приложения с кластером скопируйте ключ в <code>/home/%{admin_login}/.ssh/authorized_keys</code>
+          show_logs: Просмотреть логи
         new:
-          title: "Новый кластер"
+          title: Новый кластер
         edit:
-          title: "Редактирование кластера"
+          title: Редактирование кластера
         form:
-          help: "Вы можете задать значения квот на ресурсы по-умолчанию, кликнув на «+ добавить квоту». Эти значения будут использованы пользователями при создании заявки на ресурс."
-          add_quota: "+ добавить квоту"
-          remove_quota: "удалить квоту"
+          help: Вы можете задать значения квот на ресурсы по-молчанию, кликнув на «+ добавить квоту». Эти значения будут использованы пользователями при создании заявки на ресурс.
+          add_quota: + добавить квоту
+          remove_quota: удалить квоту
       cluster_logs:
         index:
-          title: "Логи кластеров"
-          created_after: "Создан после"
-          created_before: "Создан до"
+          title: Логи кластеров
       users:
         index:
-          title: "Управление доступом пользователей к ресурсам"
-          email: "email"
-          access_state: "Статус доступа"
-          block: "Заблокировать"
-          reactivate: "Возобновить"
-          no_users_found: "Пользователи не найдены"
+          title: Управление доступом пользователей к ресурсам
+          email: email
+          access_state: Статус доступа
+          block: Заблокировать
+          reactivate: Возобновить
+          no_users_found: Пользователи не найдены
       direction_of_sciences:
         index:
-          title: "Направления исследований"
-          new_direction_of_science: "Добавить направление исследования"
-          no_direction_of_sciences_found: "Нет направлений исследования"
+          title: Направления исследований
+          new_direction_of_science: Добавить направление исследования
+          no_direction_of_sciences_found: Нет направлений исследования
         new:
-          title: "Добавление нового направление исследования"
+          title: Добавление нового направление исследования
         edit:
-          title: "Редактирование направления исследования"
+          title: Редактирование направления исследования
       critical_technologies:
         index:
-          title: "Критические технологии"
-          new_critical_technology: "Добавить критическую технологию"
-          no_critical_technologies_found: "Нет критических технологий"
+          title: Критические технологии
+          new_critical_technology: Добавить критическую технологию
+          no_critical_technologies_found: Нет критических технологий
         new:
-          title: "Добавление новой критической технологии"
+          title: Добавление новой критической технологии
         edit:
-          title: "Редактирование критической технологии"
+          title: Редактирование критической технологии
       research_areas:
         index:
-          title: "Области науки"
-          new_research_area: "Добавить область науки"
-          no_research_areas_found: "Нет областей наук"
+          title: Области науки
+          new_research_area: Добавить область науки
+          no_research_areas_found: Нет областей наук
         new:
-          title: "Добавление новой области науки"
+          title: Добавление новой области науки
         edit:
-          title: "Редактирование области науки"
+          title: Редактирование области науки
       organizations:
         index:
-          title: "Организации"
-          new_organization: "Новая организация"
-      prepare_merge:
-        index:
-          title: "Не слитые автоматически организации и подразделения"
-        table:
-          merge: "Слить"
-        edit:
-          title: Слияние
-          automerged: Следующие членства в проектах будут слиты автоматически
-          not_automerged: Следующие членства в проектах не будут слиты автоматически
-          not_automerged_projects:  Слияние проектов
-
-          merge?: Слить?
-          with_surety: С поручительством?
-          automerged_surety_members_without_core_members: Следующие поручительства в проектах будут слиты автоматически
-          not_automerged_surety_members_without_core_members: Следующие поручительства в проектах не будут слиты автоматически
-
-
-      countries:
-        new:
-          title: Новая страна
-        index:
-          find_by_name: Найти по названию
-          title: Страны
-          new_country: Новая страна
-          none: Не имеет значения
-          yess: Да
-          noo: Нет
-        edit:
-          title: Редактировать страну
-        show:
-          cities_title: Города
-        destroy:
-          org_exist: Нельзя удалить страну,если в ней есть организации
-      cities:
-        new:
-          title: Новый город
-        index:
-          find_by_name: Найти по названию
-          title: Города
-          new_city: Новый город
-          none: Не имеет значения
-          yess: Да
-          noo: Нет
-        edit:
-          title: Редактировать город
-        destroy:
-          org_exist: Нельзя удалить город,если в нём есть организации
-        show:
-          cities_title: Города
-      organizations:
-        index:
-          find_by_name: Найти по названию
-          none: Не имеет значения
-          yess: Да
-          noo: Нет
           title: Организации
           new_organization: Новая организация
-          empty_cities_countries: Очистить поля города, страны и типа
         new:
-          title: "Создание новой организации"
+          title: Создание новой организации
         edit:
-          title: "Редактирование организации"
-          help: "Вы можете задать значения квот на ресурсы по-умолчанию, кликнув на «+ добавить квоту». Эти значения будут использованы пользователями при создании заявки на ресурс."
-          add_department: "+ добавить подразделение"
-          remove_department: "удалить подразделение"
-        show:
-          merge_edit: Редактировать со слиянием
-        merge_update:
-          here: здесь
-          not_auto: |
-            <p>Не удалось слить автоматически. Дальнейшие инструкции по слиянию  %{link}</p>
-          same_object: Вы патаетесь слить объект сам с собой
-          forbidden: Нельзя сливать организации с подразделениями.
-          stale_organization_id: Вы пытаетесь слить исходный объект с подразделением «%{dep_name}», уже не находящимся в организации «%{org_name}».
-          stale_organization_id_source: Вы пытаетесь слить  подразделение «%{dep_name}», уже не находящееся в организации «%{org_name}».
-          update: Пожалуйста, обновите страницу.
-        merge_edit:
-          preview: Предварительный просмотр
-          new_record: Новая запись
-          action_type: Вид действия
-          merge: Слить
-          organization: Организация «{{organization_name}}» с  id {{organization_id}}
-          from: из
-          department: Подразделение «{{department_name}}» с  id {{department_id}}
-          merge_with: будет слито с
-          success_message: Редактирование прошло успешно
-          department_title: Имя нового подразделения
-          title: Слияние
-          create_organization: Выделить в новую организацю
-          create_organization_error: Выделять в новую организацию можно только подразделение
-          merge_with_organization: Слить с организацией
-          merge_with_new_department: Создать новое подразделение
-          merge_with_existing_department: Слить с подраазделением организации
-          loading: Идет загрузка
-          merge_type: Вид слияния
-          merge_organization: Организация
-          merge_department: Подразделение
-          choose_source_dep: Выберите подразделение для слияния
-          choose_source_org: Выберите организацию для слияния
-          choose_to_org: Выберите организацию, с которой будет слит исходный объект
-          choose_to_dep: Выберите с каким подразделением будет слит исходный объект
+          title: Редактирование организации
+          help: Вы можете задать значения квот на ресурсы по-молчанию, кликнув на «+ добавить квоту». Эти значения будут использованы пользователями при создании заявки на ресурс.
+          add_department: + добавить подразделение
+          remove_department: удалить подразделение
       organization_kinds:
         index:
-          title: "Типы организаций"
-          new_organization_kind: "Новый тип организации"
+          title: Типы организаций
+          new_organization_kind: Новый тип организации
         new:
-          title: "Новый тип организаций"
+          title: Новый тип организаций
         edit:
-          title: "Редактирование типа организаций"
+          title: Редактирование типа организаций
       sureties:
         index:
-          title: "Поручительства"
-          template: "Редактировать шаблон поручительств"
-          created_after: "Создано после"
-          created_before: "Создано до"
-
-        edit_template:
-          title: "Шаблон поручительства"
-          surety_rtf_template: "RTF шаблон"
-          download_surety_template: "Скачать текущий шаблон"
-          save: "Сохранить"
-          surety_id: "Номер поручительства"
-          organization: "Название организации"
-          user_name: "Имя пользователя"
-          if_issues: "Если все сломалось"
-          surety_recover: "Вернуть rtf шаблон по умолчанию"
-          confirm: "Вы уверены?"
+          title: Поручительства
+          template: Редактировать шаблон поручительств
         table:
-          no_sureties: "Ничего не найдено."
-        activate_or_reject:
-          reason_empty: Пустая причина одобрения/ отклонения
+          no_sureties: Ничего не найдено.
+
     projects:
-      members:
-        invite_member: " добавить участника"
-      invited_users:
-        send_invitations: "Отправить приглашения новым участникам"
-        msg_if_member_unregistered: "Если некоторые пользователи не зарегистрированы в octoshell, Вы можете выслать им приграшения. "
-        msg_invitation_csv: "Для этого вам надо сформировать .csv документ с колонками"
-        msg_intitation_csv_col: "email, Фамилия Имя Отчество"
-        msg_invitation_csv_example: "Пример"
-        msg_invitation_csv_example_body1: "gav@abyrvalg.com,Шариков Полиграф Полиграфович"
-        msg_invitation_csv_example_body2: "filipp@mail.ru,Преображенский Филипп Филиппович"
-        invitation_csv_file: "Файл формата .csv в кодировке UTF-8."
-        invitation_upload: "Загрузить"
-        members_invited: "Приглашенные пользователи"
-        resend_invitations: "Выслать приглашения еще раз"
       new:
-        title: "Создание нового проекта"
+        title: Создание нового проекта
       edit:
-        title: "Редактирование профиля проекта"
+        title: Редактирование профиля проекта
       form:
-        nothing: "без подразделения"
-        card: "Карточка проекта"
+        card: Карточка проекта
         card_help:
-          html: "<a href=\"http://parallel.ru/cluster/reregistration/project_card\", target=\"_blank\">Пример оформления карточки проекта</a>"
-        card_name_help: "Здесь следует ввести реальное название исследовательского проекта"
-        card_driver_help: "Описание задачи, на решение которой направлен проект"
-        card_strategy_help: "Описание идеи подхода к решению задачи"
-        card_objective_help: "Описание цели на которую нацелено решение конкретной задачи"
-        card_impact_help: "Ожидаемый эффект от успешного решения задачи (научный / коммерческий / социальный)"
-        card_usage_help: "Отрасли промышленности, сектора экономики, области науки, где могут быть использованы результаты проекта"
+          html: <a href="http://parallel.ru/cluster/reregistration/project_card", target="_blank">Пример оформления карточки проекта</a>
+        card_name_help: Здесь следует ввести реальное название исследовательского проекта
+        card_driver_help: Описание задачи, на решение которой направлен проект
+        card_strategy_help: Описание идеи подхода к решению задачи
+        card_objective_help: Описание цели на которую нацелено решение конкретной задачи
+        card_impact_help: Ожидаемый эффект от успешного решения задачи (научный / коммерческий / социальный)
+        card_usage_help: Отрасли промышленности, сектора экономики, области науки, где могут быть использованы результаты проекта
       index:
-        title: "Проекты"
+        title: Проекты
         your_access_is_closed:
           html: "По результатам анализа отчетов о работе за 2014 год было обнаружено, что Вами не заполнены опросы (по каждому проекту - для руководителей проектов, персональные - для каждого пользователя СКЦ), что по правилам СКЦ МГУ (http://parallel.ru/cluster/reregistration) является обязательным.<br /> <br />До заполнения этих форм Ваш доступ заблокирован. <br /><br />Формы опросов доступны в Вашем личном кабинете (http://users.parallel.ru). Вкладка “Перерегистрация”, подраздел “Опросы”."
         user_has_not_access_to_projects:
-          html: "<p> Вы не можете участвовать в проектах, так как Вы не заполнили «Место работы» и не прикрепили Ваш публичный ssh-ключ. Пожалуйста, перейдите в ваш профиль и заполните требуемые поля.</p>"
-        goto_profile: "Перейти в профиль."
-        owned_projects: "Мои проекты"
-        projects_with_participation: "Проекты с моим участием"
-        projects_with_invitation: "Проекты, к которым есть приглашение присоединиться"
-        new_project: "Создать проект"
+          html: <p> Вы не можете участвовать в проектах, так как Вы не заполнили «Место работы» и не прикрепили Ваш публичный ssh-ключ. Пожалуйста, перейдите в ваш профиль и заполните требуемые поля.</p>
+        goto_profile: Перейти в профиль.
+        owned_projects: Мои проекты
+        projects_with_participation: Проекты с моим участием
+        projects_with_invitation: Проекты, к которым есть приглашение присоединиться
+        new_project: Создать проект
+
       projects_with_invitation:
-        join_project: "Принять приглашение"
+        join_project: Принять приглашение
       show:
-        edit_project: "Редактировать профиль проекта"
-        description: "Описание"
+        edit_project: Редактировать профиль проекта
+        description: Описание
       accesses:
-        title: "Доступ к ресурсам СКЦ МГУ"
-        quota_resources_info: "Выделено ресурсов"
+        title: Доступ к ресурсам СКЦ МГУ
+        quota_resources_info: Выделено ресурсов
       requests:
-        title: "Заявки на доступ к ресурсам СКЦ МГУ"
-        requested_resources_info: "Запрошенные ресурсы"
+        title: Заявки на доступ к ресурсам СКЦ МГУ
+        requested_resources_info: Запрошенные ресурсы
       members:
-        title: "Участники данного проекта"
-        email: "email"
-        send_email_to_member: "Отправить email участнику"
-        has_surety: "Есть поручительство"
-        project_access_state: "Есть доступ к проекту"
-        cluster_access_state: "Есть доступ к ресурсам"
-        drop_member: "Удалить участника из проекта"
+        title: Участники данного проекта
+        email: email
+        send_email_to_member: Отправить email участнику
+        has_surety: Есть поручительство
+        project_access_state: Есть доступ к проекту
+        cluster_access_state: Есть доступ к ресурсам
+        drop_member: Удалить участника из проекта
       spare_clusters:
-        title: "Свободные ресурсы"
-        new_request: "Запросить доступ"
+        title: Свободные ресурсы
+        new_request: Запросить доступ
       sureties:
-        title: "Поручительства"
-        no_active_sureties_found: "Для проекта нет активных поручительств. Добавьте новое!"
-        no_sureties_found: "Нет поручительства для некоторых участников!"
-        add_surety: "Создать поручительство"
+        title: Поручительства
+        no_active_sureties_found: Для проекта нет активных поручительств. Добавьте новое!
+        no_sureties_found: Нет поручительства для некоторых участников!
+        add_surety: Создать поручительство
       new_member_form:
-        new_member_email: "введите email нового участника"
-        submit: "Добавить участника"
+        new_member_email: введите email нового участника
+        submit: Добавить участника
     members:
-      form:
-        nothing: "без подразделения"
       edit:
-        title: "Прилашение в проект «%{project_title}»"
-        choose_organization: "Выберите организацию, от лица которой вы будете участвовать в проекте"
-        accept_invitation: "Присоединиться к проекту"
-        no_employments: |
+        title: Прилашение в проект «%{project_title}»
+        choose_organization: Выберите организацию, от лица которой вы будете участвовать в проекте
+        accept_invitation: Присоединиться к проекту
+        no_employments: |-
           <strong>Вы не указали в своём профиле место работы.</strong>
           <p>Пожалуйста, добавьте место работы, после чего можно будет подтвердить участие в проекте.</p>
-        add_employment: "Добавить место работы."
+        add_employment: Добавить место работы.
     organizations:
       new:
-        title: "Новая организация"
-        no_city: "Не нашли свой город?"
-        new_city: "Добавить город"
+        title: Новая организация
+        no_city: Не нашли свой город?
+        new_city: Добавить город
       edit:
-        title: "Редактирование организации"
-        add_department: "+ добавить подразделение"
-        remove_department: "удалить подразделение"
+        title: Редактирование организации
+        add_department: + добавить подразделение
+        remove_department: удалить подразделение
     requests:
       new:
-        title: "Создание запроса на ресурсы"
+        title: Создание запроса на ресурсы
       form:
-        help: "Заполните поля формы количеством ресурсов, которые будут необходимы вам в процессе работы проекта. Сейчас указаны размеры квот по-умолчанию."
+        help: Заполните поля формы количеством ресурсов, которые будут необходимы вам в процессе работы проекта. Сейчас указаны размеры квот по-умолчанию.
     credentials:
       list:
-        credentials: "ssh-ключи"
-        no_credentials_found: "Добавьте свой публичный ssh-ключ!"
-        add_credential: "Добавить публичный ключ"
-        confirm: "Вы действительно хотите деактивировать ключ?"
-        msg_help_sshkey: "Если Вы не знаете как добавить публичый ssh-ключ, перейдите по ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\" target=\"_blank\">Добавление публичного ssh-ключа</a>."
-
+        credentials: ssh-ключи
+        no_credentials_found: Добавьте свой публичный ssh-ключ!
+        add_credential: Добавить публичный ключ
+        confirm: Вы действительно хотите деактивировать ключ?
       new:
-        title: "Новый ssh-ключ"
+        title: Новый ssh-ключ
         help: "скопируйте сюда содержимое файла .ssh/*.pub"
     employments:
       list:
-        edit_organization: "Редактировать организацию"
-        employments: "Места работы"
-        no_employments_created: "Добавьте место работы!"
-        add_employment: "Добавить место работы"
         employments: Места работы
         no_employments_created: Добавьте место работы!
         add_employment: Добавить место работы
       form:
-        add_organization: "Добавить организацию"
-        no_department: "Не нашли своё подразделение?"
-        new_organization_department: "Добавить подразделение"
+        add_organization: Добавить организацию
+        no_department: Не нашли своё подразделение?
+        new_organization_department: Добавить подразделение
       new:
-        title: "Новое место работы"
+        title: Новое место работы
       show:
-        title: "Место работы"
+        title: Место работы
     sureties:
       new:
-        title: "Создание поручительства"
+        title: Создание поручительства
       show:
-        print_reminder: "На бланке организации распечатайте поручительство, подпишите и поставьте печать."
-        download_surety_document: "Скачать поручительство"
+        print_reminder: На бланке организации распечатайте поручительство, подпишите и поставьте печать.
+        download_surety_document: Скачать поручительство
         send_reminder: "Отправьте по адресу: 119234 Москва, Ленинские горы, 1, стр.4, Дирекция НИВЦ МГУ"
-        upload_scans: "Прикрепить сканы подписанных документов для ускорения получения доступа"
-        edit_scans: "Редактировать прикреплённые сканы"
+        upload_scans: Прикрепить сканы подписанных документов для ускорения получения доступа
+        edit_scans: Редактировать прикреплённые сканы
         confirm_message: "Вы закончили оформление поручительства?"
-        close_message: "Поручительство утратило актуальность?"
+        close_message: Поручительство утратило актуальность?
       edit:
         help: "Поддерживаются форматы: pdf, png, jpeg, jpg."
-        remove_scan: "Удалить скан"
-        add_scan: "Добавить скан"
+        remove_scan: Удалить скан
+        add_scan: Добавить скан
+
+
+
