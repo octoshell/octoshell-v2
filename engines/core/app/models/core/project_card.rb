@@ -12,7 +12,7 @@ module Core
     belongs_to :project, inverse_of: :card
 
     validates *(ALL_FIELDS + [:project]), presence: true
-    validates *RU_FIELDS, format: { with: /\A[а-яёa-z№\d[:space:][:punct:]\+]+\z/i, message: I18n.t(".errors.must_be_in_russian") }
-    validates *EN_FIELDS, format: { with: /\A[a-z\d[:space:][:punct:]\+]+\z/i, message: I18n.t(".errors.must_be_in_english") }
+    validates *RU_FIELDS, format: { with: /\A[а-яёa-z№\d[:space:][:punct:]\+]+\z/i, message: I18n.t("errors.must_be_in_russian") }
+    validates *EN_FIELDS, format: { with: /\A[a-z\d[:space:][:punct:]\+]+\z/i, message: I18n.t("errors.must_be_in_english") }
   end
 end

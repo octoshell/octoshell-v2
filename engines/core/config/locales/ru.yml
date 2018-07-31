@@ -450,6 +450,7 @@ ru:
           suspend: "Приостановить"
           close: "Закрыть"
         members:
+          login: Логин
           title: "Участники"
           email: "email"
           send_email_to_member: "Отправить email участнику"
@@ -471,6 +472,8 @@ ru:
           request_state: "Статус заявки"
           no_pending_requests_found: "Нет заявок"
           no_other_requests_found: "Нет заявок"
+        new:
+          title: Новая заявка на ресурсы
         edit:
           title: "Редактирование заявки на ресурсы"
         show:
@@ -486,6 +489,8 @@ ru:
           surety: "Поручительство"
           surety_text: "Текст поручительства"
       project_kinds:
+        table:
+          no_project_types: Нет типов проектов
         index:
           title: "Типы проектов"
           new_project_kind: "Новый тип проектов"
@@ -617,6 +622,11 @@ ru:
         show:
           cities_title: Города
       organizations:
+        load_source_objects:
+          stale_organization_id_source: Подразделение находится уже не в этой организации
+        load_to_objects_and_merge:
+          here: Сюда
+          not_auto: Невозможно слить автоматически
         index:
           find_by_name: Найти по названию
           none: Не имеет значения
@@ -676,6 +686,8 @@ ru:
           title: "Новый тип организаций"
         edit:
           title: "Редактирование типа организаций"
+        table:
+          no_organization_kinds: Нет типов организаций
       sureties:
         index:
           title: "Поручительства"

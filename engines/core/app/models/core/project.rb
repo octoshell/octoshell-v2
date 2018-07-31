@@ -41,7 +41,7 @@ module Core
 
     validates :card, :title, :organization, presence: true, if: :project_is_not_closing?
     validates :direction_of_science_ids, :critical_technology_ids,
-      :research_area_ids, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }, if: :project_is_not_closing?
+      :research_area_ids, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }, if: :project_is_not_closing?
     validate do
       errors.add(:organization_department, :dif) if organization_department && organization_department.organization != organization
     end
@@ -81,9 +81,9 @@ module Core
       users << user
       ::Core::MailerWorker.perform_async(:invitation_to_project, [user.id, self.id])
     rescue ::ActiveRecord::RecordNotUnique
-      errors.add :member, I18n.t(".errors.user_is_already_in_members", email: user.full_name)
+      errors.add :member, I18n.t("errors.user_is_already_in_members", email: user.full_name)
     rescue ::ActiveRecord::RecordNotFound
-      errors.add :member, I18n.t(".errors.user_is_not_registered")
+      errors.add :member, I18n.t("errors.user_is_not_registered")
     end
 
     def drop_member(user_id)

@@ -236,6 +236,8 @@ en:
         days_short: "day"
         present: "present"
         none: "none"
+      projects_list:
+        no_projects_found: No projects found
 
 
 

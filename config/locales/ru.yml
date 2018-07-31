@@ -236,6 +236,9 @@ ru:
         days_short: "дн."
         present: "есть"
         none: "нет"
+      projects_list:
+        no_projects_found: No projects found
+
 
 
 

@@ -15,9 +15,9 @@ module Core
     has_many :scans, class_name: "Core::SuretyScan", dependent: :destroy
 
     validates :project, presence: true
-    validates :surety_members, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }
+    validates :surety_members, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }
 
-    validates :scans, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") },
+    validates :scans, length: { minimum: 1, message: I18n.t("errors.choose_at_least") },
               :if => -> {aasm(:state).current_state == :confirmed}
 
     accepts_nested_attributes_for :scans, allow_destroy: true, :reject_if => ->(attr){ attr["image"].blank?  }

@@ -450,6 +450,7 @@ en:
           suspend: "Suspend"
           close: "Close"
         members:
+          login: Login
           title: "Members"
           email: "Email"
           send_email_to_member: "Send email to member"
@@ -471,6 +472,8 @@ en:
           request_state: "Request state"
           no_pending_requests_found: "No pending requests have been found"
           no_other_requests_found: "No requests have been found"
+        new:
+          title: "Create resources request"
         edit:
           title: "Edit the resources request"
         show:
@@ -486,6 +489,8 @@ en:
           surety: "Surety"
           surety_text: "Surety text"
       project_kinds:
+        table:
+          no_project_types: No project kinds
         index:
           title: "Project kind"
           new_project_kind: "New project kind"
@@ -614,6 +619,11 @@ en:
         show:
           cities_title: Cities
       organizations:
+        load_source_objects:
+          stale_organization_id_source: Department is not in this organization
+        load_to_objects_and_merge:
+          here: Here
+          not_auto: Impossible to merge automically
         index:
           find_by_name: Find by name
           none: Irrelevant
@@ -673,6 +683,8 @@ en:
           title: "New organization kind"
         edit:
           title: "Edit organization kind"
+        table:
+          no_organization_kinds: No organizations kinds
       sureties:
         index:
           title: "Sureties"

@@ -274,6 +274,7 @@ en:
           created_before: "Created before"
           activated_after: "Activated after"
           activated_before: "Activated before"
+          no_projects_found: "No projects found"
 
       stats:
         new:
@@ -302,7 +303,9 @@ en:
           edit_name: "Edit name"
       survey_fields:
         new:
-          title: "New survey fields"
+          title: "New survey field"
+        edit:
+          title: "Edit survey field"
         form:
           collection_help: "Only for radio-buttons, lists and scientometrics"
           strict_collection_help: "Does not allow to save values not from the list"

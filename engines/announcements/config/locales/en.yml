@@ -52,6 +52,7 @@ en:
           has_rereg_report_statuses: "Has reports with status"
           has_survey_statuses: "Has surveys with status"
           users_found: "Users have been found"
+          no_users_found: Mo users found
 
     mailer:
       announcement:

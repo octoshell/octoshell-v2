@@ -148,6 +148,8 @@ en:
           tickets_with_tag: New tagged request for support
         remote_form:
           add_tag: Add tag
+        table:
+          no_tags: No tags
 
       reply_templates:
         index:
@@ -157,7 +159,10 @@ en:
           title: Create reply template
         edit:
           title: Edit reply template
-
+        show:
+          title: Reply template
+        table:
+          no_templates: No reply templates
       fields:
         index:
           title: Extra fields for requests
@@ -166,6 +171,10 @@ en:
           title: Create extra field
         edit:
           title: Edit extra field
+        show:
+          title: Extra field
+        table:
+          no_records: No extra fields
 
       topics:
         index:
