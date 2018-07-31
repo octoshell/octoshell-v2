@@ -414,7 +414,7 @@ en:
         msg_comment: "We wish you fruitful work and successes in your research!"
       surety_rejected:
         subject: "The surety №%{number} has been rejected"
-        msg_surety_accepted: "Surety №%{number} for %{pid}:\"%{title}\" project  has been rejected."
+        msg_surety_rejected: "Surety №%{number} for %{pid}:\"%{title}\" project  has been rejected."
         msg_recommendation: "To find out the cause and to ask other questions you can visit our technical support section."
         open_support: "The technical support section."
       user_access_suspended:
@@ -697,8 +697,6 @@ en:
           reason_empty: The reason for approval / rejection is empty
 
     projects:
-      members:
-        invite_member: " add a member"
       invited_users:
         send_invitations: "Send invitations to new members"
         msg_if_member_unregistered: "If users are not registered in Octoshell, you can send them invitations "
@@ -750,6 +748,8 @@ en:
         title: "Requests for access to MSU SCC resources"
         requested_resources_info: "Requested resources"
       members:
+        login: "login"
+        invite_member: " add a member"
         title: "Members of this project"
         email: "email"
         send_email_to_member: "Send email to member"

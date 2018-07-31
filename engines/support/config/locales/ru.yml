@@ -100,7 +100,7 @@ ru:
       new_ticket_reply:
         subject: Новый ответ в заявке №%{number}
         show_request_details: Перейти к заявке
-      answered_tickets_notifications:
+      answered_tickets_notification:
         subject: Напоминание о зависших заявках в техподдержке
       footer:
         octo_regards: С уважением, Octoshell.
@@ -187,10 +187,13 @@ ru:
         created_before: Создан до
         updated_after: Обновлен после
         updated_before: Обновлен до
+      table:
+        no_tickets: Нет заявок в поддержку
       show:
         title: Заявка №%{id}
         problem_solved: "Проблема решена? Нажмите "
         new_reply: Новое сообщение
+        no_replies: Нет ответов
         if_not: "Если нет, нажмите "
       new:
         title: Новая заявка

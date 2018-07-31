@@ -100,8 +100,8 @@ en:
       new_ticket_reply:
         subject: New reply in request No%{number}
         show_request_details: Show request
-      answered_tickets_notifications:
-        subject: Answered tickets notifications
+      answered_tickets_notification:
+        subject: Reminder about suspended requests in technical support
       footer:
         octo_regards: "Yours faithfully, Octoshell."
         maintained_by: "Parallel information technologies laboratory, RCC MSU."
@@ -118,7 +118,7 @@ en:
           updated_before: Updated before
 
         table:
-          no_tickets: No tickets found
+          no_tickets: No requests found
         edit:
           title: Edit request
         new:
@@ -187,10 +187,15 @@ en:
         created_before: Created before
         updated_after: Updated after
         updated_before: Updated before
+      table:
+        no_tickets: No requests found
+
       show:
         title: Request No%{id}
         problem_solved: "Have your problem been solved? Press "
         new_reply: New reply
+        no_replies: No replies
+
         if_not: "If not, press "
       new:
         title: New request

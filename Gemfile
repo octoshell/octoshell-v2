@@ -5,6 +5,9 @@ gem "rails", "~> 4.2"
 gem "responders", "~> 2.0"
 gem "uglifier", ">= 1.3.0"
 gem "bootstrap_form", github: "bootstrap-ruby/rails-bootstrap-forms"
+gem "activerecord-jdbcpostgresql-adapter", platform: :jruby
+gem "pg", "~> 0.18", platform: :ruby
+
 
 group :development do
   gem "letter_opener"
@@ -13,7 +16,6 @@ group :development do
   gem "better_errors"
   gem 'rails_db'
   gem 'i18n-tasks', '~> 0.9.21'
-  gem 'localer'
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil

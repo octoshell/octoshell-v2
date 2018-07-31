@@ -699,8 +699,6 @@ ru:
         activate_or_reject:
           reason_empty: Пустая причина одобрения/ отклонения
     projects:
-      members:
-        invite_member: " добавить участника"
       invited_users:
         send_invitations: "Отправить приглашения новым участникам"
         msg_if_member_unregistered: "Если некоторые пользователи не зарегистрированы в octoshell, Вы можете выслать им приграшения. "
@@ -751,6 +749,8 @@ ru:
         title: "Заявки на доступ к ресурсам СКЦ МГУ"
         requested_resources_info: "Запрошенные ресурсы"
       members:
+        login: логин
+        invite_member: " добавить участника"
         title: "Участники данного проекта"
         email: "email"
         send_email_to_member: "Отправить email участнику"

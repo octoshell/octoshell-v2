@@ -16,8 +16,7 @@
             li = link_to project.owner.full_name, [:admin, project.owner]
             li = project.owner.email
         td class="col-xs-3"
-          - organization = project.organization
-          = organization.present? ? organization.name : t(".no_organization.html")
+          = project.organization.name 
         td class="col-xs-2" = l project.created_at.to_date
 - else
   p = t(".no_projects_found", default: "No Projects Found")

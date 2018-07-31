@@ -1,5 +1,4 @@
 # i18n-tasks finds and manages missing and unused translations: https://github.com/glebm/i18n-tasks
-
 # The "main" locale.
 base_locale: en
 ## All available locales are inferred from the data by default. Alternatively, specify them explicitly:
@@ -16,9 +15,9 @@ data:
   # Locale files or `File.find` patterns where translations are read from:
   read:
     ## Default:
-    # - config/locales/%{locale}.yml
+    - config/locales/%{locale}.yml
     ## More files:
-    # - config/locales/**/*.%{locale}.yml
+    - engines/**/config/locales/*.yml
 
   # Locale files to write new keys to, based on a list of key pattern => file rules. Matched from top to bottom:
   # `i18n-tasks normalize -p` will force move the keys according to these rules
@@ -55,15 +54,30 @@ search:
   ## Paths or `File.find` patterns to search in:
   paths:
    - app/
-   - engines/*/app/
+   - engines/announcements/
+   - engines/authentication/
+   - engines/comments/
+   - engines/core/
+   - engines/face/
+   - engines/jd/
+   - engines/pack/
+   - engines/sessions/
+   - engines/statistics/
+   - engines/support/
+   - engines/wiki/
 
   ## Root directories for relative keys resolution.
-  # relative_roots:
-  #   - app/controllers
-  #   - app/helpers
-  #   - app/mailers
-  #   - app/presenters
-  #   - app/views
+  relative_roots:
+    - app/controllers
+    - engines/*/app/controllers/
+    - app/helpers
+    - engines/*/app/helpers/
+    - app/mailers
+    - engines/*/app/mailers/
+    - app/presenters
+    - engines/*/app/presenters/
+    - app/views
+    - engines/*/app/views/
 
   ## Files or `File.fnmatch` patterns to exclude from search. Some files are always excluded regardless of this setting:
   ##   %w(*.jpg *.png *.gif *.svg *.ico *.eot *.otf *.ttf *.woff *.woff2 *.pdf *.css *.sass *.scss *.less *.yml *.json)
@@ -74,7 +88,7 @@ search:
 
   ## Alternatively, the only files or `File.fnmatch patterns` to search in `paths`:
   ## If specified, this settings takes priority over `exclude`, but `exclude` still applies.
-  # only: ["*.rb", "*.html.slim"]
+  # only: ["*.html.slim"]
 
   ## If `strict` is `false`, guess usages such as t("categories.#{category}.title"). The default is `true`.
   # strict: true
@@ -124,3 +138,4 @@ search:
 #
 # <%# I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
 #       patterns: [['\bSpree\.t[( ]\s*%{key}', 'spree.%{key}']] %>
+<% require './lib/relative_keys_extension' %>

@@ -190,7 +190,7 @@ ru:
         subject: "У вас %{count} неоцененных отчетов"
         msg_num_reports: "У вас на оценке находится еще %{reports} неоцененных отчетов."
         msg_speedup_assessment: "Пожалуйста, оцените их как можно быстрее."
-      notify_exerts_about_submitted_reports:
+      notify_experts_about_submitted_reports:
         subject: "В рамках перерегистрации %{count} отчетов ожидают оценки"
         msg_num_reports: "Перерегистрация «%{session}» близится к завершению, но %{reports} отчетов еще не взяты на оценку и ожидают рассмотрения."
         msg_speedup_assessment: "Пожалуйста, оцените их как можно быстрее."
@@ -233,6 +233,7 @@ ru:
         subject: "Отчет №%{id} обновлен"
         msg_report_updated: "Отчет №%{id} по проекту %{pid}:«%{title}» в рамках перерегистрации «%{session}» обновлен и готов к повторной оценке."
         assess_report: "Перейти к оценке отчета."
+        msg_report_ready: "Руководитель проекта %{pid}:«%{title}» в рамках перерегистрации «%{session}» подготовил отчет №%{id} к оценке."
       report_submitted:
         subject: "Отчет №%{id} подготовлен для оценки"
         msg_report_ready: "Руководитель проекта %{pid}:«%{title}» в рамках перерегистрации «%{session}» подготовил отчет №%{id} к оценке."
@@ -461,3 +462,5 @@ ru:
         session: "Перерегистрация"
         report_id: "Отчет №%{id}"
         no_reports: "Нет отчетов"
+      edit:
+        title: Редактировать отчет
