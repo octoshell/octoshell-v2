@@ -556,6 +556,7 @@ ru:
           title: "Редактирование критической технологии"
       research_areas:
         index:
+<<<<<<< HEAD
           title: "Области науки"
           new_research_area: "Добавить область науки"
           no_research_areas_found: "Нет областей наук"
@@ -565,6 +566,87 @@ ru:
           title: "Редактирование области науки"
       organizations:
         index:
+          title: "Организации"
+          new_organization: "Новая организация"
+      prepare_merge:
+        index:
+          title: "Не слитые автоматически организации и подразделения"
+        table:
+          merge: "Слить"
+        edit:
+          title: Слияние
+          automerged: Следующие членства в проектах будут слиты автоматически
+          not_automerged: Следующие членства в проектах не будут слиты автоматически
+          not_automerged_projects:  Слияние проектов
+
+          merge?: Слить?
+          with_surety: С поручительством?
+          automerged_surety_members_without_core_members: Следующие поручительства в проектах будут слиты автоматически
+          not_automerged_surety_members_without_core_members: Следующие поручительства в проектах не будут слиты автоматически
+
+
+      countries:
+        new:
+          title: Новая страна
+        index:
+          find_by_name: Найти по названию
+          title: Страны
+          new_country: Новая страна
+          none: Не имеет значения
+          yess: Да
+          noo: Нет
+        edit:
+          title: Редактировать страну
+        show:
+          cities_title: Города
+        destroy:
+          org_exist: Нельзя удалить страну,если в ней есть организации
+      cities:
+||||||| merged common ancestors
+          title: Области науки
+          new_research_area: Добавить область науки
+          no_research_areas_found: Нет областей наук
+=======
+          title: "Области науки"
+          new_research_area: "Добавить область науки"
+          no_research_areas_found: "Нет областей наук"
+>>>>>>> 3f496e3b9e7c8ea08f4d2b71bd686626bf2852b6
+        new:
+<<<<<<< HEAD
+          title: Новый город
+        index:
+          find_by_name: Найти по названию
+          title: Города
+          new_city: Новый город
+          none: Не имеет значения
+          yess: Да
+          noo: Нет
+||||||| merged common ancestors
+          title: Добавление новой области науки
+=======
+          title: "Добавление новой области науки"
+>>>>>>> 3f496e3b9e7c8ea08f4d2b71bd686626bf2852b6
+        edit:
+<<<<<<< HEAD
+          title: Редактировать город
+        destroy:
+          org_exist: Нельзя удалить город,если в нём есть организации
+        show:
+          cities_title: Города
+||||||| merged common ancestors
+          title: Редактирование области науки
+=======
+          title: "Редактирование области науки"
+>>>>>>> 3f496e3b9e7c8ea08f4d2b71bd686626bf2852b6
+      organizations:
+        index:
+<<<<<<< HEAD
+          find_by_name: Найти по названию
+          none: Не имеет значения
+          yess: Да
+          noo: Нет
+||||||| merged common ancestors
+=======
           title: "Организации"
           new_organization: "Новая организация"
       prepare_merge:
@@ -622,6 +704,7 @@ ru:
           none: Не имеет значения
           yess: Да
           noo: Нет
+>>>>>>> 3f496e3b9e7c8ea08f4d2b71bd686626bf2852b6
           title: Организации
           new_organization: Новая организация
           empty_cities_countries: Очистить поля города, страны и типа
@@ -699,6 +782,7 @@ ru:
         activate_or_reject:
           reason_empty: Пустая причина одобрения/ отклонения
     projects:
+<<<<<<< HEAD
       members:
         invite_member: " добавить участника"
       invited_users:
@@ -713,6 +797,21 @@ ru:
         invitation_upload: "Загрузить"
         members_invited: "Приглашенные пользователи"
         resend_invitations: "Выслать приглашения еще раз"
+||||||| merged common ancestors
+=======
+      invited_users:
+        send_invitations: "Отправить приглашения новым участникам"
+        msg_if_member_unregistered: "Если некоторые пользователи не зарегистрированы в octoshell, Вы можете выслать им приграшения. "
+        msg_invitation_csv: "Для этого вам надо сформировать .csv документ с колонками"
+        msg_intitation_csv_col: "email, Фамилия Имя Отчество"
+        msg_invitation_csv_example: "Пример"
+        msg_invitation_csv_example_body1: "gav@abyrvalg.com,Шариков Полиграф Полиграфович"
+        msg_invitation_csv_example_body2: "filipp@mail.ru,Преображенский Филипп Филиппович"
+        invitation_csv_file: "Файл формата .csv в кодировке UTF-8."
+        invitation_upload: "Загрузить"
+        members_invited: "Приглашенные пользователи"
+        resend_invitations: "Выслать приглашения еще раз"
+>>>>>>> 3f496e3b9e7c8ea08f4d2b71bd686626bf2852b6
       new:
         title: "Создание нового проекта"
       edit:
@@ -751,6 +850,7 @@ ru:
         title: "Заявки на доступ к ресурсам СКЦ МГУ"
         requested_resources_info: "Запрошенные ресурсы"
       members:
+<<<<<<< HEAD
         title: "Участники данного проекта"
         email: "email"
         send_email_to_member: "Отправить email участнику"
@@ -758,6 +858,25 @@ ru:
         project_access_state: "Есть доступ к проекту"
         cluster_access_state: "Есть доступ к ресурсам"
         drop_member: "Удалить участника из проекта"
+||||||| merged common ancestors
+        title: Участники данного проекта
+        email: email
+        send_email_to_member: Отправить email участнику
+        has_surety: Есть поручительство
+        project_access_state: Есть доступ к проекту
+        cluster_access_state: Есть доступ к ресурсам
+        drop_member: Удалить участника из проекта
+=======
+        login: логин
+        invite_member: " добавить участника"
+        title: "Участники данного проекта"
+        email: "email"
+        send_email_to_member: "Отправить email участнику"
+        has_surety: "Есть поручительство"
+        project_access_state: "Есть доступ к проекту"
+        cluster_access_state: "Есть доступ к ресурсам"
+        drop_member: "Удалить участника из проекта"
+>>>>>>> 3f496e3b9e7c8ea08f4d2b71bd686626bf2852b6
       spare_clusters:
         title: "Свободные ресурсы"
         new_request: "Запросить доступ"

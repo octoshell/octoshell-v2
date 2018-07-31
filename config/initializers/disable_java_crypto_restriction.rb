@@ -1,6 +1,6 @@
 # Only for non-production environments. For production systems install the correct jurisdiction jars:
 # https://github.com/jruby/jruby/wiki/UnlimitedStrengthCrypto
-if !Rails.env.production?
+if !Rails.env.production? && RUBY_ENGINE == 'jruby'
   security_class = java.lang.Class.for_name('javax.crypto.JceSecurity')
   restricted_field = security_class.get_declared_field('isRestricted')
   restricted_field.accessible = true

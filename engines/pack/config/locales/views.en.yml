@@ -5,6 +5,7 @@ en:
         header: Package engine wiki
     accesses:
       update_accesses:
+        unable to_create: Unable to create access for this version
         not_owned_project: The project does not belong to you. You can not work with this project access
         updated_during_edit: You can not perform an action. Something happened At the time of filling out the form. Re-enter the data
 

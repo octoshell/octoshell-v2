@@ -189,7 +189,7 @@ en:
         subject: "You have %{count} unrated reports"
         msg_num_reports: "You should rate the %{reports} unrated reports."
         msg_speedup_assessment: "Please rate them as quickly as possible."
-      notify_exerts_about_submitted_reports:
+      notify_experts_about_submitted_reports:
         subject: " %{count} reports are awaiting evaluation"
         msg_num_reports: "The \"%{session}\" Re-registration is nearing completion, but %{reports} reports have not taken for evaluation yet and are awaiting consideration."
         msg_speedup_assessment: "Please rate them as quickly as possible."
@@ -232,6 +232,7 @@ en:
       report_resubmitted:
         subject: "The report №%{id} has been updated"
         msg_report_updated: "The report No.%{id} for the  %{pid}:\"%{title}\" has been updated in the \"%{session}\" re-registration and is ready to re-evaluate."
+        msg_report_ready: "The  %{pid}:«%{title}» project manager in the «%{session}» re-registration has prepared the report  No.%{id} for evaluation."
         assess_report: "Proceed to report evaluation."
       report_submitted:
         subject: "The report No.%{id} is prepared for evaluation"
@@ -461,3 +462,5 @@ en:
         session: "Re-registration"
         report_id: "Report No.%{id}"
         no_reports: "No reports"
+      edit:
+        title: Edit report

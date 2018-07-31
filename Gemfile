@@ -5,6 +5,9 @@ gem "rails", "~> 4.2"
 gem "responders", "~> 2.0"
 gem "uglifier", ">= 1.3.0"
 gem "bootstrap_form", github: "bootstrap-ruby/rails-bootstrap-forms"
+gem "activerecord-jdbcpostgresql-adapter", platform: :jruby
+gem "pg", "~> 0.18", platform: :ruby
+
 
 group :development do
   gem "letter_opener"

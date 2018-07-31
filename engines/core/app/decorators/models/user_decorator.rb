@@ -17,7 +17,7 @@ Core.user_class.class_eval do
     inverse_of: :owner
 
   def requests
-    Core::Request.joins(project: :owner).where('core_members.user_id = ?', current_user.id )
+    Core::Request.joins(project: :owner).where('core_members.user_id = ?', id)
   end
 
   has_many :invitational_account, ->{ where(project_access_state: "invited") },

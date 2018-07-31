@@ -126,16 +126,16 @@ module Sessions
       reports.where(:state=>:assessed).select(&:failed?).map(&:close_project!)
       reports.where(:state=>[:pending, :accepted, :rejected]).map(&:postdate!)
       notify_experts_about_submitted_reports if reports.where(:state=>:submitted).any?
-      notify_exports_about_assessing_reports if reports.where(:state=>:assessing).any?
+      notify_experts_about_assessing_reports if reports.where(:state=>:assessing).any?
 
       user_surveys.where(:state=>[:pending, :filling]).map(&:postdate!)
     end
 
     def notify_experts_about_submitted_reports
-      Sessions::MailerWorker.perform_async(:notify_exerts_about_submitted_reports, id)
+      Sessions::MailerWorker.perform_async(:notify_experts_about_submitted_reports, id)
     end
 
-    def notify_exports_about_assessing_reports
+    def notify_experts_about_assessing_reports
       Sessions.user_class.experts.each do |expert|
         if expert.assesing_reports.any?
           Sessions::MailerWorker.perform_async(:notify_expert_about_assessing_reports, expert.id)
