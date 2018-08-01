@@ -110,7 +110,7 @@ Core.user_class.class_eval do
   end
 
   def self.cluster_access_state_present(_arg = nil)
-    User.joins([:employments, :credentials, { accounts: :project }])
+    User.joins([:employments, :credentials, { accounts: {project: :avaliable_clusters} }])
         .where(core_members: { project_access_state: 'allowed' })
         .where(core_projects: { state: 'active' })
         .where(access_state: :active)

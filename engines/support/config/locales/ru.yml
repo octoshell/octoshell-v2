@@ -100,7 +100,7 @@ ru:
       new_ticket_reply:
         subject: Новый ответ в заявке №%{number}
         show_request_details: Перейти к заявке
-      answered_tickets_notifications:
+      answered_tickets_notification:
         subject: Напоминание о зависших заявках в техподдержке
       footer:
         octo_regards: С уважением, Octoshell.
@@ -148,7 +148,8 @@ ru:
           tickets_with_tag: Заявки в поддержку с тегом
         remote_form:
           add_tag: Добавить тег
-
+        table:
+          no_tags: Нет тегов
       reply_templates:
         index:
           title: Шаблоны ответов
@@ -157,7 +158,10 @@ ru:
           title: Создание шаблона
         edit:
           title: Редактирование шаблона
-
+        show:
+          title: Шаблон
+        table:
+          no_templates: Нет шаблонов
       fields:
         index:
           title: Дополнительные поля для заявок
@@ -166,6 +170,10 @@ ru:
           title: Создание доп. поля
         edit:
           title: Редактирование доп. поля
+        show:
+          title: Дополнительное поле
+        table:
+          no_records: Нет дополнительных полей
 
       topics:
         index:

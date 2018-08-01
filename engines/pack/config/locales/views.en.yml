@@ -5,6 +5,7 @@ en:
         header: Package engine wiki
     accesses:
       update_accesses:
+        unable to_create: Unable to create access for this version
         not_owned_project: The project does not belong to you. You can not work with this project access
         updated_during_edit: You can not perform an action. Something happened At the time of filling out the form. Re-enter the data
 
@@ -42,6 +43,9 @@ en:
           title: Categories for versions options
         edit:
           title: Edit categories
+        table:
+          confirm: Are you sure to delete this options category?
+          no_found: No options categories
       packages:
         new:
           title: New package
@@ -52,9 +56,10 @@ en:
           new_package: New package
           edit: Edit
           delete: Delete
-          confirm: Do you really want to remove the package?
-          mega_confirm: Are you sure you want to delete the package irrevocably?!
           no_packages_found: No packages found
+        table:
+          confirm: Are you sure you want to delete the package irrevocably?!
+
       accesses:
         show:
           transitions: Note that depending on the expiration date you have set, the access status may change from expired to allowed and vice versa
@@ -62,6 +67,8 @@ en:
           expired_date: The date entered by the user is deprecated. If you approve an request without editing access, then access will be "expired".
         end_lic_with_req:
           delete_request: Delete information about the renewal request
+        table:
+          no_accesses_found: No accesses found
         q:
           show_requests_only: Show only renewals requests
         new:
@@ -74,9 +81,6 @@ en:
           new_package: New access
           edit: Edit
           delete: Delete
-          confirm: Are you sure you want to delete the package?
-          mega_confirm: Are you sure you want to delete the package irrevocably?!
-          no_packages_found: No packages found
       versions:
         new:
           title: New version

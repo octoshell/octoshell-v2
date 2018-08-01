@@ -1,7 +1,7 @@
 module Core
   class ApplicationController < ActionController::Base
     layout "layouts/application"
-    before_filter :require_login,:set_current_user
+    before_filter :require_login
 
     rescue_from MayMay::Unauthorized, with: :not_authorized
 
@@ -13,9 +13,6 @@ module Core
       redirect_to main_app.root_path, alert: t("flash.not_authorized")
     end
 
-    def set_current_user
-      Thread.current[:user] = current_user
-    end
 
     def provide_cities_hash
       @countries_meth = Country.all.order(:title_ru).includes(:cities).to_a

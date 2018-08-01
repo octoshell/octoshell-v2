@@ -77,10 +77,6 @@ ru:
       denied: Вам отказано в доступе
       allowed: Вам разрешен доступ
       expired: У Вас истек доступ
-      made_longer: Вам продлили доступ
-      version_ended: Вам продлили доступ
-      denied_longer: Вам отказали в продлении
-      deleted: Ваш доступ удален 
       end_lic_changed: Изменилась дата окончания Вашего доступа
       denied_longer: Вам отказали в продлении доступа
       deleted: Ваш доступ удален
@@ -99,14 +95,6 @@ ru:
 
     actions:
       edit_access: Редактировать доступ
-    main_form_m:
-      form:  Отправить заявку
-      delete: Удалить заявку
-      allowed: Действия при  разрешенном/истекшем доступе
-      denied: "Отказано в доступе"
-      deleted: ""
-      success: Удачно   
-
     tickets_access:
       subject:
         requested: "Заявка для %{who_name} от %{user}"

@@ -52,6 +52,8 @@ ru:
           has_rereg_report_statuses: "Имеет отчеты в состоянии"
           has_survey_statuses: "Имеет опросы в состоянии"
           users_found: "Найдено пользователей"
+          no_users_found: Не найдено пользователей
+
 
     mailer:
       announcement:

@@ -275,6 +275,7 @@ ru:
           created_before: "Создан до"
           activated_after: "Активирован после"
           activated_before: "Активирован до"
+          no_projects_found: "Не найдено проектов"
 
       stats:
         new:
@@ -303,6 +304,8 @@ ru:
           weight: "Вес"
           edit_name: "Редактировать название"
       survey_fields:
+        edit:
+          title: "Редактировать поле для опросника"
         new:
           title: "Новое поле для опросника"
         form:
@@ -464,3 +467,5 @@ ru:
         session: "Перерегистрация"
         report_id: "Отчет №%{id}"
         no_reports: "Нет отчетов"
+      edit:
+        title: Редактировать отчет

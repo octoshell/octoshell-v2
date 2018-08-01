@@ -414,7 +414,7 @@ en:
         msg_comment: "We wish you fruitful work and successes in your research!"
       surety_rejected:
         subject: "The surety №%{number} has been rejected"
-        msg_surety_accepted: "Surety №%{number} for %{pid}:\"%{title}\" project  has been rejected."
+        msg_surety_rejected: "Surety №%{number} for %{pid}:\"%{title}\" project  has been rejected."
         msg_recommendation: "To find out the cause and to ask other questions you can visit our technical support section."
         open_support: "The technical support section."
       user_access_suspended:
@@ -450,6 +450,7 @@ en:
           suspend: "Suspend"
           close: "Close"
         members:
+          login: Login
           title: "Members"
           email: "Email"
           send_email_to_member: "Send email to member"
@@ -471,6 +472,8 @@ en:
           request_state: "Request state"
           no_pending_requests_found: "No pending requests have been found"
           no_other_requests_found: "No requests have been found"
+        new:
+          title: "Create resources request"
         edit:
           title: "Edit the resources request"
         show:
@@ -486,6 +489,8 @@ en:
           surety: "Surety"
           surety_text: "Surety text"
       project_kinds:
+        table:
+          no_project_types: No project kinds
         index:
           title: "Project kind"
           new_project_kind: "New project kind"
@@ -614,6 +619,11 @@ en:
         show:
           cities_title: Cities
       organizations:
+        load_source_objects:
+          stale_organization_id_source: Department is not in this organization
+        load_to_objects_and_merge:
+          here: Here
+          not_auto: Impossible to merge automically
         index:
           find_by_name: Find by name
           none: Irrelevant
@@ -673,6 +683,8 @@ en:
           title: "New organization kind"
         edit:
           title: "Edit organization kind"
+        table:
+          no_organization_kinds: No organizations kinds
       sureties:
         index:
           title: "Sureties"
@@ -697,8 +709,6 @@ en:
           reason_empty: The reason for approval / rejection is empty
 
     projects:
-      members:
-        invite_member: " add a member"
       invited_users:
         send_invitations: "Send invitations to new members"
         msg_if_member_unregistered: "If users are not registered in Octoshell, you can send them invitations "
@@ -750,6 +760,8 @@ en:
         title: "Requests for access to MSU SCC resources"
         requested_resources_info: "Requested resources"
       members:
+        login: "login"
+        invite_member: " add a member"
         title: "Members of this project"
         email: "email"
         send_email_to_member: "Send email to member"
