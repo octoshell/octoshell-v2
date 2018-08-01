@@ -1,5 +1,5 @@
 - if @reports.any?
-  h4= page_entries_info @reports
+  h4 = page_entries_info @reports
 
   table class="table table-striped"
     tr
@@ -8,14 +8,14 @@
           = sort_link @search, :id, "#", default_order: :desc
         - else
           | #
-      th #{t('.report')}
+      th = t('.report')
       th = Core::Project.human_attribute_name(:research_areas)
-      th #{t('.status')}
+      th = t('.status')
       th class="col-xs-2"
         - if @search
           = sort_link @search, :updated_at, t('.updated'), default_order: :desc
         - else
-          | t('.updated')
+          = t('.updated')
       th class="col-xs-2" #{t('.expert')}
       th class="col-xs-1"
 
@@ -51,4 +51,4 @@
         td
           = report.session.description
 - else
-  p #{t('.no_reports')}
+  p = t('.no_reports')
