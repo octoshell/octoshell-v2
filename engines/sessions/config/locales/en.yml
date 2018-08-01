@@ -139,7 +139,7 @@ en:
             filling: "Is filling"
             submitted: "Submitted"
             exceeded: "Exceeded"
-           postdated: "Late submitted"
+            postdated: "Late submitted"
 
           events:
             fill: "Answer the questions"
