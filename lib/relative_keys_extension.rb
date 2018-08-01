@@ -1,5 +1,5 @@
-require 'active_support/all'
-if Rails.env.development?
+if !defined?(Rails) || Rails.env.development?
+  require 'active_support/all'
   module RelativeKeysExtension
     extend ActiveSupport::Concern
     def path_root(path, roots)
