@@ -1,11 +1,10 @@
 source "https://rubygems.org"
-
 gem "rake"
 gem "rails", "~> 4.2"
 gem "responders", "~> 2.0"
 gem "uglifier", ">= 1.3.0"
-gem "bootstrap_form", github: "bootstrap-ruby/rails-bootstrap-forms"
-gem "activerecord-jdbcpostgresql-adapter", platform: :jruby
+gem "bootstrap_form"
+gem "activerecord-jdbcpostgresql-adapter", '~> 1.3.0', platform: :jruby
 gem "pg", "~> 0.18", platform: :ruby
 
 
@@ -21,7 +20,7 @@ end
 gem "sinatra", ">= 1.3.0", :require => nil
 
 gem "mina", github: "zhum/mina", require: false
-gem "mina-systemd", require: false
+# gem "mina-systemd", require: false
 #gem "mina-rbenv-addons", require: false
 #gem "mina-foreman", github: "mina-deploy/mina-foreman"
 #gem "mina-foreman", github: "asabourin/mina-foreman", require: false

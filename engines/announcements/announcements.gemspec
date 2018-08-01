@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "An engine for octoshell announcements"
   s.description = "Does all of the mass mailsending for an octoshell"
   s.license     = "MIT"
+  s.platform = 'java' if RUBY_ENGINE == 'jruby'
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
 

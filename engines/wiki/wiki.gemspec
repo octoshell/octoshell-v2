@@ -13,13 +13,14 @@ Gem::Specification.new do |s|
   s.summary     = "A wiki engine for octoshell"
   s.description = "Provides a wiki engine with markdown support"
   s.license     = "MIT"
+  s.platform = 'java' if RUBY_ENGINE == 'jruby'
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 4.2"
   s.add_dependency "slim"
   #  s.add_dependency "activerecord-jdbcpostgresql-adapter"
-  s.add_dependency "bootstrap_form"
+  # s.add_dependency "bootstrap_form"
   s.add_dependency "maymay"
 
   s.test_files = Dir["spec/**/*"]
