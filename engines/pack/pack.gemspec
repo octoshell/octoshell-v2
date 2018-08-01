@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "A pack engine for octoshell"
   s.description = "A pack engine for octoshell"
   s.license     = "MIT"
+  s.platform = 'java' if RUBY_ENGINE == 'jruby'
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
@@ -23,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency "slim"
   s.add_dependency "decorators"
 
-  s.add_dependency "bootstrap_form"
+  # s.add_dependency "bootstrap_form"
 
   s.add_dependency "jquery-ui-rails"
   s.add_dependency "aasm"

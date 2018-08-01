@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "An engine for octoshell users authentication"
   s.description = "Adds functionality for users registration and signin"
   s.license     = "MIT"
+  s.platform = 'java' if RUBY_ENGINE == 'jruby'
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
@@ -21,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "sorcery"
   s.add_dependency "sidekiq"
   s.add_dependency "slim"
-  s.add_dependency "bootstrap_form"
+  # s.add_dependency "bootstrap_form"
 
   s.test_files = Dir["spec/**/*"]
 

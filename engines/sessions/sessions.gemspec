@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "An engine an annual sessions in octoshell"
   s.description = "Provides functionality for session periods for octoshell users"
   s.license     = "MIT"
+  s.platform = 'java' if RUBY_ENGINE == 'jruby'
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
