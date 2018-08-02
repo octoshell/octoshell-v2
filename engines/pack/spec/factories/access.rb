@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :access, :class => "Pack::Access" do
     # name "first_package"
     version

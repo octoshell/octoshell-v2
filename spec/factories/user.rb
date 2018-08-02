@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user, :class => "User", aliases: [:owner] do
     sequence(:email) { |n| "user_#{n}@octoshell.ru" }
     password "123456"

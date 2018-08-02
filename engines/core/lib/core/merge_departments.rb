@@ -12,6 +12,10 @@ module Core
                              organization: organization })
 
       end
+      before_destroy do
+        DepartmentMerger.where("core_department_mergers.source_department_id = #{id}
+          OR core_department_mergers.to_department_id = #{id}").destroy_all
+      end
     end
 
     def create_organization!(attributes)

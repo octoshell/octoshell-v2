@@ -87,7 +87,7 @@ module Core
     end
 
     def has_access_to_clusters?
-      project.active? && user.prepared_to_join_projects? && allowed?
+      project.active? && user.prepared_to_join_projects? && allowed? && (project.avaliable_clusters.count > 0)
     end
 
     def assign_login

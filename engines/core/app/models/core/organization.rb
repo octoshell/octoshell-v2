@@ -39,7 +39,8 @@ module Core
                  members.exists? ||
                  surety_members.exists? ||
                  sessions_stats.exists? ||
-                 projects.exists?
+                 projects.exists? ||
+                 department_mergers_any?
       !disallow
     end
 

@@ -126,6 +126,9 @@ module Core
                            t '.forbidden'
                          when 'same_object'
                            t '.same_object'
+                         when 'mergers_exists'
+                           @link = view_context.link_to t('engine_submenu.prepare_merge'), admin_prepare_merge_index_path.to_s
+                           t('.mergers_exists', link: @link)
                          when 'stale_organization_id'
                            to_org_name = Organization.find(@to_org_id).name
                            to_dep_name = OrganizationDepartment.find(params[:to][:department_id]).name

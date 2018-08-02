@@ -113,6 +113,7 @@ en:
             assessing: "Is being rated"
             assessed: "Is rated"
             exceeded: "Exceeded"
+            postdated: "Late submitted"
           events:
             accept: "Start filling"
             decline_submitting: "I can not provide an adequate report text"
@@ -137,7 +138,9 @@ en:
             pending: "Not filled"
             filling: "Is filling"
             submitted: "Submitted"
-            exceeded: "exceeded"
+            exceeded: "Exceeded"
+            postdated: "Late submitted"
+
           events:
             fill: "Answer the questions"
             submit: "Submit"
