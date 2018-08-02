@@ -87,6 +87,6 @@ table class="table table-bordered"
     tr
       td colspan="2"
         div id="surety" class=""
-          div = link_to t('.seruty_text'), "#surety_#{surety.id}", data: { toggle: "collapse",parent: "#surety_#{surety.id}" }
+          div = link_to t('.surety_text'), "#surety_#{surety.id}", data: { toggle: "collapse",parent: "#surety_#{surety.id}" }
           div id="surety_#{surety.id}" class="collapse"
             == surety.html_template

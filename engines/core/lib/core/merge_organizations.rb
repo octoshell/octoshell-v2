@@ -13,6 +13,18 @@ module Core
       end
     end
 
+    def department_mergers_any?
+      DepartmentMerger.joins("INNER JOIN core_organization_departments AS d ON d.organization_id = #{id}")
+                      .where("d.id = core_department_mergers.source_department_id OR
+                              d.id = core_department_mergers.to_department_id OR
+                              core_department_mergers.to_organization_id = #{id}")
+                      .exists?
+    end
+
+    def check_mergers
+      raise MergeError, 'mergers_exists' if department_mergers_any?
+    end
+
     def merge_with_existing_department(to_organization_id, to_department_id)
       transaction do
         merge_with_existing_department!(to_organization_id, to_department_id)
@@ -36,6 +48,7 @@ module Core
     end
 
     def merge_with_existing_department!(to_organization_id, to_department_id)
+      check_mergers
       department = OrganizationDepartment.find(to_department_id)
       if to_organization_id != department.organization_id
         raise MergeError, 'stale_organization_id'
@@ -44,6 +57,7 @@ module Core
     end
 
     def merge_with_new_department!(to_id, name = self.name)
+      check_mergers
       department = OrganizationDepartment.new(name: name,
                                               organization_id: to_id,
                                               checked: true)
@@ -53,6 +67,7 @@ module Core
     def merge_with_organization!(to_id, destroy_departments = false)
       # raise MergeError, 'forbidden' if departments.exists?
       raise MergeError, 'same_object' if to_id == id
+      check_mergers
       Organization.find(to_id)
       if destroy_departments
         merge_associations({ organization_id: id },

@@ -11,6 +11,13 @@ namespace :core do
     end
   end
 
+  task :remove_invalid_mergers => :environment do
+    ActiveRecord::Base.transaction do
+      Core::DepartmentMerger.all.select { |m| m.source_department.nil? }
+                            .each(&:destroy!)
+    end
+  end
+
   task :merge_dif => :environment do
     ActiveRecord::Base.transaction do
       Core::JoinOrgs.merge_from_table("merge_orgs.xlsx")
@@ -23,39 +30,6 @@ namespace :core do
       end
     end
   end
-
-  task :remove_invalid_mergers => :environment  do |t,args|
-    table = Roo::Spreadsheet.open("merge_orgs.xlsx")
-    table2 = Roo::Spreadsheet.open("joining-orgs_2017_11-2.ods")
-    rows = table.sheet(0).to_a.map{ |row| row[0]  }
-    rows2 = table2.sheet(0).to_a.map{ |row| row[0]  }
-
-    puts (rows & rows2).inspect
-    # rows.each do |row|
-    #   linked_rows = rows2.select{ |r| r[0] == row[0] }
-    #   unless linked_rows.all?{|l| l[5] == linked_rows[0][5] }
-    #     puts row.inspect.red
-    #   end
-    # end
-    # org_id, org_name, dep_id, dep_name,
-    # rep_org_id, rep_dep_id, rep_org_name, rep_dep_name = *row
-    # rep_org_id.nil? || rep_org_id == 'x' && (rep_dep_id.nil? || rep_dep_id == 'x')
-
-  end
-
-  task :mergeable_organizations, [:table_path] => :environment do |_t, args|
-
-    args = Core::JoinOrgs.mergeable_organizations(args[:table_path])
-    Core::JoinOrgs.create_table(*args)
-    # puts grouped_rows.inspect
-    # filtered_rows = rows.select map do |row|
-    #
-    # end
-    #без x в поле замены подразделения и без x в поле замены организации
-
-  end
-
-
 
   # Проверяет, что у всех организаций выставлена страна, соответствующая стране города
   task :check_organizations => :environment do

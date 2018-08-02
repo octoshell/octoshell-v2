@@ -197,10 +197,11 @@ module Core
       joins(:members)
         .joins("INNER JOIN core_employments As e ON
           e.organization_id = #{department.organization_id} AND
-          core_members.user_id = e.user_id")
+          core_members.user_id = e.user_id AND
+          e.organization_department_id = #{department.id}")
         .where('core_projects.organization_department_id IS NULL OR core_projects.organization_department_id != e.organization_department_id ')
         .where(core_members: {organization_id: department.organization_id, owner: true})
-
+        .distinct('core_projects.id')
     end
 
     def self.can_not_be_automerged?(department)
