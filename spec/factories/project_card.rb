@@ -3,7 +3,7 @@
 #       :en_usage]
 
 #     ALL_FIELDS = RU_FIELDS | EN_FIELDS
-# FactoryGirl.define do
+# FactoryBot.define do
 #  factory :project_card, :class => "Core::ProjectCard" do
    
 

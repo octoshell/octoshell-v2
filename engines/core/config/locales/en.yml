@@ -650,6 +650,7 @@ en:
           stale_organization_id: You are trying to merge source object with the "%{dep_name}" department, which  is not in the  "%{org_name}" organization now.
           stale_organization_id_source: You are trying to merge  "%{dep_name}" department, which  is not in the  "%{org_name}" organization now.
           update: Please update the page.
+          mergers_exists: "This organization has unmerged departments. Follow the \"%{link}\" and merge them"
         merge_edit:
           preview: Preview
           new_record: New record

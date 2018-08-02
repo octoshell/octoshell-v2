@@ -1,13 +1,15 @@
 class MailsCollectorHelper
+
+  OUTPUT_FILE = 'octoshell_mails.html'
   ENGINES = {
               Announcements: [:announcement]
             }
   def self.user
-    @user ||= FactoryGirl.create(:user)
+    @user ||= FactoryBot.create(:user)
   end
 
   def self.english_user
-    @english_user ||= FactoryGirl.create(:user, language: 'en')
+    @english_user ||= FactoryBot.create(:user, language: 'en')
   end
 
   class AnnouncementsCollector
@@ -35,11 +37,17 @@ class MailsCollectorHelper
   end
 
   def self.collect
+    mails = []
     ENGINES.each do |key, value|
       value.each do |meth|
-        eval("#{key}Collector").send(meth, user)
-        eval("#{key}Collector").send(meth, english_user)
+        mails << eval("#{key}Collector").send(meth, user)
+        mails << eval("#{key}Collector").send(meth, english_user)
       end
     end
+    puts mails.inspect
+    # File.open(OUTPUT_FILE, 'w') do |f|
+    #   f.write("write your stuff here")
+    # end
+
   end
 end
