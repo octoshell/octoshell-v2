@@ -10,8 +10,9 @@ module LocalizedEmails
     def message
       messages = MessagesCollection.new
       addresses = Array(new_message.to)
+      users = User.where(email: addresses).to_a
       grouped_addresses = addresses.group_by do |to|
-        User.find_by_email(to)&.language || DEFAULT_LOCALE
+        users.detect { |u| u.email == to }&.language || DEFAULT_LOCALE
       end
       grouped_addresses.each do |key, value|
         I18n.with_locale(key) do
