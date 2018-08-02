@@ -80,7 +80,7 @@ en:
       denied_longer: You have been denied in access prolongation
       deleted: Your access has been removed
       subject: Изменено состояние вашего доступа к версии  %{version_name}
-      body: "%{status_info} for the %{version_name} version. For details, write to us or check the responses of the administrators for your requests"
+      body: "%{status_info} for the %{link} version. For details, write to us or check the responses of the administrators for your requests"
     access_actions:
       denied: Deny
       requested: Request
@@ -198,7 +198,7 @@ en:
       mailer:
         email_vers_state_changed:
           subject: "Information about the \"%{version_name}\" version license has changed"
-          body: "The license information for the \"%{vers}\" version has changed.%{message}."
+          body: "The license information for the %{link} version has changed.%{message}."
       access:
         created_during_edit: Unable to send an request. At the time of filling out the form  administrator most likely  granted u access to the version.
         updated_during_edit_static: You can not perform an action. Something happened At the time of filling out the form. Re-enter the data

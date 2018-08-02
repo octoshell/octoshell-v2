@@ -1,7 +1,7 @@
 = render "header"
 
 p
-  strong = #{t('.msg_report_reply', id: @report.id, pid: @report.project.id,  title: @report.project.title, session: @report.session.description)}
+  strong = t('.msg_report_reply', id: @report.id, pid: @report.project.id,  title: @report.project.title, session: @report.session.description)
 
 - @report.replies.order(:created_at).last(3).each do |reply|
   blockquote

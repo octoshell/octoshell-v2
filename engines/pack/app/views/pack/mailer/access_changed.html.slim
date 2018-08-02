@@ -1,5 +1,5 @@
 = render "core/mailer/header"
-
-p =t('mailer_messages.body',version_name: @access.version.name,status_info: @status_info)
+link = link_to @access.version.name, @access.version
+p =t('mailer_messages.body',link: link,status_info: @status_info)
 
 = render "core/mailer/footer"

@@ -6,7 +6,8 @@ gem "uglifier", ">= 1.3.0"
 gem "bootstrap_form"
 gem "activerecord-jdbcpostgresql-adapter", '~> 1.3.0', platform: :jruby
 gem "pg", "~> 0.18", platform: :ruby
-
+gem 'rails_email_preview', '~> 2.0.6'
+gem 'left_join'
 
 group :development do
   gem "letter_opener"
@@ -60,8 +61,8 @@ group :test do
   gem 'shoulda-matchers', '~> 3.1'
   gem "test_after_commit"
   gem "database_cleaner"
-  gem "factory_girl_rails"
-  gem "factory_girl-seeds"
+  gem "factory_bot_rails"
+  # gem "factory_girl-seeds"
   gem "capybara"
   gem "poltergeist"
   gem "phantomjs", github: "colszowka/phantomjs-gem"
