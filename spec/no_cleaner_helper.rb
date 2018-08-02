@@ -8,7 +8,7 @@ require "rspec/rails"
 require "rspec/autorun"
 require "shoulda-matchers"
 
-require "factory_girl_rails"
+require "factory_bot_rails"
 require "capybara/rspec"
 require "capybara/poltergeist"
 require "sidekiq/testing"
@@ -32,7 +32,7 @@ RSpec.configure do |config|
     Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
   config.treat_symbols_as_metadata_keys_with_true_values = true
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   #config.include Requests::Helpers, type: :feature
   config.use_transactional_fixtures = false
   config.order = "random"

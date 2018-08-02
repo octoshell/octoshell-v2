@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :comment, :class => "Comments::Comment" do
     sequence(:text) { |n| "context_#{n}" }
    	user

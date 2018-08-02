@@ -3,6 +3,8 @@
 	  var context_title = "<%=j Comments::Comment.human_attribute_name(:context) %>";
 	  var successMessage = "<%= t('.create.success_message') %>";
 	  var errorsMessage = "<%= t('.create.errors_message') %>";
+		var names_title = "<%= t('.create.names_title') %>";
+		var tags_names = <%=raw Comments::Tag.allowed_names(current_user.id)%>;
 
 	  <%if @with_context.to_s =='create_with_context'%>
 	     var context_ids = <%=raw @contexts.map{ |c| c.id.to_s }.to_json%>;
@@ -29,6 +31,11 @@
 	                  "required": true,
 	                  "default": ' '
 	                },
+									"names":{
+										"title": names_title,
+	                  "enum": tags_names,
+	                  "default": ' '
+									},
 	                "name": {
 										"title": name_label,
 	                  "required": true
@@ -53,6 +60,21 @@
 	                      "type": "text",
 	                      "wordlimit": 250,
 	              },
+								"names":{
+									"type":"select",
+									"hideNone": "true",
+									"onFieldChange": function(e) {
+										var value = this.getValue();
+										var name = main_element.find(`.create_tag`).alpaca('get').getControlByPath('tag/name');
+										var name_value = name.getValue();
+										if(name && name_value.replace(/\s*$/g,'')[-1] == ';'){
+											name.setValue(name_value + ';' + value + ';')
+										}
+										else{
+											name.setValue(name_value + value + ';');
+										}
+        					}
+								},
 	              "attachable_type":{
 	                "type": "hidden"
 	              },

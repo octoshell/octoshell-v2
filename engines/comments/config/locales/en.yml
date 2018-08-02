@@ -43,6 +43,7 @@ en:
         errors_message: 'An error occurred while sending the data'
         write_tag: Leave tags
         tags: Tags (';' is delimiter )
+        names_title: Add an existing tag
         no_context: No context
       q:
         all: No records available

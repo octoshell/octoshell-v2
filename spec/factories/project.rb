@@ -6,14 +6,14 @@ def create_project_card
   attributes = Hash[all.map{ |key| [key,"test"]  }]
   Core::ProjectCard.new(attributes)
 end
-FactoryGirl.define do
+FactoryBot.define do
  factory :project, :class => "Core::Project" do
   owner
   sequence(:title) { |n| "Octocalc_#{n}" }
   card { create_project_card }
-  critical_technologies { [FactoryGirl.build(:critical_technology)] }
-  direction_of_sciences { [FactoryGirl.build(:direction_of_science)] }
-  research_areas { [FactoryGirl.build(:research_area)] }
+  critical_technologies { [FactoryBot.build(:critical_technology)] }
+  direction_of_sciences { [FactoryBot.build(:direction_of_science)] }
+  research_areas { [FactoryBot.build(:research_area)] }
   organization
   end
 end

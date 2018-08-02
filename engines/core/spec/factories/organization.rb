@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :organization, :class => "Core::Organization" do
     sequence(:name) { |n| "org_#{n}" }
     city

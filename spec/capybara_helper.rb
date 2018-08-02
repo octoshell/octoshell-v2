@@ -8,7 +8,7 @@ require "rspec/rails"
 require "rspec/autorun"
 require "shoulda-matchers"
 require "database_cleaner"
-require "factory_girl_rails"
+require "factory_bot_rails"
 require "capybara/rspec"
 require "capybara/poltergeist"
 require "sidekiq/testing"
@@ -30,7 +30,7 @@ RSpec.configure do |config|
   # ## Mock Framework
   # config.mock_with :rr
   config.treat_symbols_as_metadata_keys_with_true_values = true
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   Capybara.default_max_wait_time = 60
   config.use_transactional_fixtures = false
   config.order = "random"
@@ -48,7 +48,7 @@ RSpec.configure do |config|
       DatabaseCleaner.strategy = :truncation
       DatabaseCleaner.clean_with :truncation
       DatabaseCleaner.start
-      FactoryGirl.lint
+      FactoryBot.lint
     ensure
       DatabaseCleaner.clean
     end
