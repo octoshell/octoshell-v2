@@ -198,6 +198,10 @@ ActionController::Base.class_eval do
     menu.add_item(Face::MenuItem.new(name: t("admin_submenu.comments"),
                                       url: comments.edit_admin_group_classes_path)) if User.superadmins.include? current_user
 
+    menu.add_item(Face::MenuItem.new(name: t("admin_submenu.emails"),
+                                     url: main_app.rails_email_preview_path,
+                                     regexp: /admin\/emails/
+                                  ))  if may? :manage, :users
 
     menu.items
   end

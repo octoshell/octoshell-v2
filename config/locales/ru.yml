@@ -17,6 +17,7 @@ ru:
     comments: Комментарии
     packages: Пакеты
   admin_submenu:
+    emails: Emails
     comments: "Комментарии"
     cities: "Города"
     countries: "Страны"
