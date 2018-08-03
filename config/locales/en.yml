@@ -17,6 +17,7 @@ en:
     comments: Comments
     packages: Packages
   admin_submenu:
+    emails: Emails
     comments: "Comments"
     cities: "Cities"
     countries: "Countries"
