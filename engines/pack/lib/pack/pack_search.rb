@@ -1,6 +1,6 @@
 module Pack
   class PackSearch
-    NOT_CHANGED = [:deleted_eq,:id_in]
+    NOT_CHANGED = [:deleted_eq,:id_in, :end_lic_greater]
     attr_reader :model_table, :table_relation
     def initialize search_hash, model_table, user_id=nil
       @user_id = user_id #Если user_id предоставлен, то это означает, что объект создан в контроллере для пользователей
@@ -46,6 +46,7 @@ module Pack
     end
 
     def must_delete?(j)
+      return true if j == :versions
       if j.class == ActiveRecord::Associations::JoinDependency
         must_delete_dependency? j
       else

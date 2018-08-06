@@ -22,6 +22,15 @@ module Pack
       end
     end
 
+    def self.ransackable_scopes(_auth_object = nil)
+      %i[end_lic_greater]
+    end
+
+    def self.end_lic_greater(date)
+      where(['pack_versions.end_lic > ? OR pack_versions.end_lic IS NULL', Date.parse(date)])
+    end
+
+
     def add_errors(to)
       if to != self && to.changes != {}
         errors.add(:stale,"stale_error_nested")
