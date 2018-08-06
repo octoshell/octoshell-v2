@@ -165,6 +165,8 @@ ru:
         not_active: неактивна
     pack_search:
       packages:
+        end_lic_lt: Лицезия версии кончается не раньше
+        end_lic_gt: Лицезия версии кончается после
         only_deleted: только удаленные
         only_service: только служебные
         clusters: Кластеры

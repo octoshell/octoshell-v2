@@ -10,6 +10,14 @@ module Pack
     { id: id, text: name }
     end
 
+    def self.ransackable_scopes(_auth_object = nil)
+      %i[end_lic_greater]
+    end
+
+    def self.end_lic_greater(date)
+      joins(:versions).where(['pack_versions.end_lic > ? OR pack_versions.end_lic IS NULL', Date.parse(date)])
+    end
+
     before_save do
       if deleted == true
         versions.load
