@@ -21,9 +21,9 @@ module Support
 
     def name_with_parents
       names = []
-      names << self.name
-      p_topic = self.parent_topic
-      while not p_topic.nil?
+      names << name
+      p_topic = parent_topic
+      until p_topic.nil?
         names << p_topic.name
         p_topic = p_topic.parent_topic
       end

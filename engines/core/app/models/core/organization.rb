@@ -77,7 +77,7 @@ module Core
       short_name
     end
 
-    def as_json(options)
+    def as_json(_options)
       { id: id, text: name }
     end
 
@@ -85,8 +85,13 @@ module Core
       city.try(:title_ru)
     end
 
+    def city_title_en
+      city.try(:title_ru)
+    end
+
+
     def city_title=(title)
-      self.city = country.cities.where(title_ru: title.mb_chars).first_or_create! if title.present? && country.present?
+      self.city = country.cities.where(title_ru: title.mb_chars).first_or_initialize if title.present? && country.present?
     end
 
     def short_name

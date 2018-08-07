@@ -197,6 +197,10 @@ en:
 
 
     pack:
+      notificators:
+        notify_about_expiring_versions:
+          topic: 'Packages versions with expiring license'
+          subject: 'Packages versions with expiring license'
       mailer:
         email_vers_state_changed:
           subject: "Information about the \"%{version_name}\" version license has changed"

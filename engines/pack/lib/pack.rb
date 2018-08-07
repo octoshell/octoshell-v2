@@ -11,3 +11,6 @@ require "carrierwave"
 require "mime-types"
 require "jquery-ui-rails"
 require "active_record_union"
+module Pack
+	mattr_accessor :expire_after
+end

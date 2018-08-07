@@ -70,7 +70,7 @@ module Pack
     private
 
     def pack_init
-     @package = Package.find(params[:package_id])
+     @package = Package.find(params[:package_id]) if params[:package_id] 
      @categories = OptionsCategory.all.map(&:category)
     end
   end

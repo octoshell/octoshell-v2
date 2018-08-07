@@ -1,5 +1,5 @@
 module Core
-  class Admin::ApplicationController < ApplicationController
+  class Admin::ApplicationController < Core::ApplicationController
     before_filter :authorize_admins
 
     def authorize_admins
