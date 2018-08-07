@@ -1,0 +1,13 @@
+h3 = t '.title'
+table  class="table table-hover"
+  tr
+    th #
+    th = Pack::Package.model_name.human
+    th = Pack::Version.human_attribute_name :name
+    th = Pack::Version.human_attribute_name :end_lic
+  - @versions.each do |version|
+    tr
+      td class="col-xs-1" = ActionController::Base.helpers.link_to version.id, "/pack/admin/versions/#{version.id}"
+      td class="col-xs-4" = version.package.name
+      td class="col-xs-4" = version.name
+      td class="col-xs-3" = I18n.l(version.end_lic)

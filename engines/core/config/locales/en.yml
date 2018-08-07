@@ -13,11 +13,6 @@ en:
   core_confirm: Are you sure
   countries:
     new_city: New city
-  merge:
-    show: Redirect to record page
-    support:
-      subject: "Создана новая запись. %{model_name} : %{to_s}"
-      theme_name: Проверить новую запись
   activerecord:
     errors:
       models:
@@ -343,6 +338,11 @@ en:
     bad_csv_file: "Oops,  it is impossible to  parse the file... Please check file format and encoding(encoding must be UTF-8)"
 
   core:
+    notificators:
+      check:
+        show: Перейти на страницу записи
+        subject: "Создана новая запись. %{model_name} : %{to_s}"
+        topic: Проверить новую запись
     mailer:
       header:
         hello_known_name: "Hello, %{name}!"

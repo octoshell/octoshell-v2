@@ -7,6 +7,7 @@ module Pack
     validates :name, :description, :package, presence: true
     validates_uniqueness_of :name, scope: :package_id
     belongs_to :package,inverse_of: :versions
+    belongs_to :ticket,  class_name: 'Support::Ticket'
     has_many :clustervers,inverse_of: :version, :dependent => :destroy
     has_many :version_options, inverse_of: :version,:dependent => :destroy
     has_many :accesses, dependent: :destroy
@@ -62,7 +63,12 @@ module Pack
       end
     end
 
-    before_save :incr,:delete_accesses,:make_clvers_not_active
+    before_save :incr,:delete_accesses,:make_clvers_not_active, :remove_ticket
+
+    def remove_ticket
+      self.ticket = nil if end_lic.blank? || end_lic > Date.today + Pack.expire_after
+    end
+
     def incr
       self.lock_col= lock_col.to_i + 1
     end
@@ -99,19 +105,33 @@ module Pack
     after_commit :send_emails
 
     def send_emails
-
-        if previous_changes["state"]
-            accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status IN ('allowed','expired')").each do |ac|
-              ::Pack::PackWorker.perform_async(:email_vers_state_changed, ac.id)
-            end
+      if previous_changes["state"]
+        accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status IN ('allowed','expired')").each do |ac|
+          ::Pack::PackWorker.perform_async(:email_vers_state_changed, ac.id)
         end
+      end
     end
 
     def self.expired_versions
       Version.transaction do
        where("end_lic IS NOT NULL and end_lic < ? and state='available'", Date.today).each{ |ac| ac.update!(state: 'expired') }
       end
+    end
 
+    def self.expiring_versions_without_ticket
+      where("end_lic IS NOT NULL and end_lic < ?
+            AND state='available'", Date.today + Pack.expire_after)
+        .where(ticket_id: nil)
+    end
+
+    def self.notify_about_expiring_versions
+      return unless expiring_versions_without_ticket.exists?
+      Version.transaction do
+        ticket = Notificator.notify_about_expiring_versions(expiring_versions_without_ticket)
+        expiring_versions_without_ticket.each do |version|
+          version.update!(ticket: ticket)
+        end
+      end
     end
 
     def self.allowed_for_users

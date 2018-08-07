@@ -29,8 +29,8 @@ module Support
 
     accepts_nested_attributes_for :field_values
 
-    after_create :add_reporter_to_subscribers
-    after_create :notify_support
+    after_commit :add_reporter_to_subscribers
+    after_commit :notify_support
 
     include AASM
     include ::AASM_Additions
