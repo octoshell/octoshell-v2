@@ -13,11 +13,6 @@ ru:
   core_confirm: Вы уверены?
   countries:
     new_city: Новый город
-  merge:
-    show: Перейти на страницу записи
-    support:
-      subject: "Создана новая запись. %{model_name} : %{to_s}"
-      theme_name: Проверить новую запись
   activerecord:
     errors:
       models:
@@ -343,6 +338,11 @@ ru:
     bad_csv_file: "Ой, не получается разобрать файл... Возможно, неверный формат или кодировка (должна быть UTF-8)"
 
   core:
+    notificators:
+      check:
+        show: Перейти на страницу записи
+        subject: "Создана новая запись. %{model_name} : %{to_s}"
+        topic: Проверить новую запись
     mailer:
       header:
         hello_known_name: "Здравствуйте, %{name}!"

@@ -198,6 +198,11 @@ ru:
 
 
     pack:
+      notificators:
+        notify_about_expiring_versions:
+          topic: 'Версии ПО с истекающей лицензией'
+          subject: 'Версии ПО с истекающей лицензией'
+          title: 'Версии ПО с истекающей лицензией'
       mailer:
         email_vers_state_changed:
           subject: "Изменилась информация о лицензии  версии  «%{version_name}»"
