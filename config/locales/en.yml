@@ -1,4 +1,8 @@
 en:
+  model_translation:
+    ru: 'in russian'
+    en: 'in english'
+
   main_menu:
     working_area: "Study"
     admin_area: "Administator's office"

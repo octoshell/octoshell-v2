@@ -1,4 +1,8 @@
 ru:
+  model_translation:
+    en: 'на английском'
+    ru: 'на русском'
+
   main_menu:
     working_area: "Рабочий кабинет"
     admin_area: "Кабинет администратора"

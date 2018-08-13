@@ -5,6 +5,8 @@ namespace :translation do
     rows.each do |row|
       table_name = row.delete_at(0)
       row.each do |r|
+        normalized_column = r.gsub(/\s+/,'')
+        puts %(rename_column :#{table_name}, :#{normalized_column}, :#{normalized_column}_#{I18n.default_locale})
         locales.each do |locale|
           puts %(add_column :#{table_name}, :#{r}_#{locale}, :string)
         end
