@@ -2,6 +2,7 @@
 module Sessions
   class SurveyField < ActiveRecord::Base
     include ActionView::Helpers::JavaScriptHelper
+    translates :name, :hint
 
     KINDS = [:radio, :select, :mselect, :uselect, :string, :text, :number, :scientometrics, :string_scientometrics]
     KINDS_COLLECTION = begin
@@ -22,12 +23,12 @@ module Sessions
 
     belongs_to :survey
 
-    scope :sorted, -> { order("#{table_name}.weight asc, #{table_name}.name asc") }
+    scope :sorted, -> { order("#{table_name}.weight asc, #{table_name}.#{current_locale_column(:name)} asc") }
 
     validates :name, :kind, presence: true
 
     def name
-      self[:name].to_s.html_safe
+      self[self.class.current_locale_column(:name)].to_s.html_safe
     end
 
     def collection_values

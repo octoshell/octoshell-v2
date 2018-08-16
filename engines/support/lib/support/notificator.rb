@@ -50,7 +50,7 @@ module Support
     end
 
     def topic(name = topic_name)
-      @topic ||= Topic.find_or_create_by!(name: name)
+      @topic ||= Topic.find_or_create_by!(name_ru: name)
     end
 
     def create!(arg)

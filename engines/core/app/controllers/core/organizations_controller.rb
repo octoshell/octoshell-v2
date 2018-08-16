@@ -37,12 +37,11 @@ module Core
       end
       if @organization.save
         @organization.create_ticket(current_user)
-        @employment.build_default_positions
         if @organization.kind.departments_required?
           redirect_to [:edit, @organization], notice: t("flash.you_have_to_fill_departments")
         else
           @organization.departments.create!(name: @organization.short_name)
-          redirect_to main_app.profile_path
+          redirect_to @employment
         end
       else
         render :new

@@ -199,7 +199,7 @@ en:
     pack:
       notificators:
         notify_about_expiring_versions:
-          topic: 'Packages versions with expiring license'
+          topic: 'Версии ПО с истекающей лицензией'
           subject: 'Packages versions with expiring license'
       mailer:
         email_vers_state_changed:

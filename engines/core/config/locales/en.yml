@@ -519,7 +519,7 @@ en:
         show:
           info: "Cluster information"
           quotas_info: "Resources quota"
-          pub_key_help_html: "To make an application work with the cluster  copy the key в <code>/home/%{admin_login}/.ssh/authorized_keys</code>"
+          pub_key_help_html: "To make an application work with the cluster  copy the key in <code>/home/%{admin_login}/.ssh/authorized_keys</code>"
           show_logs: "Show logs"
         new:
           title: "New cluster"
@@ -528,7 +528,7 @@ en:
         form:
           help: "You can set default resources quotas values by clicking on \"+ add quota\". These values will be used by users to create resource quota request."
           add_quota: "+ add quota"
-          remove_quota: "remove quouta"
+          remove_quota: "remove quota"
       cluster_logs:
         index:
           title: "Clusters logs"

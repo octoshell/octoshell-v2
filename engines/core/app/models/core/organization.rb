@@ -91,7 +91,7 @@ module Core
 
 
     def city_title=(title)
-      self.city = country.cities.where(title_ru: title.mb_chars).first_or_initialize if title.present? && country.present?
+      self.city = country.cities.where(City.current_locale_column(:title) => title.mb_chars).first_or_initialize if title.present? && country.present?
     end
 
     def short_name

@@ -8,6 +8,9 @@
 
 module Sessions
   class Survey < ActiveRecord::Base
+
+    translates :name
+
     belongs_to :session
     belongs_to :kind, class_name: "Sessions::SurveyKind", foreign_key: :kind_id
 

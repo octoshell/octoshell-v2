@@ -3,8 +3,9 @@ module Pack
     include AASM
     attr_accessor :user_accesses
 
-
-    validates :name, :description, :package, presence: true
+    translates :description, :name
+    validates_translated :name, :description,presence: true
+    validates :package, presence: true
     validates_uniqueness_of :name, scope: :package_id
     belongs_to :package,inverse_of: :versions
     belongs_to :ticket,  class_name: 'Support::Ticket'
@@ -261,10 +262,10 @@ module Pack
       return unless hash
       #Удаляем все
       (hash.values.select { |i| i[:id] }.map { |i| i[:id].to_i } - version_options.map(&:id)).each do |opt_id|
-          opt_params = hash.values.detect { |val| val[:id].to_i == opt_id  }
-          opt = version_options.new(opt_params.except(:id, :_destroy))
-          opt.stale_edit = true
-          hash.delete_if { |key, val| val[:id].to_i == opt_id }
+        opt_params = hash.values.detect { |val| val[:id].to_i == opt_id  }
+        opt = version_options.new(opt_params.except(:id, :_destroy))
+        opt.stale_edit = true
+        hash.delete_if { |_key, val| val[:id].to_i == opt_id }
       end
       self.version_options_attributes = hash
     end
@@ -307,7 +308,7 @@ module Pack
     end
 
     def version_params(params)
-      params.permit(:delete_on_expire, :name, :description, :version,
+      params.permit(:delete_on_expire, *locale_columns(:description, :name), :version,
                     :cost, :deleted, :lock_col, :service)
     end
 

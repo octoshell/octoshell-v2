@@ -3,6 +3,8 @@ module Support
   class Tag < ActiveRecord::Base
     attr_accessor :merge_id
 
+    translates :name
+
     has_and_belongs_to_many :tickets, join_table: :support_tickets_tags
     has_and_belongs_to_many :topics, join_table: :support_topics_tags
 

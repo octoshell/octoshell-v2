@@ -1,6 +1,6 @@
   -f.object.valid?  unless f.object.new_record?
   -provide_cities_hash_view
-  = f.collection_select :country_id, @countries_meth, :id, :titles, { }, {id: 'country_select'}
+  = f.collection_select :country_id, @countries_meth, :id, :title, { }, {id: 'country_select'}
   = f.collection_select :city_id, [] , :id, :title_ru,{ },{id: 'city_select',class: 'select2-custom'}
   =javascript_tag do
     =render partial: 'core/admin/organizations/city_form',locals: {f: f}, formats: :js

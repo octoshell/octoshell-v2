@@ -57,7 +57,7 @@ module Pack
     private
 
     def package_params
-      params.require(:package).permit(:name, :description, :deleted, :lock_version)
+      params.require(:package).permit(:name, *Package.locale_columns(:description), :deleted, :lock_version)
     end
 
     def search_params

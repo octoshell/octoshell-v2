@@ -33,7 +33,7 @@ module Pack
       @version.package = @package
       @version.vers_update(params)
       if @version.save
-        redirect_to admin_package_version_path(@package,@version)
+        redirect_to admin_package_version_path(@package, @version)
       else
         render :new
       end
@@ -70,7 +70,7 @@ module Pack
     private
 
     def pack_init
-     @package = Package.find(params[:package_id]) if params[:package_id] 
+     @package = Package.find(params[:package_id]) if params[:package_id]
      @categories = OptionsCategory.all.map(&:category)
     end
   end

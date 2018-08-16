@@ -1,4 +1,5 @@
 = bootstrap_form_for [:admin, @critical_technology] do |f|
-  = f.text_field :name
+  - Core::CriticalTechnology.locale_columns(:name).each do |column|
+    = f.text_field column
   = f.form_group do
     = f.submit t("actions.save")

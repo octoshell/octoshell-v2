@@ -22,7 +22,7 @@ Octoshell::Application.configure do
   config.base_host = "localhost"
   config.action_mailer.default_options = { from: "info@localhost" }
   config.action_mailer.default_url_options = { host: "localhost:9000" }
-  config.serve_static_files = false
+  config.serve_static_files = true
   config.assets.compile = false
 
   # Compress JavaScripts and CSS.

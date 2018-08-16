@@ -2,6 +2,9 @@
 
 module Support
   class Topic < ActiveRecord::Base
+
+    translates :name
+
     belongs_to :parent_topic, class_name: "Support::Topic", foreign_key: :parent_id, inverse_of: :subtopics
     has_many :subtopics, class_name: "Support::Topic", foreign_key: :parent_id,
                          inverse_of: :parent_topic, dependent: :destroy

@@ -57,7 +57,8 @@ module Pack
     private
 
     def option_params
-      params.require(:options_category).permit(:category)
+      params.require(:options_category).permit *OptionsCategory.locale_columns(:category),
+                                               category_values_attributes: [:id, :_destroy, CategoryValue.locale_columns(:value)]
     end
   end
 end

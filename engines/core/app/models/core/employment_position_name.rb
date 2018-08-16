@@ -3,10 +3,15 @@
 # Название позиции в организации
 module Core
   class EmploymentPositionName < ActiveRecord::Base
-    validates :name, presence: true, uniqueness: true
+    validates "name_#{I18n.default_locale}", presence: true, uniqueness: true
+
+    translates :name
+
+    has_many :employment_position_fields, inverse_of: :employment_position_name
+
 
     def self.rffi
-      find_by_name!("Должность по РФФИ")
+      find_by_name_ru!("Должность по РФФИ")
     end
 
     def values(q)
@@ -17,8 +22,9 @@ module Core
     end
 
     def available_values
-      return [] if autocomplete.blank?
-      autocomplete.each_line.to_a
+      employment_position_fields
+      # return [] if autocomplete.blank?
+      # autocomplete.each_line.to_a
     end
   end
 end

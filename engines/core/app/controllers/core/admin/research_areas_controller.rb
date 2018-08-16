@@ -39,7 +39,7 @@ module Core
 
     private
     def research_area_params
-      params.require(:research_area).permit(:name, :group)
+      params.require(:research_area).permit(*ResearchArea.locale_columns(:name), :group)
     end
   end
 end

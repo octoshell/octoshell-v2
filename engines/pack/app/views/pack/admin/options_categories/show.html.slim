@@ -1,5 +1,15 @@
-table  width="50%" 
-		tr 
-			td =Pack::OptionsCategory.human_attribute_name :category
-			td #{@option.category}
-		
+h3 = "#{Pack::OptionsCategory.human_attribute_name :category} #{@option.category}"
+div class="well"
+  = link_to t("actions.edit"), [:edit, :admin, @option], class: "btn btn-default"
+  = link_to t("actions.delete"),[:admin, @option],method: :delete, class: "btn btn-danger"
+legend = Pack::CategoryValue.model_name.human
+table class="table table-hover"
+  tr
+    th class="col-xs-1" #
+    th class="col-xs-5" = Core::OrganizationDepartment.human_attribute_name(:value_ru)
+    th class="col-xs-6" = Core::OrganizationDepartment.human_attribute_name(:value_en)
+  - @option.category_values.each do |category_value|
+    tr
+      td = category_value.id
+      td = category_value.value_ru
+      td = category_value.value_en

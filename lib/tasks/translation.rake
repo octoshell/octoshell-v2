@@ -8,15 +8,28 @@ namespace :translation do
         normalized_column = r.gsub(/\s+/,'')
         puts %(rename_column :#{table_name}, :#{normalized_column}, :#{normalized_column}_#{I18n.default_locale})
         locales.each do |locale|
-          puts %(add_column :#{table_name}, :#{r}_#{locale}, :string)
+          puts %(add_column :#{table_name}, :#{normalized_column}_#{locale}, :string)
         end
       end
       row.first
     end
   end
 
-  task :load => :environment do
-    ModelTranslation::Database.load_csv
+  task :load, [:table] => :environment do |t, args|
+    ModelTranslation::Database.load_csv(args[:table])
   end
+
+  task :save_data, [:table] => :environment do |t, args|
+    ModelTranslation::Database.save_data!(args[:table])
+  end
+
+
+  task :load_with_sql => :environment do
+    relation = Sessions::SurveyField.joins(survey: :session)
+                                    .where(sessions_sessions: {description_ru: 2018})
+
+    ModelTranslation::Database.load_with_sql(relation, ['hint_ru','name_ru'], 'sessions.xlsx')
+  end
+
 
 end

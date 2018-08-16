@@ -5,6 +5,8 @@
 module Sessions
   class Session < ActiveRecord::Base
 
+    translates :description, :motivation
+
     belongs_to :personal_survey, class_name: "Survey"
     belongs_to :projects_survey, class_name: "Survey"
     belongs_to :counters_survey, class_name: "Survey"

@@ -1,0 +1,5 @@
+class AddValueIdToVersionOptions < ActiveRecord::Migration
+  def change
+    add_column :pack_version_options, :value_id, :integer
+  end
+end
