@@ -25,7 +25,7 @@ module Pack
 
     def new
       @version = Version.new
-      @version.create_temp_clustervers
+      @version.build_clustervers
     end
 
     def create
@@ -41,7 +41,7 @@ module Pack
 
     def edit
       @version = Version.includes(clustervers: :core_cluster).find(params[:id])
-      @version.create_temp_clustervers
+      @version.build_clustervers
     end
 
     def update
@@ -71,7 +71,7 @@ module Pack
 
     def pack_init
      @package = Package.find(params[:package_id]) if params[:package_id]
-     @categories = OptionsCategory.all.map(&:category)
+     @categories = OptionsCategory.all
     end
   end
 end

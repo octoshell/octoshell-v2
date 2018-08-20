@@ -1,6 +1,6 @@
 = bootstrap_form_for [:admin, @field], layout: :horizontal do |f|
-  = f.text_field :name
-  = f.text_field :hint
+  -Support::Field.locale_columns(:name,:hint).each do |column|
+    = f.text_field column
   = f.check_box :required
   = f.check_box :url
   = f.check_box :contains_source_code

@@ -44,7 +44,7 @@ module Support
     private
 
     def field_params
-      params.require(:field).permit(:name, :url, :required, :contains_source_code, :hint)
+      params.require(:field).permit(*Field.locale_columns(:name,:hint), :url, :required, :contains_source_code)
     end
   end
 end

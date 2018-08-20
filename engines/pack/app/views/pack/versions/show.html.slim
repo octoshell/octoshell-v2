@@ -25,12 +25,23 @@ div class="panel  panel-heading clearfix"
 
 
 table
-  -@version.attributes.except("delete_on_expire","end_lic","lock_col","service","deleted","state","created_at","updated_at","package_id","id","deleted").each do |key,value|
+  -[:name,:description].each do |key|
     tr
       td class="col-xs-3"
         =Pack::Version.human_attribute_name key
       td class="col-xs-9"
         =@version.send key
+
+  -@version.attributes.except("delete_on_expire","end_lic","lock_col","service",
+    "deleted","state","created_at","updated_at",
+    "package_id","id","deleted", 'ticket_id',*Pack::Version.locale_columns(:name,:description).map(&:to_s)).each_key do |key|
+    tr
+      td class="col-xs-3"
+        =Pack::Version.human_attribute_name key
+      td class="col-xs-9"
+        =@version.send key
+
+
   tr
       td class="col-xs-3"
         =Pack::Version.human_attribute_name "state"
@@ -72,14 +83,11 @@ p
           th class="col-xs-9"
             =Pack::VersionOption.human_attribute_name "value"
       -@version.version_options.each do |opt|
-
-
-
         tr
           td class="col-xs-3"
-            =opt.name
+            =opt.readable_name
           td class="col-xs-9"
-            =opt.value
+            =opt.readable_value
 
 
 p

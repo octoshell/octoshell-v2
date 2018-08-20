@@ -149,7 +149,7 @@ en:
       my_accesses_edit: Edit my accesses
       active: Version is active on the cluster
       not_active: Version is inactive on the cluster
-      not_exist: Version does not exist on cluster
+      not_exist: Version does not exist on the cluster
       cl_autocomplete: fill using autocomplete
       cl_byhand: fill using manual input
       state: expiration date

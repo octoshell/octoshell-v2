@@ -12,7 +12,7 @@ module Support
     has_and_belongs_to_many :fields, join_table: :support_topics_fields
     has_and_belongs_to_many :tags, join_table: :support_topics_tags
 
-    validates :name, presence: true
+    validates_translated :name, presence: true
     validates :parent_id, exclusion: { in: proc { |tq| [tq.id] } }, allow_nil: true
 
     scope :root, -> { where(parent_id: nil) }

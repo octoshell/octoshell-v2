@@ -22,7 +22,8 @@ module Sessions
 
     has_many :stats
 
-    validates :description, :receiving_to, presence: true
+    validates :receiving_to, presence: true
+    validates_translated :description, presence: true
 
     include AASM
     include ::AASM_Additions

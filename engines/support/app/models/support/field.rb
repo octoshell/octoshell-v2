@@ -4,7 +4,7 @@ module Support
 
     translates :name, :hint
 
-    validates :name, presence: true
+    validates_translated :name, presence: true
 
     def hint
       self[:hint].presence

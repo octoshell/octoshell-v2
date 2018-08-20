@@ -1,10 +1,8 @@
 # Шаблон ответа на тикет
 module Support
   class ReplyTemplate < ActiveRecord::Base
-    validates :subject, presence: true
-
     translates :subject, :message
-
+    validates_translated :subject, :message, presence: true
     def to_s
       subject
     end

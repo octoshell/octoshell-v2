@@ -11,7 +11,11 @@ Pack::Engine.routes.draw do
     end
     resources :versions
     resources :accesses
-    resources :options_categories
+    resources :options_categories do
+      member do
+        get 'values'
+      end
+    end
   end
   root "packages#index"
   get "/docs/:page" => "docs#show"

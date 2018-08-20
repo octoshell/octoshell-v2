@@ -5,8 +5,8 @@ module Pack
 
     translates :description, :name
     validates_translated :name, :description,presence: true
+    validates_translated :name, uniqueness: { scope: :package_id }
     validates :package, presence: true
-    validates_uniqueness_of :name, scope: :package_id
     belongs_to :package,inverse_of: :versions
     belongs_to :ticket,  class_name: 'Support::Ticket'
     has_many :clustervers,inverse_of: :version, :dependent => :destroy
@@ -14,7 +14,7 @@ module Pack
     has_many :accesses, dependent: :destroy
     accepts_nested_attributes_for :version_options,:clustervers, allow_destroy: true
     validates_associated :version_options,:clustervers
-    scope :finder, ->(q) { where("lower(name) like lower(:q)", q: "%#{q.mb_chars}%").limit(10) }
+    # scope :finder, ->(q) { where("lower(name_ru) like lower(:q)", q: "%#{q.mb_chars}%").limit(10) }
     validate :date_and_state, :work_with_stale, :pack_deleted
 
     aasm :column => :state do
@@ -81,7 +81,7 @@ module Pack
       if deleted == true || state == 'expired' && delete_on_expire
         accesses.load
         accesses.each do |a|
-          a.status='deleted'
+          a.status = 'deleted'
           a.save
         end
       end
@@ -239,20 +239,15 @@ module Pack
       end
     end
 
-    def create_temp_clusterver(cluster_id)
-      clustervers.new(core_cluster_id: cluster_id).mark_for_destruction
+    def build_clusterver(cluster)
+      clustervers.new(core_cluster: cluster).mark_for_destruction
     end
 
-    def create_temp_clustervers
-      if new_record?
-        cl = ::Core::Cluster.all
-        cl.each do |t|
-          create_temp_clusterver t.id
-        end
-      else
-        cl = ::Core::Cluster.select('core_clusters.id ,pack_clustervers.id as ex').uniq.joins("LEFT JOIN pack_clustervers ON  (core_clusters.id = pack_clustervers.core_cluster_id AND pack_clustervers.version_id=#{self.id})")
-        cl.each do |t|
-          !t.ex && create_temp_clusterver(t.id)
+    def build_clustervers
+      cluster_ids = clustervers.map(&:core_cluster_id)
+      ::Core::Cluster.all.each do |cluster|
+        if cluster_ids.exclude? cluster.id
+          build_clusterver(cluster)
         end
       end
     end
@@ -308,7 +303,7 @@ module Pack
     end
 
     def version_params(params)
-      params.permit(:delete_on_expire, *locale_columns(:description, :name), :version,
+      params.permit(:delete_on_expire, *Version.locale_columns(:description, :name),:name, :description, :version,
                     :cost, :deleted, :lock_col, :service)
     end
 

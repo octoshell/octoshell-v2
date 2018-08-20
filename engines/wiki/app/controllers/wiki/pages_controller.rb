@@ -3,7 +3,7 @@ module Wiki
     before_filter :check_abilities, except: [:index, :show]
 
     def index
-      @pages = Page.order(:name)
+      @pages = Page.order(Page.current_locale_column(:name))
     end
 
     def show
@@ -49,7 +49,7 @@ module Wiki
     end
 
     def page_params
-      params.require(:page).permit(:name, :content, :url, :show_all)
+      params.require(:page).permit(*Page.locale_columns(:name, :content), :url, :show_all)
     end
   end
 end

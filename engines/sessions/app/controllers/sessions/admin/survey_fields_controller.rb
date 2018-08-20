@@ -41,8 +41,8 @@ module Sessions
     private
 
     def survey_field_params
-      params.require(:survey_field).permit(:name, :kind, :collection, :regexp, :max_values, :weight,
-                                           :required, :entity, :strict_collection, :hint)
+      params.require(:survey_field).permit(*SurveyField.locale_columns(:name, :hint), :kind, :collection, :regexp, :max_values, :weight,
+                                           :required, :entity, :strict_collection)
     end
   end
 end

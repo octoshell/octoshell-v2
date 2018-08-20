@@ -37,6 +37,8 @@ class AddTranslationColumns < ActiveRecord::Migration
     add_column :pack_versions, :name_en, :string
     rename_column :pack_version_options, :name, :name_ru
     add_column :pack_version_options, :name_en, :string
+    rename_column :pack_version_options, :value, :value_ru
+    add_column :pack_version_options, :value_en, :string
     rename_column :pack_options_categories, :category, :category_ru
     add_column :pack_options_categories, :category_en, :string
 
@@ -55,6 +57,7 @@ class AddTranslationColumns < ActiveRecord::Migration
     add_column :sessions_survey_fields, :name_en, :string
     rename_column :sessions_surveys, :name, :name_ru
     add_column :sessions_surveys, :name_en, :string
+
     rename_column :support_fields, :name, :name_ru
     add_column :support_fields, :name_en, :string
     rename_column :support_fields, :hint, :hint_ru
@@ -67,6 +70,7 @@ class AddTranslationColumns < ActiveRecord::Migration
     add_column :support_tags, :name_en, :string
     rename_column :support_topics, :name, :name_ru
     add_column :support_topics, :name_en, :string
+    
     rename_column :wiki_pages, :name, :name_ru
     add_column :wiki_pages, :name_en, :string
     rename_column :wiki_pages, :content, :content_ru

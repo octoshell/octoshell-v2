@@ -18,6 +18,11 @@ module Pack
       end
     end
 
+    def values
+      @records = CategoryValue.where(options_category_id: params[:id])
+      render json: @records
+    end
+
     def new
       @option = OptionsCategory.new
     end
