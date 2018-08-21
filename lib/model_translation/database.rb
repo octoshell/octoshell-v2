@@ -34,8 +34,8 @@ module ModelTranslation
       def save_data!(input)
         ActiveRecord::Base.transaction do
           Support::Notificator.new.topic
-          Pack::Notificator.new.topic
-          Core::Notificator.new.topic
+          Support::Topic.find_or_create_by!(name_ru: I18n.t('core.notificators.check.topic'))
+          Support::Topic.find_or_create_by!(name_ru: I18n.t('pack.notificators.notify_about_expiring_versions.topic'))
 
           spreadsheet = Roo::Spreadsheet.open(input)
           spreadsheet.each_with_pagename do |_name, sheet|
