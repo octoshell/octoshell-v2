@@ -11,6 +11,8 @@ module Pack
     belongs_to :ticket,  class_name: 'Support::Ticket'
     has_many :clustervers,inverse_of: :version, :dependent => :destroy
     has_many :version_options, inverse_of: :version,:dependent => :destroy
+    has_many :options_categories, through: :version_options
+    has_many :category_values, through: :version_options
     has_many :accesses, dependent: :destroy
     accepts_nested_attributes_for :version_options,:clustervers, allow_destroy: true
     validates_associated :version_options,:clustervers

@@ -8,7 +8,7 @@ module Pack
       respond_to do |format|
         format.html do
           @q_form = OpenStruct.new(params[:q])
-          search = PackSearch.new(@q_form.to_h, 'versions', current_user.id)
+          search = PackSearch.new(@q_form.to_h, 'versions')
           @versions = search.get_results(nil)
           without_pagination(:versions)
         end

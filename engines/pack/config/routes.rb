@@ -11,11 +11,7 @@ Pack::Engine.routes.draw do
     end
     resources :versions
     resources :accesses
-    resources :options_categories do
-      member do
-        get 'values'
-      end
-    end
+    resources :options_categories
   end
   root "packages#index"
   get "/docs/:page" => "docs#show"
@@ -36,7 +32,10 @@ Pack::Engine.routes.draw do
       post 'destroy'
       get 'load_for_versions'
     end
-
   end
-
+  resources :category_values, only: [] do
+    member do
+      get 'values'
+    end
+  end
 end

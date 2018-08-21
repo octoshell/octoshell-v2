@@ -213,6 +213,7 @@ en:
         pack/version: Version
         pack/package: Package
         pack/access: Access
+        pack/options_category: Options category
       attributes:
         pack/package:
           deleted:  Removed
@@ -222,6 +223,9 @@ en:
           description: Description
         pack/options_category:
           category: Category
+          values: Values
+        pack/category_value:
+          value: Value
         pack/version:
           version_name: Version name
           delete_on_expire: Mark accesses removed when the license expires
@@ -241,6 +245,8 @@ en:
           clusters: Clusters
           available_for_user?: Available for user
           accesses: Accesses
+          version_options: Options
+
 
         pack/version_option:
             name: Option name

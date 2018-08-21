@@ -8,19 +8,7 @@ module Pack
       without_pagination(:records)
       respond_to do |format|
         format.html
-        format.json do
-        @records = OptionsCategory.where("lower(category) like lower(:q)", q: "%#{params[:q].mb_chars}%")
-        render json: { records: @records.page(params[:page])
-                                        .per(params[:per])
-                                        .map{ |v|  {text: v.category, id: v.category}  },
-                       total: @records.count }
-        end
       end
-    end
-
-    def values
-      @records = CategoryValue.where(options_category_id: params[:id])
-      render json: @records
     end
 
     def new
