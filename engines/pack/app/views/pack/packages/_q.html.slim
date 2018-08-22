@@ -6,6 +6,11 @@
         = f.collection_select :id_in, Pack::Package.allowed_for_users_with_joins(current_user.id), :id, :name,{label: t('pack_search.packages.packages_name')}, multiple: true,include_blank: true
       -else
         = f.collection_select :id_in, Pack::Version.allowed_for_users_with_joins(current_user.id), :id, :name,{label: t('pack_search.packages.versions_name')}, multiple: true,include_blank: true
+    div class='col-md-4'
+        = f.collection_select :options_categories_id_in, Pack::OptionsCategory.all, :id, :category,{label: Pack::OptionsCategory.model_name.human}, include_blank: true, multiple: true
+    div class='col-md-4'
+        = f.select :category_values_id_in, [],{label: Pack::OptionsCategory.human_attribute_name(:values)}, include_blank: true, multiple: true
+
   div class="row"
     div class='col-md-4'
       =f.check_box :user_access,{label: t("pack_search.packages.my_packs") }, current_user.id
@@ -22,3 +27,5 @@
       =f.check_box :deleted_eq,{label: t("pack_search.packages.show_deleted") },"","0"
   = f.form_group do
       = f.submit t("actions.find")
+=javascript_tag do
+  = render partial: 'pack/packages/q', formats: [:js]

@@ -2,6 +2,7 @@ div class="page-header"
   h1 = t(".title")
 
 = bootstrap_form_for [:admin, @session, @survey], layout: :horizontal do |f|
-  = f.text_field :name
+  -Sessions::Survey.locale_columns(:name).each do |column|
+    = f.text_field column
   = f.form_group do
     = f.submit t("actions.save")

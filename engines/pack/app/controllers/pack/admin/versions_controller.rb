@@ -8,7 +8,7 @@ module Pack
       respond_to do |format|
         format.html do
           @q_form = OpenStruct.new(params[:q])
-          search = PackSearch.new(@q_form.to_h, 'versions', current_user.id)
+          search = PackSearch.new(@q_form.to_h, 'versions')
           @versions = search.get_results(nil)
           without_pagination(:versions)
         end
@@ -25,7 +25,7 @@ module Pack
 
     def new
       @version = Version.new
-      @version.create_temp_clustervers
+      @version.build_clustervers
     end
 
     def create
@@ -33,7 +33,7 @@ module Pack
       @version.package = @package
       @version.vers_update(params)
       if @version.save
-        redirect_to admin_package_version_path(@package,@version)
+        redirect_to admin_package_version_path(@package, @version)
       else
         render :new
       end
@@ -41,7 +41,7 @@ module Pack
 
     def edit
       @version = Version.includes(clustervers: :core_cluster).find(params[:id])
-      @version.create_temp_clustervers
+      @version.build_clustervers
     end
 
     def update
@@ -70,8 +70,8 @@ module Pack
     private
 
     def pack_init
-     @package = Package.find(params[:package_id]) if params[:package_id] 
-     @categories = OptionsCategory.all.map(&:category)
+     @package = Package.find(params[:package_id]) if params[:package_id]
+     @categories = OptionsCategory.all
     end
   end
 end

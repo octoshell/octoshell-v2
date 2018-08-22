@@ -1,1 +1,1 @@
-I18n.available_locales = %i[en ru]
+I18n.available_locales = %i[ru en]

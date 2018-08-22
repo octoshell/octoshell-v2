@@ -28,7 +28,7 @@ module Core
 
     def create
       @cluster = Cluster.new(cluster_params)
-      if @cluster.save!
+      if @cluster.save
         redirect_to [:admin, @cluster], notice: t("flash.cluster_created")
       else
         render :new
@@ -42,9 +42,9 @@ module Core
     def update
       @cluster = Cluster.find(params[:id])
       if @cluster.update(cluster_params)
-        @cluster.save
         redirect_to [:admin, @cluster], notice: t("flash.cluster_updated")
       else
+        puts @cluster.errors.inspect
         render :edit
       end
     end
@@ -61,6 +61,7 @@ module Core
     def cluster_params
       params.require(:cluster).permit(:name, :host, :admin_login,
                                       :available_for_work,
+                                      *Core::Cluster.locale_columns(:name),
                                       quotas_attributes: [:id, :quota_kind_id,
                                                           :value, :_destroy])
     end

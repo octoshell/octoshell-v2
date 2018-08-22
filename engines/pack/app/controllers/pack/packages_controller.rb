@@ -33,15 +33,5 @@ module Pack
                           .uniq
     end
 
-    private
-      def package_params
-        params.require(:package).permit(:name,:description,:deleted)
-      end
-      def prop_params
-        params.require(:pref).permit(:proj_or_user,:def_date)
-      end
-    def search_params
-      params.require(:search).permit(:deleted)
-    end
   end
 end

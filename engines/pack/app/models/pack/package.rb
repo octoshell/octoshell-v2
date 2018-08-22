@@ -1,9 +1,11 @@
 module Pack
   class Package < ActiveRecord::Base
+
+    translates :description, :name
+
     self.locking_column = :lock_version
-    validates :name, :description, presence: true
-    validates :name,uniqueness: true
-    has_many :versions,:dependent => :destroy,inverse_of: :package
+    validates_translated :description,:name, presence: true
+    has_many :versions,:dependent => :destroy, inverse_of: :package
     scope :finder, ->(q) { where("lower(name) like lower(:q)", q: "%#{q.mb_chars}%") }
 
     def as_json(_options)

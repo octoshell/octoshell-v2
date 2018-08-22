@@ -9,12 +9,16 @@
       = f.hidden_field :organization_department_name
     = f.form_group do
       = f.check_box :primary
-    = f.fields_for :positions do |f|
-      = f.hidden_field :name
-      - if f.object.available_values.any?
-        = f.select :value, f.object.available_values, label: f.object.name, include_blank: true
+    = f.fields_for :positions do |ff|
+      = ff.hidden_field :id
+      = ff.hidden_field :employment_position_name_id
+      - if ff.object.available_values.any?
+        -puts "AAAA"
+        -puts ff.object.field_id
+        -puts "BBBBB"
+        = ff.collection_select :field_id, ff.object.available_values, :id, :name, label: ff.object.name, include_blank: true
       - else
-        = f.text_field :value, label: f.object.name
+        = ff.text_field :value, label: ff.object.name
 
     = f.form_group do
       = f.submit t("actions.save")

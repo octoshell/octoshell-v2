@@ -149,7 +149,7 @@ en:
       my_accesses_edit: Edit my accesses
       active: Version is active on the cluster
       not_active: Version is inactive on the cluster
-      not_exist: Version does not exist on cluster
+      not_exist: Version does not exist on the cluster
       cl_autocomplete: fill using autocomplete
       cl_byhand: fill using manual input
       state: expiration date
@@ -199,7 +199,7 @@ en:
     pack:
       notificators:
         notify_about_expiring_versions:
-          topic: 'Packages versions with expiring license'
+          topic: 'Версии ПО с истекающей лицензией'
           subject: 'Packages versions with expiring license'
       mailer:
         email_vers_state_changed:
@@ -213,6 +213,9 @@ en:
         pack/version: Version
         pack/package: Package
         pack/access: Access
+        pack/options_category: Options category
+        pack/category_value: Category values
+
       attributes:
         pack/package:
           deleted:  Removed
@@ -222,6 +225,9 @@ en:
           description: Description
         pack/options_category:
           category: Category
+          values: Values
+        pack/category_value:
+          value: Value
         pack/version:
           version_name: Version name
           delete_on_expire: Mark accesses removed when the license expires
@@ -241,10 +247,14 @@ en:
           clusters: Clusters
           available_for_user?: Available for user
           accesses: Accesses
+          version_options: Options
+
 
         pack/version_option:
             name: Option name
             value: Value
+            category_value_id: Value from category values list
+            options_category_id: Options category
         pack/clusterver:
             status: Status
             name: Cluster

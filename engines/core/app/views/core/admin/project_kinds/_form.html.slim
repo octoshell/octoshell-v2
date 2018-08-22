@@ -1,5 +1,6 @@
 = bootstrap_form_for [:admin, @project_kind] do |f|
-  = f.text_field :name
+  -Core::ProjectKind.locale_columns(:name).each do |name|
+    = f.text_field name
 
   = f.form_group do
     = f.submit t("actions.save")

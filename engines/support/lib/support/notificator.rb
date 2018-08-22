@@ -1,7 +1,5 @@
 module Support
   class Notificator < AbstractController::Base
-    # include AbstractController::Translation
-    #TODO TOPIC в локаль
 
     def topic_name
       'Уведомления'.freeze
@@ -50,7 +48,7 @@ module Support
     end
 
     def topic(name = topic_name)
-      @topic ||= Topic.find_or_create_by!(name: name)
+      @topic ||= Topic.find_or_create_by!(name_ru: name)
     end
 
     def create!(arg)

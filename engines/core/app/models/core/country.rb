@@ -3,6 +3,7 @@ module Core
     include Checkable
     has_many :organizations,through: :cities
     has_many :cities, inverse_of: :country, dependent: :destroy
+    translates :title
     validates_presence_of :title_ru, :title_en, if: :checked
     validate do
       errors.add(:title_ru, :name_required) if title_ru.blank? && title_en.blank?

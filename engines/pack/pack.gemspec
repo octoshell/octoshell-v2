@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "jquery-ui-rails"
   s.add_dependency "aasm"
+  s.add_dependency "nested_form"
   s.add_dependency "sidekiq"
   s.add_dependency "maymay"
   s.add_dependency "ransack"

@@ -6,6 +6,11 @@
         = f.collection_select :id_in, Pack::Package.all, :id, :name,{label: t('pack_search.packages.packages_name')}, multiple: true,include_blank: true
       -else
         = f.collection_select :id_in, Pack::Version.all, :id, :name,{label: t('pack_search.packages.versions_name')}, multiple: true,include_blank: true
+    div class='col-md-4'
+        = f.collection_select :options_categories_id_in, Pack::OptionsCategory.all, :id, :category,{label: Pack::OptionsCategory.model_name.human}, include_blank: true, multiple: true
+    div class='col-md-4'
+        = f.select :category_values_id_in, [],{label: Pack::OptionsCategory.human_attribute_name(:values)}, include_blank: true, multiple: true
+
 
   div class="row"
     div class="col-md-4"
@@ -30,3 +35,5 @@
     =display_all_tag
   = f.form_group do
       = f.submit t("actions.find")
+= javascript_tag do
+  = render partial: 'pack/packages/q', formats: [:js]

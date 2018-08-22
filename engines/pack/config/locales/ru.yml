@@ -215,6 +215,9 @@ ru:
         pack/version: Версия
         pack/package: Пакет
         pack/access: Доступ
+        pack/options_category: Категория опций
+        pack/category_value: Значения категорий
+
       attributes:
         pack/package:
           deleted:  удален
@@ -224,6 +227,9 @@ ru:
           description: Описание
         pack/options_category:
           category: Категория
+          values: Значения
+        pack/category_value:
+          value: Значение
         pack/version:
           version_name: Имя версии
           delete_on_expire: Помечать доступы удаленными,когда лицения истечет
@@ -243,10 +249,13 @@ ru:
           clusters: Кластеры
           available_for_user?: Доступна
           accesses: Доступы
+          version_options: Опции
 
         pack/version_option:
             name: Название опции
             value: Значение
+            category_value_id: Значение из списка значений для категорий
+            options_category_id: Категория опций
         pack/clusterver:
             status: Статус
             name: Кластер

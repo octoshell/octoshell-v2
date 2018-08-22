@@ -7,7 +7,7 @@ module Core
     belongs_to :organization_department
 
     has_many :positions, class_name: "Core::EmploymentPosition", inverse_of: :employment,dependent: :destroy
-    accepts_nested_attributes_for :positions, reject_if: proc { |a| a['value'].blank? }
+    accepts_nested_attributes_for :positions, reject_if: proc { |a| (a['value'].blank? && a['field_id'].blank?) && a['id'].blank? }
 
     before_save :check_primacy
 
@@ -46,46 +46,33 @@ module Core
       self.organization_department = organization.departments.where(name: name.mb_chars).first_or_create! if name.present? && organization.present?
     end
 
-    # TODO: переделать build_default_positions & find_existed_position
-    # пока 1 в 1 из старого octoshell.
     def build_default_positions
-      @existed_positions = positions.to_a.dup
-
-      transaction do
-        self.positions = []
-        EmploymentPositionName.all.each do |position_name|
-          positions.build do |position|
-            position.name = position_name.name
-            position.value = find_existed_position(position_name).try(:value)
-            position.try_save
-          end
+      names = positions.map(&:name_ru)
+      EmploymentPositionName.all.each do |position_name|
+        if names.exclude? position_name.name_ru
+          positions.build(employment_position_name: position_name)
         end
       end
     end
 
-    def find_existed_position(position_name)
-      @existed_positions.find do |p|
-        p.name == position_name.name
-      end
-    end
-
     def post_in_organization
-      positions.find{ |p| p.name == "Должность по РФФИ" }.try(:value)
+      positions.find do |p|
+        p.employment_position_name.name_ru == "Должность по РФФИ"
+      end.try(:selected_value)
     end
 
     def position_info
-      (positions.select{ |p| not ["Должность по РФФИ", "Должность"].include?(p.name) })
+      positions.select do |p|
+        ["Должность по РФФИ", "Должность"].exclude?(p.employment_position_name.name_ru)
+      end
     end
 
     private
 
     def check_primacy
-      if user.employments.where(primary: true).any?
-        if primary_changed? && (primary_was == false)
-          user.employments.update_all(primary: false)
-        end
-      else
-        primary = true if new_record?
+      if user.employments.where(primary: true).any? && primary_changed? &&
+         primary_was == false
+        user.employments.update_all(primary: false)
       end
     end
   end

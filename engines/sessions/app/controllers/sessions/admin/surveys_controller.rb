@@ -14,7 +14,7 @@ module Sessions
     def update
       @survey = Survey.find params[:id]
       @session = @survey.session
-      if @survey.save
+      if @survey.update survey_params
         redirect_to [:admin, @survey]
       else
         render :edit
@@ -59,7 +59,7 @@ module Sessions
     private
 
     def survey_params
-      params.require(:survey).permit(:name, :only_for_project_owners)
+      params.require(:survey).permit(*Survey.locale_columns(:name), :only_for_project_owners)
     end
   end
 end

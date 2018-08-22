@@ -4,18 +4,29 @@
 module Core
   class EmploymentPosition < ActiveRecord::Base
     belongs_to :employment, inverse_of: :positions
+    belongs_to :employment_position_name
+    belongs_to :employment_position_field, foreign_key: :field_id
+    validates :employment, presence: true
+    validates :value, presence: true, if: proc { field_id.nil? }
+    validates :employment_position_field, :field_id, presence: true, if: proc { value.blank? }
 
-    validates :employment, :name, :value, presence: true
-    validates :name, uniqueness: { scope: :employment_id }, if: :employment_id?
+    validates :employment_position_name_id, uniqueness: { scope: :employment_id }, if: :employment_id?
 
+    delegate *EmploymentPositionName.locale_columns(:name), to: :employment_position_name
     def try_save
       valid? ? save : errors.clear
     end
 
-    delegate :values, :available_values, to: :position_name
+    delegate :values, :available_values, to: :employment_position_name
 
-    def position_name
-      EmploymentPositionName.find_by_name(name) || EmploymentPositionName.new
+    def name
+      return employment_position_name.name if employment_position_name
+      super
     end
+
+    def selected_value
+      employment_position_field&.name
+    end
+
   end
 end

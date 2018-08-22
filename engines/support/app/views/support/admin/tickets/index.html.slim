@@ -13,7 +13,7 @@ div class="page-header"
 
       = f.collection_select :project_id_eq, Core::Project.all, :id, :title, label: t('.project'), include_blank: true
     div class="col-md-4"
-      = f.select :tags_name_in, Support::Tag.pluck(:name), { label: Support::Ticket.human_attribute_name(:tags), include_blank: true  }, { multiple: true  }
+      = f.collection_select :tags_id_in, Support::Tag.all, :id, :name, { label: Support::Ticket.human_attribute_name(:tags), include_blank: true  }, { multiple: true  }
       = f.collection_select :topic_id_eq, Support::Topic.leaf_topics, :id, :name_with_parents, label: Support::Ticket.human_attribute_name(:topic), include_blank: true
       = f.collection_select :responsible_id_eq, (Support.user_class.support | Support.user_class.superadmins), :id, :full_name, label: Support::Ticket.human_attribute_name(:responsible), include_blank: true
   - options = common_datepicker_options

@@ -1,7 +1,8 @@
 div class="row"
   p = t(".help")
   = bootstrap_nested_form_for [:admin, @cluster], layout: :horizontal do |f|
-    = f.text_field :name
+    - Core::Cluster.locale_columns(:name).each do |column|
+      = f.text_field column
     = f.text_field :host
     = f.form_group do
       = f.check_box :available_for_work

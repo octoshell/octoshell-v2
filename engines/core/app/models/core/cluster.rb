@@ -1,5 +1,8 @@
 module Core
   class Cluster < ActiveRecord::Base
+
+    translates :name
+
     has_many :requests, inverse_of: :cluster, dependent: :destroy
     has_many :accesses, inverse_of: :cluster, dependent: :destroy
     has_many :projects, through: :accesses
@@ -8,10 +11,9 @@ module Core
 
     has_many :quotas, class_name: "ClusterQuota", inverse_of: :cluster, dependent: :destroy
     accepts_nested_attributes_for :quotas, allow_destroy: true
-
     validates :host, :admin_login, presence: true
-
-    scope :finder, lambda { |q| where("lower(name) like :q", q: "%#{q.mb_chars.downcase}%").order("name asc") }
+    validates_translated :name, presence: true
+    scope :finder, lambda { |q| where("lower(#{current_locale_column(:name)}) like :q", q: "%#{q.mb_chars.downcase}%").order current_locale_column(:name) }
 
     # state_machine initial: :active do
     #   state :active

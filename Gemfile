@@ -8,6 +8,8 @@ gem "activerecord-jdbcpostgresql-adapter", '~> 1.3.0', platform: :jruby
 gem "pg", "~> 0.18", platform: :ruby
 gem 'rails_email_preview', '~> 2.0.6'
 gem 'left_join'
+gem 'traco'
+
 
 group :development do
   gem "letter_opener"

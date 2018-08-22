@@ -12,6 +12,7 @@ namespace :comments do
   end
 
   task recreate_attachable_abilities: :environment do
+    puts 'Creating abilities'
     ActiveRecord::Base.transaction do
       [Comments::ContextGroup, Comments::GroupClass, Comments::Context, Comments::FileAttachment, Comments::Tagging, Comments::Tag, Comments::Comment].each do |model|
         model.destroy_all

@@ -109,7 +109,7 @@ module Core
         employment = author.employments.find_by_organization_id(organization.id)
         if organization_department.present?
           "#{organization.name} (#{organization_department.name})"
-        elsif employment.present? && (fak = employment.positions.find{|p| p.name == "Факультет"}).present?
+        elsif employment.present? && (fak = employment.positions.find{|p| p.name_ru == "Факультет"}).present?
           "#{organization.name} (#{fak.name} #{fak.value})"
         else
           organization.name

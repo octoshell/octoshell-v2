@@ -1,5 +1,5 @@
 namespace :core do
-  task :merge, [:table_path] => :environment  do |t,args|
+  task :merge, [:table_path] => :environment  do |t, args|
     ActiveRecord::Base.transaction do
       Core::JoinOrgs.merge_from_table(args[:table_path])
       Core::Organization.all.each do |o|

@@ -1,7 +1,7 @@
 module Core
   class Admin::DirectionOfSciencesController < Admin::ApplicationController
     def index
-      @direction_of_sciences = DirectionOfScience.order(:name)
+      @direction_of_sciences = DirectionOfScience.order(DirectionOfScience.current_locale_column(:name))
     end
 
     def new
@@ -39,7 +39,7 @@ module Core
 
     private
     def direction_of_science_params
-      params.require(:direction_of_science).permit(:name)
+      params.require(:direction_of_science).permit(*DirectionOfScience.locale_columns(:name))
     end
   end
 end

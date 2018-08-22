@@ -4,6 +4,7 @@ module Core
     belongs_to :country
     has_many :organizations
     validates :country, presence: true
+    translates :title
     validates_presence_of :title_ru, :title_en, if: :checked
     validate do
       errors.add(:title_ru, :name_required) if title_ru.blank? && title_en.blank?
@@ -58,7 +59,7 @@ module Core
     end
 
     def to_json_with_titles
-      { id: id, text: titles }
+      { id: id, text: title }
     end
 
     def titles

@@ -8,12 +8,15 @@
 
 module Sessions
   class Survey < ActiveRecord::Base
+
+    translates :name
+
     belongs_to :session
     belongs_to :kind, class_name: "Sessions::SurveyKind", foreign_key: :kind_id
 
     has_many :fields, class_name: "Sessions::SurveyField"
     has_many :user_surveys
-    validates :name, presence: true
+    validates_translated :name, presence: true
 
     def to_s
       kind.name

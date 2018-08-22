@@ -39,7 +39,7 @@ module Core
     private
 
     def organization_kind_params
-      params.require(:organization_kind).permit(:name, :departments_required)
+      params.require(:organization_kind).permit(*OrganizationKind.locale_columns(:name), :departments_required)
     end
   end
 end

@@ -1,8 +1,8 @@
 = bootstrap_form_for [:admin, @survey, @survey_field], layout: :horizontal do |f|
-  = f.text_field :name
-  = f.text_field :hint
+  -Sessions::SurveyField.locale_columns(:name,:hint).each do |column|
+    = f.text_field column
   = f.select :kind, Sessions::SurveyField::KINDS_COLLECTION
-  = f.text_area :collection, rows: 5, help: t(".collection_help")
+  = f.text_area :collection, rows: 5, help: t(".collection_help",locales: I18n.available_locales.join('|'))
   = f.form_group
     = f.check_box :strict_collection, help: t(".strict_collection_help")
   = f.text_field :regexp, help: t(".regexp_help")

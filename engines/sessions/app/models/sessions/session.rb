@@ -5,6 +5,8 @@
 module Sessions
   class Session < ActiveRecord::Base
 
+    translates :description, :motivation
+
     belongs_to :personal_survey, class_name: "Survey"
     belongs_to :projects_survey, class_name: "Survey"
     belongs_to :counters_survey, class_name: "Survey"
@@ -20,7 +22,8 @@ module Sessions
 
     has_many :stats
 
-    validates :description, :receiving_to, presence: true
+    validates :receiving_to, presence: true
+    validates_translated :description, presence: true
 
     include AASM
     include ::AASM_Additions
