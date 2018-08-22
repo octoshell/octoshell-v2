@@ -1,8 +1,7 @@
 div class="row"
   div class="col-xs-8"
     = bootstrap_form_for [:admin,@package] do |f|
-      = f.text_field :name
-      -Pack::Package.locale_columns(:description).each do |column|
+      -Pack::Package.locale_columns(:name, :description).each do |column|
         = f.text_field column
       = f.check_box :deleted
 

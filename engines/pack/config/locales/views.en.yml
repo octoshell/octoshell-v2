@@ -97,6 +97,6 @@ en:
         index:
           title: Versions list
         version_opts_fields:
-          remove_option: Удалить опцию
-          with_category: Автозаполнение
-          without_category: Без автозаполнения
+          remove_option: Remove option
+          with_category: Autocomplete
+          without_category: Not autocomplete

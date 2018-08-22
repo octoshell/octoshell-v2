@@ -1,7 +1,6 @@
 div class="page-header"
   h1 = t(".title", default: "Users")
 = bootstrap_form_for @search, method: :get, url: admin_users_path, layout: :horizontal do |f|
-  /= autocomplete f, name: 'q[id_in]', label: User.model_name.human, source: main_app.users_path
   = f.autocomplete_field :id_in,{ label: User.model_name.human, source: main_app.users_path, include_blank: true} do |val|
     -User.find(val).full_name_with_email
   = f.collection_select :employments_organization_id_in,Core::Organization.all, :id, :name_with_id,{label: Core::Employment.model_name.human}, include_blank: true, multiple: true

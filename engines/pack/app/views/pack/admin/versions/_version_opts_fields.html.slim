@@ -6,16 +6,13 @@ div.option-container
   div.row
     div.col-xs-6
       = ff.radio_button :name_type, 'with_category',label: t('.with_category')
-      = ff.form_group :options_category do
-        = ff.collection_select :options_category_id, @categories, :id, :category,{}, class: 'attach-category'
+      = ff.collection_select :options_category_id, @categories, :id, :category,{}, class: 'attach-category'
     div.col-xs-6
-      = ff.form_group :value_type
-        = ff.radio_button :value_type, 'with_category',label: t('.with_category')
-      = ff.form_group :category_value do
-        -if ff.object.category_value_id
-          = ff.collection_select :category_value_id, Pack::CategoryValue.where(options_category_id: ff.object.options_category_id),:id,:value, {include_blank: true},class: 'attach-value'
-        -else
-          = ff.collection_select :category_value_id, Pack::CategoryValue.where(options_category_id: @categories.first.id),:id,:value, {include_blank: true},class: 'attach-value'
+      = ff.radio_button :value_type, 'with_category',label: t('.with_category')
+      -if ff.object.category_value_id
+        = ff.collection_select :category_value_id, Pack::CategoryValue.where(options_category_id: ff.object.options_category_id),:id,:value, {include_blank: true},class: 'attach-value'
+      -else
+        = ff.collection_select :category_value_id, Pack::CategoryValue.where(options_category_id: @categories.first&.id),:id,:value, {include_blank: true},class: 'attach-value'
 
   div.row
     div.col-xs-6

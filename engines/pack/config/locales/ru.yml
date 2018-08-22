@@ -216,6 +216,8 @@ ru:
         pack/package: Пакет
         pack/access: Доступ
         pack/options_category: Категория опций
+        pack/category_value: Значения категорий
+
       attributes:
         pack/package:
           deleted:  удален
@@ -252,6 +254,8 @@ ru:
         pack/version_option:
             name: Название опции
             value: Значение
+            category_value_id: Значение из списка значений для категорий
+            options_category_id: Категория опций
         pack/clusterver:
             status: Статус
             name: Кластер

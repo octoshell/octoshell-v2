@@ -5,8 +5,6 @@ module Pack
 
     self.locking_column = :lock_version
     validates_translated :description,:name, presence: true
-
-    validates :name, uniqueness: true
     has_many :versions,:dependent => :destroy, inverse_of: :package
     scope :finder, ->(q) { where("lower(name) like lower(:q)", q: "%#{q.mb_chars}%") }
 
