@@ -1,5 +1,5 @@
 # README
-Octoshell -  access management system for HPC centers. This project is based on Ruby on Rails framework(4.2)
+Octoshell - access management system for HPC centers. This project is based on Ruby on Rails framework(4.2)
 https://users.parallel.ru/
 
 
@@ -45,7 +45,7 @@ Users table has the  'language' column. User's working language is stored here. 
 javascript libraries: jquery, handlebars, select2 and alpaca.js(for building forms).
 
 
-We use bootstrap-forms to create static forms. Select2 can build lists using remote data. You can use `autocomplete_field` method  (`engines/face/lib/face/custom_autocomplete_field.rb`) to prepopulate select2 field(if you use remote data.
+We use [bootstrap-forms gem](https://github.com/bootstrap-ruby/bootstrap_form)  to create static forms. Select2 can build lists using remote data. You can use `autocomplete_field` method  (`engines/face/lib/face/custom_autocomplete_field.rb`) to prepopulate select2 field(if you use remote data).
 Example:
 
 		= bootstrap_form_for @search, method: :get, url: admin_users_path, layout: :horizontal do |f|
@@ -53,6 +53,8 @@ Example:
 		    -User.find(val).full_name_with_email ## if id_in is not blank, Selected value will contain all users' full names.
 
 ### Notificators
+
+You may need to notify administrators using support tickets (requests). Special class was designed to do it. Its functionality is very similar to ActionMailer::Base class (`engines/support/lib/support/notificator.rb`). Example: `engines/core/app/notificators/core/notificator.rb  engines/core/lib/core/checkable.rb`. Be careful with the `topic_name` method. It must be used only inside "action" method like `Notificator.check`. Pay special attention that the `new` method is not used here explicitly and method_missing is used to set correct options.    
 
 # README
 Базовое приложение для модульной версии octoshell.

@@ -1,0 +1,1 @@
+for i in engines/*; do (cd $i; rm Gemfile.lock; bundle install); done
