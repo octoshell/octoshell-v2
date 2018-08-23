@@ -10,7 +10,7 @@ Octoshell::Application.configure do
   config.cache_classes = false
 
   # Do not eager load code on boot.
-  config.eager_load = true
+  config.eager_load = false
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
@@ -21,8 +21,8 @@ Octoshell::Application.configure do
   config.action_mailer.delivery_method = :letter_opener
   config.base_host = "localhost"
   config.action_mailer.default_options = { from: "info@localhost" }
-  config.action_mailer.default_url_options = { host: "localhost:3000" }
-  config.serve_static_files = false
+  config.action_mailer.default_url_options = { host: "localhost:9000" }
+  config.serve_static_files = true
   config.assets.compile = false
 
   # Compress JavaScripts and CSS.

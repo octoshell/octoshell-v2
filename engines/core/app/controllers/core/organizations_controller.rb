@@ -1,5 +1,5 @@
 module Core
-  class OrganizationsController < ApplicationController
+  class OrganizationsController < Core::ApplicationController
     respond_to :json
 
     def index
@@ -29,20 +29,19 @@ module Core
       @organization = Organization.new(organization_params)
       @employment = @organization.employments.new(employment_params)
       @employment.user = current_user
-      new_city=params[:organization][:city_title].to_s
-      if new_city != ''
-        city = Core::City.create(title_ru: new_city,title_en: new_city)
-        if city.save
-          @organization.city = city
-        end
+      new_city = params[:organization][:city_title].to_s
+      if new_city.present? && @organization.country
+        @organization.city_title = new_city
+        @organization.city.save!
+        @organization.city.create_ticket(current_user) if @organization.city.previous_changes['id']
       end
       if @organization.save
-        @employment.build_default_positions
+        @organization.create_ticket(current_user)
         if @organization.kind.departments_required?
           redirect_to [:edit, @organization], notice: t("flash.you_have_to_fill_departments")
         else
           @organization.departments.create!(name: @organization.short_name)
-          redirect_to main_app.profile_path
+          redirect_to @employment
         end
       else
         render :new
@@ -58,6 +57,9 @@ module Core
       @organization = Organization.find(params[:id])
       can_edit
       if @organization.update(organization_params)
+        @organization.departments.each do |d|
+          d.create_ticket(current_user) if d.previous_changes['id']
+        end
         redirect_to main_app.profile_path
       else
         render :edit

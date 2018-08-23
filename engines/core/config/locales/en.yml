@@ -13,11 +13,6 @@ en:
   core_confirm: Are you sure
   countries:
     new_city: New city
-  merge:
-    show: Redirect to record page
-    support:
-      subject: "Создана новая запись. %{model_name} : %{to_s}"
-      theme_name: Проверить новую запись
   activerecord:
     errors:
       models:
@@ -343,6 +338,11 @@ en:
     bad_csv_file: "Oops,  it is impossible to  parse the file... Please check file format and encoding(encoding must be UTF-8)"
 
   core:
+    notificators:
+      check:
+        show: Перейти на страницу записи
+        subject: "Создана новая запись. %{model_name} : %{to_s}"
+        topic: Проверить новую запись
     mailer:
       header:
         hello_known_name: "Hello, %{name}!"
@@ -360,9 +360,10 @@ en:
         hello_known_name: "Hello, %{name}!"
         msg_project_invitation: "The manager of the  %{pid}:\"%{title}\" project has invited you to participate in the project work."
         msg_register: "To start your project work please register using the link"
-        msg_first_step: "You have to fill your initials, job place  or place of study, public ssh-key in your profile after registation. Please follow the link in the profile page to get the information how to work with your public ssh-key"
+        msg_first_step: "You have to fill your initials, job place  or place of study, public ssh-key in your profile after registation. Please follow the link in the profile page to get the information how to work with your public ssh-key."
         msg_accept_invitation: " You have to confirm your project membership on the  \"Projects\" tab."
         msg_register_email: "Please keep in mind that you have to register using email, which received the letter"
+        registration: Registration in Octoshell
       access_to_project_granted:
         subject: "You have been authorized to access the \"%{title}\" project"
         msg_project_acc_granted: "You have been authorized to access the %{pid}:\"%{title}\" project."
@@ -380,12 +381,12 @@ en:
         msg_project_members_logins: "Project members logins"
       project_closed:
         subject: "The \"%{title}\" project has been finished"
-        msg_project_closed: "The %{pid}:\"%{@title}\" project has been finished. The cluster accesses are closed."
+        msg_project_closed: "The %{pid}:\"%{title}\" project has been finished. The cluster accesses are closed."
         msg_recommendation: "To find out the cause and to ask other questions you can visit our technical support section."
         open_support: "The technical support section."
       project_suspended:
         subject: "The \"%{title}\" project has been suspended"
-        msg_project_suspended: "The %{pid}:\"%{@title}\" project has been suspended. The cluster accesses are closed."
+        msg_project_suspended: "The %{pid}:\"%{title}\" project has been suspended. The cluster accesses are closed."
         msg_recommendation: "To find out the cause and to ask other questions you can visit our technical support section."
         open_support: "The technical support section."
       request_accepted:
@@ -410,11 +411,11 @@ en:
         process_surety: "Start consideration."
       surety_accepted:
         subject: "The surety №%{number} has been approved"
-        msg_surety_accepted: "Surety №%{number} for %{pid}:\"%{title}\" project  has been approved!"
+        msg_surety_accepted: "Surety №%{id} for %{pid}:\"%{title}\" project  has been approved!"
         msg_comment: "We wish you fruitful work and successes in your research!"
       surety_rejected:
         subject: "The surety №%{number} has been rejected"
-        msg_surety_rejected: "Surety №%{number} for %{pid}:\"%{title}\" project  has been rejected."
+        msg_surety_rejected: "Surety №%{id} for %{pid}:\"%{title}\" project  has been rejected."
         msg_recommendation: "To find out the cause and to ask other questions you can visit our technical support section."
         open_support: "The technical support section."
       user_access_suspended:
@@ -518,7 +519,7 @@ en:
         show:
           info: "Cluster information"
           quotas_info: "Resources quota"
-          pub_key_help_html: "To make an application work with the cluster  copy the key в <code>/home/%{admin_login}/.ssh/authorized_keys</code>"
+          pub_key_help_html: "To make an application work with the cluster  copy the key in <code>/home/%{admin_login}/.ssh/authorized_keys</code>"
           show_logs: "Show logs"
         new:
           title: "New cluster"
@@ -527,7 +528,7 @@ en:
         form:
           help: "You can set default resources quotas values by clicking on \"+ add quota\". These values will be used by users to create resource quota request."
           add_quota: "+ add quota"
-          remove_quota: "remove quouta"
+          remove_quota: "remove quota"
       cluster_logs:
         index:
           title: "Clusters logs"
@@ -650,6 +651,7 @@ en:
           stale_organization_id: You are trying to merge source object with the "%{dep_name}" department, which  is not in the  "%{org_name}" organization now.
           stale_organization_id_source: You are trying to merge  "%{dep_name}" department, which  is not in the  "%{org_name}" organization now.
           update: Please update the page.
+          mergers_exists: "This organization has unmerged departments. Follow the \"%{link}\" and merge them"
         merge_edit:
           preview: Preview
           new_record: New record

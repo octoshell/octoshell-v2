@@ -1,4 +1,8 @@
 ru:
+  model_translation:
+    en: 'на английском'
+    ru: 'на русском'
+
   main_menu:
     working_area: "Рабочий кабинет"
     admin_area: "Кабинет администратора"
@@ -17,6 +21,7 @@ ru:
     comments: Комментарии
     packages: Пакеты
   admin_submenu:
+    emails: Emails
     comments: "Комментарии"
     cities: "Города"
     countries: "Страны"
@@ -237,10 +242,7 @@ ru:
         present: "есть"
         none: "нет"
       projects_list:
-        no_projects_found: No projects found
-
-
-
+        no_projects_found: Не найдено проектов
 
   helpers:
     page_entries_info:

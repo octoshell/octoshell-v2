@@ -3,7 +3,7 @@ p style="padding-bottom: 16px;"
 p
   | #{t('.msg_project_invitation', pid: @invitation.project.id, title: @invitation.project.title)}
 p
-  | #{t('.msg_register')}: #{link_to "Регистрация в Octoshell", authentication.new_user_url}. 
+  | #{t('.msg_register')}: #{link_to t(".registration"), authentication.new_user_url}. 
 p
   | #{t('.msg_first_step')}
   | #{t('.msg_accept_invitation')}

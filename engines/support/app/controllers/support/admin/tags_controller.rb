@@ -54,7 +54,7 @@ module Support
     private
 
     def tag_params
-      params.require(:tag).permit(:name)
+      params.require(:tag).permit(*Tag.locale_columns(:name))
     end
   end
 end

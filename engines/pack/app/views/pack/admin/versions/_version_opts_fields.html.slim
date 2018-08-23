@@ -1,19 +1,28 @@
-div class="row"  style="border:1px solid black;margin:10px;"
-  div class="col-xs-6"
-    -@counter_opts||= 0
-    -uniq = new ? "new_index" : ( ff.object.id ? ff.object.id.to_s : 'new_prev' + (@counter_opts+=1).to_s )
+div.option-container
+  div.row
     -if ff.object.errors[:deleted_record]!=[]
       font color="red"
         =ff.object.errors[:deleted_record][0]
-    -rad_name="name_sel"+ uniq
-    =label_tag rad_name,t('versions.cl_autocomplete')
-    = radio_button rad_name,"to_s","auto",class: "select-auto"
-    =ff.select :name,@categories
-    =label_tag rad_name, t('versions.cl_byhand')
-    = radio_button rad_name,"to_s","no",class: "select-auto",checked: true
-    = ff.text_field :name
+  div.row
+    div.col-xs-6
+      = ff.radio_button :name_type, 'with_category',label: t('.with_category')
+      = ff.collection_select :options_category_id, @categories, :id, :category,{}, class: 'attach-category'
+    div.col-xs-6
+      = ff.radio_button :value_type, 'with_category',label: t('.with_category')
+      -if ff.object.options_category
+        = ff.collection_select :category_value_id, Pack::CategoryValue.where(options_category_id: ff.object.options_category_id),:id,:value, {include_blank: true},class: 'attach-value'
+      -else
+        = ff.collection_select :category_value_id, Pack::CategoryValue.where(options_category_id: @categories.first&.id),:id,:value, {include_blank: true},class: 'attach-value'
 
-  div class="col-xs-6"
-    = ff.text_area :value,rows: 3
-  div class="col-xs-6"
-    = ff.check_box :_destroy,label: t("destroy")
+  div.row
+    div.col-xs-6
+      = ff.radio_button :name_type, 'without_category', label: t('.without_category')
+      -Pack::VersionOption.locale_columns(:name).each do |column|
+        = ff.text_field column
+    div.col-xs-6
+      = ff.radio_button :value_type, 'without_category',label: t('.without_category')
+      -Pack::VersionOption.locale_columns(:value).each do |column|
+        = ff.text_area column,rows: 3
+  div.row
+    div.col-xs-12
+      = ff.link_to_remove t(".remove_option"), class: "fa fa-times text-danger"

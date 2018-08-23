@@ -1,3 +1,3 @@
 ENV=development
-LAUNCHY_DEBUG=true nohup bundle exec sidekiq -L log/sidekiq.log -q pack_worker -q auth_mailer -q core_mailer -q sessions_mailer -q sessions_validator -q sessions_starter -q stats_collector -q support_mailer -q synchronizer -e $ENV &
+LAUNCHY_DEBUG=true nohup bundle exec sidekiq -L log/sidekiq.log -q announcements_mailer -q pack_worker -q auth_mailer -q core_mailer -q sessions_mailer -q sessions_validator -q sessions_starter -q stats_collector -q support_mailer -q synchronizer -e $ENV &
 echo $! > tmp/pids/sidekiq.pid

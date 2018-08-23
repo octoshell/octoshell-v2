@@ -1,13 +1,23 @@
 module Pack
   class Package < ActiveRecord::Base
+
+    translates :description, :name
+
     self.locking_column = :lock_version
-    validates :name, :description, presence: true
-    validates :name,uniqueness: true
-    has_many :versions,:dependent => :destroy,inverse_of: :package
+    validates_translated :description,:name, presence: true
+    has_many :versions,:dependent => :destroy, inverse_of: :package
     scope :finder, ->(q) { where("lower(name) like lower(:q)", q: "%#{q.mb_chars}%") }
 
     def as_json(_options)
     { id: id, text: name }
+    end
+
+    def self.ransackable_scopes(_auth_object = nil)
+      %i[end_lic_greater]
+    end
+
+    def self.end_lic_greater(date)
+      joins(:versions).where(['pack_versions.end_lic > ? OR pack_versions.end_lic IS NULL', Date.parse(date)])
     end
 
     before_save do

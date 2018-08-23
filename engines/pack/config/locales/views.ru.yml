@@ -36,6 +36,9 @@ ru:
 
     admin:
       options_categories:
+        form:
+          add_value: Добавить значение
+          remove_value: Удалить значение
         new:
           title: Новая категория
         index:
@@ -92,3 +95,7 @@ ru:
           new: Добавить опцию
         index:
           title: Список версий
+        version_opts_fields:
+          remove_option: Удалить опцию
+          with_category: Автозаполнение
+          without_category: Без автозаполнения

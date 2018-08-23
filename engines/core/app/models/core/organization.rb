@@ -39,7 +39,8 @@ module Core
                  members.exists? ||
                  surety_members.exists? ||
                  sessions_stats.exists? ||
-                 projects.exists?
+                 projects.exists? ||
+                 department_mergers_any?
       !disallow
     end
 
@@ -76,7 +77,7 @@ module Core
       short_name
     end
 
-    def as_json(options)
+    def as_json(_options)
       { id: id, text: name }
     end
 
@@ -84,8 +85,13 @@ module Core
       city.try(:title_ru)
     end
 
+    def city_title_en
+      city.try(:title_ru)
+    end
+
+
     def city_title=(title)
-      self.city = country.cities.where(title_ru: title.mb_chars).first_or_create! if title.present? && country.present?
+      self.city = country.cities.where(City.current_locale_column(:title) => title.mb_chars).first_or_initialize if title.present? && country.present?
     end
 
     def short_name

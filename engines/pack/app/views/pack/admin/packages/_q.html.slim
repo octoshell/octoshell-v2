@@ -6,6 +6,11 @@
         = f.collection_select :id_in, Pack::Package.all, :id, :name,{label: t('pack_search.packages.packages_name')}, multiple: true,include_blank: true
       -else
         = f.collection_select :id_in, Pack::Version.all, :id, :name,{label: t('pack_search.packages.versions_name')}, multiple: true,include_blank: true
+    div class='col-md-4'
+        = f.collection_select :options_categories_id_in, Pack::OptionsCategory.all, :id, :category,{label: Pack::OptionsCategory.model_name.human}, include_blank: true, multiple: true
+    div class='col-md-4'
+        = f.select :category_values_id_in, [],{label: Pack::OptionsCategory.human_attribute_name(:values)}, include_blank: true, multiple: true
+
 
   div class="row"
     div class="col-md-4"
@@ -17,7 +22,11 @@
       =f.select :accesses_status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{class: "change_user_access",multiple: true}
   div class="row"
     div class="col-md-4"
-      =f.autocomplete_field :clustervers_core_cluster_id_in,{label: t("pack_search.packages.clusters"), source:  core.admin_clusters_path},include_blank: true
+      =f.collection_select :clustervers_core_cluster_id_in,Core::Cluster.all, :id, :name, {label: t("pack_search.packages.clusters")},include_blank: true, multiple: true
+    div class="col-md-4"
+      =f.text_field :end_lic_greater,label: t("pack_search.packages.end_lic_gt"),class: 'datepicker'
+      =f.text_field :end_lic_lteq,label: t("pack_search.packages.end_lic_lt"),class: 'datepicker'
+
     div class="col-md-4"
       =f.check_box :clustervers_active_in,{label: t("pack_search.packages.active_cl")},"1",""
       =f.check_box :deleted_eq,{label: t("pack_search.packages.only_deleted") },"1",""
@@ -26,3 +35,5 @@
     =display_all_tag
   = f.form_group do
       = f.submit t("actions.find")
+= javascript_tag do
+  = render partial: 'pack/packages/q', formats: [:js]

@@ -1,4 +1,8 @@
 en:
+  model_translation:
+    ru: 'in russian'
+    en: 'in english'
+
   main_menu:
     working_area: "Study"
     admin_area: "Administator's office"
@@ -17,6 +21,7 @@ en:
     comments: Comments
     packages: Packages
   admin_submenu:
+    emails: Emails
     comments: "Comments"
     cities: "Cities"
     countries: "Countries"

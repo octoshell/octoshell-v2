@@ -1,5 +1,6 @@
 = bootstrap_form_for [:admin, @tag], layout: :horizontal do |f|
-  = f.text_field :name
+  -Support::Tag.locale_columns(:name).each do |column|
+    = f.text_field column
 
   = f.form_group do
     = f.submit t("actions.save")

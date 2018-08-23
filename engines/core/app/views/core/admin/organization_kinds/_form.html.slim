@@ -1,5 +1,6 @@
 = bootstrap_form_for [:admin, @organization_kind] do |f|
-  = f.text_field :name
+  -Core::OrganizationKind.locale_columns(:name).each do |column|
+    = f.text_field column
   = f.check_box :departments_required
 
   = f.form_group do

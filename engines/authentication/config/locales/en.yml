@@ -32,7 +32,7 @@ en:
         subject: "Account activation"
         activate: "activate"
         text: |
-          <p> Follow the link %{activate_user_link}  to activate your account .</p>
+          <p> Follow the link %{activate_user_link}  to activate your account.</p>
           <p> If you have problem with the link, copy and paste it in your browser %{activate_user_link_plain}.</p>
       activation_success:
         subject: "Activation has been done successfully"
@@ -42,7 +42,7 @@ en:
         change_password: "Change password"
         text: |
           <p> Instructions for recovering the Octoshell account password has been requested.</p>
-          <p> Follow this link(%{change_password_link}) to change your password .</p>
+          <p> Follow this link(%{change_password_link}) to change your password.</p>
           <p> If you have problem with the link, copy and paste it in your browser %{change_password_link_plain}.</p>
 
     flash:

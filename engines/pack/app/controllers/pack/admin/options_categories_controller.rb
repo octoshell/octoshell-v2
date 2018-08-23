@@ -8,13 +8,6 @@ module Pack
       without_pagination(:records)
       respond_to do |format|
         format.html
-        format.json do
-        @records = OptionsCategory.where("lower(category) like lower(:q)", q: "%#{params[:q].mb_chars}%")
-        render json: { records: @records.page(params[:page])
-                                        .per(params[:per])
-                                        .map{ |v|  {text: v.category, id: v.category}  },
-                       total: @records.count }
-        end
       end
     end
 
@@ -57,7 +50,8 @@ module Pack
     private
 
     def option_params
-      params.require(:options_category).permit(:category)
+      params.require(:options_category).permit *OptionsCategory.locale_columns(:category),
+                                               category_values_attributes: [:id, :_destroy, CategoryValue.locale_columns(:value)]
     end
   end
 end

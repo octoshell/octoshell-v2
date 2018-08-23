@@ -310,7 +310,7 @@ en:
         edit:
           title: "Edit survey field"
         form:
-          collection_help: "Only for radio-buttons, lists and scientometrics"
+          collection_help: "Only for radio-buttons, lists and scientometrics. Fill in each value in \"%{locales}\" format to localize collection"
           strict_collection_help: "Does not allow to save values not from the list"
           regexp_help: "You can test regexps here: http://rubular.com/ Choose 1.9.3 ruby version"
           max_values_help: "Only for Multiple select and User Lists"

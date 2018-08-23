@@ -39,7 +39,7 @@ module Comments
     private
 
     def context_params
-      params.require(:context).permit(:name)
+      params.require(:context).permit(*Context.locale_columns(:name))
     end
   end
 end

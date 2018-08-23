@@ -39,7 +39,7 @@ module Core
     private
 
     def project_kind_params
-      params.require(:project_kind).permit(:name)
+      params.require(:project_kind).permit(*OrganizationKind.locale_columns(:name))
     end
   end
 end

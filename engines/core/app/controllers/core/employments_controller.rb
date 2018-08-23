@@ -33,6 +33,7 @@ module Core
         @employment.save
         redirect_to main_app.profile_path
       else
+        puts @employment.errors.inspect
         @employment.build_default_positions
         render :show
       end
@@ -53,7 +54,8 @@ module Core
                                            :organization_department_id,
                                            :organization_department_name,
                                            :primary,
-                                           positions_attributes: [:id, :name, :value])
+                                           positions_attributes: [:id, :name, :value,:field_id,
+                                                                  :employment_position_name_id])
       else
         {}
       end

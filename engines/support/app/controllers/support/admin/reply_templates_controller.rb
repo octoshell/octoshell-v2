@@ -48,7 +48,7 @@ module Support
     private
 
     def reply_template_params
-      params.require(:reply_template).permit(:subject, :message)
+      params.require(:reply_template).permit(*ReplyTemplate.locale_columns(:subject, :message))
     end
   end
 end

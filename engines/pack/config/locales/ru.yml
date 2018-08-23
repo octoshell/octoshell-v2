@@ -81,7 +81,7 @@ ru:
       denied_longer: Вам отказали в продлении доступа
       deleted: Ваш доступ удален
       subject: Изменено состояние вашего доступа к версии  %{version_name}
-      body: "%{status_info} к версии  %{version_name}. Для подробностей напишите нам или просмотрите ответы администраторов на Ваши заявки"
+      body: "%{status_info} к версии  %{link}. Для подробностей напишите нам или просмотрите ответы администраторов на Ваши заявки"
     access_actions:
       denied: отказать
       requested: запросить
@@ -165,6 +165,8 @@ ru:
         not_active: неактивна
     pack_search:
       packages:
+        end_lic_lt: Лицезия версии кончается не раньше
+        end_lic_gt: Лицезия версии кончается после
         only_deleted: только удаленные
         only_service: только служебные
         clusters: Кластеры
@@ -196,10 +198,15 @@ ru:
 
 
     pack:
+      notificators:
+        notify_about_expiring_versions:
+          topic: 'Версии ПО с истекающей лицензией'
+          subject: 'Версии ПО с истекающей лицензией'
+          title: 'Версии ПО с истекающей лицензией'
       mailer:
         email_vers_state_changed:
           subject: "Изменилась информация о лицензии  версии  «%{version_name}»"
-          body: "У версии «%{vers}» изменилась информации о лицензии.%{message}."
+          body: "У версии %{link} изменилась информации о лицензии.%{message}."
       access:
         created_during_edit: Невозможно отправить заявку. Скорее всего, во время заполнения формы администратор выдал Вам доступ к версии.
         updated_during_edit_static: Нельзя выполнить действие. С заявкой на доступ или доступом во время заполнения формы что-то произошло. Введите данные заново
@@ -208,6 +215,9 @@ ru:
         pack/version: Версия
         pack/package: Пакет
         pack/access: Доступ
+        pack/options_category: Категория опций
+        pack/category_value: Значения категорий
+
       attributes:
         pack/package:
           deleted:  удален
@@ -217,6 +227,9 @@ ru:
           description: Описание
         pack/options_category:
           category: Категория
+          values: Значения
+        pack/category_value:
+          value: Значение
         pack/version:
           version_name: Имя версии
           delete_on_expire: Помечать доступы удаленными,когда лицения истечет
@@ -236,10 +249,13 @@ ru:
           clusters: Кластеры
           available_for_user?: Доступна
           accesses: Доступы
+          version_options: Опции
 
         pack/version_option:
             name: Название опции
             value: Значение
+            category_value_id: Значение из списка значений для категорий
+            options_category_id: Категория опций
         pack/clusterver:
             status: Статус
             name: Кластер

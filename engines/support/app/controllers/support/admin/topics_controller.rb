@@ -38,7 +38,7 @@ module Support
     private
 
     def topic_params
-      params.require(:topic).permit(:name, :parent_id, :tag_ids => [], :field_ids => [])
+      params.require(:topic).permit(*Topic.locale_columns(:name), :parent_id, :tag_ids => [], :field_ids => [])
     end
   end
 end
