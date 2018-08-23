@@ -1,9 +1,10 @@
 PATH
   remote: .
   specs:
-    pack (0.0.1)
+    pack (0.0.1-java)
       aasm
       active_record_union
+      bootstrap_form
       carrierwave
       decorators
       jquery-ui-rails

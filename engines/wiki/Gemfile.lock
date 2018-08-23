@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    wiki (0.0.1)
+    wiki (0.0.1-java)
       maymay
       rails (~> 4.2)
       slim
@@ -113,7 +113,6 @@ GEM
 
 PLATFORMS
   java
-  ruby
 
 DEPENDENCIES
   wiki!
