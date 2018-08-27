@@ -3,26 +3,11 @@
 module GraphBuilder
   extend ActiveSupport::Concern
 
-
-
   included do
     def self.to_chart
       chart = []
       if head = all.first
         ids = head.data.map { |c| c[0] }
-        array = [I18n.t('statistics.date')]
-        kind = all.first.kind.to_sym
-        if kinds_to_classes[kind].is_a? ActiveRecord::Relation
-          array += head.data.map do |c|
-            rel = kinds_to_classes[kind].to_a
-          end
-        end
-
-        
-        end
-
-
-
         chart << ["Дата"].push(*head.data.map { |c| c[1] })
         all.map do |c|
           chart << [c.pub_date].push(*c.to_row(ids))
