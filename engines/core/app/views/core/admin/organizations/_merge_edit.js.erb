@@ -15,8 +15,6 @@ var preview = "<%=j t '.preview'%>";
 var save = "<%=j t 'buttons.save'%>";
 var choose_value = "<%=j t 'choose_value'%>";
 
-var all_organizations =  <%=raw Core::Organization.all.map(&:full_json).to_json%>;
-all_organizations.push({id: "",text: "",selected: "selected"});
 var departments_names = <%=raw @departments_names.to_json%>;
 var merge_types = <%=raw @merge_types_options.to_json%>;
 var merge_types_labels = <%=raw @merge_types_labels.to_json%>;
@@ -65,6 +63,7 @@ function render_source()
   else {
      html = half_organization(half_context);
   }
+
   $('#source_preview').html(html);
 }
 
@@ -160,30 +159,40 @@ function select2_organization(control, org_address, dep_address)
 
 }
 
-function choose_organization(organization_id,organization_text)
+function choose_organization()
 {
   var org_select = form.getControlByPath('source/organization_id').getControlEl();
   var dep_select = form.getControlByPath('source/department_id').getControlEl();
   var load_id = `loadingsource/department_id`;
-  org_select.val(organization_id);
-  org_select.trigger('change');
-
-  // org_select.select2({
-  //     data: [{id: organization_id, text: organization_text }]
-  //   });
-
-  var loading = `<div id="${load_id}"class="alert alert-info"> <strong><%= t('.loading')%></strong></div>`;
-  var load_elem =   $(loading);
-  load_elem.insertBefore(dep_select);
-  var url = "/core/admin/organizations/" + organization_id +  "/index_for_organization";
-  getJSONSync( url, function( data ) {
-    dep_select.select2({
-      data: data
+  <% if @id %>
+    var organization_id = <%= @id%>;
+    var organization_text = '<%= Core::Organization.find(@id).name_with_id%>';
+  <% end %>
+  org_select.select2({
+      data: [{id: organization_id, text: organization_text }]
     });
-    var style = org_select.next().attr('style');
-    dep_select.next().attr('style',style);
-    load_elem.remove();
-  });
+
+  <% if @department_id %>
+    var department_id = <%= @department_id%>;
+    var department_text = '<%= Core::OrganizationDepartment.find(@department_id).name%>';
+    dep_select.select2({
+        data: [{id: department_id, text: department_text }]
+    });
+    form.getControlByPath('source/merge_type').setValue("merge_department");
+  <% else %>
+    var loading = `<div id="${load_id}"class="alert alert-info"> <strong><%= t('.loading')%></strong></div>`;
+    var load_elem =   $(loading);
+    load_elem.insertBefore(dep_select);
+    var url = "/core/admin/organizations/" + organization_id +  "/index_for_organization";
+    getJSONSync( url, function( data ) {
+      dep_select.select2({
+        data: data
+      });
+      var style = org_select.next().attr('style');
+      dep_select.next().attr('style',style);
+      load_elem.remove();
+    });
+  <% end %>
   var e = jQuery.Event('change');
   org_select.trigger(e);
 }
@@ -311,23 +320,28 @@ $("#merge_organization").alpaca({
                           $("#success_div").text(success_message);
                           if(arg.reload)
                           {
-                            var to_org_select = form.getControlByPath("source/organization_id").getControlEl();
-                            to_org_select.select2('destroy');
-                            to_org_select.empty();
-                            $.getJSON( "<%=all_organizations_organizations_path%>", function( data ) {
-                              data.push({id: "",text: "",selected: "selected"});
-                              to_org_select.select2({
-                                data: data,
-                                allowClear: true,
-                                placeholder: choose_value,
-                              });
-                              source_org_select.select2({
-                                data: data,
-                                allowClear: true,
-                                placeholder: choose_value,
-                              });
-
+                            var source_org_select = form.getControlByPath("source/organization_id").getControlEl();
+                            source_org_select.select2('destroy');
+                            source_org_select.empty();
+                            source_org_select.select2({
+                              ajax: {
+                                  url: '<%=admin_organizations_path%>',
+                                  dataType: 'json',
+                                  data: function(params) {
+                                    return {
+                                      q: $.trim(params.term),
+                                      page: params.page,
+                                      per: 10
+                                    }
+                                  },
+                                  processResults: function(data, params) {
+                                    var page = params.page | 1;
+                                    var more = (page * 10) < data.total;
+                                    return { results: data.records, pagination:{more: more }}
+                                  }
+                                }
                             });
+
 
                           }
                           else {
@@ -470,11 +484,14 @@ $("#merge_organization").alpaca({
     var kind_elem = control.getControlByPath("to/create_organization/kind_id").getControlEl();
 
     apply_select();
-    source_org_select.select2({data: all_organizations,allowClear: true, placeholder: choose_value});
-    to_org_select.select2({data: all_organizations,allowClear: true, placeholder: choose_value});
     <%if @id%>
-      choose_organization('<%=j @id%>','<%=j @text%>')
+      choose_organization();
+    <% else %>
+      apply_select_to(source_org_select,'<%=admin_organizations_path%>');
     <% end %>
+    apply_select_to(to_org_select,'<%=admin_organizations_path%>');
+
+
     select2_organization(control,'source/organization_id','source/department_id');
     select2_organization(control,'to/organization_id','to/department_id');
     control.on("change",empty_preview);

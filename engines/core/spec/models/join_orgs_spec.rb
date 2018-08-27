@@ -1,5 +1,5 @@
 # module Core
-#   require "initial_create_helper"
+#   require ""
 #   describe JoinOrgs do
 #     # describe "#load_test_data" do
 #     #   it "is smoke test" do

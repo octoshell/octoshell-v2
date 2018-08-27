@@ -1,5 +1,5 @@
 module Core
-  require "initial_create_helper"
+  require ""
   describe OrganizationDepartment do
     describe "#create_organization" do
       before(:each) do

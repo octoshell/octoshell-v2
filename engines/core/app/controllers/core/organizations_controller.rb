@@ -11,10 +11,6 @@ module Core
       respond_with(json)
     end
 
-    def all_organizations
-      render json: Core::Organization.all.map(&:full_json)
-    end
-
     def show
       @organization = Organization.find(params[:id])
       respond_with({ id: @organization.id, text: @organization.name })

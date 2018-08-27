@@ -116,6 +116,7 @@ en:
           created_before: Created before
           updated_after: Updated after
           updated_before: Updated before
+          find_by_content: Найти по содержимому
 
         table:
           no_tickets: No requests found

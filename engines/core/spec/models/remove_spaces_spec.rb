@@ -1,5 +1,5 @@
 module Core
-  require "initial_create_helper"
+  require ""
   describe OrganizationDepartment do
     describe "::remove_spaces" do
       it "1" do

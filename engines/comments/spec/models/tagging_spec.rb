@@ -1,5 +1,5 @@
 module Comments
-  require "initial_create_helper"
+  require ""
   describe Tagging do
     describe "::get_items" do
       before(:each) do

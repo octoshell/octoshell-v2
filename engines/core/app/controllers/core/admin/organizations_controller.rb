@@ -101,9 +101,7 @@ module Core
       provide_cities_hash
       @kinds = OrganizationKind.all.to_a.map { |k| { id: k.id, text: k.to_s } }
       @id = params[:id]
-      @text = params[:text]
-      # @organization = Organization.includes(:departments).find(params[:id])
-      # @departments_names = @organization.departments.map { |d| { id: d.id, text: d.name } }
+      @department_id = params[:department_id]
       @merge_types_options = %w[merge_with_organization merge_with_existing_department
                                 merge_with_new_department]
       @merge_types_labels = @merge_types_options.map { |o| t ".#{o}" }

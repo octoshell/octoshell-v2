@@ -3,7 +3,7 @@ div class="page-header"
 
 div class="well"
   = link_to t("actions.edit"), [:edit, :admin, @organization], class: "btn btn-default"
-  = link_to t(".merge_edit"),merge_edit_admin_organizations_path(id: @organization.id, text: @organization.name), class: "btn btn-default"
+  = link_to t(".merge_edit"),merge_edit_admin_organizations_path(id: @organization.id), class: "btn btn-default"
   - if @organization.destroy_allowed?
     - name = t("actions.delete", default: "delete")
     - confirm = t("core_confirm", default: "Are You sure?")
@@ -48,6 +48,8 @@ table class="table table-hover"
       td = department.users.where(users: { access_state: "active" }).distinct.count
       td = department.users.cluster_access_state_present.distinct.count
       td = department.checked ? t('answers.yess') : t('answers.noo')
+      td = link_to t(".merge_edit"),merge_edit_admin_organizations_path(id: @organization.id, department_id: department.id), class: "btn btn-default"
+
 =render_attachments @organization,:comments
 =render_attachments @organization,:tags
 =render_attachments @organization,:files

@@ -21,7 +21,7 @@ div class="well"
     = f.submit t("actions.find"), class: "btn btn-primary"
     button#empty_cities_countries #{t('.empty_cities_countries')}
 = bootstrap_form_tag  do |f|
-  = f.collection_select :name, ::Core::Organization.all, :id, :name_with_id, label: t('.find_by_name'), include_blank: true
+  = f.autocomplete_field :name, label: t('.find_by_name'), source: core.organizations_path, include_blank: true do |val|
 
 = safe_paginate @organizations
 = render "table", organizations: @organizations

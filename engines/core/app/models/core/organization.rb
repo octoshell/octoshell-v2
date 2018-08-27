@@ -26,7 +26,7 @@ module Core
     accepts_nested_attributes_for :departments, allow_destroy: true
     accepts_nested_attributes_for :city, allow_destroy: false
 
-    scope :finder, lambda { |q| where("lower(name) like :q OR lower(abbreviation) like :q",
+    scope :finder, lambda { |q| where("lower(name) like :q OR lower(abbreviation) like :q OR CAST(id AS TEXT) like :q",
                                       q: "%#{q.mb_chars.downcase}%").order("name asc") }
 
     validates :name, :city, :country, presence: true
@@ -78,7 +78,7 @@ module Core
     end
 
     def as_json(_options)
-      { id: id, text: name }
+      full_json
     end
 
     def city_title
