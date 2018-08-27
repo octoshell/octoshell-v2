@@ -27,8 +27,7 @@ module Core
              through: :requests, source: :cluster
 
     has_many :accesses, inverse_of: :project
-    # TODO: rename to available. typo.
-    has_many :avaliable_clusters, -> { where(core_accesses: {state: 'opened'}) },
+    has_many :available_clusters, -> { where(core_accesses: {state: 'opened'}) },
                                   through: :accesses, source: :cluster
 
     has_many :synchronization_logs, class_name: "Core::ClusterLog", inverse_of: :project
@@ -92,7 +91,7 @@ module Core
     end
 
     def spare_clusters
-      ::Core::Cluster.where.not(id: requested_clusters.pluck(:id) | avaliable_clusters.pluck(:id)).
+      ::Core::Cluster.where.not(id: requested_clusters.pluck(:id) | available_clusters.pluck(:id)).
               where(available_for_work: true)
     end
 

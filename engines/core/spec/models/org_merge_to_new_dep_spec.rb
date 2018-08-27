@@ -1,5 +1,5 @@
 module Core
-  require "initial_create_helper"
+  require ""
   describe Organization do
     describe "#merge_with_new_department" do
       before(:each) do

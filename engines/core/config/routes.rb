@@ -1,5 +1,6 @@
 Core::Engine.routes.draw do
   namespace :admin do
+    resources :members, only: :index
     resources :projects do
       member do
         get :activate
@@ -70,6 +71,10 @@ Core::Engine.routes.draw do
     resources :cluster_logs, only: :index
 
     resources :users, only: :index do
+      collection do
+        get :owners_finder
+        get :with_owned_projects_finder
+      end
       get :block, on: :member
       get :reactivate, on: :member
     end
@@ -110,9 +115,6 @@ Core::Engine.routes.draw do
   resources :organization_kinds, only: :index
 
   resources :organizations, except: [:destroy] do
-    collection do
-      get :all_organizations
-    end
     resources :organization_departments, path: :departments, only: [:index, :new, :create]
   end
 

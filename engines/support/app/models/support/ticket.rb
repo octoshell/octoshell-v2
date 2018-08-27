@@ -22,7 +22,7 @@ module Support
                             class_name: "::User", # TODO: rails bug maybe?
                             join_table: :support_tickets_subscribers, dependent: :destroy
 
-    validates :reporter, :subject, :message, :topic, presence: true
+    validates :reporter, :reporter_id, :subject, :message, :topic, presence: true
     validates :attachment, file_size: {
                              maximum: 100.megabytes.to_i
                            }
@@ -31,6 +31,15 @@ module Support
 
     after_commit :add_reporter_to_subscribers
     after_commit :notify_support
+
+    scope :find_by_content, -> (q) do
+      processed = q.mb_chars.split(' ').join('%')
+      joins(:replies).where("support_replies.message LIKE :q OR support_tickets.message LIKE :q",q: "%#{processed}%")
+    end
+
+    def self.ransackable_scopes(_auth_object = nil)
+      %i[find_by_content]
+    end
 
     include AASM
     include ::AASM_Additions

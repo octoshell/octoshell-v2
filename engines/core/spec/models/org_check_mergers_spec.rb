@@ -1,5 +1,5 @@
 module Core
-  require "initial_create_helper"
+  require ""
   describe Organization do
     describe "#check_mergers" do
       before(:each) do

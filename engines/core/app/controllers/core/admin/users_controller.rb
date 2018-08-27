@@ -4,6 +4,19 @@ module Core
       @users = User.joins(:accounts).distinct.order(:id)
     end
 
+    def owners_finder
+      @users = Core.user_class.owners_finder(params[:q])
+      render json: { records: @users.page(params[:page]).per(params[:per]),
+                     total: @users.count }
+    end
+
+    def with_owned_projects_finder
+      @users = Core.user_class.with_owned_projects_finder(params[:q])
+      render json: { records: @users.page(params[:page]).per(params[:per]),
+                     total: @users.count }
+    end
+
+
     def block
       user = User.find(params[:id])
       user.block!

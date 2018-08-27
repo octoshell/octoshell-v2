@@ -7,6 +7,10 @@ module Core
     belongs_to :organization_department
     delegate :full_name, :email, :credentials, :sured?, to: :user
 
+    scope :finder, (lambda do |q|
+      where("lower(login) like :q", q: "%#{q}%").order(:login)
+    end)
+
     include AASM
     include ::AASM_Additions
     aasm(:project_access_state, :column => :project_access_state) do
@@ -87,7 +91,7 @@ module Core
     end
 
     def has_access_to_clusters?
-      project.active? && user.prepared_to_join_projects? && allowed? && (project.avaliable_clusters.count > 0)
+      project.active? && user.prepared_to_join_projects? && allowed? && (project.available_clusters.count > 0)
     end
 
     def assign_login

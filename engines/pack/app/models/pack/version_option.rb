@@ -59,7 +59,6 @@ module Pack
     end
 
     def name_with_category?
-      puts name_type
       name_type == 'with_category'
     end
 

@@ -70,6 +70,12 @@ Core.user_class.class_eval do
   has_many :authored_sureties, class_name: "::Core::Surety", foreign_key: :author_id, inverse_of: :author
 
   scope :with_active_projects, -> { joins(accounts: :project).where(core_projects: {state: "active"}, core_members: {project_access_state: "allowed"}).distinct }
+  scope :owners_finder, (lambda do |q|
+    joins(:account_owners).finder(q)
+  end)
+  scope :with_owned_projects_finder, (lambda do |q|
+    joins(:owned_projects).finder(q)
+  end)
 
 
   after_create :check_project_invitations
@@ -110,7 +116,7 @@ Core.user_class.class_eval do
   end
 
   def self.cluster_access_state_present(_arg = nil)
-    User.joins([:employments, :credentials, { accounts: {project: :avaliable_clusters} }])
+    User.joins([:employments, :credentials, { accounts: {project: :available_clusters} }])
         .where(core_members: { project_access_state: 'allowed' })
         .where(core_projects: { state: 'active' })
         .where(access_state: :active)

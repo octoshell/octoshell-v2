@@ -1,4 +1,4 @@
-# require "initial_create_helper"
+# require ""
 #
 # describe User do
 #   subject(:user) { User.create!(email: "basya@bulat.com", password: "123456") }

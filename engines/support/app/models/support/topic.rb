@@ -16,7 +16,7 @@ module Support
     validates :parent_id, exclusion: { in: proc { |tq| [tq.id] } }, allow_nil: true
 
     scope :root, -> { where(parent_id: nil) }
-    scope :common_theme, -> { where(name: "Другое") }
+    scope :common_theme, -> { where(name_ru: "Другое") }
 
     def available_parents
       new_record? ? Topic.all : Topic.where.not(id: id)

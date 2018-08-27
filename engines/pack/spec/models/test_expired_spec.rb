@@ -1,6 +1,6 @@
 module Pack
 
-  require "initial_create_helper"
+  require ""
 
 
   describe "Pack::Access and Version expired testing" do

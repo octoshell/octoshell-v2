@@ -1,5 +1,5 @@
 module Comments
-  require "initial_create_helper"
+  require ""
   describe Comment do
     describe "::read_items items without context" do
       before(:each) do

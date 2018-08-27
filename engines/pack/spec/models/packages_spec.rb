@@ -1,5 +1,5 @@
 module Pack
-  require "initial_create_helper"
+  require ""
   describe Package do
     it "deletes package,package's versions,versions' accesses" do
       package = create(:package)

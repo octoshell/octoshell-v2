@@ -1,4 +1,4 @@
-require 'initial_create_helper'
+require ''
 module Support
   describe Notificator do
     it 'creates bot once' do

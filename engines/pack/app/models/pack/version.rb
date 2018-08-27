@@ -16,7 +16,7 @@ module Pack
     has_many :accesses, dependent: :destroy
     accepts_nested_attributes_for :version_options,:clustervers, allow_destroy: true
     validates_associated :version_options,:clustervers
-    # scope :finder, ->(q) { where("lower(name_ru) like lower(:q)", q: "%#{q.mb_chars}%").limit(10) }
+    scope :finder, ->(q) { where("lower(name_ru) like lower(:q) OR lower(name_en) like lower(:q)", q: "%#{q.mb_chars}%").limit(10) }
     validate :date_and_state, :work_with_stale, :pack_deleted
 
     aasm :column => :state do

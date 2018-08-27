@@ -1,6 +1,6 @@
 # module Comments
 #
-# 	require "initial_create_helper"
+# 	require ""
 #
 #
 #

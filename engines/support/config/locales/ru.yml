@@ -116,7 +116,7 @@ ru:
           created_before: Создан до
           updated_after: Обновлён после
           updated_before: Обновлён до
-
+          find_by_content: Найти по содержимому
         table:
           no_tickets: Нет тикетов
         edit:
