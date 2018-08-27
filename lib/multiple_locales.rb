@@ -1,10 +1,16 @@
 module MultipleLocales
   extend ActiveSupport::Concern
   def set_locale
-    if !session[:locale] && logged_in?
-      session[:locale] = current_user.language if current_user.language
-    elsif !session[:locale]
-      session[:locale] = I18n.default_locale.to_s
+    unless session[:locale]
+      if logged_in?
+        if session[:soul_id]
+          session[:locale] = User.find(session[:soul_id]).language
+        else
+          session[:locale] = current_user.language if current_user.language
+        end
+      else
+        session[:locale] = I18n.default_locale.to_s
+      end
     end
     I18n.locale = session[:locale] || I18n.default_locale
   end

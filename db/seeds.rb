@@ -45,6 +45,7 @@ ActiveRecord::Base.transaction do
   Core::DirectionOfScience.create!(name: 'Информационно-телекоммуникационные системы')
   Core::ResearchArea.create!(name: 'Математика')
   Core::ProjectKind.create!(name: 'Исследовательский')
+
   Core::Organization.create!(name: 'Test MSU', city: city, country: country,
                              kind: Core::OrganizationKind.first )
   Core::Employment.create!(user: admin, organization: Core::Organization.first)

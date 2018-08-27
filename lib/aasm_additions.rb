@@ -40,7 +40,7 @@ module AASM_Additions
     end
 
     def human_state_names_with_original(st = :state)
-      aasm(st).states.map { |s| [aasm_translate('states', s), s] }
+      aasm(st).states.map { |s| [aasm_translate('states', s), s.to_s] }
     end
 
     def state_names(st=:state)

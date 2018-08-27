@@ -3,11 +3,12 @@ div class="page-header"
 = bootstrap_form_for @search, method: :get, url: admin_users_path, layout: :horizontal do |f|
   = f.autocomplete_field :id_in,{ label: User.model_name.human, source: main_app.users_path, include_blank: true} do |val|
     -User.find(val).full_name_with_email
-  = f.collection_select :employments_organization_id_in,Core::Organization.all, :id, :name_with_id,{label: Core::Employment.model_name.human}, include_blank: true, multiple: true
+  = f.autocomplete_field :employments_organization_id_in,{ label: Core::Employment.model_name.human, source: core.organizations_path, include_blank: true} do |val|
+    -Core::Organization.find(val).name_with_id
   = f.select :user_groups_group_name_in, Group.pluck(:name), {label: User.human_attribute_name(:groups)},{include_blank: true, multiple: true}
   = f.select :owned_projects_state_in, Core::Project.human_state_names_with_original, { label: t('.managed_project_statuses')},include_blank: true,  multiple: true
   = f.select :projects_state_in, Core::Project.human_state_names_with_original, { label: t('.participated_project_statuses')}, include_blank: true,  multiple: true
-  = f.collection_select :available_projects_avaliable_clusters_id_eq, Core::Cluster.all, :id, :name,{ label: t('.has_account_on_clusters'),include_blank: true}, multiple: true
+  = f.collection_select :available_projects_available_clusters_id_eq, Core::Cluster.all, :id, :name,{ label: t('.has_account_on_clusters'),include_blank: true}, multiple: true
   = f.collection_select :sessions_id_in, Sessions::Session.all, :id, :description, { label: t('.rereg_participated')}, include_blank: true,  multiple: true
   = f.select :reports_state_in, Sessions::Report.human_state_names_with_original, { label: t('.has_rereg_report_statuses')}, include_blank: true,  multiple: true
   = f.select :surveys_state_in, Sessions::UserSurvey.human_state_names_with_original, { label: t('.has_survey_statuses')}, include_blank: true,  multiple: true

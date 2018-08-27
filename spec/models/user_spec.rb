@@ -9,7 +9,6 @@ describe User do
   end
 
   it "saves user" do
-    # @user.build_lang_pref(language: 'en')
     @user.language = 'en'
     expect(@user.save).to eq(true)
     expect(@user.language).to eq('en')
