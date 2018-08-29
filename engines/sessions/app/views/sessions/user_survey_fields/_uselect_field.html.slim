@@ -1,3 +1,4 @@
+- value=[] if value.to_s==''
 div class="row" data-max-values="#{field.max_values}"
   div class="form-group"
     div class="col-xs-8"
@@ -5,6 +6,6 @@ div class="row" data-max-values="#{field.max_values}"
         div class="alert alert-danger"
           = error
       - (field.max_values || 7).times do |i|
-        - custom_value = ((value || []) - field.collection_values).keep_if(&:present?)
+        - custom_value = (value - field.collection_values).keep_if(&:present?)
         - custom_value = custom_value.empty? ? nil : custom_value[i]
         = text_field_tag "fields[#{field.id}][]", custom_value, placeholder: t('.msg_input_value'), class: "form-control"

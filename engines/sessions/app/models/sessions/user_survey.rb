@@ -29,7 +29,7 @@ module Sessions
       end
 
       event :edit do
-        transitions :from => :submitted, :to => :filling
+        transitions :from => [:submitted,:exceeded], :to => :filling
       end
 
       event :postdate do
@@ -52,7 +52,14 @@ module Sessions
       user.block! unless user.closed? # TODO block-close do blocked state
     end
 
+    def fill_fields_if_needed(fields)
+      if fields.map {|field_id, value| values.find { |v| v.survey_field_id == field_id.to_i }}.any?{|x| x.nil? }
+        fill_fields
+      end
+    end
+
     def fill_values(fields)
+      fill_fields_if_needed(fields)
       transaction do
         saves = fields.map do |field_id, value|
           record = values.find { |v| v.survey_field_id == field_id.to_i }
