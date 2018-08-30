@@ -113,12 +113,17 @@ div
                 - if job_cond.size() > 0
                   - job_cond.each do |cond|
                     i class="fa-fw align-left #{@pictures.fetch(cond.name, 'far fa-exclamation-triangle')}" title="#{cond.description}"
-                    
-                    i class='fa-ok agreed-flag' style='display: none;' 
+                    | &nbsp;
+
+                    - feedback=@jobs_plus[job.drms_job_id]['feedback']
+                    i id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[feedback.fetch(conf,-1)]}"
+                    /'fa-ok agreed-flag'
+                    | &nbsp;
                     
                     a class="btn-danger" onClick="event.stopPropagation();$(this).prop('disabled','true');popup_show('hide#{job.drms_job_id}','#{cond.name}');"
                       i class="far fa-bell-slash" title="Скрыть правило"
-                    
+                    | &nbsp;
+
                     div class="centered-popup"
                       span class="popuptext" id="popup_hide#{job.drms_job_id}_#{cond.name}"
                         | Поясните, почему?

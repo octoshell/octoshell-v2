@@ -231,16 +231,11 @@ function multi_job_feedback() {
       data: {'feedback': feedback, 'type': 'multi_jobs'},
     }).done(function( msg ) {
       restore_disagree_button()
+      update_jobs_agree(1)
     }).fail(function( msg ) {
       restore_disagree_button()
+      update_jobs_agree(1)
     });
-
-    // var form = $("#feedback_jobs")
-    // form.find("#user").val(current_user)
-    // form.find("#jobs").val(job_list)
-    // form.find("#rules").val(rule_list)
-    // form.find("#feedback").val($("#disagree_reason").val())
-    // form.submit()
   }
 }
 
@@ -254,22 +249,7 @@ function restore_disagree_button() {
     $('#disagree_button').text('Жмите тут!');
 }
 
-function ok_task(jobid) {
-
-}
-
-
 function agree_all() {
-  //var jobs={'job_id':{'login':'l', 'cluster':'c', 'state':'st'},...};
-  //
-  //  send format:
-  //  {user: user_id, feedback: 'text', agree: 1/0,
-  //    { job_id: [rule1, rule2, ...],
-  //      job_id: [rule1, rule2, ...], ...
-  //    }
-  //  }
-  //  jobs_feedback = {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
-  //  jobs={id: {cluster='..', login='..', state='..'},...}
   var new_feedback=[]
   for (var id in jobs) {
     // search jobs without feedback yet
@@ -295,13 +275,15 @@ function agree_all() {
     url: "feedback",
     data: {'feedback': new_feedback, 'type': 'multi_jobs'},
   }).done(function( msg ) {
-    update_jobs_agree(new_feedback)
+    update_jobs_agree(0)
   }).fail(function( msg ) {
-    update_jobs_agree(new_feedback)
+    update_jobs_agree(0)
   });
 }
 
 function update_jobs_agree(feedback){
   //$('.disagree-button').prop('disabled', true);
-  $('.agreed-flag').show();
+  //$('.agreed-flag').show();
+  $('.agreed-flag').removeClass()
+  $('.agreed-flag').addClass(feedback==0 ? "#{@agree_flags[0]}" : "#{@agree_flags[1]}")
 }

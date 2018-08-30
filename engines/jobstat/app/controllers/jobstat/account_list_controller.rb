@@ -84,9 +84,12 @@ module Jobstat
       end
 
       jobs_feedback=Job::get_feedback_job(params[:user].to_i, @jobs) || {}
-      @jobs_feedback=Hash.new jobs_feedback.map { |f|
-        #{user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
-        [f['job_id'], {
+      #[{user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string, condition=string},{...}]
+      
+      @jobs_feedback={}
+      jobs_feedback.each { |f|
+        @jobs_feedback[f['job_id']]||={}
+        @jobs_feedback[f['job_id']][f['condition']]={
           user:f['user'], cluster: f['cluster'],
           task_id:f['task_id'], klass:f['class'], feedback:f['feedback']
         }]
@@ -99,12 +102,19 @@ module Jobstat
          'timelimit', 'command', 'state', 'num_cores', 'created_at', 'updated_at', 'num_nodes'].each{|i|
           @jobs_plus[id][i]=job[i]
         }
-        if(@jobs_feedback.fetch(id,false))
+        @jobs_plus[i]['feedback']=if(@jobs_feedback.fetch(id,false))
           # there is a feedback!
-          jobs_plus[i]['feedback']=@jobs_feedback[id]['feedback']
-          jobs_plus[i]['feedback_class']=@jobs_feedback[id]['class']
+          @jobs_feedback[id]
+        else
+          {}
         end
       end
+
+      @agree_flags={
+        0: 'fas fa-ok agreed-flag',
+        1: 'fas fa-cross agreed-flag',
+        -1: 'fas fa-clock agreed-flag',
+      }
     end
 
     # def get_feedback_job(user,jobs)
