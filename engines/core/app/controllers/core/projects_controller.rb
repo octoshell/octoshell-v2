@@ -1,5 +1,5 @@
 module Core
-  class ProjectsController < ApplicationController
+  class ProjectsController < Core::ApplicationController
     def index
       respond_to do |format|
         format.html do
@@ -48,41 +48,35 @@ module Core
       end
     end
 
-    def destroy
-      @project = Project.find(params[:id])
-      @project.destroy!
-      redirect_to projects_path
-    end
-
     def suspend
-      @project = Project.find(params[:id])
+      @project = current_user.owned_projects.find(params[:id])
       @project.suspend!
       @project.save
       redirect_to @project
     end
 
     def reactivate
-      @project = Project.find(params[:id])
+      @project = current_user.owned_projects.find(params[:id])
       @project.reactivate!
       @project.save
       redirect_to @project
     end
 
     def cancel
-      @project = Project.find(params[:id])
+      @project = current_user.owned_projects.find(params[:id])
       @project.cancel!
       redirect_to @project
     end
 
     def resurrect
-      @project = Project.find(params[:id])
+      @project = current_user.owned_projects.find(params[:id])
       @project.resurrect!
       @project.save
       redirect_to @project
     end
 
     def finish
-      @project = Project.find(params[:id])
+      @project = current_user.owned_projects.find(params[:id])
       @project.finish!
       @project.save
       redirect_to @project
@@ -125,12 +119,17 @@ module Core
       begin
         CSV.foreach(file.path) do |row|
           email = row.first.downcase
-          initials = row.last
+          initials = row.second
+          language = row.third || current_user.language
           user = User.find_by_email(email)
           if user.present?
             @project.invite_member(user.id) unless @project.users.exists?(id: user.id)
           else
-            @project.invitations.find_or_create_by!(user_email: email, user_fio: initials)
+            if I18n.available_locales.map(&:to_s).exclude? language
+              raise "Language is invalid"
+            end
+            @project.invitations.create_with(language: language)
+                    .find_or_create_by!(user_email: email, user_fio: initials)
           end
         end
       rescue => e
@@ -143,6 +142,12 @@ module Core
     def resend_invitations
       @project = current_user.owned_projects.find(params[:id])
       @project.invitations.all.map(&:send_email_to_user)
+      redirect_to @project
+    end
+
+    def delete_invitation
+      @project = current_user.owned_projects.find(params[:id])
+      @project.invitations.find(params[:invitation_id]).destroy
       redirect_to @project
     end
 

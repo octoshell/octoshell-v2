@@ -1,4 +1,4 @@
-require ""
+require "main_spec_helper"
 module Authentication
   describe Mailer, :type => :mailer do
     before(:each) do

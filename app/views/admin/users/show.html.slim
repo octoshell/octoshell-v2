@@ -37,6 +37,7 @@ h4 = User.human_attribute_name(:reports)
 
 h4 = User.human_attribute_name(:surveys)
 = render "sessions/user_surveys/list", surveys: @user.surveys.order(updated_at: :desc).page(1)
+= render "core/admin/credentials/list", credentials: @user.credentials.where(state: :active)
 = render_attachments(@user,:comments)
 = render_attachments(@user,:tags)
 = render_attachments(@user,:files)

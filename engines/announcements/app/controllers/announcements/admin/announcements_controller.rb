@@ -71,9 +71,8 @@ module Announcements
 
     def show_recipients
       @announcement = Announcement.find(params[:announcement_id])
-      params[:q] ||= { state_in: ["active"] }
-      @search = @announcement.recipients.search(params[:q])
-      @users = @search.result(distinct: true).includes(:profile).order(:id)
+      @search = User.search(params[:q])
+      @users = @search.result(distinct: true).where(:access_state=>:active).includes(:profile).order(:id)
       @users = if @announcement.is_special?
                  @users.where(profiles: {receive_special_mails: true})
                else

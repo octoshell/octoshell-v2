@@ -91,7 +91,7 @@ module Pack
       elsif status == 'requested'
         I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.email)
       end
-      support_access_topic = Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
+      support_access_topic = Support::Topic.find_by(name_ru: I18n.t('integration.support_theme_name'))
       tickets.create!(subject: subject, reporter: created_by, message: subject, topic: support_access_topic)
     end
 

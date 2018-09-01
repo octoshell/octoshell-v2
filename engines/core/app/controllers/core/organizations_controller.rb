@@ -66,8 +66,8 @@ module Core
     private
 
     def can_edit
-      return if @organization.can_edit?(current_user)
-      redirect_to(main_app.profile_path)
+      raise MayMay::Unauthorized unless @organization.can_edit?(current_user)
+      # redirect_to(main_app.profile_path)
     end
 
     def employment_params

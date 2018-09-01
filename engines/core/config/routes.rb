@@ -96,6 +96,7 @@ Core::Engine.routes.draw do
 
       post :invite_member
       post :invite_users_from_csv
+      delete :delete_invitation
       post :resend_invitations
       put :drop_member
     end

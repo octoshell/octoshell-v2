@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
   authenticates_with_sorcery!
-
   validates :password, confirmation: true, length: { minimum: 6 }, on: :create
   validates :password, confirmation: true, length: { minimum: 6 }, on: :update, if: :password?
   validates :email, presence: true, uniqueness: true
@@ -20,7 +19,7 @@ class User < ActiveRecord::Base
 
   def send_activation_needed_email!
     Authentication::MailerWorker.perform_async(:activation_needed,
-                               [email, activation_token])
+                               [email, activation_token, language])
   end
 
   def send_activation_success_email!
@@ -37,6 +36,13 @@ class User < ActiveRecord::Base
   end
 
   def downcase_email
-    self.email.downcase! unless self.email.nil?
+    email.downcase! unless self.email.nil?
+  end
+
+  def self.delete_pending_users
+    transaction do
+      where("created_at < ? and activation_state = 'pending'",
+            Date.today - Authentication.delete_after).each(&:destroy)
+    end
   end
 end

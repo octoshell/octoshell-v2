@@ -1,9 +1,10 @@
 module Core
-  class SuretiesController < ApplicationController
+  class SuretiesController < Core::ApplicationController
     before_filter :require_login
 
     def new
       @project = Project.find(params[:project_id])
+      not_authorized unless @project.owner.id == current_user.id
       @unsured_members = @project.members.where(:project_access_state =>:engaged)
       @surety = @project.sureties.build do |surety|
         surety.author = current_user
@@ -12,6 +13,7 @@ module Core
 
     def create
       @project = Project.find(params[:surety][:project_id])
+      not_authorized unless @project.owner.id == current_user.id
       @surety = @project.sureties.build(surety_params) do |surety|
         surety.author = current_user
         @project.members.where(:project_access_state =>:engaged).each do |project_member|

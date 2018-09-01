@@ -41,7 +41,9 @@ Core.user_class.class_eval do
     class_name: "::Core::Organization",
     through: :employments,
     inverse_of: :users
-  has_many :organization_departments, through: :employments
+  has_many :organization_departments, through: :employments,
+            class_name: "::Core::OrganizationDepartment"
+
 
   has_many :active_employments, -> { where(state: 'active') },
     class_name: "::Core::Employment",

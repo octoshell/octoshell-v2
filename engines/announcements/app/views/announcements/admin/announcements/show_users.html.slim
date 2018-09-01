@@ -2,7 +2,8 @@ div class="page-header"
   h1 = t(".title")
 
 = bootstrap_form_for @search, url: admin_announcement_show_users_path(@announcement), method: :get, layout: :horizontal do |f|
-  = autocomplete f, name: :id_eq, label: t('.user'), source: main_app.users_path
+  = f.autocomplete_field :id_eq, source:  main_app.users_path, label: t('.user') do |id|
+    - User.find(id).full_name_with_email
   = f.select :owned_projects_state_in, Core::Project.human_state_names_with_original, { label: t('.managed_project_statuses'), include_blank: true }, { multiple: true }
   = f.select :projects_state_in, Core::Project.human_state_names_with_original, { label: t('.participated_project_statuses'), include_blank: true }, { multiple: true }
   = f.collection_select :available_projects_available_clusters_id_eq, Core::Cluster.all, :id, :name, label: t('.has_account_on_clusters'), include_blank: true

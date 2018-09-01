@@ -1,5 +1,16 @@
 div class="row"
   div class="col-xs-12"
+    -if @project.errors.any?
+      h2 = t(".errors")
+      div.has-error
+        -@project.errors.messages.each do |key,value|
+          -value.each do |elem|
+              div class="col-xs-2"
+                -arr = key.to_s.split('.')
+                =arr.first == 'card' ? Core::ProjectCard.human_attribute_name(arr.last) : Core::Project.human_attribute_name(arr.first)
+              div class="col-xs-2"
+                span.help-block
+                  = elem
     = bootstrap_form_for @project do |f|
       = f.text_field :title
 

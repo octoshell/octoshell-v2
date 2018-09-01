@@ -1,5 +1,5 @@
 module Core
-  class RequestsController < ApplicationController
+  class RequestsController < Core::ApplicationController
     def new
       @project = obtain_project
       @cluster_id = params[:cluster_id]

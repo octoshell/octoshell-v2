@@ -1,6 +1,6 @@
 # coding: utf-8
 class Admin::ApplicationController < ApplicationController
-  before_filter :require_login
+  include AuthMayMay
   before_filter :authorize_admins!
 
 private

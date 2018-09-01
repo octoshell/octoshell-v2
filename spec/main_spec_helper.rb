@@ -14,12 +14,6 @@ require "capybara/poltergeist"
 require "sidekiq/testing"
 require "contexts/user_abilities"
 require "common_helper"
-Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
-  end
-end
 
 Sidekiq::Testing.inline!
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -31,8 +25,8 @@ RSpec.configure do |config|
   config.include Sorcery::TestHelpers::Rails::Controller, type: :controller
   config.include Sorcery::TestHelpers::Rails::Integration, type: :feature
   config.include PackHelpers
-  config.include(Shoulda::Matchers::ActiveModel, type: :model)
-  config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+  # config.include(Shoulda::Matchers::ActiveModel, type: :model)
+  # config.include(Shoulda::Matchers::ActiveRecord, type: :model)
 
   # ## Mock Framework
   # config.mock_with :rr
@@ -44,6 +38,7 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
   DatabaseCleaner.strategy = :transaction
   DatabaseCleaner.clean_with :truncation
+
   config.before(:each) do
     Sidekiq::Worker.clear_all
   end
@@ -64,5 +59,12 @@ RSpec.configure do |config|
     puts "Seeding data"
     Seed.all
     Pack::Seed.all
+  end
+end
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    # Choose a test framework:
+    with.test_framework :rspec
+    with.library :rails
   end
 end

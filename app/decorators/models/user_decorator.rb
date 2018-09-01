@@ -20,18 +20,12 @@ User.class_eval do
     self.language ||= I18n.default_locale.to_s
   end
 
-  # TODO: Переписать
   scope :finder, (lambda do |q|
-    return none if q.blank?
-    condition = q.split(/\s/).map do |word|
-      %w(profiles.last_name profiles.first_name profiles.middle_name email).map do |col|
-          sanitize_sql(["lower(#{col}) like '%s'", "%#{word.mb_chars.downcase}%"])
-      end.join(' or ')
-    end.join (') or (')
-    joins(:profile).where("(#{condition})").order("profiles.last_name")
+    string = %w[profiles.last_name profiles.first_name profiles.middle_name email].join("||' '||")
+    joins(:profile).where("(#{string}) LIKE ?", "%#{q}%").order("profiles.last_name")
   end)
 
-  def as_json(options)
+  def as_json(_options)
     { id: id, text: full_name_with_email }
   end
 

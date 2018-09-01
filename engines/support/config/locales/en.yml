@@ -1,4 +1,5 @@
 en:
+  support_responsible_for: "Responsible for:"
   activerecord:
     models:
       support/ticket: Support requests
@@ -7,6 +8,11 @@ en:
       support/field: Extra field
       support/reply: Reply
       support/reply_template: Reply template
+      support/user_topic: Responsible admins
+    errors:
+      models:
+        support/ticket:
+          equal_to_template: Change your problem description  (it is equal to template now)
     attributes:
       support/ticket:
         name: Name
@@ -36,6 +42,7 @@ en:
         message: Problem description
         attachment: Attachment
       support/topic:
+        template: Template
         name: Name
         parent: Parent topic
         parent_id: Parent topic
@@ -59,6 +66,8 @@ en:
       support/reply_template:
         subject: Subject
         message: Message
+      support/user_topic:
+        required: Attach automically
 
     aasm:
       support/ticket:
@@ -188,6 +197,8 @@ en:
         show:
           title: Support topic
           new_subtopic: New support subtopic
+        form:
+          attach: Attach
 
     tickets:
       index:

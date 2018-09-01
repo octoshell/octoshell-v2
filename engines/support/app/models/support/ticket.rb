@@ -26,11 +26,15 @@ module Support
     validates :attachment, file_size: {
                              maximum: 100.megabytes.to_i
                            }
+    validate do
+      template.present? && template == message && errors.add(:message, :equal_to_template)
+    end
 
     accepts_nested_attributes_for :field_values
 
-    after_commit :add_reporter_to_subscribers
-    after_commit :notify_support
+    after_commit :add_reporter_to_subscribers, on: :create
+    after_commit :add_responsible, on: :create
+    after_commit :notify_support, on: :create
 
     scope :find_by_content, -> (q) do
       processed = q.mb_chars.split(' ').join('%')
@@ -169,7 +173,30 @@ module Support
         (!field_values.blank? && field_values.any?{ |fv| fv.value.blank? })
     end
 
+    def possible_responsibles
+      all_user_topics = topic.parents_with_self.map(&:user_topics).flatten
+      User.support.map do |u|
+        user_topics = all_user_topics.select { |user_topic| user_topic.user_id == u.id }
+        [u, user_topics]
+      end
+    end
+
+    def template
+      topic.parents_with_self.detect do |topic|
+        topic.template.present?
+      end&.template
+    end
+
     private
+
+    def add_responsible
+      responsible = topic.parents_with_self.detect do |topic|
+        topic.user_topics.where(required: true).first
+      end&.user_topics&.where(required: true)&.first
+      return unless responsible
+      self.responsible = responsible.user
+      subscribers << responsible.user unless subscribers.include? responsible
+    end
 
     def add_reporter_to_subscribers
       subscribers << reporter unless subscribers.include? reporter

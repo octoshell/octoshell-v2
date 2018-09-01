@@ -231,6 +231,7 @@ ru:
         full_name: "ФИО"
         organization: "Организация"
       core/project_invitation:
+        language: Язык
         user_email: "Email"
         user_fio: "Инициалы"
         updated_at: "Приглашение выслано"
@@ -314,6 +315,8 @@ ru:
     must_be_in_english: "должно быть на английском языке"
     must_be_in_russian: "должно быть на русском языке"
     choose_at_least: "выберите не менее %{count}"
+    choose_at_max: "Выберите не более  %{count}"
+
 
     user:
       employment:
@@ -429,6 +432,9 @@ ru:
         msg_activated: "Ваш аккаунт снова активен. Вы можете продолжать работу в системе."
 
     admin:
+      credentials:
+        list:
+          credentials: "ssh-ключи"
       projects:
         requests:
           access_request: "Заявки на доступ к ресурсам СКЦ МГУ"
@@ -716,11 +722,13 @@ ru:
     projects:
       invited_users:
         send_invitations: "Отправить приглашения новым участникам"
-        msg_if_member_unregistered: "Если некоторые пользователи не зарегистрированы в octoshell, Вы можете выслать им приграшения. "
+        msg_if_member_unregistered: "Если некоторые пользователи не зарегистрированы в octoshell,
+                                     Вы можете выслать им приглашения. Вы можете определить язык(%{locales})
+                                     для отправки email пользователю в последней колонке. Если не укажите, email будет послан на Вашем языке: %{language}"
         msg_invitation_csv: "Для этого вам надо сформировать .csv документ с колонками"
         msg_intitation_csv_col: "email, Фамилия Имя Отчество"
         msg_invitation_csv_example: "Пример"
-        msg_invitation_csv_example_body1: "gav@abyrvalg.com,Шариков Полиграф Полиграфович"
+        msg_invitation_csv_example_body1: "gav@abyrvalg.com,Шариков Полиграф Полиграфович,en"
         msg_invitation_csv_example_body2: "filipp@mail.ru,Преображенский Филипп Филиппович"
         invitation_csv_file: "Файл формата .csv в кодировке UTF-8."
         invitation_upload: "Загрузить"
@@ -731,6 +739,7 @@ ru:
       edit:
         title: "Редактирование профиля проекта"
       form:
+        errors: Следующие аттрибуты неверны
         nothing: "без подразделения"
         card: "Карточка проекта"
         card_help:
@@ -764,6 +773,7 @@ ru:
         title: "Заявки на доступ к ресурсам СКЦ МГУ"
         requested_resources_info: "Запрошенные ресурсы"
       members:
+        instruction: Добавляйте только тех пользователей, которые будут работать на кластерах
         login: логин
         invite_member: " добавить участника"
         title: "Участники данного проекта"

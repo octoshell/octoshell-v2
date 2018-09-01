@@ -1,5 +1,5 @@
 module Core
-  class CitiesController < ApplicationController
+  class CitiesController < Core::ApplicationController
     respond_to :json
 
     def index

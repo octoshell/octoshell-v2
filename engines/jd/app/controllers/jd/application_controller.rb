@@ -1,14 +1,10 @@
 module Jd
   class ApplicationController < ActionController::Base
+    include AuthMayMay
     layout "layouts/application"
 
     protect_from_forgery with: :exception
 
-    rescue_from MayMay::Unauthorized, with: :not_authorized
-
-    def not_authorized
-      redirect_to root_path, alert: t("flash.not_authorized")
-    end
 
     @@systems = Rails.configuration.jd_systems
 

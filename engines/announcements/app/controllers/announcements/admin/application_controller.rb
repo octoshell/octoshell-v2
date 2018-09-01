@@ -1,5 +1,5 @@
 module Announcements
-  class Admin::ApplicationController < ApplicationController
+  class Admin::ApplicationController < Announcements::ApplicationController
     before_filter :authorize_admins
 
     def authorize_admins

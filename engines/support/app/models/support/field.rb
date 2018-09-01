@@ -6,10 +6,6 @@ module Support
 
     validates_translated :name, presence: true
 
-    def hint
-      self[:hint].presence
-    end
-
     def to_s
       name
     end

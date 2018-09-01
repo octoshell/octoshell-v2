@@ -5,8 +5,8 @@ module Pack
       # pack = create(:package)
       # version = create(:version, package: pack)
       # user= create(:user)
-      unless Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
-        Support::Topic.create!(name: I18n.t('integration.support_theme_name'))
+      unless Support::Topic.find_by(name_ru: I18n.t('integration.support_theme_name'))
+        Support::Topic.create!(name_ru: I18n.t('integration.support_theme_name'))
       end
 
 

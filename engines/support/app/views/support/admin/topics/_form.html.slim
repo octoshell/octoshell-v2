@@ -1,9 +1,21 @@
 = bootstrap_form_for [:admin, @topic], layout: :horizontal do |f|
-  -Support::Tag.locale_columns(:name).each do |column|
+  -Support::Topic.locale_columns(:name).each do |column|
     = f.text_field column
+  -Support::Topic.locale_columns(:template).each do |column|
+    = f.text_area column
   = f.collection_select :parent_id, @topic.available_parents, :id, :name, include_blank: true
   = f.collection_check_boxes :tag_ids, Support::Tag.all, :id, :name
   = f.collection_check_boxes :field_ids, Support::Field.all, :id, :name
+  h2 = Support::UserTopic.model_name.human
+  = f.form_group(:user_topic_ids) do
+    span.help-block
+  -Support.user_class.support.each do |user|
+    = f.fields_for :user_topics, @topic.user_topics.detect{ |u| u.user_id == user.id}  ||  @topic.user_topics.build(user: user).tap {|user| user.mark_for_destruction} do |ff|
+      h4 = user.full_name
+      = ff.hidden_field :id
+      = ff.hidden_field :user_id
+      = ff.check_box :_destroy, {label: t('.attach'), checked: !ff.object.marked_for_destruction?}, 0, 1
+      = ff.check_box :required
 
   = f.form_group do
     = f.submit t("actions.save")

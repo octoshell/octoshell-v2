@@ -87,6 +87,13 @@ module Support
       redirect_to [:admin, @ticket]
     end
 
+    def edit_responsible
+      @ticket = Ticket.find(params[:id])
+      @ticket.update!(ticket_params)
+      @ticket.subscribers << @ticket.responsible unless @ticket.subscribers.include? @ticket.responsible
+      redirect_to [:admin, @ticket]
+    end
+
     private
 
     def setup_default_filter

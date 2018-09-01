@@ -13,9 +13,6 @@
       = ff.hidden_field :id
       = ff.hidden_field :employment_position_name_id
       - if ff.object.available_values.any?
-        -puts "AAAA"
-        -puts ff.object.field_id
-        -puts "BBBBB"
         = ff.collection_select :field_id, ff.object.available_values, :id, :name, label: ff.object.name, include_blank: true
       - else
         = ff.text_field :value, label: ff.object.name

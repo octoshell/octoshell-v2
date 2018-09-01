@@ -1,5 +1,11 @@
 module Face
   module ApplicationHelper
+    def display_wiki_link(name)
+      page = Wiki.engines_links[name].first
+      return 'This page does not exist' unless page
+      link_to page.name, wiki.page_path(page)
+    end
+
     def admin_user_short_link(user)
       return '' unless user
       profile = user.profile
