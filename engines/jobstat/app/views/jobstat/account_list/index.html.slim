@@ -1,23 +1,20 @@
-- @js_jobs='var jobs={'+@jobs_plus.map{|i,j| "'#{i}':{'login':'#{j["login"]}', 'cluster':'#{j["cluster"]}', 'state':'#{j["state"]}', 'rules':#{j["rules"]}}"}.join(',')+'};'
-- @rule_pictures=(@pictures || {}).map{|name,value| "rule_pictures['#{name}']='<i class=\"#{value} typewritter\"></i>';"}.join("\n")
-- @finish_states={'COMPLETED'=>'far fa-grin-beam','NODE_FAIL'=>'far fa-grimace','FAILED'=>'far fa-frown','CANCELLED'=>'far fa-meh-rolling-eyes','TIMEOUT'=>'far fa-flushed'} 
+/- @js_jobs='var jobs={'+@jobs_plus.map{|i,j| "'#{i}':{'login':'#{j["login"]}', 'cluster':'#{j["cluster"]}', 'state':'#{j["state"]}', 'rules':#{j["rules"]}}"}.join(',')+'};'
+/- @rule_pictures=(@pictures || {}).map{|name,value| "rule_pictures['#{name}']='<i class=\"#{value} typewritter\"></i>';"}.join("\n")
+- @finish_states={'COMPLETED'=>'far fa-grin-beam','NODE_FAIL'=>'far fa-grimace','FAILED'=>'far fa-frown','CANCELLED'=>'far fa-meh-rolling-eyes','TIMEOUT'=>'far fa-flushed'}
+- pic=@pictures.map{|name,val| {name => "<i class=\"#{val} typewritter\"></i>"}}
 // pass ruby variables to js
-javascript:
-  #{{@js_jobs}}
 
-  var rule_pictures={}
-  #{{@rule_pictures}}
-  var jobs_feedback=#{@jobs_feedback}
+javascript:
+
+  var jobs=#{{@jobs_plus.to_json}}
+  var rule_pictures=#{{pic.to_json}}
+  var jobs_feedback=#{{@jobs_feedback.to_json}}
   var current_user=#{@current_user.id}
+  var agree_flags=['#{@agree_flags[0]}','#{@agree_flags[1]}']
+  agree_flags[99]='#{@agree_flags[99]}'
 
   var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
   // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
-
-//script type="text/javascript" src="https://raw.githubusercontent.com/Mottie/tablesorter/master/js/jquery.tablesorter.js"
-//script type="text/javascript" src="/jquery.tablesorter.js"
-
-link rel="stylesheet" type="text/css" href="/theme.blue.css"
-link rel="stylesheet" type="text/css" href="/assets/jobstat/jobs.css"
 
 h3 = "Job table query interface"
 
@@ -55,7 +52,7 @@ div
     | &nbsp;
     a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="2" core*hours
   h3 Results: #{@params[:offset]}..#{@params[:offset].to_i + @shown} of #{@total_count}
-  table id="jobs" class="table table-bordered tablesorter-blue"
+  table id="jobs" class="table table-bordered tablesorter-default fixed-layout"
     thead
       tr
         th data-sorter="false"
@@ -72,7 +69,7 @@ div
           | start
         th
           | end
-        th
+        th class="icon-x2-width"
           | state
         th
           / class="triplesort"
@@ -112,40 +109,49 @@ div
               - if perf_data_present
                 - if job_cond.size() > 0
                   - job_cond.each do |cond|
-                    i class="fa-fw align-left #{@pictures.fetch(cond.name, 'far fa-exclamation-triangle')}" title="#{cond.description}"
-                    | &nbsp;
+                    div class="cond-div #{@filters.include?(cond.name) ? 'hidden' : 'visible'}" data-rule-div="#{cond.name}"
+                      // current feedback icon
+                      - feedback=@jobs_plus[job.drms_job_id]['feedback']
+                      i id="af-#{job.drms_job_id}-#{cond.name}" class="#{@agree_flags[feedback.fetch(cond.name,99)]}"
+                      /'fa-ok agreed-flag'
+                      | &nbsp;
+                      
+                      // "hide rule" button
+                      button class="btn-warning" onClick="event.stopPropagation();popup_show('hide#{job.drms_job_id}','#{cond.name}');"
+                        i class="far fa-bell-slash" title="Скрыть правило"
+                      | &nbsp;
 
-                    - feedback=@jobs_plus[job.drms_job_id]['feedback']
-                    i id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[feedback.fetch(conf,-1)]}"
-                    /'fa-ok agreed-flag'
-                    | &nbsp;
-                    
-                    a class="btn-danger" onClick="event.stopPropagation();$(this).prop('disabled','true');popup_show('hide#{job.drms_job_id}','#{cond.name}');"
-                      i class="far fa-bell-slash" title="Скрыть правило"
-                    | &nbsp;
+                      // "why hide?" dialog
+                      div class="centered-popup"
+                        div class="popuptext" id="popup_hide#{job.drms_job_id}_#{cond.name}"
+                          | Это правило будет скрыто во всех заданиях, в том числе будущих. Поясните, почему Вы хотите скрыть его?
+                          input type="text" id="question_hide#{job.drms_job_id}_#{cond.name}" class="centered"
+                          button class="btn-info" onClick="popup_hide('hide#{job.drms_job_id}','#{cond.name}');hide_rule(#{job.drms_job_id},'#{cond.name}');"
+                            | Отправить!
+                          button onClick="popup_hide('hide#{job.drms_job_id}','#{cond.name}');"
+                            | Передумал
 
-                    div class="centered-popup"
-                      span class="popuptext" id="popup_hide#{job.drms_job_id}_#{cond.name}"
-                        | Поясните, почему?
-                        input type="text" id="question_hide#{job.drms_job_id}_#{cond.name}" style="width: 90%; align: center;"
-                        button class="btn-info" onClick="hide_rule('#{job.drms_job_id}','#{cond.name}');"
-                          | Отправить!
-                        button onClick="popup_hide('hide#{job.drms_job_id}','#{cond.name}');"
-                          | Передумал
+                      // "I disagree with rule" button
+                      button class="btn-warning disagree-button" onClick="event.stopPropagation();popup_show('disagree#{job.drms_job_id}','#{cond.name}');"
+                        i class="far fa-angry" title="Не согласен!"
+                      | &nbsp;
+                      
+                      // "why disagree?" dialog
+                      div class="popup"
+                        div class="popuptext" style="width: 80%" id="popup_disagree#{job.drms_job_id}_#{cond.name}"
+                          div class="centered"
+                            | Поясните, почему?
+                          input type="text" id="question_#{job.drms_job_id}_#{cond.name}" class="centered"
+                          div class="centered"
+                            button class="btn-info" onClick="disagree('#{job.drms_job_id}','#{cond.name}')"
+                              | Отправить!
+                            button onClick="popup_hide('disagree#{job.drms_job_id}','#{cond.name}');"
+                              | Передумал
+                      // rule icon
+                      i class="fa-fw align-left #{@pictures.fetch(cond.name, 'far fa-exclamation-triangle')}" title="#{cond.description}"
+                      | &nbsp;
 
-                    a class="btn-warning disagree-button" onClick="event.stopPropagation();popup_show('disagree#{job.drms_job_id}','#{cond.name}');"
-                      i class="far fa-angry" title="Не согласен!"
-                    
-                    div class="popup"
-                      span class="popuptext" id="popup_disagree#{job.drms_job_id}_#{cond.name}"
-                        | Поясните, почему?
-                        input type="text" id="question_#{job.drms_job_id}_#{cond.name}" style="width: 90%"
-                        button class="btn-info" onClick="disagree('#{job.drms_job_id}','#{cond.name}')"
-                          | Отправить!
-                        button onClick="popup_hide('disagree#{job.drms_job_id}','#{cond.name}');"
-                          | Передумал
-                    | #{cond.description}
-                    br
+                      | #{cond.description}
                 - else
                   i class="fas fa-fw fa-check"
               - else
@@ -156,7 +162,7 @@ div
             - if job_cond.size() > 0
               - job_cond.each do |cond|
                 /= image_tag @pictures.fetch(cond.name, "other.png"), size: "20", alt: cond.description, title: cond.description, style: "margin: 1px"
-                i class="fa-fw #{@pictures.fetch(cond.name, 'fas fa-exclamation-triangle')} inline em12" title="#{cond.description}"
+                i class="fa-fw #{@pictures.fetch(cond.name, 'fas fa-exclamation-triangle')} inline em12 cond-div #{@filters.include?(cond.name) ? 'hidden' : 'visible'}" title="#{cond.description}" data-rule-div="#{cond.name}"
             - else
               /= image_tag "ok.png", size: "20", border: 2
               i class="fas fa-fw fa-check em12"

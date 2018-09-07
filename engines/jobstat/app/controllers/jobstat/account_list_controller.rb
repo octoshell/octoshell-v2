@@ -69,15 +69,11 @@ module Jobstat
 
         @jobs.each{|j|
           rules=j.get_rules(@current_user)
-          @jobs_plus[j.drms_job_id]={'rules'=>'{'+rules.map{|r|"#{r.name}:'#{r.description}'"}.join(',')+'}'}
+          @jobs_plus[j.drms_job_id]={'rules'=>{}}
+          rules.each{|r|
+            @jobs_plus[j.drms_job_id]['rules'][r.name] = r.description
+          }
         }
-        # @js_cond=@jobs.map { |j|
-        #   '"#{j.drms_job_id}":['+
-        #     j.get_rules(@current_user).map { |r|
-        #      '{"name":"#{r.name}","description":"#{r.description}"}'
-        #    }.join(',')+']'
-        # }.join(',')
-#        @js_cond="var js_cond={#{@js_cond}};"
       rescue => e
         logger.info "account_list_controller:index: #{e.message}; #{e.backtrace.join("\n")}"
         @jobs = []
@@ -92,7 +88,7 @@ module Jobstat
         @jobs_feedback[f['job_id']][f['condition']]={
           user:f['user'], cluster: f['cluster'],
           task_id:f['task_id'], klass:f['class'], feedback:f['feedback']
-        }]
+        }
       }
 
       @jobs.each do |job|
@@ -102,19 +98,23 @@ module Jobstat
          'timelimit', 'command', 'state', 'num_cores', 'created_at', 'updated_at', 'num_nodes'].each{|i|
           @jobs_plus[id][i]=job[i]
         }
-        @jobs_plus[i]['feedback']=if(@jobs_feedback.fetch(id,false))
+        @jobs_plus[id]['feedback']=if(@jobs_feedback.fetch(id,false))
           # there is a feedback!
-          @jobs_feedback[id]
+          {'class' => @jobs_feedback[id][:klass]}
         else
           {}
         end
       end
 
       @agree_flags={
-        0: 'fas fa-ok agreed-flag',
-        1: 'fas fa-cross agreed-flag',
-        -1: 'fas fa-clock agreed-flag',
+        0 => 'far fa-thumbs-up agreed-flag',
+        1 => 'far fa-thumbs-down agreed-flag',
+        99 => 'far fa-clock agreed-flag',
       }
+
+      # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
+      @filters=Job::get_filters(current_user).map { |x| x.filters }.flatten.uniq
+      # -> [cond1,cond2,...]
     end
 
     # def get_feedback_job(user,jobs)
@@ -151,7 +151,7 @@ module Jobstat
         logger.info("Ooooops! feedback_all_jobs got bad argument: #{parm}") 
         return 500
       end
-      arr=parm.map{|x| x}
+      arr= (parm.kind_of?(Hash) ? parm.map{|k,v| v} : parm.map{|x| x})
       #logger.info("--->> #{arr}")
       code=Job::post_data(uri,'',arr)
       if code!=200
@@ -209,17 +209,17 @@ module Jobstat
     end
 
     # hide rule
-    def feedback_rule parm
+    def feedback_rule_show parm
       #TODO make caching for not confirmed sends
       #FIXME! move address to config
-      uri=URI("http://graphit.parallel.ru:8123/api/feedback-job")
+      # POST: user=UID_octoshell(int), cluster=string(список через запятую), account=string(список через запятую), filters=string(имена тегов через запятую)
+
+      uri=URI("http://graphit.parallel.ru:8123/api/filter")
       req={
         user: parm[:user].to_i,
         cluster: parm[:cluster],
-        job_id: parm[:job_id].to_i,
-        task_id: (parm[:task_id] || 0),
         condition: parm[:condition],
-        feedback: parm[:feedback],
+        account: parm[:account],
       }
       code=500
       begin
@@ -243,9 +243,45 @@ module Jobstat
         logger.info "feedback_job: error #{e.message}"
         code=500
       end
-      render plain: code, layout: false
-      response.status=code
-      #redirect_to '/jobstat/account/list/index' #FIXME
+      code
+    end
+
+    # hide rule
+    def feedback_rule parm
+      #TODO make caching for not confirmed sends
+      #FIXME! move address to config
+      #  user=UID_octoshell(int), cluster=string(список через запятую), account=string(список через запятую), condition=string, feedback=string.
+
+      uri=URI("http://graphit.parallel.ru:8123/api/feedback-condition")
+      req={
+        user: parm[:user].to_i,
+        cluster: parm[:cluster],
+        account: parm[:account],
+        condition: parm[:condition],
+        feedback: parm[:feedback],
+      }
+      code=500
+      begin
+        Net::HTTP.start(uri.host, uri.port,
+                        :use_ssl => uri.scheme == 'https', 
+                        :verify_mode => OpenSSL::SSL::VERIFY_NONE,
+                        :read_timeout => 5,
+                        :opent_imeout => 5,
+                        :ssl_timeout => 5,
+                       ) do |http|
+          request = Net::HTTP::Post.new uri.request_uri
+          request.set_form_data req
+          #request.basic_auth 'username', 'password'
+
+          resp = http.request request
+
+          code=resp.code
+        end
+      rescue => e #Net::ReadTimeout, Net::OpenTimeout
+        logger.info "feedback_rule: error #{e.message}"
+        code=500
+      end
+      code
     end
 
     protected
