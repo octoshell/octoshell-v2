@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    jobstat (0.0.1-java)
-      activerecord-jdbcpostgresql-adapter
+    jobstat (0.0.1)
       kaminari
       maymay
+      pg (~> 0.18)
       rails (~> 4.2)
       ransack
       sidekiq
@@ -42,14 +42,6 @@ GEM
       activemodel (= 4.2.10)
       activesupport (= 4.2.10)
       arel (~> 6.0)
-    activerecord-jdbc-adapter (50.0)
-      activerecord (>= 2.2)
-    activerecord-jdbcpostgresql-adapter (50.0)
-      activerecord-jdbc-adapter (~> 50.0)
-      jdbc-postgres (>= 9.4, < 43)
-    activerecord-jdbcsqlite3-adapter (50.0)
-      activerecord-jdbc-adapter (~> 50.0)
-      jdbc-sqlite3 (~> 3.8, < 3.30)
     activesupport (4.2.10)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -57,16 +49,14 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.4)
     builder (3.2.3)
-    concurrent-ruby (1.0.5-java)
-    connection_pool (2.2.1)
-    crass (1.0.3)
+    concurrent-ruby (1.0.5)
+    connection_pool (2.2.2)
+    crass (1.0.4)
     erubis (2.7.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    i18n (0.9.1)
+    i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    jdbc-postgres (42.1.4)
-    jdbc-sqlite3 (3.20.1)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -79,19 +69,20 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
-    loofah (2.1.1)
+    loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
       mini_mime (>= 0.1.1)
     maymay (0.0.2)
-    mini_mime (1.0.0)
-    minitest (5.11.1)
-    nokogiri (1.8.1-java)
-    polyamorous (1.3.2)
-      activerecord (>= 3.0)
-    rack (1.6.8)
-    rack-protection (2.0.0)
+    mini_mime (1.0.1)
+    mini_portile2 (2.3.0)
+    minitest (5.11.3)
+    nokogiri (1.8.4)
+      mini_portile2 (~> 2.3.0)
+    pg (0.21.0)
+    rack (1.6.10)
+    rack-protection (2.0.3)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -112,30 +103,28 @@ GEM
       activesupport (>= 4.2.0, < 5.0)
       nokogiri (~> 1.6)
       rails-deprecated_sanitizer (>= 1.0.1)
-    rails-html-sanitizer (1.0.3)
-      loofah (~> 2.0)
+    rails-html-sanitizer (1.0.4)
+      loofah (~> 2.2, >= 2.2.2)
     railties (4.2.10)
       actionpack (= 4.2.10)
       activesupport (= 4.2.10)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (12.3.0)
-    ransack (1.8.4)
-      actionpack (>= 3.0)
-      activerecord (>= 3.0)
-      activesupport (>= 3.0)
+    rake (12.3.1)
+    ransack (1.8.9)
+      actionpack (>= 3.0, <= 5.1.1)
+      activerecord (>= 3.0, <= 5.1.1)
+      activesupport (>= 3.0, <= 5.1.1)
       i18n
-      polyamorous (~> 1.3)
-    redis (4.0.1)
-    sidekiq (5.0.5)
-      concurrent-ruby (~> 1.0)
-      connection_pool (~> 2.2, >= 2.2.0)
+    redis (4.0.2)
+    sidekiq (5.2.1)
+      connection_pool (~> 2.2, >= 2.2.2)
       rack-protection (>= 1.5.0)
-      redis (>= 3.3.4, < 5)
-    slim (3.0.9)
+      redis (>= 3.3.5, < 5)
+    slim (4.0.1)
       temple (>= 0.7.6, < 0.9)
-      tilt (>= 1.3.3, < 2.1)
-    sprockets (3.7.1)
+      tilt (>= 2.0.6, < 2.1)
+    sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.2.1)
@@ -144,20 +133,17 @@ GEM
       sprockets (>= 3.0.0)
     temple (0.8.0)
     thor (0.20.0)
-    thread_safe (0.3.6-java)
+    thread_safe (0.3.6)
     tilt (2.0.8)
-    tzinfo (1.2.4)
+    tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    tzinfo-data (1.2017.3)
-      tzinfo (>= 1.0.0)
 
 PLATFORMS
-  java
+  ruby
 
 DEPENDENCIES
-  activerecord-jdbcsqlite3-adapter
   jobstat!
   tzinfo-data
 
 BUNDLED WITH
-   1.16.1
+   1.16.0

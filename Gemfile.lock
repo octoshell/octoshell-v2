@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/bootstrap-ruby/rails-bootstrap-forms.git
-  revision: 0fac4b176e753e2883b6632ab62926981cc88550
-  specs:
-    bootstrap_form (2.7.0)
-
-GIT
   remote: git://github.com/colszowka/phantomjs-gem.git
   revision: 38a722deeb7989e2de093fd628139266386492c1
   specs:
@@ -12,18 +6,19 @@ GIT
 
 GIT
   remote: git://github.com/railsconfig/config.git
-  revision: 3ca820679cf393ced263b29d983f1c5270787ede
+  revision: 2439d5a41061cf303aa912ce7f03b8b7e69ada4d
   specs:
-    config (1.5.0)
+    config (1.7.0)
       activesupport (>= 3.0)
-      deep_merge (~> 1.1.1)
-      dry-validation (~> 0.10.4)
+      deep_merge (~> 1.2.1)
+      dry-validation (>= 0.10.4)
 
 GIT
   remote: git://github.com/zhum/mina.git
-  revision: 79ecee4f177e7056359786410aecbf73d40e6eaa
+  revision: 890c5cedcc6863cd05f4e555230cddf07107dd67
   specs:
-    mina (1.0.6.pre.pJRUBY)
+    mina (1.2.3)
+      open4 (~> 1.3.4)
       rake
 
 PATH
@@ -31,24 +26,12 @@ PATH
   specs:
     announcements (0.0.1)
       aasm
-      activerecord-jdbcpostgresql-adapter
       carrierwave
       decorators (~> 1.0.2)
       kaminari
       kramdown
       maymay
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
-    announcements (0.0.1-java)
-      aasm
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      decorators (~> 1.0.2)
-      kaminari
-      kramdown
-      maymay
+      pg (~> 0.18)
       rails (~> 4.2)
       ransack
       sidekiq
@@ -58,15 +41,8 @@ PATH
   remote: engines/authentication
   specs:
     authentication (0.0.1)
-      activerecord-jdbcpostgresql-adapter
       bootstrap_form
-      rails (~> 4.2)
-      sidekiq
-      slim
-      sorcery
-    authentication (0.0.1-java)
-      activerecord-jdbcpostgresql-adapter
-      bootstrap_form
+      pg (~> 0.18)
       rails (~> 4.2)
       sidekiq
       slim
@@ -77,7 +53,6 @@ PATH
   specs:
     core (0.0.1)
       aasm
-      activerecord-jdbcpostgresql-adapter
       carrierwave
       clbustos-rtf
       decorators (~> 1.0.2)
@@ -86,23 +61,7 @@ PATH
       mini_magick
       net-scp
       net-ssh
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      sidekiq-failures
-      slim
-      sshkey
-    core (0.0.1-java)
-      aasm
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      clbustos-rtf
-      decorators (~> 1.0.2)
-      kaminari
-      maymay
-      mini_magick
-      net-scp
-      net-ssh
+      pg (~> 0.18)
       rails (~> 4.2)
       ransack
       sidekiq
@@ -114,29 +73,13 @@ PATH
   remote: engines/face
   specs:
     face (0.0.1)
-      activerecord-jdbcpostgresql-adapter
       bootstrap-datepicker-rails
       bootstrap_form
       coffee-rails
       jquery-rails
       kramdown
       nested_form
-      rails (~> 4.2)
-      rails-jquery-autocomplete
-      russian
-      sass-rails
-      select2-rails
-      slim
-      therubyrhino
-      underscore-rails
-    face (0.0.1-java)
-      activerecord-jdbcpostgresql-adapter
-      bootstrap-datepicker-rails
-      bootstrap_form
-      coffee-rails
-      jquery-rails
-      kramdown
-      nested_form
+      pg (~> 0.18)
       rails (~> 4.2)
       rails-jquery-autocomplete
       russian
@@ -150,17 +93,9 @@ PATH
   remote: engines/jobstat
   specs:
     jobstat (0.0.1)
-      activerecord-jdbcpostgresql-adapter
       kaminari
       maymay
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
-    jobstat (0.0.1-java)
-      activerecord-jdbcpostgresql-adapter
-      kaminari
-      maymay
+      pg (~> 0.18)
       rails (~> 4.2)
       ransack
       sidekiq
@@ -171,24 +106,12 @@ PATH
   specs:
     sessions (0.0.1)
       aasm
-      activerecord-jdbcpostgresql-adapter
       carrierwave
       decorators (~> 1.0.2)
       kaminari
       maymay
       mini_magick
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
-    sessions (0.0.1-java)
-      aasm
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      decorators (~> 1.0.2)
-      kaminari
-      maymay
-      mini_magick
+      pg (~> 0.18)
       rails (~> 4.2)
       ransack
       sidekiq
@@ -198,17 +121,9 @@ PATH
   remote: engines/statistics
   specs:
     statistics (0.0.1)
-      activerecord-jdbcpostgresql-adapter
       kaminari
       maymay
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
-    statistics (0.0.1-java)
-      activerecord-jdbcpostgresql-adapter
-      kaminari
-      maymay
+      pg (~> 0.18)
       rails (~> 4.2)
       ransack
       sidekiq
@@ -219,24 +134,12 @@ PATH
   specs:
     support (0.0.1)
       aasm
-      activerecord-jdbcpostgresql-adapter
       carrierwave
       decorators (~> 1.0.2)
       kaminari
       maymay
       mini_magick
-      rails (~> 4.2)
-      ransack
-      sidekiq
-      slim
-    support (0.0.1-java)
-      aasm
-      activerecord-jdbcpostgresql-adapter
-      carrierwave
-      decorators (~> 1.0.2)
-      kaminari
-      maymay
-      mini_magick
+      pg (~> 0.18)
       rails (~> 4.2)
       ransack
       sidekiq
@@ -246,22 +149,16 @@ PATH
   remote: engines/wiki
   specs:
     wiki (0.0.1)
-      activerecord-jdbcpostgresql-adapter
       bootstrap_form
       maymay
-      rails (~> 4.2)
-      slim
-    wiki (0.0.1-java)
-      activerecord-jdbcpostgresql-adapter
-      bootstrap_form
-      maymay
+      pg (~> 0.18)
       rails (~> 4.2)
       slim
 
 GEM
   remote: https://rubygems.org/
   specs:
-    aasm (4.12.2)
+    aasm (5.0.0)
       concurrent-ruby (~> 1.0)
     actionmailer (4.2.10)
       actionpack (= 4.2.10)
@@ -292,11 +189,6 @@ GEM
       activemodel (= 4.2.10)
       activesupport (= 4.2.10)
       arel (~> 6.0)
-    activerecord-jdbc-adapter (1.3.24)
-      activerecord (>= 2.2, < 5.0)
-    activerecord-jdbcpostgresql-adapter (1.3.24)
-      activerecord-jdbc-adapter (~> 1.3.24)
-      jdbc-postgres (~> 9.1, <= 9.4.1206)
     activesupport (4.2.10)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -305,19 +197,19 @@ GEM
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     arel (6.0.4)
-    bcrypt (3.1.11)
-    bcrypt (3.1.11-java)
-    bootstrap-datepicker-rails (1.7.1.1)
+    bcrypt (3.1.12)
+    bootstrap-datepicker-rails (1.8.0.1)
       railties (>= 3.0)
+    bootstrap_form (2.7.0)
     builder (3.2.3)
-    capybara (2.15.3)
+    capybara (3.7.1)
       addressable
       mini_mime (>= 0.1.3)
-      nokogiri (>= 1.3.3)
-      rack (>= 1.0.0)
-      rack-test (>= 0.5.4)
-      xpath (~> 2.0)
-    carrierwave (1.2.1)
+      nokogiri (~> 1.8)
+      rack (>= 1.6.0)
+      rack-test (>= 0.6.3)
+      xpath (~> 3.1)
+    carrierwave (1.2.3)
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
@@ -336,13 +228,12 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
-    concurrent-ruby (1.0.5-java)
-    connection_pool (2.2.1)
-    crass (1.0.2)
-    database_cleaner (1.6.1)
+    connection_pool (2.2.2)
+    crass (1.0.4)
+    database_cleaner (1.7.0)
     decorators (1.0.5)
       railties (>= 3.0.19)
-    deep_merge (1.1.1)
+    deep_merge (1.2.1)
     diff-lcs (1.3)
     docile (1.1.5)
     dry-configurable (0.7.0)
@@ -350,132 +241,122 @@ GEM
     dry-container (0.6.0)
       concurrent-ruby (~> 1.0)
       dry-configurable (~> 0.1, >= 0.1.3)
-    dry-core (0.3.4)
+    dry-core (0.4.7)
       concurrent-ruby (~> 1.0)
-    dry-equalizer (0.2.0)
+    dry-equalizer (0.2.1)
+    dry-inflector (0.1.2)
     dry-logic (0.4.2)
       dry-container (~> 0.2, >= 0.2.6)
       dry-core (~> 0.2)
       dry-equalizer (~> 0.2)
-    dry-types (0.12.0)
+    dry-types (0.13.2)
       concurrent-ruby (~> 1.0)
-      dry-configurable (~> 0.1)
       dry-container (~> 0.3)
-      dry-core (~> 0.2, >= 0.2.1)
+      dry-core (~> 0.4, >= 0.4.4)
       dry-equalizer (~> 0.2)
+      dry-inflector (~> 0.1, >= 0.1.2)
       dry-logic (~> 0.4, >= 0.4.2)
-      inflecto (~> 0.0.0, >= 0.0.2)
-    dry-validation (0.10.7)
+    dry-validation (0.12.2)
       concurrent-ruby (~> 1.0)
       dry-configurable (~> 0.1, >= 0.1.3)
       dry-core (~> 0.2, >= 0.2.1)
       dry-equalizer (~> 0.2)
       dry-logic (~> 0.4, >= 0.4.0)
-      dry-types (~> 0.9, >= 0.9.0)
+      dry-types (~> 0.13.1)
     erubis (2.7.0)
     execjs (2.7.0)
-    factory_girl (4.8.1)
+    factory_bot (4.11.0)
       activesupport (>= 3.0.0)
-    factory_girl-seeds (1.1.0)
-      factory_girl
-    factory_girl_rails (4.8.0)
-      factory_girl (~> 4.8.0)
+    factory_girl (4.9.0)
+      activesupport (>= 3.0.0)
+    factory_girl-seeds (2.0.0)
+      factory_bot
+    factory_girl_rails (4.9.0)
+      factory_girl (~> 4.9.0)
       railties (>= 3.0.0)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.18)
-    ffi (1.9.18-java)
-    foreman (0.84.0)
+    ffi (1.9.25)
+    foreman (0.85.0)
       thor (~> 0.19.1)
-    globalid (0.4.0)
+    globalid (0.4.1)
       activesupport (>= 4.2.0)
-    i18n (0.8.6)
-    inflecto (0.0.2)
-    jdbc-postgres (9.4.1206)
-    jquery-rails (4.3.1)
+    i18n (0.9.5)
+      concurrent-ruby (~> 1.0)
+    jquery-rails (4.3.3)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    jquery-tablesorter (1.23.15)
+    jquery-tablesorter (1.26.0)
       railties (>= 3.2, < 6)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
     json (2.1.0)
-    json (2.1.0-java)
     jwt (1.5.6)
-    kaminari (1.0.1)
+    kaminari (1.1.1)
       activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.0.1)
-      kaminari-activerecord (= 1.0.1)
-      kaminari-core (= 1.0.1)
-    kaminari-actionview (1.0.1)
+      kaminari-actionview (= 1.1.1)
+      kaminari-activerecord (= 1.1.1)
+      kaminari-core (= 1.1.1)
+    kaminari-actionview (1.1.1)
       actionview
-      kaminari-core (= 1.0.1)
-    kaminari-activerecord (1.0.1)
+      kaminari-core (= 1.1.1)
+    kaminari-activerecord (1.1.1)
       activerecord
-      kaminari-core (= 1.0.1)
-    kaminari-core (1.0.1)
-    kramdown (1.15.0)
+      kaminari-core (= 1.1.1)
+    kaminari-core (1.1.1)
+    kramdown (1.17.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    launchy (2.4.3-java)
-      addressable (~> 2.3)
-      spoon (~> 0.0.1)
-    letter_opener (1.4.1)
+    letter_opener (1.6.0)
       launchy (~> 2.2)
-    loofah (2.1.1)
+    loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mail (2.6.6)
-      mime-types (>= 1.16, < 4)
+    mail (2.7.0)
+      mini_mime (>= 0.1.1)
     maymay (0.0.2)
     method_source (0.9.0)
-    mime-types (3.1)
+    mime-types (3.2.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2016.0521)
+    mime-types-data (3.2018.0812)
     mini_magick (4.8.0)
-    mini_mime (0.1.4)
+    mini_mime (1.0.1)
     mini_portile2 (2.3.0)
-    minitest (5.10.3)
-    multi_json (1.12.2)
+    minitest (5.11.3)
+    multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     nested_form (0.3.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (4.2.0)
-    nokogiri (1.8.1)
+    net-ssh (5.0.2)
+    nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
-    nokogiri (1.8.1-java)
-    oauth (0.5.3)
+    oauth (0.5.4)
     oauth2 (1.4.0)
       faraday (>= 0.8, < 0.13)
       jwt (~> 1.0)
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
-    poltergeist (1.16.0)
-      capybara (~> 2.1)
+    open4 (1.3.4)
+    pg (0.21.0)
+    poltergeist (1.18.1)
+      capybara (>= 2.1, < 4)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
-    polyamorous (1.3.1)
-      activerecord (>= 3.0)
-    pry (0.11.1)
+    pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    pry (0.11.1-java)
-      coderay (~> 1.1.0)
-      method_source (~> 0.9.0)
-      spoon (~> 0.0)
     pry-rails (0.3.6)
       pry (>= 0.10.4)
-    public_suffix (3.0.0)
-    puma (3.10.0)
-    puma (3.10.0-java)
+    public_suffix (3.0.3)
+    puma (3.12.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
-    rack (1.6.8)
-    rack-protection (1.5.3)
+    rack (1.6.10)
+    rack-protection (1.5.5)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -493,8 +374,8 @@ GEM
       sprockets-rails
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
-    rails-dom-testing (1.0.8)
-      activesupport (>= 4.2.0.beta, < 5.0)
+    rails-dom-testing (1.0.9)
+      activesupport (>= 4.2.0, < 5.0)
       nokogiri (~> 1.6)
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-erd (1.5.2)
@@ -502,57 +383,56 @@ GEM
       activesupport (>= 3.2)
       choice (~> 0.2.0)
       ruby-graphviz (~> 1.2)
-    rails-html-sanitizer (1.0.3)
-      loofah (~> 2.0)
-    rails-jquery-autocomplete (1.0.3)
+    rails-html-sanitizer (1.0.4)
+      loofah (~> 2.2, >= 2.2.2)
+    rails-jquery-autocomplete (1.0.4)
       rails (>= 3.2)
     railties (4.2.10)
       actionpack (= 4.2.10)
       activesupport (= 4.2.10)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (12.1.0)
-    ransack (1.8.3)
-      actionpack (>= 3.0)
-      activerecord (>= 3.0)
-      activesupport (>= 3.0)
+    rake (12.3.1)
+    ransack (1.8.9)
+      actionpack (>= 3.0, <= 5.1.1)
+      activerecord (>= 3.0, <= 5.1.1)
+      activesupport (>= 3.0, <= 5.1.1)
       i18n
-      polyamorous (~> 1.3)
-    rb-fsevent (0.10.2)
+    rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    redis (4.0.1)
+    redis (4.0.2)
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
-    rollbar (2.15.4)
+    rollbar (2.17.0)
       multi_json
-    rspec-core (3.6.0)
-      rspec-support (~> 3.6.0)
-    rspec-expectations (3.6.0)
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.1)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.6.0)
-    rspec-mocks (3.6.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.6.0)
-    rspec-rails (3.6.1)
+      rspec-support (~> 3.8.0)
+    rspec-rails (3.8.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
-      rspec-core (~> 3.6.0)
-      rspec-expectations (~> 3.6.0)
-      rspec-mocks (~> 3.6.0)
-      rspec-support (~> 3.6.0)
-    rspec-support (3.6.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-support (3.8.0)
     ruby-graphviz (1.2.3)
     russian (0.6.0)
       i18n (>= 0.5.0)
-    sass (3.5.2)
+    sass (3.5.7)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    sass-rails (5.0.6)
+    sass-rails (5.0.7)
       railties (>= 4.0.0, < 6)
       sass (~> 3.1)
       sprockets (>= 2.8, < 4.0)
@@ -562,11 +442,10 @@ GEM
       thor (~> 0.14)
     shoulda-matchers (3.1.2)
       activesupport (>= 4.0.0)
-    sidekiq (5.0.5)
-      concurrent-ruby (~> 1.0)
-      connection_pool (~> 2.2, >= 2.2.0)
+    sidekiq (5.2.1)
+      connection_pool (~> 2.2, >= 2.2.2)
       rack-protection (>= 1.5.0)
-      redis (>= 3.3.4, < 5)
+      redis (>= 3.3.5, < 5)
     sidekiq-failures (1.0.0)
       sidekiq (>= 4.0.0)
     simplecov (0.13.0)
@@ -578,16 +457,14 @@ GEM
       rack (~> 1.5)
       rack-protection (~> 1.4)
       tilt (>= 1.3, < 3)
-    slim (3.0.8)
+    slim (4.0.1)
       temple (>= 0.7.6, < 0.9)
-      tilt (>= 1.3.3, < 2.1)
-    sorcery (0.11.0)
+      tilt (>= 2.0.6, < 2.1)
+    sorcery (0.12.0)
       bcrypt (~> 3.1)
       oauth (~> 0.4, >= 0.4.4)
       oauth2 (~> 1.0, >= 0.8.0)
-    spoon (0.0.6)
-      ffi
-    sprockets (3.7.1)
+    sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.2.1)
@@ -601,32 +478,28 @@ GEM
     therubyrhino_jar (1.7.6)
     thor (0.19.4)
     thread_safe (0.3.6)
-    thread_safe (0.3.6-java)
     tilt (2.0.8)
-    tzinfo (1.2.3)
+    tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    uglifier (3.2.0)
+    uglifier (4.1.18)
       execjs (>= 0.3.0, < 3)
     underscore-rails (1.8.3)
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
-    websocket-driver (0.7.0-java)
-      websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.2)
-    whenever (0.9.7)
+    websocket-extensions (0.1.3)
+    whenever (0.10.0)
       chronic (>= 0.6.3)
-    xpath (2.1.0)
-      nokogiri (~> 1.3)
+    xpath (3.1.0)
+      nokogiri (~> 1.8)
 
 PLATFORMS
-  java
   ruby
 
 DEPENDENCIES
   activerecord-jdbcpostgresql-adapter (~> 1.3.21)
   announcements!
   authentication!
-  bootstrap_form!
+  bootstrap_form (~> 2.7.0)
   capybara
   codeclimate-test-reporter
   config!

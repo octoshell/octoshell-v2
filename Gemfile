@@ -2,11 +2,14 @@ source "https://rubygems.org"
 
 gem "rake"
 gem "rails", "~> 4.2"
-gem "activerecord-jdbcpostgresql-adapter", "~> 1.3.21", platform: :jruby
+platforms :jruby do
+  gem "activerecord-jdbcpostgresql-adapter", "~> 1.3.21"
+end
 gem "pg", "~> 0.18", platform: :ruby
 gem "responders", "~> 2.0"
 gem "uglifier", ">= 1.3.0"
-gem "bootstrap_form", github: "bootstrap-ruby/rails-bootstrap-forms"
+gem "bootstrap_form", "~> 2.7.0"
+#github: "bootstrap-ruby/rails-bootstrap-forms"
 
 group :development do
   gem "letter_opener"
