@@ -279,13 +279,19 @@ module Jobstat
             #request.basic_auth 'username', 'password'
 
             response = http.request request
-            if response.body.nil?
-              nil
+            if response.code==200 
+              if response.body.length==0
+                logger.info "get_data: Empty response..."
+                nil
+              else
+                json=JSON.load(response.body)
+                #json['filters'].split ','
+                logger.info "get_data for #{id}: #{json}"
+                json
+              end
             else
-              json=JSON.load(response.body)
-              #json['filters'].split ','
-              logger.info "get_data for #{id}: #{json}"
-              json
+              logger.info "get_data: Bad response, code=#{code}"
+              nil
             end
           end
         rescue => e #Net::ReadTimeout, Net::OpenTimeout

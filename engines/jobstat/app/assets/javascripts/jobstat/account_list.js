@@ -4,7 +4,7 @@ $(document).ready(function() {
     duplicateSpan: false,
     emptyTo: 'bottom',
     widgets: ['staticRow'],
-    theme: 'blue',
+    //theme: 'default',
     textExtraction: {
       //0: function(node, table, cellIndex) { return $(node).find("strong").text(); },
       '.rank': function(node, table, cellIndex) {
@@ -103,38 +103,86 @@ function process_response(index, jobid) {
 
 function popup_show(a, b) {
   var x = $("#popup_" + a + "_" + b)
-  x.addClass('show')
+  x.addClass('active')
 }
 
 function popup_hide(a, b) {
   var x = $("#popup_" + a + "_" + b)
-  x.removeClass('show')
+  x.removeClass('active')
 }
 
 // user disagrees with rule
 function disagree(jobid, rule) {
   //alert("feedback"+index+" -- "+jobid);
-  var form = $("#feedback_job_rule")
-  form.find("#user").val(current_user)
-  form.find("#account").val(jobs[jobid]['login'])
-  form.find("#cluster").val(jobs[jobid]['cluster'])
-  form.find("#job_id").val(jobid)
-    //FIXME place right task_id (where is it?)
-  form.find("#task_id").val(0)
-  form.find("#condition").val(rule)
-  form.find("#feedback").val($("#question_" + jobid + '_' + rule).val())
-  $("#popup_" + jobid + "_" + rule).removeClass('show')
-  form.submit()
+  // var form = $("#feedback_job_rule")
+  // form.find("#user").val(current_user)
+  // form.find("#account").val(jobs[jobid]['login'])
+  // form.find("#cluster").val(jobs[jobid]['cluster'])
+  // form.find("#job_id").val(jobid)
+  //   //FIXME place right task_id (where is it?)
+  // form.find("#task_id").val(0)
+  // form.find("#condition").val(rule)
+  // form.find("#feedback").val($("#question_" + jobid + '_' + rule).val())
+  // $("#popup_" + jobid + "_" + rule).removeClass('show')
+  // form.submit()
+  var feedback={
+    user: current_user,
+    cluster: jobs[jobid]['cluster'],
+    //job_id: jobid,
+    //task_id: 0,
+    account: jobs[jobid]['login'],
+    condition: rule,
+    feedback: $("#question_" + jobid + '_' + rule).val(),
+  }
+  $.ajax({
+    type: "POST",
+    url: "feedback",
+    data: {'feedback': feedback, 'type': 'feedback_rule'},
+  }).done(function( msg ) {
+    restore_disagree_button()
+    //update_jobs_agree(feedback)
+  }).fail(function( msg ) {
+    restore_disagree_button()
+    //update_jobs_agree(feedback)
+  });}
+
+function hide_rule_on_page(rule) {
+  $(".cond-div").each(function(div){
+    if($(this).attr("data-rule-div")==rule) {
+      $(this).attr("visibility","hidden")
+    }
+  })
 }
 
 function hide_rule(jobid, rule) {
-  var form = $("#feedback_rule")
-  form.find("#user").val(current_user)
-  form.find("#account").val(jobs[jobid]['login'])
-  form.find("#cluster").val(jobs[jobid]['cluster'])
-  form.find("#condition").val(rule)
-  form.find("#feedback").val($("#question_hide" + jobid + '_' + rule).val())
-  form.submit()
+  // var form = $("#feedback_rule")
+  // form.find("#user").val(current_user)
+  // form.find("#account").val(jobs[jobid]['login'])
+  // form.find("#cluster").val(jobs[jobid]['cluster'])
+  // form.find("#condition").val(rule)
+  // form.find("#feedback").val($("#question_hide" + jobid + '_' + rule).val())
+  // form.submit()
+  var feedback={
+    user: current_user,
+    cluster: jobs[jobid]['cluster'],
+    // job_id: jobid,
+    // task_id: 0,
+    condition: rule,
+    account: jobs[jobid]['login'],
+    feedback: $("#question_hide" + jobid + '_' + rule).val(),
+  }
+  $.ajax({
+    type: "POST",
+    url: "feedback",
+    data: {'feedback': feedback, 'type': 'hide_rule'},
+  }).done(function( msg ) {
+    restore_disagree_button()
+    //update_jobs_agree(feedback)
+  }).fail(function( msg ) {
+    restore_disagree_button()
+    //update_jobs_agree(feedback)
+  });
+  hide_rule_on_page(rule)
 }
 
 function intersection(o1, o2) {
@@ -212,15 +260,25 @@ function multi_job_feedback() {
       }
     })
 
-    var feedback={
-      'user': current_user,
-      'cluster': jobs[job_list[0]]['cluster'],
-      'job_id': job_list,
-      'condition': rule_list,
-      'task_id': 0,
-      'class': 1,
-      'feedback': $("#disagree_reason").val(),
-    }
+    var feedback=[]
+    job_list.forEach(function(id){
+      rule_list.forEach(function(rule){
+        feedback.push({
+          'user': current_user,
+          'cluster': jobs[id]['cluster'],
+          'job_id': id,
+          'condition': rule,
+          'task_id': 0,
+          'class': 1,
+          'feedback': $("#disagree_reason").val(),
+        })
+        if(!jobs[id]['feedback']){
+          jobs[id]['feedback']={}
+        }
+        jobs[id]['feedback'][rule]={'class': 1}
+      })
+    })
+   
 
     $('#disagree_button').text('Отправляем...');
     $('#disagree_button').prop('disabled', true);
@@ -231,10 +289,10 @@ function multi_job_feedback() {
       data: {'feedback': feedback, 'type': 'multi_jobs'},
     }).done(function( msg ) {
       restore_disagree_button()
-      update_jobs_agree(1)
+      update_jobs_agree(feedback)
     }).fail(function( msg ) {
       restore_disagree_button()
-      update_jobs_agree(1)
+      update_jobs_agree(feedback)
     });
   }
 }
@@ -253,18 +311,27 @@ function agree_all() {
   var new_feedback=[]
   for (var id in jobs) {
     // search jobs without feedback yet
+    var current_feed
     if ('feedback' in jobs[id]) {
       //  job has feedback
+      current_feed=jobs[id]['feedback']
     } else {
-      new_feedback.push({
-        'user': current_user,
-        'cluster': jobs[id]['cluster'],
-        'job_id': id,
-        'condition': jobs[id]['rules'],
-        'task_id': 0,
-        'class': 0,
-        'feedback': 'ok!'
-      })
+      current_feed={}
+      jobs[id]['feedback']={}
+    }
+    for(var rule in jobs[id]['rules']){
+      if(!(rule in current_feed)){
+        new_feedback.push({
+          'user': current_user,
+          'cluster': jobs[id]['cluster'],
+          'job_id': id,
+          'condition': rule,
+          'task_id': 0,
+          'class': 0,
+          'feedback': 'ok!'
+        })
+        jobs[id]['feedback'][rule]={'class': 0}
+      }
     }
   }
 
@@ -275,15 +342,46 @@ function agree_all() {
     url: "feedback",
     data: {'feedback': new_feedback, 'type': 'multi_jobs'},
   }).done(function( msg ) {
-    update_jobs_agree(0)
+    update_jobs_agree(new_feedback)
   }).fail(function( msg ) {
-    update_jobs_agree(0)
+    update_jobs_agree(new_feedback)
   });
 }
 
 function update_jobs_agree(feedback){
-  //$('.disagree-button').prop('disabled', true);
-  //$('.agreed-flag').show();
-  $('.agreed-flag').removeClass()
-  $('.agreed-flag').addClass(feedback==0 ? "#{@agree_flags[0]}" : "#{@agree_flags[1]}")
-}
+  $('.disagree-button').prop('disabled', false);
+  for(var job in jobs){
+    if(jobs[job]['feedback']){
+      for(var rule in jobs[job]['feedback']){
+        var c=(jobs[job]['feedback'][rule]['class']=='0')? 0 : 1
+
+        var id='#af-'+job+'-'+rule
+        $(id).attr('class','agreed-flag') // reset other classes
+        $(id).addClass(agree_flags[c])
+      }
+    }
+  }
+
+
+/*
+  feedback.forEach(function(item){
+    item['job_id'].forEach(function(job) {
+      if(!('feedback' in jobs[job])){
+        jobs[job['feedback']]={}
+      }
+      item['condition'].forEach(function(rule){
+        var id='#af-'+job+'-'+rule
+        $(id).attr('class','agreed-flag') // reset other classes
+        if(item['class']==0) {
+          $(id).addClass(agree_flags[0])
+          jobs[id]['feedback'][rule]={'class':0}
+        }
+        else {
+          $(id).addClass(agree_flags[1])
+          jobs[id]['feedback'][rule]={'class':1}
+        }
+      })
+    })
+  })
+  */
+ }
