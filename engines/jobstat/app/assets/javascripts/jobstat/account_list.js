@@ -149,7 +149,8 @@ function disagree(jobid, rule) {
 function hide_rule_on_page(rule) {
   $(".cond-div").each(function(div){
     if($(this).attr("data-rule-div")==rule) {
-      $(this).attr("visibility","hidden")
+      $(this).removeClass("visible")
+      $(this).addClass("hidden")
     }
   })
 }

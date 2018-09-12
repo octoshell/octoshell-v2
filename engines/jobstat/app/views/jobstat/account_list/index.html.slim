@@ -3,7 +3,8 @@
 - @finish_states={'COMPLETED'=>'far fa-grin-beam','NODE_FAIL'=>'far fa-grimace','FAILED'=>'far fa-frown','CANCELLED'=>'far fa-meh-rolling-eyes','TIMEOUT'=>'far fa-flushed'}
 - pic=@pictures.map{|name,val| {name => "<i class=\"#{val} typewritter\"></i>"}}
 // pass ruby variables to js
-
+- group_plus = @rules_plus['groups']
+- def_icon = {'icon'=>'far fa-exclamation-triangle'}
 javascript:
 
   var jobs=#{{@jobs_plus.to_json}}
@@ -12,11 +13,12 @@ javascript:
   var current_user=#{@current_user.id}
   var agree_flags=['#{@agree_flags[0]}','#{@agree_flags[1]}']
   agree_flags[99]='#{@agree_flags[99]}'
+  var rules_plus=#{{@rules_plus.to_json}}
 
   var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
   // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
 
-h3 = "Job table query interface"
+h3 Job table query interface
 
 = render "form"
 
@@ -122,14 +124,16 @@ div
                       | &nbsp;
 
                       // "why hide?" dialog
-                      div class="centered-popup"
-                        div class="popuptext" id="popup_hide#{job.drms_job_id}_#{cond.name}"
-                          | Это правило будет скрыто во всех заданиях, в том числе будущих. Поясните, почему Вы хотите скрыть его?
+                      div class="popup-wrap width80" id="popup_hide#{job.drms_job_id}_#{cond.name}"
+                        div class="content"
+                          div class="centered"
+                            | Это правило будет скрыто во всех заданиях, в том числе будущих. Поясните, почему Вы хотите скрыть его?
                           input type="text" id="question_hide#{job.drms_job_id}_#{cond.name}" class="centered"
-                          button class="btn-info" onClick="popup_hide('hide#{job.drms_job_id}','#{cond.name}');hide_rule(#{job.drms_job_id},'#{cond.name}');"
-                            | Отправить!
-                          button onClick="popup_hide('hide#{job.drms_job_id}','#{cond.name}');"
-                            | Передумал
+                          div class="centered"
+                            button class="btn-info" onClick="popup_hide('hide#{job.drms_job_id}','#{cond.name}');hide_rule(#{job.drms_job_id},'#{cond.name}');"
+                              | Отправить!
+                            button onClick="popup_hide('hide#{job.drms_job_id}','#{cond.name}');"
+                              | Передумал
 
                       // "I disagree with rule" button
                       button class="btn-warning disagree-button" onClick="event.stopPropagation();popup_show('disagree#{job.drms_job_id}','#{cond.name}');"
@@ -137,10 +141,10 @@ div
                       | &nbsp;
                       
                       // "why disagree?" dialog
-                      div class="popup"
-                        div class="popuptext" style="width: 80%" id="popup_disagree#{job.drms_job_id}_#{cond.name}"
+                      div class="popup-wrap width80" id="popup_disagree#{job.drms_job_id}_#{cond.name}"
+                        div class="content"
                           div class="centered"
-                            | Поясните, почему?
+                            | Поясните, почему Вы не согласны с оценкой правила?
                           input type="text" id="question_#{job.drms_job_id}_#{cond.name}" class="centered"
                           div class="centered"
                             button class="btn-info" onClick="disagree('#{job.drms_job_id}','#{cond.name}')"
@@ -148,7 +152,10 @@ div
                             button onClick="popup_hide('disagree#{job.drms_job_id}','#{cond.name}');"
                               | Передумал
                       // rule icon
-                      i class="fa-fw align-left #{@pictures.fetch(cond.name, 'far fa-exclamation-triangle')}" title="#{cond.description}"
+                      //i class="fa-fw align-left #{@pictures.fetch(cond.name, 'far fa-exclamation-triangle')}" title="#{cond.description}"
+                      - rule = @rules_plus['rules'].fetch(cond.name, nil)
+                      - icon = rule ? group_plus.fetch(rule['group'],def_icon)
+                      i class="fa-fw align-left #{icon['icon']} #{icon['color']}" title="#{cond.description}"
                       | &nbsp;
 
                       | #{cond.description}

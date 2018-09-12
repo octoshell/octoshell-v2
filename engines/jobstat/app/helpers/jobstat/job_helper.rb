@@ -209,6 +209,33 @@ module Jobstat
       ["vadim"]
     end
 
+    def get_all_projects
+      all_projects=get_owned_projects(current_user)
+      all_projects.merge!(get_involved_projects(current_user)){|key,old_val,new_val|
+        old_val.concat(new_val).uniq
+      }      
+    end
 
+    def get_select_options_by_projects projects, selected=[]
+      list=[]
+      dis=[]
+      projects.each{|proj,logins|
+        p="-- #{shorten(proj,32)} --"
+        list << p
+        dis << p
+        list.concat(logins)
+      }
+      [list, selected: selected, disabled: dis]
+      #options_for_select(list, selected: selected, disabled: dis)
+    end
+
+    def shorten name, len
+      l=name.length
+      if l>len
+        "#{name[0 .. l/2-1]}..#{name[l/2+1 .. l]}"
+      else
+        name
+      end
+    end
   end
 end

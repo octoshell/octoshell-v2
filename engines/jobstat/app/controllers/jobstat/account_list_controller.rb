@@ -35,8 +35,10 @@ module Jobstat
     }
 
     def index
-      @owned_logins = get_owned_logins
-      @involved_logins = get_involved_logins
+      #@owned_logins = get_owned_logins
+      #@involved_logins = get_involved_logins
+      @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
+      @all_logins=get_select_options_by_projects
       @params = get_defaults.merge(params.symbolize_keys)
       @total_count = 0
       @shown = 0
@@ -47,11 +49,15 @@ module Jobstat
       @extra_js='jobstat/application'
       @pictures=PICTURES
 
-      query_logins = (@params[:involved_logins] | @params[:owned_logins]) & (@involved_logins | @owned_logins)
+      #query_logins = (@params[:involved_logins] | @params[:owned_logins]) & (@involved_logins | @owned_logins)
+      query_logins = @projects.map{|_,login| login}.uniq
+      query_logins = ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
+
+      @rules_plus=load_rules
 
       if @params[:states].length == 0 or
-          @params[:partitions].length == 0 or
-          query_logins.length == 0
+          @params[:partitions].length == 0 #or
+          #query_logins.length == 0
 
         @notice = "Choose all query parameters"
         return
@@ -315,5 +321,15 @@ module Jobstat
         .order(:drms_job_id)
     end
 
+    def load_rules
+      rules={}
+      begin
+        File.open("engines/jobstat/config/rules-plus.json", "r") { |file|
+          rules=JSON.load(file)
+        }
+      rescue
+      end
+      rules
+    end
   end
 end

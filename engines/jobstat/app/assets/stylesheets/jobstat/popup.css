@@ -87,7 +87,10 @@ a.circle-button.active {
 }
 
 .centered {
-  width: 90%;
   margin: auto;
   text-align: center;
+}
+
+.width80 {
+  width:  80vw;
 }

@@ -276,3 +276,15 @@
 .td.th.icon-x2-width, .th.icon-x2-width {
   width: 3em;
 }
+
+.color-regular {
+  color: black;
+}
+
+.color-red {
+  color: red;
+}
+
+.color-orange {
+  color: orange;
+}

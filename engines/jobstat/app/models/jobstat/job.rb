@@ -184,11 +184,10 @@ module Jobstat
       # end
       user_id=user.id
 
-      get_data("jobstat:filters:#{user_id}",
+      data=get_data("jobstat:filters:#{user_id}",
         URI("http://graphit.parallel.ru:8123/api/filters"),
-        "?user=#{user_id}"
-        )
-
+        "?user=#{user_id}")
+      data || []
     end
 
     def self.post_filters(user,filters)
