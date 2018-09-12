@@ -15,6 +15,10 @@ ul class="list-unstyled"
 h3 = Support::Topic.human_attribute_name(:template)
 p = @topic.template
 
+h3 = Support::Topic.human_attribute_name(:visible_on_create)
+p = @topic.visible_on_create
+
+
 h3 = Support::Topic.human_attribute_name(:fields)
 
 - if @topic.fields.any?

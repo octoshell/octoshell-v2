@@ -34,7 +34,7 @@ User.class_eval do
   end
 
   def full_name_with_email
-    [full_name, email].join(" - ")
+    [full_name, email].join(" ")
   end
 
   def self.superadmins

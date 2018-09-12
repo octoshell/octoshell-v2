@@ -9,7 +9,8 @@ gem "pg", "~> 0.18", platform: :ruby
 gem 'rails_email_preview', '~> 2.0.6'
 gem 'left_join'
 gem 'traco'
-
+gem 'lmtp', github: 'apaokin/ruby-lmtp', require: false
+gem 'rubyzip', '>= 1.0.0', require: false
 
 group :development do
   gem "letter_opener"

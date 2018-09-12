@@ -38,7 +38,8 @@ module Support
     def create_bot(password)
       ActiveRecord::Base.transaction do
         bot = Support.user_class.create! email: self.class.email,
-                                         password: password
+                                         password: password,
+                                         activation_state: 'active'
         bot.create_profile! first_name: 'Bot', last_name: 'Botov'
       end
     end
@@ -48,7 +49,7 @@ module Support
     end
 
     def topic(name = topic_name)
-      @topic ||= Topic.find_or_create_by!(name_ru: name)
+      Topic.find_or_create_by!(name_ru: name, visible_on_create: false)
     end
 
     def create!(arg)

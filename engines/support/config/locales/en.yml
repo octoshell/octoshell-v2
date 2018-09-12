@@ -42,6 +42,7 @@ en:
         message: Problem description
         attachment: Attachment
       support/topic:
+        visible_on_create: Visible for user when he creates request
         template: Template
         name: Name
         parent: Parent topic
@@ -109,6 +110,7 @@ en:
       new_ticket_reply:
         subject: New reply in request No%{number}
         show_request_details: Show request
+        remain: Do not remove this line! You can add your reply to this request by writing it after the following dash(----) line.
       answered_tickets_notification:
         subject: Reminder about suspended requests in technical support
       footer:

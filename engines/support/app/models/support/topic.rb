@@ -8,7 +8,6 @@ module Support
     belongs_to :parent_topic, class_name: "Support::Topic", foreign_key: :parent_id, inverse_of: :subtopics
     has_many :subtopics, class_name: "Support::Topic", foreign_key: :parent_id,
                          inverse_of: :parent_topic, dependent: :destroy
-
     has_and_belongs_to_many :fields, join_table: :support_topics_fields
     has_and_belongs_to_many :tags, join_table: :support_topics_tags
     has_and_belongs_to_many :responsible_users,class_name: '::User',
@@ -27,10 +26,15 @@ module Support
     end
 
     scope :root, -> { where(parent_id: nil) }
+    scope :visible_root, -> { where(parent_id: nil, visible_on_create: true) }
     scope :common_theme, -> { where(name_ru: "Другое") }
 
     def available_parents
       new_record? ? Topic.all : Topic.where.not(id: id)
+    end
+
+    def visible_subtopics
+      subtopics.where(visible_on_create: true)
     end
 
     def name_with_parents

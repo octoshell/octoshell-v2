@@ -16,6 +16,7 @@ require "mime-types"
 module Support
   mattr_accessor :user_class
   mattr_accessor :project_class
+  mattr_accessor :dash_number
 
   class UserClassAbsenceError < StandardError; end
   class ProjectClassAbsenceError < StandardError; end

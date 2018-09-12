@@ -81,13 +81,21 @@ def create_many_accesses(relation)
     ActiveRecord::Base.connection.execute(str_acc)
   end
 end
+
 def create_admin(overrides = {})
   user = create(:user,overrides)
   UserGroup.create!(user: user,group: Group.find_by!( name: "superadmins" ) )
   user
 end
+
 def create_support(overrides = {})
   user = create(:user,overrides)
   UserGroup.create!(user: user,group: Group.find_by!( name: "support" ) )
   user
+end
+
+def to_exim(mail)
+  mail.delivery_method :exim, location: '/usr/sbin/exim'
+  mail.deliver
+  sleep 1
 end

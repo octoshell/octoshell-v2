@@ -4,9 +4,8 @@ module Sessions
       menu = Face::Menu.new
       menu.items.clear
       bell_html = '<span class="badge warning"><i class="fa fa-bell"> </i></span>'
-      current_session = Sessions::Session.current
-      surveys_any = current_user.surveys.where(session: current_session, state: [:pending, :filling, :exceeded]).any?
-      reports_any = current_user.reports.where(session: current_session, state: [:pending, :accepted, :exceeded]).any?
+      surveys_any = current_user.warning_surveys.exists?
+      reports_any = current_user.warning_reports.exists?
       html = reports_any ? "#{t("engine_submenu.reports")} #{bell_html}".html_safe : t("engine_submenu.reports")
       menu.add_item(Face::MenuItem.new({name: html,
                                         url: sessions.reports_path,

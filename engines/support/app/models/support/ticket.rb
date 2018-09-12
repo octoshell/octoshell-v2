@@ -33,7 +33,7 @@ module Support
     accepts_nested_attributes_for :field_values
 
     after_commit :add_reporter_to_subscribers, on: :create
-    after_commit :add_responsible, on: :create
+    before_create :add_responsible
     after_commit :notify_support, on: :create
 
     scope :find_by_content, -> (q) do
@@ -120,11 +120,12 @@ module Support
       not closed?
     end
 
-    def topics
+    def topics(for_user = false)
       if topic
         topic.subtopics
+        for_user ? topic.visible_subtopics : topic.subtopics
       else
-        Topic.root
+        for_user ? Topic.visible_root : Topic.root
       end
     end
 

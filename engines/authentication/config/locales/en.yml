@@ -74,6 +74,8 @@ en:
       models:
         user:
           attributes:
+            email:
+              postmaster: "You can not use email with 'postmaster' string contained"
             base:
               user_is_not_registered: "User has not been registered."
               user_is_not_activated: "User has not been activated yet. Follow the link in the activation email."

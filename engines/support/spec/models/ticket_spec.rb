@@ -28,8 +28,8 @@ module Support
       @user = create(:user)
       @topic.user_topics.create!(user: @support_user, required: true)
       @ticket = create(:ticket, topic: @topic)
-      expect(@ticket.responsible).to eq @support_user
-      expect(@ticket.subscribers).to include @support_user
+      expect(Ticket.first.responsible).to eq @support_user
+      expect(Ticket.first.subscribers).to include @support_user
     end
 
     it 'creates without responsible' do

@@ -3,6 +3,9 @@ class User < ActiveRecord::Base
   validates :password, confirmation: true, length: { minimum: 6 }, on: :create
   validates :password, confirmation: true, length: { minimum: 6 }, on: :update, if: :password?
   validates :email, presence: true, uniqueness: true
+  validate do
+    errors.add(:email, :postmaster) if email[/postmaster/]
+  end
   before_validation :downcase_email
 
   def activated?

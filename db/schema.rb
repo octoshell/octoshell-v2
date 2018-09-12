@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180901160554) do
+ActiveRecord::Schema.define(version: 20180907145732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,6 +128,17 @@ ActiveRecord::Schema.define(version: 20180901160554) do
   create_table "comments_tags", force: :cascade do |t|
     t.string "name"
   end
+
+  create_table "comments_user_records", force: :cascade do |t|
+    t.integer  "record_id"
+    t.string   "record_type"
+    t.integer  "user_id",                 null: false
+    t.integer  "type_ab",     default: 0
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "comments_user_records", ["record_type", "record_id", "user_id", "type_ab"], name: "record, user index", using: :btree
 
   create_table "core_access_fields", force: :cascade do |t|
     t.integer "access_id"
@@ -508,6 +519,15 @@ ActiveRecord::Schema.define(version: 20180901160554) do
     t.datetime "updated_at"
   end
 
+  create_table "lang_prefs", force: :cascade do |t|
+    t.string   "language"
+    t.integer  "user_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "lang_prefs", ["user_id"], name: "index_lang_prefs_on_user_id", using: :btree
+
   create_table "pack_access_tickets", id: false, force: :cascade do |t|
     t.integer "access_id"
     t.integer "ticket_id"
@@ -874,13 +894,14 @@ ActiveRecord::Schema.define(version: 20180901160554) do
   add_index "support_tickets_tags", ["ticket_id"], name: "index_support_tickets_tags_on_ticket_id", using: :btree
 
   create_table "support_topics", force: :cascade do |t|
-    t.string   "name_ru",     limit: 255
+    t.string   "name_ru",           limit: 255
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name_en"
     t.text     "template_en"
     t.text     "template_ru"
+    t.boolean  "visible_on_create",             default: true
   end
 
   create_table "support_topics_fields", force: :cascade do |t|
@@ -950,4 +971,3 @@ ActiveRecord::Schema.define(version: 20180901160554) do
 
   add_index "wiki_pages", ["url"], name: "index_wiki_pages_on_url", unique: true, using: :btree
 
-end
