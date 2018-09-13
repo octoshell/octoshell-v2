@@ -38,7 +38,7 @@ module Jobstat
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
       @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
-      @all_logins=get_select_options_by_projects
+      @all_logins=get_select_options_by_projects @projects
       @params = get_defaults.merge(params.symbolize_keys)
       @total_count = 0
       @shown = 0
@@ -48,12 +48,15 @@ module Jobstat
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
       @pictures=PICTURES
+      @jobs_feedback={}
 
       #query_logins = (@params[:involved_logins] | @params[:owned_logins]) & (@involved_logins | @owned_logins)
       query_logins = @projects.map{|_,login| login}.uniq
       query_logins = ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
 
       @rules_plus=load_rules
+      @jobs=[]
+      @jobs_plus={}
 
       if @params[:states].length == 0 or
           @params[:partitions].length == 0 #or
@@ -65,13 +68,17 @@ module Jobstat
         @notice = nil
       end
 
+      @agree_flags={
+        0 => 'far fa-thumbs-up agreed-flag',
+        1 => 'far fa-thumbs-down agreed-flag',
+        99 => 'far fa-clock agreed-flag',
+      }
+
       begin
         @jobs = get_jobs(@params, query_logins)
         @total_count = @jobs.count
         @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
         @shown = @jobs.length
-
-        @jobs_plus={}
 
         @jobs.each{|j|
           rules=j.get_rules(@current_user)
@@ -111,12 +118,6 @@ module Jobstat
           {}
         end
       end
-
-      @agree_flags={
-        0 => 'far fa-thumbs-up agreed-flag',
-        1 => 'far fa-thumbs-down agreed-flag',
-        99 => 'far fa-clock agreed-flag',
-      }
 
       # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
       @filters=Job::get_filters(current_user).map { |x| x.filters }.flatten.uniq
