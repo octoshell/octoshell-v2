@@ -113,18 +113,6 @@ function popup_hide(a, b) {
 
 // user disagrees with rule
 function disagree(jobid, rule) {
-  //alert("feedback"+index+" -- "+jobid);
-  // var form = $("#feedback_job_rule")
-  // form.find("#user").val(current_user)
-  // form.find("#account").val(jobs[jobid]['login'])
-  // form.find("#cluster").val(jobs[jobid]['cluster'])
-  // form.find("#job_id").val(jobid)
-  //   //FIXME place right task_id (where is it?)
-  // form.find("#task_id").val(0)
-  // form.find("#condition").val(rule)
-  // form.find("#feedback").val($("#question_" + jobid + '_' + rule).val())
-  // $("#popup_" + jobid + "_" + rule).removeClass('show')
-  // form.submit()
   var feedback={
     user: current_user,
     cluster: jobs[jobid]['cluster'],
@@ -156,13 +144,6 @@ function hide_rule_on_page(rule) {
 }
 
 function hide_rule(jobid, rule) {
-  // var form = $("#feedback_rule")
-  // form.find("#user").val(current_user)
-  // form.find("#account").val(jobs[jobid]['login'])
-  // form.find("#cluster").val(jobs[jobid]['cluster'])
-  // form.find("#condition").val(rule)
-  // form.find("#feedback").val($("#question_hide" + jobid + '_' + rule).val())
-  // form.submit()
   var feedback={
     user: current_user,
     cluster: jobs[jobid]['cluster'],

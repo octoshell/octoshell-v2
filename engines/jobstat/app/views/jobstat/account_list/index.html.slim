@@ -1,22 +1,15 @@
-/- @js_jobs='var jobs={'+@jobs_plus.map{|i,j| "'#{i}':{'login':'#{j["login"]}', 'cluster':'#{j["cluster"]}', 'state':'#{j["state"]}', 'rules':#{j["rules"]}}"}.join(',')+'};'
-/- @rule_pictures=(@pictures || {}).map{|name,value| "rule_pictures['#{name}']='<i class=\"#{value} typewritter\"></i>';"}.join("\n")
 - @finish_states={'COMPLETED'=>'far fa-grin-beam','NODE_FAIL'=>'far fa-grimace','FAILED'=>'far fa-frown','CANCELLED'=>'far fa-meh-rolling-eyes','TIMEOUT'=>'far fa-flushed'}
-- pic=@pictures.map{|name,val| {name => "<i class=\"#{val} typewritter\"></i>"}}
+
 // pass ruby variables to js
 - group_plus = @rules_plus['groups']
 - def_icon = {'icon'=>'far fa-exclamation-triangle'}
 javascript:
-
   var jobs=#{{@jobs_plus.to_json}}
-  var rule_pictures=#{{pic.to_json}}
   var jobs_feedback=#{{@jobs_feedback.to_json}}
   var current_user=#{@current_user.id}
-  var agree_flags=['#{@agree_flags[0]}','#{@agree_flags[1]}']
-  agree_flags[99]='#{@agree_flags[99]}'
+  var agree_flags=#{{@agree_flags.to_json}}
   var rules_plus=#{{@rules_plus.to_json}}
 
-  var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
-  // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
 
 h3 Job table query interface
 
@@ -26,8 +19,19 @@ h3 Job table query interface
   p style = 'color:#FF0000;' = @notice
 
 div
-  button onClick='agree_all()' id='agree_all'
+  button onClick="$('#agree_all_confirmation').addClass('active')" id='agree_all'
     | Я согласен с оценками моих запусков
+  div class="popup-wrap width80" id="agree_all_confirmation"
+    div class="content"
+      div class="centered"
+        | Все замечания без оценок по Вашим запускам будут отмечены как 
+        strong "согласен с оценкой"
+      div class="centered"
+        button class="btn-info" onClick="$('#agree_all_confirmation').removeClass('active');agree_all()"
+          | Да, я согласен со всеми оценками!
+        button onClick="$('#agree_all_confirmation').removeClass('active')"
+          | Передумал
+
   | Не согласны с оценкой запусков?  
   div id='disagree_reason_box' style="display: none; width: 100%" class="feedback_div"
     br
@@ -43,9 +47,9 @@ div
   div
     | Чтобы посмотреть описание проблем задания, скрыть их видимость или прокомментировать их применимость к заданию, нажмите на первой ячейке строки таблицы.
     br
-    a href='/jobstat/rules_summary' Вот здесь
+    a href='all_rules' Вот здесь 
     | полная информация по возможным проблемам и настройки их видимости.
-div
+div class="perf-table"
   /p
     | Sort by &nbsp;
     a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="0" num nodes
@@ -53,6 +57,12 @@ div
     a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="1" duration
     | &nbsp;
     a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="2" core*hours
+  input type="checkbox" class="hide-login-data" id="hide-login-checkbox" checked=1
+  label for="hide-login-checkbox" Скрыть логин/раздел
+  br
+  input type="checkbox" class="hide-perf-data" id="hide-perf-checkbox"
+  label for="hide-perf-checkbox" Скрыть данные производительности
+
   h3 Results: #{@params[:offset]}..#{@params[:offset].to_i + @shown} of #{@total_count}
   table id="jobs" class="table table-bordered tablesorter-default fixed-layout"
     thead
@@ -63,9 +73,9 @@ div
           | job issues
         th
           | job id
-        th
+        th class="login-data"
           | login
-        th
+        th class="login-data"
           | partition
         th
           | start
@@ -78,19 +88,19 @@ div
           | nodes
         th
           | hours
-        th class='rank'
-          | job size
         th
+          | job size (node*hours)
+        th class="perf-data"
           | cpu load
-        th
+        th class="perf-data"
           | gpu load
-        th
+        th class="perf-data"
           | LA
-        th
+        th class="perf-data"
           | IPC
-        th
+        th class="perf-data"
           | MPI in (MB)
-        th
+        th class="perf-data"
           | MPI out (MB)
     - index=1
     - @jobs.each do |job|
@@ -119,7 +129,7 @@ div
                       | &nbsp;
                       
                       // "hide rule" button
-                      button class="btn-warning" onClick="event.stopPropagation();popup_show('hide#{job.drms_job_id}','#{cond.name}');"
+                      button class="btn-danger" onClick="event.stopPropagation();popup_show('hide#{job.drms_job_id}','#{cond.name}');"
                         i class="far fa-bell-slash" title="Скрыть правило"
                       | &nbsp;
 
@@ -128,7 +138,7 @@ div
                         div class="content"
                           div class="centered"
                             | Это правило будет скрыто во всех заданиях, в том числе будущих. Поясните, почему Вы хотите скрыть его?
-                          input type="text" id="question_hide#{job.drms_job_id}_#{cond.name}" class="centered"
+                          input type="text" id="question_hide#{job.drms_job_id}_#{cond.name}" class="centered fullwidth"
                           div class="centered"
                             button class="btn-info" onClick="popup_hide('hide#{job.drms_job_id}','#{cond.name}');hide_rule(#{job.drms_job_id},'#{cond.name}');"
                               | Отправить!
@@ -145,17 +155,16 @@ div
                         div class="content"
                           div class="centered"
                             | Поясните, почему Вы не согласны с оценкой правила?
-                          input type="text" id="question_#{job.drms_job_id}_#{cond.name}" class="centered"
+                          input type="text" id="question_#{job.drms_job_id}_#{cond.name}" class="centered fullwidth"
                           div class="centered"
-                            button class="btn-info" onClick="disagree('#{job.drms_job_id}','#{cond.name}')"
+                            button class="btn-info" onClick="popup_hide('disagree#{job.drms_job_id}','#{cond.name}');disagree('#{job.drms_job_id}','#{cond.name}')"
                               | Отправить!
                             button onClick="popup_hide('disagree#{job.drms_job_id}','#{cond.name}');"
                               | Передумал
                       // rule icon
-                      //i class="fa-fw align-left #{@pictures.fetch(cond.name, 'far fa-exclamation-triangle')}" title="#{cond.description}"
                       - rule = @rules_plus['rules'].fetch(cond.name, nil)
-                      - icon = rule ? group_plus.fetch(rule['group'],def_icon)
-                      i class="fa-fw align-left #{icon['icon']} #{icon['color']}" title="#{cond.description}"
+                      - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
+                      i class="fa-fw align-left inline #{icon['icon']} #{icon['color']}" title="#{cond.description}"
                       | &nbsp;
 
                       | #{cond.description}
@@ -168,26 +177,25 @@ div
           - if perf_data_present
             - if job_cond.size() > 0
               - job_cond.each do |cond|
-                /= image_tag @pictures.fetch(cond.name, "other.png"), size: "20", alt: cond.description, title: cond.description, style: "margin: 1px"
-                i class="fa-fw #{@pictures.fetch(cond.name, 'fas fa-exclamation-triangle')} inline em12 cond-div #{@filters.include?(cond.name) ? 'hidden' : 'visible'}" title="#{cond.description}" data-rule-div="#{cond.name}"
+                - rule = @rules_plus['rules'].fetch(cond.name, nil)
+                - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
+                i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline em12 cond-div #{@filters.include?(cond.name) ? 'hidden' : 'visible'}" title="#{cond.description}" data-rule-div="#{cond.name}"
+                | &nbsp;
+
             - else
               /= image_tag "ok.png", size: "20", border: 2
               i class="fas fa-fw fa-check em12"
           - else
             p 
               | no data
-        /td
-          button class='btn' onClick="ok_task(#{job.drms_job_id})"
-            i class='fas fa-fw fa-check'
-          button class='btn' onClick="notok_task(#{job.drms_job_id})"
-            i class='fas fa-fw fa-times'
         td = link_to(job.drms_job_id, job)
-        td = job.login
-        td = job.partition
+        td class="login-data" = job.login
+        td class="login-data" = job.partition
         td = job.start_time.strftime('%D %T')
         td = job.end_time.strftime('%D %T')
         td class="task_state_#{job.state} centered"
-          i class="em15 #{@finish_states.fetch(job.state, 'fas fa-meh-blank')}" title="#{job.state}"
+          /i class="em15 #{@finish_states.fetch(job.state, 'fas fa-meh-blank')}" title="#{job.state}"
+          = job.state.downcase
         td
           / class="sorter-metrics1"
           /| #{job.num_nodes}/#{number_with_precision(job.get_duration_hours, :precision => 1)}/#{number_with_precision(job.get_cpuh, :precision => 1)}
@@ -209,17 +217,23 @@ div
           /== '<i class="fas fa-star"></i>' * stars.to_i
           /== '<i class="fas fa-star-half-alt"></i>' * (stars-stars.to_i > 0.5 ? 1 : 0)
 
-        td class="job_metric_#{job_ranking[:cpu_user]}" = number_with_precision(job_performance[:cpu_user], :precision => 1)
+        td class="perf-data job_metric_#{job_ranking[:cpu_user]}"
+          = number_with_precision(job_performance[:cpu_user], :precision => 1)
 
-        td class="job_metric_#{job_ranking[:gpu_load]}" = number_with_precision(job_performance[:gpu_load], :precision => 1)
+        td class="perf-data job_metric_#{job_ranking[:gpu_load]}"
+          = number_with_precision(job_performance[:gpu_load], :precision => 1)
 
-        td class="job_metric_#{job_ranking[:loadavg]}" = number_with_precision(job_performance[:loadavg], :precision => 1)
+        td class="perf-data job_metric_#{job_ranking[:loadavg]}"
+          = number_with_precision(job_performance[:loadavg], :precision => 1)
 
-        td class="job_metric_#{job_ranking[:ipc]}" = number_with_precision(job_performance[:ipc] && job_performance[:ipc], :precision => 2)
+        td class="perf-data job_metric_#{job_ranking[:ipc]}"
+          = number_with_precision(job_performance[:ipc] && job_performance[:ipc], :precision => 2)
 
-        td class="job_metric_#{job_ranking[:ib_rcv_data_mpi]}" = number_with_precision(job_performance[:ib_rcv_data_mpi], :precision => 1)
+        td class="perf-data job_metric_#{job_ranking[:ib_rcv_data_mpi]}"
+          = number_with_precision(job_performance[:ib_rcv_data_mpi], :precision => 1)
 
-        td class="job_metric_#{job_ranking[:ib_xmit_data_mpi]}" = number_with_precision(job_performance[:ib_xmit_data_mpi], :precision => 1)
+        td class="perf-data job_metric_#{job_ranking[:ib_xmit_data_mpi]}"
+          = number_with_precision(job_performance[:ib_xmit_data_mpi], :precision => 1)
 
 table
   tr
@@ -230,27 +244,3 @@ table
     td
       - if @jobs.length == 100
         a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" next >>>
-
-div style="display: none"
-  // disagree with rule on a job
-  form id="feedback_job_rule" action="feedback_job" method="post"
-    input id="user" name="user" type="text"
-    //input id="account" name="account" type="text"
-    input id="cluster" name="cluster" type="text"
-    input id="job_id" name="job_id" type="text"
-    input id="task_id" name="task_id" type="text"
-    input id="condition" name="condition" type="text"
-    input id="feedback" name="feedback" type="text"
-  // hide rule
-  form id="feedback_rule" action="feedback_rule" method="post"
-    input id="user" name="user" type="text"
-    input id="account" name="account" type="text"
-    input id="cluster" name="cluster" type="text"
-    input id="condition" name="condition" type="text"
-    input id="feedback" name="feedback" type="text"
-  // disagree with multiple jobs
-  form id="feedback_jobs" action="feedback_jobs" method="post"
-    input id="user" name="user" type="text"
-    input id="jobs" name="jobs" type="text"
-    input id="rules" name="rules" type="text"
-    input id="feedback" name="feedback" type="text"

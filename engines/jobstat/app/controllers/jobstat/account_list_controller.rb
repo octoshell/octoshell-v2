@@ -4,41 +4,11 @@ module Jobstat
   class AccountListController < ApplicationController
     include JobHelper
 
-    PICTURES = {
-      'rule_mpi_issues' => 'fas fa-exchange-alt', #Низкая активность использования вычислительных ресурсов при высокой интенсивности использования MPI сети.
-      'rule_mpi_packets' => 'fas fa-exchange-alt', #Размер MPI пакетов слишком маленький.
-      'rule_not_effective' => 'fas fa-dumbbell', #Низкая активность использования всех доступных ресурсов (процессоров, памяти, коммуникационной сети, графических ускорителей).
-      'rule_bad_mem' => 'fas fa-memory', #Низкая активность использования вычислительных ресурсов при высокой интенсивности работы с памятью.
-      'rule_bad_locality' => 'fas fa-bug', #Низкая активность работы задачи при низкой локальности обращений в память.
-      'rule_locality' => 'fas fa-dice', #Высокая интенсивность работы с памятью при низкой локальности обращений в память.
-      'rule_cache' => 'fas fa-dice', #Низкая активность работы задачи при высокой интенсивности работы с памятью и низкой локальности обращений в память.
-      'rule_interleave' => 'fas fa-dice', #Низкая активность работы задачи при высокой интенсивности работы с памятью и высокой локальности обращений в память.
-      'rule_normal_serial' => 'fas fa-thumbs-down', #Последовательная задача
-      'rule_cpu_gpu' => 'fas fa-microchip', #Задача слабо использует CPU при высокой загрузке GPU. 
-      'rule_more_cpu_gpu' => 'fas fa-microchip', #Задача практически не использует CPU при высокой загрузке GPU.
-      'rule_anomaly' => 'fas fa-exclamation', #Чрезвычайно низкая активность использования всех доступных ресурсов.
-      'rule_disbalance_cpu_la' => 'fas fa-not-equal', #Заметный дисбаланс внутри узлов либо активность сильно отличается на разных узлах.
-      'rule_avg_disbalance' => 'fas fa-not-equal', #Интенсивность использования ресурсов сильно отличается на разных узлах.
-      'rule_node_disbalance' => 'fas fa-not-equal', #Данные мониторинга сильно отличаются для разных узлов -> скорее всего, имеет место разбалансировка. Правило имеет смысл учитывать, если не сработали более конкретные правила
-      'rule_mpi_many_operations' => 'fas fa-sync', #Низкая интенсивность использования MPI сети, однако число MPI операций велико.
-      'rule_mpi_small_packets' => 'fas fa-angle-double-left', #Слишком маленькие средние размеры MPI IB пакетов при достаточно высокой интенсивности использования коммуникационной сети.
-      'rule_fs_small_packets' => 'fas fa-save', #Слишком маленькие средние размеры ФС IB пакетов при достаточно высокой интенсивности использования коммуникационной сети.
-      'rule_mpi_high_system' => 'fas fa-moon', #Работа с коммуникационнной сетью занимает слишком много системных ресурсов.
-      'rule_mpi_bad_locality' => 'fas fa-random', #Задача активно работает с MPI сетью, но сетевая локальность плохая (узлы СК расположены далеко друг от друга).
-      'rule_wrong_partition_gpu' => 'fas fa-bomb', #Задача запущена в разделе для GPU задач, однако практически не использует графические процессоры.
-      'rule_wrong_partition_io' => 'fas fa-bomb', #Задача запущена в разделе для задач с невысокими требованиям к скорости вовода/вывода, однако в этой задаче интенсивность ввода/вывода велика.
-      'rule_one_active_process' => 'fas fa-bolt', #В даной задаче обнаружен только 1 активный процесс на узел, при этом интенсивность использования памяти, GPU или сети невысока.
-      'rule_mpi_disbalance' => 'fas fa-not-equal', #Большой дислабанс на узлах между средним объемом передаваемых и получаемых данных по MPI сети.
-      'rule_irq_iowait' => 'fas fa-save', #Слишком высокая IRQ или IOWAIT загрузка.
-      'rule_nice' => 'fas fa-snowflake', #Слишком высокая NICE загрузка.
-      'rule_disaster' => 'fas fa-exclamation-triangle',
-    }
-
     def index
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
       @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
-      @all_logins=get_select_options_by_projects
+      @all_logins=get_select_options_by_projects @projects
       @params = get_defaults.merge(params.symbolize_keys)
       @total_count = 0
       @shown = 0
@@ -47,16 +17,24 @@ module Jobstat
 
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
-      @pictures=PICTURES
+      #@pictures=PICTURES
+      @jobs_feedback={}
 
       #query_logins = (@params[:involved_logins] | @params[:owned_logins]) & (@involved_logins | @owned_logins)
       query_logins = @projects.map{|_,login| login}.uniq
       query_logins = ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
+      al=(@params[:all_logins] || []).reject{|x| x==''}
+      query_logins = (al & query_logins)
+      @params[:all_logins]=al
 
       @rules_plus=load_rules
+      @jobs=[]
+      @jobs_plus={}
 
-      if @params[:states].length == 0 or
-          @params[:partitions].length == 0 #or
+      states=@params[:states].reject{|x| x==''}
+      partitions=@params[:states].reject{|x| x==''}
+      if states.length == 0 or
+         partitions.length == 0 #or
           #query_logins.length == 0
 
         @notice = "Choose all query parameters"
@@ -65,13 +43,17 @@ module Jobstat
         @notice = nil
       end
 
+      @agree_flags={
+        0 => 'far fa-thumbs-up agreed-flag',
+        1 => 'far fa-thumbs-down agreed-flag',
+        99 => 'far fa-clock agreed-flag',
+      }
+
       begin
         @jobs = get_jobs(@params, query_logins)
         @total_count = @jobs.count
         @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
         @shown = @jobs.length
-
-        @jobs_plus={}
 
         @jobs.each{|j|
           rules=j.get_rules(@current_user)
@@ -112,12 +94,6 @@ module Jobstat
         end
       end
 
-      @agree_flags={
-        0 => 'far fa-thumbs-up agreed-flag',
-        1 => 'far fa-thumbs-down agreed-flag',
-        99 => 'far fa-clock agreed-flag',
-      }
-
       # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
       @filters=Job::get_filters(current_user).map { |x| x.filters }.flatten.uniq
       # -> [cond1,cond2,...]
@@ -131,19 +107,19 @@ module Jobstat
 
     def feedback
       code=case params[:type]
-      when 'one_job'
-        feedback_job params[:feedback]
+      # when 'filter'
+      #   feedback_filter params[:feedback]       # ...
       when 'multi_jobs'
-        feedback_multi_jobs params[:feedback]
+        feedback_multi_jobs params[:feedback]   # ok (jobs+rules disagree)
       when 'proposal'
-        feedback_proposal params[:feedback]
+        feedback_proposal params[:feedback]     # new rule
       when 'hide_rule'
-        feedback_rule_show params[:feedback]
+        feedback_rule_show params[:feedback]    # hide one rule
       when 'feedback_rule'
-        feedback_rule params[:feedback]
+        feedback_rule params[:feedback]         # ...
       else
         logger.info "Bad feedback type: #{params[:type]}"
-        500
+        500 #, "Bad feedback type: #{params[:type]}"
       end
       render plain: code, layout: false
     end
@@ -155,63 +131,85 @@ module Jobstat
       #user=UID_octoshell(int), class=int(0=ok,1=not_ok), cluster=string, job_id=int, task_id=int, condition=string, feedback=string.
       if !parm.kind_of?(Enumerable)
         logger.info("Ooooops! feedback_all_jobs got bad argument: #{parm}") 
-        return 500
+        return 500,''
       end
       arr= (parm.kind_of?(Hash) ? parm.map{|k,v| v} : parm.map{|x| x})
       #logger.info("--->> #{arr}")
       code=Job::post_data(uri,'',arr)
       if code!=200
         logger.info "feedback_all_jobs: post code=#{code}"
-        500
-      else
-        200
-      end
-    end
-
-    def feedback_job parm
-      old_filters=Job::get_filters(current_user) || []
-      new_filters=parm[:filters] || []
-      code=Job::post_filters(parm[:user].to_i, old_filters+new_filters)
-      render plain: code, layout: false
-      response.status=code
-    end
-
-    def feedback_jobs parm
-      #TODO make caching for not confirmed sends
-      #FIXME! move address to config
-      uri=URI("http://graphit.parallel.ru:8123/api/feedback-jobs")
-
-      jobs=parm[:jobs].split(',')
-      req={
-        user: parm[:user].to_i,
-        cluster: parm[:cluster],
-        jobs: jobs,
-        tasks: jobs,
-        feedback: parm[:feedback],
-      }
-      code=500
-      begin
-        Net::HTTP.start(uri.host, uri.port,
-                        :use_ssl => uri.scheme == 'https', 
-                        :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-                        :read_timeout => 5,
-                        :opent_imeout => 5,
-                        :ssl_timeout => 5,
-                       ) do |http|
-          request = Net::HTTP::Post.new uri.request_uri
-          request.set_form_data req
-          #request.basic_auth 'username', 'password'
-
-          resp = http.request request
-
-          code=resp.code
-        end
-      rescue => e #Net::ReadTimeout, Net::OpenTimeout
-        logger.info "feedback_job: error #{e.message}"
         code=500
       end
-      render plain: code, layout: false
-      response.status=code
+      return code, "feedback_all_jobs: post code=#{code}"
+    end
+
+    def all_rules
+      @extra_css='jobstat/application'
+      @extra_js='jobstat/application'
+      @rules_plus=load_rules
+      @filters=Job::get_filters(current_user).map { |x| x.filters }.flatten.uniq
+      @current_user=current_user
+    end
+
+    # def feedback_job parm
+    #   old_filters=Job::get_filters(current_user) || []
+    #   new_filters=parm[:filters] || []
+    #   code=Job::post_filters(parm[:user].to_i, old_filters+new_filters)
+    #   render plain: code, layout: false
+    #   response.status=code
+    # end
+
+    # def feedback_jobs parm
+    #   #TODO make caching for not confirmed sends
+    #   #FIXME! move address to config
+    #   uri=URI("http://graphit.parallel.ru:8123/api/feedback-jobs")
+
+    #   jobs=parm[:jobs].split(',')
+    #   req={
+    #     user: parm[:user].to_i,
+    #     cluster: parm[:cluster],
+    #     jobs: jobs,
+    #     tasks: jobs,
+    #     feedback: parm[:feedback],
+    #   }
+    #   code=500
+    #   begin
+    #     Net::HTTP.start(uri.host, uri.port,
+    #                     :use_ssl => uri.scheme == 'https', 
+    #                     :verify_mode => OpenSSL::SSL::VERIFY_NONE,
+    #                     :read_timeout => 5,
+    #                     :opent_imeout => 5,
+    #                     :ssl_timeout => 5,
+    #                    ) do |http|
+    #       request = Net::HTTP::Post.new uri.request_uri
+    #       request.set_form_data req
+    #       #request.basic_auth 'username', 'password'
+
+    #       resp = http.request request
+
+    #       code=resp.code
+    #     end
+    #   rescue => e #Net::ReadTimeout, Net::OpenTimeout
+    #     logger.info "feedback_job: error #{e.message}"
+    #     code=500
+    #   end
+    #   render plain: code, layout: false
+    #   response.status=code
+    # end
+
+    def feedback_proposal params # feedback+user
+      #http://graphit.parallel.ru:8123/api/feedback-proposal?user=1&cluster=lomonosov-2&job_id=585183&task_id=0&feedback=something-something
+      uri=URI("http://graphit.parallel.ru:8123/api/feedback-proposal")
+
+      req={
+        user: parm[:user].to_i,
+        cluster: 'all',
+        job_id: 0,
+        tasks: 0,
+        feedback: parm[:feedback],
+      }
+      code,body=post_feedback(uri,req)
+      code
     end
 
     # hide rule
@@ -220,36 +218,31 @@ module Jobstat
       #FIXME! move address to config
       # POST: user=UID_octoshell(int), cluster=string(список через запятую), account=string(список через запятую), filters=string(имена тегов через запятую)
 
+      cond=parm[:condition]
+      if cond.to_s == ''
+        return 500, 'bad condition (empty)'
+      end
       uri=URI("http://graphit.parallel.ru:8123/api/filter")
+
+      filters=Job::get_filters(current_user)
+        .map { |x| x.filters }
+        .flatten
+        .uniq
+      if parm[:delete].to_s=='1'
+        filters.reject! {|x| x==cond}
+      else
+        filters.push cond
+      end
       req={
         user: parm[:user].to_i,
-        cluster: parm[:cluster],
-        condition: parm[:condition],
+        cluster: parm[:cluster] || 'all',
+        condition: filters.join(','),
         account: parm[:account],
       }
-      code=500
-      begin
-        Net::HTTP.start(uri.host, uri.port,
-                        :use_ssl => uri.scheme == 'https', 
-                        :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-                        :read_timeout => 5,
-                        :opent_imeout => 5,
-                        :ssl_timeout => 5,
-                       ) do |http|
-          request = Net::HTTP::Post.new uri.request_uri
-          request.set_form_data req
-          #request.basic_auth 'username', 'password'
-
-          resp = http.request request
-
-          code=resp.code
-        end
-        CacheData.delete("jobstat:filters:#{parm[:user]}")
-      rescue => e #Net::ReadTimeout, Net::OpenTimeout
-        logger.info "feedback_job: error #{e.message}"
-        code=500
-      end
-      code
+      logger.info "feedback_rule_show: REQ=#{req.inspect}"
+      code,body=post_feedback uri,req
+      CacheData.delete("jobstat:filters:#{parm[:user]}")
+      return code, ''
     end
 
     # hide rule
@@ -266,28 +259,8 @@ module Jobstat
         condition: parm[:condition],
         feedback: parm[:feedback],
       }
-      code=500
-      begin
-        Net::HTTP.start(uri.host, uri.port,
-                        :use_ssl => uri.scheme == 'https', 
-                        :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-                        :read_timeout => 5,
-                        :opent_imeout => 5,
-                        :ssl_timeout => 5,
-                       ) do |http|
-          request = Net::HTTP::Post.new uri.request_uri
-          request.set_form_data req
-          #request.basic_auth 'username', 'password'
-
-          resp = http.request request
-
-          code=resp.code
-        end
-      rescue => e #Net::ReadTimeout, Net::OpenTimeout
-        logger.info "feedback_rule: error #{e.message}"
-        code=500
-      end
-      code
+      code,body=post_feedback uri, req
+      return code,body
     end
 
     protected
@@ -330,6 +303,36 @@ module Jobstat
       rescue
       end
       rules
+    end
+
+    def post_feedback uri, req, user=nil, password=nil
+      code=500
+      resp=nil
+      begin
+        Net::HTTP.start(uri.host, uri.port,
+                        :use_ssl => uri.scheme == 'https', 
+                        :verify_mode => OpenSSL::SSL::VERIFY_NONE,
+                        :read_timeout => 5,
+                        :opent_imeout => 5,
+                        :ssl_timeout => 5,
+                       ) do |http|
+          request = Net::HTTP::Post.new uri.request_uri
+          request.set_form_data req
+          if user
+            request.basic_auth user, password.to_s
+          end
+          logger.info "post_feedback (#{uri})-> #{req.inspect}"
+          resp = http.request request
+
+          code=resp.code
+        end
+      rescue => e #Net::ReadTimeout, Net::OpenTimeout
+        logger.info "post_feedback #{uri}: error #{e.message}"
+        code=500
+      end
+      #render plain: code, layout: false
+      #response.status=code
+      return code, (resp ? resp.body : '')
     end
   end
 end

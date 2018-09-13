@@ -289,7 +289,7 @@ module Jobstat
                 json
               end
             else
-              logger.info "get_data: Bad response, code=#{code}"
+              logger.info "get_data: Bad response, code=#{response.code}"
               nil
             end
           end

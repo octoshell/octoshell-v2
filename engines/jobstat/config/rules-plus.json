@@ -1,6 +1,7 @@
 {
   "rules": {
     "rule_anomaly": {
+      "index": 10,
       "is_enabled": 1,
       "description": "Чрезвычайно низкая активность использования всех доступных ресурсов.",
       "comment": "Средняя загрузка процессора и средний load average катастрофически низки; загрузка ГПУ также очень низкая. ",
@@ -14,6 +15,7 @@
       "module_recommendation": "---"
     },
     "rule_disbalance_cpu_la": {
+      "index": 20,
       "is_enabled": 1,
       "description": "Заметный дисбаланс внутри узлов либо активность сильно отличается на разных узлах.",
       "comment": "max_cpu_user * avg_loadavg  / (avg_cpu_user * 28)",
@@ -27,6 +29,7 @@
       "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling"
     },
     "rule_avg_disbalance": {
+      "index": 30,
       "is_enabled": 0,
       "description": "Интенсивность использования ресурсов сильно отличается на разных узлах.",
       "comment": "TODO",
@@ -40,6 +43,7 @@
       "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling"
     },
     "rule_node_disbalance": {
+      "index": 40,
       "is_enabled": 0,
       "description": "Данные мониторинга сильно отличаются для разных узлов -> скорее всего, имеет место разбалансировка. Правило имеет смысл учитывать, если не сработали более конкретные правила",
       "comment": "TODO",
@@ -53,6 +57,7 @@
       "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling"
     },
     "rule_mem_disbalance": {
+      "index": 50,
       "is_enabled": 1,
       "description": "Заметный дисбаланс внутри узлов по использовании памяти.",
       "comment": "not check_class_susp and: 1) low load and store; or 2) low_l1_miss + low load or store; or 3) low_l1_miss + low_llc_miss + not very high load and store",
@@ -66,6 +71,7 @@
       "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling,memory_efficiency"
     },
     "rule_low_ipc": {
+      "index": 60,
       "is_enabled": 1,
       "description": "Скорость выполнения инструкций слишком мала. При этом не наблюдается высокой внешней активности (расчетов на ГПУ или передачи данных по сети).",
       "comment": "thr_low_ipc AND class_not_comm AND thr_low_gpu_load",
@@ -79,6 +85,7 @@
       "module_recommendation": "general_serial_analysis"
     },
     "rule_cpu_gpu": {
+      "index": 70,
       "is_enabled": 1,
       "description": "Задача слабо использует CPU при высокой загрузке GPU. ",
       "comment": "class_gpu_pure",
@@ -92,6 +99,7 @@
       "module_recommendation": "accelerator_analysis"
     },
     "rule_more_cpu_gpu": {
+      "index": 80,
       "is_enabled": 1,
       "description": "Задача практически не использует CPU при высокой загрузке GPU.",
       "comment": "class_gpu_pure AND tag_less_suspicious (без части про ГПУ)",
@@ -105,6 +113,7 @@
       "module_recommendation": "accelerator_analysis"
     },
     "rule_mpi_disbalance": {
+      "index": 90,
       "is_enabled": 1,
       "description": "Большой дислабанс на узлах между средним объемом передаваемых и получаемых данных по MPI сети.",
       "comment": "num_nodes > 1 AND NOT tag_low_ib_mpiAND (xmit_mpi/recv_data > MPI_DISBALANCE) OR (xmit_mpi/recv_data  < 1.0/MPI_DISBALANCE)",
@@ -118,6 +127,7 @@
       "module_recommendation": "mpi_profiling"
     },
     "rule_irq_iowait": {
+      "index": 100,
       "is_enabled": 1,
       "description": "Слишком высокая IRQ или IOWAIT загрузка.",
       "comment": "thr_high_cpu_irq OR thr_high_cpu_iowait",
@@ -131,6 +141,7 @@
       "module_recommendation": "---"
     },
     "rule_nice": {
+      "index": 110,
       "is_enabled": 1,
       "description": "Слишком высокая NICE загрузка.",
       "comment": "thr_high_cpu_nice",
@@ -144,6 +155,7 @@
       "module_recommendation": "---"
     },
     "rule_mpi_issues": {
+      "index": 120,
       "is_enabled": 1,
       "description": "Низкая активность использования вычислительных ресурсов при высокой интенсивности использования MPI сети.",
       "comment": "class_less_suspicious AND (tag_comm_data OR tag_comm_pckts)",
@@ -157,6 +169,7 @@
       "module_recommendation": "mpi_profiling"
     },
     "rule_mpi_many_operations": {
+      "index": 130,
       "is_enabled": 0,
       "description": "Низкая интенсивность использования MPI сети, однако число MPI операций велико.",
       "comment": "TODO",
@@ -170,6 +183,7 @@
       "module_recommendation": "mpi_profiling"
     },
     "rule_mpi_high_system": {
+      "index": 140,
       "is_enabled": 1,
       "description": "Работа с коммуникационнной сетью занимает слишком много системных ресурсов.",
       "comment": "num_nodes > 1 AND thr_low_ib AND thr_high_cpu_system",
@@ -183,6 +197,7 @@
       "module_recommendation": "mpi_profiling,io_analysis"
     },
     "rule_mpi_bad_locality": {
+      "index": 150,
       "is_enabled": 1,
       "description": "Задача активно работает с MPI сетью, но сетевая локальность плохая (узлы СК расположены далеко друг от друга).",
       "comment": "num_nodes > 1 AND ((thr_high_ib_mpi OR thr_high_ib_fs) AND NOT thr_low_network_sparsity)OR (NOT (thr_low_ib_mpi OR thr_low_ib_fs) AND thr_high_network_sparsity)))",
@@ -196,6 +211,7 @@
       "module_recommendation": "mpi_profiling"
     },
     "rule_mpi_packets": {
+      "index": 160,
       "is_enabled": 1,
       "description": "Размер MPI пакетов слишком маленький.",
       "comment": "class_less_suspicious AND NOT tag_comm_data AND tag_comm_pckts",
@@ -209,6 +225,7 @@
       "module_recommendation": "mpi_profiling"
     },
     "rule_mpi_small_packets": {
+      "index": 170,
       "is_enabled": 1,
       "description": "Слишком маленькие средние размеры MPI IB пакетов при достаточно высокой интенсивности использования коммуникационной сети.",
       "comment": "num_nodes > 1 AND NOT thr_low_ib_mpi AND (avg_mpi_xmit_packets < MPI_SMALL_PACKETS OR avg_mpi_rcv_packets < MPI_SMALL_PACKETS)",
@@ -222,6 +239,7 @@
       "module_recommendation": "mpi_profiling"
     },
     "rule_fs_small_packets": {
+      "index": 180,
       "is_enabled": 1,
       "description": "Слишком маленькие средние размеры ФС IB пакетов при достаточно высокой интенсивности использования коммуникационной сети.",
       "comment": "num_nodes > 1 AND NOT thr_low_ib_fs AND (avg_fs_xmit_packets < FS_SMALL_PACKETS OR avg_fs_rcv_packets < FS_SMALL_PACKETS)",
@@ -235,6 +253,7 @@
       "module_recommendation": "io_analysis"
     },
     "rule_normal_serial": {
+      "index": 190,
       "is_enabled": 1,
       "description": "Последовательная задача",
       "comment": "class_serial",
@@ -248,6 +267,7 @@
       "module_recommendation": "general_serial_analysis"
     },
     "rule_one_active_process": {
+      "index": 200,
       "is_enabled": 1,
       "description": "В даной задаче обнаружен только 1 активный процесс на узел, при этом интенсивность использования памяти, GPU или сети невысока.",
       "comment": "not tag_comm_data AND NOT thr_high_gpu_load AND (SERIAL_LA_MIN < loadavg.avg < SERIAL_LA_MAX)AND (NOT thr_high_mem_load AND not thr_high_mem_store)",
@@ -261,6 +281,7 @@
       "module_recommendation": "---"
     },
     "rule_not_effective": {
+      "index": 210,
       "is_enabled": 1,
       "description": "Низкая активность использования всех доступных ресурсов (процессоров, памяти, коммуникационной сети, графических ускорителей).",
       "comment": "class_less_suspicious AND (tag_not_comm OR tag_serial OR tag_single) AND NOT tag_data_intensive",
@@ -274,6 +295,7 @@
       "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling"
     },
     "rule_bad_mem": {
+      "index": 220,
       "is_enabled": 1,
       "description": "Низкая активность использования вычислительных ресурсов при высокой интенсивности работы с памятью.",
       "comment": "class_less_suspicious AND (tag_not_comm OR tag_serial OR tag_single) AND tag_data_intensive",
@@ -287,6 +309,7 @@
       "module_recommendation": "memory_efficiency"
     },
     "rule_bad_locality": {
+      "index": 230,
       "is_enabled": 1,
       "description": "Низкая активность работы задачи при низкой локальности обращений в память.",
       "comment": "class_less_suspicious AND (tag_not_comm OR tag_serial OR tag_single) AND (tag_bad_locality OR tag_weird_locality)  ",
@@ -300,6 +323,7 @@
       "module_recommendation": "memory_efficiency"
     },
     "rule_locality": {
+      "index": 240,
       "is_enabled": 1,
       "description": "Высокая интенсивность работы с памятью при низкой локальности обращений в память.",
       "comment": "class_data_intensive AND tag_bad_locality",
@@ -313,6 +337,7 @@
       "module_recommendation": "memory_efficiency"
     },
     "rule_cache": {
+      "index": 250,
       "is_enabled": 1,
       "description": "Низкая активность работы задачи при высокой интенсивности работы с памятью и низкой локальности обращений в память.",
       "comment": "class_less_suspicious AND (tag_not_comm OR tag_serial OR tag_single) AND tag_data_intensive AND (tag_bad_locality OR tag_weird_locality)  ",
@@ -326,6 +351,7 @@
       "module_recommendation": "memory_efficiency"
     },
     "rule_interleave": {
+      "index": 260,
       "is_enabled": 1,
       "description": "Низкая активность работы задачи при высокой интенсивности работы с памятью и высокой локальности обращений в память.",
       "comment": "class_less_suspicious AND (tag_not_comm OR tag_serial OR tag_single) AND tag_data_intensive AND tag_good_locality ",
@@ -339,6 +365,7 @@
       "module_recommendation": "memory_efficiency,static_analysis"
     },
     "rule_wrong_partition_gpu": {
+      "index": 270,
       "is_enabled": 1,
       "description": "Задача запущена в разделе для GPU задач, однако практически не использует графические процессоры.",
       "comment": "partition in GPU_PARTITIONS AND avg_gpu_load < GPU_LOAD_LOW",
@@ -352,6 +379,7 @@
       "module_recommendation": "---"
     },
     "rule_wrong_partition_io": {
+      "index": 280,
       "is_enabled": 1,
       "description": "Задача запущена в разделе для задач с невысокими требованиям к скорости ввода/вывода, однако в этой задаче интенсивность ввода/вывода велика.",
       "comment": "not thr_low_ib_fs AND partition in LOW_IO_PARTITIONS",
@@ -367,15 +395,15 @@
   },
   "groups": {
     "disaster": { "icon": "far fa-times-circle", "color": "color-red"},
-    "disbalance": { "icon": "far fa-balance-scale", "color": "color-regular", "alt":"stream ? chart-bar ? sort-amount-up ?"},
-    "general_low_efficiency": { "icon": "far fa-exclamation", "color": "color-orange", "alt": "(а можно кстати взять такой же как disaster, только окрасить в оранжевый/желтый)"},
-    "gpu_based": { "icon": "far fa-tachometer-alt", "color": "color-regular"},
-    "incorrect_behavior": { "icon": "far fa-ban", "color": "color-regular"},
-    "inefficient_mpi": { "icon": "far fa-exchange-alt", "color": "color-regular"},
-    "inefficient_network_packets": { "icon": "far fa-project-diagram", "color": "color-regular"},
-    "serial_like_jobs": { "icon": "far fa-laptop", "color": "color-regular", "alt":"desktop"},
-    "suspicious_and_not_communicative": { "icon": "far fa-comment-slash", "color": "color-regular"},
-    "wrong_partition": { "icon": "far fa-random", "color": "color-regular"}
+    "disbalance": { "icon": "fas fa-balance-scale", "color": "color-regular", "alt":"stream ? chart-bar ? sort-amount-up ?"},
+    "general_low_efficiency": { "icon": "fas fa-exclamation", "color": "color-orange", "alt": "(а можно кстати взять такой же как disaster, только окрасить в оранжевый/желтый)"},
+    "gpu_based": { "icon": "fas fa-tachometer-alt", "color": "color-regular"},
+    "incorrect_behavior": { "icon": "fas fa-ban", "color": "color-regular"},
+    "inefficient_mpi": { "icon": "fas fa-exchange-alt", "color": "color-regular"},
+    "inefficient_network_packets": { "icon": "fas fa-project-diagram", "color": "color-regular"},
+    "serial_like_jobs": { "icon": "fas fa-laptop", "color": "color-regular", "alt":"desktop"},
+    "suspicious_and_not_communicative": { "icon": "fas fa-comment-slash", "color": "color-regular"},
+    "wrong_partition": { "icon": "fas fa-random", "color": "color-regular"}
   }
 
 }

@@ -2,7 +2,8 @@
   position: absolute;
   overflow-y: visible;
   overflow-x: hidden;
-/*  top: 10%;
+  /*
+  top: 10%;
   right: 10%;
   bottom: 85px;
   left: 10%;
@@ -10,35 +11,37 @@
   */
   display: block;
   border-radius: 4px;
-  transform: translateY(20px);
+  /*transform: translateY(20px);
   transition: all 0.6s;
-  -webkit-transition: all 0.6s;
+  -webkit-transition: all 0.6s;*/
   visibility: hidden;
+  /*max-height: 0px;*/
 }
 .popup-wrap .content {
-  opacity: 0;
+  opacity: 1;
 }
 .popup-wrap:before {
   position: absolute;
   width: 1px;
   height: 1px;
-  background: white;
+  background: #fff;
   content: "";
   bottom: 10px;
   left: 50%;
   top: 95%;
   color: #fff;
   border-radius: 50%;
-  -webkit-transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
-  transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+  /*-webkit-transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);*/
 }
 .popup-wrap.active {
   display: block;
+  /*max-height: 2000px;*/
   visibility: visible;
   box-shadow: 2px 3px 16px silver;
-  transition: all 0.6s;
+  /*transition: all 0.6s;
   -webkit-transition: all 0.6s;
-  transform: translateY(0px);
+  transform: translateY(0px);*/
 }
 .popup-wrap.active:before {
   height: 2000px;
@@ -49,15 +52,16 @@
   top: 50%;
   left: 50%;
   display: block;
-  -webkit-transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
-  transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+  /*-webkit-transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);*/
 }
 .popup-wrap.active .content {
   position: relative;
-  z-index: 100;
+  z-index: 1000;
   opacity: 1;
-  transition: all 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19);
-  -webkit-transition: all 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  /*background: #101010;*/
+  /*transition: all 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  -webkit-transition: all 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19);*/
 }
 
 a.circle-button {
@@ -93,4 +97,12 @@ a.circle-button.active {
 
 .width80 {
   width:  80vw;
+}
+
+.fullwidth {
+  width:  100%;
+}
+
+.white {
+  background-color:  white;
 }

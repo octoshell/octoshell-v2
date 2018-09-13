@@ -1,8 +1,9 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: new_octoshell_development
+  database: new_octoshell
   user: octo
+  host: localhost
   password: 'octopass'
 
 test:
@@ -10,6 +11,7 @@ test:
   encoding: unicode
   database: new_octoshell_test
   user: octo
+  host: localhost
   password: 'octopass'
 
 production:
@@ -19,4 +21,5 @@ production:
   pool: 10
   min_messages: warning
   user: octo
+  host: localhost
   password: 'octopass'

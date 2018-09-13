@@ -1,7 +1,10 @@
 //fixme! translate
 h1 Информация о задаче #{@job[:drms_job_id]}
 
-= @job[:command]
+a href='/jobstat/account/list/index' Вернуться к списку запусков
+br
+h5
+  = @job[:command]
 
 div class="row"
   div class="col-md-4"
