@@ -1,7 +1,89 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
+i.color-regular {
+  color: black;
+}
+
+i.color-red {
+  color: red;
+}
+
+i.color-orange {
+  color: orange;
+}
+
+/************************************/
+/*  Usage:
+  div class="accordion"
+    input type="checkbox" id="one"
+    label for="one">LABEL
+
+    article collapsed text
 */
+
+.accordion label{
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.accordion input + label:before {
+  content: '\f105';
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+}
+
+.accordion input:checked + label:before {
+  content: '\f107';
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+}
+
+.accordion input:checked + label,
+.accordion input:checked + label:hover{
+    text-shadow: 0px 1px 1px rgba(255,255,255, 0.6);
+    box-shadow: 
+        0px 0px 0px 1px rgba(155,155,155,0.3), 
+        0px 2px 2px rgba(0,0,0,0.1);
+}
+
+.accordion label:hover:after,
+.accordion input:checked + label:hover:after{
+  content: '';
+  position: absolute;
+}
+
+/* .accordion input:checked + label:hover:after {
+    background-image: url(http://netcribe.com/example/arrow_up.png);
+}
+ */
+.accordion input{
+  display: none;
+}
+
+.accordion article{
+  overflow: hidden;
+  max-height: 0px;
+  position: relative;
+  -webkit-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -moz-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -o-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -ms-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+  transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+}
+
+.accordion input:checked ~ article{
+  -webkit-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -moz-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -o-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -ms-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+  transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+
+  max-height: 500px;
+}
+
+.perf-table input.hide-login-data:checked ~ .login-data{
+  display: none;
+}
+
 
 .job_metric_low {
   background-color: #ff8080 !important;
@@ -41,44 +123,44 @@
 
  /* Popup container */
 .popup {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
 }
 
 /* The actual popup (appears on top) */
 .popup .popuptext {
-    visibility: hidden;
-    width: 260px;
-    background-color: #ccc;
-    color: #000;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -80px;
+  visibility: hidden;
+  width: 260px;
+  background-color: #ccc;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
 }
 
 /* Popup arrow */
 .popup .popuptext::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #ccc transparent transparent transparent;
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #ccc transparent transparent transparent;
 }
 
 /* Toggle this class when clicking on the popup container (hide and show the popup) */
 .popup .active {
-    visibility: visible;
-    -webkit-animation: fadeIn 1s;
-    animation: fadeIn 1s;
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
 }
 
 .hidden_box {
@@ -95,23 +177,24 @@
 
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
 
 @keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity:1 ;}
+  from {opacity: 0;}
+  to {opacity:1 ;}
 }
 
 @font-face {
-    font-family: 'signals';
-    src: url('/fonts/signals-font.woff') format('woff'),
-         url('/fonts/signals-font.ttf') format('truetype'),
-         url('/fonts/signals-font.svg#signals') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'signals';
+  src: url('/fonts/signals-font.woff') format('woff'),
+       url('/fonts/signals-font.ttf') format('truetype'),
+       url('/fonts/signals-font.svg#signals') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
+
 [class*='icon-signal-']:before{
   display: inline-block;
    font-family: 'signals';
@@ -136,19 +219,19 @@
 
 
 .dropdown {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 400px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-    z-index: 1;
-    opacity: 0;
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 400px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  opacity: 0;
 }
 
 @media screen and (width: (479px,600px)) {
@@ -238,18 +321,18 @@
 }
 
 .centered-popup .popuptext {
-    visibility: visible; /*hidden;*/
-    width: 100%;
-    background-color: #ccc;
-    color: #000;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -80px;
+  visibility: visible; /*hidden;*/
+  width: 100%;
+  background-color: #ccc;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
 }
 
 
@@ -277,14 +360,3 @@
   width: 3em;
 }
 
-.color-regular {
-  color: black;
-}
-
-.color-red {
-  color: red;
-}
-
-.color-orange {
-  color: orange;
-}

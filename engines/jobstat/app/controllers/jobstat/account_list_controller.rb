@@ -169,6 +169,10 @@ module Jobstat
       end
     end
 
+    def all_rules
+      @rules_plus=load_rules
+    end
+
     def feedback_job parm
       old_filters=Job::get_filters(current_user) || []
       new_filters=parm[:filters] || []
