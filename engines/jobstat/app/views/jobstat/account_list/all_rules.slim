@@ -1,0 +1,32 @@
+- group_plus = @rules_plus['groups']
+- def_icon = {'icon'=>'far fa-exclamation-triangle'}
+
+
+h3 Job assess rules
+
+a href="index" Вернуться к списку запусков
+
+button
+  | Хочу предложить новое правило
+
+section class="accordion"
+  h4 Список всех правил оценки запусков приложений
+  - @rules_plus.sort{|a,b| a[1]['index'] <=> b[1]['index']}.each do |r|
+    - rule=r[1]
+    - icon = group_plus.fetch(rule['group'],def_icon)
+    div
+      input type="checkbox" id="rule-#{r[0]}" name="box"
+      label for="rule-#{r[0]}"
+        i class="fa-fw align-left inline #{icon['icon']} #{icon['color']}"
+        | &nbsp;
+        = rule['description']
+      button 
+        | Скрыть/вернуть
+      button
+        | [не] оповещать по email
+      button
+        | Высказать мнение по правилу
+      article
+        p Описание: #{rule['comment']}
+        p Предполагаемая причина: #{rule['suggestion']}
+        p Рекомендации: #{rule['text_recommendation']}
