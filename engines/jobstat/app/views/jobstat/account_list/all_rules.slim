@@ -42,20 +42,19 @@ section class="accordion"
               | Поясните, почему Вы хотите скрыть правило в выдачах результатов расчётов?
             input type="text" id="text_hide_rule_#{r[0]}" class="centered fullwidth" style="display: block"
             div class="centered white"
-              button class="btn-info" onClick="$('#hide_rule_#{r[0]}').removeClass('active');hide_rule('#{r[0]}',false);"
+              button class="btn-info" onClick="hide_rule('#{r[0]}',false);"
                 | Скрыть правило!
               button onClick="$('#hide_rule_#{r[0]}').removeClass('active');"
                 | Передумал
         | &nbsp;
-        button id="btn-email-#{r[0]}" class="btn-warning" onClick="email_rule(#{r[0]})" title="Оповещать по email/не оповещать"
+        button id="btn-email-#{r[0]}" class="btn-warning" onClick="pre_email_rule('#{r[0]}')" title="Оповещать по email/не оповещать"
           i class="fa-fw fas fa-envelope"
         div class="popup-wrap width80" id="email_rule_#{r[0]}"
           div class="content"
             div class="centered white"
-              | Поясните, почему Вы не хотите получать уведомления по email о срабатывании этого правила?
-            input type="text" id="text_email_rule_#{r[0]}" class="centered fullwidth" style="display: block"
+              | Вы уверены, что не хотите получать уведомления по email о срабатывании этого правила?
             div class="centered white"
-              button class="btn-info" onClick="$('#email_rule_#{r[0]}').removeClass('active');hide_rule('#{r[0]}');"
+              button class="btn-info" onClick="email_rule('#{r[0]}',false);"
                 | Отключить уведомления!
               button onClick="$('#email_rule_#{r[0]}').removeClass('active');"
                 | Передумал
@@ -74,6 +73,18 @@ section class="accordion"
 javascript:
   
   var filters=#{{@filters.to_json}}
+  var emails=#{{@emails.to_json}}
+
+  $(function(){
+    // mark hidden rules
+    filters.forEach(function(rule){
+      $("#btn-hide-"+rule).addClass("tinted")
+    })
+    // mark disabled email notifications
+    emails.forEach(function(rule){
+      $("#btn-email-"+rule).addClass("tinted")
+    })
+  })
 
   function send_suggestion(){
     var cu=#{{@current_user.id}};
@@ -87,13 +98,6 @@ javascript:
       url: "feedback",
       data: {'feedback': feedback, 'type': 'feedback_rule'},
     })
-    // .done(function( msg ) {
-    //   restore_disagree_button()
-    //   //update_jobs_agree(feedback)
-    // }).fail(function( msg ) {
-    //   restore_disagree_button()
-    //   //update_jobs_agree(feedback)
-    // });
   }
 
   function pre_hide_rule(rule_id) {
@@ -134,8 +138,40 @@ javascript:
     })
   }
 
-  function email_rule(rule_id) {
+  function pre_email_rule(rule_id) {
+    var i=emails.indexOf(rule_id)
+    if(i>-1){
+      // already disabled! Enable it!!!
+      emails.splice(i,1)
+      email_rule(rule_id,true)
+    }
+    else{
+      // open confirmation dialog
+      $("#email_rule_"+rule_id).addClass('active')
+    }
+  }
 
+  function email_rule(rule_id,del) {
+    var cu=#{{@current_user.id}};
+    var feedback={
+      user: cu,
+      condition: rule_id,
+      delete: (del ? 1 : 0),
+    }
+    emails.push(rule_id)
+    if(del){
+      $("#btn-email-"+rule_id).removeClass("tinted")
+    }
+    else{
+      $("#btn-email-"+rule_id).addClass("tinted")
+    }
+    $("#email_rule_"+rule_id).removeClass('active')
+
+    $.ajax({
+      type: "POST",
+      url: "feedback",
+      data: {'feedback': feedback, 'type': 'email_rule'},
+    })
   }
 
   function feedback_rule(rule_id) {

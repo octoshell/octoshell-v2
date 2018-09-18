@@ -117,6 +117,8 @@ module Jobstat
         feedback_rule_show params[:feedback]    # hide one rule
       when 'feedback_rule'
         feedback_rule params[:feedback]         # ...
+      when 'email_rule'
+        email_rule params[:feedback]            #  enable/disable email notification for rules
       else
         logger.info "Bad feedback type: #{params[:type]}"
         500 #, "Bad feedback type: #{params[:type]}"
@@ -149,53 +151,10 @@ module Jobstat
       @rules_plus=load_rules
       @filters=Job::get_filters(current_user).map { |x| x.filters }.flatten.uniq
       @current_user=current_user
+
+      # FIXME!!! just for tests!
+      @emails = ["rule_avg_disbalance"]
     end
-
-    # def feedback_job parm
-    #   old_filters=Job::get_filters(current_user) || []
-    #   new_filters=parm[:filters] || []
-    #   code=Job::post_filters(parm[:user].to_i, old_filters+new_filters)
-    #   render plain: code, layout: false
-    #   response.status=code
-    # end
-
-    # def feedback_jobs parm
-    #   #TODO make caching for not confirmed sends
-    #   #FIXME! move address to config
-    #   uri=URI("http://graphit.parallel.ru:8123/api/feedback-jobs")
-
-    #   jobs=parm[:jobs].split(',')
-    #   req={
-    #     user: parm[:user].to_i,
-    #     cluster: parm[:cluster],
-    #     jobs: jobs,
-    #     tasks: jobs,
-    #     feedback: parm[:feedback],
-    #   }
-    #   code=500
-    #   begin
-    #     Net::HTTP.start(uri.host, uri.port,
-    #                     :use_ssl => uri.scheme == 'https', 
-    #                     :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-    #                     :read_timeout => 5,
-    #                     :opent_imeout => 5,
-    #                     :ssl_timeout => 5,
-    #                    ) do |http|
-    #       request = Net::HTTP::Post.new uri.request_uri
-    #       request.set_form_data req
-    #       #request.basic_auth 'username', 'password'
-
-    #       resp = http.request request
-
-    #       code=resp.code
-    #     end
-    #   rescue => e #Net::ReadTimeout, Net::OpenTimeout
-    #     logger.info "feedback_job: error #{e.message}"
-    #     code=500
-    #   end
-    #   render plain: code, layout: false
-    #   response.status=code
-    # end
 
     def feedback_proposal params # feedback+user
       #http://graphit.parallel.ru:8123/api/feedback-proposal?user=1&cluster=lomonosov-2&job_id=585183&task_id=0&feedback=something-something
@@ -210,6 +169,18 @@ module Jobstat
       }
       code,body=post_feedback(uri,req)
       code
+    end
+
+    # enable/disable email notifications
+    def email_rule parm
+      email={
+        user: parm[:user].to_i,
+        condition: parm[:condition],
+        del: parm[:delete]
+      }
+      #TODO implement storing user/condition pairs for disabled notifications
+      logger.info "!!!!!!!!!!!!! NOT IMPLEMENTED YET: #{email}"
+      200
     end
 
     # hide rule
@@ -242,7 +213,7 @@ module Jobstat
       logger.info "feedback_rule_show: REQ=#{req.inspect}"
       code,body=post_feedback uri,req
       CacheData.delete("jobstat:filters:#{parm[:user]}")
-      return code, ''
+      code
     end
 
     # hide rule
@@ -260,7 +231,7 @@ module Jobstat
         feedback: parm[:feedback],
       }
       code,body=post_feedback uri, req
-      return code,body
+      code
     end
 
     protected
@@ -332,7 +303,7 @@ module Jobstat
       end
       #render plain: code, layout: false
       #response.status=code
-      return code, (resp ? resp.body : '')
+      return code
     end
   end
 end
