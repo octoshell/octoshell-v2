@@ -10,10 +10,6 @@ i.color-orange {
   color: orange;
 }
 
-.tinted {
-  opacity: 0.3;
-}
-
 /************************************/
 /*  Usage:
   div class="accordion"
@@ -215,9 +211,8 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
    font-style: normal;
    font-weight: normal;
    line-height: 1;
-   -webkit-font-smoothing: antialiased;
-   -moz-osx-font-smoothing: grayscale;
 }
+
 .icon-signal-0:before{content:'a';}
 .icon-signal-1:before{content:'b';}
 .icon-signal-2:before{content:'c';}
@@ -247,6 +242,7 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
   z-index: 1;
   opacity: 0;
 }
+
 
 @media screen and (width: (479px,600px)) {
   .dropdown-content {
@@ -309,7 +305,7 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
   opacity: 0;
 }
 
-@media (width: (479px,1024px) {
+@media (width: (479px,1024px)) {
   .centered-popup {
     width: 50%;
     height: 50%;
@@ -372,5 +368,10 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
 
 .td.th.icon-x2-width, .th.icon-x2-width {
   width: 3em;
+}
+
+
+.tinted {
+  opacity: 0.3;
 }
 
