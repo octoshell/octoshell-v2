@@ -4,7 +4,6 @@
 - group_plus = @rules_plus['groups']
 - def_icon = {'icon'=>'far fa-exclamation-triangle'}
 javascript:
-
   var jobs=#{{@jobs_plus.to_json}}
   var jobs_feedback=#{{@jobs_feedback.to_json}}
   var current_user=#{@current_user.id}
@@ -12,6 +11,9 @@ javascript:
   var rules_plus=#{{@rules_plus.to_json}}
   var filters=#{{@filters.to_json}}
   var emails=#{{@emails.to_json}}
+
+  var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
+  // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
 
 h3 Job table query interface
 
@@ -92,6 +94,8 @@ div class="perf-table"
           | hours
         th
           | job size (node*hours)
+        th class="perf-data"
+          | job size
         th class="perf-data"
           | cpu load
         th class="perf-data"
