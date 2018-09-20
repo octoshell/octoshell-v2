@@ -10,6 +10,7 @@ require "mina/git"
 
 domain=ENV['DEPLOY_DOMAIN'] || "ooctoshell-v2.parallel.ru"
 user=ENV['DEPLOY_USER'] || 'admin'
+port=ENV['DEPLOY_PORT'] || 22
 ruby_ver=ENV['DEPLOY_RUBY'] || "jruby-9.1.10.0"
 repo=ENV['DEPLOY_REPO'] || "https://github.com/octoshell/octoshell-v2.git"
 branch=ENV['DEPLOY_BRANCH'] || "rails4_2_jruby_9000"
@@ -20,6 +21,7 @@ set :domain, domain
 set :forward_agent, true
 set :application, "octoshell2"
 set :user, user
+set :port, port
 set :dbuser, dbuser
 set :dbpass, dbpass
 set :rbenv_ruby_version, ruby_ver

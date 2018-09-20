@@ -4,12 +4,14 @@
 - group_plus = @rules_plus['groups']
 - def_icon = {'icon'=>'far fa-exclamation-triangle'}
 javascript:
+
   var jobs=#{{@jobs_plus.to_json}}
   var jobs_feedback=#{{@jobs_feedback.to_json}}
   var current_user=#{@current_user.id}
   var agree_flags=#{{@agree_flags.to_json}}
   var rules_plus=#{{@rules_plus.to_json}}
-
+  var filters=#{{@filters.to_json}}
+  var emails=#{{@emails.to_json}}
 
 h3 Job table query interface
 

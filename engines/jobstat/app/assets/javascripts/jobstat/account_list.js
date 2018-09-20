@@ -132,7 +132,8 @@ function disagree(jobid, rule) {
   }).fail(function( msg ) {
     restore_disagree_button()
     //update_jobs_agree(feedback)
-  });}
+  });
+}
 
 function hide_rule_on_page(rule) {
   $(".cond-div").each(function(div){

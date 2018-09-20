@@ -18,7 +18,7 @@ div class="popup-wrap width80" id="suggest_new_rule"
       | Впишите свои предложения по новому правилу оценки запуска. Постарайтесь сформулировать их как можно более подробно и развёрнуто.
     input type="text" id="suggest_new_rule_text" class="centered fullwidth"
     div class="centered white"
-      button class="btn-info" onClick="$('#suggest_new_rule').removeClass('active');send_suggestion();"
+      button class="btn-info" onClick="$('#suggest_new_rule').removeClass('active');all_send_suggestion();"
         | Отправить!
       button onClick="$('#suggest_new_rule').removeClass('active');"
         | Передумал
@@ -34,7 +34,7 @@ section class="accordion"
       label for="rule-#{r[0]}"
         | &nbsp;
         - tint = @filters.any?{|x|x==r[0]} ? "tinted" : ""
-        button id="btn-hide-#{r[0]}" class="btn-warning #{tint}" onClick="pre_hide_rule('#{r[0]}')" title="Скрыть правило/снова показывать"
+        button id="btn-hide-#{r[0]}" class="btn-warning #{tint}" onClick="all_pre_hide_rule('#{r[0]}')" title="Скрыть правило/снова показывать"
           i class="fa-fw fas fa-bell-slash"
         div class="popup-wrap width80" id="hide_rule_#{r[0]}"
           div class="content"
@@ -42,25 +42,35 @@ section class="accordion"
               | Поясните, почему Вы хотите скрыть правило в выдачах результатов расчётов?
             input type="text" id="text_hide_rule_#{r[0]}" class="centered fullwidth" style="display: block"
             div class="centered white"
-              button class="btn-info" onClick="hide_rule('#{r[0]}',false);"
+              button class="btn-info" onClick="all_hide_rule('#{r[0]}',false);"
                 | Скрыть правило!
               button onClick="$('#hide_rule_#{r[0]}').removeClass('active');"
                 | Передумал
         | &nbsp;
-        button id="btn-email-#{r[0]}" class="btn-warning" onClick="pre_email_rule('#{r[0]}')" title="Оповещать по email/не оповещать"
+        button id="btn-email-#{r[0]}" class="btn-warning" onClick="all_pre_email_rule('#{r[0]}')" title="Оповещать по email/не оповещать"
           i class="fa-fw fas fa-envelope"
         div class="popup-wrap width80" id="email_rule_#{r[0]}"
           div class="content"
             div class="centered white"
               | Вы уверены, что не хотите получать уведомления по email о срабатывании этого правила?
             div class="centered white"
-              button class="btn-info" onClick="email_rule('#{r[0]}',false);"
+              button class="btn-info" onClick="all_email_rule('#{r[0]}',false);"
                 | Отключить уведомления!
               button onClick="$('#email_rule_#{r[0]}').removeClass('active');"
                 | Передумал
         | &nbsp;
-        button class="btn-info" onClick="feedback_rule(#{r[0]})" title="Высказать мнение по правилу"
+        button class="btn-info" onClick="all_pre_feedback_rule('#{r[0]}')" title="Высказать мнение по правилу"
           i class="fa-fw fas fa-volume-up"
+        div class="popup-wrap width80" id="feedback_rule_#{r[0]}"
+          div class="content"
+            div class="centered white"
+              | Максимально подробнее опишите Ваши комментарии:
+            input type="text" id="text_feedback_rule_#{r[0]}" class="centered fullwidth" style="display: block"
+            div class="centered white"
+              button class="btn-info" onClick="all_feedback_rule('#{r[0]}');"
+                | Отправить комментарий!
+              button onClick="$('#feedback_rule_#{r[0]}').removeClass('active');"
+                | Передумал
         | &nbsp; &nbsp;
         i class="fa-fw #{icon['icon']} #{icon['color']}"
         | &nbsp;
@@ -71,7 +81,12 @@ section class="accordion"
         p <strong>Рекомендации:</strong> #{rule['text_recommendation']}
 
 javascript:
-  
+
+  var filters=#{{@filters.to_json}}
+  var emails=#{{@emails.to_json}}
+  var current_user=#{{@current_user.id}};
+
+/*  
   var filters=#{{@filters.to_json}}
   var emails=#{{@emails.to_json}}
 
@@ -174,6 +189,23 @@ javascript:
     })
   }
 
-  function feedback_rule(rule_id) {
-    
+  function pre_feedback_rule(rule_id) {
+    $("#feedback_rule_"+rule_id).addClass('active')
   }
+
+  function feedback_rule(rule_id) {
+    var cu=#{{@current_user.id}};
+    var feedback={
+      user: cu,
+      condition: rule_id,
+      feedback: $('#feedback_rule_'+rule_id)
+    }
+    $("#email_rule_"+rule_id).removeClass('active')
+
+    $.ajax({
+      type: "POST",
+      url: "feedback",
+      data: {'feedback': feedback, 'type': 'proposal'},
+    })
+  }
+  */

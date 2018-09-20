@@ -97,6 +97,9 @@ module Jobstat
       # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
       @filters=Job::get_filters(current_user).map { |x| x.filters }.flatten.uniq
       # -> [cond1,cond2,...]
+
+      # FIXME!!!!!! (see all_rules)
+      @emails = ["rule_avg_disbalance"]
     end
 
     # def get_feedback_job(user,jobs)
@@ -156,7 +159,7 @@ module Jobstat
       @emails = ["rule_avg_disbalance"]
     end
 
-    def feedback_proposal params # feedback+user
+    def feedback_proposal parm
       #http://graphit.parallel.ru:8123/api/feedback-proposal?user=1&cluster=lomonosov-2&job_id=585183&task_id=0&feedback=something-something
       uri=URI("http://graphit.parallel.ru:8123/api/feedback-proposal")
 
