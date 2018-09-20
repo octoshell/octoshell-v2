@@ -69,6 +69,20 @@ module Jobstat
       FloatDatum.where(job_id: job.id, name: "ib_xmit_data_mpi").first_or_create
           .update({value: params["avg"]["ib_xmit_data_mpi"]})
     end
+    
+    def post_digest
+      drms_job_id = params["job_id"]
+      drms_task_id = params.fetch("task_id", 0)
+
+      job = Job.where(drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+
+      DigestFloatData.where(job_id: job.id).destroy_all
+
+      params["data"].each do |entry|
+        DigestFloatData.where(job_id: job.id, name: params["name"]).first_or_create
+          .update({value: entry["avg"], time: Time.at(entry["time"]).utc.to_datetime})
+      end
+    end
 
     #before_filter :parse_request, :authenticate_from_token!, only: [:push]
 

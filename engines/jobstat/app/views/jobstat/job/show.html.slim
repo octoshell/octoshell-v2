@@ -279,12 +279,12 @@ javascript:
 
   function DrawGraphs()
   {
-    DrawSingleGraph("g_cpu", [[0, 0], [1, 10], [2, 30]], 100);
-    DrawSingleGraph("g_gpu", [[0, 0], [1, 10], [2, 30]], 100);
-    DrawSingleGraph("g_loadavg", [[0, 0], [1, 10], [2, 30]]);
-    DrawSingleGraph("g_ipc", [[0, 0], [1, 10], [2, 30]]);
-    DrawSendRecvGraph("g_ib_mpi", [[0, 0, 0], [1, 2, 3], [2, 4, 2]]);
-    DrawSendRecvGraph("g_ib_fs", [[0, 0, 0], [1, 2, 3], [2, 4, 2]]);
+    DrawSingleGraph("g_cpu", [<%= raw @cpu_digest_data.to_json %>, 100);
+    DrawSingleGraph("g_gpu", [<%= raw @gpu_digest_data.to_json %>, 100);
+    DrawSingleGraph("g_loadavg", [<%= raw @loadavg_digest_data.to_json %>);
+    DrawSingleGraph("g_ipc", [<%= raw @ipc_digest_data.to_json %>);
+    DrawSendRecvGraph("g_ib_mpi", [<%= raw @mpi_digest_data.to_json %>]);
+    DrawSendRecvGraph("g_ib_fs", [<%= raw @fs_digest_data.to_json %>]);
   }
 
   $(document).ready(function(){
