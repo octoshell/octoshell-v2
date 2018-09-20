@@ -157,12 +157,6 @@ module Jobstat
 
       # FIXME!!! just for tests!
       @emails = ["rule_avg_disbalance"]
-    def feedback_job parm
-      old_filters=Job::get_filters(current_user) || []
-      new_filters=parm[:filters] || []
-      code=Job::post_filters(parm[:user].to_i, old_filters+new_filters)
-      render plain: code, layout: false
-      response.status=code
     end
 
     def feedback_proposal parm

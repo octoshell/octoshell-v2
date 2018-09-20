@@ -38,7 +38,7 @@ set :shared_files, %w(config/puma.rb config/settings.yml config/database.yml)
 set :force_asset_precompile, true
 set :rails_env, 'production'
 
-task :environment do
+task :remote_environment do
   invoke :"rbenv:load"
 end
 
