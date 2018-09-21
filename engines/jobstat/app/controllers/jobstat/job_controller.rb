@@ -14,7 +14,7 @@ module Jobstat
       result = []
 
       dataset_a.each do |entry|
-        result = [entry.time, entry.value, tmp_hash[entry.time]]
+	      result.push([entry.time.to_i, entry.value, tmp_hash[entry.time]])
       end
 
       result
@@ -24,7 +24,7 @@ module Jobstat
       result = []
 
       dataset.each do |entry|
-        result = [entry.time, entry.value]
+	      result.push([entry.time.to_i, entry.value])
       end
 
       result
@@ -37,16 +37,16 @@ module Jobstat
       @ranking = @job.get_ranking
       @current_user = current_user
 
-      @cpu_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "cpu_user").all)
-      @gpu_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "gpu_load").all)
-      @loadavg_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "loadavg").all)
-      @ipc_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "ipc").all)
+      @cpu_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "cpu_user").order(:time).all)
+      @gpu_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "gpu_load").order(:time).all)
+      @loadavg_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "loadavg").order(:time).all)
+      @ipc_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "ipc").order(:time).all)
 
-      rcv_mpi = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_mpi").all
-      xmit_mpi = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_mpi").all
+      rcv_mpi = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_mpi").order(:time).all
+      xmit_mpi = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_mpi").order(:time).all
 
-      rcv_fs = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_fs").all
-      xmit_fs = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_fs").all
+      rcv_fs = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_fs").order(:time).all
+      xmit_fs = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_fs").order(:time).all
 
       @mpi_digest_data = graph_data_multi(rcv_mpi, xmit_mpi)
       @fs_digest_data = graph_data_multi(rcv_fs, xmit_fs)

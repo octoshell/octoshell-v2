@@ -222,8 +222,11 @@ script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"
 javascript:
   function DrawSingleGraph(target, sensor_data, max)
   {
+	for(var i = 0; i < sensor_data.length; i++)
+	sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+
       var data = new google.visualization.DataTable();
-      data.addColumn('number', 'время');
+      data.addColumn('datetime', 'время');
       data.addColumn('number', 'среднее %');
 
       data.addRows(sensor_data);
@@ -253,9 +256,12 @@ javascript:
 
   function DrawSendRecvGraph(target, sensor_data)
   {
+	for(var i = 0; i < sensor_data.length; i++)
+	sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+
       var data = new google.visualization.DataTable();
       //fixme! translate
-      data.addColumn('number', 'время');
+      data.addColumn('datetime', 'время');
       //fixme! translate
       data.addColumn('number', 'передано MB/s');
       //fixme! translate
@@ -279,12 +285,13 @@ javascript:
 
   function DrawGraphs()
   {
-    DrawSingleGraph("g_cpu", [<%= raw @cpu_digest_data.to_json %>, 100);
-    DrawSingleGraph("g_gpu", [<%= raw @gpu_digest_data.to_json %>, 100);
-    DrawSingleGraph("g_loadavg", [<%= raw @loadavg_digest_data.to_json %>);
-    DrawSingleGraph("g_ipc", [<%= raw @ipc_digest_data.to_json %>);
-    DrawSendRecvGraph("g_ib_mpi", [<%= raw @mpi_digest_data.to_json %>]);
-    DrawSendRecvGraph("g_ib_fs", [<%= raw @fs_digest_data.to_json %>]);
+     DrawSingleGraph("g_cpu",  #{{ raw @cpu_digest_data.to_json }} , 100);
+     DrawSingleGraph("g_gpu",  #{{ raw @gpu_digest_data.to_json }} , 100);
+     DrawSingleGraph("g_loadavg",  #{{ raw @loadavg_digest_data.to_json }} );
+     DrawSingleGraph("g_ipc",  #{{ raw @ipc_digest_data.to_json }} );
+     DrawSendRecvGraph("g_ib_mpi",  #{{ raw @mpi_digest_data.to_json }} );
+     DrawSendRecvGraph("g_ib_fs",  #{{ raw @fs_digest_data.to_json }} );
+
   }
 
   $(document).ready(function(){
