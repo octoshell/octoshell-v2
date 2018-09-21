@@ -76,11 +76,11 @@ module Jobstat
 
       job = Job.where(drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
 
-      DigestFloatData.where(job_id: job.id).destroy_all
+      DigestFloatDatum.where(job_id: job.id).destroy_all
 
-      params["data"].each do |entry|
-        DigestFloatData.where(job_id: job.id, name: params["name"]).first_or_create
-          .update({value: entry["avg"], time: Time.at(entry["time"]).utc.to_datetime})
+      JSON.parse(params["data"]).each do |entry|
+	      DigestFloatDatum.where(job_id: job.id, name: params["name"], time: Time.at(entry["time"]).utc.to_datetime).first_or_create
+          .update({value: entry["avg"]})
       end
     end
 
