@@ -153,6 +153,7 @@ task :deploy => :remote_environment do
       invoke :"deploy:link_shared_paths"
       invoke :"bundle:install"
       invoke :"rails:assets_precompile"
+      invoke :"copy_migrations"
       invoke :"rails:db_migrate"
       invoke :"deploy:cleanup"
 #      invoke :"set_whenever"
@@ -177,6 +178,12 @@ task :deploy_1 do
       comment "Copying settings.yml"
       command "scp config/settings.yml #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/settings.yml"
       command "scp public/fonts/* #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/fonts/"
+  end
+end
+
+task :make_seed => :remote_environment do
+  in_path(fetch(:current_path)) do
+    command "RACK_ENV=production rbenv exec bundle exec rake railties:install:migrations"
   end
 end
 
@@ -211,7 +218,8 @@ end
 
 task :restart_service do
   comment "Restarting service!"
-  command "sudo systemctl restart octoshell"
+  #command "sudo systemctl restart octoshell"
+  command "touch /var/www/octoshell2/restart.txt"
 end
 
 #task :export_foreman do
