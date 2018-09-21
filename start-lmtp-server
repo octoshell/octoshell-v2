@@ -1,0 +1,2 @@
+rails runner lib/receive_emails/lmtp_server.rb &
+echo $! > server.pid

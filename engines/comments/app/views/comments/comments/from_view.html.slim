@@ -8,7 +8,11 @@ div attachment_type='comments' attachable_type=@attach_to[:class_name] attachabl
        .col-md-8.panel.panel-default
          div#messages
          div style="margin:10px"
-            div class = 'create_comment'
+          .attachable-hidden
+            input type="checkbox" id="comments-input-hider"
+            label for="comments-input-hider" = t '.create.write_comment'
+            article
+              div class = 'create_comment'
   div id = 'table'
   ul id="pagination" class="pagination-sm"
   = handlebars_tag(id:'index_template') do

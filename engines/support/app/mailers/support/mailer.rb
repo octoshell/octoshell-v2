@@ -12,6 +12,14 @@ module Support
       mail to: @user.email, subject: t(".subject", number: @ticket.id)
     end
 
+    def reply_error(ticket_id, user_id, message)
+      @ticket = Support::Ticket.find(ticket_id)
+      @user = Support.user_class.find(user_id)
+      @message = message
+      mail to: @user.email, subject: t(".subject", number: @ticket.id)
+    end
+
+
     # TODO
     def answered_tickets_notification(user_id)
       @user = Support.user_class.find(user_id)

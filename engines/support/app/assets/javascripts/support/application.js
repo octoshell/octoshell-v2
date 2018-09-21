@@ -19,7 +19,15 @@
 
 $(document).ready(function(){
   $('#reply_template').on('change', function(){
-    $('#reply_message').append($(this).val())
+    var newValue = $('#reply_message').val() + $(this).val();
+    $('#reply_message').val(newValue);
+     var height = $('#reply_message').attr('height') || 700;
+     var pandaoId = 'edit-markdown-reply_message';
+     editor = editormd({
+         id: pandaoId,
+         path : "/lib/",
+         height: height
+     });
   });
 
   $(document).on('reload_form form', function(e){
@@ -54,7 +62,7 @@ $(document).ready(function(){
 
   $('#reply-template-maker').on('click', function(e){
     var data = $('#reply_message').val();
-    var url = $('#reply-template-maker').attr("href") + '?' + 'reply_template[message]=' + data;
+    var url = $('#reply-template-maker').attr("href") + '?' + `reply_template[message_${window.locale}]=` + data;
     window.open(url, '_blank')
     return false
   })

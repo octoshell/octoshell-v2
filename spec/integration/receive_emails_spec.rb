@@ -153,9 +153,9 @@ module ReceiveEmails
     end
 
 
-    it 'creates new reply to ticket via email without attachment and with emty reply' do
+    it 'does not create new reply to ticket via email without attachment and with empty reply' do
       ticket = create(:ticket)
-      support = create_support
+      support = create_support(language: 'en')
       ticket.replies.create!(message: 'hello', author: support)
       new_body = ActionMailer::Base.deliveries.last.body.to_s
       mail = Mail::Message.new do
@@ -165,9 +165,29 @@ module ReceiveEmails
       end
       mail.from = support.email
       expect { to_exim mail }.to change{ Support::Reply.count }.by 0
-
+      puts ActionMailer::Base.deliveries.last.inspect.yellow
     end
 
+    it 'creates new reply to ticket via email with attachment' do
+      ticket = create(:ticket)
+      support = create_support
+      ticket.replies.create!(message: 'hello', author: support)
+      new_body = ActionMailer::Base.deliveries.last.body.to_s.gsub('-' * Support.dash_number,  '-' * Support.dash_number + 'I answer hello')
+      mail = Mail::Message.new do
+        to 'support@octoshell.ru'
+        subject 'Ticket title'
+        body new_body
+        add_file filename: 'somefile.rb', content: File.read($0)
+      end
+      mail.from = support.email
+      ticket.close
+      expect { to_exim mail }.to change{ Support::Reply.count }.by 1
+      expect(Support::Reply.last).to have_attributes(author: support,
+                                                     message: 'I answer hello',
+                                                     ticket: ticket)
+      expect(Support::Ticket.last.state).to eq 'answered_by_support'
+      expect(Support::Reply.last.attachment.url.split('/').last).to eq 'somefile.rb'
+    end
 
     it 'creates new reply to ticket via email with attachment' do
       ticket = create(:ticket)

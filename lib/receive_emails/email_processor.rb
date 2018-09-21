@@ -14,7 +14,7 @@ module ReceiveEmails
     end
 
     def continue_processing?
-      user && (!message.header['Auto-Submitted'] || message.header['Auto-Submitted'].to_s == 'no')
+      user # && (!message.header['Auto-Submitted'] || message.header['Auto-Submitted'].to_s == 'no')
     end
 
     def topic
@@ -92,6 +92,7 @@ module ReceiveEmails
       reply = Support::Reply.new(message: new_ticket_message.rpartition(/-{#{Support.dash_number}}/).last,
                                  ticket_id: ticket_id,
                                  author: user)
+      reply.ticket.reopen if reply.ticket.may_reopen?
       raise 'foreign ticket' if User.superadmins.exclude?(user) && User.support.exclude?(user) && reply.ticket.reporter != user
       add_attachments_and_save reply
     end
@@ -109,18 +110,24 @@ module ReceiveEmails
     end
 
     def process
-      puts @message.inspect
-      puts "---------"
       return unless continue_processing?
       begin
-        ticket_string = text_part&.body.to_s[/ticket_id:\d+/]
+        ticket_string = text_part&.body.to_s[/ticket_id:\d+.*-{#{Support.dash_number}}/]
         if ticket_string
-          create_reply ticket_string[/\d+/]
+          I18n.with_locale(user.language.to_sym) do
+            ActiveRecord::Base.transaction do
+              create_reply ticket_string[/ticket_id:\d+/][/\d+/]
+            end
+          end
         else
           create_ticket
         end
       rescue StandardError => e
-        puts e.inspect.red
+        if e.is_a? ActiveRecord::RecordInvalid
+          Support::MailerWorker.perform_async(:reply_error, [e.record.ticket_id, user.id, e])
+        else
+          puts e.inspect.red
+        end
       end
     end
   end

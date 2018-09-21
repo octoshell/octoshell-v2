@@ -110,9 +110,13 @@ en:
       new_ticket_reply:
         subject: New reply in request No%{number}
         show_request_details: Show request
-        remain: Do not remove this line! You can add your reply to this request by writing it after the following dash(----) line.
+        remain: Do not remove this line! You can add your reply to this request by writing it after the following dash line.
       answered_tickets_notification:
         subject: Reminder about suspended requests in technical support
+      reply_error:
+        subject: Your reply for request  №%{number} is incorrect
+        show_request_details: Show request
+        errors: "Errors:"
       footer:
         octo_regards: "Yours faithfully, Octoshell."
         maintained_by: "Parallel information technologies laboratory, RCC MSU."

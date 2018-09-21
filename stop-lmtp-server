@@ -1,0 +1,2 @@
+rm -f mail.sock
+kill -9 $(cat server.pid)

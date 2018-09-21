@@ -13,9 +13,7 @@ module Support
           redirect_to admin_tickets_path
         end
       else
-        @ticket = @reply.ticket
-        @replies = @ticket.replies
-        render [:admin, @ticket]
+        redirect_to [:admin, @reply.ticket], flash: { error: @reply.errors.full_messages.to_sentence } 
       end
     end
 

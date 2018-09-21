@@ -1,0 +1,14 @@
+= render "header"
+h5 style="color: 666;" #{t('.topic')}: #{@ticket.topic.name_with_parents}
+p
+  strong = @ticket.subject
+- if (Support.user_class.support | Support.user_class.superadmins).include?(@user)
+  p = link_to t('.show_request_details'), support.admin_ticket_url(@ticket)
+- else
+  p = link_to t('.show_request_details'), support.ticket_url(@ticket)
+p
+  =t '.errors'
+p
+  =@message
+
+= render "footer"
