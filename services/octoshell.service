@@ -1,0 +1,24 @@
+[Service]
+#StopWhenUnneeded=true
+EnvironmentFile=-/var/www/octoshell2/env
+WorkingDirectory=/var/www/octoshell2/
+ExecStart=/bin/true
+Type=oneshot
+RemainAfterExit=yes
+User=octoadmin
+
+[Unit]
+Description=Octoshell web service
+#Requires=octoshell-sq-announcements-mailer.service
+#Requires=octoshell-sq-support-mailer.service
+#Requires=octoshell-sq-auth-mailer.service
+#Requires=octoshell-sq-syncronizer.service
+#Requires=octoshell-sq-core-mailer.service
+#Requires=octoshell-sq-sessions-mailer.service
+#Requires=octoshell-sq-sessions-starter.service
+#Requires=octoshell-sq-sessions-validator.service
+#Requires=octoshell-sq-stats-collector.service   
+#Requires=octoshell-web.service
+
+[Install]
+WantedBy=multi-user.target
