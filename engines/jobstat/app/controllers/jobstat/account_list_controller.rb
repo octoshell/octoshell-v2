@@ -99,7 +99,8 @@ module Jobstat
       # -> [cond1,cond2,...]
 
       # FIXME!!!!!! (see all_rules)
-      @emails = ["rule_avg_disbalance"]
+      @emails = JobMailFilter.filters_for_user current_user.id
+#      @emails = ["rule_avg_disbalance"]
     end
 
     # def get_feedback_job(user,jobs)
@@ -155,8 +156,7 @@ module Jobstat
       @filters=Job::get_filters(current_user).map { |x| x.filters }.flatten.uniq
       @current_user=current_user
 
-      # FIXME!!! just for tests!
-      @emails = ["rule_avg_disbalance"]
+      @emails = JobMailFilter.filters_for_user current_user.id
     end
 
     def feedback_proposal parm
@@ -182,7 +182,11 @@ module Jobstat
         del: parm[:delete]
       }
       #TODO implement storing user/condition pairs for disabled notifications
-      logger.info "!!!!!!!!!!!!! NOT IMPLEMENTED YET: #{email}"
+      if parm[:delete].to_i == 1
+        JobMailFilter.del_mail_filter current_user, parm[:condition]
+      else
+        JobMailFilter.add_mail_filter current_user, parm[:condition]
+      end
       200
     end
 

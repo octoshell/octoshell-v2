@@ -33,7 +33,7 @@ set :keep_releases, 5
 #set :foreman_app, 'octoshell3'
 #old set :shared_paths, %w(public/fonts public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)
 set :shared_dirs, %w(public/uploads log public/fonts public/assets)
-set :shared_files, %w(config/puma.rb config/settings.yml config/database.yml public/fonts/signals-font.svg public/fonts/signals-font.ttf public/fonts/signals-font.woff public/fonts/signals-font.woff2)
+set :shared_files, %w(config/puma.rb config/settings.yml config/database.yml)
 #set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log)
 set :force_asset_precompile, true
 set :rails_env, 'production'
@@ -176,6 +176,7 @@ task :deploy_1 do
       command "scp config/puma.rb #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/puma.rb"
       comment "Copying settings.yml"
       command "scp config/settings.yml #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/settings.yml"
+      command "scp public/fonts/* #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/fonts/"
   end
 end
 
@@ -215,8 +216,8 @@ end
 
 #task :export_foreman do
 #  set :export_cmd, "rbenv exec bundle exec foreman export #{fetch(:foreman_format)} #{fetch(:deploy_to)}/tmp/foreman -a #{fetch(:foreman_app)} -u #{fetch(:foreman_user)} -d #{fetch(:current_path)} -l #{fetch(:foreman_log)}"
-#  set :copy_cmd, "sudo cp #{fetch(:deploy_to)}/tmp/foreman/* #{fetch(:foreman_location)}"
-#  comment "Exporting foreman procfile for #{fetch(:foreman_app)}"
+#  set :copy_cmd, "sudo cp #{fetch(:deploy_to)}/tmp/foreman/* #{fetch(:foreman_location)}"#
+  comment "Exporting foreman procfile for #{fetch(:foreman_app)}"
 #  invoke :"rbenv:load"
 #  command %{
 #    #{echo_cmd %[(cd #{fetch(:current_path)} ; #{fetch(:export_cmd)} ; #{fetch(:copy_cmd)})]}
