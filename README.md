@@ -26,7 +26,7 @@ To install jruby:
 1. `bin/rake db:setup`
 1. optional run tests: `bin/rspec .`
 1. After "seeds" example cluster will be created. You should login to your cluster as root, create new user 'octo'. Login as `admin@octoshell.ru` in web-application. Go to "Admin/Cluster control" and edit "Test cluster". Copy `octo` public key from web to /home/octo/.ssh/authorized_keys.
-1. `rake assets:precompile` for MRI or  `bundle exec rake assets:precompile EXECJS_RUNTIME='Node' JRUBY_OPTS="-J-d32 -X-C"` for jruby
+1. `rake assets:precompile` for MRI or  `bundle exec rake assets:precompile EXECJS_RUNTIME='Node' JRUBY_OPTS="-J-d32 -X-C"` for jruby(Downloading without precompilation  and   config.assets.debug = true can take significant amount of time)
 1. Start production sidekiq: `./run-sidekiq` (`dev-sidekiq` for development)
 1. Start production server: `./run` (`dev` for development)
 1. Enter as admin with login `admin@octoshell.ru` and password `123456`

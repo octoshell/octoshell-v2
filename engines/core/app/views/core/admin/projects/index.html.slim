@@ -2,7 +2,7 @@ div class="page-header"
   h1 = t(".title")
 
 = bootstrap_form_for @search, url: admin_projects_path, method: :get, layout: :horizontal do |f|
-  = f.autocomplete_field :id_eq,{ label: Core::Project.human_attribute_name(:title), source: projects_path} do |val|
+  = f.autocomplete_field :id_eq,{ label: Core::Project.human_attribute_name(:title), source: projects_path},'redirect-url': '/core/admin/projects/{{id}}' do |val|
     -Core::Project.find(val).title
   = f.collection_select :kind_id_eq, Core::ProjectKind.all, :id, :name, label: Core::Project.human_attribute_name(:kind), include_blank: true
   = f.autocomplete_field :owner_id_eq,{ label: Core::Project.human_attribute_name("owner"), source: owners_finder_admin_users_path} do |val|
