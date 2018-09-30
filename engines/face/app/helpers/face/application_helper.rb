@@ -105,7 +105,7 @@ module Face
     end
 
     def markdown(text)
-      Kramdown::Document.new(text, filter_html: true).to_html.html_safe
+      CommonMarker.render_html(text, :DEFAULT).html_safe
     end
   end
 end

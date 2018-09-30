@@ -1,9 +1,3 @@
-var  org_name = $("#_name");
-org_name.on("select2:select", function(e) {
-  var value = e.params.data.id;
-  var url = '/core/admin/organizations/' + value;
-  window.location.href = url;
-});
 var cities =  <%=raw @cities.to_json%>;
 
 var country_select = $('#country_select');

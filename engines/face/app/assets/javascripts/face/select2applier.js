@@ -35,5 +35,10 @@ $(function(){
       }
     }
     select.select2(options)
-  })
+  });
+  $(document).on( "select2:select", "[redirect-url]", function(e) {
+   var id = e.params.data.id;
+   var url = $(this).attr('redirect-url');
+   window.location.href = url.replace('{{id}}',id);
+  });
 });

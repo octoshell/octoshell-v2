@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency "ransack"
   s.add_dependency "kaminari"
   s.add_dependency "carrierwave"
-  s.add_dependency "kramdown"
+  s.add_dependency "commonmarker"
 
   s.test_files = Dir["spec/**/*"]
 end

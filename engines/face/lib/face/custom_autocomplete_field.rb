@@ -1,6 +1,7 @@
 module CustomAutocompleteField
   def autocomplete_field(method, options = {}, html_options = {}, &block)
-    html_options[:class] = 'select2-ajax'
+    html_options[:class] ||=  ''
+    html_options[:class] << ' select2-ajax'
     data = { source: options.delete(:source), url: options.delete(:url) }
     html_options[:data] = data
     sel_opts = [[]]

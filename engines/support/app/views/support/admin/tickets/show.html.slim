@@ -127,7 +127,7 @@ h3 = Support::Ticket.human_attribute_name(:replies)
     div class="row"
       div class="col-xs-10"
         blockquote class="#{reply.author_id == reply.ticket.reporter_id ? "admin" : "user"}"
-          = markdown reply.message
+          = markdown(reply.message)
           div class="raw-reply" = reply.message
           = link_to t("actions.show_as_text"), "#", class: "raw-text-opener"
           - if reply.attachment?
