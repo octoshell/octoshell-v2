@@ -3,8 +3,8 @@ development:
   encoding: unicode
   database: new_octoshell_development
   user: octo
-  host: localhost
   password: 1234
+  host: localhost
 
 test:
   adapter: postgresql

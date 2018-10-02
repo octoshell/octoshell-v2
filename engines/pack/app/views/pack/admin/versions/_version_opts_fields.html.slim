@@ -15,7 +15,6 @@ div.option-container
           = ff.collection_select :category_value_id, Pack::CategoryValue.where(options_category_id: ff.object.options_category_id),:id,:value, {include_blank: true},class: 'attach-value'
         -else
           = ff.collection_select :category_value_id, Pack::CategoryValue.where(options_category_id: @categories.first&.id),:id,:value, {include_blank: true},class: 'attach-value'
-
   div.row
     div.col-xs-6
       = ff.radio_button :name_type, 'without_category', label: t('.without_category')

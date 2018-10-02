@@ -1,0 +1,6 @@
+= render "header"
+
+p #{t('.msg_num_reports', reports: @users.assessing_reports.count)}
+p #{t('.msg_speedup_assessment')}
+
+= render "footer"

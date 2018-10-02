@@ -7,7 +7,6 @@ module Pack
       # user= create(:user)
       unless Support::Topic.find_by(name_ru: I18n.t('integration.support_theme_name'))
         Support::Topic.create!(name_ru: I18n.t('integration.support_theme_name'))
-      end
 
 
     end

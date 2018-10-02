@@ -10,8 +10,6 @@ class SupportPreview
   def reply_error
     ::Support::Mailer.reply_error(Support::Ticket.first.id, Support.user_class.first.id, 'Your errors')
   end
-
-
   def answered_tickets_notification
     ::Support::Mailer.answered_tickets_notification(User.first.id)
   end

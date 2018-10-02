@@ -244,9 +244,6 @@ ru:
       projects_list:
         no_projects_found: Не найдено проектов
 
-
-
-
   helpers:
     page_entries_info:
       one_page:

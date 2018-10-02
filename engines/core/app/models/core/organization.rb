@@ -78,7 +78,11 @@ module Core
     end
 
     def as_json(_options)
+<<<<<<< HEAD
       full_json
+=======
+      { id: id, text: name }
+>>>>>>> upstream/master
     end
 
     def city_title

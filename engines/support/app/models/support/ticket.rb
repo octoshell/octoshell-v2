@@ -44,7 +44,6 @@ module Support
     def self.ransackable_scopes(_auth_object = nil)
       %i[find_by_content]
     end
-
     include AASM
     include ::AASM_Additions
     aasm(:state, :column => :state) do

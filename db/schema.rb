@@ -970,4 +970,3 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   end
 
   add_index "wiki_pages", ["url"], name: "index_wiki_pages_on_url", unique: true, using: :btree
-

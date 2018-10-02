@@ -15,7 +15,6 @@ module Support
 
     has_many :user_topics, dependent: :destroy
     accepts_nested_attributes_for :user_topics, allow_destroy: true
-
     validates_translated :name, presence: true
     validates :parent_id, exclusion: { in: proc { |tq| [tq.id] } }, allow_nil: true
     validate do

@@ -1,4 +1,4 @@
-require ''
+require 'initial_create_helper'
 module ModelTranslation
     class TestClass
       extend LightTranslates

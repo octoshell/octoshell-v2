@@ -1,5 +1,5 @@
 module Pack
-  require ""
+  require "initial_create_helper"
   describe Version do
     it "changes version state" do
       version = create(:version)

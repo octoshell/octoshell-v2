@@ -129,7 +129,7 @@ module Sessions
       reports.where(:state=>:assessed).select(&:failed?).map(&:close_project!)
       reports.where(:state=>[:pending, :accepted, :rejected]).map(&:postdate!)
       notify_experts_about_submitted_reports if reports.where(:state=>:submitted).any?
-      notify_experts_about_assessing_reports if reports.where(:state=>:assessing).any?
+      notify_exports_about_assessing_reports if reports.where(:state=>:assessing).any?
 
       user_surveys.where(:state=>[:pending, :filling]).map(&:postdate!)
     end
