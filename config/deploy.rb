@@ -170,6 +170,7 @@ end
 
 desc "Copy migrations from engines"
 task :"copy_migrations" do
+  comment "Copying migrations from railties."
   command "RACK_ENV=production rbenv exec bundle exec rake railties:install:migrations"
 end
 
