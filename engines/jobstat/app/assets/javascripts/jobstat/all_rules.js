@@ -9,6 +9,7 @@ $(function(){
   })
 })
 
+// new rule suggestion
 function all_send_suggestion(){
   var feedback={
     cluster: 'all',
@@ -18,7 +19,7 @@ function all_send_suggestion(){
   $.ajax({
     type: "POST",
     url: "feedback",
-    data: {'feedback': feedback, 'type': 'feedback_rule'},
+    data: {'feedback': feedback, 'type': 'proposal'},
   })
 }
 
@@ -109,7 +110,7 @@ function all_feedback_rule(rule_id) {
   $.ajax({
     type: "POST",
     url: "feedback",
-    data: {'feedback': feedback, 'type': 'proposal'},
+    data: {'feedback': feedback, 'type': 'feedback_rule'},
   })
 }
 

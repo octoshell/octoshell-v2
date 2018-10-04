@@ -58,6 +58,7 @@ $(document).ready(function() {
     console.log(response)
     location.reload()
   }
+
   $("#feedback_job_rule").submit(function() {
     $.post($(this).attr('action'), $(this).serialize(), silent_submit)
     return false
@@ -102,13 +103,13 @@ function process_response(index, jobid) {
 }
 
 function popup_show(a, b) {
-  var x = $("#popup_" + a + "_" + b)
-  x.addClass('active')
+  $("#popup_" + a).addClass('active')
+  $("#" + b).val('')
+  $("#" + b).focus()
 }
 
 function popup_hide(a, b) {
-  var x = $("#popup_" + a + "_" + b)
-  x.removeClass('active')
+  $("#popup_" + a).removeClass('active')
 }
 
 // user disagrees with rule
@@ -126,12 +127,8 @@ function disagree(jobid, rule) {
     type: "POST",
     url: "feedback",
     data: {'feedback': feedback, 'type': 'feedback_rule'},
-  }).done(function( msg ) {
+  }).always(function( msg ) {
     restore_disagree_button()
-    //update_jobs_agree(feedback)
-  }).fail(function( msg ) {
-    restore_disagree_button()
-    //update_jobs_agree(feedback)
   });
 }
 
@@ -221,8 +218,12 @@ function multi_job_feedback() {
     $(".job_check").show()
 
     $('#disagree_reason_box').css({
-      display: 'inline'
+      display: 'inline',
     }).animate();
+
+    $('#disagree_reason').focus()
+    $('#disagree_reason').val('')
+  
     $('#disagree_button').text('Отметьте нужные задания и отправьте отзыв').attr('disabled', true);
   } else {
     // all selected, send data!
@@ -288,6 +289,7 @@ function restore_disagree_button() {
     // Now delete checkboxes
     $(".job_check").hide()
     $('#disagree_button').text('Жмите тут!');
+    $('#disagree_button').prop('disabled', false);
 }
 
 function agree_all() {

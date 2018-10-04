@@ -62,12 +62,16 @@ module Jobstat
             @jobs_plus[j.drms_job_id]['rules'][r.name] = r.description
           }
         }
+        @jobs=@jobs.to_a
       rescue => e
         logger.info "account_list_controller:index: #{e.message}; #{e.backtrace.join("\n")}"
         @jobs = []
       end
 
-      jobs_feedback=Job::get_feedback_job(params[:user].to_i, @jobs) || {}
+      joblist=@jobs.map{|j| j.drms_job_id}
+      logger.info "JOBLIST: #{joblist.inspect}"
+      jobs_feedback=Job::get_feedback_job(params[:user].to_i, joblist) || {}
+      logger.info "JOBLIST got: #{jobs_feedback}"
       #[{user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string, condition=string},{...}]
       
       @jobs_feedback={}
@@ -95,7 +99,7 @@ module Jobstat
       end
 
       # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
-      @filters=Job::get_filters(current_user).map { |x| x.filters }.flatten.uniq
+      @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq
       # -> [cond1,cond2,...]
 
       # FIXME!!!!!! (see all_rules)
@@ -133,27 +137,28 @@ module Jobstat
     def feedback_multi_jobs parm
       #"0"=>{"user"=>"1234", "cluster"=>"lomonosov-2", "job_id"=>"615023",
       #      "task_id"=>"0", "class"=>"0", "feedback"=>"ooops"},
-      uri=URI("http://graphit.parallel.ru:8123/api/feedback-jobs")
+      uri=URI("http://graphit.parallel.ru:8123/api/feedback-job")
       #user=UID_octoshell(int), class=int(0=ok,1=not_ok), cluster=string, job_id=int, task_id=int, condition=string, feedback=string.
       if !parm.kind_of?(Enumerable)
         logger.info("Ooooops! feedback_all_jobs got bad argument: #{parm}") 
         return 500,''
       end
       arr= (parm.kind_of?(Hash) ? parm.map{|k,v| v} : parm.map{|x| x})
-      #logger.info("--->> #{arr}")
-      code=Job::post_data(uri,'',arr)
-      if code!=200
-        logger.info "feedback_all_jobs: post code=#{code}"
-        code=500
+      code=200
+      arr.each do |job|
+        resp=Job::post_data(uri,job)  
+        unless Net::HTTPSuccess === resp
+          logger.info "feedback_multi_jobs: post code=#{resp ? resp.code : -1}"
+          code=500
+        end
       end
-      return code, "feedback_all_jobs: post code=#{code}"
     end
 
     def all_rules
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
       @rules_plus=load_rules
-      @filters=Job::get_filters(current_user).map { |x| x.filters }.flatten.uniq
+      @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq
       @current_user=current_user
 
       @emails = JobMailFilter.filters_for_user current_user.id
@@ -165,13 +170,20 @@ module Jobstat
 
       req={
         user: parm[:user].to_i,
-        cluster: 'all',
-        job_id: 0,
-        tasks: 0,
+        #cluster: 'all',
+        #account: parm['acount'],
         feedback: parm[:feedback],
       }
-      code,body=post_feedback(uri,req)
-      code
+      [:cluster,:account].each do |x|
+        req[x]=parm[x] if parm[x]
+      end
+      resp=Job::post_data(uri,req)
+      if Net::HTTPSuccess === resp
+        200
+      else
+        logger.info "feedback_proposal: post code=#{resp ? resp.code : -1}"
+        500
+      end
     end
 
     # enable/disable email notifications
@@ -200,10 +212,10 @@ module Jobstat
       if cond.to_s == ''
         return 500, 'bad condition (empty)'
       end
-      uri=URI("http://graphit.parallel.ru:8123/api/filter")
+      uri=URI("http://graphit.parallel.ru:8123/api/filters")
 
       filters=Job::get_filters(current_user)
-        .map { |x| x.filters }
+        .map { |x| x['filters'] }
         .flatten
         .uniq
       if parm[:delete].to_s=='1'
@@ -214,13 +226,18 @@ module Jobstat
       req={
         user: parm[:user].to_i,
         cluster: parm[:cluster] || 'all',
-        condition: filters.join(','),
-        account: parm[:account],
+        filters: filters.join(','),
+        account: parm[:account] || 'none',
       }
       logger.info "feedback_rule_show: REQ=#{req.inspect}"
-      code,body=post_feedback uri,req
+      resp=Job::post_data uri,req
       CacheData.delete("jobstat:filters:#{parm[:user]}")
-      code
+      if Net::HTTPSuccess === resp
+        200
+      else
+        logger.info "feedback_rule_show: post code=#{resp ? resp.code : -1}"
+        500
+      end
     end
 
     # hide rule
@@ -232,13 +249,22 @@ module Jobstat
       uri=URI("http://graphit.parallel.ru:8123/api/feedback-condition")
       req={
         user: parm[:user].to_i,
-        cluster: parm[:cluster],
-        account: parm[:account],
+        #cluster: parm[:cluster] || 'all',
+        #account: parm[:account] || 'none',
         condition: parm[:condition],
         feedback: parm[:feedback],
       }
-      code,body=post_feedback uri, req
-      code
+      [:cluster,:account].each do |x|
+        req[x]=parm[x] if parm[x]
+      end
+      resp=Job::post_data uri, req
+      CacheData.delete("jobstat:fedback_rule:#{parm[:user]}")
+      if Net::HTTPSuccess === resp
+        200
+      else
+        logger.info "feedback_rule: post code=#{resp ? resp.code : -1}"
+        500
+      end
     end
 
     protected
@@ -283,34 +309,36 @@ module Jobstat
       rules
     end
 
-    def post_feedback uri, req, user=nil, password=nil
-      code=500
-      resp=nil
-      begin
-        Net::HTTP.start(uri.host, uri.port,
-                        :use_ssl => uri.scheme == 'https', 
-                        :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-                        :read_timeout => 5,
-                        :opent_imeout => 5,
-                        :ssl_timeout => 5,
-                       ) do |http|
-          request = Net::HTTP::Post.new uri.request_uri
-          request.set_form_data req
-          if user
-            request.basic_auth user, password.to_s
-          end
-          logger.info "post_feedback (#{uri})-> #{req.inspect}"
-          resp = http.request request
+    # def post_feedback uri, req, user=nil, password=nil
+    #   code=500
+    #   resp=nil
+    #   begin
+    #     Net::HTTP.start(uri.host, uri.port,
+    #                     :use_ssl => uri.scheme == 'https', 
+    #                     :verify_mode => OpenSSL::SSL::VERIFY_NONE,
+    #                     :read_timeout => 5,
+    #                     :opent_imeout => 5,
+    #                     :ssl_timeout => 5,
+    #                    ) do |http|
+    #       request = Net::HTTP::Post.new uri.request_uri
+    #       request['Accept'] = '*/*'
+    #       request['Content-Type'] = 'application/json'
+    #       request.set_form_data req
+    #       if user
+    #         request.basic_auth user, password.to_s
+    #       end
+    #       logger.info "post_feedback (#{uri})-> #{req.inspect}"
+    #       resp = http.request request
 
-          code=resp.code
-        end
-      rescue => e #Net::ReadTimeout, Net::OpenTimeout
-        logger.info "post_feedback #{uri}: error #{e.message}"
-        code=500
-      end
-      #render plain: code, layout: false
-      #response.status=code
-      return code
-    end
+    #       code=resp.code
+    #     end
+    #   rescue => e #Net::ReadTimeout, Net::OpenTimeout
+    #     logger.info "post_feedback #{uri}: error #{e.message}"
+    #     code=500
+    #   end
+    #   #render plain: code, layout: false
+    #   #response.status=code
+    #   return code
+    # end
   end
 end

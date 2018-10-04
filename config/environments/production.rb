@@ -75,6 +75,9 @@ Octoshell::Application.configure do
   # Disable automatic flushing of the log to improve performance.
   # config.autoflush_log = false
 
+  config.active_record.raise_in_transactional_callbacks = true
+
+
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 

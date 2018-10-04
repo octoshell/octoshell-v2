@@ -168,22 +168,27 @@ task :"seed_if_needed" do
   command "test #{fetch(:deploy_to)}/seed_done.txt || RACK_ENV=production rbenv exec bundle exec rake db:seed && touch #{fetch(:deploy_to)}/seed_done.txt"
 end
 
+desc "Copy migrations from engines"
+task :"copy_migrations" do
+  command "RACK_ENV=production rbenv exec bundle exec rake railties:install:migrations"
+end
+
 desc "Prepare for first deploy"
 task :deploy_1 do
   run(:local) do
-      command "hostname"
-      command "pwd"
-      comment "Copying puma.rb"
-      command "scp config/puma.rb #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/puma.rb"
-      comment "Copying settings.yml"
-      command "scp config/settings.yml #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/settings.yml"
-      command "scp public/fonts/* #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/fonts/"
+    command "hostname"
+    command "pwd"
+    comment "Copying puma.rb"
+    command "scp config/puma.rb #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/puma.rb"
+    comment "Copying settings.yml"
+    command "scp config/settings.yml #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/settings.yml"
+    command "scp public/fonts/* #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/fonts/"
   end
 end
 
 task :make_seed => :remote_environment do
   in_path(fetch(:current_path)) do
-    command "RACK_ENV=production rbenv exec bundle exec rake railties:install:migrations"
+    command "RACK_ENV=production rbenv exec bundle exec rake db:seed"
   end
 end
 

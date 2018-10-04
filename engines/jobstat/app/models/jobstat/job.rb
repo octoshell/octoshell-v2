@@ -1,7 +1,7 @@
 require 'yaml/store'
-require "uri"
-require "net/http"
-require "net/https"
+# require "uri"
+# require "net/http"
+# require "net/https"
 
 module Jobstat
   class Job < ActiveRecord::Base
@@ -185,55 +185,55 @@ module Jobstat
       user_id=user.id
 
       data=get_data("jobstat:filters:#{user_id}",
-        URI("http://graphit.parallel.ru:8123/api/filters"),
-        "?user=#{user_id}")
+        URI("http://graphit.parallel.ru:8123/api/filters?user=#{user_id}"))
+      logger.info "get_filters: data=#{data.inspect}"
       data || []
     end
 
-    def self.post_filters(user,filters)
-      user_id=user.is_a?(Fixnum) ? user : user.id
-      #projects=get_involved_projects(user)
-      #accesses=projects.map{|p| p.accesses}
-      uri=URI("http://graphit.parallel.ru:8124/api/filters")
-      begin
-        Net::HTTP.start(uri.host, uri.port,
-          :use_ssl => uri.scheme == 'https', 
-          :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-          :read_timeout => 5,
-          :open_timeout => 5,
-          :ssl_timeout => 5,
-          ) do |http|
-          request = Net::HTTP::post_form(
-            uri.request_uri,
-            user: user_id,
-            #FIXME! title -> RNF id
-            #cluster: accesses.map{|a| a.cluster}.flatten.uniq.map { |c| c.title }.join(','),
-            #account: projects.map { |p| p.members.map { |m| m.login } }.flatten.uniq.join(','),
-            filters: filters.join(','),
-            )
-          response = http.request request
+    # def self.post_filters(user,filters)
+    #   user_id=user.is_a?(Fixnum) ? user : user.id
+    #   #projects=get_involved_projects(user)
+    #   #accesses=projects.map{|p| p.accesses}
+    #   uri=URI("http://graphit.parallel.ru:8124/api/filters")
+    #   post_data(uri,filters)
+    #   # begin
+    #   #   Net::HTTP.start(uri.host, uri.port,
+    #   #     :use_ssl => uri.scheme == 'https', 
+    #   #     :verify_mode => OpenSSL::SSL::VERIFY_NONE,
+    #   #     :read_timeout => 5,
+    #   #     :open_timeout => 5,
+    #   #     :ssl_timeout => 5,
+    #   #     ) do |http|
+    #   #     request = Net::HTTP::post_form(
+    #   #       uri.request_uri,
+    #   #       user: user_id,
+    #   #       #FIXME! title -> RNF id
+    #   #       #cluster: accesses.map{|a| a.cluster}.flatten.uniq.map { |c| c.title }.join(','),
+    #   #       #account: projects.map { |p| p.members.map { |m| m.login } }.flatten.uniq.join(','),
+    #   #       filters: filters.join(','),
+    #   #       )
+    #   #     response = http.request request
 
-          response.code
-        end
-        # FIXME! retry post later!
-      rescue => e #Net::ReadTimeout, Net::OpenTimeout
-        logger.info "post_filters: error #{e.message}; #{e.backtrace.join("\n")}"
-        999
-      end
-    end
+    #   #     response.code
+    #   #   end
+    #   #   # FIXME! retry post later!
+    #   # rescue => e #Net::ReadTimeout, Net::OpenTimeout
+    #   #   logger.info "post_filters: error #{e.message}; #{e.backtrace.join("\n")}"
+    #   #   999
+    #   # end
+    # end
 
     def self.get_feedback_job user_id, joblist=[]
 
       jobs=joblist.kind_of?(Array) ? joblist.join(',') : joblist
 
       get_data("jobstat:feedback_job:#{user_id}:#{jobs}",
-        URI('http://graphit.parallel.ru:8123/api/feedback-job'),
-        "?user=#{user_id}&cluster=lomonosov-2&job_id=#{jobs}"
+        URI("http://graphit.parallel.ru:8123/api/feedback-job?user=#{user_id}&cluster=lomonosov-2&job_id=#{jobs}")
         )
     end
 
-    def self.post_data(uri,address,data)
-      code=begin
+    def self.post_data(uri,data)
+      begin
         Net::HTTP.start(uri.host, uri.port,
           :use_ssl => uri.scheme == 'https', 
           :verify_mode => OpenSSL::SSL::VERIFY_NONE,
@@ -241,30 +241,24 @@ module Jobstat
           :opent_imeout => 5,
           :ssl_timeout => 5,
           ) do |http|
-          request = Net::HTTP::Post.new "#{uri.request_uri}#{address}"
+          request = Net::HTTP::Post.new uri.request_uri
           #request.basic_auth 'username', 'password'
+          logger.info "post_data posting to #{uri.inspect} body=#{data.inspect}"
           request.set_form_data data
 
           response = http.request request
-          if response.body.nil?
-            nil
-          else
-            #json=JSON.load(response.body)
-            #json['filters'].split ','
-            logger.info "post_data: #{response.code}/#{response.body}"
-            #json
-          end
-          response.code
+          logger.info "post_data: #{response.code}/#{response.body}"
+          response
         end
       rescue => e #Net::ReadTimeout, Net::OpenTimeout
         logger.info "post_data: error #{e.message}; #{e.backtrace.join("\n")}"
-        500
+        nil
       end
     end
 
     private
 
-    def self.get_data(id,uri,address)
+    def self.get_data(id,uri)
       CacheData.get(id) do
         begin
           Net::HTTP.start(uri.host, uri.port,
@@ -274,27 +268,27 @@ module Jobstat
             :opent_imeout => 5,
             :ssl_timeout => 5,
             ) do |http|
-            request = Net::HTTP::Get.new "#{uri.request_uri}#{address}"
+            request = Net::HTTP::Get.new uri.request_uri
             #request.basic_auth 'username', 'password'
 
             response = http.request request
-            if response.code==200 
+            if Net::HTTPSuccess === response
               if response.body.length==0
-                logger.info "get_data: Empty response..."
+                logger.info "get_data #{uri}: Empty response..."
                 nil
               else
                 json=JSON.load(response.body)
                 #json['filters'].split ','
-                logger.info "get_data for #{id}: #{json}"
+                logger.info "get_data #{uri} for #{id}: #{json}"
                 json
               end
             else
-              logger.info "get_data: Bad response, code=#{response.code}"
+              logger.info "get_data #{uri}: Bad response, code=#{response.code}, body=#{response.body}"
               nil
             end
           end
         rescue => e #Net::ReadTimeout, Net::OpenTimeout
-          logger.info "get_data: error #{e.message}; #{e.backtrace.join("\n")}"
+          logger.info "get_data #{uri}: error #{e.message}; #{e.backtrace.join("\n")}"
           nil
         end
       end
