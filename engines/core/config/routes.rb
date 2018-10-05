@@ -1,5 +1,6 @@
 Core::Engine.routes.draw do
   namespace :admin do
+    resources :members, only: :index
     resources :projects do
       member do
         get :activate
@@ -46,6 +47,7 @@ Core::Engine.routes.draw do
     resources :organizations do
       member do
         get :index_for_organization
+        put :check
       end
       collection do
         get :merge_edit
@@ -70,6 +72,10 @@ Core::Engine.routes.draw do
     resources :cluster_logs, only: :index
 
     resources :users, only: :index do
+      collection do
+        get :owners_finder
+        get :with_owned_projects_finder
+      end
       get :block, on: :member
       get :reactivate, on: :member
     end
@@ -91,6 +97,7 @@ Core::Engine.routes.draw do
 
       post :invite_member
       post :invite_users_from_csv
+      delete :delete_invitation
       post :resend_invitations
       put :drop_member
     end
@@ -110,9 +117,6 @@ Core::Engine.routes.draw do
   resources :organization_kinds, only: :index
 
   resources :organizations, except: [:destroy] do
-    collection do
-      get :all_organizations
-    end
     resources :organization_departments, path: :departments, only: [:index, :new, :create]
   end
 
@@ -122,6 +126,7 @@ Core::Engine.routes.draw do
   resources :cities do
     collection do
       get :index_for_country
+      get :finder
     end
   end
   root "projects#index"

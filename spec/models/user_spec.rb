@@ -1,4 +1,4 @@
-require 'initial_create_helper'
+require 'main_spec_helper'
 describe User do
   before(:each) do
     @user = build(:user)
@@ -9,7 +9,6 @@ describe User do
   end
 
   it "saves user" do
-    # @user.build_lang_pref(language: 'en')
     @user.language = 'en'
     expect(@user.save).to eq(true)
     expect(@user.language).to eq('en')
@@ -19,6 +18,20 @@ describe User do
     @user.language = 'non-existing-language'
     expect(@user.save).to eq(false)
   end
+  describe '#cut_email' do
+    it 'hides usual email' do
+      @user = build(:user, email: 'unknown@gmail.com')
+      expect(@user.cut_email).to eq 'unknown@g*l.com'
+    end
 
+    it 'hides email' do
+      @user = build(:user, email: 'unknown@s.com')
+      expect(@user.cut_email).to eq 'unknown@s.com'
+    end
 
+    it 'hides email too' do
+      @user = build(:user, email: 'unknown@com')
+      expect(@user.cut_email).to eq 'unknown@com'
+    end
+  end
 end

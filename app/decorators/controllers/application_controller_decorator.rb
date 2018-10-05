@@ -57,9 +57,8 @@ ActionController::Base.class_eval do
     menu.add_item(Face::MenuItem.new({name: t("user_submenu.projects"),
                                       url: core.projects_path,
                                       regexp: /core\/(?:projects|)(?!employments|organizations)/}))
-    current_session = Sessions::Session.current || Sessions::Session.last
-    sessions_warning = current_user.reports.where(session: current_session, state: [:pending, :accepted, :exceeded]).any? ||
-                       current_user.surveys.where(session: current_session, state: [:pending, :filling, :exceeded]).any?
+    sessions_warning = current_user.warning_surveys.exists? ||
+                       current_user.warning_reports.exists?
     sessions_title = if sessions_warning
                       t("user_submenu.sessions_warning.html").html_safe
                      else

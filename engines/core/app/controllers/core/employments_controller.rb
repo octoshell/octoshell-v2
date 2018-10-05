@@ -1,5 +1,5 @@
 module Core
-  class EmploymentsController < ApplicationController
+  class EmploymentsController < Core::ApplicationController
     before_filter :require_login
 
     def new
@@ -23,7 +23,7 @@ module Core
     end
 
     def show
-      @employment = Employment.find(params[:id])
+      @employment = current_user.employments.find(params[:id])
       @employment.build_default_positions
     end
 

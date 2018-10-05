@@ -29,7 +29,7 @@ div class="well"
         = submit_tag t('.test'), class: "btn btn-default"
 
 - if @announcement.pending?
-  p = link_to t('.change_rec_list'), [:admin, @announcement, :show_recipients], class: "btn btn-primary"
+  p = link_to t('.change_rec_list'), [:admin, @announcement, :show_users], class: "btn btn-primary"
   p = link_to t('.send_to_n_users', num: @announcement.recipients.size), [:admin, @announcement, :deliver], class: "btn btn-primary", method: :put
 - else
   legend #{t('.recipients')}

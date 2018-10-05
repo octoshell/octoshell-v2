@@ -1,5 +1,5 @@
 module Support
-  class Admin::ApplicationController < ApplicationController
+  class Admin::ApplicationController < Support::ApplicationController
     layout "layouts/support/admin"
 
     before_filter :authorize_admins

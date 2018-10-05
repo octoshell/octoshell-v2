@@ -13,7 +13,7 @@ module Announcements
     private
 
     def markdown(text)
-      Kramdown::Document.new(text, filter_html: true).to_html.html_safe
+      CommonMarker.render_html(text, :DEFAULT).html_safe
     end
     helper_method :markdown
   end

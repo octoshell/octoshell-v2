@@ -5,10 +5,12 @@
     p
       strong = reply.author.full_name
     p = reply.message
-
 - if (Support.user_class.support | Support.user_class.superadmins).include?(@user)
   p = link_to t('.show_request_details'), support.admin_ticket_url(@ticket)
 - else
   p = link_to t('.show_request_details'), support.ticket_url(@ticket)
 
 = render "footer"
+p
+  | ticket_id:#{@ticket.id} #{t '.remain'}
+= '-' * Support.dash_number

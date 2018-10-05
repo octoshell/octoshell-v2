@@ -3,6 +3,7 @@
 module Sessions
   class ReportMaterialsUploader < CarrierWave::Uploader::Base
     include CarrierWave::Compatibility::Paperclip
+    prepend FileTranslit
     storage :file
 
     def extension_white_list

@@ -1,5 +1,5 @@
 module Core
-  class OrganizationKindsController < ApplicationController
+  class OrganizationKindsController < Core::ApplicationController
     respond_to :json
 
     def index

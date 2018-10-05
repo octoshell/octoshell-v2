@@ -5,7 +5,7 @@ div class="page-header"
   div class="form-group select"
     label class="select required control-label col-xs-2" for="stat_survey_field_id"
       abbr title="required" *
-      |  
+      |
       = Sessions::Stat.human_attribute_name(:survey_field_id)
     div class="col-xs-10"
       select name="stat[survey_field_id]" class="form-control"
@@ -14,7 +14,9 @@ div class="page-header"
             - survey.fields.each do |field|
               option value="#{field.id}" selected="#{'selected' if @stat.survey_field_id == field.id}" = field.name
 
-  = f.collection_select :organization_id, Core::Organization.all, :id, :name
+  = f.autocomplete_field :organization_id, source: core.organizations_path do |val|
+   - Core::Organization.find(val).name_with_id
+
 
 
   = f.text_field :weight

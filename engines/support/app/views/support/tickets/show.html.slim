@@ -64,7 +64,7 @@ table class="table table-stripped"
     - if field_value.value.present?
       tr
         th = field_value.field.present? ? field_value.field.name : "N/A"
-        td = markdown field_value.value
+        td = field_value.value
     - else
       tr class="hidden"
         th = field_value.field.present? ? field_value.field.name : "N/A"
@@ -112,7 +112,7 @@ h3 = Support::Ticket.human_attribute_name(:replies)
   legend = t(".new_reply")
   = bootstrap_form_for @ticket.replies.build, layout: :horizontal, multipart: true do |f|
     = f.hidden_field :ticket_id
-    = f.text_area :message, rows: 5
+    = f.text_area :message, rows: 5,class: 'edit-markdown',height: 400
     = f.file_field :attachment
     = f.form_group
       div class="well"

@@ -3,9 +3,9 @@
   div class="row"
     div class='col-md-4' id='type_aim'
       -if @packages
-        = f.collection_select :id_in, Pack::Package.allowed_for_users_with_joins(current_user.id), :id, :name,{label: t('pack_search.packages.packages_name')}, multiple: true,include_blank: true
+        = f.collection_select :id_in, Pack::Package.allowed_for_users_with_joins(current_user.id), :id, :name,{label: t('pack_search.packages.packages_name')}, multiple: true,include_blank: true,'redirect-url': '/pack/packages/{{id}}'
       -else
-        = f.collection_select :id_in, Pack::Version.allowed_for_users_with_joins(current_user.id), :id, :name,{label: t('pack_search.packages.versions_name')}, multiple: true,include_blank: true
+        = f.collection_select :id_in, Pack::Version.allowed_for_users_with_joins(current_user.id), :id, :name,{label: t('pack_search.packages.versions_name')}, multiple: true,include_blank: true, 'redirect-url': '/pack/versions/{{id}}'
     div class='col-md-4'
         = f.collection_select :options_categories_id_in, Pack::OptionsCategory.all, :id, :category,{label: Pack::OptionsCategory.model_name.human}, include_blank: true, multiple: true
     div class='col-md-4'

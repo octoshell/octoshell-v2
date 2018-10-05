@@ -1,5 +1,5 @@
 module Pack
-  require "initial_create_helper"
+  require 'main_spec_helper'
   describe "Pack::Access requested access" do
     before(:each) do
       @version = create(:version)

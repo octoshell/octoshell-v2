@@ -6,6 +6,7 @@ en:
     sessions: "Sessions"
 
   statistics:
+    date: Date
     by_kind: "By kind"
     by_organization_kind: "By organization kind"
     by_organization_city: "By organization city"

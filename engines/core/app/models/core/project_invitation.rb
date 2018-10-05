@@ -5,7 +5,7 @@ module Core
     after_create :send_email_to_user
 
     def send_email_to_user
-      Core::MailerWorker.perform_async(:invitation_to_octoshell, self.id)
+      Core::MailerWorker.perform_async(:invitation_to_octoshell, [id, language])
       touch
     end
 

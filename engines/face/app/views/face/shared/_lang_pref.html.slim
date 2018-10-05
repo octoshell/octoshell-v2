@@ -3,16 +3,6 @@ ul#lang-pref class="nav navbar-nav navbar-right"
     a href='' lang='ru' rus
   li  class="#{"active" if session[:locale] == 'en'}"
     a href='' lang='en' eng
-javascript:
-  $('#lang-pref a').click(function(e){
-    e.preventDefault();
-    var lang = $(this).attr('lang');
-    $('<form action="#{main_app.change_lang_prefs_path}" method="POST"/>')
-        .append($('<input type="hidden" name="language" value="' + lang + '">'))
-        .append($('<input type="hidden" name="authenticity_token" value="#{form_authenticity_token}">'))
-        .appendTo($(document.body))
-        .submit();
-  });
 //    console.log($(this).attr('lang'));
 //<div class="block-inner clearfix">
   //<ul class="menu clearfix"><li class="first leaf menu-depth-1 menu-item-1543">

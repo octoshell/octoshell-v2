@@ -2,7 +2,7 @@
 
 module Announcements
   class AttachmentUploader < CarrierWave::Uploader::Base
-
+    prepend FileTranslit
     storage :file
 
     def store_dir

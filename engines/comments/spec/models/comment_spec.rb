@@ -1,5 +1,5 @@
 module Comments
-  require "initial_create_helper"
+  require 'main_spec_helper'
   describe Comment do
     describe "::get_items" do
       before(:each) do

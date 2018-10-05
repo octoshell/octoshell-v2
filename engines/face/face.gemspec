@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency "select2-rails"
   s.add_dependency "underscore-rails"
   s.add_dependency "bootstrap-datepicker-rails"
-  s.add_dependency "kramdown"
+  s.add_dependency "commonmarker"
   s.add_dependency "rails-jquery-autocomplete"
   s.add_dependency "jquery-fileupload-rails"
 

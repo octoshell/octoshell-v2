@@ -4,6 +4,7 @@ require "sidekiq"
 require "bootstrap_form"
 
 module Authentication
+  mattr_accessor :delete_after
   class Engine < ::Rails::Engine
     isolate_namespace Authentication
 

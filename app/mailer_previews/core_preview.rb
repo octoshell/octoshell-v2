@@ -4,7 +4,7 @@ class CorePreview
   end
 
   def invitation_to_octoshell
-    Core::Mailer.invitation_to_octoshell(Core::ProjectInvitation.first.id)
+    Core::Mailer.invitation_to_octoshell(Core::ProjectInvitation.first.id, 'ru')
   end
 
   def access_to_project_granted

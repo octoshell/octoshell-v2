@@ -20,18 +20,12 @@ User.class_eval do
     self.language ||= I18n.default_locale.to_s
   end
 
-  # TODO: Переписать
   scope :finder, (lambda do |q|
-    return none if q.blank?
-    condition = q.split(/\s/).map do |word|
-      %w(profiles.last_name profiles.first_name profiles.middle_name email).map do |col|
-          sanitize_sql(["lower(#{col}) like '%s'", "%#{word.mb_chars.downcase}%"])
-      end.join(' or ')
-    end.join (') or (')
-    joins(:profile).where("(#{condition})").order("profiles.last_name")
+    string = %w[profiles.last_name profiles.first_name profiles.middle_name email].join("||' '||")
+    joins(:profile).where("(#{string}) LIKE ?", "%#{q}%").order("profiles.last_name")
   end)
 
-  def as_json(options)
+  def as_json(_options)
     { id: id, text: full_name_with_email }
   end
 
@@ -40,8 +34,24 @@ User.class_eval do
   end
 
   def full_name_with_email
-    [full_name, email].join(" - ")
+    [full_name, email].join(" ")
   end
+
+  def cut_email
+    to_swap = email.rpartition('@').last.rpartition('.').first
+    if to_swap.length >= 2
+      modified = to_swap[0] + '*' + to_swap[-1]
+    else
+      modified = to_swap
+    end
+    email.gsub(/@#{to_swap}/, "@#{modified}")
+  end
+
+  def full_name_with_cut_email
+    [full_name, cut_email].join(" ")
+  end
+
+
 
   def self.superadmins
     Group.superadmins.users

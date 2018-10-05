@@ -1,5 +1,11 @@
 module Core
-  class CredentialsController < ApplicationController
+  class CredentialsController < Core::ApplicationController
+    before_action only: :deactivate do
+      @credential = Credential.find(params[:credential_id])
+      not_authorized unless @credential.user_id == current_user.id
+    end
+
+
     def new
       @credential = current_user.credentials.build
     end
@@ -14,7 +20,6 @@ module Core
     end
 
     def deactivate
-      @credential = Credential.find(params[:credential_id])
       if @credential.deactivate!
         @credential.save
         redirect_to main_app.profile_path

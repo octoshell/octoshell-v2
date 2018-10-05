@@ -6,6 +6,7 @@ ru:
     sessions: "Перерегистрации"
 
   statistics:
+    date: Дата
     by_kind: "По типу"
     by_organization_kind: "По типу организаций"
     by_organization_city: "По городу организации"

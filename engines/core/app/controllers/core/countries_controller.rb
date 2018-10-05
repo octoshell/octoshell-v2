@@ -1,5 +1,5 @@
 module Core
-  class CountriesController < ApplicationController
+  class CountriesController < Core::ApplicationController
     respond_to :json
 
     def index

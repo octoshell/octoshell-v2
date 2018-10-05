@@ -4,7 +4,7 @@
 
 
 module Pack
-  require "initial_create_helper"
+  require 'main_spec_helper'
   describe Access do
     describe "#user_access" do
       before(:each) do

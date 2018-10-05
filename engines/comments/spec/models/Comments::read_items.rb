@@ -1,5 +1,5 @@
 # module Comments
-#   require "initial_create_helper"
+#   require 'main_spec_helper'
 #   describe Level do
 #     describe "::create_permission_level" do
 #       before(:each) do

@@ -25,6 +25,7 @@ module Support
           end
         end
       end
+      @ticket.message = @ticket.template if @ticket.template.present?
       render :new
     end
 
@@ -64,7 +65,7 @@ module Support
     end
 
     def reopen
-      @ticket = Ticket.find(params[:ticket_id])
+      @ticket = find_ticket(params[:ticket_id])
       if @ticket.reopen
         @ticket.save
         redirect_to @ticket

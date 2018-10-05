@@ -1,4 +1,4 @@
-require "initial_create_helper"
+require "main_spec_helper"
 module Authentication
   describe Mailer, :type => :mailer do
     before(:each) do

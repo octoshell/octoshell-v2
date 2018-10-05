@@ -1,4 +1,5 @@
 en:
+  support_responsible_for: "Responsible for:"
   activerecord:
     models:
       support/ticket: Support requests
@@ -7,6 +8,11 @@ en:
       support/field: Extra field
       support/reply: Reply
       support/reply_template: Reply template
+      support/user_topic: Responsible admins
+    errors:
+      models:
+        support/ticket:
+          equal_to_template: Change your problem description  (it is equal to template now)
     attributes:
       support/ticket:
         name: Name
@@ -36,6 +42,8 @@ en:
         message: Problem description
         attachment: Attachment
       support/topic:
+        visible_on_create: Visible for user when he creates request
+        template: Template
         name: Name
         parent: Parent topic
         parent_id: Parent topic
@@ -59,6 +67,8 @@ en:
       support/reply_template:
         subject: Subject
         message: Message
+      support/user_topic:
+        required: Attach automically
 
     aasm:
       support/ticket:
@@ -100,8 +110,13 @@ en:
       new_ticket_reply:
         subject: New reply in request No%{number}
         show_request_details: Show request
+        remain: Do not remove this line! You can add your reply to this request by writing it after the following dash line.
       answered_tickets_notification:
         subject: Reminder about suspended requests in technical support
+      reply_error:
+        subject: Your reply for request  №%{number} is incorrect
+        show_request_details: Show request
+        errors: "Errors:"
       footer:
         octo_regards: "Yours faithfully, Octoshell."
         maintained_by: "Parallel information technologies laboratory, RCC MSU."
@@ -116,6 +131,7 @@ en:
           created_before: Created before
           updated_after: Updated after
           updated_before: Updated before
+          find_by_content: Найти по содержимому
 
         table:
           no_tickets: No requests found
@@ -187,6 +203,8 @@ en:
         show:
           title: Support topic
           new_subtopic: New support subtopic
+        form:
+          attach: Attach
 
     tickets:
       index:

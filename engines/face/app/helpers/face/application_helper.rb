@@ -1,5 +1,11 @@
 module Face
   module ApplicationHelper
+    def display_wiki_link(name)
+      page = Wiki.engines_links[name].first
+      return 'This page does not exist' unless page
+      link_to page.name, wiki.page_path(page)
+    end
+
     def admin_user_short_link(user)
       return '' unless user
       profile = user.profile
@@ -99,7 +105,7 @@ module Face
     end
 
     def markdown(text)
-      Kramdown::Document.new(text, filter_html: true).to_html.html_safe
+      CommonMarker.render_html(text, :DEFAULT).html_safe
     end
   end
 end

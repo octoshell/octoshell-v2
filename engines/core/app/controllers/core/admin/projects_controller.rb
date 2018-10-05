@@ -18,7 +18,7 @@ module Core
           @count_allowed_members = Hash[@count_allowed_members.count('users.id')]
         end
         format.json do
-          @projects = Project.finder(params[:q]).order('projects.name asc')
+          @projects = Project.finder(params[:q]).order(:title)
           render json: { records: @projects.page(params[:page]).per(params[:per]), total: @projects.count }
         end
       end

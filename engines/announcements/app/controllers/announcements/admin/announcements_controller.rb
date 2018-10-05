@@ -1,6 +1,13 @@
 module Announcements
   class Admin::AnnouncementsController < Admin::ApplicationController
     before_filter { authorize! :manage, :announcements }
+    # before_action only: %i[create update] do
+    #   if announcement_params[:attachment]
+    #     announcement_params[:attachment].original_filename =
+    #       Translit.convert(announcement_params[:attachment].original_filename, :english)
+    #   end
+    # end
+
     helper Face::ApplicationHelper
     def index
       @announcements = Announcement.order("id desc").includes(created_by: :profile)
@@ -72,8 +79,7 @@ module Announcements
 
     def show_recipients
       @announcement = Announcement.find(params[:announcement_id])
-      #params[:q] ||= { state_in: ["active"] }
-      @search = @announcement.recipients.search(params[:q])
+      @search = User.search(params[:q])
       @users = @search.result(distinct: true).includes(:profile).order(:id)
       @users = if @announcement.is_special?
                  @users.where(profiles: {receive_special_mails: true})
@@ -86,7 +92,9 @@ module Announcements
 
     def select_recipients
       @announcement = Announcement.find(params[:announcement_id])
-      @announcement.update(recipient_ids: (params[:selected_recipient_ids] || []).map(&:to_i))
+      remain_ids = (((params[:selected_recipient_ids] || []).map(&:to_i) || []) +
+        (@announcement.recipient_ids - params[:users_ids].split(' ').map(&:to_i))).uniq
+      @announcement.update(recipient_ids: remain_ids)
 
       redirect_to [:admin, @announcement]
     end

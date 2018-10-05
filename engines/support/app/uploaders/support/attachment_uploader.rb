@@ -4,7 +4,7 @@ module Support
   class AttachmentUploader < CarrierWave::Uploader::Base
     #include CarrierWave::MimeTypes
     CarrierWave::SanitizedFile.sanitize_regexp = /[^a-zA-Zа-яА-ЯёЁ0-9\.\-\+_]/u
-
+    prepend FileTranslit
     storage :file
 
     # Override the directory where uploaded files will be stored.

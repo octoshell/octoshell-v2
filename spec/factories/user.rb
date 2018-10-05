@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :user, :class => "User", aliases: [:owner] do
     sequence(:email) { |n| "user_#{n}@octoshell.ru" }
-    password "123456"
+    password { "123456" }
 
     after(:create) do |user|
       user.update(activation_state: "active")
@@ -10,6 +10,6 @@ FactoryBot.define do
 
   factory :unactivated_user, :class => "User" do
     sequence(:email) { |n| "unactivated_user_#{n}@octoshell.ru" }
-    password "123456"
+    password { "123456" }
   end
 end

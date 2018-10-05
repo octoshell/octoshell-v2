@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180817104458) do
+ActiveRecord::Schema.define(version: 20180907145732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -363,11 +363,12 @@ ActiveRecord::Schema.define(version: 20180817104458) do
   add_index "core_project_cards", ["project_id"], name: "index_core_project_cards_on_project_id", using: :btree
 
   create_table "core_project_invitations", force: :cascade do |t|
-    t.integer  "project_id",             null: false
-    t.string   "user_fio",   limit: 255, null: false
-    t.string   "user_email", limit: 255, null: false
+    t.integer  "project_id",                            null: false
+    t.string   "user_fio",   limit: 255,                null: false
+    t.string   "user_email", limit: 255,                null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "language",               default: "ru"
   end
 
   add_index "core_project_invitations", ["project_id"], name: "index_core_project_invitations_on_project_id", using: :btree
@@ -873,11 +874,14 @@ ActiveRecord::Schema.define(version: 20180817104458) do
   add_index "support_tickets_tags", ["ticket_id"], name: "index_support_tickets_tags_on_ticket_id", using: :btree
 
   create_table "support_topics", force: :cascade do |t|
-    t.string   "name_ru",    limit: 255
+    t.string   "name_ru",           limit: 255
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name_en"
+    t.text     "template_en"
+    t.text     "template_ru"
+    t.boolean  "visible_on_create",             default: true
   end
 
   create_table "support_topics_fields", force: :cascade do |t|
@@ -888,6 +892,14 @@ ActiveRecord::Schema.define(version: 20180817104458) do
   create_table "support_topics_tags", force: :cascade do |t|
     t.integer "topic_id"
     t.integer "tag_id"
+  end
+
+  create_table "support_user_topics", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "topic_id"
+    t.boolean  "required",   default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "user_groups", force: :cascade do |t|

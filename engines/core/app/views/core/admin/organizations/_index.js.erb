@@ -1,32 +1,14 @@
-var  org_name = $("#_name");
-org_name.on("select2:select", function(e) {
-  var value = e.params.data.id;
-  var url = '/core/admin/organizations/' + value;
-  window.location.href = url;
-});
-var cities =  <%=raw @cities.to_json%>;
-
-var country_select = $('#country_select');
-var city_select = $('#city_select');
-var id = country_select.val();
-city_select.select2({
-  data: cities[id]
-});
-$(document).on("select2:select","#country_select", function(e) {
-  var id = e.params.data.id;
-  city_select.select2('destroy');
-  city_select.empty();
-  city_select.select2({
-    data: cities[id]
-  });
-});
-
-$("#empty_cities_countries").click(function(e){
-  country_select.val(null).trigger('change');
-  city_select.val(null).trigger('change');
-  $('#q_kind_id_eq').val(null).trigger('change');
-  city_select.select2('destroy');
-  city_select.empty();
-  city_select.select2({data: []});
-  return false;
+$(document).ready(function(){
+  var city_select = $('#city_select');
+  if(city_select.length){
+    apply_select_to(city_select,'/core/cities/finder');
+    var id =  $('#country_select').select2('val');
+    apply_select_to(city_select,'/core/cities/finder',{country_id: id});
+    $(document).on("select2:select","#country_select", function(e) {
+      var id = e.params.data.id;
+      city_select.select2('destroy');
+      city_select.empty();
+      apply_select_to(city_select,'/core/cities/finder',{country_id: id});
+    });
+  }
 });

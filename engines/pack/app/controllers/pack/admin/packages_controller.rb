@@ -5,7 +5,7 @@ module Pack
     def index
       respond_to do |format|
         format.html{
-          @q_form = OpenStruct.new(params[:q])
+          @q_form = OpenStruct.new(q_param)
           search = PackSearch.new(@q_form.to_h, 'packages')
           @packages = search.get_results(nil)
           without_pagination(:packages)
@@ -63,5 +63,10 @@ module Pack
     def search_params
       params.require(:search).permit(:deleted)
     end
+
+    def q_param
+      params[:q] || { clustervers_active_in: '1' }
+    end
+
   end
 end

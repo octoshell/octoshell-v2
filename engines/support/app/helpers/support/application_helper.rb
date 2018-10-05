@@ -1,5 +1,22 @@
 module Support
   module ApplicationHelper
+
+    def responsible_user_topics(ticket)
+      ticket.possible_responsibles.map do |r|
+        user_topics_array = r.second
+        user_topics_res = []
+        formed_string = [r.first.full_name]
+        if r.second.any?
+          user_topics_array.each do |user_topic|
+            string = user_topic.topic.name
+            string << "(#{UserTopic.human_attribute_name(:required)})" if user_topic.required
+            user_topics_res << string
+          end
+        end
+        [r.first.id, formed_string.join(' '), user_topics_res]
+      end
+    end
+
     def support_admin_submenu_items
       menu = Face::Menu.new
       menu.items.clear

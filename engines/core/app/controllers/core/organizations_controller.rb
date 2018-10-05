@@ -11,10 +11,6 @@ module Core
       respond_with(json)
     end
 
-    def all_organizations
-      render json: Core::Organization.all.map(&:full_json)
-    end
-
     def show
       @organization = Organization.find(params[:id])
       respond_with({ id: @organization.id, text: @organization.name })
@@ -70,8 +66,8 @@ module Core
     private
 
     def can_edit
-      return if @organization.can_edit?(current_user)
-      redirect_to(main_app.profile_path)
+      raise MayMay::Unauthorized unless @organization.can_edit?(current_user)
+      # redirect_to(main_app.profile_path)
     end
 
     def employment_params

@@ -73,6 +73,8 @@ ru:
       models:
         user:
           attributes:
+            email:
+              postmaster: Нельзя зарегистрироваться с email, содержащим postmaster 
             base:
               user_is_not_registered: "Пользователь не зарегистрирован."
               user_is_not_activated: "Пользователь еще не активирован. Пройдите по ссылке в письме об активации."

@@ -231,6 +231,7 @@ en:
         full_name: "Full name"
         organization: "Organization"
       core/project_invitation:
+        language: Language
         user_email: "Email"
         user_fio: "Initials"
         updated_at: "Inivitation is sent at"
@@ -314,6 +315,7 @@ en:
     must_be_in_english: "Must be in english"
     must_be_in_russian: "Must be in russian"
     choose_at_least: "Choose at least %{count}"
+    choose_at_max: "Choose max %{count}"
 
     user:
       employment:
@@ -428,6 +430,9 @@ en:
         msg_activated: "Your account is active again. You can continue your job in our system."
 
     admin:
+      credentials:
+        list:
+          credentials: "ssh-keys"
       projects:
         requests:
           access_request: "Request to access to MSU Supercomputing Center resouces"
@@ -641,6 +646,7 @@ en:
           add_department: "+ add a department"
           remove_department: "delete the department"
         show:
+          check: Confirm unchecked organization
           merge_edit: Edit with merger
         merge_update:
           here: here
@@ -713,21 +719,23 @@ en:
     projects:
       invited_users:
         send_invitations: "Send invitations to new members"
-        msg_if_member_unregistered: "If users are not registered in Octoshell, you can send them invitations "
-        msg_invitation_csv: "You have to form the .csv document with the following columns"
-        msg_intitation_csv_col: "email, Surname Name Middle name"
+        msg_if_member_unregistered: "If users are not registered in Octoshell, you can send them invitations. Your language is %{language}.
+                                     Add one of the following languages: %{locales} to the end of line to specify different language for an invitation email"
+        msg_invitation_csv: "You should form the .csv document with the following columns"
+        msg_intitation_csv_col: "email, Surname Name Middle name, language"
         msg_invitation_csv_example: "Example"
-        msg_invitation_csv_example_body1: "gav@abyrvalg.com,Sharikov Polygraph Polygraphovich"
+        msg_invitation_csv_example_body1: "gav@abyrvalg.com,Sharikov Polygraph Polygraphovich, ru"
         msg_invitation_csv_example_body2: "filipp@mail.ru,Preobrazhensky Filipp Filippovich"
         invitation_csv_file: ".csv file in UTF-8 encoding."
         invitation_upload: "Upload"
         members_invited: "Invited members"
-        resend_invitations: "Resend invitation"
+        resend_invitations: "Resend invitations"
       new:
         title: "Create a new project"
       edit:
         title: "Edit project profile"
       form:
+        errors: These attributes are invalid
         nothing: "Without department"
         card: "Project card"
         card_help:
@@ -762,6 +770,7 @@ en:
         title: "Requests for access to MSU SCC resources"
         requested_resources_info: "Requested resources"
       members:
+        instruction: Add only those users who will work on clusters
         login: "login"
         invite_member: " add a member"
         title: "Members of this project"

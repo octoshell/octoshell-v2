@@ -6,14 +6,9 @@ https://users.parallel.ru/
 ## Installation and starting
 
 1. install rbenv (https://github.com/rbenv/rbenv)
-1. Octoshell is used with 2 ruby implementations: jruby and MRI. Jruby is good in production environment, but boots very slowly. It is significant disadvantage in development environment and you should use MRI implementation during dev. Your code should be compatitible with all implementations.  
-To install MRI implementation:
+1. install ruby:
 		rbenv install 2.5.1
 		rbenv local 2.5.1
-To install jruby:
-		install jdk (oracle is better).   
-		rbenv install jruby-9.1.12.0
-		rbenv local jruby-9.1.12.0
 1. `gem install bundler`
 1. `bundle install`
 1. install redis
@@ -25,6 +20,7 @@ To install jruby:
 1. `bin/rake db:setup`
 1. optional run tests: `bin/rspec .`
 1. After "seeds" example cluster will be created. You should login to your cluster as root, create new user 'octo'. Login as `admin@octoshell.ru` in web-application. Go to "Admin/Cluster control" and edit "Test cluster". Copy `octo` public key from web to /home/octo/.ssh/authorized_keys.
+1. `rake assets:precompile` (Downloading pages without precompilation  and   config.assets.debug = true can take significant amount of time)
 1. Start production sidekiq: `./run-sidekiq` (`dev-sidekiq` for development)
 1. Start production server: `./run` (`dev` for development)
 1. Enter as admin with login `admin@octoshell.ru` and password `123456`

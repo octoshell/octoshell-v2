@@ -4,6 +4,9 @@ Support::Engine.routes.draw do
       put :close
       put :reopen
       post :accept
+      member do
+        put :edit_responsible
+      end
     end
 
     resources :replies, only: :create

@@ -1,4 +1,5 @@
 ru:
+  support_responsible_for: "Ответственный за:"
   activerecord:
     models:
       support/ticket: Заявка в поддержку
@@ -7,6 +8,11 @@ ru:
       support/field: Дополнительное поле
       support/reply: Ответ
       support/reply_template: Шаблон ответа
+      support/user_topic: Ответственные
+    errors:
+      models:
+        support/ticket:
+          equal_to_template: Измените описание проблемы (сейчас там шаблон)
     attributes:
       support/ticket:
         name: Название
@@ -36,6 +42,8 @@ ru:
         message: Описание проблемы
         attachment: Приложенный файл
       support/topic:
+        template: Шаблон
+        visible_on_create: Видна ли при создании заявки пользователем
         name: Наименование
         parent: Родительская тема
         parent_id: Родительская тема
@@ -59,6 +67,8 @@ ru:
       support/reply_template:
         subject: Заголовок
         message: Сообщение
+      support/user_topic:
+        required: Ответственный по умолчанию
 
     aasm:
       support/ticket:
@@ -100,6 +110,12 @@ ru:
       new_ticket_reply:
         subject: Новый ответ в заявке №%{number}
         show_request_details: Перейти к заявке
+        remain: Не удаляйте эту строку! Вы можете добавить ответ к этой заявке, записав Ваш ответ после следующей пунктирной линии.
+      reply_error:
+        subject: Не удалось оставить ответ к  заявке №%{number} по причине ошибок
+        show_request_details: Перейти к заявке
+        errors: "Ошибки:"
+
       answered_tickets_notification:
         subject: Напоминание о зависших заявках в техподдержке
       footer:
@@ -116,7 +132,7 @@ ru:
           created_before: Создан до
           updated_after: Обновлён после
           updated_before: Обновлён до
-
+          find_by_content: Найти по содержимому
         table:
           no_tickets: Нет тикетов
         edit:
@@ -186,6 +202,8 @@ ru:
         show:
           title: Тема заявок
           new_subtopic: Новая подтема
+        form:
+          attach: Прикрепить
 
     tickets:
       index:

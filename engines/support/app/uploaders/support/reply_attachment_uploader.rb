@@ -3,6 +3,7 @@
 module Support
   class ReplyAttachmentUploader < CarrierWave::Uploader::Base
     include CarrierWave::Compatibility::Paperclip
+    prepend FileTranslit
     CarrierWave::SanitizedFile.sanitize_regexp = /[^a-zA-Zа-яА-ЯёЁ0-9\.\-\+_]/u
 
     storage :file

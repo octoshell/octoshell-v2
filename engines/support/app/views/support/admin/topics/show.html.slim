@@ -12,6 +12,13 @@ ul class="list-unstyled"
   - @topic.tags.each do |tag|
     li = tag
 
+h3 = Support::Topic.human_attribute_name(:template)
+p = @topic.template
+
+h3 = Support::Topic.human_attribute_name(:visible_on_create)
+p = @topic.visible_on_create
+
+
 h3 = Support::Topic.human_attribute_name(:fields)
 
 - if @topic.fields.any?
@@ -23,3 +30,14 @@ h3 = Support::Topic.human_attribute_name(:fields)
       tr
         td = link_to field, [:admin, field]
         td = field.required
+
+h3 = Support::UserTopic.model_name.human
+- if @topic.user_topics.any?
+  table class="table table-bordered"
+    tr
+      th = User.model_name.human
+      th = Support::UserTopic.human_attribute_name(:required)
+    - @topic.user_topics.each do |user_topic|
+      tr
+        td = user_topic.user.full_name
+        td = user_topic.required

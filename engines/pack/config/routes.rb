@@ -1,6 +1,6 @@
 Pack::Engine.routes.draw do
   namespace :admin do
-    root "packages#index"
+    root "versions#index"
     resources :accesses do
       member do
         post 'manage_access'
@@ -13,7 +13,7 @@ Pack::Engine.routes.draw do
     resources :accesses
     resources :options_categories
   end
-  root "packages#index"
+  root "versions#index"
   get "/docs/:page" => "docs#show"
   resources :versions, only: [:show,:index]
   resources :packages do

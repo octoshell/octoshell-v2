@@ -1,9 +1,10 @@
 = bootstrap_nested_form_for [:admin, @ticket], layout: :horizontal, multipart: true do |f|
-  = f.collection_select :reporter_id, User.all - [current_user], :id, :full_name_with_email
+  = f.autocomplete_field :reporter_id, source:  main_app.users_path do |id|
+    -User.find(id).full_name_with_email
   = f.collection_select :responsible_id, User.support, :id, :full_name_with_email unless @ticket.new_record?
   = f.text_field :subject
   = f.text_field :url
-  = f.text_area :message, rows: 14
+  = f.text_area :message, rows: 14, class: 'edit-markdown'
   = f.file_field :attachment
   = f.collection_select :topic_id, Support::Topic.common_theme, :id, :name_with_parents
   = autocomplete f, name: :project_id, label: Support::Ticket.human_attribute_name(:project), source: core.projects_path, include_blank: true

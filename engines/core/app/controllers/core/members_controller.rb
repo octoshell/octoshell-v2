@@ -1,13 +1,15 @@
 module Core
-  class MembersController < ApplicationController
-    def edit
+  class MembersController < Core::ApplicationController
+    before_action only: %i[edit update] do
       @project = Project.find(params[:project_id])
       @member = @project.members.find(params[:id])
+      not_authorized unless @member.user_id == current_user.id
+    end
+
+    def edit
     end
 
     def update
-      @project = Project.find(params[:project_id])
-      @member = @project.members.find(params[:id])
       if @member.update(member_params)
         @member.accept_invitation!
         @member.save
