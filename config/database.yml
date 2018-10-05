@@ -1,7 +1,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: new_octoshell_development
+  database: august_octoshell_migrated
   user: octo
   password: 1234
   host: localhost
