@@ -6,15 +6,26 @@ require "mina/rails"
 require "mina/git"
 #require "mina/systemd"
 
-set :domain, "users.parallel.ru"
+domain=ENV['DEPLOY_DOMAIN'] || "ooctoshell-v2.parallel.ru"
+user=ENV['DEPLOY_USER'] || 'admin'
+port=ENV['DEPLOY_PORT'] || 22
+ruby_ver=ENV['DEPLOY_RUBY'] || "jruby-9.1.10.0"
+repo=ENV['DEPLOY_REPO'] || "https://github.com/octoshell/octoshell-v2.git"
+branch=ENV['DEPLOY_BRANCH'] || "rails4_2_jruby_9000"
+dbuser=ENV['DEPLOY_DBUSER'] || "octo"
+dbpass=ENV['DEPLOY_DBPASS'] || "octopass"
+
+set :domain, domain
 set :forward_agent, true
 set :application, "octoshell2"
-set :user, "admin"
-set :rbenv_ruby_version, "jruby-9.1.10.0"
+set :user, user
+set :dbuser, dbuser
+set :dbpass, dbpass
+set :rbenv_ruby_version, ruby_ver
 set :deploy_to, "/var/www/#{fetch(:application)}"
 #set :deploy_to, "/var/www/octoshell2"
-set :repository, "git@github.com:octoshell/octoshell-v2.git"
-set :branch, "master"
+set :repository, repo
+set :branch, branch
 set :keep_releases, 5
 #set :foreman_app, 'octoshell3'
 #old set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)
