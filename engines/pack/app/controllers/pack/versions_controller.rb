@@ -30,7 +30,8 @@ module Pack
           @options_for_select << "user"
           @options_for_select_labels << t("user")
           @q_form = OpenStruct.new(params[:q] || { user_access: current_user.id,
-                                                   id_in: nil } )
+                                                   id_in: nil,
+                                                   clustervers_active_in: '1' })
           search = PackSearch.new(@q_form.to_h, 'versions', current_user.id)
           @versions = search.get_results(search.table_relation.allowed_for_users).page(params[:page]).per(15)
         end

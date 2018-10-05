@@ -1,5 +1,5 @@
 module Comments
-  require ""
+  require 'main_spec_helper'
   describe Permissions do
     describe "::create_permissions" do
       before(:each) do

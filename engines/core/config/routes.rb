@@ -47,6 +47,7 @@ Core::Engine.routes.draw do
     resources :organizations do
       member do
         get :index_for_organization
+        put :check
       end
       collection do
         get :merge_edit
@@ -125,6 +126,7 @@ Core::Engine.routes.draw do
   resources :cities do
     collection do
       get :index_for_country
+      get :finder
     end
   end
   root "projects#index"

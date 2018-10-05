@@ -1,5 +1,5 @@
     module Core
-      require ""
+      require 'main_spec_helper'
       describe Member do
         describe "automerge" do
           before(:each) do

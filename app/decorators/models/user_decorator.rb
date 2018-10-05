@@ -37,6 +37,22 @@ User.class_eval do
     [full_name, email].join(" ")
   end
 
+  def cut_email
+    to_swap = email.rpartition('@').last.rpartition('.').first
+    if to_swap.length >= 2
+      modified = to_swap[0] + '*' + to_swap[-1]
+    else
+      modified = to_swap
+    end
+    email.gsub(/@#{to_swap}/, "@#{modified}")
+  end
+
+  def full_name_with_cut_email
+    [full_name, cut_email].join(" ")
+  end
+
+
+
   def self.superadmins
     Group.superadmins.users
   end

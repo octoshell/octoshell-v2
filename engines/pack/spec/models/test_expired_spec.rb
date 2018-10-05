@@ -1,6 +1,6 @@
 module Pack
 
-  require ""
+  require 'main_spec_helper'
 
 
   describe "Pack::Access and Version expired testing" do

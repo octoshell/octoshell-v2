@@ -84,6 +84,13 @@ module Core
       end
     end
 
+    def check
+      @organization = Organization.find(params[:id])
+      @organization.update!(checked: true)
+      redirect_to [:admin, @organization]
+    end
+
+
     def destroy
       @organization = Organization.find(params[:id])
       if @organization.destroy_allowed?

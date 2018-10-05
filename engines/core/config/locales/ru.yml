@@ -651,6 +651,7 @@ ru:
           add_department: "+ добавить подразделение"
           remove_department: "удалить подразделение"
         show:
+          check: Подтвердить непроверенную организацию
           merge_edit: Редактировать со слиянием
         merge_update:
           here: здесь
@@ -726,7 +727,7 @@ ru:
                                      Вы можете выслать им приглашения. Вы можете определить язык(%{locales})
                                      для отправки email пользователю в последней колонке. Если не укажите, email будет послан на Вашем языке: %{language}"
         msg_invitation_csv: "Для этого вам надо сформировать .csv документ с колонками"
-        msg_intitation_csv_col: "email, Фамилия Имя Отчество"
+        msg_intitation_csv_col: "email, Фамилия Имя Отчество, язык"
         msg_invitation_csv_example: "Пример"
         msg_invitation_csv_example_body1: "gav@abyrvalg.com,Шариков Полиграф Полиграфович,en"
         msg_invitation_csv_example_body2: "filipp@mail.ru,Преображенский Филипп Филиппович"

@@ -1,5 +1,5 @@
 module Core
-  require ""
+  require 'main_spec_helper'
   describe Organization do
     describe "#merge_with_organization" do
       before (:each) do

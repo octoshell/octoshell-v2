@@ -1,4 +1,4 @@
-require ""
+require 'main_spec_helper'
 describe LocalizedEmails, type: :mailer do
   it 'delivers Test Mail' do
     @users = []

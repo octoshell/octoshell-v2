@@ -59,7 +59,7 @@ en:
       support_theme_name: Заявка на доступ к версиям пакетов
     engine_submenu:
         packages_list: Packages
-        versions_list: Versions
+        versions_list: Packages versions
         accesses_list: Accesses
         options_list: Options
     options_list: Options

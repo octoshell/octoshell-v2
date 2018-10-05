@@ -7,7 +7,7 @@ module Pack
     def index
       respond_to do |format|
         format.html do
-          @q_form = OpenStruct.new(params[:q])
+          @q_form = OpenStruct.new(q_param)
           search = PackSearch.new(@q_form.to_h, 'versions')
           @versions = search.get_results(nil)
           without_pagination(:versions)
@@ -72,6 +72,10 @@ module Pack
     def pack_init
      @package = Package.find(params[:package_id]) if params[:package_id]
      @categories = OptionsCategory.all
+    end
+
+    def q_param
+      params[:q] || { clustervers_active_in: '1' }
     end
   end
 end

@@ -15,6 +15,19 @@ module Core
       render json: @records
     end
 
+    def finder
+      @cities = City.finder(params[:q]).order(City.current_locale_column(:title))
+      if params[:country_id].present?
+        @cities = @cities.where(country_id: params[:country_id])
+      end
+      json = { records: @cities.page(params[:page]).per(params[:per]), total: @cities.count }
+      render json: json
+      # @cities = City.where(country_id: params[:country_id])
+      # @records = @cities.map(&:to_json_with_titles)
+      # render json: @records
+    end
+
+
     def show
       country = Country.find(params[:country_id])
       @city = country.cities.find(params[:id])

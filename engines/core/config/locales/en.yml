@@ -646,6 +646,7 @@ en:
           add_department: "+ add a department"
           remove_department: "delete the department"
         show:
+          check: Confirm unchecked organization
           merge_edit: Edit with merger
         merge_update:
           here: here
@@ -721,7 +722,7 @@ en:
         msg_if_member_unregistered: "If users are not registered in Octoshell, you can send them invitations. Your language is %{language}.
                                      Add one of the following languages: %{locales} to the end of line to specify different language for an invitation email"
         msg_invitation_csv: "You should form the .csv document with the following columns"
-        msg_intitation_csv_col: "email, Surname Name Middle name"
+        msg_intitation_csv_col: "email, Surname Name Middle name, language"
         msg_invitation_csv_example: "Example"
         msg_invitation_csv_example_body1: "gav@abyrvalg.com,Sharikov Polygraph Polygraphovich, ru"
         msg_invitation_csv_example_body2: "filipp@mail.ru,Preobrazhensky Filipp Filippovich"

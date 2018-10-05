@@ -4,6 +4,8 @@ div class="page-header"
 div class="well"
   = link_to t("actions.edit"), [:edit, :admin, @organization], class: "btn btn-default"
   = link_to t(".merge_edit"),merge_edit_admin_organizations_path(id: @organization.id), class: "btn btn-default"
+  = link_to t(".check"),check_admin_organization_path(@organization),method: :put, class: "btn btn-success" unless @organization.checked
+
   - if @organization.destroy_allowed?
     - name = t("actions.delete", default: "delete")
     - confirm = t("core_confirm", default: "Are You sure?")

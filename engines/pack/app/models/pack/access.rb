@@ -279,7 +279,7 @@ module Pack
       access
     end
 
-    def who_name_with_type
+    def who_name_with_type(who_name = self.who_name)
       "#{I18n.t('who_types.' + who_type)} \"#{who_name}\""
     end
 

@@ -1,6 +1,6 @@
 # module Comments
 #
-# 	require ""
+# 	require 'main_spec_helper'
 #
 #
 #

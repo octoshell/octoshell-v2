@@ -1,5 +1,5 @@
 module Comments
-  require ""
+  require 'main_spec_helper'
   describe Tagging do
     describe "::get_items" do
       before(:each) do

@@ -8,7 +8,13 @@ class UsersController < ApplicationController
       end
       format.json do
         @users = User.finder(params[:q])
-        render json: { records: @users.page(params[:page]).per(params[:per]), total: @users.count }
+        if User.superadmins.include? current_user
+          render json: { records: @users.page(params[:page]).per(params[:per]),
+                         total: @users.count }
+        else
+          render json: { records: @users.page(params[:page]).per(params[:per])
+                                        .map{ |u| { id: u.id, text: u.full_name_with_cut_email } }, total: @users.count }
+        end
       end
     end
   end

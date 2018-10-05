@@ -1,5 +1,5 @@
 module Comments
-  require ""
+  require 'main_spec_helper'
   describe Comment do
     describe "::read_items items without context" do
       before(:each) do

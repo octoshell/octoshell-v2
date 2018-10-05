@@ -38,7 +38,7 @@ module Support
 
     scope :find_by_content, -> (q) do
       processed = q.mb_chars.split(' ').join('%')
-      joins(:replies).where("support_replies.message LIKE :q OR support_tickets.message LIKE :q",q: "%#{processed}%")
+      left_join(:replies).where("support_replies.message LIKE :q OR support_tickets.message LIKE :q",q: "%#{processed}%")
     end
 
     def self.ransackable_scopes(_auth_object = nil)
