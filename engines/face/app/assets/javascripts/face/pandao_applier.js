@@ -34,16 +34,21 @@
         factory(window.editormd);
 	}
   $(function() {
-    $('.edit-markdown').each(function(){
-     var height = $(this).attr('height') || 700;
-     var pandaoId = 'edit-markdown-' +  this.id;
-     $(this).wrap(`<div id=${pandaoId}> </div>`);
-     var editor = editormd({
-         id: pandaoId,
-         path : "/lib/",
-         height: height
-     });
-    });
+    function isMobileDevice() {
+      return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+    };
+    if(!isMobileDevice()){
+      $('.edit-markdown').each(function(){
+       var height = $(this).attr('height') || 700;
+       var pandaoId = 'edit-markdown-' +  this.id;
+       $(this).wrap(`<div id=${pandaoId}> </div>`);
+       var editor = editormd({
+           id: pandaoId,
+           path : "/lib/",
+           height: height
+       });
+      });
+    }
   });
 
 })();
