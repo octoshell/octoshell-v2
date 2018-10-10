@@ -15,14 +15,18 @@ javascript:
   var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
   // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
 
-h3 Job table query interface
+h3 Информация о завершенных задачах
+
+p На данной странице вы можете посмотреть информацию о ваших задачах, а также оценить эффективность их выполнения. Для отображения только интересующих задач укажите ниже требуемые фильтры.
 
 = render "form"
+
 
 - if @notice
   p style = 'color:#FF0000;' = @notice
 
 div
+  br
   button onClick="$('#agree_all_confirmation').addClass('active')" id='agree_all'
     | Я согласен с оценками моих запусков
   div class="popup-wrap width80" id="agree_all_confirmation"
@@ -50,10 +54,16 @@ div
   button id="disagree_button" onClick="multi_job_feedback()" alt="Не согласен!"
     | Жмите тут!
   div
-    | Чтобы посмотреть описание проблем задания, скрыть их видимость или прокомментировать их применимость к заданию, нажмите на первой ячейке строки таблицы.
     br
-    a href='all_rules' Вот здесь 
-    | полная информация по возможным проблемам и настройки их видимости.
+    p Для каждой задачи в столбце "Найденные проблемы" указаны проблемы с эффективностью, найденные для данной задачи. Чтобы посмотреть их описание, скрыть их видимость или прокомментировать их применимость к заданию, необходимо нажать на левый столбец. Значок соответствует типу найденной проблемы; цвет обозначает ее критичность (красный – радикальное снижение эффективности или программа работает некорректно, черный - заметное снижение эффективности, зеленый – проблем не найдено или они несущественны).
+    p 
+      | Посмотреть список всех потенциальных проблем с эффективностью, настроить их отображение или содержание, а также предложить свое новое правило для обнаружения проблем с эффективностью можно на 
+      a href='all_rules' этой странице
+      |.
+    p 
+      | Есть общие пожелания или замечания? 
+      a href='TODO' Напишите нам
+      | .
 div class="perf-table"
   /p
     | Sort by &nbsp;
@@ -68,47 +78,56 @@ div class="perf-table"
   input type="checkbox" class="hide-perf-data" id="hide-perf-checkbox"
   label for="hide-perf-checkbox" Скрыть данные производительности
 
-  h3 Results: #{@params[:offset]}..#{@params[:offset].to_i + @shown} of #{@total_count}
+  h3 Показаны задачи: #{@params[:offset]}..#{@params[:offset].to_i + @shown} of #{@total_count}
+  table
+    tr
+      td
+        - if @params[:offset].to_i >= @PER_PAGE
+          a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i - @PER_PAGE)}" <<<
+      td width="10px"
+      td
+        - if @jobs.length == 100
+          a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
   table id="jobs" class="table table-bordered tablesorter-default fixed-layout"
     thead
       tr
         th data-sorter="false"
           |
         th data-sorter="false"
-          | job issues
+          | Найденные проблемы
         th
-          | job id
+          | ID задачи
         th class="login-data"
-          | login
+          | Логин
         th class="login-data"
-          | partition
+          | Раздел
         th
-          | start
+          | Начало счета
         th
-          | end
+          | Конец счета
         th class="icon-x2-width"
-          | state
+          | Статус
         th
           / class="triplesort"
-          | nodes
+          | Число узлов
         th
-          | hours
+          | Время счета, в часах
         th
-          | job size (node*hours)
-        th class="perf-data"
+          | Размер задачи (ЦПУ-часы)
+        /th class="perf-data"
           | job size
         th class="perf-data"
-          | cpu load
+          | Загрузка ЦПУ
         th class="perf-data"
-          | gpu load
+          | Загрузка ГПУ
         th class="perf-data"
-          | LA
+          | Load average
         th class="perf-data"
           | IPC
         th class="perf-data"
-          | MPI in (MB)
+          | Получено байт по MPI, в МБ
         th class="perf-data"
-          | MPI out (MB)
+          | Передано байт по MPI, в МБ
     - index=1
     - @jobs.each do |job|
       - index+=1
@@ -248,8 +267,8 @@ table
   tr
     td
       - if @params[:offset].to_i >= @PER_PAGE
-        a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i - @PER_PAGE)}" <<< prev
+        a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i - @PER_PAGE)}" <<< 
     td width="10px"
     td
       - if @jobs.length == 100
-        a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" next >>>
+        a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
