@@ -32,16 +32,18 @@ module Jobstat
       @jobs_plus={}
 
       states=@params[:states].reject{|x| x==''}
-      partitions=@params[:states].reject{|x| x==''}
-      if states.length == 0 or
-         partitions.length == 0 #or
-          #query_logins.length == 0
+      partitions=@params[:partitions].reject{|x| x==''}
+      @params[:states]='ALL' if states.length==0
+      @params[:partitions]='ALL' if partitions.length==0
+      # if states.length == 0 or
+      #    partitions.length == 0 #or
+      #     #query_logins.length == 0
 
-        @notice = "Choose all query parameters"
-        return
-      else
-        @notice = nil
-      end
+      #   @notice = "Choose all query parameters"
+      #   return
+      # else
+      #   @notice = nil
+      # end
 
       @agree_flags={
         0 => 'far fa-thumbs-up agreed-flag',

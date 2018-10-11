@@ -9,21 +9,20 @@ button onClick="$('.rule-checkbox').prop('checked', true);"
   | Раскрыть все описания
 button onClick="$('.rule-checkbox').prop('checked', false);"
   | Скрыть все описания
-button onClick="$('#suggest_new_rule').addClass('active');$('#suggest_new_rule_text').focus()"
+button onClick="$('#suggest_new_rule').addClass('target');$('#suggest_new_rule_text').focus()"
   | Хочу предложить новое правило
   // "why hide?" dialog
-div class="popup-wrap width80" id="suggest_new_rule"
-  div class="content"
-    form action="#" onSubmit="return on_new_rule_suggest();"
-      div class="centered white"
-        | Впишите свои предложения по новому правилу оценки запуска. Постарайтесь сформулировать их как можно более подробно и развёрнуто.
-      input type="text" id="suggest_new_rule_text" class="centered fullwidth"
-      div class="centered white"
-        button class="btn-info" type="submit"
-          | Отправить!
-        button onClick="$('#suggest_new_rule').removeClass('active');"
-          | Передумал
-
+div class="octo-popup content" id="suggest_new_rule"
+  form action="#" onSubmit="return on_new_rule_suggest();"
+    div class="centered x-white"
+      | Впишите свои предложения по новому правилу оценки запуска. Постарайтесь сформулировать их как можно более подробно и развёрнуто.
+    input type="text" id="suggest_new_rule_text" class="fullwidth"
+    div class="centered x-white"
+      button class="btn-info" type="submit"
+        | Отправить!
+      button onClick="$('#suggest_new_rule').removeClass('target');"
+        | Передумал
+a class="octo-close-popup" onClick="$('#suggest_new_rule').removeClass('target'); return false"
 
 section class="accordion"
   h4 Список всех правил оценки запусков приложений
@@ -37,50 +36,52 @@ section class="accordion"
         - tint = @filters.any?{|x|x==r[0]} ? "tinted" : ""
         button id="btn-hide-#{r[0]}" class="btn-warning #{tint}" onClick="all_pre_hide_rule('#{r[0]}');$('#text_hide_rule_#{r[0]}').focus();" title="Скрыть правило/снова показывать"
           i class="fa-fw fas fa-bell-slash"
-        div class="popup-wrap width80" id="hide_rule_#{r[0]}"
-          div class="content"
-            form onSubmit="all_hide_rule('#{r[0]}',false); return false;"
-              div class="centered white"
-                | Поясните, почему Вы хотите скрыть правило в выдачах результатов расчётов?
-              input type="text" id="text_hide_rule_#{r[0]}" class="centered fullwidth" style="display: block"
-              div class="centered white"
-                button class="btn-info" type="submit"
-                  | Скрыть правило!
-                button onClick="$('#hide_rule_#{r[0]}').removeClass('active');"
-                  | Передумал
+        div class="octo-popup content" id="hide_rule_#{r[0]}"
+          form onSubmit="all_hide_rule('#{r[0]}',false); return false;"
+            div class="centered x-white"
+              | Поясните, почему Вы хотите скрыть правило в выдачах результатов расчётов?
+            input type="text" id="text_hide_rule_#{r[0]}" class="fullwidth" style="display: block"
+            div class="centered x-white"
+              button class="btn-info" type="submit"
+                | Скрыть правило!
+              button onClick="$('#hide_rule_#{r[0]}').removeClass('target'); return false;"
+                | Передумал
+        a class="octo-close-popup" onClick="$('#hide_rule_#{r[0]}').removeClass('target'); return false"
         | &nbsp;
-        button id="btn-email-#{r[0]}" class="btn-warning" onClick="all_pre_email_rule('#{r[0]}')" title="Оповещать по email/не оповещать"
+
+        /!!button id="btn-email-#{r[0]}" class="btn-warning" onClick="all_pre_email_rule('#{r[0]}')" title="Оповещать по email/не оповещать"
           i class="fa-fw fas fa-envelope"
-        div class="popup-wrap width80" id="email_rule_#{r[0]}"
-          div class="content"
-            form onSubmit="all_email_rule('#{r[0]}',false); return false;"
-              div class="centered white"
-                | Вы уверены, что не хотите получать уведомления по email о срабатывании этого правила?
-              div class="centered white"
-                button class="btn-info" type="submit"
-                  | Отключить уведомления!
-                button onClick="$('#email_rule_#{r[0]}').removeClass('active');"
-                  | Передумал
-        | &nbsp;
+        /!!div class="octo-popup content" id="email_rule_#{r[0]}"
+          form onSubmit="all_email_rule('#{r[0]}',false); return false;"
+            div class="centered white"
+              | Вы уверены, что не хотите получать уведомления по email о срабатывании этого правила?
+            div class="centered white"
+              button class="btn-info" type="submit"
+                | Отключить уведомления!
+              button onClick="$('#email_rule_#{r[0]}').removeClass('target');"
+                | Передумал
+        /!!a onClick="$('#email_rule_#{r[0]}').removeClass('target');"
+        /!!| &nbsp;
+
         button class="btn-info" onClick="all_pre_feedback_rule('#{r[0]}');$('#text_feedback_rule_#{r[0]}').focus()" title="Высказать мнение по правилу"
           i class="fa-fw fas fa-volume-up"
-        div class="popup-wrap width80" id="feedback_rule_#{r[0]}"
-          div class="content"
-            form action="#" onSubmit="all_feedback_rule('#{r[0]}'); return false;"
-              div class="centered white"
-                | Максимально подробнее опишите Ваши комментарии:
-              input type="text" id="text_feedback_rule_#{r[0]}" class="centered fullwidth" style="display: block"
-              div class="centered white"
-                button class="btn-info" type="submit"
-                  | Отправить комментарий!
-                button onClick="$('#feedback_rule_#{r[0]}').removeClass('active');"
-                  | Передумал
+        div class="octo-popup content" id="feedback_rule_#{r[0]}"
+          form action="#" onSubmit="all_feedback_rule('#{r[0]}'); return false;"
+            div class="centered x-white"
+              | Максимально подробнее опишите Ваши комментарии:
+            input type="text" id="text_feedback_rule_#{r[0]}" class="fullwidth" style="display: block"
+            div class="centered x-white"
+              button class="btn-info" type="submit"
+                | Отправить комментарий!
+              button onClick="$('#feedback_rule_#{r[0]}').removeClass('target'); return false;"
+                | Передумал
+        a class="octo-close-popup" onClick="$('#feedback_rule_#{r[0]}').removeClass('target'); return false"
         | &nbsp; &nbsp;
         i class="fa-fw #{icon['icon']} #{icon['color']}"
         | &nbsp;
         = rule['description']
-      article
-        p <strong>Описание:</strong> #{rule['comment']}
+      article class="hh"
+        /p <strong>Описание:</strong> #{rule['comment']}
         p <strong>Предполагаемая причина:</strong> #{rule['suggestion']}
         p <strong>Рекомендации:</strong> #{rule['text_recommendation']}
 
@@ -91,7 +92,7 @@ javascript:
   var current_user=#{{@current_user.id}};
 
   function on_new_rule_suggest(){
-    $('#suggest_new_rule').removeClass('active');
+    $('#suggest_new_rule').removeClass('target');
     all_send_suggestion();
     return false;
   }

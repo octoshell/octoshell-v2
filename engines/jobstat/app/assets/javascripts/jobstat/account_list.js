@@ -103,17 +103,21 @@ function process_response(index, jobid) {
 }
 
 function popup_show(a, b) {
-  $("#popup_" + a).addClass('active')
+  //$("#popup_" + a).addClass('active')
+  $("#popup_" + a).addClass('target')
   $("#" + b).val('')
   $("#" + b).focus()
+  return false;
 }
 
 function popup_hide(a, b) {
-  $("#popup_" + a).removeClass('active')
+  //$("#popup_" + a).removeClass('active')
+  $("#popup_" + a).removeClass('target')
+  return false;
 }
 
 // user disagrees with rule
-function disagree(jobid, rule) {
+function disagree(jobid, rule, text) {
   var feedback={
     user: current_user,
     cluster: jobs[jobid]['cluster'],
@@ -121,7 +125,7 @@ function disagree(jobid, rule) {
     //task_id: 0,
     account: jobs[jobid]['login'],
     condition: rule,
-    feedback: $("#question_" + jobid + '_' + rule).val(),
+    feedback: text ? text : $("#question_" + jobid + '_' + rule).val(),
   }
   $.ajax({
     type: "POST",
@@ -129,6 +133,30 @@ function disagree(jobid, rule) {
     data: {'feedback': feedback, 'type': 'feedback_rule'},
   }).always(function( msg ) {
     restore_disagree_button()
+    jobs[jobid]['feedback'][rule]={'class': 1}
+    update_jobs_agree('')
+  });
+}
+
+// user agrees with rule
+function agree(jobid, rule, text) {
+  var feedback={
+    user: current_user,
+    cluster: jobs[jobid]['cluster'],
+    //job_id: jobid,
+    //task_id: 0,
+    account: jobs[jobid]['login'],
+    condition: rule,
+    feedback: text ? text : $("#question_" + jobid + '_' + rule).val(),
+  }
+  $.ajax({
+    type: "POST",
+    url: "feedback",
+    data: {'feedback': feedback, 'type': 'feedback_rule'},
+  }).always(function( msg ) {
+    restore_disagree_button()
+    jobs[jobid]['feedback'][rule]={'class': 0}
+    update_jobs_agree('')
   });
 }
 
@@ -320,7 +348,7 @@ function agree_all() {
     }
   }
 
-  $('#agree_all').prop('disabled', true);
+  //$('#agree_all').prop('disabled', true);
 
   $.ajax({
     type: "POST",
@@ -338,7 +366,7 @@ function update_jobs_agree(feedback){
   for(var job in jobs){
     if(jobs[job]['feedback']){
       for(var rule in jobs[job]['feedback']){
-        var c=(jobs[job]['feedback'][rule]['class']=='0')? 0 : 1
+        var c=(parseInt(jobs[job]['feedback'][rule]['class'])==0)? 0 : 1
 
         var id='#af-'+job+'-'+rule
         $(id).attr('class','agreed-flag') // reset other classes
@@ -370,3 +398,14 @@ function update_jobs_agree(feedback){
   })
   */
  }
+
+function show_thanks(text){
+  var time_to_show=2000;
+
+  if(!text) {
+    text="Спасибо за отзыв!"
+  }
+
+  $('#thanks_box').addClass('active');
+  setTimeout("$('#thanks_box').removeClass('active');",time_to_show);
+}

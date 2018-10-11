@@ -66,23 +66,31 @@ i.color-orange {
   overflow: hidden;
   max-height: 0px;
   position: relative;
-  -webkit-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
-  -moz-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
-  -o-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
-  -ms-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
-  transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -webkit-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -moz-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -o-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -ms-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
 }
 
 .accordion input:checked ~ article{
-  -webkit-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
-  -moz-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
-  -o-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
-  -ms-transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
-  transition: height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -webkit-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -moz-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -o-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -ms-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
 
   max-height: 500px;
 }
 
+
+input:checked ~ *.hh{
+  border-color: orange;
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 2px;
+  background-color: #eee;
+}
 
 
 
@@ -225,7 +233,9 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
 .em15 {
   font-size: 1.5em;
 }  
-
+.em12 {
+  font-size: 1.2em;
+}  
 
 .dropdown {
   position: relative;
@@ -284,10 +294,11 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
   top: 5px;
   left: 0px;
   text-decoration: none;
-  color: #333;
+  color: #111;
+  cursor: pointer;
 }
 .dropdown-content .close:hover {
-  color: #08D060;
+  color: red;
 }
 
 .inline {

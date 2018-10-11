@@ -15,7 +15,7 @@ javascript:
   var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
   // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
 
-h3 Job table query interface
+//h3 Job table query interface
 
 = render "form"
 
@@ -95,7 +95,7 @@ div class="perf-table"
           | hours
         th
           | job size (node*hours)
-        th class="perf-data"
+        /th class="perf-data"
           | job size
         th class="perf-data"
           | cpu load
@@ -119,84 +119,102 @@ div class="perf-table"
       tr id="job_row_#{index}" data-jobid="#{job.drms_job_id}" data-info-state="#{perf_data_present ? 0 : -1}"
         td
           input type="checkbox" class="job_check" style="display: none;" data-job-id="#{job.drms_job_id}" onChange="job_check_clicked(#{job.drms_job_id})"
-          a class="button" onClick="toggle_dropdown('#job_info_#{index}');"
+          a class="red-on-hover" onClick="$('#job_info_#{index}').addClass('target')"
             i class="fas fa-bars"
           // feedback dropdown window
-          div class="dropdown"
-            div id="job_info_#{index}" class="dropdown-content"
-              button class="close" onClick="toggle_dropdown('#job_info_#{index}');" &times;
+          div id="job_info_#{index}" class="octo-popup"
+              a class="octo-popup-close" onClick="$('#job_info_#{index}').removeClass('target')"&times;
               - if perf_data_present
                 - if job_cond.size() > 0
                   - job_cond.each do |cond|
                     div class="cond-div #{@filters.include?(cond.name) ? 'hidden' : 'visible'}" data-rule-div="#{cond.name}"
                       // current feedback icon
                       - feedback=@jobs_plus[job.drms_job_id]['feedback']
-                      i id="af-#{job.drms_job_id}-#{cond.name}" class="#{@agree_flags[feedback.fetch(cond.name,99)]}"
+                      a class="btn" onClick="$('#vote-#{job.drms_job_id}-#{cond.name}').addClass('target')" title="Согласиться/не согласиться с этой оценкой"
+                        i id="af-#{job.drms_job_id}-#{cond.name}" class="#{@agree_flags[feedback.fetch(cond.name,99)]}"
                       /'fa-ok agreed-flag'
                       | &nbsp;
                       
                       // "hide rule" button
                       button class="btn-danger" onClick="popup_show('hide#{job.drms_job_id}_#{cond.name}','question_hide#{job.drms_job_id}_#{cond.name}');"
                         i class="far fa-bell-slash" title="Скрыть правило"
-                      | &nbsp;
-
-                      // "why hide?" dialog
-                      div class="popup-wrap width80" id="popup_hide#{job.drms_job_id}_#{cond.name}"
-                        div class="content"
-                          form onSubmit="popup_hide('hide#{job.drms_job_id}_#{cond.name}');hide_rule(#{job.drms_job_id},'#{cond.name}'); return false;"
-                            div class="centered"
-                              | Это правило будет скрыто во всех заданиях, в том числе будущих. Поясните, почему Вы хотите скрыть его?
-                            input type="text" id="question_hide#{job.drms_job_id}_#{cond.name}" class="centered fullwidth"
-                            div class="centered"
-                              button class="btn-info" type="submit"
-                                | Отправить!
-                              button onClick="popup_hide('hide#{job.drms_job_id}_#{cond.name}');"
-                                | Передумал
+                      | &nbsp; 
 
                       // "I disagree with rule" button
                       button class="btn-warning disagree-button" onClick="popup_show('disagree#{job.drms_job_id}_#{cond.name}','question_#{job.drms_job_id}_#{cond.name}');"
                         i class="far fa-angry" title="Не согласен!"
-                      | &nbsp;
+                      | &nbsp; 
                       
-                      // "why disagree?" dialog
-                      div class="popup-wrap width80" id="popup_disagree#{job.drms_job_id}_#{cond.name}"
-                        div class="content"
-                          form onSubmit="popup_hide('disagree#{job.drms_job_id}_#{cond.name}');disagree('#{job.drms_job_id}','#{cond.name}'); return false;"
-                            div class="centered"
-                              | Поясните, почему Вы не согласны с оценкой правила?
-                            input type="text" id="question_#{job.drms_job_id}_#{cond.name}" class="centered fullwidth"
-                            div class="centered"
-                              button class="btn-info" type="submit"
-                                | Отправить!
-                              button onClick="popup_hide('disagree#{job.drms_job_id}_#{cond.name}');"
-                                | Передумал
                       // rule icon
                       - rule = @rules_plus['rules'].fetch(cond.name, nil)
                       - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
-                      i class="fa-fw align-left inline #{icon['icon']} #{icon['color']}" title="#{cond.description}"
-                      | &nbsp;
+                      a href="all_rules##{cond.name}"
+                        i class="em15 fa-fw align-left inline #{icon['icon']} #{icon['color']}" title="#{cond.description}"
+                      | &nbsp; 
 
                       | #{cond.description}
+
+                      // agree/disagree one rule dialog
+                      div class="octo-popup2 container" id="vote-#{job.drms_job_id}-#{cond.name}"
+                        a class="btn" onClick="agree('#{job.drms_job_id}','#{cond.name}');$('#vote-#{job.drms_job_id}-#{cond.name}').removeClass('target')"
+                          i class="far fa-thumbs-up agreed-flag"
+                          | Согласен с правилом!
+                        br
+                        a class="btn" onClick="disagree('#{job.drms_job_id}','#{cond.name}');$('#vote-#{job.drms_job_id}-#{cond.name}').removeClass('target')"
+                          i class="far fa-thumbs-down agreed-flag"
+                          | Не согласен с правилом!
+                        br
+                      a class="octo-close-popup2" onClick="$('#vote-#{job.drms_job_id}-#{cond.name}').removeClass('target')"
+                      // "why hide?" dialog
+                      div class="octo-popup2 container" id="popup_hide#{job.drms_job_id}_#{cond.name}"
+                          /div class="content container"
+                          form onSubmit="popup_hide('hide#{job.drms_job_id}_#{cond.name}');hide_rule(#{job.drms_job_id},'#{cond.name}'); return false;"
+                            div class="centered"
+                              | Это правило будет скрыто во всех заданиях, в том числе будущих. Поясните, почему Вы хотите скрыть его?
+                            input type="text" id="question_hide#{job.drms_job_id}_#{cond.name}" class="fullwidth"
+                            div class="centered col-12"
+                              button class="btn-info" type="submit"
+                                | Отправить!
+                              button class="btn-info" onClick="return popup_hide('hide#{job.drms_job_id}_#{cond.name}');"
+                                | Передумал
+                      a class="octo-close-popup2" onClick="return popup_hide('hide#{job.drms_job_id}_#{cond.name}');"
+                      // "why disagree?" dialog
+                      div class="octo-popup2 container" id="popup_disagree#{job.drms_job_id}_#{cond.name}"
+                          /div class="content container"
+                          form onSubmit="popup_hide('disagree#{job.drms_job_id}_#{cond.name}');disagree('#{job.drms_job_id}','#{cond.name}'); return false;"
+                            div class="centered"
+                              | Поясните, почему Вы не согласны с оценкой правила?
+                            input type="text" id="question_#{job.drms_job_id}_#{cond.name}" class="fullwidth"
+                            div class="centered"
+                              button class="btn-info" type="submit"
+                                | Отправить!
+                              button class="btn-info" onClick="return popup_hide('disagree#{job.drms_job_id}_#{cond.name}')"
+                                | Передумал
+                      a class="octo-close-popup2" onClick="return popup_hide('disagree#{job.drms_job_id}_#{cond.name}')"
                 - else
-                  i class="fas fa-fw fa-check"
+                  i class="em2 fas fa-fw fa-check"
+                  | Всё в порядке, замечаний нет!
               - else
                 p 
                   | Нет данных о задаче :(
-        td onClick="process_response(#{index},#{job.drms_job_id})"
+          a class="octo-close-popup" onClick="$('#job_info_#{index}').removeClass('target')"
+        td
+          /onClick="process_response(#{index},#{job.drms_job_id})"
           - if perf_data_present
             - if job_cond.size() > 0
               - job_cond.each do |cond|
                 - rule = @rules_plus['rules'].fetch(cond.name, nil)
                 - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
-                i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline em12 cond-div #{@filters.include?(cond.name) ? 'hidden' : 'visible'}" title="#{cond.description}" data-rule-div="#{cond.name}"
-                | &nbsp;
+                a href="all_rules##{cond.name}" class="em12 #{@filters.include?(cond.name) ? 'hidden' : 'visible'}"
+                  i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{cond.description}" data-rule-div="#{cond.name}"
+                |  
 
             - else
               /= image_tag "ok.png", size: "20", border: 2
               i class="fas fa-fw fa-check em12"
           - else
             p 
-              | no data
+              | Нет данных...
         td = link_to(job.drms_job_id, job)
         td class="login-data" = job.login
         td class="login-data" = job.partition

@@ -13,7 +13,7 @@ javascript:
     $("#_only_long").prop('checked', #{@params[:only_long].to_i == 1});
   });
 
-- logger.info "VIEW: selected=#{@params[:all_logins]}"
+//- logger.info "VIEW: selected=#{@params[:all_logins]}"
 div class="container"
   = bootstrap_form_tag(method: "get") do |f|
     div class="row"

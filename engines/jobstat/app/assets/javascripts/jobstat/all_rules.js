@@ -32,7 +32,7 @@ function all_pre_hide_rule(rule_id) {
   }
   else{
     // open confirmation dialog
-    $("#hide_rule_"+rule_id).addClass('active')
+    $("#hide_rule_"+rule_id).addClass('target')
   }
 }
 
@@ -51,7 +51,7 @@ function all_hide_rule(rule_id,del) {
   else{
     $("#btn-hide-"+rule_id).addClass("tinted")
   }
-  $("#hide_rule_"+rule_id).removeClass('active')
+  $("#hide_rule_"+rule_id).removeClass('target')
 
   $.ajax({
     type: "POST",
@@ -69,7 +69,7 @@ function all_pre_email_rule(rule_id) {
   }
   else{
     // open confirmation dialog
-    $("#email_rule_"+rule_id).addClass('active')
+    $("#email_rule_"+rule_id).addClass('target')
   }
 }
 
@@ -86,7 +86,7 @@ function all_email_rule(rule_id,del) {
   else{
     $("#btn-email-"+rule_id).addClass("tinted")
   }
-  $("#email_rule_"+rule_id).removeClass('active')
+  $("#email_rule_"+rule_id).removeClass('target')
 
   $.ajax({
     type: "POST",
@@ -96,7 +96,7 @@ function all_email_rule(rule_id,del) {
 }
 
 function all_pre_feedback_rule(rule_id) {
-  $("#feedback_rule_"+rule_id).addClass('active')
+  $("#feedback_rule_"+rule_id).addClass('target')
 }
 
 function all_feedback_rule(rule_id) {
@@ -105,7 +105,7 @@ function all_feedback_rule(rule_id) {
     condition: rule_id,
     feedback: $('#text_feedback_rule_'+rule_id).val()
   }
-  $("#feedback_rule_"+rule_id).removeClass('active')
+  $("#feedback_rule_"+rule_id).removeClass('target')
 
   $.ajax({
     type: "POST",
