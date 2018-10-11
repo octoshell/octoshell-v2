@@ -17,17 +17,17 @@ javascript:
 div class="container"
   = bootstrap_form_tag(method: "get") do |f|
     div class="row"
-      = f.text_field("start_time", class: "datepicker", value: @params[:start_time], label: "From", wrapper: {class: 'col-md-3'})
-      = f.text_field("end_time", class: "datepicker", value: @params[:end_time], label: "To", wrapper: {class: 'col-md-3'})
-      = f.select("cluster", @clusters.keys, {selected: @params[:cluster]}, {wrapper: {class: 'col-md-3'}})
+      = f.text_field("start_time", class: "datepicker", value: @params[:start_time], label: "От", wrapper: {class: 'col-md-3'})
+      = f.text_field("end_time", class: "datepicker", value: @params[:end_time], label: "До", wrapper: {class: 'col-md-3'})
+      = f.select("cluster", @clusters.keys, {label: "Кластер", selected: @params[:cluster]}, {wrapper: {class: 'col-md-3'}})
     div class="row"
-      = f.select("states", ["ALL"] + @states_options, {selected: @params[:states]}, {multiple: true, wrapper: {class: 'col-md-3'}})
-      = f.select("partitions", ["ALL"] + @partitions_options, {selected: @params[:partitions]}, {multiple: true, wrapper: {class: 'col-md-3'}})
-      = f.select("all_logins", options_for_select(@all_logins[0],**@all_logins[1]), {selected: @params[:all_logins]}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("states", ["ALL"] + @states_options, {label: "Статусы завершения задачи", selected: @params[:states]}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("partitions", ["ALL"] + @partitions_options, {label: "Разделы суперкомпьютера", selected: @params[:partitions]}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("all_logins", options_for_select(@all_logins[0],**@all_logins[1]), {label: "Логины", selected: @params[:all_logins]}, {multiple: true, wrapper: {class: 'col-md-3'}})
     div class="row"
-      = f.submit "Show", class: 'col-md-1'
+      = f.submit "Показать", class: 'col-md-1'
       span class='col-md-1'
         | &nbsp;
       span class='col-md-10'
-        = f.check_box :only_long, name: :only_long, label: 'Jobs longer than 15 minutes', checked: true
+        = f.check_box :only_long, name: :only_long, label: 'Только задания длиннее 15 минут', checked: true
       
