@@ -71,7 +71,8 @@ module Jobstat
     end
     
     def post_digest
-      unless params.key?("data") return
+      return unless params.key?("data")
+      return if params["data"].nil?
 
       drms_job_id = params["job_id"]
       drms_task_id = params.fetch("task_id", 0)
