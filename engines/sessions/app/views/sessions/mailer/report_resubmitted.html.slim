@@ -1,6 +1,6 @@
 = render "header"
 
-p Отчёт по проекту «#{@report.project.title}» в рамках перерегистрации «#{@report.session.description}» обновлён и готов к повторной оценке.
-p = link_to "Приступить к оценке отчёта.", sessions.admin_report_url(@report)
+p #{t('.msg_report_ready', id: @report.id, pid: @report.project.id, title: @report.project.title, session: @report.session.description)}
+p = link_to t('.assess_report'), sessions.admin_report_url(@report)
 
 = render "footer"

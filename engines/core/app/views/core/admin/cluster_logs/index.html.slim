@@ -4,11 +4,11 @@ div class="page-header"
 = bootstrap_form_for @search, url: admin_cluster_logs_path, method: :get, layout: :horizontal do |f|
   = f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name,  label: Core::ClusterLog.human_attribute_name(:cluster)
   = autocomplete f, name: :project_id_eq, label: Core::ClusterLog.human_attribute_name(:project), source: core.projects_path
-  - options = { include_blank: true, label_col: "col-sm-4", control_col: "col-sm-8", start_year: 2012, end_year: Date.current.year, class: "datepicker" }
+  - options = common_datepicker_options
   div class="col-md-6"
-    = f.text_field :created_at_gt, options.merge(label: "Создан после")
+    = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
   div class="col-md-6"
-    = f.text_field :created_at_lt, options.merge(label: "Создан до")
+    = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
 
@@ -17,7 +17,7 @@ div class="page-header"
   pre
     - @logs.each do |log|
       strong = log.created_at.to_s
-      |  
+      |
       code = log.message
       br
 = safe_paginate @logs

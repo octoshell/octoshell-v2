@@ -2,7 +2,7 @@ div class="page-header"
   h1
     = @project.title
     - if @user_can_manage_project
-      |  
+      |
       = link_to "", edit_project_path(@project), class: "fa fa-pencil-square"
   h3 = mark_project_state(@project)
 

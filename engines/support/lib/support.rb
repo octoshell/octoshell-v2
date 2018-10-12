@@ -1,4 +1,6 @@
 require "support/engine"
+require "support/notificator"
+require "support/markdown_handler"
 require "file_size_validator"
 
 require "decorators"
@@ -14,6 +16,7 @@ require "mime-types"
 module Support
   mattr_accessor :user_class
   mattr_accessor :project_class
+  mattr_accessor :dash_number
 
   class UserClassAbsenceError < StandardError; end
   class ProjectClassAbsenceError < StandardError; end

@@ -1,0 +1,9 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="well"
+
+
+= safe_paginate @mergers
+= render "table", mergers: @mergers
+= safe_paginate @mergers

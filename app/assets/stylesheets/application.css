@@ -8,10 +8,12 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ *= require rails_email_preview/application
  *= require face/application
  *= require core/application
  *= require support/application
  *= require sessions/application
+ *= require comments/application
  *= require_self
  *= require_tree .
  */

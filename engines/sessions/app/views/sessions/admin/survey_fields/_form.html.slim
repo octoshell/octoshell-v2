@@ -1,15 +1,15 @@
 = bootstrap_form_for [:admin, @survey, @survey_field], layout: :horizontal do |f|
-  = f.text_field :name
-  = f.text_field :hint
+  -Sessions::SurveyField.locale_columns(:name,:hint).each do |column|
+    = f.text_field column
   = f.select :kind, Sessions::SurveyField::KINDS_COLLECTION
-  = f.text_area :collection, rows: 5, help: t(".collection_help", default: "Только для Радио, Списков и Наукометрии")
+  = f.text_area :collection, rows: 5, help: t(".collection_help",locales: I18n.available_locales.join('|'))
   = f.form_group
-    = f.check_box :strict_collection, help: t(".strict_collection_help", default: "Не позволяет сохранять значения не из списка")
-  = f.text_field :regexp, help: t(".regexp_help", default: 'Для формата "Петров В.П, Иванов П.В. -- Москва, 2004 -- Изд. Смена": \A[А-яа-я\/\s\w.,]+ -- [А-яа-я\/\s\w.,]+ -- [А-яа-я\/\s\w.,]+\z. Тестировать регекспы можно здесь: http://rubular.com/ В качестве ruby version выбирать 1.9.3')
-  = f.text_field :max_values, help: t(".max_values_help", default: "Только для Множественного и Пользовательского списков")
+    = f.check_box :strict_collection, help: t(".strict_collection_help")
+  = f.text_field :regexp, help: t(".regexp_help")
+  = f.text_field :max_values, help: t(".max_values_help")
   = f.form_group
     = f.check_box :required
-  = f.number_field :weight, help: t(".weight_help", default: "Чем больше значение, тем ниже в списке")
+  = f.number_field :weight, help: t(".weight_help")
 
   = f.form_group do
     = f.submit t("actions.save")

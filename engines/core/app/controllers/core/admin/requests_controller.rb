@@ -4,7 +4,8 @@ module Core
 
     def index
       @search = Request.search(params[:q])
-      @requests = @search.result(distinct: true).order(created_at: :desc).preload(:project).page(params[:page])
+      @requests = @search.result(distinct: true).order(created_at: :desc).preload(:project)
+      without_pagination(:requests)
     end
 
     def show
@@ -18,7 +19,6 @@ module Core
     def update
       @request = Request.find(params[:id])
       if @request.update(request_params)
-        @request.save
         redirect_to [:admin, @request], notice: t("flash.request_updated")
       else
         render :edit
@@ -34,6 +34,25 @@ module Core
       Request.find(params[:id]).reject!
       redirect_to admin_requests_path
     end
+
+    def activate_or_reject
+      @request = Request.find(params[:id])
+      unless params[:request][:reason].present?
+        flash[:error] = t('.reason_empty')
+        redirect_to [:admin, @request]
+        return
+      end
+      if params[:commit] == Core::Request.human_state_event_name(:approve)
+        @request.approve
+      else
+        @request.reject
+      end
+      @request.reason = params[:request][:reason]
+      @request.changed_by = current_user
+      @request.save!
+      redirect_to [:admin, @request]
+    end
+
 
     private
 

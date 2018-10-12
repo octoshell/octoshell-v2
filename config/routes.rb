@@ -2,6 +2,7 @@ require "sidekiq/web"
 require "admin_constraint"
 
 Octoshell::Application.routes.draw do
+  mount RailsEmailPreview::Engine, at: '/admin/emails'
   # This line mounts Wiki routes at /wiki by default.
   mount Wiki::Engine, :at => "/wiki"
 
@@ -26,7 +27,9 @@ Octoshell::Application.routes.draw do
   # This line mounts Authentication's routes at /auth by default.
   mount Authentication::Engine, at: "/auth"
 
+  mount Pack::Engine, at: "/pack"
   mount Announcements::Engine, :at => "/announcements"
+  mount Comments::Engine, :at => "/comments"
 
   root "face/home#show"
 
@@ -34,6 +37,13 @@ Octoshell::Application.routes.draw do
     get :login_as, on: :member
     get :return_to_self, on: :member
   end
+
+  resources :lang_prefs, only: {} do
+    collection do
+      post :change
+    end
+  end
+
   resource :profile
 
   namespace :admin do

@@ -1,0 +1,29 @@
+- @object.simple_readable_attributes.each do |key|
+    p
+         b
+             | #{@object.class.human_attribute_name(key)}:
+         = @object.send(key)
+
+-if @object.class == Core::OrganizationDepartment
+  h3 #{Core::Organization.model_name.human}
+  - @object.organization.simple_readable_attributes.each do |key|
+      p
+           b
+               | #{@object.organization.class.human_attribute_name(key)}:
+           = @object.organization.send(key)
+
+  - @object.organization.complicated_readable_attributes.each do |key, value|
+      p
+          b
+              | #{@object.organization.class.human_attribute_name(key)}:
+          = value
+
+
+-elsif @object.respond_to? :complicated_readable_attributes
+	- @object.complicated_readable_attributes.each do |key, value|
+	     p
+	         b
+	             | #{@object.class.human_attribute_name(key)}:
+	         = value
+
+= ActionController::Base.helpers.link_to(t('.show'), @url)

@@ -73,7 +73,7 @@ module Sessions
     end
 
     def session_params
-      params.require(:session).permit(:description, :motivation, :receiving_to)
+      params.require(:session).permit(*Session.locale_columns(:description, :motivation), :receiving_to)
     end
   end
 end

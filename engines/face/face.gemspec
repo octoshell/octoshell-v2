@@ -12,6 +12,8 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/octoshell/octoshell-v2"
   s.summary     = "An engine for octoshell front-end customization"
   s.description = "Does all settings for an octoshell front-end presentation"
+  s.license     = "MIT"
+  s.platform = 'java' if RUBY_ENGINE == 'jruby'
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
@@ -30,8 +32,10 @@ Gem::Specification.new do |s|
   s.add_dependency "select2-rails"
   s.add_dependency "underscore-rails"
   s.add_dependency "bootstrap-datepicker-rails"
-  s.add_dependency "kramdown"
+  s.add_dependency "commonmarker"
   s.add_dependency "rails-jquery-autocomplete"
+  s.add_dependency "jquery-fileupload-rails"
+
 
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "capybara"

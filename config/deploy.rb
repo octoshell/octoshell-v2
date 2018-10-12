@@ -34,9 +34,8 @@ set :keep_releases, 5
 #old set :shared_paths, %w(public/fonts public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)
 set :shared_dirs, %w(public/uploads log public/fonts public/assets)
 set :shared_files, %w(config/puma.rb config/settings.yml config/database.yml)
-#set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log)
-set :force_asset_precompile, true
 set :rails_env, 'production'
+set :force_asset_precompile, true
 
 task :remote_environment do
   invoke :"rbenv:load"
@@ -119,47 +118,19 @@ class String
   end
 end
 
-#desc "Deploys the current version to the server."
-#task :deploy => :environment do
-#  deploy do
-#    invoke :"git:clone"
-#    invoke :"deploy:link_shared_paths"
-#    invoke :"bundle:install"
-#    invoke :"rails:db_migrate"
-#    invoke :"rails:assets_precompile"
-#    comment "Done precompile"
-#    invoke :"deploy:cleanup"
-#    comment "Done cleanup"
-#    invoke :"set_whenever"
-#
-#    #on :launch do
-#    #  invoke :"export_foreman"
-#    #  #invoke :"foreman:export"
-#    #  invoke :"foreman:restart"
-#    #  invoke :'systemctl:restart', 'octoshell'
-#    #end
-#  end
-#end
-
 desc "Deploys the current version to the server."
 task :deploy => :remote_environment do
   deploy do
-#    run(:remote) do
-#    in_path(fetch(:current_path)) do
-      comment "Start deploy..."
-      command "hostname"
-      command "pwd"
-      invoke :"git:clone"
-      invoke :"deploy:link_shared_paths"
-      invoke :"bundle:install"
-      invoke :"rails:assets_precompile"
-      invoke :"copy_migrations"
-      invoke :"rails:db_migrate"
-      invoke :"deploy:cleanup"
-#      invoke :"set_whenever"
-    on :launch do
-#      invoke :restart_service
-    end
+    comment "Start deploy..."
+    command "hostname"
+    command "pwd"
+    invoke :"git:clone"
+    invoke :"deploy:link_shared_paths"
+    invoke :"bundle:install"
+    invoke :"rails:assets_precompile"
+    invoke :"copy_migrations"
+    invoke :"rails:db_migrate"
+    invoke :"deploy:cleanup"
   end
 end
 
@@ -184,6 +155,20 @@ task :deploy_1 do
     comment "Copying settings.yml"
     command "scp config/settings.yml #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/settings.yml"
     command "scp public/fonts/* #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/fonts/"
+    invoke :"git:clone"
+    invoke :"deploy:link_shared_paths"
+    #invoke :"bundle:install"
+    command "rm -f Gemfile.lock"
+    command "bundle install"
+    invoke :"rails:db_migrate"
+    #invoke :"rails:assets_precompile"
+    #command %{RAILS_ENV=production bundle exec rake assets:precompile EXECJS_RUNTIME='Node' JRUBY_OPTS="-J-d32 -X-C"}
+    command %{RAILS_ENV=production bundle exec rake assets:precompile"}
+    comment "Done precompile"
+    invoke :"deploy:cleanup"
+    comment "Done cleanup"
+    invoke :"set_whenever"
+
   end
 end
 

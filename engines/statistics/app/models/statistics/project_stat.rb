@@ -8,6 +8,7 @@ module Statistics
               :by_critical_technologies,
               :by_state ]
 
+
     include StatCollector
     include GraphBuilder
 
@@ -77,8 +78,8 @@ module Statistics
     end
 
     def by_state_data
-      Core::Project.human_state_names.map do |human_name, state|
-        [state, human_name, Core::Project.where(state: state).count]
+      Core::Project.human_state_names_with_original.map do |a|
+        [a[1], a[0], Core::Project.where(state: a[1]).count]
       end
     end
   end

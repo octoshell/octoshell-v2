@@ -1,17 +1,17 @@
 div class="page-header"
   h1 = t(".title", default: "New Organization")
-
+  h4 = display_wiki_link(:create_organization)
 = bootstrap_form_for @organization, layout: :horizontal do |f|
   = f.text_field :name
   = f.text_field :abbreviation
-  = f.collection_select :kind_id, Core::OrganizationKind.order(:name), :id, :name
-  = f.collection_select :country_id, Core::Country.order(:title_ru), :id, :title_ru
-  = f.collection_select :city_id, Core::City.order(:title_ru), :id, :title_ru
-  /= autocomplete f, name: :city_id, label: Core::Organization.human_attribute_name("city"), source: country_cities_path(1)
+  - kind_column = Core::OrganizationKind.current_locale_column(:name)
+  = f.collection_select :kind_id, Core::OrganizationKind.order(kind_column), :id, :name
+  = render partial: 'core/admin/organizations/city_form', locals: {f: f},formats: :html
   = f.form_group do
     p = t(".no_city")
     = link_to t(".new_city"), "#", id: "new_city_adder"
     = f.hidden_field :city_title
-
+  = f.form_group :primary, label: { text: Core::Employment.human_attribute_name(:primary)}
+    = check_box 'employment', :primary
   = f.form_group do
     = f.submit t("actions.save")

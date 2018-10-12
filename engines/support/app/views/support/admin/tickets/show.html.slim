@@ -9,6 +9,9 @@ div class="page-header"
         - if @ticket.pending?
           = link_to t(".accept"), [:admin, @ticket, :accept], class: "btn btn-warning", method: :post
         = link_to Support::Ticket.human_state_event_name(:close), admin_ticket_close_path(@ticket), method: :put, class: "btn btn-danger", data: { confirm: t("actions.confirm")}
+        = link_to t("actions.edit_access"), pack.admin_access_path(@ticket.pack_accesses.first), class: "btn btn-default"  if @ticket.pack_accesses.exists?
+
+
       h3
         - state = { pending: "danger", answered_by_support: "warning", answered_by_reporter: "danger", resolved: "success", closed: "default" }[@ticket.state_name.to_sym]
         span class="label label-#{state}" = @ticket.human_state_name
@@ -81,20 +84,24 @@ div class="page-header"
     - if field_value.value.present?
       div class="col-xs-12"
         div class="col-md-6 col-xs-12" = field_value.field.present? ? field_value.field.name : "N/A"
-        div = markdown field_value.value
+        div = field_value.value
     - else
       div class="col-md-6 col-xs-12 hidden"
         div class="col-xs-6 col-md-6" = field_value.field.present? ? field_value.field.name : "N/A"
-        
+
   - if @ticket.has_blank_fields?
     div class="col-xs-12 link"
       small = link_to t("actions.show_empty_fields"), "#", id: "empty-fields-opener"
 
 
-h3 = Support::Ticket.human_attribute_name(:subscribers)
-
-div id="ticket-subscribers"
-  = render "subscribers_form", ticket: @ticket
+div.col-xs-6
+  h3 = Support::Ticket.human_attribute_name(:subscribers)
+  div id="ticket-subscribers"
+    = render "subscribers_form", ticket: @ticket
+div.col-xs-6
+  h3 = Support::Ticket.human_attribute_name(:responsible)
+  div id="ticket-responsible"
+    = render "responsible_form", ticket: @ticket
 
 div class="panel panel-default"
   div class="panel-heading"
@@ -120,7 +127,7 @@ h3 = Support::Ticket.human_attribute_name(:replies)
     div class="row"
       div class="col-xs-10"
         blockquote class="#{reply.author_id == reply.ticket.reporter_id ? "admin" : "user"}"
-          = markdown reply.message
+          = markdown(reply.message)
           div class="raw-reply" = reply.message
           = link_to t("actions.show_as_text"), "#", class: "raw-text-opener"
           - if reply.attachment?
@@ -135,7 +142,7 @@ h3 = Support::Ticket.human_attribute_name(:replies)
     = f.form_group do
       = select_tag :reply_template, options_from_collection_for_select(Support::ReplyTemplate.all, :message, :subject), prompt: Support::ReplyTemplate.model_name.human, style: "width: 100%"
     = f.hidden_field :ticket_id
-    = f.text_area :message, rows: 5, help: link_to(t(".create_reply_template"), new_admin_reply_template_path, id: "reply-template-maker")
+    = f.text_area :message, rows: 5, help: link_to(t(".create_reply_template"), new_admin_reply_template_path, id: "reply-template-maker"),class: 'edit-markdown',height: 600
     = f.file_field :attachment
     = f.form_group do
       div class="btn-toolbar"
@@ -143,3 +150,6 @@ h3 = Support::Ticket.human_attribute_name(:replies)
         = f.primary t(".send_and_show_result"), name: :show_self
         - if @next_ticket.present?
           = f.primary t(".send_and_show_next"), name: :show_next
+= render_attachments(@ticket,:comments)
+= render_attachments(@ticket,:tags)
+= render_attachments(@ticket,:files)

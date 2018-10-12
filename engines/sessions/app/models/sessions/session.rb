@@ -5,6 +5,8 @@
 module Sessions
   class Session < ActiveRecord::Base
 
+    translates :description, :motivation
+
     belongs_to :personal_survey, class_name: "Survey"
     belongs_to :projects_survey, class_name: "Survey"
     belongs_to :counters_survey, class_name: "Survey"
@@ -20,7 +22,8 @@ module Sessions
 
     has_many :stats
 
-    validates :description, :receiving_to, presence: true
+    validates :receiving_to, presence: true
+    validates_translated :description, presence: true
 
     include AASM
     include ::AASM_Additions
@@ -132,10 +135,10 @@ module Sessions
     end
 
     def notify_experts_about_submitted_reports
-      Sessions::MailerWorker.perform_async(:notify_exerts_about_submitted_reports, id)
+      Sessions::MailerWorker.perform_async(:notify_experts_about_submitted_reports, id)
     end
 
-    def notify_exports_about_assessing_reports
+    def notify_experts_about_assessing_reports
       Sessions.user_class.experts.each do |expert|
         if expert.assesing_reports.any?
           Sessions::MailerWorker.perform_async(:notify_expert_about_assessing_reports, expert.id)

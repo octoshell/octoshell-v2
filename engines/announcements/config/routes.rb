@@ -4,7 +4,7 @@ Announcements::Engine.routes.draw do
       put :deliver
       put :test
       get :show_users
-      get :show_recipients
+      # get :show_recipients
       post :select_recipients
     end
 

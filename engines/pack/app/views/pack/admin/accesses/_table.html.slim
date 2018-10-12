@@ -1,0 +1,25 @@
+- if records
+      div  class="panel-body"
+        table  class="table table-hover"
+          tr
+            th =t 'name'
+            th =t Pack::Access.human_attribute_name 'version'
+            th =t Pack::Access.human_attribute_name 'status'
+            th =t Pack::Access.human_attribute_name :end_lic_readable
+          -records.each do |item|
+            tr
+              td  = link_to item.who_name_with_type, admin_access_path(item)
+              td  =  item.version.name
+              td  =item.status_readable
+              td  =item.end_lic_readable
+              td
+                div class="btn-group pull-right"
+                  = link_to t("edit", default: "edit"), edit_admin_access_path(item.id), class: "btn btn-default btn-sm"
+                  button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                    span class="caret"
+                  ul class="dropdown-menu" role="menu"
+                    li class="text-left"
+                      = link_to t("delete", default: "delete"), admin_access_path(item.id), data:  { method: :delete, confirm: t("delete", default: "delete") }, class: "text-danger"
+- else
+    div class="panel-body"
+       	p = t(".no_accesses_found", default: "No packages Found")

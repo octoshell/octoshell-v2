@@ -33,7 +33,7 @@ module Sessions
     private
 
     def report_submit_denial_reason_params
-      params.require(:report_submit_denial_reason).permit(:name)
+      params.require(:report_submit_denial_reason).permit(*ReportSubmitDenialReason.locale_columns(:name))
     end
   end
 end

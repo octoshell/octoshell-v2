@@ -18,7 +18,9 @@ module Sessions
       state :pending, :initial => true
       state :filling
       state :submitted
-      state :exceeded
+      state :exceeded   # not submitted and then postdated
+      state :postfilling # filling after postdate
+      state :postdated  # submitted after postdate
 
       event :accept do
         transitions :from => :pending, :to => :filling, :after => :fill_fields
@@ -26,10 +28,14 @@ module Sessions
 
       event :submit do
         transitions :from => :filling, :to => :submitted
+        transitions :from => :postfilling, :to => :postdated
       end
 
       event :edit do
         transitions :from => :submitted, :to => :filling
+        transitions :from => :exceeded, :to => :postfilling, :after => :fill_fields
+        transitions :from => :postfilling, :to => :postfilling
+        transitions :from => :postdated, :to => :postfilling
       end
 
       event :postdate do

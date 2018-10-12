@@ -15,4 +15,5 @@
 //= require support/application
 //= require sessions/application
 //= require announcements/application
+//= require pack/application
 //= require_tree .

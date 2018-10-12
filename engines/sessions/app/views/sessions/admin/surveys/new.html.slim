@@ -2,8 +2,11 @@ div class="page-header"
   h1 = t(".title")
 
 = bootstrap_form_for [:admin, @session, @survey], layout: :horizontal do |f|
-  = f.text_field :name
-  = f.grouped_collection_select :template_survey_id, @template_surveys, :last, :first, :id, :name, label: "Взять за образец опросник", include_blank: true
+  - Sessions::Survey.locale_columns(:name).each do |column|
+    = f.text_field column
+  -selected = nil
+  -selected = params[:survey][:template_survey_id] if params[:survey] && params[:survey][:template_survey_id]
+  = f.grouped_collection_select :template_survey_id, @template_surveys, :last, :first, :id, :name, label: t('.use_survey_as_template'), selected: selected , include_blank: true
   = f.form_group do
     = f.check_box :only_for_project_owners
 

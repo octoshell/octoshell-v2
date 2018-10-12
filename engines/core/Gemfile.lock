@@ -5,6 +5,7 @@ PATH
       aasm
       carrierwave
       clbustos-rtf
+      colorize
       decorators (~> 1.0.2)
       kaminari
       maymay
@@ -14,15 +15,17 @@ PATH
       pg (~> 0.18)
       rails (~> 4.2)
       ransack
+      roo
       sidekiq
       sidekiq-failures
       slim
       sshkey
+      write_xlsx
 
 GEM
   remote: https://rubygems.org/
   specs:
-    aasm (5.0.0)
+    aasm (5.0.1)
       concurrent-ruby (~> 1.0)
     actionmailer (4.2.10)
       actionpack (= 4.2.10)
@@ -65,6 +68,7 @@ GEM
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
     clbustos-rtf (0.5.0)
+    colorize (0.8.1)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.2)
     crass (1.0.4)
@@ -97,18 +101,18 @@ GEM
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
-    mini_magick (4.8.0)
+    mini_magick (4.9.2)
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (5.0.2)
-    nokogiri (1.8.4)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     pg (0.21.0)
     rack (1.6.10)
-    rack-protection (2.0.3)
+    rack-protection (2.0.4)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -143,9 +147,12 @@ GEM
       activesupport (>= 3.0, <= 5.1.1)
       i18n
     redis (4.0.2)
+    roo (2.7.1)
+      nokogiri (~> 1)
+      rubyzip (~> 1.1, < 2.0.0)
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
-    rspec-expectations (3.8.1)
+    rspec-expectations (3.8.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-mocks (3.8.0)
@@ -160,7 +167,8 @@ GEM
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    sidekiq (5.2.1)
+    rubyzip (1.2.2)
+    sidekiq (5.2.2)
       connection_pool (~> 2.2, >= 2.2.2)
       rack-protection (>= 1.5.0)
       redis (>= 3.3.5, < 5)
@@ -183,6 +191,11 @@ GEM
     tilt (2.0.8)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    write_xlsx (0.85.5)
+      rubyzip (>= 1.0.0)
+      zip-zip
+    zip-zip (0.3)
+      rubyzip (>= 1.0.0)
 
 PLATFORMS
   ruby

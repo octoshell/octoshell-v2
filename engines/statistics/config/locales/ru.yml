@@ -1,31 +1,44 @@
 ru:
   engine_submenu:
-    projects: Проекты
-    organizations: Организации
-    users: Пользователи
-    sessions: Перерегистрации
+    projects: "Проекты"
+    organizations: "Организации"
+    users: "Пользователи"
+    sessions: "Перерегистрации"
 
   statistics:
-    by_kind: По типу
-    by_organization_kind: По типу организаций
-    by_organization_city: По городу организации
-    by_msu_subdivisions: По подразделениям МГУ
-    by_organization_kind: По типу организаций
-    by_directions_of_science: По направлениям науки
-    by_critical_technologies: По критическим технологиям
-    by_research_areas: По областям исследований
-    by_city: По городам
-    by_state: По статусу
+    date: Дата
+    by_kind: "По типу"
+    by_organization_kind: "По типу организаций"
+    by_organization_city: "По городу организации"
+    by_msu_subdivisions: "По подразделениям МГУ"
+    by_organization_kind: "По типу организаций"
+    by_directions_of_science: "По направлениям науки"
+    by_critical_technologies: "По критическим технологиям"
+    by_research_areas: "По областям исследований"
+    by_city: "По городам"
+    by_state: "По статусу"
 
     projects:
       index:
-        title: Статистика по проектам
+        title: "Статистика по проектам"
+        refresh_rate: "Данные обновляются каждые 3 месяца"
+        calculate_now: "Посчитать сейчас"
     organizations:
       index:
-        title: Статистика по организациям
+        title: "Статистика по организациям"
+        refresh_rate: "Данные обновляются каждые 3 месяца"
+        calculate_now: "Посчитать сейчас"
     users:
       index:
-        title: Статистика по пользователям
+        title: "Статистика по пользователям"
+        refresh_rate: "Данные обновляются каждые 3 месяца"
+        calculate_now: "Посчитать сейчас"
     sessions:
       index:
-        title: Статистика по перерегистрациям
+        title: "Статистика по перерегистрациям"
+        refresh_rate: "Данные обновляются каждые 3 месяца"
+        calculate_now: "Посчитать сейчас"
+    shared:
+      stats:
+        graph: "График"
+        table: "Таблица        "

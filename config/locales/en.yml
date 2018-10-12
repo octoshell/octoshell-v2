@@ -1,23 +1,266 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 en:
-  hello: "Hello world"
+  model_translation:
+    ru: 'in russian'
+    en: 'in english'
+
+  main_menu:
+    working_area: "Study"
+    admin_area: "Administator's office"
+    wiki: "Wiki"
+  user_submenu:
+    projects: "Projects"
+    tickets_warning:
+      html: "Support <span class=\"badge warning\"><i class=\"fa fa-bell\"></i></span>"
+    tickets: "Support"
+    sessions: "Re-registrations"
+    sessions_warning:
+      html: "Re-registrations <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
+    profile: Profile
+    job_stat: Jobs statistics
+    job_table: Jobs
+    comments: Comments
+    packages: Packages
+  admin_submenu:
+    emails: Emails
+    comments: "Comments"
+    cities: "Cities"
+    countries: "Countries"
+    projects: "Projects"
+    project_kinds: "Project kinds"
+    sureties: "Sureties"
+    sureties_with_count:
+      html: "Sureties <span class=\"badge info\">%{count}</span>"
+    requests: "Requests"
+    requests_with_count:
+      html: "Requests <span class=\"badge info\">%{count}</span>"
+    support: "Support"
+    support_with_count:
+      html: "Support <span class=\"badge info\">%{count}</span>"
+    clusters: "Clusters"
+    cluster_logs: "Cluster log"
+    quota_kinds: "Resource quota kind"
+    users: "Users"
+    groups: "Access groups"
+    direction_of_sciences: "Research directions"
+    research_areas: "Research areas"
+    critical_technologies: "Critical technologies"
+    organizations: "Organizations"
+    organization_kinds: "Organization kinds"
+    sessions: "Re-registrations"
+    reports: "Reports"
+    report_submit_denial_reasons: "Reasons for refusal to provide a report"
+    statistics: "Statistics"
+    announcements: "Announcements"
+    sidekiq: "Monitoring task queues"
+  without_pagination:
+    displaying_all_records: All records are displayed
+    display_all_records: Display all records on single page(may be long)
+
+
+  flash:
+    password_updated: "The password has been updated."
+    profile_updated: "The profile has been updated."
+    not_logged_in: "You haven't logged in. Log in or register."
+    not_authorized: "You are not authorized for this action."
+
+  actions:
+    return_to_self_session: "Return to own session"
+    submit: "Submit"
+
+  activerecord:
+    models:
+      profile: "Profile"
+      group: "User group"
+      ability: "Ability"
+    attributes:
+      user:
+        groups: "Groups"
+        group_ids: "Groups"
+        full_name: "Initials"
+        projects: "Projects"
+      profile:
+        first_name: "Name"
+        middle_name: "Middle name"
+        last_name: "Surname"
+        receive_info_mails: "Use my email for info newsletters"
+        receive_special_mails: "Use my email for service newsletters"
+      group:
+        name: "Name"
+
+  users:
+    edit:
+      title: "Edit user information"
+      title: "Change password"
+      minimum_password_length: "Minimum 6 characters"
+      save: "Save"
+    index:
+      title: "Users"
+      email: "Email"
+      is_admin: "Administator"
+  profiles:
+    form:
+      info_mails_help: "Tick if you agree to receive newsletters about future seminars and other useful information."
+      special_mails_help: "Tick if you agree to receive a newsletter about the status of clusters, preventive works and other service information."
+      save: "Save"
+    show:
+      is_admin: "Administator"
+      title: "Profile"
+      change_password: "Change password"
+  abilities:
+    accesses:
+      manage: "Full access to cluster keys"
+    accounts:
+      manage: "Full access to Project accesses"
+    clusters:
+      manage: "Full access to Clusters"
+    cluster_fields:
+      manage: "Full access to Extra cluster fields"
+    cluster_projects:
+      manage: "Full access to Projects on a cluster"
+    cluster_users:
+      manage: "Full access to Users on a cluster"
+    critical_technologies:
+      manage: "Full access to Critical technologies"
+    credentials:
+      manage: "Full access to Public keys"
+    direction_of_sciences:
+      manage: "Full access to Research directions"
+    extends:
+      manage: "Full access to Extensions"
+    groups:
+      manage: "Full access to Groups"
+    images:
+      manage: "Full access to Images"
+    import_items:
+      manage: "Full access to Import"
+    history_items:
+      access: "Browse user history"
+    organizations:
+      manage: "Full access to Organizations"
+    organization_kinds:
+      manage: "Full access to Organizations kinds"
+    position_names:
+      manage: "Full access to Organization job names"
+    projects:
+      review: "Ability to review projects"
+      manage: "Full access to Projects"
+    pages:
+      manage: "Full access to Wiki pages"
+      show_all: "Browsing all Wiki pages"
+      manage: Full access to Wiki pages
+    packages:
+      manage: Full access to Packages
+    requests:
+      manage: "Full access to Resource requests"
+    settings:
+      manage: "Full access to Settings"
+    sureties:
+      manage: "Full access to Sureties"
+      confirm: "surety pre-approval"
+      unconfirm: "Withdrawal of prior approval of sureties"
+      activate: "Surety activation"
+      close: "Surety closing"
+      decline: "Surety rejection"
+    project_prefixes:
+      manage: "Full access to Project prefixes"
+    tasks:
+      manage: "Full access to Procedures"
+    tickets:
+      manage: "Full access to Support tickets"
+    ticket_fields:
+      manage: "Full access to Extra fields to support tickets"
+    ticket_questions:
+      manage: "Full access to Support ticket questions"
+    ticket_tags:
+      manage: "Full access to Tags"
+    ticket_templates:
+      manage: "Full access to Answer templates"
+    users:
+      manage: "Full access to Users"
+    all:
+      show_all: "Ability to browse all records without pagination"
+    admin:
+      access: "Access to Administator's office"
+    reports:
+      access: "Access to reports subsection"
+      manage: "Report expert"
+      review: "Ability to review reports"
+      supervise: "Ability to accept/reject overdue reports"
+      admin: "Full access to reports"
+    sessions:
+      manage: "Ability to launch re-registration"
+    user_surveys:
+      access: "Просмотр отчетов пользователя"
+    research_areas:
+      manage: "Full access to Research areas"
+    faults:
+      resolve: "Solving user problems"
+    console:
+      access: "Console access"
+    announcements:
+      manage: "Full access to Announcements"
+    notices:
+      manage: "Full access to newsletters"
+
+  admin:
+    groups:
+      index:
+        title: "User groups"
+        new_group: "Add a group"
+        default_abilities: "Reestablish default abilities"
+      form:
+        abilities: "Abilities"
+      new:
+        title: "Group creation"
+      edit:
+        title: "Edit group"
+    users:
+      index:
+        title: "Users"
+        managed_project_statuses: "Manages projects with statuses"
+        participated_project_statuses: "Participates in projects with statuses"
+        has_account_on_clusters: "Cluster account exists"
+        rereg_participated: "Participated in re-registrations"
+        has_rereg_report_statuses: "Has re-registration reports in state"
+        has_survey_statuses: "Has polls in the state"
+        access_state: "Status"
+        cluster_access_state_present: "Show only with access to clusters"
+
+      table:
+        no_employment:
+          html: "<span class='fa fa-exclamation-triangle text-danger'> no job place is filled</span>"
+      edit:
+        title: "User membership in group accesses"
+      show:
+        login_as_user: "Login as user"
+        edit_groups_involvement: "Edit group involvement"
+        delete_user: "Delete user account"
+        block_user: "Block access"
+        unblock_user: "Unblock access"
+        reg_date: "Registation date"
+        days_short: "day"
+        present: "present"
+        none: "none"
+      projects_list:
+        no_projects_found: No projects found
+
+
+
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "Shown <b>0</b>"
+          one: "Shown <b>1</b>"
+          few: "Shown <b>%{count}</b>"
+          many: "Shown <b>%{count}</b>"
+          other: "Shown <b>все %{count}</b>"
+      more_pages:
+        display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> pages are shown  of <b>%{total}</b>"
+  views:
+    pagination:
+      next: "Next"
+      first: "First"
+      last: "Last"
+      previous: "Previous"
+      truncate: "..."

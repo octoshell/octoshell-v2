@@ -1,9 +1,9 @@
 = render "header"
 p
-  | Поручительство №#{@surety.id} в рамках проекта «#{@surety.project.title}» отклонено.
+  | #{t('.msg_surety_rejected', id: @surety.id, pid: @surety.project.id, title: @surety.project.title)}
 p
-  | Выяснить причину, а также задать другие вопросы вы можете, перейдя в раздел Техподдержки.
+  | #{t('.msg_recommendation')}
 p
-  = link_to "Открыть раздел техподдержки.", support.tickets_url
+  = link_to t('.open_support'), support.tickets_url
 
 = render "footer"

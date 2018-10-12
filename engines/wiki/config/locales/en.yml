@@ -1,2 +1,29 @@
 en:
+  activerecord:
+    models:
+      wiki/page: "Wiki page"
+    attributes:
+      wiki/page:
+        name: "Name"
+        url: "url"
+        content: "Content"
+
+  buttons:
+    save: "Save"
+
   wiki:
+    markdown_help: "<a href=\"http://daringfireball.net/projects/markdown/syntax\">Markdown</a> is used for markdown"
+    pages:
+      new:
+        title: "New page"
+      edit:
+        title: "Page edition"
+      index:
+        title: "Octoshell wiki"
+        new_page: "New page"
+        edit: "Edit"
+        delete: "Delete"
+        confirm: "Are you sure you want to delete this page?"
+        no_pages_found: "No wiki pages have been created yet."
+        name: "Name"
+        link: "Links"

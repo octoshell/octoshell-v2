@@ -5,8 +5,11 @@ module Core
     belongs_to :project, inverse_of: :members
     belongs_to :organization
     belongs_to :organization_department
-
     delegate :full_name, :email, :credentials, :sured?, to: :user
+
+    scope :finder, (lambda do |q|
+      where("lower(login) like :q", q: "%#{q}%").order(:login)
+    end)
 
     include AASM
     include ::AASM_Additions
@@ -47,7 +50,7 @@ module Core
 
       event :deny do
         transitions :from => :allowed, :to => :denied
-  
+
         after do
           ::Core::MailerWorker.perform_async(:access_to_project_denied, id)
         end
@@ -68,9 +71,9 @@ module Core
 
     def human_project_access_state_name st=nil
       if st.nil?
-        project_access_state.to_s
+        human_state_name
       else
-        st
+        self.class.human_state_name st
       end
     end
 
@@ -88,12 +91,37 @@ module Core
     end
 
     def has_access_to_clusters?
-      project.active? && user.prepared_to_join_projects? && allowed?
+      project.active? && user.prepared_to_join_projects? && allowed? && (project.available_clusters.count > 0)
     end
 
     def assign_login
       new_login = email.delete(".+_-")[/^(.+)@/, 1].downcase
       self.login = "#{new_login[0,24]}_#{project.id}"
     end
+
+    def self.department_members(department)
+      where(organization_id: department.organization_id)
+        .where("core_members.organization_department_id is NULL
+          OR core_members.organization_department_id = #{department.id}")
+        .joins("INNER JOIN core_employments AS u_e ON core_members.user_id = u_e.user_id AND
+          u_e.organization_department_id = #{department.id}")
+        .joins("LEFT JOIN core_employments As e ON
+          e.organization_id = #{department.organization_id} AND
+          core_members.user_id = e.user_id")
+        .group('core_members.id')
+    end
+
+    def self.can_be_automerged(department)
+      department_members(department).having("COUNT( DISTINCT COALESCE(e.organization_department_id,-1)) = 1")
+    end
+
+    def self.can_not_be_automerged(department)
+      department_members(department).having("Count( DISTINCT COALESCE(e.organization_department_id,-1)) > 1")
+    end
+
+    def self.can_not_be_automerged?(department)
+      can_not_be_automerged(department).exists?
+    end
+
   end
 end

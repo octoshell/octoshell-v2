@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "An engine for octoshell announcements"
   s.description = "Does all of the mass mailsending for an octoshell"
   s.license     = "MIT"
+  s.platform = 'java' if RUBY_ENGINE == 'jruby'
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
 
@@ -21,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "activerecord-jdbcpostgresql-adapter" if /java/.match(RUBY_PLATFORM)
   s.add_dependency "pg", "~> 0.18" unless /java/.match(RUBY_PLATFORM)
   s.add_dependency "decorators", "~> 1.0.2"
-#  s.add_dependency "state_machine"
+  #s.add_dependency "state_machine"
   s.add_dependency "aasm"
   s.add_dependency "slim"
   s.add_dependency "sidekiq"
@@ -29,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency "ransack"
   s.add_dependency "kaminari"
   s.add_dependency "carrierwave"
-  s.add_dependency "kramdown"
+  s.add_dependency "commonmarker"
 
   s.test_files = Dir["spec/**/*"]
 end

@@ -18,6 +18,7 @@ production:
   adapter: postgresql
   encoding: unicode
   database: new_octoshell
+  host: localhost
   pool: 10
   min_messages: warning
   user: octo

@@ -57,9 +57,8 @@ ActionController::Base.class_eval do
     menu.add_item(Face::MenuItem.new({name: t("user_submenu.projects"),
                                       url: core.projects_path,
                                       regexp: /core\/(?:projects|)(?!employments|organizations)/}))
-    current_session = Sessions::Session.current || Sessions::Session.last
-    sessions_warning = current_user.reports.where(session: current_session, state: [:pending, :accepted, :exceeded]).any? ||
-                       current_user.surveys.where(session: current_session, state: [:pending, :filling, :exceeded]).any?
+    sessions_warning = current_user.warning_surveys.exists? ||
+                       current_user.warning_reports.exists?
     sessions_title = if sessions_warning
                       t("user_submenu.sessions_warning.html").html_safe
                      else
@@ -68,6 +67,10 @@ ActionController::Base.class_eval do
     menu.add_item(Face::MenuItem.new({name: sessions_title,
                                       url: sessions.reports_path,
                                       regexp: /sessions/}))
+
+    menu.add_item(Face::MenuItem.new({name: t("user_submenu.packages"),
+                                      url: pack.root_path,
+                                      regexp: /pack/}))
 
     tickets_warning = current_user.tickets.where(state: :answered_by_support).any?
     tickets_title = if tickets_warning
@@ -90,6 +93,8 @@ ActionController::Base.class_eval do
     menu.add_item(Face::MenuItem.new({name: t("user_submenu.job_table"),
                                       url: jobstat.account_list_index_path,
                                       regexp: /account\/list/}))
+    menu.add_item(Face::MenuItem.new(name: t("user_submenu.comments"),
+                                      url: comments.index_all_comments_path))
 
     menu.items
   end
@@ -104,6 +109,9 @@ ActionController::Base.class_eval do
                                       url: core.admin_projects_path,
                                       regexp: /core\/admin\/projects/})) if may? :manage, :projects
 
+    menu.add_item(Face::MenuItem.new({name: t("user_submenu.packages"),
+                                      url: pack.admin_root_path,
+                                      regexp: /pack\/admin/}))  if may? :manage, :packages
     tickets_count = Support::Ticket.where(state: [:pending, :answered_by_reporter]).count
     support_title = if tickets_count.zero?
                        t("admin_submenu.support")
@@ -181,6 +189,18 @@ ActionController::Base.class_eval do
                                       regexp: /admin\/announcements/})) if User.superadmins.include?(current_user)|| current_user.mailsender?
     menu.add_item(Face::MenuItem.new({name: t("admin_submenu.sidekiq"),
                                       url: main_app.admin_sidekiq_web_path})) if User.superadmins.include? current_user
+    menu.add_item(Face::MenuItem.new({name: t("admin_submenu.countries"),
+                                      url: core.admin_countries_path})) if User.superadmins.include? current_user
+    menu.add_item(Face::MenuItem.new({name: t("admin_submenu.cities"),
+                                      url: core.admin_cities_path})) if User.superadmins.include? current_user
+    menu.add_item(Face::MenuItem.new(name: t("admin_submenu.comments"),
+                                      url: comments.edit_admin_group_classes_path)) if User.superadmins.include? current_user
+
+    menu.add_item(Face::MenuItem.new(name: t("admin_submenu.emails"),
+                                     url: main_app.rails_email_preview_path,
+                                     regexp: /admin\/emails/
+                                  ))  if may? :manage, :users
+
     menu.items
   end
 end

@@ -1,18 +1,18 @@
 module Core
   class Admin::CriticalTechnologiesController < Admin::ApplicationController
     private
-    def critical_technology_params #FIXIT does not work... WHY?????
-      params.require(:critical_technology).permit(:name)
-    end
-    
+    # def critical_technology_params #FIXIT does not work... WHY?????
+    #   params.require(:critical_technology).permit(:name)
+    # end
+
     public
 
     def crit_tech_params
-      params.require(:critical_technology).permit(:name)
+      params.require(:critical_technology).permit(*CriticalTechnology.locale_columns(:name))
     end
-    
+
     def index
-      @critical_technologies = CriticalTechnology.order(:name)
+      @critical_technologies = CriticalTechnology.order(CriticalTechnology.current_locale_column(:name))
     end
 
     def new

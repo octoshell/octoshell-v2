@@ -1,0 +1,31 @@
+-to_url = @packages ? packages_path : versions_path
+= bootstrap_form_for @q_form,as: "q", url: to_url, method: :get do |f|
+  div class="row"
+    div class='col-md-4' id='type_aim'
+      -if @packages
+        = f.collection_select :id_in, Pack::Package.allowed_for_users_with_joins(current_user.id), :id, :name,{label: t('pack_search.packages.packages_name')}, multiple: true,include_blank: true,'redirect-url': '/pack/packages/{{id}}'
+      -else
+        = f.collection_select :id_in, Pack::Version.allowed_for_users_with_joins(current_user.id), :id, :name,{label: t('pack_search.packages.versions_name')}, multiple: true,include_blank: true, 'redirect-url': '/pack/versions/{{id}}'
+    div class='col-md-4'
+        = f.collection_select :options_categories_id_in, Pack::OptionsCategory.all, :id, :category,{label: Pack::OptionsCategory.model_name.human}, include_blank: true, multiple: true
+    div class='col-md-4'
+        = f.select :category_values_id_in, [],{label: Pack::OptionsCategory.human_attribute_name(:values)}, include_blank: true, multiple: true
+
+  div class="row"
+    div class='col-md-4'
+      =f.check_box :user_access,{label: t("pack_search.packages.my_packs") }, current_user.id
+  div class='row'
+    div class='col-md-4'
+      =f.select :accesses_who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } ),{ label: t("pack_search.packages.who_type") },{class: "change_user_access", multiple: true}
+    div class='col-md-4'
+      =f.select :accesses_status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)}, class: "change_user_access",multiple: true
+    div class='col-md-4'
+      =f.collection_select :clustervers_core_cluster_id_in, Core::Cluster.all, :id, :name, label: t("pack_search.packages.clusters"),include_blank: true, multiple: true
+  div class='row'
+    div class='col-md-4'
+      =f.check_box :clustervers_active_in,{label: t("pack_search.packages.active_cl")},"1",""
+      =f.check_box :deleted_eq,{label: t("pack_search.packages.show_deleted") },"","0"
+  = f.form_group do
+      = f.submit t("actions.find")
+=javascript_tag do
+  = render partial: 'pack/packages/q', formats: [:js]

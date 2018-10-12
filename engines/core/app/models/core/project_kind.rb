@@ -1,5 +1,6 @@
 module Core
   class ProjectKind < ActiveRecord::Base
-    validates :name, presence: true
+    translates :name
+    validates_translated :name, presence: true
   end
 end

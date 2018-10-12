@@ -9,10 +9,10 @@
           | #
       th
         = Core::Project.model_name.human
-        |  / 
+        |  /
         br
         = Core::Organization.model_name.human
-        |  / 
+        |  /
         br
         = Core::Surety.human_attribute_name(:author)
       th = Core::Surety.human_attribute_name(:scans)
@@ -30,6 +30,7 @@
         td
           ul class="list-unstyled"
             li = link_to surety.project, [:admin, surety.project]
+            li = link_to surety.organization, core.admin_organization_path(surety.organization)
             li = link_to surety.author.full_name, main_app.admin_user_path(surety.author)
         td
           - if surety.scans.any?

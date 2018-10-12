@@ -1,0 +1,3 @@
+table class="vtop" class="col-xs-12"
+  = f.fields_for :version_options,@version.version_options.build,child_index: "new_index" do |ff|
+     =render partial: "version_opts_fields",locals: {ff: ff,new: true}

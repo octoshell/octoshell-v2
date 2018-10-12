@@ -4,7 +4,11 @@ module Core
 
     def index
       @search = Surety.search(params[:q])
-      @sureties = @search.result(distinct: true).page(params[:page])
+      @sureties = @search.result(distinct: true).includes({ author: :profile,
+                                                            members: :profile,
+                                                            project: [:card, :organization] },
+                                                            :scans)
+      without_pagination(:sureties)
     end
 
     def show
@@ -27,11 +31,29 @@ module Core
     def activate
       @surety = find_surety(params[:surety_id])
       if @surety.activate
-        @surety.save
+        # @surety.save
         redirect_to_surety @surety
       else
         redirect_to_surety_with_alert @surety
       end
+    end
+
+    def activate_or_reject
+      @surety = find_surety(params[:surety_id])
+      unless params[:surety][:reason].present?
+        flash[:error] = t('.reason_empty')
+        redirect_to_surety @surety
+        return
+      end
+      if params[:commit] == Core::Surety.human_state_event_name(:activate)
+        @surety.activate
+      else
+        @surety.reject
+      end
+      @surety.reason = params[:surety][:reason]
+      @surety.changed_by = current_user
+      @surety.save
+      redirect_to_surety @surety
     end
 
     def close
@@ -115,7 +137,9 @@ module Core
     end
 
     def setup_default_filter
-      params[:q] ||= { state_in: ["confirmed"] }
+      params[:q] ||= { state_in: ['confirmed'],
+                       project_id_eq: '',
+                       scans_id_not_null: '1' }
     end
   end
 end

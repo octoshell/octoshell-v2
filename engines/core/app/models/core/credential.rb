@@ -40,10 +40,10 @@ module Core
 
     def public_key_validator
       if public_key =~ /private/i
-        errors.add(:public_key, I18n.t(".errors.private_key_supplied"))
+        errors.add(:public_key, I18n.t("errors.private_key_supplied"))
       end
       unless SSHKey.valid_ssh_public_key?(public_key)
-        errors.add(:public_key, I18n.t(".errors.wrong_key"))
+        errors.add(:public_key, I18n.t("errors.wrong_key"))
       end
     end
 

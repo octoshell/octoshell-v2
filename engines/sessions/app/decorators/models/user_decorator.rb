@@ -8,4 +8,17 @@ Sessions.user_class.class_eval do
                                class_name: "Sessions::Report",
                                foreign_key: :expert_id,
                                source: :report, inverse_of: :expert
+
+
+  def warning_reports
+    current_session = sessions.last
+    reports.where(state: %i[pending accepted exceeded],
+                  session: current_session)
+  end
+
+  def warning_surveys
+    current_session = sessions.last
+    surveys.where(state: %i[pending filling exceeded],
+                  session: current_session)
+  end
 end if Sessions.user_class

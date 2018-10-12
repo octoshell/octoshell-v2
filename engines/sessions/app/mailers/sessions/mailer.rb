@@ -1,5 +1,6 @@
 module Sessions
   class Mailer < ActionMailer::Base
+    add_template_helper(ApplicationHelper)
     def project_failed_session(report_id)
       @report = Sessions::Report.find(report_id)
       @user = @report.author
@@ -55,7 +56,7 @@ module Sessions
       mail to: @user.email, subject: t(".subject", id: report_id, title: @report.project.title)
     end
 
-    def notify_exerts_about_submitted_reports(session_id)
+    def notify_experts_about_submitted_reports(session_id)
       @session = Sessions::Session.find(session_id)
       @submitted_reports = @session.reports.where(:state=>:submitted)
       expert_emails = Sessions.user_class.experts.map(&:email)

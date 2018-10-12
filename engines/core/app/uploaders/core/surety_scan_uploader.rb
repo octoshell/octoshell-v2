@@ -5,6 +5,7 @@ module Core
     CarrierWave::SanitizedFile.sanitize_regexp = /[^a-zA-Zа-яА-ЯёЁ0-9\.\-\+_]/u
 
     include CarrierWave::MiniMagick
+    prepend FileTranslit
 
     storage :file
 

@@ -4,7 +4,7 @@ $(function(){
     en: "Choose"
   }
 
-  $('select, select2-container, select2-ajax, input.chosen, select.chosen').each(function(i, e){
+  $('select, select2-container, select2-ajax, input.chosen, select.chosen').not('.select2-custom').each(function(i, e){
     var select = $(e)
     var options = select.find('option')
     if (options.size() == 1) {
@@ -27,12 +27,18 @@ $(function(){
             per: 10
           }
         },
-        processResults: function(data, page) {
-          var more = (page * 10) < data.total
+        processResults: function(data, params) {
+          var page = params.page | 1;
+          var more = (page * 10) < data.total;
           return { results: data.records, pagination:{more: more }}
         },
       }
     }
     select.select2 && select.select2(options)
-  })
+  });
+  $(document).on( "select2:select", "[redirect-url]", function(e) {
+   var id = e.params.data.id;
+   var url = $(this).attr('redirect-url');
+   window.location.href = url.replace('{{id}}',id);
+  });
 });

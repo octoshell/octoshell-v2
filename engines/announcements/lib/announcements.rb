@@ -7,7 +7,7 @@ require "sidekiq"
 require "ransack"
 require "kaminari"
 require "carrierwave"
-require "kramdown"
+require "commonmarker"
 
 module Announcements
 end

@@ -56,3 +56,11 @@ reports:
   - access
 sessions:
   - manage
+comments:
+  - manage
+packages:
+  - manage
+versions:
+  - manage
+comments_engine:
+  - manage

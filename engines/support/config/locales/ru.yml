@@ -1,4 +1,5 @@
 ru:
+  support_responsible_for: "Ответственный за:"
   activerecord:
     models:
       support/ticket: Заявка в поддержку
@@ -7,6 +8,11 @@ ru:
       support/field: Дополнительное поле
       support/reply: Ответ
       support/reply_template: Шаблон ответа
+      support/user_topic: Ответственные
+    errors:
+      models:
+        support/ticket:
+          equal_to_template: Измените описание проблемы (сейчас там шаблон)
     attributes:
       support/ticket:
         name: Название
@@ -36,6 +42,8 @@ ru:
         message: Описание проблемы
         attachment: Приложенный файл
       support/topic:
+        template: Шаблон
+        visible_on_create: Видна ли при создании заявки пользователем
         name: Наименование
         parent: Родительская тема
         parent_id: Родительская тема
@@ -59,8 +67,10 @@ ru:
       support/reply_template:
         subject: Заголовок
         message: Сообщение
+      support/user_topic:
+        required: Ответственный по умолчанию
 
-    aaaasm:
+    aasm:
       support/ticket:
         state:
           states:
@@ -88,13 +98,29 @@ ru:
 
   support:
     mailer:
+      header:
+        hello_known_name: Здравствуйте, %{name}!
+        hello_unknown: Здравствуйте!
       new_ticket:
         subject: Новая заявка в техподдержку
+        user_created_request: Пользователь %{full_name} создал заявку в поддержку.
+        ticket: Вопрос
+        topic: Тема
+        show_ticket_details: Перейти к заявке
       new_ticket_reply:
         subject: Новый ответ в заявке №%{number}
-      answered_tickets_notifications:
-        subject: Напоминание о зависших заявках в техподдержке
+        show_request_details: Перейти к заявке
+        remain: Не удаляйте эту строку! Вы можете добавить ответ к этой заявке, записав Ваш ответ после следующей пунктирной линии.
+      reply_error:
+        subject: Не удалось оставить ответ к  заявке №%{number} по причине ошибок
+        show_request_details: Перейти к заявке
+        errors: "Ошибки:"
 
+      answered_tickets_notification:
+        subject: Напоминание о зависших заявках в техподдержке
+      footer:
+        octo_regards: С уважением, Octoshell.
+        maintained_by: Лаборатория Параллельных информационных технологий НИВЦ МГУ.
     admin:
       tickets:
         index:
@@ -106,7 +132,7 @@ ru:
           created_before: Создан до
           updated_after: Обновлён после
           updated_before: Обновлён до
-
+          find_by_content: Найти по содержимому
         table:
           no_tickets: Нет тикетов
         edit:
@@ -138,7 +164,8 @@ ru:
           tickets_with_tag: Заявки в поддержку с тегом
         remote_form:
           add_tag: Добавить тег
-
+        table:
+          no_tags: Нет тегов
       reply_templates:
         index:
           title: Шаблоны ответов
@@ -147,7 +174,10 @@ ru:
           title: Создание шаблона
         edit:
           title: Редактирование шаблона
-
+        show:
+          title: Шаблон
+        table:
+          no_templates: Нет шаблонов
       fields:
         index:
           title: Дополнительные поля для заявок
@@ -156,6 +186,10 @@ ru:
           title: Создание доп. поля
         edit:
           title: Редактирование доп. поля
+        show:
+          title: Дополнительное поле
+        table:
+          no_records: Нет дополнительных полей
 
       topics:
         index:
@@ -168,15 +202,24 @@ ru:
         show:
           title: Тема заявок
           new_subtopic: Новая подтема
+        form:
+          attach: Прикрепить
 
     tickets:
       index:
         title: Поддержка
         new_ticket: Новая заявка
+        created_after: Создан после
+        created_before: Создан до
+        updated_after: Обновлен после
+        updated_before: Обновлен до
+      table:
+        no_tickets: Нет заявок в поддержку
       show:
         title: Заявка №%{id}
         problem_solved: "Проблема решена? Нажмите "
         new_reply: Новое сообщение
+        no_replies: Нет ответов
         if_not: "Если нет, нажмите "
       new:
         title: Новая заявка

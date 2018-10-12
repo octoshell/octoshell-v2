@@ -13,14 +13,14 @@ Gem::Specification.new do |s|
   s.summary     = "A core engine for octoshell"
   s.description = "Basic logic and bisuness models for an octoshell"
   s.license     = "MIT"
-
+  s.platform = 'java' if RUBY_ENGINE == 'jruby'
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 4.2"
-
   s.add_dependency "activerecord-jdbcpostgresql-adapter" if /java/.match(RUBY_PLATFORM)
   s.add_dependency "pg", "~> 0.18" unless /java/.match(RUBY_PLATFORM)
   s.add_dependency "decorators", "~> 1.0.2"
+#  s.add_dependency "state_machines-activerecord"
   s.add_dependency "aasm"
   s.add_dependency "slim"
   s.add_dependency "sidekiq"
@@ -34,6 +34,9 @@ Gem::Specification.new do |s|
   s.add_dependency "clbustos-rtf"
   s.add_dependency "mini_magick"
   s.add_dependency "carrierwave"
+  s.add_dependency "roo"
+  s.add_dependency "colorize"
+  s.add_dependency 'write_xlsx'
 
   s.test_files = Dir["spec/**/*"]
 

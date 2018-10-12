@@ -1,5 +1,6 @@
 Core::Engine.routes.draw do
   namespace :admin do
+    resources :members, only: :index
     resources :projects do
       member do
         get :activate
@@ -30,12 +31,28 @@ Core::Engine.routes.draw do
       put :close
       put :confirm
       put :reject
+      put :activate_or_reject
     end
 
     resources :project_kinds
     resources :organization_kinds
 
-    resources :organizations, only: [:new, :create, :index, :show, :edit, :update] do
+    resources :countries
+    resources :cities
+    resources :prepare_merge,only: [:index,:update,:edit] do
+      member do
+        delete :destroy
+      end
+    end
+    resources :organizations do
+      member do
+        get :index_for_organization
+        put :check
+      end
+      collection do
+        get :merge_edit
+        post :merge_update
+      end
       resources :departments, except: :show
     end
 
@@ -46,6 +63,7 @@ Core::Engine.routes.draw do
     resources :requests, only: [:index, :show, :edit, :update] do
       get :approve, on: :member
       get :reject, on: :member
+      put :activate_or_reject, on: :member
     end
 
     resources :quota_kinds, except: :show
@@ -54,6 +72,10 @@ Core::Engine.routes.draw do
     resources :cluster_logs, only: :index
 
     resources :users, only: :index do
+      collection do
+        get :owners_finder
+        get :with_owned_projects_finder
+      end
       get :block, on: :member
       get :reactivate, on: :member
     end
@@ -75,6 +97,7 @@ Core::Engine.routes.draw do
 
       post :invite_member
       post :invite_users_from_csv
+      delete :delete_invitation
       post :resend_invitations
       put :drop_member
     end
@@ -93,13 +116,18 @@ Core::Engine.routes.draw do
 
   resources :organization_kinds, only: :index
 
-  resources :organizations, except: :destroy do
+  resources :organizations, except: [:destroy] do
     resources :organization_departments, path: :departments, only: [:index, :new, :create]
   end
 
   resources :countries, only: :index do
     resources :cities, only: [:index, :show]
   end
-
+  resources :cities do
+    collection do
+      get :index_for_country
+      get :finder
+    end
+  end
   root "projects#index"
 end

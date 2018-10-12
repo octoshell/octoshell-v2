@@ -3,8 +3,12 @@ class Admin::UsersController < Admin::ApplicationController
   before_filter :check_authorization, except: :show
 
   def index
-    @search = User.includes(:employments).search(params[:q])
-    @users = @search.result(distinct: true).order(id: :desc).page(params[:page])
+    @search = User.includes({employments:[:organization,:organization_department]}, :profile).search(params[:q])
+    @users = @search.result(distinct: true).order(id: :desc)
+    # unless display_all_applied?
+    #   @users = @users.page(params[:page])
+    # end
+    without_pagination(:users)
   end
 
   def show

@@ -1,0 +1,102 @@
+en:
+  pack:
+    docs:
+      docs_ru:
+        header: Package engine wiki
+    accesses:
+      update_accesses:
+        unable to_create: Unable to create access for this version
+        not_owned_project: The project does not belong to you. You can not work with this project access
+        updated_during_edit: You can not perform an action. Something happened At the time of filling out the form. Re-enter the data
+
+    packages:
+        new:
+          new_access: New request for access to version
+          success: The request has been sent  successfully
+        allowed_expired:
+          title: Request for  renewal of version access
+          success: The request has been sent  successfully
+        show:
+          can_delete_requested: An application for access to the version has been sent. It has not been considered yet. You can remove the request
+          success_delete: Request has been removed
+          new_end_lic_forever: You have already requested for prolongation to endless access to the version. Do you want to change the request?
+          end_lic_expired: Your access to version expired.
+          new_end_lic: "You have already requested for the prolongation of access to ${access.new_end_lic}. Do you want to change the request?"
+          end_lic_null: 'Your access is endless'
+          user: User
+
+
+        index:
+          title: Packages list
+    versions:
+        show:
+          title: Version
+        index:
+          title: Versions list
+
+    admin:
+      options_categories:
+        form:
+          add_value: Добавить значение
+          remove_value: Удалить значение
+
+        new:
+          title: New category
+        index:
+          new: New category
+          title: Categories for versions options
+        edit:
+          title: Edit categories
+        table:
+          confirm: Are you sure to delete this options category?
+          no_found: No options categories
+      packages:
+        new:
+          title: New package
+        edit:
+          title: Edit package
+        index:
+          title: Packages list
+          new_package: New package
+          edit: Edit
+          delete: Delete
+          no_packages_found: No packages found
+        table:
+          confirm: Are you sure you want to delete the package irrevocably?!
+
+      accesses:
+        show:
+          transitions: Note that depending on the expiration date you have set, the access status may change from expired to allowed and vice versa
+        requested:
+          expired_date: The date entered by the user is deprecated. If you approve an request without editing access, then access will be "expired".
+        end_lic_with_req:
+          delete_request: Delete information about the renewal request
+        table:
+          no_accesses_found: No accesses found
+        q:
+          show_requests_only: Show only renewals requests
+        new:
+          title: New access
+        edit:
+          title: Edit access
+        index:
+          new: New access
+          title: List of accesses to packages
+          new_package: New access
+          edit: Edit
+          delete: Delete
+      versions:
+        new:
+          title: New version
+        edit:
+          title: Edit version
+        show:
+          title: Version information
+        form2:
+          new: Add option
+        index:
+          title: Versions list
+        version_opts_fields:
+          remove_option: Remove option
+          with_category: Autocomplete
+          without_category: Not autocomplete

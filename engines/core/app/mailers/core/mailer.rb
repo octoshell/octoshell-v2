@@ -1,13 +1,17 @@
 module Core
   class Mailer < ActionMailer::Base
+
+    attr_accessor :language
+
     def invitation_to_project(user_id, project_id)
       @user = Core.user_class.find(user_id)
       @project = Core::Project.find(project_id)
       mail to: @user.email, subject: t(".subject", title: @project.title)
     end
 
-    def invitation_to_octoshell(invitation_id)
+    def invitation_to_octoshell(invitation_id, language)
       @invitation = Core::ProjectInvitation.find(invitation_id)
+      self.language = language
       mail to: @invitation.user_email, subject: t(".subject", title: @invitation.project.title)
     end
 

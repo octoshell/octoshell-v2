@@ -1,0 +1,7 @@
+= render "core/mailer/header"
+-vers=@access.version
+-link = link_to vers.name, vers
+p =t('.body',link: link,message: t("mailer_version_messages.#{vers.state}",date: vers.end_lic)).html_safe
+
+
+= render "core/mailer/footer"

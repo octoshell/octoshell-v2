@@ -1,0 +1,14 @@
+$(document).ready(function(){
+  var city_select = $('#city_select');
+  if(city_select.length){
+    apply_select_to(city_select,'/core/cities/finder');
+    var id =  $('#country_select').select2('val');
+    apply_select_to(city_select,'/core/cities/finder',{country_id: id});
+    $(document).on("select2:select","#country_select", function(e) {
+      var id = e.params.data.id;
+      city_select.select2('destroy');
+      city_select.empty();
+      apply_select_to(city_select,'/core/cities/finder',{country_id: id});
+    });
+  }
+});

@@ -1,5 +1,5 @@
 module Core
-  class OrganizationDepartmentsController < ApplicationController
+  class OrganizationDepartmentsController < Core::ApplicationController
     respond_to :json
 
     def index

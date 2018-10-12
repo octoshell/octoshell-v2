@@ -1,9 +1,11 @@
 = bootstrap_form_for [:admin, @announcement], layout: :horizontal, multipart: true do |f|
-  = f.text_field :title
+  -Announcement.locale_columns(:title).each do |column|
+    = f.text_field column
   = f.email_field :reply_to, placeholder: 'service@users.parallel.ru', input_html: { class: "input-xxlarge" }
   = f.form_group do
     = f.check_box :is_special
-  = f.text_area :body, help: t(".markdown_help").html_safe, rows: 10
+  -Announcement.locale_columns(:body).each do |column|
+    = f.text_area column, help: t(".markdown_help").html_safe, rows: 10,class: 'edit-markdown'
   = f.file_field :attachment
 
   = f.form_group do

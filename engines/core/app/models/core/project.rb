@@ -27,8 +27,7 @@ module Core
              through: :requests, source: :cluster
 
     has_many :accesses, inverse_of: :project
-    # TODO: rename to available. typo.
-    has_many :avaliable_clusters, -> { where(core_accesses: {state: 'opened'}) },
+    has_many :available_clusters, -> { where(core_accesses: {state: 'opened'}) },
                                   through: :accesses, source: :cluster
 
     has_many :synchronization_logs, class_name: "Core::ClusterLog", inverse_of: :project
@@ -39,9 +38,12 @@ module Core
 
     accepts_nested_attributes_for :card, :sureties
 
-    validates :card, :title, presence: true, if: :project_is_not_closing?
+    validates :card, :title, :organization, presence: true, if: :project_is_not_closing?
     validates :direction_of_science_ids, :critical_technology_ids,
-      :research_area_ids, length: { minimum: 1, message: I18n.t(".errors.choose_at_least") }, if: :project_is_not_closing?
+      :research_area_ids, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }, if: :project_is_not_closing?
+    validate do
+      errors.add(:organization_department, :dif) if organization_department && organization_department.organization != organization
+    end
 
     scope :finder, lambda { |q| where("lower(title) like :q", q: "%#{q.mb_chars.downcase}%").order("title asc") }
 
@@ -78,9 +80,9 @@ module Core
       users << user
       ::Core::MailerWorker.perform_async(:invitation_to_project, [user.id, self.id])
     rescue ::ActiveRecord::RecordNotUnique
-      errors.add :member, I18n.t(".errors.user_is_already_in_members", email: user.full_name)
+      errors.add :member, I18n.t("errors.user_is_already_in_members", email: user.full_name)
     rescue ::ActiveRecord::RecordNotFound
-      errors.add :member, I18n.t(".errors.user_is_not_registered")
+      errors.add :member, I18n.t("errors.user_is_not_registered")
     end
 
     def drop_member(user_id)
@@ -89,7 +91,7 @@ module Core
     end
 
     def spare_clusters
-      ::Core::Cluster.where.not(id: requested_clusters.pluck(:id) | avaliable_clusters.pluck(:id)).
+      ::Core::Cluster.where.not(id: requested_clusters.pluck(:id) | available_clusters.pluck(:id)).
               where(available_for_work: true)
     end
 
@@ -188,7 +190,21 @@ module Core
           on_activate
         end
       end
+    end
 
+    def self.can_not_be_automerged(department)
+      joins(:members)
+        .joins("INNER JOIN core_employments As e ON
+          e.organization_id = #{department.organization_id} AND
+          core_members.user_id = e.user_id AND
+          e.organization_department_id = #{department.id}")
+        .where('core_projects.organization_department_id IS NULL OR core_projects.organization_department_id != e.organization_department_id ')
+        .where(core_members: {organization_id: department.organization_id, owner: true})
+        .distinct('core_projects.id')
+    end
+
+    def self.can_not_be_automerged?(department)
+      can_not_be_automerged(department).exists?
     end
   end
 end

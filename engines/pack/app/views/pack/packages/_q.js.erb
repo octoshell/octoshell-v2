@@ -1,0 +1,22 @@
+function applySelectToVersionOptionValue(selectValue, id){
+	var path = "/pack/category_values/" + id + "/values";
+	$.getJSON(path, function( data ) {
+		var selectedArray = <%=raw (params[:q] || { category_values_id_in: [''] })[:category_values_id_in] %>;
+		selectValue.select2({data: data}).val(selectedArray).trigger('change.select2');
+	});
+}
+
+function applyValueSelect(categoryValue){
+	categoryValue.html('');
+	if($('#q_options_categories_id_in').find('option:selected').length == 1){
+		var id = $('#q_options_categories_id_in').find('option:selected').val();
+		applySelectToVersionOptionValue(categoryValue, id);
+	}
+}
+
+var categoryValue = $('#q_category_values_id_in');
+$(document).on('change','#q_options_categories_id_in', function() {
+	applyValueSelect(categoryValue);
+});
+categoryValue.select2();
+applyValueSelect(categoryValue);

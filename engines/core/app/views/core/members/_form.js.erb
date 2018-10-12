@@ -1,0 +1,24 @@
+
+var departments = <%=raw @departments.to_json%>;
+var nothing = '<%= t '.nothing' %>';
+var org_select = $('#member_organization_id');
+var dep_select = $('#member_organization_department_id');
+var style =  org_select.next().attr('style');
+
+var array = departments[Object.keys(departments)[0]].slice(0);
+array.unshift({id: ' ', text: nothing});
+dep_select.select2({
+  data: array
+});
+
+$(document).on("select2:select","#member_organization_id", function(e) {
+  var id = e.params.data.id;
+  var array = departments[id].slice(0);
+  array.unshift({id: ' ', text: nothing});
+  dep_select.select2('destroy');
+  dep_select.empty();
+  dep_select.select2({
+    data: array
+  });
+  dep_select.next().attr('style',style);
+});

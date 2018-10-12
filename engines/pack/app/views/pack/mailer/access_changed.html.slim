@@ -1,0 +1,5 @@
+= render "core/mailer/header"
+- link = link_to @access.version.name, @access.version
+p =t('mailer_messages.body',link: link,status_info: @status_info).html_safe
+
+= render "core/mailer/footer"

@@ -8,17 +8,17 @@
           = sort_link @search, :id, "#", default_order: :desc
         - else
           | #
-      th Отчет
-      th Проект
-      th Статус
-      th Сдать до
-      th Перерегистрация
+      th #{t('.report')}
+      th #{t('.project')}
+      th #{t('.status')}
+      th #{t('.complete_by')}
+      th #{t('.session')}
 
     - reports.each do |report|
       tr
         td = report.id
         td
-          strong = link_to "Отчет ##{report.id}", sessions.report_path(report)
+          strong = link_to t('.report_id', id: report.id), sessions.report_path(report)
         td
           = link_to report.project.title, core.project_path(report.project) if report.project
         td

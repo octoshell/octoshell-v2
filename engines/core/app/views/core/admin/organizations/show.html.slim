@@ -3,8 +3,16 @@ div class="page-header"
 
 div class="well"
   = link_to t("actions.edit"), [:edit, :admin, @organization], class: "btn btn-default"
+  = link_to t(".merge_edit"),merge_edit_admin_organizations_path(id: @organization.id), class: "btn btn-default"
+  = link_to t(".check"),check_admin_organization_path(@organization),method: :put, class: "btn btn-success" unless @organization.checked
 
-table class="table table-bordered"
+  - if @organization.destroy_allowed?
+    - name = t("actions.delete", default: "delete")
+    - confirm = t("core_confirm", default: "Are You sure?")
+    - data = { method: :delete, confirm: confirm }
+    = link_to name, [:admin, @organization], data: data, class: "btn btn-default"
+
+table class="table table-hover"
   tr
     th = Core::Organization.human_attribute_name(:name)
     td = @organization.name
@@ -20,17 +28,30 @@ table class="table table-bordered"
   tr
     th = Core::Organization.human_attribute_name(:city)
     td = @organization.city
+  tr
+    th = Core::Organization.human_attribute_name(:checked)
+    td = @organization.checked ? t('answers.yess',default: 'yes') : t('answers.noo',default: 'no')
+
 
 legend = Core::Organization.human_attribute_name(:departments)
 table class="table table-hover"
   tr
-    th class="col-xs-8" = Core::OrganizationDepartment.human_attribute_name(:name)
-    th class="col-xs-2" = Core::OrganizationDepartment.human_attribute_name(:users_count)
+    th class="col-xs-1"  #
+    th class="col-xs-5" = Core::OrganizationDepartment.human_attribute_name(:name)
     th class="col-xs-2" = Core::OrganizationDepartment.human_attribute_name(:projects_count)
+    th class="col-xs-1" = Core::OrganizationDepartment.human_attribute_name(:users_count)
+    th class="col-xs-1" = Core::Organization.human_attribute_name(:users_with_access_count)
+    th class="col-xs-2" = Core::OrganizationDepartment.human_attribute_name(:checked)
   - @organization.departments.each do |department|
     tr
+      td = department.id
       td = department.name
-      td = department.users.where(users: { access_state: "active" }).distinct.count
       td = department.projects.where(core_projects: { state: "active" }).distinct.count
+      td = department.users.where(users: { access_state: "active" }).distinct.count
+      td = department.users.cluster_access_state_present.distinct.count
+      td = department.checked ? t('answers.yess') : t('answers.noo')
+      td = link_to t(".merge_edit"),merge_edit_admin_organizations_path(id: @organization.id, department_id: department.id), class: "btn btn-default"
 
-
+=render_attachments @organization,:comments
+=render_attachments @organization,:tags
+=render_attachments @organization,:files

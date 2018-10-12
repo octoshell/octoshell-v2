@@ -8,9 +8,9 @@ module Support
     def index
       @search = Ticket.search(params[:q])
       @tickets = @search.result(distinct: true)
+                        .includes({reporter: :profile}, {responsible: :profile})
                         .order("id DESC, updated_at DESC")
-                        .page(params[:page])
-
+      without_pagination(:tickets)
       # записываем отрисованные тикеты в куки, для перехода к следующему тикету после ответа
       cookies[:tickets_list] = @tickets.map(&:id).join(',')
     end
@@ -84,6 +84,13 @@ module Support
       @ticket = Ticket.find(params[:ticket_id])
       @ticket.accept(current_user)
       @ticket.save
+      redirect_to [:admin, @ticket]
+    end
+
+    def edit_responsible
+      @ticket = Ticket.find(params[:id])
+      @ticket.update!(ticket_params)
+      @ticket.subscribers << @ticket.responsible unless @ticket.subscribers.include? @ticket.responsible
       redirect_to [:admin, @ticket]
     end
 

@@ -1,7 +1,8 @@
 /*
  *= require_self
  *= require bootstrap
- *NOT require disable_bootstrap_responsive
+ *= require glyphicon
+ *= require jquery
  *= require select2
  *= require select2-bootstrap
  *= require bootstrap-datepicker3
