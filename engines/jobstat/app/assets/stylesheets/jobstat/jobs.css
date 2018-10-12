@@ -386,3 +386,6 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
   opacity: 0.3;
 }
 
+.gray-text {
+  color: gray;
+}

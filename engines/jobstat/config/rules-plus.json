@@ -394,7 +394,7 @@
     }
   },
   "groups": {
-    "disaster": { "icon": "far fa-times-circle", "color": "color-red"},
+    "disaster": { "icon": "far fa-times-circle", "color": "color-red", "name": ""},
     "disbalance": { "icon": "fas fa-balance-scale", "color": "color-regular", "alt":"stream ? chart-bar ? sort-amount-up ?"},
     "general_low_efficiency": { "icon": "fas fa-exclamation", "color": "color-orange", "alt": "(а можно кстати взять такой же как disaster, только окрасить в оранжевый/желтый)"},
     "gpu_based": { "icon": "fas fa-tachometer-alt", "color": "color-regular"},

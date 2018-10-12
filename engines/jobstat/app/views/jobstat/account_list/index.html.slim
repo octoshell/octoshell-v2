@@ -21,6 +21,13 @@ p На данной странице вы можете посмотреть ин
 
 = render "form"
 
+div class='thanks' id='thanks_box'
+  div &nbsp;
+  div class="thanks-text"
+    | Спасибо!
+  div &nbsp;
+
+  /onclick="show_thanks('Вот спасибо-то!')" клик
 
 - if @notice
   p style = 'color:#FF0000;' = @notice
@@ -167,7 +174,7 @@ div class="perf-table"
                       // rule icon
                       - rule = @rules_plus['rules'].fetch(cond.name, nil)
                       - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
-                      a href="all_rules##{cond.name}"
+                      a href="all_rules#go-#{cond.name}"
                         i class="em15 fa-fw align-left inline #{icon['icon']} #{icon['color']}" title="#{cond.description}"
                       | &nbsp; 
 
@@ -221,13 +228,16 @@ div class="perf-table"
           /onClick="process_response(#{index},#{job.drms_job_id})"
           - if perf_data_present
             - if job_cond.size() > 0
+              - hidden_count=0
               - job_cond.each do |cond|
                 - rule = @rules_plus['rules'].fetch(cond.name, nil)
                 - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
-                a href="all_rules##{cond.name}" class="em12 #{@filters.include?(cond.name) ? 'hidden' : 'visible'}"
+                - hidden_count +=1 if @filters.include?(cond.name)
+                a href="all_rules#go-#{cond.name}" class="em12 #{@filters.include?(cond.name) ? 'hidden' : 'visible'}"
                   i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{cond.description}" data-rule-div="#{cond.name}"
                 |  
-
+              - if hidden_count>0
+                span class="gray-text" +#{hidden_count}
             - else
               /= image_tag "ok.png", size: "20", border: 2
               i class="fas fa-fw fa-check em12"

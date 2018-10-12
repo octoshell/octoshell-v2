@@ -257,7 +257,7 @@ Current:
   transition-delay: 0s;
 }
 .octo-close-popup2 {
-  background: rgba(0,0,0,.7);
+  background: rgba(0, 0, 0, .7);
   cursor: default;
   position: fixed;
   top: 0;
@@ -282,27 +282,45 @@ Current:
 .thanks {
   position: fixed;
   left: 30vw;
-  right: 30vw;
-  top: 45vh;
-  visibility: hidden;
+  width: 40vw;
+  height: 50vh;
+  top: 25vh;
   display: none;
+  visibility: hidden;
   opacity: 0;
-  background-color: rgba(255, 255, 255, .8);
+  background-color: rgba(100, 255, 100, .9);
   z-index: 5000;
+  text-align: center;
+  font-size: 3em;
+  display: table-cell;
+  vertical-align: middle;
+  border-radius: 3vw;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
 }
 
 @keyframes thanks {
-  from {
-    left: -30vw;
+  0% {
+    left: 0;
     opacity: 0;
   }
-  to {
+  25% {
     left: 30vw;
     opacity: 1;
   }
+  75% {
+    left: 30vw;
+    opacity: 1;
+  }
+  100% {
+    left: 100vw;
+    opacity: 0;
+  }
 }
 
-.thanks .active {
-  animation: thanks 2s ease-in-out both;
+.thanks.active {
+  animation: thanks 4s ease-in-out both;
   display: block;
+  visibility: visible;
 }

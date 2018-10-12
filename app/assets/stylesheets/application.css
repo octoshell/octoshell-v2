@@ -19,3 +19,41 @@
 .return-btn-container {
   padding-top: 4em;
 }
+
+
+.right-float-button {
+  position: fixed;
+  right: -17em;
+  width: 20em;
+  top: 30vh;
+  z-index: 6000;
+  padding: 10px;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background: rgba(0,200,100,.9);
+  -webkit-transition: all 1s ease;
+     -moz-transition: all 1s ease;
+      -ms-transition: all 1s ease;
+       -o-transition: all 1s ease;
+          transition: all 1s ease;
+}
+
+.right-float-button > div {
+  float: left;
+}
+
+.right-float-button:hover {
+  right: 0;
+  -webkit-transition: all 1s ease;
+     -moz-transition: all 1s ease;
+      -ms-transition: all 1s ease;
+       -o-transition: all 1s ease;
+          transition: all 1s ease;
+
+}
+
+.orange {
+  color: orange;
+}

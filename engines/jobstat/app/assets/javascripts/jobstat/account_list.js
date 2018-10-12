@@ -121,8 +121,8 @@ function disagree(jobid, rule, text) {
   var feedback={
     user: current_user,
     cluster: jobs[jobid]['cluster'],
-    //job_id: jobid,
-    //task_id: 0,
+    job_id: jobid,
+    task_id: 0,
     account: jobs[jobid]['login'],
     condition: rule,
     feedback: text ? text : $("#question_" + jobid + '_' + rule).val(),
@@ -130,11 +130,12 @@ function disagree(jobid, rule, text) {
   $.ajax({
     type: "POST",
     url: "feedback",
-    data: {'feedback': feedback, 'type': 'feedback_rule'},
+    data: {'feedback': feedback, 'type': 'feedback_job'},
   }).always(function( msg ) {
     restore_disagree_button()
     jobs[jobid]['feedback'][rule]={'class': 1}
     update_jobs_agree('')
+    show_thanks("Спасибо за отзыв!")
   });
 }
 
@@ -157,6 +158,7 @@ function agree(jobid, rule, text) {
     restore_disagree_button()
     jobs[jobid]['feedback'][rule]={'class': 0}
     update_jobs_agree('')
+    show_thanks("Спасибо за отзыв!")
   });
 }
 
@@ -183,12 +185,10 @@ function hide_rule(jobid, rule) {
     type: "POST",
     url: "feedback",
     data: {'feedback': feedback, 'type': 'hide_rule'},
-  }).done(function( msg ) {
+  }).always(function( msg ) {
     restore_disagree_button()
     //update_jobs_agree(feedback)
-  }).fail(function( msg ) {
-    restore_disagree_button()
-    //update_jobs_agree(feedback)
+    show_thanks("Чтобы вернуть отображение, перейдите на страницу всех правил.")
   });
   hide_rule_on_page(rule)
 }
@@ -299,12 +299,10 @@ function multi_job_feedback() {
       type: "POST",
       url: "feedback",
       data: {'feedback': feedback, 'type': 'multi_jobs'},
-    }).done(function( msg ) {
+    }).always(function( msg ) {
       restore_disagree_button()
       update_jobs_agree(feedback)
-    }).fail(function( msg ) {
-      restore_disagree_button()
-      update_jobs_agree(feedback)
+      show_thanks("Спасибо за отзыв!")
     });
   }
 }
@@ -355,8 +353,10 @@ function agree_all() {
     url: "feedback",
     data: {'feedback': new_feedback, 'type': 'multi_jobs'},
   }).done(function( msg ) {
+    show_thanks("Спасибо за отзыв!")
     update_jobs_agree(new_feedback)
   }).fail(function( msg ) {
+    show_thanks("Ой, не получилось сохранить Ваш отзыв, попробуйте чуть позже ещё раз его отправить.")
     update_jobs_agree(new_feedback)
   });
 }
@@ -400,12 +400,13 @@ function update_jobs_agree(feedback){
  }
 
 function show_thanks(text){
-  var time_to_show=2000;
+  var time_to_show=5000;
 
   if(!text) {
     text="Спасибо за отзыв!"
   }
 
+  $('#thanks_box > .thanks-text').text(text);
   $('#thanks_box').addClass('active');
   setTimeout("$('#thanks_box').removeClass('active');",time_to_show);
 }

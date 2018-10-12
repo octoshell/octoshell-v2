@@ -29,7 +29,7 @@ section class="accordion"
   - @rules_plus['rules'].sort{|a,b| a[1]['index'] <=> b[1]['index']}.each do |r|
     - rule=r[1]
     - icon = group_plus.fetch(rule['group'],def_icon)
-    div
+    div id="go-#{r[0]}"
       input class="rule-checkbox" type="checkbox" id="rule-#{r[0]}" name="box"
       label for="rule-#{r[0]}"
         | &nbsp;
@@ -90,6 +90,13 @@ javascript:
   var filters=#{{@filters.to_json}}
   var emails=#{{@emails.to_json}}
   var current_user=#{{@current_user.id}};
+
+  $(function(){
+    var hash = window.location.hash.substr(4);
+    if(hash!=''){
+      $('#rule-'+hash).prop("checked",true);
+    }
+  });
 
   function on_new_rule_suggest(){
     $('#suggest_new_rule').removeClass('target');
