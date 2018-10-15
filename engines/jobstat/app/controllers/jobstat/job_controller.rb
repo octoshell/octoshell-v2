@@ -43,10 +43,10 @@ module Jobstat
       @ipc_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "ipc").order(:time).all)
 
       rcv_mpi = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_mpi").order(:time).all
-      xmit_mpi = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_mpi").order(:time).all
+      xmit_mpi = DigestFloatDatum.where(job_id: @job.id, name: "ib_xmit_data_mpi").order(:time).all
 
       rcv_fs = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_fs").order(:time).all
-      xmit_fs = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_fs").order(:time).all
+      xmit_fs = DigestFloatDatum.where(job_id: @job.id, name: "ib_xmit_data_fs").order(:time).all
 
       @mpi_digest_data = graph_data_multi(rcv_mpi, xmit_mpi)
       @fs_digest_data = graph_data_multi(rcv_fs, xmit_fs)

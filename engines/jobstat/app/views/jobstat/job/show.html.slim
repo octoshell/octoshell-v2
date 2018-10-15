@@ -188,33 +188,33 @@ table class="table table-bordered table-striped"
 //fixme! translate
 h3 = "Динамика поведения датчиков"
 
-a href="full jd" Полный jd
+#{ link_to "Полный JD", "https://graphit.parallel.ru:5001/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36) } 
 
 div class="row"
   div class="col-md-4" style="height: 250px"
     //fixme! translate
-    h4 = "Загрузка ЦПУ %"
+    h4 = "Загрузка ЦПУ (0% .. 100%)"
     div id="g_cpu"
   div class="col-md-4" style="height: 250px"
-    h4 = "loadavg (link)"
+    h4 #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
     div id="g_loadavg"
   div class="col-md-4" style="height: 250px"
     //fixme! translate
-    h4 = "Использование MPI IB MB/s"
+    h4 = "Использование MPI IB (MB/s)"
     div id="g_ib_mpi"
 
 div class="row"
   div class="col-md-4" style="height: 250px"
     //fixme! translate
-    h4 = "Загрузка ГПУ %"
+    h4 = "Загрузка ГПУ (0% .. 100%)"
     div id="g_gpu"
   div class="col-md-4" style="height: 250px"
     //fixme! translate
-    h4 = "IPC (link)"
+    h4 #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
     div id="g_ipc"
   div class="col-md-4" style="height: 250px"
     //fixme! translate
-    h4 = "Использование FS IB MB/s"
+    h4 = "Использование Filesystem IB (MB/s)"
     div id="g_ib_fs"
 
 script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"
@@ -222,65 +222,71 @@ script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"
 javascript:
   function DrawSingleGraph(target, sensor_data, max)
   {
-	for(var i = 0; i < sensor_data.length; i++)
-	sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+    for(var i = 0; i < sensor_data.length; i++)
+      sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
 
-      var data = new google.visualization.DataTable();
-      data.addColumn('datetime', 'время');
-      data.addColumn('number', 'среднее %');
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'время');
+    data.addColumn('number', 'значение');
 
-      data.addRows(sensor_data);
+    data.addRows(sensor_data);
 
-      var options = {
-        hAxis: {
-          //fixme! translate
-          title: 'Время',
-        },
-        vAxis: {
-        },
-        colors: ['#8080ff'],
-        'chartArea': {'width': '90%', 'height': '80%'},
-        'legend': {'position': 'bottom'},
-      };
+    var options = {
+      hAxis: {
+        //fixme! translate
+        title: 'Время',
+        format: 'HH:mm',
+      },
+      vAxis: {
+        minValue: 0
+      },
+      colors: ['#8080ff'],
+      chartArea: {'width': '85%'},
+      legend: {'position': 'none'},
+    };
 
-      if(max) {
-        options.vAxis.viewWindow = {
-          min: 0,
-          max: max
-          }
-      }
+    if(max) options.vAxis.maxValue = max;
 
-      var chart = new google.visualization.LineChart(document.getElementById(target));
-      chart.draw(data, options);
+    var chart = new google.visualization.LineChart(document.getElementById(target));
+    chart.draw(data, options);
   }
 
   function DrawSendRecvGraph(target, sensor_data)
   {
-	for(var i = 0; i < sensor_data.length; i++)
-	sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+    for(var i = 0; i < sensor_data.length; i++)
+    {
+      sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+      sensor_data[i][1] /= 1024 * 1024;
+      sensor_data[i][2] /= 1024 * 1024;
+    }
 
-      var data = new google.visualization.DataTable();
-      //fixme! translate
-      data.addColumn('datetime', 'время');
-      //fixme! translate
-      data.addColumn('number', 'передано MB/s');
-      //fixme! translate
-      data.addColumn('number', 'получено MB/s');
+    var data = new google.visualization.DataTable();
+    //fixme! translate
+    data.addColumn('date', 'время');
+    //fixme! translate
+    data.addColumn('number', 'передано MB/s');
+    //fixme! translate
+    data.addColumn('number', 'получено MB/s');
 
-      data.addRows(sensor_data);
+    data.addRows(sensor_data);
 
-      var options = {
-        hAxis: {
-          //fixme! translate
-          title: 'Время'
-        },
-        colors: ['#8080ff', '#ff8080'],
-        'chartArea': {'width': '90%', 'height': '80%'},
-       'legend': {'position': 'bottom'},
-      };
+    var options = {
+      hAxis: {
+        //fixme! translate
+        title: 'Время',
+        format: 'HH:mm'
+      },
+      vAxis: {
+        minValue: 0,
+        format: "short"
+      },
+      colors: ['#8080ff', '#ff8080'],
+      chartArea: {'width': '80%', 'top' : '10%', 'bottom': '20%'},
+      legend: {'position': 'bottom'},
+    };
 
-      var chart = new google.visualization.LineChart(document.getElementById(target));
-      chart.draw(data, options);
+    var chart = new google.visualization.LineChart(document.getElementById(target));
+    chart.draw(data, options);
   }
 
   function DrawGraphs()

@@ -71,14 +71,17 @@ module Jobstat
     end
     
     def post_digest
+      return unless params.key?("data")
+      return if params["data"].nil?
+
       drms_job_id = params["job_id"]
       drms_task_id = params.fetch("task_id", 0)
 
       job = Job.where(drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
 
-      DigestFloatDatum.where(job_id: job.id).destroy_all
+      DigestFloatDatum.where(job_id: job.id, name: params["name"]).destroy_all
 
-      JSON.parse(params["data"]).each do |entry|
+      params["data"].each do |entry|
 	      DigestFloatDatum.where(job_id: job.id, name: params["name"], time: Time.at(entry["time"]).utc.to_datetime).first_or_create
           .update({value: entry["avg"]})
       end
