@@ -1,314 +1,336 @@
-//fixme! translate
-h1 Информация о задаче #{@job[:drms_job_id]}
+
+b[:drms_job_id]
 
 a href='/jobstat/account/list/index' Вернуться к списку запусков
 br
-h5
-  = @job[:command]
+h3 = "Информация по задаче № #{@job[:drms_job_id]}"
 
 div class="row"
-  div class="col-md-4"
-    //fixme! translate
-    h3 = "Общая информация"
-    table class="table table-bordered table-striped"
-      tr
-        td
-          | Cluster
-        td
-          = @job[:cluster]
-      tr
-        td
-          | Job id
-        td
-          = @job[:drms_job_id]
-      tr
-        td
-          | Login
-        td
-          = @job[:login]
-      tr
-        td
-          | State
-        td
-          = @job[:state]
-      tr
-        td
-          | Partition
-        td
-          = @job[:partition]
-      tr
-        td
-          | Num cores
-        td
-          = @job[:num_cores]
-      tr
-        td
-          | Num nodes
-        td
-          = @job[:num_nodes]
-      tr
-        td
-          | Submit time
-        td
-          = @job[:submit_time].strftime("%D %T")
-      tr
-        td
-          | Start time
-        td
-          = @job[:start_time].strftime("%D %T")
-      tr
-        td
-          | End time
-        td
-          = @job[:end_time].strftime("%D %T")
-      tr
-        td
-          | Duration (hours)
-        td
-          = number_with_precision(@job.get_duration_hours, :precision => 1)
+	div class="col-md-4"
+		//fixme! translate
+		h3 = "Общая информация"
+		table class="table table-bordered table-striped"
+			tr
+				td
+					| Суперкомпьютер
+				td
+					= @job[:cluster]
+			tr
+				td
+					| ID задачи
+				td
+					= @job[:drms_job_id]
+			tr
+				td
+					| Логин
+				td
+					= @job[:login]
+			tr
+				td
+					| Статус завершения задачи
+				td
+					= @job[:state]
+			tr
+				td
+					| Раздел суперкомпьютера
+				td
+					= @job[:partition]
+			tr
+				td
+					| Число ядер
+				td
+					= @job[:num_cores]
+			tr
+				td
+					| Число узлов
+				td
+					= @job[:num_nodes]
+			tr
+				td
+					| Постановка в очередь
+				td
+					= @job[:submit_time].strftime("%D %T")
+			tr
+				td
+					| Начало счета
+				td
+					= @job[:start_time].strftime("%D %T")
+			tr
+				td
+					| Конец счета
+				td
+					= @job[:end_time].strftime("%D %T")
+			tr
+				td
+					| Время счета, в часах
+				td
+					= number_with_precision(@job.get_duration_hours, :precision => 1)
 
-  div class="col-md-4"
-    //fixme! translate
-    h3 = "Производительность"
-    table class="table table-bordered table-striped"
-      tr
-        td
-          | Metric
-        td
-          | Value
-        td
-          | Ranking
-      tr
-        td
-          | Average CPU load (%)
-        td
-          = format_float_or_nil(@job_perf[:cpu_user])
-        td class="job_metric_#{@ranking[:cpu_user]}"
-          = @ranking[:cpu_user]
-      tr
-        td
-          | Average Loadavg
-        td
-          = format_float_or_nil(@job_perf[:loadavg])
-        td class="job_metric_#{@ranking[:loadavg]}"
-          = @ranking[:loadavg]
-      tr
-        td
-          | Average IPC
-        td
-          = format_float_or_nil(@job_perf[:ipc])
-        td class="job_metric_#{@ranking[:ipc]}"
-          = @ranking[:ipc]
-      tr
-        td
-          | Average GPU load (%)
-        td
-          = format_float_or_nil(@job_perf[:gpu_load])
-        td class="job_metric_#{@ranking[:gpu_load]}"
-          = @ranking[:gpu_load]
-      tr
-        td
-          | Average IB receive data MPI (MB/s)
-        td
-          = format_float_or_nil(@job_perf[:ib_rcv_data_mpi])
-        td class="job_metric_#{@ranking[:ib_rcv_data_mpi]}"
-          = @ranking[:ib_rcv_data_mpi]
-      tr
-        td
-          | Average IB send data MPI (MB/s)
-        td
-          = format_float_or_nil(@job_perf[:ib_xmit_data_mpi])
-        td class="job_metric_#{@ranking[:ib_xmit_data_mpi]}"
-          = @ranking[:ib_xmit_data_mpi]
-      tr
-        td
-          | Average IB receive data FS (MB/s)
-        td
-          = format_float_or_nil(@job_perf[:ib_rcv_data_fs])
-        td class="job_metric_#{@ranking[:ib_rcv_data_fs]}"
-          = @ranking[:ib_rcv_data_fs]
-      tr
-        td
-          | Average IB send data FS (MB/s)
-        td
-          = format_float_or_nil(@job_perf[:ib_xmit_data_fs])
-        td class="job_metric_#{@ranking[:ib_xmit_data_fs]}"
-          = @ranking[:ib_xmit_data_fs]
+	div class="col-md-4"
+		//fixme! translate
+		h3 = "Производительность"
+		table class="table table-bordered table-striped"
+			tr
+				td
+					| Матрике
+				td
+					| Значение
+				td
+					| Общая оценка
+			tr
+				td
+					| Средняя загрузка ЦПУ (%)
+				td
+					= format_float_or_nil(@job_perf[:cpu_user])
+				td class="job_metric_#{@ranking[:cpu_user]}"
+					= @ranking[:cpu_user]
+			tr
+				td
+					| Среднее #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
 
-  div class="col-md-4"
-    //fixme! translate
-    h3 = "Базовые свойства"
-    table class="table table-bordered table-striped"
-      - if @job.get_classes.length > 0
-        - @job.get_classes.each do |cond|
-          tr
-            td
-              = cond.description
-      - else
-        tr
-          td
-            //fixme! translate
-            = "Необычных свойств не обнаружено"
+				td
+					= format_float_or_nil(@job_perf[:loadavg])
+				td class="job_metric_#{@ranking[:loadavg]}"
+					= @ranking[:loadavg]
+			tr
+				td
+					| Среднее #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
 
-//fixme! translate
-h3 = "Найденные признаки неэффективности"
+				td
+					= format_float_or_nil(@job_perf[:ipc])
+				td class="job_metric_#{@ranking[:ipc]}"
+					= @ranking[:ipc]
+			tr
+				td
+					| Средняя загрузка ГПУ (%)
+				td
+					= format_float_or_nil(@job_perf[:gpu_load])
+				td class="job_metric_#{@ranking[:gpu_load]}"
+					= @ranking[:gpu_load]
+			tr
+				td
+					| Получено байт по сети MPI (МБ/с)
+				td
+					= format_float_or_nil(@job_perf[:ib_rcv_data_mpi])
+				td class="job_metric_#{@ranking[:ib_rcv_data_mpi]}"
+					= @ranking[:ib_rcv_data_mpi]
+			tr
+				td
+					| Передано байт по сети MPI (МБ/с)
+				td
+					= format_float_or_nil(@job_perf[:ib_xmit_data_mpi])
+				td class="job_metric_#{@ranking[:ib_xmit_data_mpi]}"
+					= @ranking[:ib_xmit_data_mpi]
+			tr
+				td
+					| Получено байт по сети для файловой системы (МБ/с)
+				td
+					= format_float_or_nil(@job_perf[:ib_rcv_data_fs])
+				td class="job_metric_#{@ranking[:ib_rcv_data_fs]}"
+					= @ranking[:ib_rcv_data_fs]
+			tr
+				td
+					| Передано байт по сети для файловой системы (МБ/с)
+				td
+					= format_float_or_nil(@job_perf[:ib_xmit_data_fs])
+				td class="job_metric_#{@ranking[:ib_xmit_data_fs]}"
+					= @ranking[:ib_xmit_data_fs]
 
-table class="table table-bordered table-striped"
+	div class="col-md-4"
+		//fixme! translate
+		h3 = "Базовые свойства"
+		table class="table table-bordered table-striped"
+			- if @job.get_classes.length > 0
+				- @job.get_classes.each do |cond|
+					tr
+						td
+							= cond.description
+			- else
+				tr
+					td
+						//fixme! translate
+						= "Необычных свойств не обнаружено"
+
+table
   tr
     td
-      = "id"
-    td
-      //fixme! translate
-      = "Описание"
-    td
-      //fixme! translate
-      = "Предположение"
-    td
-      //fixme! translate
-      = "Рекомендация"
+       | Строка запуска:&nbsp;&nbsp; #{@job[:command]}
 
-  - rules=@job.get_rules(@current_user)
-  - if rules.length > 0
-    - rules.each do |cond|
-      tr
-        td
-          = cond.name
-        td
-          = cond.description
-        td
-          = cond.suggestion
-        td
-          = cond.text_recommendation
-  - else
-    tr
-      td colspan="4"
-        //fixme! translate
-        = "Признаков не найдено"
+br
 
 //fixme! translate
-h3 = "Динамика поведения датчиков"
+h3 = "Найденные потенциальные проблемы с эффективностью"
 
-a href="full jd" Полный jd
+table class="table table-bordered table-striped"
+	tr
+		/td
+			= "id"
+		td
+			//fixme! translate
+			= "Описание"
+		td
+			//fixme! translate
+			= "Предположение"
+		td
+			//fixme! translate
+			= "Рекомендация"
+
+	- rules=@job.get_rules(@current_user)
+	- if rules.length > 0
+		- rules.each do |cond|
+			tr
+				/td
+					= cond.name
+				td
+					= cond.description
+				td
+					= cond.suggestion
+				td
+					= cond.text_recommendation
+	- else
+		tr
+			td colspan="4"
+				//fixme! translate
+				= "Проблем не найдено"
+table
+	tr
+		td
+			span style='color: red;'
+				i Возможность оценки и/или изменения обнаруженных проблем с эффективностью на данный момент реализована только на общей странице со списком задач.
+
+//fixme! translate
+br
+
+h3 = "Динамика поведения задачи во время выполнения"
+
+p #{ link_to "Более подробное описание", "https://graphit.parallel.ru:5001/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36) } 
 
 div class="row"
-  div class="col-md-4" style="height: 250px"
-    //fixme! translate
-    h4 = "Загрузка ЦПУ %"
-    div id="g_cpu"
-  div class="col-md-4" style="height: 250px"
-    h4 = "loadavg (link)"
-    div id="g_loadavg"
-  div class="col-md-4" style="height: 250px"
-    //fixme! translate
-    h4 = "Использование MPI IB MB/s"
-    div id="g_ib_mpi"
+	div class="col-md-4" style="height: 250px"
+		//fixme! translate
+		h4 = "Загрузка ЦПУ (0% .. 100%)"
+		div id="g_cpu"
+	div class="col-md-4" style="height: 250px"
+		h4 #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
+		div id="g_loadavg"
+	div class="col-md-4" style="height: 250px"
+		//fixme! translate
+		h4 = "Использование MPI (МБ/с)"
+		div id="g_ib_mpi"
 
 div class="row"
-  div class="col-md-4" style="height: 250px"
-    //fixme! translate
-    h4 = "Загрузка ГПУ %"
-    div id="g_gpu"
-  div class="col-md-4" style="height: 250px"
-    //fixme! translate
-    h4 = "IPC (link)"
-    div id="g_ipc"
-  div class="col-md-4" style="height: 250px"
-    //fixme! translate
-    h4 = "Использование FS IB MB/s"
-    div id="g_ib_fs"
+	div class="col-md-4" style="height: 250px"
+		//fixme! translate
+		h4 = "Загрузка ГПУ (0% .. 100%)"
+		div id="g_gpu"
+	div class="col-md-4" style="height: 250px"
+		//fixme! translate
+		h4 #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
+		div id="g_ipc"
+	div class="col-md-4" style="height: 250px"
+		//fixme! translate
+		h4 = "Использование файловой системы (МБ/с)"
+		div id="g_ib_fs"
 
 script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"
 
 javascript:
-  function DrawSingleGraph(target, sensor_data, max)
-  {
-	for(var i = 0; i < sensor_data.length; i++)
-	sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+	function DrawSingleGraph(target, sensor_data, max)
+	{
+		for(var i = 0; i < sensor_data.length; i++)
+			sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
 
-      var data = new google.visualization.DataTable();
-      data.addColumn('datetime', 'время');
-      data.addColumn('number', 'среднее %');
+		var data = new google.visualization.DataTable();
+		data.addColumn('date', 'время');
+		data.addColumn('number', 'значение');
 
-      data.addRows(sensor_data);
+		data.addRows(sensor_data);
 
-      var options = {
-        hAxis: {
-          //fixme! translate
-          title: 'Время',
-        },
-        vAxis: {
-        },
-        colors: ['#8080ff'],
-        'chartArea': {'width': '90%', 'height': '80%'},
-        'legend': {'position': 'bottom'},
-      };
+		var options = {
+			hAxis: {
+				//fixme! translate
+				title: 'Время',
+				format: 'HH:mm',
+			},
+			vAxis: {
+				minValue: 0
+			},
+			colors: ['#8080ff'],
+			chartArea: {'width': '85%'},
+			legend: {'position': 'none'},
+		};
 
-      if(max) {
-        options.vAxis.viewWindow = {
-          min: 0,
-          max: max
-          }
-      }
+		if(max) options.vAxis.maxValue = max;
 
-      var chart = new google.visualization.LineChart(document.getElementById(target));
-      chart.draw(data, options);
-  }
+		var chart = new google.visualization.LineChart(document.getElementById(target));
+		chart.draw(data, options);
+	}
 
-  function DrawSendRecvGraph(target, sensor_data)
-  {
-	for(var i = 0; i < sensor_data.length; i++)
-	sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+	function DrawSendRecvGraph(target, sensor_data)
+	{
+		for(var i = 0; i < sensor_data.length; i++)
+		{
+			sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+			sensor_data[i][1] /= 1024 * 1024;
+			sensor_data[i][2] /= 1024 * 1024;
+		}
 
-      var data = new google.visualization.DataTable();
-      //fixme! translate
-      data.addColumn('datetime', 'время');
-      //fixme! translate
-      data.addColumn('number', 'передано MB/s');
-      //fixme! translate
-      data.addColumn('number', 'получено MB/s');
+		var data = new google.visualization.DataTable();
+		//fixme! translate
+		data.addColumn('date', 'время');
+		//fixme! translate
+		data.addColumn('number', 'передано MB/s');
+		//fixme! translate
+		data.addColumn('number', 'получено MB/s');
 
-      data.addRows(sensor_data);
+		data.addRows(sensor_data);
 
-      var options = {
-        hAxis: {
-          //fixme! translate
-          title: 'Время'
-        },
-        colors: ['#8080ff', '#ff8080'],
-        'chartArea': {'width': '90%', 'height': '80%'},
-       'legend': {'position': 'bottom'},
-      };
+		var options = {
+			hAxis: {
+				//fixme! translate
+				title: 'Время',
+				format: 'HH:mm'
+			},
+			vAxis: {
+				minValue: 0,
+				format: "short"
+			},
+			colors: ['#8080ff', '#ff8080'],
+			chartArea: {'width': '80%', 'top' : '10%', 'bottom': '20%'},
+			legend: {'position': 'bottom'},
+		};
 
-      var chart = new google.visualization.LineChart(document.getElementById(target));
-      chart.draw(data, options);
-  }
+		var chart = new google.visualization.LineChart(document.getElementById(target));
+		chart.draw(data, options);
+	}
 
-  function DrawGraphs()
-  {
-     DrawSingleGraph("g_cpu",  #{{ raw @cpu_digest_data.to_json }} , 100);
-     DrawSingleGraph("g_gpu",  #{{ raw @gpu_digest_data.to_json }} , 100);
-     DrawSingleGraph("g_loadavg",  #{{ raw @loadavg_digest_data.to_json }} );
-     DrawSingleGraph("g_ipc",  #{{ raw @ipc_digest_data.to_json }} );
-     DrawSendRecvGraph("g_ib_mpi",  #{{ raw @mpi_digest_data.to_json }} );
-     DrawSendRecvGraph("g_ib_fs",  #{{ raw @fs_digest_data.to_json }} );
+	function DrawGraphs()
+	{
+		 DrawSingleGraph("g_cpu",  #{{ raw @cpu_digest_data.to_json }} , 100);
+		 DrawSingleGraph("g_gpu",  #{{ raw @gpu_digest_data.to_json }} , 100);
+		 DrawSingleGraph("g_loadavg",  #{{ raw @loadavg_digest_data.to_json }} );
+		 DrawSingleGraph("g_ipc",  #{{ raw @ipc_digest_data.to_json }} );
+		 DrawSendRecvGraph("g_ib_mpi",  #{{ raw @mpi_digest_data.to_json }} );
+		 DrawSendRecvGraph("g_ib_fs",  #{{ raw @fs_digest_data.to_json }} );
 
-  }
+	}
 
-  $(document).ready(function(){
-    google.charts.load('current', {packages: ['corechart', 'line']});
-    google.charts.setOnLoadCallback(DrawGraphs);
-  });
+	$(document).ready(function(){
+		google.charts.load('current', {packages: ['corechart', 'line']});
+		google.charts.setOnLoadCallback(DrawGraphs);
+	});
 
 
 css:
-  .job_metric_low {
-    background-color: #ff8080
-  }
+	.job_metric_low {
+		background-color: #ff8080
+	}
 
-  .job_metric_average {
-    background-color: #ffff80
-  }
+	.job_metric_average {
+		background-color: #ffff80
+	}
 
-  .job_metric_good {
-    background-color: #80ff80
-  }
+	.job_metric_good {
+		background-color: #80ff80
+	}
+
