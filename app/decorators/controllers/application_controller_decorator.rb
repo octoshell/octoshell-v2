@@ -54,6 +54,20 @@ ActionController::Base.class_eval do
   def user_submenu_items
     menu = Face::Menu.new
     menu.items.clear
+    menu.add_item(Face::MenuItem.new({name: t("user_submenu.profile"),
+                                      url: main_app.profile_path,
+                                      regexp: /(?:profile|(?:employments|organizations))/}))
+
+    tickets_warning = current_user.tickets.where(state: :answered_by_support).any?
+    tickets_title = if tickets_warning
+                      t("user_submenu.tickets_warning.html").html_safe
+                     else
+                      t("user_submenu.tickets")
+                     end
+    menu.add_item(Face::MenuItem.new({name: tickets_title,
+                                      url: support.tickets_path,
+                                      regexp: /support/}))
+
     menu.add_item(Face::MenuItem.new({name: t("user_submenu.projects"),
                                       url: core.projects_path,
                                       regexp: /core\/(?:projects|)(?!employments|organizations)/}))
@@ -71,20 +85,6 @@ ActionController::Base.class_eval do
     menu.add_item(Face::MenuItem.new({name: t("user_submenu.packages"),
                                       url: pack.root_path,
                                       regexp: /pack/}))
-
-    tickets_warning = current_user.tickets.where(state: :answered_by_support).any?
-    tickets_title = if tickets_warning
-                      t("user_submenu.tickets_warning.html").html_safe
-                     else
-                      t("user_submenu.tickets")
-                     end
-    menu.add_item(Face::MenuItem.new({name: tickets_title,
-                                      url: support.tickets_path,
-                                      regexp: /support/}))
-    menu.add_item(Face::MenuItem.new({name: t("user_submenu.profile"),
-                                      url: main_app.profile_path,
-                                      regexp: /(?:profile|(?:employments|organizations))/}))
-
 
     menu.add_item(Face::MenuItem.new({name: t("user_submenu.job_stat"),
                                       url: jobstat.account_summary_show_path,

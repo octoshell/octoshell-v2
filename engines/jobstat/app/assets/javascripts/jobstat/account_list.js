@@ -14,23 +14,23 @@ $(document).ready(function() {
           return x;*/
       },
     },
-    textSorter: {
-      '.triplesort': function(a, b, direction, column, table) {
-        // this is the original sort method from tablesorter 2.0.3
-        var item = $(table).attr('data-triple-sort')
-        if (typeof(item) === 'undefined') {
-          console.log("Warning! No data-triple-sort specified...")
-          item = '0'
-        } else {
-          item = parseInt(item)
-        }
-        // format data for normalization
-        var x = parseFloat(a.split('/')[item])
-        var y = parseFloat(b.split('/')[item])
-          //console.log("sorting-by: "+item+"a="+a+" b="+b+" x="+x+" y="+y)
-        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-      },
-    },
+    // textSorter: {
+    //   '.triplesort': function(a, b, direction, column, table) {
+    //     // this is the original sort method from tablesorter 2.0.3
+    //     var item = $(table).attr('data-triple-sort')
+    //     if (typeof(item) === 'undefined') {
+    //       console.log("Warning! No data-triple-sort specified...")
+    //       item = '0'
+    //     } else {
+    //       item = parseInt(item)
+    //     }
+    //     // format data for normalization
+    //     var x = parseFloat(a.split('/')[item])
+    //     var y = parseFloat(b.split('/')[item])
+    //       //console.log("sorting-by: "+item+"a="+a+" b="+b+" x="+x+" y="+y)
+    //     return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    //   },
+    // },
   });
 
   $(".sorting").click(function() {
@@ -50,57 +50,32 @@ $(document).ready(function() {
     return false;
   });
 
-  function silent_submit(response) {
-    console.log(response)
-  }
+  // function silent_submit(response) {
+  //   console.log(response)
+  // }
 
-  function submit_and_reload(response) {
-    console.log(response)
-    location.reload()
-  }
+  // function submit_and_reload(response) {
+  //   console.log(response)
+  //   location.reload()
+  // }
 
-  $("#feedback_job_rule").submit(function() {
-    $.post($(this).attr('action'), $(this).serialize(), silent_submit)
-    return false
-  })
-  $("#feedback_jobs").submit(function() {
-    $.post($(this).attr('action'), $(this).serialize(), silent_submit)
-    return false
-  })
-  $("#feedback_rule").submit(function() {
-    $.post($(this).attr('action'), $(this).serialize(), submit_and_reload)
-    return false
-  })
+  // $("#feedback_job_rule").submit(function() {
+  //   $.post($(this).attr('action'), $(this).serialize(), silent_submit)
+  //   return false
+  // })
+  // $("#feedback_jobs").submit(function() {
+  //   $.post($(this).attr('action'), $(this).serialize(), silent_submit)
+  //   return false
+  // })
+  // $("#feedback_rule").submit(function() {
+  //   $.post($(this).attr('action'), $(this).serialize(), submit_and_reload)
+  //   return false
+  // })
 
 });
 
 
 var feedback_started = false;
-
-function toggle_dropdown(target) {
-  $(target).toggleClass('show');
-}
-
-// open/close new div after job row
-function process_response(index, jobid) {
-  var row = $("#job_row_" + index);
-  var info_row = $("#job_info_" + index);
-  if (row.attr('data-info-state') == '-1') {
-    return
-  }
-  if (row.attr('data-info-state') == '0') {
-    // open it!
-    row.attr('data-info-state', '1');
-    //$(info_row).removeClass("hidden_box");
-    $(info_row).show();
-  } else {
-    // close it!
-    row.attr('data-info-state', '0');
-    //$(info_row).addClass("hidden_box");
-    $(info_row).hide();
-  }
-  //$(info_row).toggleClass("hidden_box");
-}
 
 function popup_show(a, b) {
   //$("#popup_" + a).addClass('active')
@@ -117,12 +92,16 @@ function popup_hide(a, b) {
 }
 
 // user disagrees with rule
-function disagree(jobid, rule, text) {
+function disagree(jobid, rule, mass, text) {
+  if(!mass) {
+    mass=0;
+  }
   var feedback={
     user: current_user,
     cluster: jobs[jobid]['cluster'],
     job_id: jobid,
     task_id: 0,
+    mass: mass,
     account: jobs[jobid]['login'],
     condition: rule,
     feedback: text ? text : $("#question_" + jobid + '_' + rule).val(),
@@ -140,12 +119,16 @@ function disagree(jobid, rule, text) {
 }
 
 // user agrees with rule
-function agree(jobid, rule, text) {
+function agree(jobid, rule, mass, text) {
+  if (!mass){
+    mass=0;
+  }
   var feedback={
     user: current_user,
     cluster: jobs[jobid]['cluster'],
-    //job_id: jobid,
-    //task_id: 0,
+    job_id: jobid,
+    task_id: 0,
+    mass: mass,
     account: jobs[jobid]['login'],
     condition: rule,
     feedback: text ? text : $("#question_" + jobid + '_' + rule).val(),
@@ -168,6 +151,22 @@ function hide_rule_on_page(rule) {
       $(this).removeClass("visible")
       $(this).addClass("hidden")
     }
+  })
+  update_hidden_rules_count();
+}
+
+function update_hidden_rules_count(){
+  $(".hidden_rules_count").each(function(div){
+
+    var tr=$(this).closest('tr')
+    var jobid=tr.attr('data-jobid')
+    var count=0
+    for(var rule in jobs[jobid]['rules']){
+      if(!filters[rule]){
+        count+=1;
+      }
+    }
+    $(this).text='+'+count
   })
 }
 

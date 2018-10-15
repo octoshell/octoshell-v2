@@ -104,7 +104,7 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
 
 
 .job_metric_low {
-  background-color: #ff8080 !important;
+  background-color: #ff8080  !important;
 }
 
 .job_metric_average {
@@ -254,31 +254,19 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
 }
 
 
-@media screen and (width: (479px,600px)) {
-  .dropdown-content {
-    min-width: 420px;
-  }
-}
-
-@media screen and (width: (601px,768px)) {
-  .dropdown-content {
-    min-width: 550px;
-  }
-}
-
-@media screen and (width: (769px,1024px)){
+@media screen and (min-width: 768px) {
   .dropdown-content {
     min-width: 700px;
   }
 }
 
-@media screen and (width: (1025px,1200px)) {
+@media screen and (min-width: 992px){
   .dropdown-content {
-    min-width: 1000px;
+    min-width: 950px;
   }
 }
 
-@media screen and (min-width: 1201px) {
+@media screen and (min-width: 1200px) {
   .dropdown-content {
     min-width: 1100px;
   }
@@ -316,7 +304,7 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
   opacity: 0;
 }
 
-@media (width: (479px,1024px)) {
+@media (min-width: 992px) {
   .centered-popup {
     width: 50%;
     height: 50%;
@@ -328,7 +316,7 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
   }
 }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: 1200px) {
   .centered-popup {
     position: absolute;
     width: 20%;

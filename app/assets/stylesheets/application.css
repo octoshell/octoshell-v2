@@ -25,7 +25,7 @@
 
 .right-float-button {
   position: fixed;
-  right: -17em;
+  right: -18em;
   width: 20em;
   top: 30vh;
   z-index: 6000;
@@ -34,7 +34,7 @@
   justify-content: flex-start;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  background: rgba(0,200,100,.9);
+  background: #80FF80;
   -webkit-transition: all 1s ease;
      -moz-transition: all 1s ease;
       -ms-transition: all 1s ease;
@@ -56,6 +56,19 @@
 
 }
 
-.orange {
-  color: orange;
+.right-float-button-text, .right-float-button-text > a {
+  color: white;
+}
+
+.semi-large {
+  font-size: 1em;
+}
+
+@media screen and (min-width: 762px) {
+  .semi-large {
+    font-size: 1.5em;
+  }
+  .right-float-button {
+    right: -17em;
+  }
 }

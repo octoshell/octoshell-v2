@@ -57,11 +57,16 @@ module Jobstat
         @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
         @shown = @jobs.length
 
+        # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
+        @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq
+        # -> [cond1,cond2,...]
+
         @jobs.each{|j|
           rules=j.get_rules(@current_user)
-          @jobs_plus[j.drms_job_id]={'rules'=>{}}
+          @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0}
           rules.each{|r|
             @jobs_plus[j.drms_job_id]['rules'][r.name] = r.description
+            @jobs_plus[j.drms_job_id]['filtered']+=1 if @filters.include? r.name
           }
         }
         @jobs=@jobs.to_a
@@ -100,20 +105,10 @@ module Jobstat
         end
       end
 
-      # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
-      @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq
-      # -> [cond1,cond2,...]
-
       # FIXME!!!!!! (see all_rules)
       @emails = JobMailFilter.filters_for_user current_user.id
 #      @emails = ["rule_avg_disbalance"]
     end
-
-    # def get_feedback_job(user,jobs)
-    #   code=Job::get_feedback_job(params[:user].to_i, jobs)
-    #   render plain: code, layout: false
-    #   response.status=code
-    # end
 
     def feedback
       code=case params[:type]

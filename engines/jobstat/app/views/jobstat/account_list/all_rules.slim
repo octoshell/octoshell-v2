@@ -34,7 +34,7 @@ section class="accordion"
       label for="rule-#{r[0]}"
         | &nbsp;
         - tint = @filters.any?{|x|x==r[0]} ? "tinted" : ""
-        button id="btn-hide-#{r[0]}" class="btn-warning #{tint}" onClick="all_pre_hide_rule('#{r[0]}');$('#text_hide_rule_#{r[0]}').focus();" title="Скрыть правило/снова показывать"
+        button id="btn-hide-#{r[0]}" class="btn-danger #{tint}" onClick="all_pre_hide_rule('#{r[0]}');$('#text_hide_rule_#{r[0]}').focus();" title="Скрыть правило/снова показывать"
           i class="fa-fw fas fa-bell-slash"
         div class="octo-popup content" id="hide_rule_#{r[0]}"
           form onSubmit="all_hide_rule('#{r[0]}',false); return false;"

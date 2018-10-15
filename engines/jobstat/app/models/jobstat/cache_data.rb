@@ -1,4 +1,5 @@
-class CacheData
+module Jobstat
+  class CacheData
   include Singleton
 
   class << self
@@ -37,4 +38,5 @@ private
     @@cache_db_singleton ||= YAML::Store.new "engines/jobstat/cache.yaml"
   end
 
+end
 end
