@@ -1,11 +1,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require select2
-//= require select2_locale_ru
 //= require underscore
 //= require bootstrap-datepicker/core
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.ru.js
-//=require jquery-fileupload/basic
+//= require jquery-fileupload/basic
 //= require_directory ./dep
 //= require_directory .
+//= require select2
+//= require select2_locale_ru

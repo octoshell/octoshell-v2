@@ -315,8 +315,8 @@ div class="perf-table"
             td = link_to(job.drms_job_id, job)
             td class="login-data" = job.login
             td class="login-data" = job.partition
-            td = job.start_time.strftime('%D %T')
-            td = job.end_time.strftime('%D %T')
+            td = job.start_time.strftime('%F %T')
+            td = job.end_time.strftime('%F %T')
             td class="task_state_#{job.state} centered"
               /i class="em15 #{@finish_states.fetch(job.state, 'fas fa-meh-blank')}" title="#{job.state}"
               = job.state.downcase
