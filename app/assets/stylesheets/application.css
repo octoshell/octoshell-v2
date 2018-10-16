@@ -34,7 +34,7 @@
   justify-content: flex-start;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  background: #80FF80;
+  background: rgba(40, 120, 40, 0.7);
   -webkit-transition: all 1s ease;
      -moz-transition: all 1s ease;
       -ms-transition: all 1s ease;

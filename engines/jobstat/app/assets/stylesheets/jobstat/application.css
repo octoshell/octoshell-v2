@@ -10,8 +10,8 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= req jquery-tablesorter/theme.bootstrap
- *= req jquery-tablesorter/theme.blue
+ *= require jquery-tablesorter/theme.bootstrap
+ *= require jquery-tablesorter/theme.blue
  *= require jquery-tablesorter/theme.default
  *= require_tree .
  *= require_self

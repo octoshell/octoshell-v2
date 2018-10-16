@@ -189,20 +189,21 @@ Current:
 
 .thanks {
   position: fixed;
-  left: 30vw;
-  width: 40vw;
+  left: 35vw;
+  width: 30vw;
   min-height: 2em;
   top: 25vh;
   display: none;
   visibility: hidden;
   opacity: 0;
-  background-color: rgba(100, 255, 100, .9);
+  background-color: rgb(40, 120, 40);
+  color: white;
   z-index: 5000;
   text-align: center;
-  font-size: 3em;
+  font-size: 2em;
   display: table-cell;
   vertical-align: middle;
-  border-radius: 3vw;
+  border-radius: 2vw;
   flex-direction: column;
   align-content: center;
   align-items: center;
@@ -214,11 +215,11 @@ Current:
     opacity: 0;
   }
   25% {
-    left: 30vw;
+    left: 35vw;
     opacity: 1;
   }
   75% {
-    left: 30vw;
+    left: 35vw;
     opacity: 1;
   }
   100% {
@@ -248,4 +249,19 @@ Current:
   .octo-popup2.target,.octo-popup.target {
     width: 1000px;
   }
+}
+
+.roll-down {
+  display: none;
+  max-height: 0;
+}
+
+.roll-down.target {
+  display: block;
+  max-height: 1000px;
+  -webkit-transition: max-height .25s ease;
+     -moz-transition: max-height .25s ease;
+      -ms-transition: max-height .25s ease;
+       -o-transition: max-height .25s ease;
+          transition: max-height .25s ease;
 }

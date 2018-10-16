@@ -84,6 +84,7 @@ div class="row"
 					= format_float_or_nil(@job_perf[:cpu_user])
 				td class="job_metric_#{@ranking[:cpu_user]}"
 					= @ranking[:cpu_user]
+          //TODO: localization!
 			tr
 				td
 					| Среднее #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
@@ -92,6 +93,7 @@ div class="row"
 					= format_float_or_nil(@job_perf[:loadavg])
 				td class="job_metric_#{@ranking[:loadavg]}"
 					= @ranking[:loadavg]
+          //TODO: localization!
 			tr
 				td
 					| Среднее #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
@@ -100,6 +102,7 @@ div class="row"
 					= format_float_or_nil(@job_perf[:ipc])
 				td class="job_metric_#{@ranking[:ipc]}"
 					= @ranking[:ipc]
+          //TODO: localization!
 			tr
 				td
 					| Средняя загрузка ГПУ (%)
@@ -107,6 +110,7 @@ div class="row"
 					= format_float_or_nil(@job_perf[:gpu_load])
 				td class="job_metric_#{@ranking[:gpu_load]}"
 					= @ranking[:gpu_load]
+          //TODO: localization!
 			tr
 				td
 					| Получено байт по сети MPI (МБ/с)
@@ -114,6 +118,7 @@ div class="row"
 					= format_float_or_nil(@job_perf[:ib_rcv_data_mpi])
 				td class="job_metric_#{@ranking[:ib_rcv_data_mpi]}"
 					= @ranking[:ib_rcv_data_mpi]
+          //TODO: localization!
 			tr
 				td
 					| Передано байт по сети MPI (МБ/с)
@@ -121,6 +126,7 @@ div class="row"
 					= format_float_or_nil(@job_perf[:ib_xmit_data_mpi])
 				td class="job_metric_#{@ranking[:ib_xmit_data_mpi]}"
 					= @ranking[:ib_xmit_data_mpi]
+          //TODO: localization!
 			tr
 				td
 					| Получено байт по сети для файловой системы (МБ/с)
@@ -128,6 +134,7 @@ div class="row"
 					= format_float_or_nil(@job_perf[:ib_rcv_data_fs])
 				td class="job_metric_#{@ranking[:ib_rcv_data_fs]}"
 					= @ranking[:ib_rcv_data_fs]
+          //TODO: localization!
 			tr
 				td
 					| Передано байт по сети для файловой системы (МБ/с)
@@ -135,6 +142,7 @@ div class="row"
 					= format_float_or_nil(@job_perf[:ib_xmit_data_fs])
 				td class="job_metric_#{@ranking[:ib_xmit_data_fs]}"
 					= @ranking[:ib_xmit_data_fs]
+          //TODO: localization!
 
 	div class="col-md-4"
 		//fixme! translate
@@ -198,18 +206,11 @@ table
 			span style='color: red;'
 				i Возможность оценки и/или изменения обнаруженных проблем с эффективностью на данный момент реализована только на общей странице со списком задач.
 
-<<<<<<< HEAD
-#{ link_to "Полный JD", "https://graphit.parallel.ru:5001/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36) } 
-||||||| merged common ancestors
-a href="full jd" Полный jd
-=======
-//fixme! translate
 br
 
 h3 = "Динамика поведения задачи во время выполнения"
 
 p #{ link_to "Более подробное описание", "https://graphit.parallel.ru:5001/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36) } 
->>>>>>> origin/vad-explanations
 
 div class="row"
 	div class="col-md-4" style="height: 250px"
@@ -325,17 +326,3 @@ javascript:
     google.charts.load('current', {packages: ['corechart', 'line']});
     google.charts.setOnLoadCallback(DrawGraphs);
   });
-
-css:
-	.job_metric_low {
-		background-color: #ff8080
-	}
-
-	.job_metric_average {
-		background-color: #ffff80
-	}
-
-	.job_metric_good {
-		background-color: #80ff80
-	}
-

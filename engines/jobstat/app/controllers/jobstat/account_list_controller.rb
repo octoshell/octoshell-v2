@@ -26,6 +26,7 @@ module Jobstat
       al=(@params[:all_logins] || []).reject{|x| x==''}
       query_logins = (al & query_logins)
       @params[:all_logins]=al
+      logger.info "---> al=#{al} / query_logins=#{query_logins} / all_logins=#{@all_logins}"
 
       @rules_plus=load_rules
       @jobs=[]
@@ -58,7 +59,7 @@ module Jobstat
         @shown = @jobs.length
 
         # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
-        @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq
+        @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''}
         # -> [cond1,cond2,...]
 
         @jobs.each{|j|

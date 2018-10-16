@@ -12,3 +12,4 @@
 //
 //= require jquery-tablesorter
 //= require_tree .
+//= require_self

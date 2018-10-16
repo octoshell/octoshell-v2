@@ -102,6 +102,7 @@ PATH
   remote: engines/jobstat
   specs:
     jobstat (0.0.1)
+      jquery-tablesorter
       kaminari
       maymay
       pg (~> 0.18)

@@ -10,6 +10,10 @@ i.color-orange {
   color: orange;
 }
 
+i.color-green {
+  color: green;
+}
+
 /************************************/
 /*  Usage:
   div class="accordion"

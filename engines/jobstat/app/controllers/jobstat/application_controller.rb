@@ -7,7 +7,7 @@ module Jobstat
     rescue_from MayMay::Unauthorized, with: :not_authorized
 
     def just_test
-      logger.info "user_id=#{current_user ? current_user.id : 'none'}"
+      logger.info "JOURNAL: url=#{request.url}/#{request.method}; user_id=#{current_user ? current_user.id : 'none'}"
     end
 
     def not_authenticated

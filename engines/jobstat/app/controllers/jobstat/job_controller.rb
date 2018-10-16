@@ -36,6 +36,8 @@ module Jobstat
       @job_perf = @job.get_performance
       @ranking = @job.get_ranking
       @current_user = current_user
+      @extra_css='jobstat/application'
+      @extra_js='jobstat/application'
 
       @cpu_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "cpu_user").order(:time).all)
       @gpu_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "gpu_load").order(:time).all)

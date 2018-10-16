@@ -2,6 +2,7 @@ $(document).ready(function() {
   $("#jobs").tablesorter({
     //debug: true,
     duplicateSpan: false,
+    dateformat: 'yyyymmdd',
     emptyTo: 'bottom',
     widgets: ['staticRow'],
     //theme: 'default',
@@ -111,7 +112,7 @@ function disagree(jobid, rule, mass, text) {
     url: "feedback",
     data: {'feedback': feedback, 'type': 'feedback_job'},
   }).always(function( msg ) {
-    restore_disagree_button()
+    restore_disagree()
     jobs[jobid]['feedback'][rule]={'class': 1}
     update_jobs_agree('')
     show_thanks("Спасибо за отзыв!")
@@ -138,7 +139,7 @@ function agree(jobid, rule, mass, text) {
     url: "feedback",
     data: {'feedback': feedback, 'type': 'feedback_rule'},
   }).always(function( msg ) {
-    restore_disagree_button()
+    restore_disagree()
     jobs[jobid]['feedback'][rule]={'class': 0}
     update_jobs_agree('')
     show_thanks("Спасибо за отзыв!")
@@ -166,7 +167,7 @@ function update_hidden_rules_count(){
         count+=1;
       }
     }
-    $(this).text='+'+count
+    $(this).text('+'+count)
   })
 }
 
@@ -185,9 +186,9 @@ function hide_rule(jobid, rule) {
     url: "feedback",
     data: {'feedback': feedback, 'type': 'hide_rule'},
   }).always(function( msg ) {
-    restore_disagree_button()
+    restore_disagree()
     //update_jobs_agree(feedback)
-    show_thanks("Чтобы вернуть отображение, перейдите на страницу всех правил.")
+    show_thanks("Вернуть отображение правила можно на странице со всеми правилами.")
   });
   hide_rule_on_page(rule)
 }
@@ -234,25 +235,32 @@ function job_check_clicked(jobid){
   $("#disagree_rules").html(rules_text)
 }
 
+
+function multi_job_feedback_start() {
+  // Just start feedback, do preparations
+  $(".job_check").prop('checked',false)
+  $(".job_check").show()
+}
+
 // feedback on "O! I disagree with my tasks valuation!"
 function multi_job_feedback() {
   // Just start feedback, do preparations
-  if (feedback_started == false) {
-    var row, c, jobid;
-    feedback_started = true;
-    // Just prepare feedback - show checkboxes
-    $(".job_check").prop('checked',false)
-    $(".job_check").show()
+  // if (feedback_started == false) {
+  //   var row, c, jobid;
+  //   //feedback_started = true;
+  //   // Just prepare feedback - show checkboxes
+  //   $(".job_check").prop('checked',false)
+  //   $(".job_check").show()
 
-    $('#disagree_reason_box').css({
-      display: 'inline',
-    }).animate();
+  //   // $('#disagree_reason_box').css({
+  //   //   display: 'inline',
+  //   // }).animate();
 
-    $('#disagree_reason').focus()
-    $('#disagree_reason').val('')
+  //   // $('#disagree_reason').focus()
+  //   // $('#disagree_reason').val('')
   
-    $('#disagree_button').text('Отметьте нужные задания и отправьте отзыв').attr('disabled', true);
-  } else {
+  //   //$('#disagree_button').text('Отметьте нужные задания и отправьте отзыв').attr('disabled', true);
+  // } else {
     // all selected, send data!
     var job_list = [];
     var rule_list = [];
@@ -291,30 +299,31 @@ function multi_job_feedback() {
     })
    
 
-    $('#disagree_button').text('Отправляем...');
-    $('#disagree_button').prop('disabled', true);
-    feedback_started = false;
+    // $('#disagree_button').text('Отправляем...');
+    // $('#disagree_button').prop('disabled', true);
+    //feedback_started = false;
     $.ajax({
       type: "POST",
       url: "feedback",
       data: {'feedback': feedback, 'type': 'multi_jobs'},
     }).always(function( msg ) {
-      restore_disagree_button()
+      restore_disagree()
       update_jobs_agree(feedback)
       show_thanks("Спасибо за отзыв!")
     });
-  }
+  //}
 }
 
-function restore_disagree_button() {
-    $('#disagree_reason_box').css({
-      display: 'none'
-    }).animate();
+function restore_disagree() {
+    // $('#disagree_reason_box').css({
+    //   display: 'none'
+    // }).animate();
 
     // Now delete checkboxes
     $(".job_check").hide()
-    $('#disagree_button').text('Жмите тут!');
-    $('#disagree_button').prop('disabled', false);
+    // $('#disagree_button').text('Жмите тут!');
+    // $('#disagree_button').prop('disabled', false);
+    $('#disagree_rules').text('- Пока не выбраны задачи, поэтому в списке нет правил...')
 }
 
 function agree_all() {
@@ -408,4 +417,8 @@ function show_thanks(text){
   $('#thanks_box > .thanks-text').text(text);
   $('#thanks_box').addClass('active');
   setTimeout("$('#thanks_box').removeClass('active');",time_to_show);
+}
+
+function reset_disagree(){
+
 }
