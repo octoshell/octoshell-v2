@@ -6,158 +6,158 @@ br
 h3 = "Информация по задаче № #{@job[:drms_job_id]}"
 
 div class="row"
-	div class="col-md-4"
-		//fixme! translate
-		h3 = "Общая информация"
-		table class="table table-bordered table-striped"
-			tr
-				td
-					| Суперкомпьютер
-				td
-					= @job[:cluster]
-			tr
-				td
-					| ID задачи
-				td
-					= @job[:drms_job_id]
-			tr
-				td
-					| Логин
-				td
-					= @job[:login]
-			tr
-				td
-					| Статус завершения задачи
-				td
-					= @job[:state]
-			tr
-				td
-					| Раздел суперкомпьютера
-				td
-					= @job[:partition]
-			tr
-				td
-					| Число ядер
-				td
-					= @job[:num_cores]
-			tr
-				td
-					| Число узлов
-				td
-					= @job[:num_nodes]
-			tr
-				td
-					| Постановка в очередь
-				td
-					= @job[:submit_time].strftime("%D %T")
-			tr
-				td
-					| Начало счета
-				td
-					= @job[:start_time].strftime("%D %T")
-			tr
-				td
-					| Конец счета
-				td
-					= @job[:end_time].strftime("%D %T")
-			tr
-				td
-					| Время счета, в часах
-				td
-					= number_with_precision(@job.get_duration_hours, :precision => 1)
+  div class="col-md-4"
+    //fixme! translate
+    h3 = "Общая информация"
+    table class="table table-bordered table-striped"
+      tr
+        td
+          | Суперкомпьютер
+        td
+          = @job[:cluster]
+      tr
+        td
+          | ID задачи
+        td
+          = @job[:drms_job_id]
+      tr
+        td
+          | Логин
+        td
+          = @job[:login]
+      tr
+        td
+          | Статус завершения задачи
+        td
+          = @job[:state]
+      tr
+        td
+          | Раздел суперкомпьютера
+        td
+          = @job[:partition]
+      tr
+        td
+          | Число ядер
+        td
+          = @job[:num_cores]
+      tr
+        td
+          | Число узлов
+        td
+          = @job[:num_nodes]
+      tr
+        td
+          | Постановка в очередь
+        td
+          = @job[:submit_time].strftime("%D %T")
+      tr
+        td
+          | Начало счета
+        td
+          = @job[:start_time].strftime("%D %T")
+      tr
+        td
+          | Конец счета
+        td
+          = @job[:end_time].strftime("%D %T")
+      tr
+        td
+          | Время счета, в часах
+        td
+          = number_with_precision(@job.get_duration_hours, :precision => 1)
 
-	div class="col-md-4"
-		//fixme! translate
-		h3 = "Производительность"
-		table class="table table-bordered table-striped"
-			tr
-				td
-					| Матрике
-				td
-					| Значение
-				td
-					| Общая оценка
-			tr
-				td
-					| Средняя загрузка ЦПУ (%)
-				td
-					= format_float_or_nil(@job_perf[:cpu_user])
-				td class="job_metric_#{@ranking[:cpu_user]}"
-					= @ranking[:cpu_user]
+  div class="col-md-4"
+    //fixme! translate
+    h3 = "Производительность"
+    table class="table table-bordered table-striped"
+      tr
+        td
+          | Матрике
+        td
+          | Значение
+        td
+          | Общая оценка
+      tr
+        td
+          | Средняя загрузка ЦПУ (%)
+        td
+          = format_float_or_nil(@job_perf[:cpu_user])
+        td class="job_metric_#{@ranking[:cpu_user]}"
+          = @ranking[:cpu_user]
           //TODO: localization!
-			tr
-				td
-					| Среднее #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
+      tr
+        td
+          | Среднее #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
 
-				td
-					= format_float_or_nil(@job_perf[:loadavg])
-				td class="job_metric_#{@ranking[:loadavg]}"
-					= @ranking[:loadavg]
+        td
+          = format_float_or_nil(@job_perf[:loadavg])
+        td class="job_metric_#{@ranking[:loadavg]}"
+          = @ranking[:loadavg]
           //TODO: localization!
-			tr
-				td
-					| Среднее #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
+      tr
+        td
+          | Среднее #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
 
-				td
-					= format_float_or_nil(@job_perf[:ipc])
-				td class="job_metric_#{@ranking[:ipc]}"
-					= @ranking[:ipc]
+        td
+          = format_float_or_nil(@job_perf[:ipc])
+        td class="job_metric_#{@ranking[:ipc]}"
+          = @ranking[:ipc]
           //TODO: localization!
-			tr
-				td
-					| Средняя загрузка ГПУ (%)
-				td
-					= format_float_or_nil(@job_perf[:gpu_load])
-				td class="job_metric_#{@ranking[:gpu_load]}"
-					= @ranking[:gpu_load]
+      tr
+        td
+          | Средняя загрузка ГПУ (%)
+        td
+          = format_float_or_nil(@job_perf[:gpu_load])
+        td class="job_metric_#{@ranking[:gpu_load]}"
+          = @ranking[:gpu_load]
           //TODO: localization!
-			tr
-				td
-					| Получено байт по сети MPI (МБ/с)
-				td
-					= format_float_or_nil(@job_perf[:ib_rcv_data_mpi])
-				td class="job_metric_#{@ranking[:ib_rcv_data_mpi]}"
-					= @ranking[:ib_rcv_data_mpi]
+      tr
+        td
+          | Получено байт по сети MPI (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_rcv_data_mpi])
+        td class="job_metric_#{@ranking[:ib_rcv_data_mpi]}"
+          = @ranking[:ib_rcv_data_mpi]
           //TODO: localization!
-			tr
-				td
-					| Передано байт по сети MPI (МБ/с)
-				td
-					= format_float_or_nil(@job_perf[:ib_xmit_data_mpi])
-				td class="job_metric_#{@ranking[:ib_xmit_data_mpi]}"
-					= @ranking[:ib_xmit_data_mpi]
+      tr
+        td
+          | Передано байт по сети MPI (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_xmit_data_mpi])
+        td class="job_metric_#{@ranking[:ib_xmit_data_mpi]}"
+          = @ranking[:ib_xmit_data_mpi]
           //TODO: localization!
-			tr
-				td
-					| Получено байт по сети для файловой системы (МБ/с)
-				td
-					= format_float_or_nil(@job_perf[:ib_rcv_data_fs])
-				td class="job_metric_#{@ranking[:ib_rcv_data_fs]}"
-					= @ranking[:ib_rcv_data_fs]
+      tr
+        td
+          | Получено байт по сети для файловой системы (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_rcv_data_fs])
+        td class="job_metric_#{@ranking[:ib_rcv_data_fs]}"
+          = @ranking[:ib_rcv_data_fs]
           //TODO: localization!
-			tr
-				td
-					| Передано байт по сети для файловой системы (МБ/с)
-				td
-					= format_float_or_nil(@job_perf[:ib_xmit_data_fs])
-				td class="job_metric_#{@ranking[:ib_xmit_data_fs]}"
-					= @ranking[:ib_xmit_data_fs]
+      tr
+        td
+          | Передано байт по сети для файловой системы (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_xmit_data_fs])
+        td class="job_metric_#{@ranking[:ib_xmit_data_fs]}"
+          = @ranking[:ib_xmit_data_fs]
           //TODO: localization!
 
-	div class="col-md-4"
-		//fixme! translate
-		h3 = "Базовые свойства"
-		table class="table table-bordered table-striped"
-			- if @job.get_classes.length > 0
-				- @job.get_classes.each do |cond|
-					tr
-						td
-							= cond.description
-			- else
-				tr
-					td
-						//fixme! translate
-						= "Необычных свойств не обнаружено"
+  div class="col-md-4"
+    //fixme! translate
+    h3 = "Базовые свойства"
+    table class="table table-bordered table-striped"
+      - if @job.get_classes.length > 0
+        - @job.get_classes.each do |cond|
+          tr
+            td
+              = cond.description
+      - else
+        tr
+          td
+            //fixme! translate
+            = "Необычных свойств не обнаружено"
 
 table
   tr
@@ -170,41 +170,41 @@ br
 h3 = "Найденные потенциальные проблемы с эффективностью"
 
 table class="table table-bordered table-striped"
-	tr
-		/td
-			= "id"
-		td
-			//fixme! translate
-			= "Описание"
-		td
-			//fixme! translate
-			= "Предположение"
-		td
-			//fixme! translate
-			= "Рекомендация"
+  tr
+    /td
+      = "id"
+    td
+      //fixme! translate
+      = "Описание"
+    td
+      //fixme! translate
+      = "Предположение"
+    td
+      //fixme! translate
+      = "Рекомендация"
 
-	- rules=@job.get_rules(@current_user)
-	- if rules.length > 0
-		- rules.each do |cond|
-			tr
-				/td
-					= cond.name
-				td
-					= cond.description
-				td
-					= cond.suggestion
-				td
-					= cond.text_recommendation
-	- else
-		tr
-			td colspan="4"
-				//fixme! translate
-				= "Проблем не найдено"
+  - rules=@job.get_rules(@current_user)
+  - if rules.length > 0
+    - rules.each do |cond|
+      tr
+        /td
+          = cond.name
+        td
+          = cond.description
+        td
+          = cond.suggestion
+        td
+          = cond.text_recommendation
+  - else
+    tr
+      td colspan="4"
+        //fixme! translate
+        = "Проблем не найдено"
 table
-	tr
-		td
-			span style='color: red;'
-				i Возможность оценки и/или изменения обнаруженных проблем с эффективностью на данный момент реализована только на общей странице со списком задач.
+  tr
+    td
+      span style='color: red;'
+        i Возможность оценки и/или изменения обнаруженных проблем с эффективностью на данный момент реализована только на общей странице со списком задач.
 
 br
 
@@ -213,31 +213,31 @@ h3 = "Динамика поведения задачи во время выпо�
 p #{ link_to "Более подробное описание", "https://graphit.parallel.ru:5001/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36) } 
 
 div class="row"
-	div class="col-md-4" style="height: 250px"
-		//fixme! translate
-		h4 = "Загрузка ЦПУ (0% .. 100%)"
-		div id="g_cpu"
-	div class="col-md-4" style="height: 250px"
-		h4 #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
-		div id="g_loadavg"
-	div class="col-md-4" style="height: 250px"
-		//fixme! translate
-		h4 = "Использование MPI (МБ/с)"
-		div id="g_ib_mpi"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Загрузка ЦПУ (0% .. 100%)"
+    div id="g_cpu"
+  div class="col-md-4" style="height: 250px"
+    h4 #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
+    div id="g_loadavg"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Использование MPI (МБ/с)"
+    div id="g_ib_mpi"
 
 div class="row"
-	div class="col-md-4" style="height: 250px"
-		//fixme! translate
-		h4 = "Загрузка ГПУ (0% .. 100%)"
-		div id="g_gpu"
-	div class="col-md-4" style="height: 250px"
-		//fixme! translate
-		h4 #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
-		div id="g_ipc"
-	div class="col-md-4" style="height: 250px"
-		//fixme! translate
-		h4 = "Использование файловой системы (МБ/с)"
-		div id="g_ib_fs"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Загрузка ГПУ (0% .. 100%)"
+    div id="g_gpu"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
+    div id="g_ipc"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Использование файловой системы (МБ/с)"
+    div id="g_ib_fs"
 
 script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"
 

@@ -23,6 +23,14 @@ javascript:
     else {
       $('#hidden_count').text('Нет скрытых правил.')
     }
+    // mark hidden rules
+    filters.forEach(function(rule){
+      $("#btn-hide-"+rule).addClass("tinted")
+    })
+    // mark disabled email notifications
+    emails.forEach(function(rule){
+      $("#btn-email-"+rule).addClass("tinted")
+    })
   });
 
 h3 Информация о завершенных задачах

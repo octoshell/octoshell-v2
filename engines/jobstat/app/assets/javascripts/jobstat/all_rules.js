@@ -1,14 +1,3 @@
-$(function(){
-  // mark hidden rules
-  filters.forEach(function(rule){
-    $("#btn-hide-"+rule).addClass("tinted")
-  })
-  // mark disabled email notifications
-  emails.forEach(function(rule){
-    $("#btn-email-"+rule).addClass("tinted")
-  })
-})
-
 // new rule suggestion
 function all_send_suggestion(){
   var feedback={

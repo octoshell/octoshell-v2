@@ -1,6 +1,20 @@
 - group_plus = @rules_plus['groups']
 - def_icon = {'icon'=>'far fa-exclamation-triangle'}
 
+javascript:
+  var filters=#{{@filters.to_json}}
+  
+  $(function(){
+    // mark hidden rules
+    filters.forEach(function(rule){
+      $("#btn-hide-"+rule).addClass("tinted")
+    })
+    // mark disabled email notifications
+    emails.forEach(function(rule){
+      $("#btn-email-"+rule).addClass("tinted")
+    })
+  });
+
 h3 Job assess rules
 div
   a href="index" Вернуться к списку запусков

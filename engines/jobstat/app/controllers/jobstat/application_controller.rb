@@ -2,11 +2,11 @@ module Jobstat
   class ApplicationController < ActionController::Base
     layout "layouts/application"
 
-    before_filter :require_login, :load_defaults, :just_test
+    before_filter :require_login, :load_defaults, :journal_user
 
     rescue_from MayMay::Unauthorized, with: :not_authorized
 
-    def just_test
+    def journal_user
       logger.info "JOURNAL: url=#{request.url}/#{request.method}; user_id=#{current_user ? current_user.id : 'none'}"
     end
 
