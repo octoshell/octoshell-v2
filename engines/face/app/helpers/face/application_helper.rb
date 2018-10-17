@@ -6,6 +6,21 @@ module Face
       link_to page.name, wiki.page_path(page)
     end
 
+    # def markdown_edit(&block)
+    #   puts capture(&block)
+    # end
+
+    def markdown_area(f, method, options = {})
+      # options.merge!({help: t(".markdown_help").html_safe})
+      # puts options.inspect
+      #puts f.text_field(method, options).inspect
+      options[:"data-bar"] = '.bar1'
+      options[:"data-preview"] = '.preview1'
+      options[:class] = 'markdown-edit'
+
+      render 'face/shared/linked2',{ text_area_field: f.text_area(method, options) }
+    end
+
     def admin_user_short_link(user)
       return '' unless user
       profile = user.profile

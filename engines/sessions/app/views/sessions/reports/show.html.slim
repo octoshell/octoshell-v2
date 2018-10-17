@@ -76,7 +76,9 @@ legend #{t('.conversation')}
 div class="row"
   div class="well well-small"
     = bootstrap_form_for @reply, url: report_replies_path(@report) do |f|
-      = f.text_area :message, rows: 3, hide_label: true, placeholder: t('.message'),class: 'edit-markdown',height: 300
+      = f.text_area :message, rows: 3, hide_label: true, placeholder: t('.message')
+      = markdown_area f, :message, rows: 3, hide_label: true, placeholder: t('.message')
+
       = f.form_group
         = f.submit t("actions.send")
 javascript:

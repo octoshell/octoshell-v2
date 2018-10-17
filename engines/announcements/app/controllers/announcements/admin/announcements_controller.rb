@@ -7,7 +7,6 @@ module Announcements
     #       Translit.convert(announcement_params[:attachment].original_filename, :english)
     #   end
     # end
-
     helper Face::ApplicationHelper
     def index
       @announcements = Announcement.order("id desc").includes(created_by: :profile)

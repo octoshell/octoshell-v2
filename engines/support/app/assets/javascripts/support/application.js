@@ -21,13 +21,6 @@ $(document).ready(function(){
   $('#reply_template').on('change', function(){
     var newValue = $('#reply_message').val() + $(this).val();
     $('#reply_message').val(newValue);
-     var height = $('#reply_message').attr('height') || 700;
-     var pandaoId = 'edit-markdown-reply_message';
-     editor = editormd({
-         id: pandaoId,
-         path : "/lib/",
-         height: height
-     });
   });
 
   $(document).on('reload_form form', function(e){
