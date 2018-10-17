@@ -3,7 +3,6 @@ Octoshell - access management system for HPC centers. This project is based on R
 https://users.parallel.ru/
 
 
-
 ## Installation and starting
 
 1. install rbenv (e.g. `curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash`)
