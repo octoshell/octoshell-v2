@@ -1,5 +1,6 @@
 class CreateJobstatJobs < ActiveRecord::Migration
   def change
+    return if File.exists? '/tmp/skip_bad_migrations.txt'
     create_table :jobstat_jobs do |t|
       t.string :cluster, :limit => 32
       t.bigint :drms_job_id
