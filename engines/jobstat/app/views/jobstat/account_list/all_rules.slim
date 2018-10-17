@@ -2,20 +2,9 @@
 - def_icon = {'icon'=>'far fa-exclamation-triangle'}
 
 javascript:
-  var filters=#{{@filters.to_json}}
-  
-  $(function(){
-    // mark hidden rules
-    filters.forEach(function(rule){
-      $("#btn-hide-"+rule).addClass("tinted")
-    })
-    // mark disabled email notifications
-    emails.forEach(function(rule){
-      $("#btn-email-"+rule).addClass("tinted")
-    })
-  });
 
-h3 Job assess rules
+h3 Список всех доступных правил
+p На данной странице приведено подробное описание всех правил, которые на данный момент используются для обнаружения потенциальных проблем с эффективностью. Для каждого правила можно предложить свои замечания; также можно скрыть правило, чтобы соответствующая проблема с эффективностью не отображалась для Ваших задач.
 div
   a href="index" Вернуться к списку запусков
 
@@ -104,12 +93,22 @@ javascript:
   var filters=#{{@filters.to_json}}
   var emails=#{{@emails.to_json}}
   var current_user=#{{@current_user.id}};
-
+  
   $(function(){
     var hash = window.location.hash.substr(4);
     if(hash!=''){
       $('#rule-'+hash).prop("checked",true);
     }
+
+    // mark hidden rules
+    filters.forEach(function(rule){
+      $("#btn-hide-"+rule).addClass("tinted")
+    })
+    // mark disabled email notifications
+    emails.forEach(function(rule){
+      $("#btn-email-"+rule).addClass("tinted")
+    })
+
   });
 
   function on_new_rule_suggest(){

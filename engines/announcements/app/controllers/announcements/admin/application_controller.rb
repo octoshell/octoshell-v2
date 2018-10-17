@@ -1,6 +1,6 @@
 module Announcements
   class Admin::ApplicationController < Announcements::ApplicationController
-    before_filter :authorize_admins :journal_user
+    before_filter :authorize_admins, :journal_user
 
     def authorize_admins
       authorize! :access, :admin
