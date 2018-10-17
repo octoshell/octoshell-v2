@@ -4,8 +4,10 @@ $(document).ready(function() {
     duplicateSpan: false,
     dateformat: 'yyyymmdd',
     emptyTo: 'bottom',
-    widgets: ['staticRow'],
-    //theme: 'default',
+    widgets: ['staticRow', 'resizable', 'stickyHeaders', 'columnSelector' ],
+    widgetOptions: {
+      resizable: true,
+    },
     textExtraction: {
       //0: function(node, table, cellIndex) { return $(node).find("strong").text(); },
       '.rank': function(node, table, cellIndex) {
