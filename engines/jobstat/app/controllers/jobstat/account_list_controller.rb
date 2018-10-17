@@ -17,12 +17,10 @@ module Jobstat
 
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
-      #@pictures=PICTURES
       @jobs_feedback={}
 
-      #query_logins = (@params[:involved_logins] | @params[:owned_logins]) & (@involved_logins | @owned_logins)
       query_logins = @projects.map{|_,login| login}.uniq
-      query_logins = ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
+      #!debug query_logins = ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
       al=(@params[:all_logins] || []).reject{|x| x==''}
       query_logins = (al & query_logins)
       @params[:all_logins]=al
@@ -226,6 +224,7 @@ module Jobstat
         cluster: parm[:cluster] || 'all',
         filters: filters.join(','),
         account: parm[:account] || 'none',
+        feedback: parm[:feedback],
       }
       logger.info "feedback_rule_show: REQ=#{req.inspect}"
       resp=Job::post_data uri,req
@@ -244,11 +243,15 @@ module Jobstat
       #FIXME! move address to config
       #  user=UID_octoshell(int), cluster=string(список через запятую), account=string(список через запятую), condition=string, feedback=string.
 
-      uri=URI("http://graphit.parallel.ru:8123/api/feedback-condition")
+      uri=URI("http://graphit.parallel.ru:8123/api/feedback-job")
       req={
         user: parm[:user].to_i,
-        #cluster: parm[:cluster] || 'all',
-        #account: parm[:account] || 'none',
+        cluster: parm[:cluster] || 'all',
+        account: parm[:account] || 'none',
+        mass: parm[:mass] || 0,
+        :class => parm[:class] || 0,
+        job_id: parm[:job_id] || 0,
+        task_id: parm[:task_id] || 0,
         condition: parm[:condition],
         feedback: parm[:feedback],
       }

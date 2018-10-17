@@ -18,10 +18,10 @@ javascript:
   $(function(){
     var len=filters.length;
     if (len>0) {
-      $('#hidden_count').text('Скрыто правил: '+len)
+      $('#hidden_count').text('Скрыто проблем с производительностью: '+len)
     }
     else {
-      $('#hidden_count').text('Нет скрытых правил.')
+      $('#hidden_count').text('Нет скрытых проблем с производительностью.')
     }
     // mark hidden rules
     filters.forEach(function(rule){
@@ -87,14 +87,14 @@ div
     a href='all_rules' этой странице
     |.
   p 
-    | Есть общие пожелания или замечания? Отправьте
+    | Есть общие пожелания или замечания? Отправьте 
     a href='mailto://feedback-octoshell@parallel.ru' e-mail
-    | . А лучше - напишите
+    | . А лучше - напишите 
     a href="/support/tickets/new" здесь.
 div
   button onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
     | Я не согласен с некоторыми оценками...
-  div id="mass_notok" class='roll-down col-12'
+  div id="mass_notok" class='roll-down col-12 gray-round-background'
     p Выберите нужные запуски галочками в левом столбце.
       В области ниже будут показаны правила, общие для выбранных запусков.
       Выберите все правила, с которыми Вы не согласны и отправьте нам отзыв.

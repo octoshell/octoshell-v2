@@ -16,3 +16,10 @@
  *= require_tree .
  *= require_self
  */
+.gray-round-background {
+  border-color: orange;
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 2px;
+  background-color: #eee;
+}

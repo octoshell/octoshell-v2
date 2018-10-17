@@ -104,6 +104,7 @@ function disagree(jobid, rule, mass, text) {
     cluster: jobs[jobid]['cluster'],
     job_id: jobid,
     task_id: 0,
+    class: 1,
     mass: mass,
     account: jobs[jobid]['login'],
     condition: rule,
@@ -112,7 +113,7 @@ function disagree(jobid, rule, mass, text) {
   $.ajax({
     type: "POST",
     url: "feedback",
-    data: {'feedback': feedback, 'type': 'feedback_job'},
+    data: {'feedback': feedback, 'type': 'feedback_rule'},
   }).always(function( msg ) {
     restore_disagree()
     jobs[jobid]['feedback'][rule]={'class': 1}
@@ -131,6 +132,7 @@ function agree(jobid, rule, mass, text) {
     cluster: jobs[jobid]['cluster'],
     job_id: jobid,
     task_id: 0,
+    class: 0,
     mass: mass,
     account: jobs[jobid]['login'],
     condition: rule,
@@ -291,6 +293,7 @@ function multi_job_feedback() {
           'condition': rule,
           'task_id': 0,
           'class': 1,
+          'mass': 1,
           'feedback': $("#disagree_reason").val(),
         })
         if(!jobs[id]['feedback']){
@@ -349,6 +352,7 @@ function agree_all() {
           'condition': rule,
           'task_id': 0,
           'class': 0,
+          'mass': 1,
           'feedback': 'ok!'
         })
         jobs[id]['feedback'][rule]={'class': 0}
@@ -419,8 +423,4 @@ function show_thanks(text){
   $('#thanks_box > .thanks-text').text(text);
   $('#thanks_box').addClass('active');
   setTimeout("$('#thanks_box').removeClass('active');",time_to_show);
-}
-
-function reset_disagree(){
-
 }

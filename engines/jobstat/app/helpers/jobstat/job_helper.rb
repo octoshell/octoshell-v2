@@ -220,14 +220,13 @@ module Jobstat
       list=[]
       dis=[]
       projects.each{|proj,logins|
-        p="-- #{shorten(proj,32)} --"
+        p="---- #{shorten(proj,32)} ----"
         list << p
         dis << p
         list.concat(logins)
       }
       [list, selected: selected, disabled: dis]
-      #FIXME!!! Just for tests!
-      [["-- RNF --","vadim", "shvets", "-- Worlid domination --", "vurdizm", "wasabiko", "ivanov", "-- Postgraduate play --", "afanasievily_251892", "gumerov_219059"], selected: selected, disabled: ["-- RNF --","-- Worlid domination --","-- Postgraduate play --"]]
+      #debug [["-- RNF --","vadim", "shvets", "-- Worlid domination --", "vurdizm", "wasabiko", "ivanov", "-- Postgraduate play --", "afanasievily_251892", "gumerov_219059"], selected: selected, disabled: ["-- RNF --","-- Worlid domination --","-- Postgraduate play --"]]
       #options_for_select(list, selected: selected, disabled: dis)
     end
 
