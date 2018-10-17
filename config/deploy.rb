@@ -128,7 +128,7 @@ task :deploy => :remote_environment do
     invoke :"deploy:link_shared_paths"
     invoke :"bundle:install"
     invoke :"rails:assets_precompile"
-    invoke :"copy_migrations"
+    #invoke :"copy_migrations"
     invoke :"rails:db_migrate"
     invoke :"deploy:cleanup"
   end
