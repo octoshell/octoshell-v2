@@ -62,7 +62,7 @@ div class="row"
 					= @job[:end_time].strftime("%D %T")
 			tr
 				td
-					| Время счета, в часах
+					| Время счета (часы)
 				td
 					= number_with_precision(@job.get_duration_hours, :precision => 1)
 
@@ -70,9 +70,9 @@ div class="row"
 		//fixme! translate
 		h3 = "Производительность"
 		table class="table table-bordered table-striped"
-			tr
+			tr style="font-weight:bold"
 				td
-					| Матрике
+					| Метрика
 				td
 					| Значение
 				td
@@ -109,28 +109,28 @@ div class="row"
 					= @ranking[:gpu_load]
 			tr
 				td
-					| Получено байт по сети MPI (МБ/с)
+					| Интенсивность передачи данных по MPI (МБ/с)
 				td
 					= format_float_or_nil(@job_perf[:ib_rcv_data_mpi])
 				td class="job_metric_#{@ranking[:ib_rcv_data_mpi]}"
 					= @ranking[:ib_rcv_data_mpi]
-			tr
+			/tr
 				td
-					| Передано байт по сети MPI (МБ/с)
+					| Передано данных по MPI сети (МБ/с)
 				td
 					= format_float_or_nil(@job_perf[:ib_xmit_data_mpi])
 				td class="job_metric_#{@ranking[:ib_xmit_data_mpi]}"
 					= @ranking[:ib_xmit_data_mpi]
 			tr
 				td
-					| Получено байт по сети для файловой системы (МБ/с)
+					| Интенсивность чтения из файловой системы (МБ/с)
 				td
 					= format_float_or_nil(@job_perf[:ib_rcv_data_fs])
 				td class="job_metric_#{@ranking[:ib_rcv_data_fs]}"
 					= @ranking[:ib_rcv_data_fs]
 			tr
 				td
-					| Передано байт по сети для файловой системы (МБ/с)
+					| Интенсивность записи в файловую систему (МБ/с)
 				td
 					= format_float_or_nil(@job_perf[:ib_xmit_data_fs])
 				td class="job_metric_#{@ranking[:ib_xmit_data_fs]}"
@@ -161,8 +161,10 @@ br
 //fixme! translate
 h3 = "Найденные потенциальные проблемы с эффективностью"
 
+p В данном разделе приведен список проблем с эффективностью, которые были найдены для данной задачи. Для каждой проблемы приведено ее описание (какой признак возникновения проблемы был обнаружен), предположение (в чем, на наш взгляд, может заключаться причина возникновения проблемы) и рекомендация (что мы советуем сделать для ее устранения). Во многих случаях в рекомендации указано, какой тип дальнейшего анализа стоит проводить; реализацию этого функционала планируется выполнить в будущем.
+p Возможность оценки корректности и/или изменения обнаруженных проблем с эффективностью также планируется добавить в ближайшем будущем. Сейчас эта возможность реализована только на общей странице со списком задач.
 table class="table table-bordered table-striped"
-	tr
+	tr style="font-weight:bold"
 		/td
 			= "id"
 		td
@@ -192,11 +194,6 @@ table class="table table-bordered table-striped"
 			td colspan="4"
 				//fixme! translate
 				= "Проблем не найдено"
-table
-	tr
-		td
-			span style='color: red;'
-				i Возможность оценки и/или изменения обнаруженных проблем с эффективностью на данный момент реализована только на общей странице со списком задач.
 
 //fixme! translate
 br
