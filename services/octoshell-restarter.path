@@ -1,0 +1,5 @@
+[Path]
+PathModified=/var/www/octoshell2/restart.txt
+
+[Install]
+WantedBy=multi-user.target

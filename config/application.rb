@@ -23,6 +23,8 @@ module Octoshell
     config.i18n.default_locale = :ru
     config.assets.initialize_on_precompile = false
     config.jd_systems = {}
+
+    config.cache_store = :memory_store, { size: 128.megabytes, expires_in: 600 }
     config.active_record.raise_in_transactional_callbacks = true
   end
 end

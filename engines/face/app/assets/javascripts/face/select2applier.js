@@ -34,7 +34,7 @@ $(function(){
         },
       }
     }
-    select.select2(options)
+    select.select2 && select.select2(options)
   });
   $(document).on( "select2:select", "[redirect-url]", function(e) {
    var id = e.params.data.id;

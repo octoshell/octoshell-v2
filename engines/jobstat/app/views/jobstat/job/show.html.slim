@@ -1,0 +1,317 @@
+
+b[:drms_job_id]
+
+a href='/jobstat/account/list/index' Вернуться к списку запусков
+br
+h3 = "Информация по задаче № #{@job[:drms_job_id]}"
+
+div class="row"
+  div class="col-md-4"
+    //fixme! translate
+    h3 = "Общая информация"
+    table class="table table-bordered table-striped"
+      tr
+        td
+          | Суперкомпьютер
+        td
+          = @job[:cluster]
+      tr
+        td
+          | ID задачи
+        td
+          = @job[:drms_job_id]
+      tr
+        td
+          | Логин
+        td
+          = @job[:login]
+      tr
+        td
+          | Статус завершения задачи
+        td
+          = @job[:state]
+      tr
+        td
+          | Раздел суперкомпьютера
+        td
+          = @job[:partition]
+      tr
+        td
+          | Число ядер
+        td
+          = @job[:num_cores]
+      tr
+        td
+          | Число узлов
+        td
+          = @job[:num_nodes]
+      tr
+        td
+          | Постановка в очередь
+        td
+          = @job[:submit_time].strftime("%D %T")
+      tr
+        td
+          | Начало счета
+        td
+          = @job[:start_time].strftime("%D %T")
+      tr
+        td
+          | Конец счета
+        td
+          = @job[:end_time].strftime("%D %T")
+      tr
+        td
+          | Время счета (часы)
+        td
+          = number_with_precision(@job.get_duration_hours, :precision => 1)
+
+  div class="col-md-4"
+    //fixme! translate
+    h3 = "Производительность"
+    table class="table table-bordered table-striped"
+      tr style="font-weight:bold"
+        td
+          | Метрика
+        td
+          | Значение
+        td
+          | Общая оценка
+      tr
+        td
+          | Средняя загрузка ЦПУ (%)
+        td
+          = format_float_or_nil(@job_perf[:cpu_user])
+        td class="job_metric_#{@ranking[:cpu_user]}"
+          = @ranking[:cpu_user]
+      tr
+        td
+          | Среднее #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
+
+        td
+          = format_float_or_nil(@job_perf[:loadavg])
+        td class="job_metric_#{@ranking[:loadavg]}"
+          = @ranking[:loadavg]
+      tr
+        td
+          | Среднее #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
+
+        td
+          = format_float_or_nil(@job_perf[:ipc])
+        td class="job_metric_#{@ranking[:ipc]}"
+          = @ranking[:ipc]
+      tr
+        td
+          | Средняя загрузка ГПУ (%)
+        td
+          = format_float_or_nil(@job_perf[:gpu_load])
+        td class="job_metric_#{@ranking[:gpu_load]}"
+          = @ranking[:gpu_load]
+      tr
+        td
+          | Интенсивность передачи данных по MPI (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_rcv_data_mpi])
+        td class="job_metric_#{@ranking[:ib_rcv_data_mpi]}"
+          = @ranking[:ib_rcv_data_mpi]
+      /tr
+        td
+          | Передано данных по MPI сети (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_xmit_data_mpi])
+        td class="job_metric_#{@ranking[:ib_xmit_data_mpi]}"
+          = @ranking[:ib_xmit_data_mpi]
+      tr
+        td
+          | Интенсивность чтения из файловой системы (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_rcv_data_fs])
+        td class="job_metric_#{@ranking[:ib_rcv_data_fs]}"
+          = @ranking[:ib_rcv_data_fs]
+      tr
+        td
+          | Интенсивность записи в файловую систему (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_xmit_data_fs])
+        td class="job_metric_#{@ranking[:ib_xmit_data_fs]}"
+          = @ranking[:ib_xmit_data_fs]
+
+  div class="col-md-4"
+    //fixme! translate
+    h3 = "Базовые свойства"
+    table class="table table-bordered table-striped"
+      - if @job.get_classes.length > 0
+        - @job.get_classes.each do |cond|
+          tr
+            td
+              = cond.description
+      - else
+        tr
+          td
+            //fixme! translate
+            = "Необычных свойств не обнаружено"
+
+table
+  tr
+    td
+       | Строка запуска:&nbsp;&nbsp; #{@job[:command]}
+
+br
+
+//fixme! translate
+h3 = "Найденные потенциальные проблемы с эффективностью"
+
+p В данном разделе приведен список проблем с эффективностью, которые были найдены для данной задачи. Для каждой проблемы приведено ее описание (какой признак возникновения проблемы был обнаружен), предположение (в чем, на наш взгляд, может заключаться причина возникновения проблемы) и рекомендация (что мы советуем сделать для ее устранения). Во многих случаях в рекомендации указано, какой тип дальнейшего анализа стоит проводить; реализацию этого функционала планируется выполнить в будущем.
+p Возможность оценки корректности и/или изменения обнаруженных проблем с эффективностью также планируется добавить в ближайшем будущем. Сейчас эта возможность реализована только на общей странице со списком задач.
+table class="table table-bordered table-striped"
+  th style="font-weight:bold"
+    /td
+      = "id"
+    td
+      //fixme! translate
+      = "Описание"
+    td
+      //fixme! translate
+      = "Предположение"
+    td
+      //fixme! translate
+      = "Рекомендация"
+
+  - rules=@job.get_rules(@current_user)
+  - if rules.length > 0
+    - rules.each do |cond|
+      tr
+        /td
+          = cond.name
+        td
+          = cond.description
+        td
+          = cond.suggestion
+        td
+          = cond.text_recommendation
+  - else
+    tr
+      td colspan="4"
+        //fixme! translate
+        = "Проблем не найдено"
+
+br
+
+h3 = "Динамика поведения задачи во время выполнения"
+
+p #{ link_to "Более подробное описание", "https://graphit.parallel.ru:5001/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36) } 
+
+div class="row"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Загрузка ЦПУ (0% .. 100%)"
+    div id="g_cpu"
+  div class="col-md-4" style="height: 250px"
+    h4 #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
+    div id="g_loadavg"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Использование MPI (МБ/с)"
+    div id="g_ib_mpi"
+
+div class="row"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Загрузка ГПУ (0% .. 100%)"
+    div id="g_gpu"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
+    div id="g_ipc"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Использование файловой системы (МБ/с)"
+    div id="g_ib_fs"
+
+script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"
+
+javascript:
+  function DrawSingleGraph(target, sensor_data, max)
+  {
+    for(var i = 0; i < sensor_data.length; i++)
+      sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'время');
+    data.addColumn('number', 'значение');
+
+    data.addRows(sensor_data);
+
+    var options = {
+      hAxis: {
+        //fixme! translate
+        title: 'Время',
+        format: 'HH:mm',
+      },
+      vAxis: {
+        minValue: 0
+      },
+      colors: ['#8080ff'],
+      chartArea: {'width': '85%'},
+      legend: {'position': 'none'},
+    };
+
+    if(max) options.vAxis.maxValue = max;
+
+    var chart = new google.visualization.LineChart(document.getElementById(target));
+    chart.draw(data, options);
+  }
+
+  function DrawSendRecvGraph(target, sensor_data)
+  {
+    for(var i = 0; i < sensor_data.length; i++)
+    {
+      sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+      sensor_data[i][1] /= 1024 * 1024;
+      sensor_data[i][2] /= 1024 * 1024;
+    }
+
+    var data = new google.visualization.DataTable();
+    //fixme! translate
+    data.addColumn('date', 'время');
+    //fixme! translate
+    data.addColumn('number', 'передано MB/s');
+    //fixme! translate
+    data.addColumn('number', 'получено MB/s');
+
+    data.addRows(sensor_data);
+
+    var options = {
+      hAxis: {
+        //fixme! translate
+        title: 'Время',
+        format: 'HH:mm'
+      },
+      vAxis: {
+        minValue: 0,
+        format: "short"
+      },
+      colors: ['#8080ff', '#ff8080'],
+      chartArea: {'width': '80%', 'top' : '10%', 'bottom': '20%'},
+      legend: {'position': 'bottom'},
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById(target));
+    chart.draw(data, options);
+  }
+
+  function DrawGraphs()
+  {
+     DrawSingleGraph("g_cpu",  #{{ raw @cpu_digest_data.to_json }} , 100);
+     DrawSingleGraph("g_gpu",  #{{ raw @gpu_digest_data.to_json }} , 100);
+     DrawSingleGraph("g_loadavg",  #{{ raw @loadavg_digest_data.to_json }} );
+     DrawSingleGraph("g_ipc",  #{{ raw @ipc_digest_data.to_json }} );
+     DrawSendRecvGraph("g_ib_mpi",  #{{ raw @mpi_digest_data.to_json }} );
+     DrawSendRecvGraph("g_ib_fs",  #{{ raw @fs_digest_data.to_json }} );
+
+  }
+
+  $(document).ready(function(){
+    google.charts.load('current', {packages: ['corechart', 'line']});
+    google.charts.setOnLoadCallback(DrawGraphs);
+  });

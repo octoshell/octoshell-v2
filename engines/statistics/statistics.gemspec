@@ -19,7 +19,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.2"
 
-  # s.add_dependency "activerecord-jdbcpostgresql-adapter"
+  s.add_dependency "activerecord-jdbcpostgresql-adapter" if /java/.match(RUBY_PLATFORM)
+  s.add_dependency "pg", "~> 0.18" unless /java/.match(RUBY_PLATFORM)
   s.add_dependency "slim"
   s.add_dependency "sidekiq"
   s.add_dependency "maymay"

@@ -1,14 +1,15 @@
 PATH
   remote: .
   specs:
-    face (0.0.1-java)
+    face (0.0.1)
       bootstrap-datepicker-rails
       bootstrap_form
       coffee-rails
+      commonmarker
       jquery-fileupload-rails
       jquery-rails
-      kramdown
       nested_form
+      pg (~> 0.18)
       rails (~> 4.2)
       rails-jquery-autocomplete
       russian
@@ -62,7 +63,7 @@ GEM
       railties (>= 3.0)
     bootstrap_form (2.7.0)
     builder (3.2.3)
-    capybara (3.4.2)
+    capybara (3.9.0)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -76,12 +77,14 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.0.5-java)
+    commonmarker (0.17.13)
+      ruby-enum (~> 0.5)
+    concurrent-ruby (1.0.5)
     crass (1.0.4)
     diff-lcs (1.3)
     erubis (2.7.0)
     execjs (2.7.0)
-    ffi (1.9.25-java)
+    ffi (1.9.25)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     i18n (0.9.5)
@@ -94,17 +97,19 @@ GEM
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    kramdown (1.17.0)
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
       mini_mime (>= 0.1.1)
-    mini_mime (1.0.0)
+    mini_mime (1.0.1)
+    mini_portile2 (2.3.0)
     minitest (5.11.3)
     nested_form (0.3.2)
-    nokogiri (1.8.4-java)
-    public_suffix (3.0.2)
+    nokogiri (1.8.5)
+      mini_portile2 (~> 2.3.0)
+    pg (0.21.0)
+    public_suffix (3.0.3)
     rack (1.6.10)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -138,26 +143,28 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    rspec-core (3.7.1)
-      rspec-support (~> 3.7.0)
-    rspec-expectations (3.7.0)
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.2)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.7.0)
-    rspec-mocks (3.7.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.7.0)
-    rspec-rails (3.7.2)
+      rspec-support (~> 3.8.0)
+    rspec-rails (3.8.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
-      rspec-core (~> 3.7.0)
-      rspec-expectations (~> 3.7.0)
-      rspec-mocks (~> 3.7.0)
-      rspec-support (~> 3.7.0)
-    rspec-support (3.7.1)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-support (3.8.0)
+    ruby-enum (0.7.2)
+      i18n
     russian (0.6.0)
       i18n (>= 0.5.0)
-    sass (3.5.7)
+    sass (3.6.0)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -170,9 +177,9 @@ GEM
       tilt (>= 1.1, < 3)
     select2-rails (4.0.3)
       thor (~> 0.14)
-    slim (3.0.9)
+    slim (4.0.1)
       temple (>= 0.7.6, < 0.9)
-      tilt (>= 1.3.3, < 2.1)
+      tilt (>= 2.0.6, < 2.1)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -185,7 +192,7 @@ GEM
       therubyrhino_jar (>= 1.7.3)
     therubyrhino_jar (1.7.6)
     thor (0.20.0)
-    thread_safe (0.3.6-java)
+    thread_safe (0.3.6)
     tilt (2.0.8)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
@@ -194,7 +201,7 @@ GEM
       nokogiri (~> 1.8)
 
 PLATFORMS
-  java
+  ruby
 
 DEPENDENCIES
   capybara
@@ -202,4 +209,4 @@ DEPENDENCIES
   rspec-rails
 
 BUNDLED WITH
-   1.15.3
+   1.16.0

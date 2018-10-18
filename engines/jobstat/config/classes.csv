@@ -1,0 +1,18 @@
+name,is_on,description,src_file,group,priority,confidence,criticalness,comment
+tag_short,1,Короткая задача (< 15 минут),simple_tag_conditions.py,job_duration,1,0,0,"Задачи с данным тегом выполняются очень недолго, поэтому не представляют большого интереса для анализа эффективности."
+tag_super_short,1,Очень короткая задача (< 6 минут),simple_tag_conditions.py,job_duration,2,0,0,"Задачи с данным тегом не могут быть проанализированы, поскольку для них не собираются данные системного монтиоринга."
+tag_suspicious,1,Задача практически не использует вычислительные ресурсы СК,simple_tag_conditions.py,general_efficiency,2,0,0,Средняя загрузка процессора и средний load average меньше нормальной загрузки при 1 активном процессе на узле; загрузка ГПУ также низкая. 
+tag_sc_appropriate,1,Задача хорошо использует ресурсы СК,simple_tag_conditions.py,general_efficiency,1,0,0,"Средний load average оптимальный, также задача активно использует MPI."
+tag_less_suspicious,1,Задача слабо использует вычислительные ресурсы СК,simple_tag_conditions.py,general_efficiency,1,0,0,Средняя загрузка процессора и средний load average меньше нормальной загрузки при 2 активных процессах на узле; загрузка ГПУ также низкая. 
+tag_comm_data,1,В задаче много MPI коммуникаций,simple_tag_conditions.py,MPI_based,1,0,0,Задача активно использует MPI.
+tag_comm_packets,1,Задача шлёт много MPI пакетов,simple_tag_conditions.py,MPI_based,1,0,0,"Задача не очень активно использует MPI, однако передается (или получается) много MPI пакетов."
+tag_not_comm,1,В задаче мало MPI коммуникаций,simple_tag_conditions.py,MPI_based,1,0,0,"Задача задействует несколько узлов, однако между ними практически нет передачи MPI сообщений."
+tag_serial,1,Одноядерная задача,simple_tag_conditions.py,serial_like_jobs,2,0,0,"Задача задействует один узел, и средний load average примерно равен 1."
+tag_single,1,Одноузловая задача,simple_tag_conditions.py,serial_like_jobs,1,0,0,Задача задействует один узел.
+tag_data_intensive,1,Задача активно работает с памятью,simple_tag_conditions.py,memory_based,1,0,0,Интенсивность выполнения операций чтения и/или записи высока.
+tag_good_locality,1,Задача имеет высокую локальность обращений в память,simple_tag_conditions.py,memory_based,1,0,0,"Соотношение интенсивности (load+store) операций к L1 кэш-промахам, а также соотношение L1 к L3 кэш-промахам достаточно большое."
+tag_bad_locality,1,Задача имеет низкую локальность обращений в память,simple_tag_conditions.py,memory_based,1,0,0,"Соотношение интенсивности (load+store) операций к L1 кэш-промахам, а также соотношение L1 к L3 кэш-промахам небольшое."
+tag_weird_locality,1,Задача имеет необычную локальность обращений в память,simple_tag_conditions.py,memory_based,1,0,0,"Соотношение интенсивности (load+store) операций к L1 кэш-промахам большое, а соотношение L1 к L3 кэш-промахам небольшое (что странно, такого вроде не должно быть)."
+tag_gpu_pure,1,Задача использует только GPU,simple_tag_conditions.py,gpu_based,1,0,0,"Загрузка ГПУ очень высока, загрузка процессора низка."
+tag_gpu_hybrid_good,1,Задача хорошо испольует и GPU и CPU,simple_tag_conditions.py,gpu_based,1,0,0,Загрузка ГПУ и загрузка процессора достаточно высока.
+tag_low_ib_high_gpu,1,"Задача активно испольузет GPU, а узлы мало общаются между собой",simple_tag_conditions.py,gpu_based,1,0,0,"Задача задействует более 1 узла, загрузка ГПУ очень высока, но задача слабо использует MPI."

@@ -13,7 +13,6 @@
  *= require core/application
  *= require support/application
  *= require sessions/application
- *= require jd/application
  *= require comments/application
  *= require_self
  *= require_tree .
@@ -21,4 +20,55 @@
 
 .return-btn-container {
   padding-top: 4em;
+}
+
+
+.right-float-button {
+  position: fixed;
+  right: -18em;
+  width: 20em;
+  top: 30vh;
+  z-index: 6000;
+  padding: 10px;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background: rgba(40, 120, 40, 0.7);
+  -webkit-transition: all 1s ease;
+     -moz-transition: all 1s ease;
+      -ms-transition: all 1s ease;
+       -o-transition: all 1s ease;
+          transition: all 1s ease;
+}
+
+.right-float-button > div {
+  float: left;
+}
+
+.right-float-button:hover {
+  right: 0;
+  -webkit-transition: all 1s ease;
+     -moz-transition: all 1s ease;
+      -ms-transition: all 1s ease;
+       -o-transition: all 1s ease;
+          transition: all 1s ease;
+
+}
+
+.right-float-button-text, .right-float-button-text > a {
+  color: white;
+}
+
+.semi-large {
+  font-size: 1em;
+}
+
+@media screen and (min-width: 762px) {
+  .semi-large {
+    font-size: 1.5em;
+  }
+  .right-float-button {
+    right: -17em;
+  }
 }

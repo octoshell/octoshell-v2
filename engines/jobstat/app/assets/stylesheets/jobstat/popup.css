@@ -1,0 +1,267 @@
+.centered {
+  margin: auto;
+  text-align: center;
+}
+
+.width80vw {
+  width: 80vw;
+}
+
+.width80 {
+  width: 80%;
+}
+
+.fullwidth {
+  width: 100%;
+}
+
+.white {
+  background-color:  white;
+}
+
+a.red-on-hover:hover {
+  color: red;
+  cursor: pointer;
+}
+
+
+
+/***************************************************
+Taken from https://codepen.io/FluidOfInsanity/pen/mOGLbZ
+
+Original:
+<a href="#popup1" class="btn">Popup</a> <---  id is identical to next!
+<div id="popup1" class="popup">         <---  here id is as above
+  <a href="#" class="close">&times;</a>
+  <h2>The Popup Has Arrived</h2>
+  <p>This popup can be closed by
+     clicking the fancy <b>×</b>
+     in the top right corner or
+     by clicking outside the popup box!</p>
+</div>
+<a href="#" class="close-popup"></a>
+
+Current:
+
+<a onclick="$('#p1').addClass('target')"></a>
+<div class="octo-popup" id="p1">
+  popup text...
+</div>
+<a onclick="$('#p1').removeClass('target') class="octo-close-popup"></a>
+
+***************************************************/
+
+.octo-popup {
+  position: relative;
+  padding: 10px;
+  border-radius: 10px;
+  top: 20px;
+  left: 20px;
+  /*transform: translate(0,-50%);*/
+  background: rgba(255,255,255,.8);
+  /* visibility: hidden; */
+  display: none;
+  /* width: 0px; */
+  max-height: 0px;
+  opacity: 0;
+  /* "delay" the visibility transition */
+  -webkit-transition: opacity .5s, visibility 0s linear .5s;
+  transition: opacity .5s, visibility 0s linear .5s;
+  z-index: 1010;
+}
+/* .octo-popup:target */
+.octo-popup.target {
+  /* visibility: visible; */
+  display: block;
+  width: 80vw;
+  max-height: 80vw;
+  opacity: 1;
+  /* cancel visibility transition delay */
+  -webkit-transition-delay: 0s;
+  transition-delay: 0s;
+}
+.octo-popup-close {
+  position: relative;
+  padding: 4px;
+  max-width: 1500px;
+  font-weight: bold;
+  line-height:  2em;
+  text-decoration: none;
+  /*border-radius: 0px;*/
+  top: 0px;
+  left: 0px;
+  /*transform: translate(-50%,-50%);*/
+  background: rgba(255,255,255,.9);
+}
+.octo-popup-close:hover {
+  text-decoration: none;
+  color: red;
+}
+.octo-popup .close {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  padding: 5px;
+  color: #000;
+  transition: color .3s;
+  font-size: 2em;
+  line-height: .6em;
+  font-weight: bold;
+  text-decoration: none;
+}
+.octo-popup .close:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.octo-close-popup {
+  background: rgba(0,0,0,.7);
+  cursor: default;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+  /* "delay" the visibility transition */
+  -webkit-transition: opacity .5s, visibility 0s linear .5s;
+  transition: opacity .5s, visibility 0s linear .5s;
+}
+.octo-popup.target + .octo-close-popup{  
+  opacity: 1;
+  visibility: visible;
+  /* cancel visibility transition delay */
+  -webkit-transition-delay: 0s;
+  transition-delay: 0s;
+  z-index: 1009;
+}
+
+/*   2-nd level popup */
+.octo-popup2 {
+  position: relative;
+  padding: 10px;
+  border-radius: 10px;
+  top: 20px;
+  left: 20px;
+  display: none;
+  /*transform: translate(0,-50%);*/
+  background: rgba(255,255,255,.8);
+  visibility: hidden;
+  opacity: 0;
+  /* "delay" the visibility transition */
+  -webkit-transition: opacity .5s, visibility 0s linear .5s;
+  transition: opacity .5s, visibility 0s linear .5s;
+  z-index: 1200;
+}
+/* .octo-popup:target */
+.octo-popup2.target {
+  visibility: visible;
+  width: 80vw;
+  opacity: 1;
+  display: block;
+  /* cancel visibility transition delay */
+  -webkit-transition-delay: 0s;
+  transition-delay: 0s;
+}
+.octo-close-popup2 {
+  background: rgba(0, 0, 0, .7);
+  cursor: default;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+  /* "delay" the visibility transition */
+  -webkit-transition: opacity .5s, visibility 0s linear .5s;
+  transition: opacity .5s, visibility 0s linear .5s;
+}
+.octo-popup2.target + .octo-close-popup2{
+  opacity: 1;
+  visibility: visible;
+  /* cancel visibility transition delay */
+  -webkit-transition-delay: 0s;
+  transition-delay: 0s;
+  z-index: 1199;
+}
+
+.thanks {
+  position: fixed;
+  left: 35vw;
+  width: 30vw;
+  min-height: 2em;
+  top: 25vh;
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+  background-color: rgb(40, 120, 40);
+  color: white;
+  z-index: 5000;
+  text-align: center;
+  font-size: 2em;
+  display: table-cell;
+  vertical-align: middle;
+  border-radius: 2vw;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+}
+
+@keyframes thanks {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  25% {
+    left: 35vw;
+    opacity: 1;
+  }
+  75% {
+    left: 35vw;
+    opacity: 1;
+  }
+  100% {
+    left: 100vw;
+    opacity: 0;
+  }
+}
+
+.thanks.active {
+  animation: thanks 4s ease-in-out both;
+  display: block;
+  visibility: visible;
+}
+
+
+@media (min-width: 768px) {
+  .octo-popup2.target,.octo-popup.target {
+    width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .octo-popup2.target,.octo-popup.target {
+    width: 920px;
+  }
+}
+@media (min-width: 1200px) {
+  .octo-popup2.target,.octo-popup.target {
+    width: 1000px;
+  }
+}
+
+.roll-down {
+  display: none;
+  max-height: 0;
+}
+
+.roll-down.target {
+  display: block;
+  max-height: 1000px;
+  -webkit-transition: max-height .25s ease;
+     -moz-transition: max-height .25s ease;
+      -ms-transition: max-height .25s ease;
+       -o-transition: max-height .25s ease;
+          transition: max-height .25s ease;
+}

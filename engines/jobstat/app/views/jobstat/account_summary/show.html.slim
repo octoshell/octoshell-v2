@@ -1,0 +1,50 @@
+== '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/css/theme.blue.min.css"></script>'
+
+div
+  h1 = "Statistics on all submitted jobs"
+
+  = render "form"
+
+  br
+  h1 = "Всего"
+
+  table class="tablesorter-blue"
+    thead
+      tr
+        td style="width: 50%" = "Суперкомпьютер"
+        td = "Количество"
+        td = "ЦПУ ядро * час"
+        td = "ГПУ * час"
+    tbody
+      - @total_cluster_data.each do |key, value|
+        tr
+          td = "#{@clusters[key].name}"
+          td = value[0]
+          td = value[1]
+          td = value[2]
+      tr
+        td = "Всего"
+        td = @total_data[0]
+        td = @total_data[1]
+        td = @total_data[2]
+
+  - @data.keys.each do |cluster|
+    h1 = "#{@clusters[cluster].name}"
+    table class="tablesorter-blue"
+      thead
+        tr
+          td style="width: 25%" = "Раздел"
+          td style="width: 25%" = "Статус"
+          td = "Количество"
+          td = "ЦПУ ядро * час"
+          td = "ГПУ * час"
+      tbody
+        - @data[cluster].keys.each do |partition|
+          - @data[cluster][partition].keys.each_with_index do |state, index|
+            tr
+              - if index == 0
+                td rowspan = @data[cluster][partition].keys.length #{partition}
+              td = "#{state}"
+              td = @data[cluster][partition][state][0]
+              td = @data[cluster][partition][state][1]
+              td = @data[cluster][partition][state][2]

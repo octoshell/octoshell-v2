@@ -1,0 +1,118 @@
+- group_plus = @rules_plus['groups']
+- def_icon = {'icon'=>'far fa-exclamation-triangle'}
+
+javascript:
+
+h3 Список всех доступных правил
+p На данной странице приведено подробное описание всех правил, которые на данный момент используются для обнаружения потенциальных проблем с эффективностью. Для каждого правила можно предложить свои замечания; также можно скрыть правило, чтобы соответствующая проблема с эффективностью не отображалась для Ваших задач.
+div
+  a href="index" Вернуться к списку запусков
+
+button onClick="$('.rule-checkbox').prop('checked', true);"
+  | Раскрыть все описания
+button onClick="$('.rule-checkbox').prop('checked', false);"
+  | Скрыть все описания
+button onClick="$('#suggest_new_rule').addClass('target');$('#suggest_new_rule_text').focus()"
+  | Хочу предложить новое правило
+  // "why hide?" dialog
+div class="octo-popup content" id="suggest_new_rule"
+  form action="#" onSubmit="return on_new_rule_suggest();"
+    div class="centered x-white"
+      | Впишите свои предложения по новому правилу оценки запуска. Постарайтесь сформулировать их как можно более подробно и развёрнуто.
+    input type="text" id="suggest_new_rule_text" class="fullwidth"
+    div class="centered x-white"
+      button class="btn-info" type="submit"
+        | Отправить!
+      button onClick="$('#suggest_new_rule').removeClass('target');"
+        | Передумал
+a class="octo-close-popup" onClick="$('#suggest_new_rule').removeClass('target'); return false"
+
+section class="accordion"
+  h4 Список всех правил оценки запусков приложений
+  - @rules_plus['rules'].sort{|a,b| a[1]['index'] <=> b[1]['index']}.each do |r|
+    - rule=r[1]
+    - icon = group_plus.fetch(rule['group'],def_icon)
+    div id="go-#{r[0]}"
+      input class="rule-checkbox" type="checkbox" id="rule-#{r[0]}" name="box"
+      label for="rule-#{r[0]}"
+        | &nbsp;
+        - tint = @filters.any?{|x|x==r[0]} ? "tinted" : ""
+        button id="btn-hide-#{r[0]}" class="btn-danger #{tint}" onClick="all_pre_hide_rule('#{r[0]}');$('#text_hide_rule_#{r[0]}').focus();" title="Скрыть правило/снова показывать"
+          i class="fa-fw far fa-bell-slash"
+        div class="octo-popup content" id="hide_rule_#{r[0]}"
+          form onSubmit="all_hide_rule('#{r[0]}',false); return false;"
+            div class="centered x-white"
+              | Поясните, почему Вы хотите скрыть правило в выдачах результатов расчётов?
+            input type="text" id="text_hide_rule_#{r[0]}" class="fullwidth" style="display: block"
+            div class="centered x-white"
+              button class="btn-info" type="submit"
+                | Скрыть правило!
+              button onClick="$('#hide_rule_#{r[0]}').removeClass('target'); return false;"
+                | Передумал
+        a class="octo-close-popup" onClick="$('#hide_rule_#{r[0]}').removeClass('target'); return false"
+        | &nbsp;
+
+        /!!button id="btn-email-#{r[0]}" class="btn-warning" onClick="all_pre_email_rule('#{r[0]}')" title="Оповещать по email/не оповещать"
+          i class="fa-fw fas fa-envelope"
+        /!!div class="octo-popup content" id="email_rule_#{r[0]}"
+          form onSubmit="all_email_rule('#{r[0]}',false); return false;"
+            div class="centered white"
+              | Вы уверены, что не хотите получать уведомления по email о срабатывании этого правила?
+            div class="centered white"
+              button class="btn-info" type="submit"
+                | Отключить уведомления!
+              button onClick="$('#email_rule_#{r[0]}').removeClass('target');"
+                | Передумал
+        /!!a onClick="$('#email_rule_#{r[0]}').removeClass('target');"
+        /!!| &nbsp;
+
+        button class="btn-info" onClick="all_pre_feedback_rule('#{r[0]}');$('#text_feedback_rule_#{r[0]}').focus()" title="Высказать мнение по правилу"
+          i class="fa-fw fas fa-volume-up"
+        div class="octo-popup content" id="feedback_rule_#{r[0]}"
+          form action="#" onSubmit="all_feedback_rule('#{r[0]}'); return false;"
+            div class="centered x-white"
+              | Максимально подробнее опишите Ваши комментарии:
+            input type="text" id="text_feedback_rule_#{r[0]}" class="fullwidth" style="display: block"
+            div class="centered x-white"
+              button class="btn-info" type="submit"
+                | Отправить комментарий!
+              button onClick="$('#feedback_rule_#{r[0]}').removeClass('target'); return false;"
+                | Передумал
+        a class="octo-close-popup" onClick="$('#feedback_rule_#{r[0]}').removeClass('target'); return false"
+        | &nbsp; &nbsp;
+        i class="fa-fw #{icon['icon']} #{icon['color']}"
+        | &nbsp;
+        = rule['description']
+      article class="hh"
+        /p <strong>Описание:</strong> #{rule['comment']}
+        p <strong>Предполагаемая причина:</strong> #{rule['suggestion']}
+        p <strong>Рекомендации:</strong> #{rule['text_recommendation']}
+
+javascript:
+
+  var filters=#{{@filters.to_json}}
+  var emails=#{{@emails.to_json}}
+  var current_user=#{{@current_user.id}};
+  
+  $(function(){
+    var hash = window.location.hash.substr(4);
+    if(hash!=''){
+      $('#rule-'+hash).prop("checked",true);
+    }
+
+    // mark hidden rules
+    filters.forEach(function(rule){
+      $("#btn-hide-"+rule).addClass("tinted")
+    })
+    // mark disabled email notifications
+    emails.forEach(function(rule){
+      $("#btn-email-"+rule).addClass("tinted")
+    })
+
+  });
+
+  function on_new_rule_suggest(){
+    $('#suggest_new_rule').removeClass('target');
+    all_send_suggestion();
+    return false;
+  }

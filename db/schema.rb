@@ -11,16 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180907145732) do
+ActiveRecord::Schema.define(version: 20181012105917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "abilities", force: :cascade do |t|
-    t.string   "action",     limit: 255
-    t.string   "subject",    limit: 255
+    t.string   "action"
+    t.string   "subject"
     t.integer  "group_id"
-    t.boolean  "available",              default: false
+    t.boolean  "available",  default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -36,12 +36,12 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "announcement_recipients", ["user_id"], name: "index_announcement_recipients_on_user_id", using: :btree
 
   create_table "announcements", force: :cascade do |t|
-    t.string   "title_ru",      limit: 255
-    t.string   "reply_to",      limit: 255
+    t.string   "title_ru"
+    t.string   "reply_to"
     t.text     "body_ru"
-    t.string   "attachment",    limit: 255
+    t.string   "attachment"
     t.boolean  "is_special"
-    t.string   "state",         limit: 255
+    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "created_by_id"
@@ -139,12 +139,12 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "core_access_fields", ["access_id"], name: "index_core_access_fields_on_access_id", using: :btree
 
   create_table "core_accesses", force: :cascade do |t|
-    t.integer  "project_id",                     null: false
-    t.integer  "cluster_id",                     null: false
-    t.string   "state",              limit: 255
+    t.integer  "project_id",         null: false
+    t.integer  "cluster_id",         null: false
+    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "project_group_name", limit: 255
+    t.string   "project_group_name"
   end
 
   add_index "core_accesses", ["cluster_id"], name: "index_core_accesses_on_cluster_id", using: :btree
@@ -153,9 +153,9 @@ ActiveRecord::Schema.define(version: 20180907145732) do
 
   create_table "core_cities", force: :cascade do |t|
     t.integer "country_id"
-    t.string  "title_ru",   limit: 255
-    t.string  "title_en",   limit: 255
-    t.boolean "checked",                default: false
+    t.string  "title_ru"
+    t.string  "title_en"
+    t.boolean "checked",    default: false
   end
 
   add_index "core_cities", ["country_id"], name: "index_core_cities_on_country_id", using: :btree
@@ -181,15 +181,15 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "core_cluster_quotas", ["cluster_id"], name: "index_core_cluster_quotas_on_cluster_id", using: :btree
 
   create_table "core_clusters", force: :cascade do |t|
-    t.string   "name_ru",            limit: 255,                null: false
-    t.string   "host",               limit: 255,                null: false
+    t.string   "name_ru",                           null: false
+    t.string   "host",                              null: false
     t.text     "description"
     t.text     "public_key"
     t.text     "private_key"
-    t.string   "admin_login",        limit: 255
+    t.string   "admin_login"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "available_for_work",             default: true
+    t.boolean  "available_for_work", default: true
     t.string   "name_en"
   end
 
@@ -197,16 +197,16 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "core_clusters", ["public_key"], name: "index_core_clusters_on_public_key", unique: true, using: :btree
 
   create_table "core_countries", force: :cascade do |t|
-    t.string  "title_ru", limit: 255
-    t.string  "title_en", limit: 255
-    t.boolean "checked",              default: false
+    t.string  "title_ru"
+    t.string  "title_en"
+    t.boolean "checked",  default: false
   end
 
   create_table "core_credentials", force: :cascade do |t|
-    t.integer  "user_id",                null: false
-    t.string   "state",      limit: 255
-    t.string   "name",       limit: 255, null: false
-    t.text     "public_key",             null: false
+    t.integer  "user_id",    null: false
+    t.string   "state"
+    t.string   "name",       null: false
+    t.text     "public_key", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "core_credentials", ["user_id"], name: "index_core_credentials_on_user_id", using: :btree
 
   create_table "core_critical_technologies", force: :cascade do |t|
-    t.string   "name_ru",    limit: 255
+    t.string   "name_ru"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name_en"
@@ -237,7 +237,7 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   end
 
   create_table "core_direction_of_sciences", force: :cascade do |t|
-    t.string   "name_ru",    limit: 255
+    t.string   "name_ru"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name_en"
@@ -260,7 +260,7 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   end
 
   create_table "core_employment_position_names", force: :cascade do |t|
-    t.string   "name_ru",      limit: 255
+    t.string   "name_ru"
     t.text     "autocomplete"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -269,8 +269,8 @@ ActiveRecord::Schema.define(version: 20180907145732) do
 
   create_table "core_employment_positions", force: :cascade do |t|
     t.integer  "employment_id"
-    t.string   "name",                        limit: 255
-    t.string   "value",                       limit: 255
+    t.string   "name"
+    t.string   "value"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "employment_position_name_id"
@@ -283,7 +283,7 @@ ActiveRecord::Schema.define(version: 20180907145732) do
     t.integer  "user_id"
     t.integer  "organization_id"
     t.boolean  "primary"
-    t.string   "state",                      limit: 255
+    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "organization_department_id"
@@ -292,11 +292,11 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "core_employments", ["organization_department_id"], name: "index_core_employments_on_organization_department_id", using: :btree
 
   create_table "core_members", force: :cascade do |t|
-    t.integer  "user_id",                                                null: false
-    t.integer  "project_id",                                             null: false
-    t.boolean  "owner",                                  default: false
-    t.string   "login",                      limit: 255
-    t.string   "project_access_state",       limit: 255
+    t.integer  "user_id",                                    null: false
+    t.integer  "project_id",                                 null: false
+    t.boolean  "owner",                      default: false
+    t.string   "login"
+    t.string   "project_access_state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "organization_id"
@@ -313,29 +313,29 @@ ActiveRecord::Schema.define(version: 20180907145732) do
 
   create_table "core_organization_departments", force: :cascade do |t|
     t.integer "organization_id"
-    t.string  "name",            limit: 255
-    t.boolean "checked",                     default: false
+    t.string  "name"
+    t.boolean "checked",         default: false
   end
 
   add_index "core_organization_departments", ["organization_id"], name: "index_core_organization_departments_on_organization_id", using: :btree
 
   create_table "core_organization_kinds", force: :cascade do |t|
-    t.string   "name_ru",              limit: 255
-    t.boolean  "departments_required",             default: false
+    t.string   "name_ru"
+    t.boolean  "departments_required", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name_en"
   end
 
   create_table "core_organizations", force: :cascade do |t|
-    t.string   "name",         limit: 255
-    t.string   "abbreviation", limit: 255
+    t.string   "name"
+    t.string   "abbreviation"
     t.integer  "kind_id"
     t.integer  "country_id"
     t.integer  "city_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "checked",                  default: false
+    t.boolean  "checked",      default: false
   end
 
   add_index "core_organizations", ["city_id"], name: "index_core_organizations_on_city_id", using: :btree
@@ -363,24 +363,24 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "core_project_cards", ["project_id"], name: "index_core_project_cards_on_project_id", using: :btree
 
   create_table "core_project_invitations", force: :cascade do |t|
-    t.integer  "project_id",                            null: false
-    t.string   "user_fio",   limit: 255,                null: false
-    t.string   "user_email", limit: 255,                null: false
+    t.integer  "project_id",                null: false
+    t.string   "user_fio",                  null: false
+    t.string   "user_email",                null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "language",               default: "ru"
+    t.string   "language",   default: "ru"
   end
 
   add_index "core_project_invitations", ["project_id"], name: "index_core_project_invitations_on_project_id", using: :btree
 
   create_table "core_project_kinds", force: :cascade do |t|
-    t.string "name_ru", limit: 255
+    t.string "name_ru"
     t.string "name_en"
   end
 
   create_table "core_projects", force: :cascade do |t|
-    t.string   "title",                      limit: 255, null: false
-    t.string   "state",                      limit: 255
+    t.string   "title",                      null: false
+    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "organization_id"
@@ -397,8 +397,8 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "core_projects", ["state"], name: "index_core_projects_on_state", using: :btree
 
   create_table "core_quota_kinds", force: :cascade do |t|
-    t.string "name_ru",        limit: 255
-    t.string "measurement_ru", limit: 255
+    t.string "name_ru"
+    t.string "measurement_ru"
     t.string "name_en"
     t.string "measurement_en"
   end
@@ -412,15 +412,15 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "core_request_fields", ["request_id"], name: "index_core_request_fields_on_request_id", using: :btree
 
   create_table "core_requests", force: :cascade do |t|
-    t.integer  "project_id",                null: false
-    t.integer  "cluster_id",                null: false
-    t.string   "state",         limit: 255
+    t.integer  "project_id",    null: false
+    t.integer  "cluster_id",    null: false
+    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "cpu_hours"
     t.integer  "gpu_hours"
     t.integer  "hdd_size"
-    t.string   "group_name",    limit: 255
+    t.string   "group_name"
     t.integer  "creator_id"
     t.text     "comment"
     t.text     "reason"
@@ -433,8 +433,8 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "core_requests", ["project_id"], name: "index_core_requests_on_project_id", using: :btree
 
   create_table "core_research_areas", force: :cascade do |t|
-    t.string   "name_ru",    limit: 255
-    t.string   "group",      limit: 255
+    t.string   "name_ru"
+    t.string   "group"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name_en"
@@ -450,13 +450,13 @@ ActiveRecord::Schema.define(version: 20180907145732) do
 
   create_table "core_sureties", force: :cascade do |t|
     t.integer  "project_id"
-    t.string   "state",          limit: 255
-    t.string   "comment",        limit: 255
-    t.string   "boss_full_name", limit: 255
-    t.string   "boss_position",  limit: 255
+    t.string   "state"
+    t.string   "comment"
+    t.string   "boss_full_name"
+    t.string   "boss_position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "document",       limit: 255
+    t.string   "document"
     t.integer  "author_id"
     t.text     "reason"
     t.integer  "changed_by_id"
@@ -479,21 +479,21 @@ ActiveRecord::Schema.define(version: 20180907145732) do
 
   create_table "core_surety_scans", force: :cascade do |t|
     t.integer "surety_id"
-    t.string  "image",     limit: 255
+    t.string  "image"
   end
 
   add_index "core_surety_scans", ["surety_id"], name: "index_core_surety_scans_on_surety_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",               default: 0, null: false
-    t.integer  "attempts",               default: 0, null: false
-    t.text     "handler",                            null: false
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
     t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
-    t.string   "locked_by",  limit: 255
-    t.string   "queue",      limit: 255
+    t.string   "locked_by"
+    t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -501,12 +501,93 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "groups", force: :cascade do |t|
-    t.string   "name",       limit: 255
+    t.string   "name"
     t.integer  "weight"
     t.boolean  "system"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "jobstat_data_types", force: :cascade do |t|
+    t.string   "name"
+    t.string   "type",       limit: 1
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "jobstat_data_types", ["name"], name: "index_jobstat_data_types_on_name", using: :btree
+
+  create_table "jobstat_digest_float_data", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "job_id",     limit: 8
+    t.float    "value"
+    t.datetime "time"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "jobstat_digest_float_data", ["job_id"], name: "index_jobstat_digest_float_data_on_job_id", using: :btree
+
+  create_table "jobstat_digest_string_data", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "job_id",     limit: 8
+    t.string   "value"
+    t.datetime "time"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "jobstat_digest_string_data", ["job_id"], name: "index_jobstat_digest_string_data_on_job_id", using: :btree
+
+  create_table "jobstat_float_data", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "job_id",     limit: 8
+    t.float    "value"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "jobstat_float_data", ["job_id"], name: "index_jobstat_float_data_on_job_id", using: :btree
+
+  create_table "jobstat_job_mail_filters", force: :cascade do |t|
+    t.string  "condition"
+    t.integer "user_id"
+  end
+
+  create_table "jobstat_jobs", force: :cascade do |t|
+    t.string   "cluster",      limit: 32
+    t.integer  "drms_job_id",  limit: 8
+    t.integer  "drms_task_id", limit: 8
+    t.string   "login",        limit: 32
+    t.string   "partition",    limit: 32
+    t.datetime "submit_time"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer  "timelimit",    limit: 8
+    t.string   "command",      limit: 1024
+    t.string   "state",        limit: 32
+    t.integer  "num_cores",    limit: 8
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "num_nodes"
+  end
+
+  add_index "jobstat_jobs", ["end_time"], name: "index_jobstat_jobs_on_end_time", using: :btree
+  add_index "jobstat_jobs", ["login"], name: "index_jobstat_jobs_on_login", using: :btree
+  add_index "jobstat_jobs", ["partition"], name: "index_jobstat_jobs_on_partition", using: :btree
+  add_index "jobstat_jobs", ["start_time"], name: "index_jobstat_jobs_on_start_time", using: :btree
+  add_index "jobstat_jobs", ["state"], name: "index_jobstat_jobs_on_state", using: :btree
+  add_index "jobstat_jobs", ["submit_time"], name: "index_jobstat_jobs_on_submit_time", using: :btree
+
+  create_table "jobstat_string_data", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "job_id",     limit: 8
+    t.string   "value"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "jobstat_string_data", ["job_id"], name: "index_jobstat_string_data_on_job_id", using: :btree
 
   create_table "pack_access_tickets", id: false, force: :cascade do |t|
     t.integer "access_id"
@@ -608,13 +689,13 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "pack_versions", ["package_id"], name: "index_pack_versions_on_package_id", using: :btree
 
   create_table "profiles", force: :cascade do |t|
-    t.integer "user_id",                                          null: false
-    t.string  "first_name",            limit: 255
-    t.string  "last_name",             limit: 255
-    t.string  "middle_name",           limit: 255
+    t.integer "user_id",                              null: false
+    t.string  "first_name"
+    t.string  "last_name"
+    t.string  "middle_name"
     t.text    "about"
-    t.boolean "receive_info_mails",                default: true
-    t.boolean "receive_special_mails",             default: true
+    t.boolean "receive_info_mails",    default: true
+    t.boolean "receive_special_mails", default: true
   end
 
   create_table "sessions_projects_in_sessions", force: :cascade do |t|
@@ -637,7 +718,7 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "sessions_report_replies", ["report_id"], name: "index_sessions_report_replies_on_report_id", using: :btree
 
   create_table "sessions_report_submit_denial_reasons", force: :cascade do |t|
-    t.string "name_ru", limit: 255
+    t.string "name_ru"
     t.string "name_en"
   end
 
@@ -646,10 +727,10 @@ ActiveRecord::Schema.define(version: 20180907145732) do
     t.integer  "project_id"
     t.integer  "author_id"
     t.integer  "expert_id"
-    t.string   "state",                     limit: 255
-    t.string   "materials",                 limit: 255
-    t.string   "materials_file_name",       limit: 255
-    t.string   "materials_content_type",    limit: 255
+    t.string   "state"
+    t.string   "materials"
+    t.string   "materials_file_name"
+    t.string   "materials_content_type"
     t.integer  "materials_file_size"
     t.datetime "materials_updated_at"
     t.integer  "illustration_points"
@@ -667,7 +748,7 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "sessions_reports", ["session_id"], name: "index_sessions_reports_on_session_id", using: :btree
 
   create_table "sessions_sessions", force: :cascade do |t|
-    t.string   "state",          limit: 255
+    t.string   "state"
     t.text     "description_ru"
     t.text     "motivation_ru"
     t.datetime "started_at"
@@ -680,8 +761,8 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   create_table "sessions_stats", force: :cascade do |t|
     t.integer "session_id"
     t.integer "survey_field_id"
-    t.string  "group_by",        limit: 255, default: "count"
-    t.integer "weight",                      default: 0
+    t.string  "group_by",        default: "count"
+    t.integer "weight",          default: 0
     t.integer "organization_id"
     t.text    "cache"
   end
@@ -692,17 +773,17 @@ ActiveRecord::Schema.define(version: 20180907145732) do
 
   create_table "sessions_survey_fields", force: :cascade do |t|
     t.integer "survey_id"
-    t.string  "kind",              limit: 255
+    t.string  "kind"
     t.text    "collection"
-    t.integer "max_values",                    default: 1
-    t.integer "weight",                        default: 0
+    t.integer "max_values",        default: 1
+    t.integer "weight",            default: 0
     t.text    "name_ru"
-    t.boolean "required",                      default: false
-    t.string  "entity",            limit: 255
-    t.boolean "strict_collection",             default: false
-    t.string  "hint_ru",           limit: 255
-    t.string  "reference_type",    limit: 255
-    t.string  "regexp",            limit: 255
+    t.boolean "required",          default: false
+    t.string  "entity"
+    t.boolean "strict_collection", default: false
+    t.string  "hint_ru"
+    t.string  "reference_type"
+    t.string  "regexp"
     t.string  "hint_en"
     t.string  "name_en"
   end
@@ -710,7 +791,7 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "sessions_survey_fields", ["survey_id"], name: "index_sessions_survey_fields_on_survey_id", using: :btree
 
   create_table "sessions_survey_kinds", force: :cascade do |t|
-    t.string "name", limit: 255
+    t.string "name"
   end
 
   create_table "sessions_survey_values", force: :cascade do |t|
@@ -726,7 +807,7 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   create_table "sessions_surveys", force: :cascade do |t|
     t.integer "session_id"
     t.integer "kind_id"
-    t.string  "name_ru",                 limit: 255
+    t.string  "name_ru"
     t.boolean "only_for_project_owners"
     t.string  "name_en"
   end
@@ -739,7 +820,7 @@ ActiveRecord::Schema.define(version: 20180907145732) do
     t.integer  "session_id"
     t.integer  "survey_id"
     t.integer  "project_id"
-    t.string   "state",      limit: 255
+    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -750,28 +831,28 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "sessions_user_surveys", ["user_id"], name: "index_sessions_user_surveys_on_user_id", using: :btree
 
   create_table "statistics_organization_stats", force: :cascade do |t|
-    t.string   "kind",       limit: 255
+    t.string   "kind"
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "statistics_project_stats", force: :cascade do |t|
-    t.string   "kind",       limit: 255
+    t.string   "kind"
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "statistics_session_stats", force: :cascade do |t|
-    t.string   "kind",       limit: 255
+    t.string   "kind"
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "statistics_user_stats", force: :cascade do |t|
-    t.string   "kind",       limit: 255
+    t.string   "kind"
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -788,11 +869,11 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "support_field_values", ["ticket_id"], name: "index_support_field_values_on_ticket_id", using: :btree
 
   create_table "support_fields", force: :cascade do |t|
-    t.string   "name_ru",              limit: 255
-    t.string   "hint_ru",              limit: 255
-    t.boolean  "required",                         default: false
-    t.boolean  "contains_source_code",             default: false
-    t.boolean  "url",                              default: false
+    t.string   "name_ru"
+    t.string   "hint_ru"
+    t.boolean  "required",             default: false
+    t.boolean  "contains_source_code", default: false
+    t.boolean  "url",                  default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name_en"
@@ -803,11 +884,11 @@ ActiveRecord::Schema.define(version: 20180907145732) do
     t.integer  "author_id"
     t.integer  "ticket_id"
     t.text     "message"
-    t.string   "attachment",              limit: 255
+    t.string   "attachment"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "attachment_file_name",    limit: 255
-    t.string   "attachment_content_type", limit: 255
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
     t.integer  "attachment_file_size"
     t.datetime "attachment_updated_at"
   end
@@ -816,14 +897,14 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "support_replies", ["ticket_id"], name: "index_support_replies_on_ticket_id", using: :btree
 
   create_table "support_reply_templates", force: :cascade do |t|
-    t.string "subject_ru", limit: 255
+    t.string "subject_ru"
     t.text   "message_ru"
     t.string "subject_en"
     t.text   "message_en"
   end
 
   create_table "support_tags", force: :cascade do |t|
-    t.string   "name_ru",    limit: 255
+    t.string   "name_ru"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name_en"
@@ -835,16 +916,16 @@ ActiveRecord::Schema.define(version: 20180907145732) do
     t.integer  "cluster_id"
     t.integer  "surety_id"
     t.integer  "reporter_id"
-    t.string   "subject",                 limit: 255
+    t.string   "subject"
     t.text     "message"
-    t.string   "state",                   limit: 255
-    t.string   "url",                     limit: 255
-    t.string   "attachment",              limit: 255
+    t.string   "state"
+    t.string   "url"
+    t.string   "attachment"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "responsible_id"
-    t.string   "attachment_file_name",    limit: 255
-    t.string   "attachment_content_type", limit: 255
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
     t.integer  "attachment_file_size"
     t.datetime "attachment_updated_at"
   end
@@ -874,14 +955,14 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "support_tickets_tags", ["ticket_id"], name: "index_support_tickets_tags_on_ticket_id", using: :btree
 
   create_table "support_topics", force: :cascade do |t|
-    t.string   "name_ru",           limit: 255
+    t.string   "name_ru"
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name_en"
     t.text     "template_en"
     t.text     "template_ru"
-    t.boolean  "visible_on_create",             default: true
+    t.boolean  "visible_on_create", default: true
   end
 
   create_table "support_topics_fields", force: :cascade do |t|
@@ -911,38 +992,38 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   add_index "user_groups", ["user_id"], name: "index_user_groups_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                           limit: 255, null: false
-    t.string   "crypted_password",                limit: 255
-    t.string   "salt",                            limit: 255
+    t.string   "email",                           null: false
+    t.string   "crypted_password"
+    t.string   "salt"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "activation_state",                limit: 255
-    t.string   "activation_token",                limit: 255
+    t.string   "activation_state"
+    t.string   "activation_token"
     t.datetime "activation_token_expires_at"
-    t.string   "remember_me_token",               limit: 255
+    t.string   "remember_me_token"
     t.datetime "remember_me_token_expires_at"
-    t.string   "reset_password_token",            limit: 255
+    t.string   "reset_password_token"
     t.datetime "reset_password_token_expires_at"
     t.datetime "reset_password_email_sent_at"
-    t.string   "access_state",                    limit: 255
+    t.string   "access_state"
     t.datetime "deleted_at"
     t.datetime "last_login_at"
     t.datetime "last_logout_at"
     t.datetime "last_activity_at"
-    t.string   "last_login_from_ip_address",      limit: 255
+    t.string   "last_login_from_ip_address"
     t.string   "language"
   end
 
-  add_index "users", ["activation_token"], name: "index_users_on_activation_token", using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["activation_token"], name: "index_authentication_users_on_activation_token", using: :btree
+  add_index "users", ["email"], name: "index_authentication_users_on_email", unique: true, using: :btree
   add_index "users", ["last_login_at"], name: "index_users_on_last_login_at", using: :btree
-  add_index "users", ["remember_me_token"], name: "index_users_on_remember_me_token", using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", using: :btree
+  add_index "users", ["remember_me_token"], name: "index_authentication_users_on_remember_me_token", using: :btree
+  add_index "users", ["reset_password_token"], name: "index_authentication_users_on_reset_password_token", using: :btree
 
   create_table "wiki_pages", force: :cascade do |t|
-    t.string   "name_ru",    limit: 255
+    t.string   "name_ru"
     t.text     "content_ru"
-    t.string   "url",        limit: 255
+    t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name_en"
@@ -950,5 +1031,77 @@ ActiveRecord::Schema.define(version: 20180907145732) do
   end
 
   add_index "wiki_pages", ["url"], name: "index_wiki_pages_on_url", unique: true, using: :btree
+
+  create_table "wiki_tasks", force: :cascade do |t|
+    t.string   "account"
+    t.integer  "task_id"
+    t.float    "cores_hours"
+    t.string   "workdir"
+    t.text     "nodelist"
+    t.float    "timelimit"
+    t.string   "partition"
+    t.integer  "num_cores"
+    t.datetime "t_start"
+    t.integer  "num_nodes"
+    t.string   "cluster"
+    t.string   "state"
+    t.datetime "t_submit"
+    t.text     "command"
+    t.float    "duration"
+    t.datetime "t_end"
+    t.float    "max_cpu_iowait"
+    t.float    "max_ib_rcv_pckts"
+    t.float    "max_cpu_soft_irq"
+    t.float    "max_cpu_flops"
+    t.float    "max_cpu_idle"
+    t.float    "max_cpu_perf_l1d_repl"
+    t.float    "max_cpu_user"
+    t.float    "max_llc_miss"
+    t.float    "max_ib_xmit_pckts"
+    t.float    "max_mem_store"
+    t.float    "max_loadavg"
+    t.float    "max_ib_xmit_data"
+    t.float    "max_cpu_irq"
+    t.float    "max_cpu_nice"
+    t.float    "max_ib_rcv_data"
+    t.float    "max_cpu_system"
+    t.float    "max_mem_load"
+    t.float    "avg_cpu_iowait"
+    t.float    "avg_ib_rcv_pckts"
+    t.float    "avg_cpu_soft_irq"
+    t.float    "avg_cpu_idle"
+    t.float    "avg_cpu_perf_l1d_repl"
+    t.float    "avg_cpu_user"
+    t.float    "avg_llc_miss"
+    t.float    "avg_ib_xmit_pckts"
+    t.float    "avg_cpu_flops"
+    t.float    "avg_loadavg"
+    t.float    "avg_ib_xmit_data"
+    t.float    "avg_cpu_irq"
+    t.float    "avg_mem_store"
+    t.float    "avg_cpu_nice"
+    t.float    "avg_ib_rcv_data"
+    t.float    "avg_cpu_system"
+    t.float    "avg_mem_load"
+    t.float    "min_cpu_iowait"
+    t.float    "min_mem_store"
+    t.float    "min_cpu_soft_irq"
+    t.float    "min_cpu_idle"
+    t.float    "min_ib_rcv_pckts"
+    t.float    "min_cpu_flops"
+    t.float    "min_cpu_perf_l1d_repl"
+    t.float    "min_cpu_user"
+    t.float    "min_llc_miss"
+    t.float    "min_ib_xmit_pckts"
+    t.float    "min_cpu_system"
+    t.float    "min_loadavg"
+    t.float    "min_ib_xmit_data"
+    t.float    "min_cpu_irq"
+    t.float    "min_cpu_nice"
+    t.float    "min_ib_rcv_data"
+    t.float    "min_mem_load"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
 
 end

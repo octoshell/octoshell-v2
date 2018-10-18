@@ -4,3 +4,13 @@
 - right_bar = render "authentication/menu"
 
 = render "layouts/face/application", { right_bar: right_bar, content: yield }
+
+div class='right-float-button'
+  div class="right-float-button-text"
+    i class="fas fa-bullhorn semi-large"
+    | &nbsp;
+  div class="right-float-button-text"
+    a href="/support/tickets/new" target="_blank"
+      | Отправьте нам
+      br
+      | комментарий

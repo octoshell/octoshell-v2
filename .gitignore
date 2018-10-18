@@ -28,7 +28,7 @@ config/dumps/
 
 public/uploads/
 public/system/
+public/assets/
 public/system_archive.tar.gz
-
 vendor/
 deploy/

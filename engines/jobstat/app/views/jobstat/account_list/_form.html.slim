@@ -1,0 +1,33 @@
+javascript:
+  $(document).ready(function(){
+    var ids = ["#_owned_logins", "#_states", "#_partitions"]
+
+    for(var i = 0; i < ids.length; i++)
+    {
+      var id = ids[i];
+
+      if($(id + ' option:selected').length == 0)
+        $(id + ' option:first-child').attr("selected", "selected");
+    }
+
+    $("#_only_long").prop('checked', #{@params[:only_long].to_i == 1});
+  });
+
+//- logger.info "VIEW: selected=#{@params[:all_logins]}"
+div class="container"
+  = bootstrap_form_tag(method: "get") do |f|
+    div class="row"
+      = f.text_field("start_time", class: "datepicker", value: @params[:start_time], label: "От", wrapper: {class: 'col-md-3'})
+      = f.text_field("end_time", class: "datepicker", value: @params[:end_time], label: "До", wrapper: {class: 'col-md-3'})
+      = f.select("cluster", @clusters.keys, {label: "Кластер", selected: @params[:cluster]}, {wrapper: {class: 'col-md-3'}})
+    div class="row"
+      = f.select("all_logins", options_for_select(@all_logins[0],@all_logins[1]), {label: "Логины", selected: @params[:all_logins]}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("states", ["ALL"] + @states_options, {label: "Статусы завершения задачи", selected: @params[:states]}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("partitions", ["ALL"] + @partitions_options, {label: "Разделы суперкомпьютера", selected: @params[:partitions]}, {multiple: true, wrapper: {class: 'col-md-3'}})
+    div class="row"
+      = f.submit "Показать", class: 'col-md-1'
+      span class='col-md-1'
+        | &nbsp;
+      span class='col-md-10'
+        = f.check_box :only_long, name: :only_long, label: 'Только задания длиннее 15 минут', checked: true
+      
