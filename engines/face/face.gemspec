@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "slim"
   s.add_dependency "russian"
   s.add_dependency "therubyrhino"
-  s.add_dependency "sass-rails"
+  s.add_dependency "sassc-rails"
   s.add_dependency "coffee-rails"
   s.add_dependency "jquery-rails"
   s.add_dependency "select2-rails"
