@@ -14,11 +14,11 @@ html
     - if @extra_css
       - [@extra_css].flatten.each do |css|
         = stylesheet_link_tag "#{css}", media: "all"
+    = csrf_meta_tags
     = javascript_include_tag "application"
     - if @extra_js
       - [@extra_js].flatten.each do |js|
         = javascript_include_tag "#{js}"
-    = csrf_meta_tags
     javascript:
       window.env = "#{Rails.env}"
       window.locale = "#{I18n.locale}"

@@ -1,7 +1,7 @@
 # This migration comes from jobstat (originally 20171226061628)
 class CreateJobstatDigestStringData < ActiveRecord::Migration
   def change
-    return
+    return if File.exists? '/tmp/skip-octoshell-bad-migrations'
     create_table :jobstat_digest_string_data do |t|
       t.string :name
       t.bigint :job_id, :index => true

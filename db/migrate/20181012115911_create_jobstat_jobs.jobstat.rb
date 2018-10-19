@@ -1,7 +1,7 @@
 # This migration comes from jobstat (originally 20171226061144)
 class CreateJobstatJobs < ActiveRecord::Migration
   def change
-    return
+    return if File.exists? '/tmp/skip-octoshell-bad-migrations'
     create_table :jobstat_jobs do |t|
       t.string :cluster, :limit => 32
       t.bigint :drms_job_id
