@@ -16,6 +16,7 @@ ru:
       hardware/kind: "Вид устройств"
     attributes:
       hardware/item:
+        kind_id: Вид
         name: Название
         description: Описание
         current_state: Текущее состояния

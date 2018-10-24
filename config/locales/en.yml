@@ -150,6 +150,8 @@ en:
       manage: Full access to Wiki pages
     packages:
       manage: Full access to Packages
+    hardware:
+      manage: Full access to Packages
     requests:
       manage: "Full access to Resource requests"
     settings:

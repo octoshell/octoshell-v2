@@ -15,15 +15,12 @@ module Hardware
                       .page(params[:page])
                       .preload(:kind)
                       .left_joins(:items_states)
-                      .where('hardware_items_states.updated_at < ? OR hardware_items_states.id IS NULL',session[:hardware_max_date])
+                      .after_or(session[:hardware_max_date])
       name_column = State.current_locale_column(:name)
       @states = {}
       states_rec = Item.where(id: @items.ids).current_state_date
       .joins("INNER JOIN hardware_states AS s on s.id = i_s.state_id ")
-      .select("hardware_items.id, s.#{name_column} AS name, s.id AS s_id").group('s.id')
-      if session[:hardware_max_date]
-        states_rec = states_rec.where('hardware_items_states.updated_at < ?',session[:hardware_max_date])
-      end
+      .select("hardware_items.id, s.#{name_column} AS name, s.id AS s_id").after(session[:hardware_max_date]).group('s.id')
       states_rec.each{ |i| @states[i[:id]]= [i[:s_id],i[:name]]  }
       without_pagination(:items)
     end

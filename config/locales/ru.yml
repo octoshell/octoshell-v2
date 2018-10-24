@@ -150,6 +150,9 @@ ru:
       show_all: Просмотр всех Страниц Справки
     packages:
       manage: Полный доступ к Пакетам
+    hardware:
+      manage: Полный доступ к Аппаратуре
+
     requests:
       manage: "Полный доступ к Заявкам на ресурсы"
     settings:

@@ -25,4 +25,4 @@ blockquote
   h3 = Hardware::Kind.model_name.human
   p = link_to @item.kind.name, [:admin, @item.kind]
 
-= render partial: 'hardware/admin/items/items_states_table',locals: {items_states: @item.items_states.includes(:state).where('hardware_items_states.updated_at < ?', session[:hardware_max_date])}
+= render partial: 'hardware/admin/items/items_states_table',locals: {items_states: @item.items_states.includes(:state).after(session[:hardware_max_date])}

@@ -42,5 +42,16 @@ module Hardware
       states&.last&.to_states || kind.states
     end
 
+    def self.after(date)
+      return all unless date
+      where('hardware_items_states.updated_at < ?', date)
+    end
+
+    def self.after_or(date)
+      return all unless date
+      where('hardware_items_states.updated_at < ? OR hardware_items_states.id IS NULL', date)
+    end
+
+
   end
 end

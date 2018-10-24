@@ -64,3 +64,5 @@ versions:
   - manage
 comments_engine:
   - manage
+hardware:
+  - manage
