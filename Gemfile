@@ -45,6 +45,7 @@ gem "announcements",  path: "engines/announcements"
 gem "jd",             path: 'engines/jd'
 gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
+gem "hardware",       path: "engines/hardware"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"

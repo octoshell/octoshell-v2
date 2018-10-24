@@ -1,0 +1,87 @@
+---
+ru:
+  admin_submenu:
+    hardware: Аппаратура
+  activerecord:
+    errors:
+      models:
+        hardware/state:
+          attributes:
+            base:
+              restrict_dependent_destroy:
+                many: Нельзя удалить состояние с существующими устройствами
+    models:
+      hardware/item: "Устройство"
+      hardware/state: "Состояние устройства"
+      hardware/kind: "Вид устройств"
+    attributes:
+      hardware/item:
+        name: Название
+        description: Описание
+        current_state: Текущее состояния
+        states: Все состояния, в которых этот объект когда-то был
+      hardware/state:
+        name: Название
+        description: Описание
+        reason: Причина изменения состояния
+        updated_at: Обновлено
+        from_states: Состояния, из которых средства могут перейти в это состояние
+        to_states: Состояния, в которые могут перейти средства с этим состоянием
+      hardware/kind:
+        name: Название
+        description: Описание
+  hardware:
+    admin:
+      items:
+        edit:
+          title: Редактировать устройства
+        index:
+          new_item: Новое устройство
+          title: Список устройств
+        items_states_table:
+          no_items_states: Нет состояний
+        new:
+          title: Новое устройство
+        show:
+          state_manipulation: Управление состоянием
+        table:
+          confirm: Вы действительно хотите удалить?
+          no_items: Нет устройств
+        update_state:
+          stale: Перед Вами кто-то обновил состояние объекта. Повторите вашу попытку
+      kinds:
+        edit:
+          title: Редактировать вид устройства
+        index:
+          new_kind: Новый вид
+          title: Виды устройств
+        new:
+          title: Новый вид устойств
+        show:
+          items: Устройства
+          new_item: Новое устройство
+          new_state: Новое состояние
+        table:
+          confirm: Вы действительно хотите  удалить вид устройства?
+          no_kinds: Нет видов устройств
+      states:
+        edit:
+          title: Редактировать состояние
+        new:
+          title: Новое состояние
+        show:
+          go_to_kind: Перейти к виду устройств
+        states_table:
+          no_states: Нет состояний
+        table:
+          confirm: Вы действительно хотите удалить состояние?
+          no_states: Нет состояний
+    engine_submenu:
+      items: Устройства
+      kinds: Виды устройств
+    self_error: Self error
+  layouts:
+    hardware:
+      admin:
+        max_date: Не показывать изменения начиная с
+        remove_max_date: Состояние на сегодня

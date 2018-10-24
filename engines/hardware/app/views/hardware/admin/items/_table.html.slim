@@ -1,0 +1,31 @@
+- if items.any?
+  table class="table table-bordered"
+    tr
+      th class="col-xs-1" #
+      th class="col-xs-3" = Hardware::Item.human_attribute_name(:name)
+      th class="col-xs-3" = Hardware::Kind.model_name.human
+      th class="col-xs-3" = Hardware::Item.human_attribute_name(:current_state)
+
+    - items.each do |item|
+      tr
+        td = item.id
+        td = link_to item.name, [:admin, item]
+        td = link_to item.kind.name, [:admin, item.kind]
+        td
+          -if @states[item.id]
+            - state = @states[item.id]
+            = link_to state.second, admin_kind_state_path(kind_id: item.kind.id, id: state.first)
+        td
+          div class="btn-group pull-right"
+            = link_to t("actions.edit", default: "edit"), [:edit, :admin, item], class: "btn btn-default btn-sm"
+            button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+              span class="caret"
+            ul class="dropdown-menu" role="menu"
+              - name = t("actions.delete", default: "delete")
+              - confirm = t(".confirm", default: "Are you sure?")
+              - data = { method: :delete, confirm: confirm }
+              li class="text-left"
+                = link_to name, [:admin, item], data: data, class: "text-danger"
+
+- else
+  p = t(".no_items")

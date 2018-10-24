@@ -1,0 +1,57 @@
+---
+ru:
+  hardware:
+    admin:
+      items:
+        edit:
+          title: Edit device
+        index:
+          new_item: New device
+          title: Devices list
+        items_states_table:
+          no_items_states: No states
+        new:
+          title: New device
+        show:
+          state_manipulation: State management
+        table:
+          confirm: Do you really want to remove this state?
+          no_items: No devices
+        update_state:
+          stale: State was updated while you were editing this item. Repeat it please
+      kinds:
+        edit:
+          title: Edit device kind
+        index:
+          new_kind: New device kind
+          title: Device kinds
+        new:
+          title: New device kind
+        show:
+          items: Devices
+          new_item: New device
+          new_state: New state
+        table:
+          confirm: Do you really want to remove this device kind?
+          no_kinds: Нет видов устройств
+      states:
+        edit:
+          title: Edit state
+        new:
+          title: New state
+        show:
+          go_to_kind: Go to this device kind
+        states_table:
+          no_states: No states
+        table:
+          confirm: Do you really want to remove this state?
+          no_states: No states
+    engine_submenu:
+      items: Devices
+      kinds: New device kinds
+    self_error: Self error
+  layouts:
+    hardware:
+      admin:
+        max_date: Do not show changes after
+        remove_max_date: Today state

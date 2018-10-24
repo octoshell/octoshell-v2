@@ -1,0 +1,18 @@
+div class="page-header"
+  h1 = @kind.name
+
+div class="well"
+  = link_to t("actions.edit"), [:edit, :admin, @kind], class: "btn btn-default"
+  = link_to t("actions.delete"), [:admin, @kind], method: :delete, class: "btn btn-default"
+  = link_to t(".new_state"), [:new, :admin, @kind, :state], class: "btn btn-default"
+  = link_to t(".items"), admin_items_path(q: {kind_id_in: [@kind.id]} ), class: "btn btn-success"
+  = link_to t(".new_item"), new_admin_item_path(kind_id: @kind.id), class: "btn btn-default"
+
+blockquote
+  h4 = Hardware::Kind.human_attribute_name(:name)
+  p = @kind.name
+
+  h4 = Hardware::Kind.human_attribute_name(:description)
+  p = @kind.description
+
+= render partial: 'hardware/admin/states/table',locals: {states: @kind.states}

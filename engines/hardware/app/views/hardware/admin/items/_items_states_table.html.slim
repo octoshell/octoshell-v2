@@ -1,0 +1,17 @@
+h2 = Hardware::Item.human_attribute_name(:states)
+
+- if items_states.any?
+  table class="table table-bordered"
+    tr
+      th class="col-xs-4" = Hardware::ItemsState.human_attribute_name(:name)
+      th class="col-xs-4" = Hardware::ItemsState.human_attribute_name(:reason)
+      th class="col-xs-4" = Hardware::ItemsState.human_attribute_name(:updated_at)
+
+    - items_states.each do |items_state|
+      tr
+        td = link_to items_state.state.name, [:admin, items_state.state.kind, items_state.state]
+        td = items_state.reason
+        td = items_state.updated_at
+
+- else
+  p = t(".no_items_states")

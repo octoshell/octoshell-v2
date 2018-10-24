@@ -102,6 +102,21 @@ PATH
       underscore-rails
 
 PATH
+  remote: engines/hardware
+  specs:
+    hardware (0.0.1)
+      aasm
+      carrierwave
+      decorators
+      jquery-ui-rails
+      kaminari
+      maymay
+      mime-types
+      rails (~> 4.2.10)
+      ransack
+      slim
+
+PATH
   remote: engines/jd
   specs:
     jd (0.0.1)
@@ -594,6 +609,7 @@ DEPENDENCIES
   face!
   factory_bot_rails
   foreman
+  hardware!
   i18n-tasks (~> 0.9.21)
   jd!
   jquery-rails

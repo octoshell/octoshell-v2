@@ -1,0 +1,8 @@
+= bootstrap_form_for [:admin, @item] do |f|
+  = f.collection_select :kind_id, Hardware::Kind.all, :id, :name
+  -Hardware::Item.locale_columns(:name).each do |column|
+    = f.text_field column
+  -Hardware::Item.locale_columns(:description).each do |column|
+    = f.text_field column
+  = f.form_group do
+    = f.submit t("actions.save")
