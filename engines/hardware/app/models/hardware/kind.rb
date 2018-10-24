@@ -6,7 +6,7 @@ module Hardware
     validates :name_en, uniqueness: true, if: proc { |k| k.name_en.present? }
 
     has_many :states, inverse_of: :kind, dependent: :destroy
-    has_many :items_states, inverse_of: :kind, dependent: :destroy
+    # has_many :items_states, inverse_of: :kind, dependent: :destroy
     has_many :items, inverse_of: :kind, dependent: :destroy
 
   end
