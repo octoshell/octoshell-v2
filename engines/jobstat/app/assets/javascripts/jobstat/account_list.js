@@ -4,7 +4,7 @@ $(document).ready(function() {
     duplicateSpan: false,
     dateformat: 'yyyymmdd',
     emptyTo: 'bottom',
-    widgets: ['staticRow', 'resizable', 'stickyHeaders', 'columnSelector' ],
+    widgets: ['staticRow', 'resizable', 'columnSelector' ], //'stickyHeaders', <-- conflicts with columnSelector
     widgetOptions: {
       resizable: true,
     },

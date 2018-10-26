@@ -220,7 +220,7 @@ module Jobstat
       list=[]
       dis=[]
       projects.each{|proj,logins|
-        p="---- #{shorten(proj,32)} ----"
+        p="---- #{shorten(proj.title,32)} ----"
         list << p
         dis << p
         list.concat(logins)

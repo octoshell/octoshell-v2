@@ -92,6 +92,7 @@ function all_feedback_rule(rule_id) {
   var feedback={
     user: current_user,
     condition: rule_id,
+    class: 1,
     feedback: $('#text_feedback_rule_'+rule_id).val()
   }
   $("#feedback_rule_"+rule_id).removeClass('target')
@@ -99,7 +100,7 @@ function all_feedback_rule(rule_id) {
   $.ajax({
     type: "POST",
     url: "feedback",
-    data: {'feedback': feedback, 'type': 'feedback_rule'},
+    data: {'feedback': feedback, 'type': 'feedback_rule_only'},
   })
 }
 

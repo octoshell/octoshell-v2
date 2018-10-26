@@ -186,42 +186,9 @@ module Jobstat
 
       data=get_data("jobstat:filters:#{user_id}",
         URI("http://graphit.parallel.ru:8123/api/filters?user=#{user_id}"))
-      logger.info "get_filters: data=#{data.inspect}"
+      #logger.info "get_filters: data=#{data.inspect}"
       data || []
     end
-
-    # def self.post_filters(user,filters)
-    #   user_id=user.is_a?(Fixnum) ? user : user.id
-    #   #projects=get_involved_projects(user)
-    #   #accesses=projects.map{|p| p.accesses}
-    #   uri=URI("http://graphit.parallel.ru:8124/api/filters")
-    #   post_data(uri,filters)
-    #   # begin
-    #   #   Net::HTTP.start(uri.host, uri.port,
-    #   #     :use_ssl => uri.scheme == 'https', 
-    #   #     :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-    #   #     :read_timeout => 5,
-    #   #     :open_timeout => 5,
-    #   #     :ssl_timeout => 5,
-    #   #     ) do |http|
-    #   #     request = Net::HTTP::post_form(
-    #   #       uri.request_uri,
-    #   #       user: user_id,
-    #   #       #FIXME! title -> RNF id
-    #   #       #cluster: accesses.map{|a| a.cluster}.flatten.uniq.map { |c| c.title }.join(','),
-    #   #       #account: projects.map { |p| p.members.map { |m| m.login } }.flatten.uniq.join(','),
-    #   #       filters: filters.join(','),
-    #   #       )
-    #   #     response = http.request request
-
-    #   #     response.code
-    #   #   end
-    #   #   # FIXME! retry post later!
-    #   # rescue => e #Net::ReadTimeout, Net::OpenTimeout
-    #   #   logger.info "post_filters: error #{e.message}; #{e.backtrace.join("\n")}"
-    #   #   999
-    #   # end
-    # end
 
     def self.get_feedback_job user_id, joblist=[]
 

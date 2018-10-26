@@ -19,12 +19,12 @@ module Jobstat
       @extra_js='jobstat/application'
       @jobs_feedback={}
 
-      query_logins = @projects.map{|_,login| login}.uniq
+      query_logins = @projects.map{|_,login| login}.flatten.uniq
       #!debug query_logins = ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
       al=(@params[:all_logins] || []).reject{|x| x==''}
       query_logins = (al & query_logins)
       @params[:all_logins]=al
-      logger.info "---> al=#{al} / query_logins=#{query_logins} / all_logins=#{@all_logins}"
+      #logger.info "---> al=#{al} / query_logins=#{query_logins} / all_logins=#{@all_logins}"
 
       @rules_plus=load_rules
       @jobs=[]
@@ -34,15 +34,6 @@ module Jobstat
       partitions=@params[:partitions].reject{|x| x==''}
       @params[:states]='ALL' if states.length==0
       @params[:partitions]='ALL' if partitions.length==0
-      # if states.length == 0 or
-      #    partitions.length == 0 #or
-      #     #query_logins.length == 0
-
-      #   @notice = "Choose all query parameters"
-      #   return
-      # else
-      #   @notice = nil
-      # end
 
       @agree_flags={
         0 => 'far fa-thumbs-up agreed-flag',
@@ -75,9 +66,9 @@ module Jobstat
       end
 
       joblist=@jobs.map{|j| j.drms_job_id}
-      logger.info "JOBLIST: #{joblist.inspect}"
+      #logger.info "JOBLIST: #{joblist.inspect}"
       jobs_feedback=Job::get_feedback_job(params[:user].to_i, joblist) || {}
-      logger.info "JOBLIST got: #{jobs_feedback}"
+      #logger.info "JOBLIST got: #{jobs_feedback}"
       #[{user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string, condition=string},{...}]
       
       @jobs_feedback={}
@@ -111,8 +102,8 @@ module Jobstat
 
     def feedback
       code=case params[:type]
-      # when 'filter'
-      #   feedback_filter params[:feedback]       # ...
+      when 'feedback_rule_only'
+        feedback_rule_only params[:feedback]    # ...
       when 'multi_jobs'
         feedback_multi_jobs params[:feedback]   # ok (jobs+rules disagree)
       when 'proposal'
@@ -268,6 +259,26 @@ module Jobstat
       end
     end
 
+    def feedback_rule_only parm
+      #TODO make caching for not confirmed sends
+
+      uri=URI("http://graphit.parallel.ru:8123/api/feedback-condition")
+      req={
+        user: parm[:user].to_i,
+        :class => parm[:class] || 0,
+        condition: parm[:condition],
+        feedback: parm[:feedback],
+      }
+      resp=Job::post_data uri, req
+      CacheData.delete("jobstat:fedback_rule:#{parm[:user]}")
+      if Net::HTTPSuccess === resp
+        200
+      else
+        logger.info "feedback_rule_only: post code=#{resp ? resp.code : -1}"
+        500
+      end
+    end
+
     protected
 
     def get_defaults
@@ -309,37 +320,5 @@ module Jobstat
       end
       rules
     end
-
-    # def post_feedback uri, req, user=nil, password=nil
-    #   code=500
-    #   resp=nil
-    #   begin
-    #     Net::HTTP.start(uri.host, uri.port,
-    #                     :use_ssl => uri.scheme == 'https', 
-    #                     :verify_mode => OpenSSL::SSL::VERIFY_NONE,
-    #                     :read_timeout => 5,
-    #                     :opent_imeout => 5,
-    #                     :ssl_timeout => 5,
-    #                    ) do |http|
-    #       request = Net::HTTP::Post.new uri.request_uri
-    #       request['Accept'] = '*/*'
-    #       request['Content-Type'] = 'application/json'
-    #       request.set_form_data req
-    #       if user
-    #         request.basic_auth user, password.to_s
-    #       end
-    #       logger.info "post_feedback (#{uri})-> #{req.inspect}"
-    #       resp = http.request request
-
-    #       code=resp.code
-    #     end
-    #   rescue => e #Net::ReadTimeout, Net::OpenTimeout
-    #     logger.info "post_feedback #{uri}: error #{e.message}"
-    #     code=500
-    #   end
-    #   #render plain: code, layout: false
-    #   #response.status=code
-    #   return code
-    # end
   end
 end
