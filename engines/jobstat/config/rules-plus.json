@@ -115,7 +115,7 @@
     "rule_mpi_disbalance": {
       "index": 90,
       "is_enabled": 1,
-      "description": "Большой дислабанс на узлах между средним объемом передаваемых и получаемых данных по MPI сети.",
+      "description": "Большой дисбаланс на узлах между средним объемом передаваемых и получаемых данных по MPI сети.",
       "comment": "num_nodes > 1 AND NOT tag_low_ib_mpiAND (xmit_mpi/recv_data > MPI_DISBALANCE) OR (xmit_mpi/recv_data  < 1.0/MPI_DISBALANCE)",
       "src_file": "rules_integral_based.py",
       "group": "incorrect_behavior",
@@ -185,7 +185,7 @@
     "rule_mpi_high_system": {
       "index": 140,
       "is_enabled": 1,
-      "description": "Работа с коммуникационнной сетью занимает слишком много системных ресурсов.",
+      "description": "Работа с коммуникационной сетью занимает слишком много системных ресурсов.",
       "comment": "num_nodes > 1 AND thr_low_ib AND thr_high_cpu_system",
       "src_file": "rules_integral_based.py",
       "group": "inefficient_mpi",
@@ -206,7 +206,7 @@
       "priority": 1,
       "confidence": 2,
       "criticalness": 3,
-      "suggestion": "При запуске задачи менеджером ресурсов был выбран неудачный набор узлов. Рекомендуется при необходимости явно указывать узлы, на которых будет производиться запуск проргаммы, либо пытаться оптимизировать работу с MPI.",
+      "suggestion": "При запуске задачи менеджером ресурсов был выбран неудачный набор узлов. Рекомендуется при необходимости явно указывать узлы, на которых будет производиться запуск программы, либо пытаться оптимизировать работу с MPI.",
       "text_recommendation": "Анализ MPI программ -> Профилировка",
       "module_recommendation": "mpi_profiling"
     },
