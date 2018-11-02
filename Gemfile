@@ -14,6 +14,8 @@ gem 'traco'
 gem 'lmtp', github: 'apaokin/ruby-lmtp', require: false
 gem 'rubyzip', '>= 1.0.0', require: false
 
+gem 'therubyracer' # for execjs
+
 group :development do
   gem "letter_opener"
   gem "quiet_assets"

@@ -5,26 +5,54 @@ https://users.parallel.ru/
 
 ## Installation and starting
 
-1. install rbenv (e.g. `curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash`)
+We assume, that all below is doing as user `octo` (or root, if it is said 'as root'). You can use another user. Please, note, that linux account `octo` and database role `octo` are not connected, but we prefer to use the same name for both cases.
+
+1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git build-essential libssl-dev libreadline-dev zlib1g-dev`)
+1. install as root redis (under debian/ubuntu: `sudo apt-get install redis`)
+1. install postgresql (under debian/ubuntu: `sudo apt-get install postgresql postgresql-server-dev-all`)
+1. install rbenv (e.g. `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
+1. as root add database user octo: `sudo -u postgres createuser -s octo`
+1. as root set database password: `sudo -u postgres psql` then enter `\password octo` and enter password. Exit with `\q`.
+1. Enable and start redis and postgresql (e.g. `systemctl enable redis; systemctl enable postgresql; systemctl start redis; systemctl start postgresql`)
+1. make sure rbenv is loaded automatically, by adding to ~/.bashrc these lines:
+
+```
+  export PATH=~/.rbenv/bin:$PATH
+  eval "$(rbenv init -)"
+```
+1. reopen your terminal session or execute lines from point above in console
 1. install ruby:
-		rbenv install 2.5.1
-		rbenv local 2.5.1
-1. `gem install bundler`
-1. `bundle install`
-1. install redis
-1. install postgresql
-1. `git clone`
-1. add database user octo: `sudo -u postgres createuser -s octo`
-1. set database password: `sudo -u postgres psql` then enter `\password octo` and enter password. Exit with `\q`.
-1. fill database password in `config/database.yml`
-1. `cd db/migrate && ln -s ../../engines/jobstat/db/migrate/* .`
-1. `bin/rake db:setup`
-1. optional run tests: `bin/rspec .`
-1. After "seeds" example cluster will be created. You should login to your cluster as root, create new user 'octo'. Login as `admin@octoshell.ru` in web-application. Go to "Admin/Cluster control" and edit "Test cluster". Copy `octo` public key from web to /home/octo/.ssh/authorized_keys.
-1. `rake assets:precompile` (Downloading pages without precompilation  and   config.assets.debug = true can take significant amount of time)
-1. Start production sidekiq: `./run-sidekiq` (`dev-sidekiq` for development)
-1. Start production server: `./run` (`dev` for development)
-1. Enter as admin with login `admin@octoshell.ru` and password `123456`
+
+```
+  rbenv install 2.5.1
+  rbenv local 2.5.1
+```
+
+1. execute `gem install bundler`
+1. execute `bundle install`
+1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
+1. go to cloned directory (`cd octoshell-v2`)
+1. copy `config/database.yml.example` into `config/database.yml`
+1. fill database parameters and password in `config/database.yml`
+1. execute `bundle install`
+1. execute `bundle exec rake db:setup`
+1. execute `bundle exec rake assets:precompile` (Downloading pages without precompilation  and   config.assets.debug = true can take significant amount of time)
+
+Now you can test all in **development** mode, just execute `./dev` and wait for 'Use Ctrl-C to stop'. Open 'http://localhost:5000/' to access application.
+To test delayed actions, such as email send, cluster sync, start sidekiq in development mode: `dev-sidekiq`.
+
+Enter as admin with login `admin@octoshell.ru` and password `123456`
+
+To run in **production** mode:
+
+1. as root install nginx (`sudo apt-get install nginx`)
+1. as root copy nginx config file (`cp nginx-octo.conf /etc/nginx/sites-enabled/`), restart nginx (`systemctl restart nginx`)
+1. as root move your app into /var/www: `mkdir /var/www/octoshell2; mv ~octo/octoshell-v2 /var/www/octoshell2/current`)
+1. Start production sidekiq: `./run-sidekiq`
+1. Start production server: `./run`
+1. To add cluster sync you should login to your cluster as root, create new user 'octo'. Login as `admin@octoshell.ru` in web-application. Go to "Admin/Cluster control" and edit "Test cluster". Copy `octo` public key from web to /home/octo/.ssh/authorized_keys.
+
+Best way is to test in development mode and then do deploy on production (or stage) server. See **Deploy** section for more details.
 
 ## Hacks
 
