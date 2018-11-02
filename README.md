@@ -1,3 +1,6 @@
+Русская версия ниже.
+For russian version see below.
+
 # README
 Octoshell - access management system for HPC centers. This project is based on Ruby on Rails framework(4.2)
 https://users.parallel.ru/
@@ -7,13 +10,13 @@ https://users.parallel.ru/
 
 We assume, that all below is doing as user `octo` (or root, if it is said 'as root'). You can use another user. Please, note, that linux account `octo` and database role `octo` are not connected, but we prefer to use the same name for both cases.
 
-1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git build-essential libssl-dev libreadline-dev zlib1g-dev`)
+1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev`)
 1. install as root redis (under debian/ubuntu: `sudo apt-get install redis`)
 1. install postgresql (under debian/ubuntu: `sudo apt-get install postgresql postgresql-server-dev-all`)
-1. install rbenv (e.g. `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
 1. as root add database user octo: `sudo -u postgres createuser -s octo`
 1. as root set database password: `sudo -u postgres psql` then enter `\password octo` and enter password. Exit with `\q`.
-1. Enable and start redis and postgresql (e.g. `systemctl enable redis; systemctl enable postgresql; systemctl start redis; systemctl start postgresql`)
+1. enable and start redis and postgresql (e.g. `systemctl enable redis; systemctl enable postgresql; systemctl start redis; systemctl start postgresql`)
+1. as user install rbenv (e.g. `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
 1. make sure rbenv is loaded automatically, by adding to ~/.bashrc these lines:
 
 ```
@@ -97,28 +100,60 @@ You may need to notify administrators using support tickets (requests). Special 
 All deploys after this can be done by `git fetch; ./do_deploy`, and then on deploy server `systemctl restart octoshell`.
 
 # README
+
 Базовое приложение для модульной версии octoshell.
 
 ## Установка и запуск
 
-1. установить rbenv (например `curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash`)
-1. install ruby:
-    rbenv install 2.5.1
-    rbenv local 2.5.1
-1. `gem install bundler`
-1. `bundle install`
-1. установить redis
-1. установить postgresql
-1. `git clone`
-1. добавить пользователя БД octo: `sudo -u postgres createuser -s octo`
-1. установить пароль для пользоватедя БД: `sudo -u postgres psql` then enter `\password octo` and enter password. Exit with `\q`.
-1. прописать пароль в `config/database.yml`
-1. `bin/rake db:setup`
-1. запустить тесты (по желанию): `bin/rspec .`
-1. После прогона сидов создастся тестовый «кластер». Для синхронизации с ним необходимо доступ на него под пользователем root. Затем залогиниться в приложение как администратор `admin@octoshell.ru`. В «Админке проектов» зайти в раздел «Управление кластерами» и открыть Тестовый кластер. Скопировать публичный ключ админа кластера (по умолчанию `octo`) в `/home/octo/.ssh/authorized_keys`.
-1. Запустить sidekiq: `./run-sidekiq`
-1. Запустить сервер: `./run`
-1. Войти по адресу `http://localhost:3000/` с логином `admin@octoshell.ru` и паролем `123456`
+Далее считаем, что установка производится под пользователем `octo` (или `root`, если сказано `под рутом`). Можно использовать другое имя пользователя. Отметим, что имя пользователя и имя роли базы данных не обязаны совпадать, но мы используем одинаковые.
+
+1. под рутом ставим пакеты (debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev`)
+1. под рутом ставим redis (debian/ubuntu: `sudo apt-get install redis`)
+1. под рутом ставим postgresql (debian/ubuntu: `sudo apt-get install postgresql postgresql-server-dev-all`)
+1. под рутом добавим роль для БД octo: `sudo -u postgres createuser -s octo`
+1. под рутом зададим роли пароль: `sudo -u postgres psql`, вводим `\password octo` и вводим пароль. Выход: `\q`.
+1. под рутом включаем и запускаем redis и postgresql (например `systemctl enable redis; systemctl enable postgresql; systemctl start redis; systemctl start postgresql`)
+1. под пользователем ставим rbenv (проще всего так: `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
+1. в ~/.bashrc пользователя должны быть добавлены эти строки, чтобы работал rbenv:
+
+```
+  export PATH=~/.rbenv/bin:$PATH
+  eval "$(rbenv init -)"
+```
+1. запускаем новое окно терминала или терминальную сессию или просто выполняем в консоли строки из предыдущего пункта.
+1. ставим ruby:
+
+```
+  rbenv install 2.5.1
+  rbenv local 2.5.1
+```
+
+1. выполняем `gem install bundler`
+1. выполняем `bundle install`
+1. выполняем `git clone https://github.com/octoshell/octoshell-v2.git`
+1. переходим в созданный каталог (`cd octoshell-v2`)
+1. копируем `config/database.yml.example` в `config/database.yml`
+1. вписываем параметры БД и пароль в `config/database.yml`
+1. выполняем `bundle install`
+1. выполняем `bundle exec rake db:setup`
+1. выполняем `bundle exec rake assets:precompile`
+
+Теперь можно запустить всё в **development** режиме, просто выполнив `./dev` и подождав строчки 'Use Ctrl-C to stop'. В браузере открываем 'http://localhost:5000/'.
+Чтобы протестировать отложенные операции, такие как рассылка email, синхронизация с кластером и т.п., запускаем sidekiq в development режиме: `dev-sidekiq`.
+
+В браузере вводим логин `admin@octoshell.ru` и пароль `123456`
+
+Для запуска в **production** режиме:
+
+1. под рутом ставим nginx (`sudo apt-get install nginx`)
+1. под рутом копируем конфиг nginx-а (`cp nginx-octo.conf /etc/nginx/sites-enabled/`), перезапускаем nginx (`systemctl restart nginx`)
+1. под рутом перемещаем каталог приложения в /var/www: `mkdir /var/www/octoshell2; mv ~octo/octoshell-v2 /var/www/octoshell2/current`)
+1. запускаем production sidekiq: `./run-sidekiq`
+1. запускаем production server: `./run`
+1. для синхронизации с кластером, заходим как root на кластер, создаём пользователя 'octo'. Входим как `admin@octoshell.ru` в приложение. Идём в "Admin/Cluster control" редактируем "Test cluster" (или новый). Копируем открытый ключ `octo` из web-странички в /home/octo/.ssh/authorized_keys.
+
+Лучше всего потестировать приложение в development режиме, а потом выполнить деплой на рабочий (или тестовый) сервер, см. раздел **Деплой**.
+
 
 ## Деплой
 
