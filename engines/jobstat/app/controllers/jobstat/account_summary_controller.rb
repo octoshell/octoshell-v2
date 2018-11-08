@@ -5,8 +5,8 @@ module Jobstat
     include JobHelper
     def show
       year = Time.new.year
-      defaults = {:start_time => "01.01.#{year - 1}",
-                  :end_time => "01.01.#{year}",
+      defaults = {:start_time => "#{year - 1}.01.01",
+                  :end_time => "#{year}.01.01",
                   :involved_logins => [],
                   :owned_logins => []
       }
