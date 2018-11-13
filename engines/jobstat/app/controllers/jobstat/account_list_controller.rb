@@ -8,7 +8,6 @@ module Jobstat
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
       @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
-      @all_logins=get_select_options_by_projects @projects
       @params = get_defaults.merge(params.symbolize_keys)
       @total_count = 0
       @shown = 0
@@ -20,11 +19,15 @@ module Jobstat
       @jobs_feedback={}
 
       query_logins = @projects.map{|_,login| login}.flatten.uniq
+      req_logins=(@params[:all_logins] || []).reject{|x| x==''}
       #!debug query_logins = ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
-      al=(@params[:all_logins] || []).reject{|x| x==''}
-      query_logins = (al & query_logins)
-      @params[:all_logins]=al
-      #logger.info "---> al=#{al} / query_logins=#{query_logins} / all_logins=#{@all_logins}"
+      unless req_logins.include?('ALL') || req_logins.length==0
+        query_logins = (req_logins & query_logins)
+      end
+      @params[:all_logins]=query_logins
+      @all_logins=get_select_options_by_projects @projects, query_logins
+      @all_logins[0]=['ALL']+@all_logins[0]
+      #@all_logins[1][:selected]<<['ALL'] if req_logins.length==0
 
       @rules_plus=load_rules
       @jobs=[]
