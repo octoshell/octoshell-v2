@@ -285,7 +285,7 @@ module Jobstat
     protected
 
     def get_defaults
-      {:start_time => Date.today.beginning_of_month.strftime("%Y.%m.%d"),
+      {:start_time => Date.today.prev_day.beginning_of_month.strftime("%Y.%m.%d"),
        :end_time => Date.today.strftime("%Y.%m.%d"),
        :cluster => @default_cluster,
        :states => [],

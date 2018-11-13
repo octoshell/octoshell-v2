@@ -225,7 +225,7 @@ module Jobstat
         dis << p
         list.concat(logins)
       }
-      [list, selected: selected, disabled: dis]
+      [list, {selected: selected, disabled: dis}]
       #debug [["-- RNF --","vadim", "shvets", "-- Worlid domination --", "vurdizm", "wasabiko", "ivanov", "-- Postgraduate play --", "afanasievily_251892", "gumerov_219059"], selected: selected, disabled: ["-- RNF --","-- Worlid domination --","-- Postgraduate play --"]]
       #options_for_select(list, selected: selected, disabled: dis)
     end
