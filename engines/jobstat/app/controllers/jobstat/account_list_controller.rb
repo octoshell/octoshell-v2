@@ -303,7 +303,7 @@ module Jobstat
       jobs = jobs.where(partition: @params[:partitions]) unless params[:partitions].include?("ALL")
 
       if params[:only_long].to_i == 1
-        jobs = jobs.where "end_time - start_time > 15 * '1 min'::interval"
+        jobs = jobs.where "end_time - start_time > '942 second'::interval" # 15:42 = 15*60+42
       end
 
       jobs.where(login: query_logins, cluster: params[:cluster])
