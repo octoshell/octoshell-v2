@@ -22,7 +22,8 @@ User.class_eval do
 
   scope :finder, (lambda do |q|
     string = %w[profiles.last_name profiles.first_name profiles.middle_name email].join("||' '||")
-    joins(:profile).where("(#{string}) LIKE ?", "%#{q}%").order("profiles.last_name")
+    #!!! WARNING !!! Postgresql extension!!!
+    joins(:profile).where("(#{string}) ILIKE ?", "%#{q}%").order("profiles.last_name")
   end)
 
   def as_json(_options)
