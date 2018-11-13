@@ -5,18 +5,20 @@ module Jobstat
     include JobHelper
     def show
       year = Time.new.year
-      defaults = {:start_time => "01.01.#{year - 1}",
-                  :end_time => "01.01.#{year}",
+      defaults = {:start_time => Date.today.strftime("%Y.01.01"),
+                  :end_time => Date.today.strftime("%Y.%m.%d"),
                   :involved_logins => [],
                   :owned_logins => []
       }
 
-      @owned_logins = get_owned_logins
-      @involved_logins = get_involved_logins
+      @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
+      @all_logins=get_select_options_by_projects @projects
+      #@owned_logins = get_owned_logins
+      #@involved_logins = get_involved_logins
 
       @params = defaults.merge(params.symbolize_keys)
 
-      query_logins = (@params[:involved_logins] | @params[:owned_logins]) & (@involved_logins | @owned_logins)
+      query_logins = (@params[:all_logins] & @all_logins)
 
       @jobs = Job.where "start_time > ? AND end_time < ?",
                         DateTime.parse(@params[:start_time]),
