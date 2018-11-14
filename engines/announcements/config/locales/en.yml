@@ -58,5 +58,5 @@ en:
       announcement:
         hello_known_name: "Good afternoon, %{name}!"
         hello_unknown: "Hello!"
-        msg_spec_announce_help: "If you do not want to receive service announcements, you need to untick   «Use my email for service newsletters» in your profile."
-        msg_info_announce_help: "If you do not want to receive info announcements, you need to untick   «Use my email for info newsletters» in your profile."
+        msg_spec_announce_help: "If you do not want to receive service announcements, you need to untick «Use my email for service newsletters» in your profile. (https://users.parallel.ru/profile)"
+        msg_info_announce_help: "If you do not want to receive info announcements, you need to untick «Use my email for info newsletters» in your profile. (https://users.parallel.ru/profile)"
