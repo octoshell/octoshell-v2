@@ -2,7 +2,7 @@
 
 // pass ruby variables to js
 - group_plus = @rules_plus['groups']
-- def_icon = {'icon'=>'far fa-exclamation-triangle'}
+- def_icon = {'icon'=>'far fa-exclamation-triangle', 'color'=>'color-regular'}
 
 javascript:
   var jobs=#{{@jobs_plus.to_json}}
@@ -212,7 +212,7 @@ div class="perf-table"
       tr id="job_row_#{job.drms_job_id}" data-jobid="#{job.drms_job_id}" data-info-state="#{perf_data_present ? 0 : -1}"
         td
           input type="checkbox" class="job_check" style="display: none;" data-job-id="#{job.drms_job_id}" onChange="job_check_clicked(#{job.drms_job_id})"
-          a class="red-on-hover" onClick="$('#job_info_#{index}').addClass('target')"
+          a class="red-on-hover" onClick="$('#job_info_#{index}').addClass('target')" title="Подробнее о правилах, скрыть/прокомментировать правила"
             i class="fas fa-bars"
           // feedback dropdown window
           div id="job_info_#{index}" class="octo-popup"
@@ -327,7 +327,10 @@ div class="perf-table"
           - else
             p 
               | Нет данных...
-        td = link_to(job.drms_job_id, job)
+        td
+          - d="Подробнее про этот запуск\nИмя задачи: #{job.get_command}"
+          p title="#{d}"
+            = link_to(job.drms_job_id, job)
         td class="login-data" = job.login
         td class="login-data" = job.partition
         td = job.start_time.strftime('%F %T')

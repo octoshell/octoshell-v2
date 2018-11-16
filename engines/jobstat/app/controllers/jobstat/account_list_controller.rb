@@ -29,7 +29,7 @@ module Jobstat
       @all_logins[0]=['ALL']+@all_logins[0]
       #@all_logins[1][:selected]<<['ALL'] if req_logins.length==0
 
-      @rules_plus=load_rules
+      @rules_plus=Job.load_rules
       @jobs=[]
       @jobs_plus={}
 
@@ -38,11 +38,7 @@ module Jobstat
       @params[:states]='ALL' if states.length==0
       @params[:partitions]='ALL' if partitions.length==0
 
-      @agree_flags={
-        0 => 'far fa-thumbs-up agreed-flag',
-        1 => 'far fa-thumbs-down agreed-flag',
-        99 => 'far fa-clock agreed-flag',
-      }
+      @agree_flags=Job.agree_flags
 
       begin
         @jobs = get_jobs(@params, query_logins)
@@ -78,8 +74,8 @@ module Jobstat
       jobs_feedback.each { |f|
         @jobs_feedback[f['job_id']]||={}
         @jobs_feedback[f['job_id']][f['condition']]={
-          user:f['user'], cluster: f['cluster'],
-          task_id:f['task_id'], klass:f['class'], feedback:f['feedback']
+          user: f['user'], cluster: f['cluster'],
+          task_id: f['task_id'], klass: f['class'], feedback: f['feedback']
         }
       }
 
@@ -147,7 +143,7 @@ module Jobstat
     def all_rules
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
-      @rules_plus=load_rules
+      @rules_plus=Job.load_rules
       @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq
       @current_user=current_user
 
@@ -313,15 +309,5 @@ module Jobstat
         .order(:drms_job_id)
     end
 
-    def load_rules
-      rules={}
-      begin
-        File.open("engines/jobstat/config/rules-plus.json", "r") { |file|
-          rules=JSON.load(file)
-        }
-      rescue
-      end
-      rules
-    end
   end
 end
