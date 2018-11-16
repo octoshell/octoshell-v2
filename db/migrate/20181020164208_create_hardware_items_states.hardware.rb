@@ -6,6 +6,8 @@ class CreateHardwareItemsStates < ActiveRecord::Migration
       t.belongs_to :state
       t.text :reason_en
       t.text :reason_ru
+      t.text :description_en
+      t.text :description_ru
       t.timestamps null: false
     end
   end

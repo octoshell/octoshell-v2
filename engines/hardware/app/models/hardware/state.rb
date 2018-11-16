@@ -12,6 +12,7 @@ module Hardware
                                         association_foreign_key: :to_id,
                                         dependent: :destroy
     has_many :items_states, dependent: :restrict_with_error, inverse_of: :state
+    has_many :items, through: :items_states, source: :item, inverse_of: :states
 
 
 

@@ -3,12 +3,16 @@ div class="page-header"
 
 div class="well"
   = link_to t("actions.edit"), [:edit, :admin, @item], class: "btn btn-default"
-  = link_to t("actions.delete"), [:admin, @item], method: :delete, class: "btn btn-default"
+  /= link_to t("actions.delete"), [:admin, @item], method: :delete, class: "btn btn-default"
 h3 = t('.state_manipulation')
 div class="well"
-  = bootstrap_form_for @item.items_states.build, url: admin_item_update_state_path(@item) do |f|
-    -Hardware::ItemsState.locale_columns(:reason).each do |column|
-      = f.text_field column
+  = bootstrap_form_for Hardware::ItemsState.new, url: admin_item_update_state_path(@item) do |f|
+    .col-xs-6
+      -Hardware::ItemsState.locale_columns(:reason).each do |column|
+        = f.text_field column
+    .col-xs-6
+      -Hardware::ItemsState.locale_columns(:description).each do |column|
+        = f.text_field column
     = hidden_field_tag :items_states_count, @item.items_states.count
     = f.form_group do
       -@item.to_states.each_with_index do |state,i|
@@ -24,5 +28,16 @@ blockquote
   p = @item.description
   h3 = Hardware::Kind.model_name.human
   p = link_to @item.kind.name, [:admin, @item.kind]
+h3 = Hardware::Item.human_attribute_name(:last_state)
+.row
+  .col-xs-2
+    = @item.last_items_state&.state&.name
+  .col-xs-3
+    = @item.last_items_state&.reason
+  .col-xs-3
+    = @item.last_items_state&.description
+  .col-xs-4
+    = l(@item.last_items_state&.created_at) if @item.last_items_state&.created_at
+
 
 = render partial: 'hardware/admin/items/items_states_table',locals: {items_states: @item.items_states.includes(:state).after(session[:hardware_max_date])}

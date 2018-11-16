@@ -1,11 +1,12 @@
 Hardware::Engine.routes.draw do
   namespace :admin do
     root 'kinds#index'
+    resources :items_states
     resources :kinds do
       collection do
         get :states
       end
-      resources :states,except: :index
+      resources :states, except: :index
     end
     resources :items do
       collection do

@@ -3,7 +3,7 @@ div class="page-header"
 
 div class="well"
   = link_to t("actions.edit"), [:edit, :admin, @kind], class: "btn btn-default"
-  = link_to t("actions.delete"), [:admin, @kind], method: :delete, class: "btn btn-default"
+  /= link_to t("actions.delete"), [:admin, @kind], method: :delete, class: "btn btn-danger"
   = link_to t(".new_state"), [:new, :admin, @kind, :state], class: "btn btn-default"
   = link_to t(".items"), admin_items_path(q: {kind_id_in: [@kind.id]} ), class: "btn btn-success"
   = link_to t(".new_item"), new_admin_item_path(kind_id: @kind.id), class: "btn btn-default"

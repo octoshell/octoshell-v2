@@ -1,16 +1,8 @@
 module Hardware
   class Admin::ItemsController < Admin::ApplicationController
 
-    before_action do
-      # @date = ::Date.current
-      # if params[:max_date] && params[:max_date].present?
-      #   @date = params[:max_date]
-      # end
-      # puts @date.inspect
-    end
-
     def index
-      @search = Item.search(params[:q])
+      @search = Item.search(params_q)
       @items = @search.result(distinct: true)
                       .page(params[:page])
                       .preload(:kind)
@@ -58,6 +50,11 @@ module Hardware
     def update
       @item = Item.find(params[:id])
       if @item.update(item_params)
+        last_items_state_unpermitted_params = params[:item].delete(:last_items_state)
+        if last_items_state_unpermitted_params
+          last_items_state_params = last_items_state_unpermitted_params.permit!
+          @item.last_items_state.update! last_items_state_params
+        end
         redirect_to [:admin, @item]
       else
         render :edit
@@ -70,7 +67,7 @@ module Hardware
         flash[:error] = t('.stale')
       else
         @state = State.find_by!(State.current_locale_column(:name) => params[:commit])
-        items_state_params = params.require(:items_state).permit(:reason_ru, :reason_en)
+        items_state_params = params.require(:items_state).permit(:reason_ru, :reason_en, :description_ru, :description_en)
         @items_state = @item.items_states.new(items_state_params)
         @items_state.state = @state
         @items_state.save!
@@ -88,6 +85,9 @@ module Hardware
 
     private
 
+    def params_q
+      params[:q] || { only_deleted: false }
+    end
     def item_params
       params.require(:item).permit(*Item.locale_columns(:name, :description), :kind_id)
     end

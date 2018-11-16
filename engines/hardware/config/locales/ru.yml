@@ -20,6 +20,7 @@ ru:
         name: Название
         description: Описание
         current_state: Текущее состояния
+        last_state_description: Описание текущего состояния
         states: Все состояния, в которых этот объект когда-то был
       hardware/state:
         name: Название
@@ -28,6 +29,11 @@ ru:
         updated_at: Обновлено
         from_states: Состояния, из которых средства могут перейти в это состояние
         to_states: Состояния, в которые могут перейти средства с этим состоянием
+      hardware/items_state:
+        name: Название
+        description: Описание состояния
+        reason: Причина изменения состояния
+        updated_at: Обновлено
       hardware/kind:
         name: Название
         description: Описание

@@ -129,17 +129,6 @@ ActiveRecord::Schema.define(version: 20181020164209) do
     t.string "name"
   end
 
-  create_table "comments_user_records", force: :cascade do |t|
-    t.integer  "record_id"
-    t.string   "record_type"
-    t.integer  "user_id",                 null: false
-    t.integer  "type_ab",     default: 0
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-  end
-
-  add_index "comments_user_records", ["record_type", "record_id", "user_id", "type_ab"], name: "record, user index", using: :btree
-
   create_table "core_access_fields", force: :cascade do |t|
     t.integer "access_id"
     t.integer "quota"
@@ -535,8 +524,10 @@ ActiveRecord::Schema.define(version: 20181020164209) do
     t.integer  "state_id"
     t.text     "reason_en"
     t.text     "reason_ru"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text     "description_en"
+    t.text     "description_ru"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "hardware_kinds", force: :cascade do |t|
@@ -565,15 +556,6 @@ ActiveRecord::Schema.define(version: 20181020164209) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  create_table "lang_prefs", force: :cascade do |t|
-    t.string   "language"
-    t.integer  "user_id",    null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "lang_prefs", ["user_id"], name: "index_lang_prefs_on_user_id", using: :btree
 
   create_table "pack_access_tickets", id: false, force: :cascade do |t|
     t.integer "access_id"
