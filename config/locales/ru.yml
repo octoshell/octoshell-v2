@@ -16,8 +16,8 @@ ru:
     sessions_warning:
       html: "Перерегистрации <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
     profile: Профиль
-    job_stat: Статистика запусков
-    job_table: Запуски
+    job_stat: Статистика
+    job_table: Эффективность
     comments: Комментарии
     packages: Пакеты
   admin_submenu:
