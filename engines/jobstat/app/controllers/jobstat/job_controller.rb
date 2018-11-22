@@ -32,10 +32,12 @@ module Jobstat
 
     def show
       @job = Job.find(params["id"])
+      @feedbacks=Job::get_feedback_job(params[:user].to_i, @job.id)
 
       @job_perf = @job.get_performance
       @ranking = @job.get_ranking
       @current_user = current_user
+
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
 
@@ -54,6 +56,10 @@ module Jobstat
       @fs_digest_data = graph_data_multi(rcv_fs, xmit_fs)
 
       cpu_user = FloatDatum.where(job_id: @job.id, name: "cpu_user").take
+
+      @agree_flags=Job.agree_flags
+      @rules_plus=Job.load_rules
+      @filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''}
 
       if cpu_user.nil? || cpu_user.value.nil?
         render :show_no_data

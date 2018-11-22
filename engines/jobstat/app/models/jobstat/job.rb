@@ -223,6 +223,41 @@ module Jobstat
       end
     end
 
+    # FIXME! make this more customizable, not hardcoded!
+    def get_command
+      array = command.split
+      if /\/ompi$/.match(array[0]) ||
+         /\/impi$/.match(array[0]) ||
+         /\/run$/.match(array[0])
+      then
+        array.shift
+      end
+      if /([^\/]+)$/.match array[0]
+        $1
+      else
+        array[0]
+      end
+    end
+
+    def self.agree_flags
+      {
+        0 => 'far fa-thumbs-up agreed-flag',
+        1 => 'far fa-thumbs-down agreed-flag',
+        99 => 'far fa-clock agreed-flag',
+      }
+    end
+
+    def self.load_rules
+      rules={}
+      begin
+        File.open("engines/jobstat/config/rules-plus.json", "r") { |file|
+          rules=JSON.load(file)
+        }
+      rescue
+      end
+      rules
+    end
+
     private
 
     def self.get_data(id,uri)
