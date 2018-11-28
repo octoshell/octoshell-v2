@@ -37,7 +37,7 @@ table class="table table-bordered"
   -if @surety.changed_by
       tr
         th = Core::Surety.human_attribute_name(:changed_by)
-        td =  @surety.changed_by.full_name
+        td = link_to @surety.changed_by.full_name main_app.admin_user_path(@surety.changed_by)
 
 
 - if @surety.scans.any?

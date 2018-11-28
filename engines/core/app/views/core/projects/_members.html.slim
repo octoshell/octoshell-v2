@@ -21,7 +21,7 @@ div class="row" id="members"
           td
             ul class="list-unstyled"
               li
-                = member.full_name
+                = link_to member.full_name, main_app.user_path(member)
                 - if member.user_id == @project.owner.id
                   |
                   i class="fa fa-flag"

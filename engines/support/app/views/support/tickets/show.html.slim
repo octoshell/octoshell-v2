@@ -17,7 +17,7 @@ div class="well btn-toolbar"
 table class="table table-stripped"
   tr
     th class="col-xs-4" = Support::Ticket.human_attribute_name(:reporter)
-    td = @ticket.reporter.full_name
+    td = link_to @ticket.reporter.full_name, main_app.admin_user_path(@ticket.reporter)
   tr
     th = Support::Ticket.human_attribute_name(:reporter_logins)
     td = @ticket.reporter_logins
@@ -42,10 +42,10 @@ table class="table table-stripped"
   - if @ticket.project.present?
     tr
       th = Support::Ticket.human_attribute_name(:project)
-      td = @ticket.project
+      td = link_to @ticket.project, core.admin_project_path(@ticket.project)
     tr
       th = Support::Ticket.human_attribute_name(:project_id)
-      td = @ticket.project.id
+      td = link_to @ticket.project.id, core.admin_project_path(@ticket.project)
   - else
     tr class="hidden"
       th = Support::Ticket.human_attribute_name(:project)
@@ -54,7 +54,7 @@ table class="table table-stripped"
   - if @ticket.cluster.present?
     tr
       th = Support::Ticket.human_attribute_name(:cluster)
-      td = @ticket.cluster
+      td = link_to @ticket.cluster, core.admin_cluster_path(@ticket.cluster)
   - else
     tr class="hidden"
       th = Support::Ticket.human_attribute_name(:cluster)

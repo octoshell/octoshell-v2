@@ -14,7 +14,7 @@ div class="page-header"
         th = Core::SuretyMember.human_attribute_name(:organization)
       - @unsured_members.each do |member|
         tr
-          td = member.full_name
-          td = member.organization
+          td = link_to member.full_name, main_app.user_path(member.user)
+          td = link_to member.organization, core.organization_path(member.organization)
   = f.form_group do
     = f.submit t("actions.generate")
