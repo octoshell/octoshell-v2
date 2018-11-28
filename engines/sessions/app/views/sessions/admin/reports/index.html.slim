@@ -5,7 +5,7 @@ div class="page-header"
   = f.collection_select :session_id_in, Sessions::Session.all, :id, :description, { label: t('.session'), include_blank: true }, { multiple: true }
   /= f.collection_select :author_id_eq, Sessions.user_class.joins(:owned_projects).includes(:profile).distinct.all, :id, :full_name_with_email, label: Sessions::Report.human_attribute_name(:author), include_blank: true
   = f.autocomplete_field :author_id_eq,{ label: Sessions::Report.human_attribute_name(:author), source: core.with_owned_projects_finder_admin_users_path} do |val|
-    -User.find(val).full_name_with_email
+    - User.find(val).full_name_with_email
   = f.autocomplete_field :project_id_eq,{ label: Sessions::Report.human_attribute_name(:project), source: core.projects_path} do |val|
     -Core::Project.find(val).title
   = f.select :state_in, Sessions::Report.state_names(:state).map { |n| [Sessions::Report.human_state_name(n), n] }, { label: Sessions::Report.human_attribute_name(:state), include_blank: true }, { multiple: true }

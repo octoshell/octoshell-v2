@@ -13,11 +13,11 @@ div class="row" id="members"
             ul class="list-unstyled"
               li
                 / TODO: may? :review, :users
-                = member.full_name
+                = link_to member.full_name, main_app.admin_user_path(member.user)
                 - if member.user_id == @project.owner.id
                   |  
                   i class="fa fa-flag"
-              li
+              /li
                 = mail_to member.email do
                   i class="fa fa-envelope"
                   |  

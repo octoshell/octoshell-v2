@@ -20,7 +20,7 @@
         = Support::Ticket.human_attribute_name(:updated_at)
     - tickets.each do |ticket|
       tr
-        td class="col-xs-1"= ticket.id
+        td class="col-xs-1" = link_to ticket.id, [:admin, ticket]
         td class="col-xs-5"
           ul class="list-unstyled"
             li

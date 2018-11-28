@@ -21,7 +21,7 @@
 
     - @reports.each do |report|
       tr
-        td = report.id
+        td = link_to report.id, sessions.admin_report_path(report)
         td
           ul class="list-unstyled"
             li

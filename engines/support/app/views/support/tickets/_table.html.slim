@@ -16,7 +16,7 @@
         = Support::Ticket.human_attribute_name(:updated_at)
     - tickets.each do |ticket|
       tr
-        td = ticket.id
+        td = link_to ticket.id, ticket
         td
           ul class="list-unstyled"
             li

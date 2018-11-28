@@ -16,7 +16,7 @@ div class="row" id="sureties"
           td
             ul class="list-unstyled"
               - surety.members.each do |member|
-                li = member.full_name
+                = link_to member.full_name, main_app.admin_user_path(member)
           td
             span class="label label-#{state}" = surety.human_state_name
           td

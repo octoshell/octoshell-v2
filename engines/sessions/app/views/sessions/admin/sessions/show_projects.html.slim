@@ -35,11 +35,11 @@ div class="page-header"
           tr
             td = check_box_tag "selected_project_ids[]", project.id,
                                @projects_involved_in_session_ids.include?(project.id)
-            td = project.id
+            td = link_to project.id, core.admin_project_path(project)
             td = link_to project.title, core.admin_project_path(project)
             td = project.human_state_name
-            td class="col-xs-2" = project.owner.full_name_with_email
-            td class="col-xs-3" = project.organization.name if project.organization
+            td class="col-xs-2" = link_to project.owner.full_name_with_email, main_app.admin_user_path(project.owner)
+            td class="col-xs-3" = link_to(project.organization.name, core.admin_organization_path(project.organization)) if project.organization
             td class="col-xs-2" = l project.created_at.to_date
   - else
     div class="panel-body"
