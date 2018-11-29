@@ -33,6 +33,7 @@ module Jobstat
       @clusters = {"lomonosov-1" => lom1, "lomonosov-2" => lom2}
 
       slurm_states = {
+        "RUNNING" => "Running",
         "COMPLETED" => "Completed",
         "FAILED" => "Failed",
         "CANCELLED" => "Cancelled",

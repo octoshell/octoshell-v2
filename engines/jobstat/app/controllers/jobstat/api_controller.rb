@@ -4,10 +4,6 @@ module Jobstat
       drms_job_id = params["job_id"]
       drms_task_id = params.fetch("task_id", 0)
 
-      if params["state"] == 'RUNNING'
-        return
-      end
-
       Job.where(drms_job_id: drms_job_id, drms_task_id: drms_task_id).first_or_create
           .update({cluster: params["cluster"],
                    login: params["account"],
