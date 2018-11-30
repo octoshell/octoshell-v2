@@ -12,6 +12,7 @@ module Jobstat
                    start_time: Time.at(params["t_start"]).utc.to_datetime,
                    end_time: Time.at(params["t_end"]).utc.to_datetime,
                    timelimit: params["timelimit"],
+                   nodelist: params["nodelist"],
                    command: params["command"],
                    state: params["state"],
                    num_cores: params["num_cores"],
