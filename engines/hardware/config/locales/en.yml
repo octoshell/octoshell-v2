@@ -1,6 +1,35 @@
 ---
-ru:
+en:
+  admin_submenu:
+    hardware: Hardware
   hardware:
+    models:
+      hardware/item: "Device"
+      hardware/state: "State of device"
+      hardware/kind: "Device kind"
+    attributes:
+      hardware/item:
+        kind_id: Kind
+        name: Name
+        description: Description
+        current_state: Current state
+        last_state_description: Current state description
+        states: All states of the device
+      hardware/state:
+        name: Name
+        description: Description
+        reason: Reason of last state update
+        updated_at: Updated at
+        from_states: Состояния, из которых средства могут перейти в это состояние
+        to_states: Состояния, в которые могут перейти средства с этим состоянием
+      hardware/items_state:
+        name: Name
+        description: State description
+        reason: Reason for change of state
+        updated_at: Updated at
+      hardware/kind:
+        name: Name
+        description: Description
     admin:
       items:
         edit:
@@ -8,6 +37,7 @@ ru:
         index:
           new_item: New device
           title: Devices list
+          only_deleted: Only deleted
         items_states_table:
           no_items_states: No states
         new:
@@ -48,10 +78,10 @@ ru:
           no_states: No states
     engine_submenu:
       items: Devices
-      kinds: New device kinds
+      kinds: Device kinds
     self_error: Self error
   layouts:
     hardware:
       admin:
         max_date: Do not show changes after
-        remove_max_date: Today state
+        remove_max_date: Today's state
