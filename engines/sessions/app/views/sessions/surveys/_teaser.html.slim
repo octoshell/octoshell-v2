@@ -26,7 +26,7 @@
                   td class="span2"
                     - if us.pending?
                       span class="label label-important" = us.human_state_name
-                    - elsif us.filling?
+                    - elsif us.filling? || us.postfilling?
                       span class="label label-warning" = us.human_state_name
                     - elsif us.submitted?
                       span class="label label-success" = us.human_state_name

@@ -12,13 +12,13 @@ Sessions.user_class.class_eval do
 
   def warning_reports
     current_session = sessions.last
-    reports.where(state: %i[pending accepted exceeded],
+    reports.where(state: %i[pending accepted exceeded postfilling],
                   session: current_session)
   end
 
   def warning_surveys
     current_session = sessions.last
-    surveys.where(state: %i[pending filling exceeded],
+    surveys.where(state: %i[pending filling exceeded postfilling],
                   session: current_session)
   end
 end if Sessions.user_class
