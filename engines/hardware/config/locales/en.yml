@@ -37,7 +37,7 @@ en:
         index:
           new_item: New device
           title: Devices list
-          only_deleted: Only deleted
+          only_deleted: Show devices of deleted state
         items_states_table:
           no_items_states: No states
         new:
@@ -79,6 +79,7 @@ en:
     engine_submenu:
       items: Devices
       kinds: Device kinds
+      items_states: States of devices
     self_error: Self error
   layouts:
     hardware:
