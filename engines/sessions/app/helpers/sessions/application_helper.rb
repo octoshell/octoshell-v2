@@ -39,7 +39,7 @@ module Sessions
       case report.state_name
       when :can_not_be_submitted then
         :primary
-      when :accepted, :assessing, :filling then
+      when :accepted, :assessing, :filling, :postfilling then
         :warning
       when :submitted, :assessed then
         :success
