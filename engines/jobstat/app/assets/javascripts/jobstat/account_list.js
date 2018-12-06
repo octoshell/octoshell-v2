@@ -112,7 +112,7 @@ function disagree(jobid, rule, mass, text) {
   }
   $.ajax({
     type: "POST",
-    url: "feedback",
+    url: feedback_url,
     data: {'feedback': feedback, 'type': 'feedback_rule'},
   }).always(function( msg ) {
     restore_disagree()
@@ -140,7 +140,7 @@ function agree(jobid, rule, mass, text) {
   }
   $.ajax({
     type: "POST",
-    url: "feedback",
+    url: feedback_url,
     data: {'feedback': feedback, 'type': 'feedback_rule'},
   }).always(function( msg ) {
     restore_disagree()
@@ -187,7 +187,7 @@ function hide_rule(jobid, rule) {
   }
   $.ajax({
     type: "POST",
-    url: "feedback",
+    url: feedback_url,//"feedback",
     data: {'feedback': feedback, 'type': 'hide_rule'},
   }).always(function( msg ) {
     restore_disagree()
@@ -309,7 +309,7 @@ function multi_job_feedback() {
     //feedback_started = false;
     $.ajax({
       type: "POST",
-      url: "feedback",
+      url: feedback_url,
       data: {'feedback': feedback, 'type': 'multi_jobs'},
     }).always(function( msg ) {
       restore_disagree()
@@ -364,7 +364,7 @@ function agree_all() {
 
   $.ajax({
     type: "POST",
-    url: "feedback",
+    url: feedback_url,
     data: {'feedback': new_feedback, 'type': 'multi_jobs'},
   }).done(function( msg ) {
     show_thanks("Спасибо за отзыв!")

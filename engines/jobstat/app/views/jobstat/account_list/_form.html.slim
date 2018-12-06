@@ -1,6 +1,6 @@
 //- logger.info "VIEW: selected=#{@params[:all_logins]}"
-div class="container"
-  = bootstrap_form_tag(method: "get") do |f|
+div class="container" id="intro-step2" data-disable-interaction="1" data-step="2"
+  = bootstrap_form_tag(:method => "get") do |f|
     div class="row"
       = f.text_field("start_time", class: "datepicker", value: @params[:start_time], label: "От", wrapper: {class: 'col-md-3'})
       = f.text_field("end_time", class: "datepicker", value: @params[:end_time], label: "До", wrapper: {class: 'col-md-3'})
@@ -15,6 +15,7 @@ div class="container"
         | &nbsp;
       span class='col-md-10'
         = f.check_box :only_long, name: :only_long, label: 'Только задания длиннее 15 минут', checked: true
+    = f.hidden_field :fake_data, value: @fake_data
       
 javascript:
   $(document).ready(function(){

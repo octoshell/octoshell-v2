@@ -1,5 +1,5 @@
 - group_plus = @rules_plus['groups']
-- def_icon = {'icon'=>'fas fa-exclamation-triangle', 'color'=>'color-regular'}}
+- def_icon = {'icon'=>'fas fa-exclamation-triangle', 'color'=>'color-regular'}
 
 h3 Список всех доступных правил
 p На данной странице приведено подробное описание всех правил, которые на данный момент используются для обнаружения потенциальных проблем с эффективностью. Для каждого правила можно предложить свои замечания; также можно скрыть правило, чтобы соответствующая проблема с эффективностью не отображалась для Ваших задач.
@@ -91,6 +91,8 @@ javascript:
   var filters=#{{@filters.to_json}}
   var emails=#{{@emails.to_json}}
   var current_user=#{{@current_user.id}};
+  var feedback_url='#{{url_for ["account_list","feedback"]}}';
+
   
   $(function(){
     var hash = window.location.hash.substr(4);
