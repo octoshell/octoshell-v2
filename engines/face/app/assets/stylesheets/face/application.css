@@ -25,3 +25,8 @@
   background-color: #337ab7;
 }
 
+.version {
+  float: right;
+  font-size: 0.5em;
+  color: #808080;
+}

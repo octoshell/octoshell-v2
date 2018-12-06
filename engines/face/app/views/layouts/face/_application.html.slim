@@ -49,5 +49,7 @@ html
 
       div id="footer"
         = link_to t('.maintaining_organization'), 'http://parallel.ru/cluster', target: '_blank'
+        span class="version"
+          | Ver #{Octoshell::Version.full_ver}
         br
         | Created by #{link_to('Evrone', 'http://evrone.ru')}

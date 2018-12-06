@@ -11,16 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181012115912) do
+ActiveRecord::Schema.define(version: 20181130150333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "abilities", force: :cascade do |t|
-    t.string   "action"
-    t.string   "subject"
+    t.string   "action",     limit: 255
+    t.string   "subject",    limit: 255
     t.integer  "group_id"
-    t.boolean  "available",  default: false
+    t.boolean  "available",              default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
