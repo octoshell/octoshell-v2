@@ -18,7 +18,7 @@ module Jobstat
 
       @params = defaults.merge(params.symbolize_keys)
 
-      query_logins = (@params[:all_logins] & @all_logins)
+      query_logins = (@params[:all_logins] & @all_logins[0])
 
       @jobs = Job.where "start_time > ? AND end_time < ?",
                         DateTime.parse(@params[:start_time]),
