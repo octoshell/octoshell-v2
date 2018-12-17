@@ -1,22 +1,25 @@
 div class="page-header"
   h1 = t(".title")
 
-= bootstrap_form_for @search, method: :get, url: admin_reports_path, layout: :horizontal do |f|
-  = f.collection_select :session_id_in, Sessions::Session.all, :id, :description, { label: t('.session'), include_blank: true }, { multiple: true }
-  /= f.collection_select :author_id_eq, Sessions.user_class.joins(:owned_projects).includes(:profile).distinct.all, :id, :full_name_with_email, label: Sessions::Report.human_attribute_name(:author), include_blank: true
-  = f.autocomplete_field :author_id_eq,{ label: Sessions::Report.human_attribute_name(:author), source: core.with_owned_projects_finder_admin_users_path} do |val|
-    - User.find(val).full_name_with_email
-  = f.autocomplete_field :project_id_eq,{ label: Sessions::Report.human_attribute_name(:project), source: core.projects_path} do |val|
-    -Core::Project.find(val).title
-  = f.select :state_in, Sessions::Report.state_names(:state).map { |n| [Sessions::Report.human_state_name(n), n] }, { label: Sessions::Report.human_attribute_name(:state), include_blank: true }, { multiple: true }
-  - if Sessions.user_class.superadmins.include? current_user
-    = f.collection_select :expert_id_eq, Sessions.user_class.experts, :id, :full_name, priority: [current_user], label: t('.expert'), include_blank: true
-  = display_all_tag
+= bootstrap_form_for @search, method: :get, url: admin_reports_path, layout: :vertical do |f|
+  div class="container"
+    div class="col-md-6"
+      = f.collection_select :session_id_in, Sessions::Session.all, :id, :description, { label: t('.session'), include_blank: true }, { multiple: true }
+      /= f.collection_select :author_id_eq, Sessions.user_class.joins(:owned_projects).includes(:profile).distinct.all, :id, :full_name_with_email, label: Sessions::Report.human_attribute_name(:author), include_blank: true
+      = f.select :state_in, Sessions::Report.state_names(:state).map { |n| [Sessions::Report.human_state_name(n), n] }, { label: Sessions::Report.human_attribute_name(:state), include_blank: true }, { multiple: true }
+      = f.autocomplete_field :project_id_eq,{ label: Sessions::Report.human_attribute_name(:project), source: core.projects_path} do |val|
+        -Core::Project.find(val).title
+    div class="col-md-6"
+      = f.autocomplete_field :author_id_eq,{ label: Sessions::Report.human_attribute_name(:author), source: core.with_owned_projects_finder_admin_users_path} do |val|
+        - User.find(val).full_name_with_email
+      - if Sessions.user_class.superadmins.include? current_user
+        = f.collection_select :expert_id_eq, Sessions.user_class.experts, :id, :full_name, priority: [current_user], label: t('.expert'), include_blank: true
   /* = search_check_boxes(f, :illustration_points_in, t('.figures')) */
   /* = search_check_boxes(f, :statement_points_in, t('presentation')) */
   /* = search_check_boxes(f, :summary_points_in, t('.overall_assessment')) */
 
   = f.form_group do
+    = display_all_tag
     = f.primary t("actions.find")
 
 = safe_paginate @reports
