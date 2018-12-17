@@ -10,7 +10,8 @@ class Synchronizer
       @connection_to_cluster = Net::SSH.start(@cluster.host,
         @cluster.admin_login,
         keys: [mock_ssh_key_path(@cluster.private_key)])
-    rescue
+    rescue => e
+      logger.info "Synchronizer error: #{e.message} (access=#{access})."
       nil
     end
   end
