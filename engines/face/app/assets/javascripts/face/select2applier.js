@@ -38,7 +38,11 @@ $(function(){
   });
   $(document).on( "select2:select", "[redirect-url]", function(e) {
    var id = e.params.data.id;
+   var project_id = e.params.data.project_id;
+   var user_id = e.params.data.user_id;
    var url = $(this).attr('redirect-url');
+   url=url.replace('{{project_id}}',project_id)
+   url=url.replace('{{user_id}}',user_id)
    window.location.href = url.replace('{{id}}',id);
   });
 });
