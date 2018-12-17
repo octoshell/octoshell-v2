@@ -110,8 +110,10 @@ Please, note, that from 2019 we are using Conventional Commits standart for comm
 
 Types:
 
-+---+---+
+|Type|Description|
+|---|---|
 |docs 	|Documantation update|
+|uix    |User interface changes|
 |feat 	|New functions and features|
 |fix 	|Bug fixes|
 |perf 	|Performance improvement|
@@ -202,8 +204,11 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
     Полное описание. Если в описании более одного пункта, каждый долен начинаться с '* '.
 
 Типы:
-+---+---+
+
+|Type|Description|
+|---|---|
 |docs 	|Обновление документации|
+|uix    |Исправления в интерфейсе пользователя|
 |feat 	|Добавление нового функционала|
 |fix 	|Исправление ошибок|
 |perf 	|Изменения направленные на улучшение производительности|
