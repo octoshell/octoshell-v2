@@ -26,6 +26,10 @@ User.class_eval do
     joins(:profile).where("(#{string}) ILIKE ?", "%#{q}%").order("profiles.last_name")
   end)
 
+  scope :logins, (lambda do |q|
+    Core::Member.where("login ILIKE ?","%#{q}%").map{|a| {id: a.user_id, login: a.login}}
+  end)
+
   def as_json(_options)
     { id: id, text: full_name_with_email }
   end
