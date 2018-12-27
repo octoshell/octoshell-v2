@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181130150333) do
+ActiveRecord::Schema.define(version: 20181226144058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -310,6 +310,21 @@ ActiveRecord::Schema.define(version: 20181130150333) do
   add_index "core_members", ["user_id", "owner"], name: "index_core_members_on_user_id_and_owner", using: :btree
   add_index "core_members", ["user_id", "project_id"], name: "index_core_members_on_user_id_and_project_id", unique: true, using: :btree
   add_index "core_members", ["user_id"], name: "index_core_members_on_user_id", using: :btree
+
+  create_table "core_notices", force: :cascade do |t|
+    t.integer  "sourceable_id"
+    t.string   "sourceable_type"
+    t.integer  "linkable_id"
+    t.string   "linkable_type"
+    t.text     "message"
+    t.integer  "count"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "category"
+  end
+
+  add_index "core_notices", ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id", using: :btree
+  add_index "core_notices", ["sourceable_type", "sourceable_id"], name: "index_core_notices_on_sourceable_type_and_sourceable_id", using: :btree
 
   create_table "core_organization_departments", force: :cascade do |t|
     t.integer "organization_id"

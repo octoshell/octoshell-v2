@@ -23,6 +23,24 @@ module Jobstat
                   })
     end
 
+    def post_test
+      parse_request
+      drms_job_id = @json["job_id"]
+      user_id = @json["user_id"].to_i
+      logger.info "------ parsed: #{@json}"
+
+      user=User.find(user_id) # 869867
+      job=Job.find(drms_job_id)
+      note=Core::Notice.create(
+        sourceable: user,
+        message: 'test notice!',
+        linkable: job,
+        category: 1)
+      note.save!
+
+      render json: note
+    end
+
     def post_tags
       drms_job_id = params["job_id"]
       drms_task_id = params.fetch("task_id", 0)

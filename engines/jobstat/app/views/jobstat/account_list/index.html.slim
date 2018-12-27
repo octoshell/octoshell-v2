@@ -6,6 +6,11 @@
 
 h3 Информация о завершенных задачах
 
+- @notes=Core::Notice.where(sourceable: @current_user)
+- @notes.each do |n|
+  div 
+    | #{n.message} (#{n.linkable ? n.linkable.state : '---'})
+
 button onclick="startIntro()" intro
 
 p id="intro-step1" data-step="1" На данной странице вы можете посмотреть информацию о ваших задачах, а также оценить эффективность их выполнения. Для отображения только интересующих задач укажите ниже требуемые фильтры.
