@@ -160,7 +160,7 @@ module Support
 
     def reporter_logins
       accounts = if project
-                   project.members
+                   project.members.where(user_id: reporter.id)
                  else
                    reporter.accounts
                  end
