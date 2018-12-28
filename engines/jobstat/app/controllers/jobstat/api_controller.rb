@@ -23,22 +23,45 @@ module Jobstat
                   })
     end
 
-    def post_test
-      parse_request
-      drms_job_id = @json["job_id"]
-      user_id = @json["user_id"].to_i
-      logger.info "------ parsed: #{@json}"
+    CHECKER_PREFIX = '[                checker                ]'
 
-      user=User.find(user_id) # 869867
-      job=Job.find(drms_job_id)
+    def add_notice(job, user)
+      Core::Notice.where(sourceable: user, linkable: job, category: 1).destroy_all
       note=Core::Notice.create(
         sourceable: user,
-        message: 'test notice!',
+        message: 'bad job',
         linkable: job,
         category: 1)
       note.save!
+      logger.info checker_prefix + ": new notice for #{job.drms_job_id}"
+    end
 
-      render json: note
+    def remove_notice(job, user)
+      Core::Notice.where(sourceable: user, linkable: job, category: 1).destroy_all
+      logger.info CHECKER_PREFIX + ": removed notice for #{job.drms_job_id}"
+    end
+
+    def group_match(job, user)
+      job.get_rules(user).each { |r|
+        return true if r.group == 'disaster'
+      }
+      return false
+    end
+
+    def time_match(job)
+      return job.end_time > Time.new && job.state != 'COMPLETED'
+    end
+
+    def check_job(job)
+      logger.info CHECKER_PREFIX + ": checking job #{job.id}: state = #{job.state}, end_time = #{job.end_time}"
+
+      user = Core::Member.where(login: job.login).take.user
+
+      if group_match(job, user) && time_match(job)
+        add_notice(job, user)
+      else
+        remove_notice(job, user)
+      end
     end
 
     def post_tags
@@ -53,6 +76,8 @@ module Jobstat
       tags.each do |name|
         StringDatum.where(job_id: job.id, name: "tag", value: name).first_or_create()
       end
+
+      check_job(job)
     end
 
     def post_performance
