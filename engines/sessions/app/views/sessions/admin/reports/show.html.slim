@@ -118,6 +118,6 @@ div class="panel"
           h4 = link_to survey, admin_user_survey_path(survey)
   - else
     p #{t('.no_completed_surveys')}
-= render_attachments(@report,:tags)
 = render_attachments(@report,:comments)
+= render_attachments(@report,:tags)
 = render_attachments(@report,:files)
