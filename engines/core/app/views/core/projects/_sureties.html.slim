@@ -10,7 +10,7 @@ div class="row" id="sureties"
         th = Core::Surety.human_attribute_name(:scans)
         th = Core::Surety.human_attribute_name(:created_at)
       - @project.sureties.preload(members: :profile).each do |surety|
-        - state = { generated: "primary", filling: "primary", confirmed: "warning", active: "success", closed: "danger" }[surety.state.to_sym]
+        - state = { generated: "primary", filling: "primary", confirmed: "warning", active: "success", closed: "danger", rejected: "danger" }[surety.state.to_sym]
         tr
           td = link_to_if @user_can_manage_project, surety, surety
           td
