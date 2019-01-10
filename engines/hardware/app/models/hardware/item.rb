@@ -1,9 +1,13 @@
 module Hardware
   class Item < ActiveRecord::Base
-    translates :name, :description
+    translates :name, :description, fallback: :any
     belongs_to :kind, inverse_of: :items
+
     has_many :items_states, inverse_of: :item
     has_many :states, through: :items_states, source: :state, inverse_of: :items
+    has_many :options, as: :owner
+    accepts_nested_attributes_for :options, allow_destroy: true
+
 
     validates :name_ru, uniqueness: { scope: :kind_id }, if: proc { |k| k.name_ru.present? }
     validates :name_en, uniqueness: { scope: :kind_id }, if: proc { |k| k.name_en.present? }
@@ -30,11 +34,26 @@ module Hardware
       .having("MAX(hardware_items_states.created_at) = i_s.created_at")
     end
 
+    def self.current_state_date(*val)
+      val = val.select(&:present?).map { |elem| elem == true ? 1 : elem  }
+      where("i_s.state_id IN (#{val.join(',')})")
+    end
+
+    def self.joins_last_state
+      joins("LEFT JOIN hardware_items_states AS i_s  ON i_s.item_id = hardware_items.id")
+      .joins("LEFT JOIN hardware_items_states AS i_s2 ON (hardware_items.id = i_s2.item_id AND
+    (i_s.updated_at < i_s2.updated_at OR i_s.updated_at = i_s2.updated_at AND i_s.id < i_s2.id))")
+      .where("i_s2.id IS NULL")
+    end
+
     def self.only_deleted(val)
-      if val == true
-        where("hardware_states.name_en = '#{Hardware::DELETED[:name_en]}'")
+      j = joins_last_state
+      .joins("LEFT JOIN hardware_states ON i_s.state_id = hardware_states.id")
+      if val == 'only_deleted'
+        j.where("hardware_states.name_en = '#{Hardware::DELETED[:name_en]}'")
       else
-        where("hardware_states.name_en != '#{Hardware::DELETED[:name_en]}'")
+        j.where("hardware_states.name_en !=
+          '#{Hardware::DELETED[:name_en]}' OR hardware_states.id IS NULL")
       end
     end
 
@@ -49,6 +68,10 @@ module Hardware
 
     def last_items_state
       items_states.select(&:id)&.last
+    end
+
+    def last_items_state_after(date)
+      items_states.after(date).last
     end
 
 

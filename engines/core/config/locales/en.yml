@@ -624,6 +624,8 @@ en:
           org_exist: You can not delete city with an existing organization in it
         show:
           cities_title: Cities
+          merge: Merge
+
       organizations:
         load_source_objects:
           stale_organization_id_source: Department is not in this organization

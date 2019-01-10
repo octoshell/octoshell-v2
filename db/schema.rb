@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181020164209) do
+ActiveRecord::Schema.define(version: 20190107141259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,16 @@ ActiveRecord::Schema.define(version: 20181020164209) do
   end
 
   add_index "announcements", ["created_by_id"], name: "index_announcements_on_created_by_id", using: :btree
+
+  create_table "category_values", force: :cascade do |t|
+    t.integer  "options_category_id"
+    t.string   "value_ru"
+    t.string   "value_en"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "category_values", ["options_category_id"], name: "index_category_values_on_options_category_id", using: :btree
 
   create_table "comments_comments", force: :cascade do |t|
     t.text     "text"
@@ -553,6 +563,108 @@ ActiveRecord::Schema.define(version: 20181020164209) do
   create_table "hardware_states_links", force: :cascade do |t|
     t.integer  "from_id"
     t.integer  "to_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "jobstat_data_types", force: :cascade do |t|
+    t.string   "name"
+    t.string   "type",       limit: 1
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "jobstat_data_types", ["name"], name: "index_jobstat_data_types_on_name", using: :btree
+
+  create_table "jobstat_digest_float_data", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "job_id",     limit: 8
+    t.float    "value"
+    t.datetime "time"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "jobstat_digest_float_data", ["job_id"], name: "index_jobstat_digest_float_data_on_job_id", using: :btree
+
+  create_table "jobstat_digest_string_data", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "job_id",     limit: 8
+    t.string   "value"
+    t.datetime "time"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "jobstat_digest_string_data", ["job_id"], name: "index_jobstat_digest_string_data_on_job_id", using: :btree
+
+  create_table "jobstat_float_data", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "job_id",     limit: 8
+    t.float    "value"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "jobstat_float_data", ["job_id"], name: "index_jobstat_float_data_on_job_id", using: :btree
+
+  create_table "jobstat_job_mail_filters", force: :cascade do |t|
+    t.string  "condition"
+    t.integer "user_id"
+  end
+
+  create_table "jobstat_jobs", force: :cascade do |t|
+    t.string   "cluster",      limit: 32
+    t.integer  "drms_job_id",  limit: 8
+    t.integer  "drms_task_id", limit: 8
+    t.string   "login",        limit: 32
+    t.string   "partition",    limit: 32
+    t.datetime "submit_time"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer  "timelimit",    limit: 8
+    t.string   "command",      limit: 1024
+    t.string   "state",        limit: 32
+    t.integer  "num_cores",    limit: 8
+    t.integer  "num_nodes",    limit: 8
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.text     "nodelist"
+  end
+
+  add_index "jobstat_jobs", ["end_time"], name: "index_jobstat_jobs_on_end_time", using: :btree
+  add_index "jobstat_jobs", ["login"], name: "index_jobstat_jobs_on_login", using: :btree
+  add_index "jobstat_jobs", ["partition"], name: "index_jobstat_jobs_on_partition", using: :btree
+  add_index "jobstat_jobs", ["start_time"], name: "index_jobstat_jobs_on_start_time", using: :btree
+  add_index "jobstat_jobs", ["state"], name: "index_jobstat_jobs_on_state", using: :btree
+  add_index "jobstat_jobs", ["submit_time"], name: "index_jobstat_jobs_on_submit_time", using: :btree
+
+  create_table "jobstat_string_data", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "job_id",     limit: 8
+    t.string   "value"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "jobstat_string_data", ["job_id"], name: "index_jobstat_string_data_on_job_id", using: :btree
+
+  create_table "options", force: :cascade do |t|
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "name_ru"
+    t.string   "name_en"
+    t.text     "value_ru"
+    t.text     "value_en"
+    t.integer  "category_value_id"
+    t.integer  "options_category_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  create_table "options_categories", force: :cascade do |t|
+    t.string   "name_ru"
+    t.string   "name_en"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

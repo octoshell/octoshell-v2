@@ -10,6 +10,14 @@ module Hardware
       render json: @states
     end
 
+    def index_json
+      json = Kind.all.map do |k|
+        puts k.states.inspect
+        k.attributes.merge(states: k.states.map { |s| s.attributes.merge(transitions_to: s.to_states.map(&:attributes)) } )
+      end
+      render json: json
+    end
+
 
     def show
       @kind = Kind.find(params[:id])

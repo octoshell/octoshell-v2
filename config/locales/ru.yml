@@ -1,4 +1,10 @@
 ru:
+  options:
+    fields:
+      remove_option: Удалить опцию
+      with_category: Автозаполнение
+      without_category: Без автозаполнения
+      new: Новая опция
   model_translation:
     en: 'на английском'
     ru: 'на русском'
@@ -21,6 +27,7 @@ ru:
     comments: Комментарии
     packages: Пакеты
   admin_submenu:
+    options: Опции
     emails: Emails
     comments: "Комментарии"
     cities: "Города"
@@ -71,6 +78,9 @@ ru:
       profile: "Профиль"
       group: "Группа пользователей"
       ability: "Возможность"
+      options_category: Категория опций
+      category_value: Значения из категорий
+      option: Опции
     attributes:
       user:
         groups: "Группы"
@@ -85,6 +95,18 @@ ru:
         receive_special_mails: "Использовать мой email для служебных рассылок"
       group:
         name: "Наименование"
+      options_category:
+        name: Категория
+        values: Значения
+      category_value:
+        value: Значение
+      option:
+        name: Название опции
+        value: Значение
+        category_value_id: Значение из списка значений для категорий
+        options_category_id: Категория опций
+
+
 
   users:
     edit:
@@ -206,6 +228,20 @@ ru:
       manage: "Полный доступ к объявлениям"
 
   admin:
+    options_categories:
+      form:
+        add_value: Добавить значение
+        remove_value: Удалить значение
+      new:
+        title: Новая категория
+      index:
+        new: Новая категория
+        title: Категории для опций
+      edit:
+        title: Редактирование категории
+      table:
+        confirm: Вы действительно хотите удалить эту категорию опций?
+        no_found: Нет категорий для опцийW
     groups:
       index:
         title: "Группы пользователей"

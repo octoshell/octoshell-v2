@@ -47,6 +47,18 @@ Octoshell::Application.routes.draw do
 
   resource :profile
 
+  resources :options, only: [] do
+    collection do
+      get :categories
+    end
+
+    member do
+      get :values
+    end
+
+  end
+
+
   namespace :admin do
     mount Sidekiq::Web => "/sidekiq", :constraints => AdminConstraint.new
 
@@ -60,5 +72,11 @@ Octoshell::Application.routes.draw do
     resources :groups do
       put :default, on: :collection
     end
+
+    resources :options_categories do
+
+    end
+
+
   end
 end

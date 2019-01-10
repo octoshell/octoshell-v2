@@ -6,6 +6,10 @@ div class="well"
   - confirm = t("core_confirm", default: "Are You sure?")
   - data = { method: :delete, confirm: confirm }
   = link_to name, [:admin, @city], data: data, class: "btn btn-default"
+  = form_tag [:merge, :admin, @city] do
+    = autocomplete nil, name: :merge_id, label: Core::City.model_name.human, source: core.finder_cities_path
+    =submit_tag t('.merge'),class: "btn btn-success"
+
 
 
 table class="table table-hover"

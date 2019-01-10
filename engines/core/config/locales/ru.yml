@@ -629,6 +629,7 @@ ru:
           org_exist: Нельзя удалить город,если в нём есть организации
         show:
           cities_title: Города
+          merge: Слить
       organizations:
         load_source_objects:
           stale_organization_id_source: Подразделение находится уже не в этой организации

@@ -2,7 +2,7 @@
 en:
   admin_submenu:
     hardware: Hardware
-  hardware:
+  activerecord:
     models:
       hardware/item: "Device"
       hardware/state: "State of device"
@@ -15,6 +15,8 @@ en:
         current_state: Current state
         last_state_description: Current state description
         states: All states of the device
+        last_state: Current state
+
       hardware/state:
         name: Name
         description: Description
@@ -30,7 +32,18 @@ en:
       hardware/kind:
         name: Name
         description: Description
+  hardware:
     admin:
+      items_states:
+        index:
+          created_before: Created before
+          created_after: Created after
+          item_name_en_cont: Name(en) of item contains
+          item_name_ru_cont: Name(ru) of item contains
+          title: States
+        table:
+          no_items_states: Нет состояний
+
       items:
         edit:
           title: Edit device

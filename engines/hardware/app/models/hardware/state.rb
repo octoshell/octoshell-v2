@@ -16,7 +16,7 @@ module Hardware
 
 
 
-    translates :name, :description
+    translates :name, :description, fallback: :any
     validates :name_ru, uniqueness: { scope: :kind_id }, if: proc { |k| k.name_ru.present? }
     validates :name_en, uniqueness: { scope: :kind_id }, if: proc { |k| k.name_en.present? }
     validates_translated :name, presence: true

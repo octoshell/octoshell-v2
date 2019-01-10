@@ -1,7 +1,5 @@
-bind_func_disable("#enable_id","#disable_id","#item_id");
-
-function applySelectToVersionOptionValue(selectValue, id){
-  var path = "/pack/category_values/" + id + "/values";
+function applySelectToOptionValue(selectValue, id){
+  var path = " /options/" + id + "/values";
   var id = selectValue.select2('val');
   // alert(id);
   selectValue.select2('destroy');
@@ -15,7 +13,7 @@ function applySelectToVersionOptionValue(selectValue, id){
 
 $(document).on('select2:select','.attach-category', function (e) {
   var selectValue = $(this).parents('.option-container').find('.attach-value');
-  applySelectToVersionOptionValue(selectValue,e.params.data.id);
+  applySelectToOptionValue(selectValue,e.params.data.id);
 });
 
 
@@ -27,5 +25,5 @@ apply_select();
 $('.attach-category').each(function(indx, element){
   element = $(element);
   var selectValue = element.parents('.option-container').find('.attach-value');
-  applySelectToVersionOptionValue(selectValue,element.children("option:selected").val());
+  applySelectToOptionValue(selectValue,element.children("option:selected").val());
 });

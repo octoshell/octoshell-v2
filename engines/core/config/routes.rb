@@ -38,7 +38,11 @@ Core::Engine.routes.draw do
     resources :organization_kinds
 
     resources :countries
-    resources :cities
+    resources :cities do
+      member do
+        post :merge
+      end
+    end
     resources :prepare_merge,only: [:index,:update,:edit] do
       member do
         delete :destroy

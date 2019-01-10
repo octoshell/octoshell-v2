@@ -208,6 +208,12 @@ ActionController::Base.class_eval do
                                      regexp: /admin\/emails/
                                   ))  if may? :manage, :users
 
+    menu.add_item(Face::MenuItem.new(name: t("admin_submenu.options"),
+                                     url: main_app.admin_options_categories_path,
+                                     regexp: /admin\/options/
+                                  ))  if may? :manage, :users
+
+
     menu.items
   end
 end

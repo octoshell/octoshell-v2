@@ -22,6 +22,7 @@ ru:
         current_state: Текущее состояния
         last_state_description: Описание текущего состояния
         states: Все состояния, в которых этот объект когда-то был
+        last_state: Текущее состояния
       hardware/state:
         name: Название
         description: Описание
@@ -39,10 +40,20 @@ ru:
         description: Описание
   hardware:
     admin:
+      items_states:
+        index:
+          created_before: Созданы до
+          created_after: Созданы после
+          item_name_en_cont: Название устройства(en) содержит
+          item_name_ru_cont: Название устройства(ru) содержит
+          title: Состояния
+        table:
+          no_items_states: Нет состояний
       items:
         edit:
           title: Редактировать устройства
         index:
+          only_deleted: Показать устройства только с удаленным состоянием
           new_item: Новое устройство
           title: Список устройств
         items_states_table:
@@ -86,6 +97,7 @@ ru:
     engine_submenu:
       items: Устройства
       kinds: Виды устройств
+      items_states: Состояния устройств
     self_error: Self error
   layouts:
     hardware:

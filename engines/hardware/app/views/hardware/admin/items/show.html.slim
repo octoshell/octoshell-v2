@@ -31,13 +31,15 @@ blockquote
 h3 = Hardware::Item.human_attribute_name(:last_state)
 .row
   .col-xs-2
-    = @item.last_items_state&.state&.name
+    -items_state = @item.last_items_state_after(session[:hardware_max_date])
+    = items_state&.state&.name
   .col-xs-3
-    = @item.last_items_state&.reason
+    = items_state&.reason
   .col-xs-3
-    = @item.last_items_state&.description
+    = items_state&.description
   .col-xs-4
-    = l(@item.last_items_state&.created_at) if @item.last_items_state&.created_at
+    = l(items_state&.created_at) if items_state&.created_at
 
 
 = render partial: 'hardware/admin/items/items_states_table',locals: {items_states: @item.items_states.includes(:state).after(session[:hardware_max_date])}
+= render partial: 'options/index',locals: {rec: @item }

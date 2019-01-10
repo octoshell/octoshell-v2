@@ -7,6 +7,26 @@ module Hardware
       value
     end
 
+    def self.kinds(array)
+      ActiveRecord::Base.transaction do
+        update! array
+      end
+    end
+
+
+    def self.from_a(array)
+      ActiveRecord::Base.transaction do
+        update! array
+      end
+    end
+
+    def self.to_a(records = Item.all)
+      records.map do |r|
+        r.attributes.merge(state: r&.last_items_state&.attributes)
+      end
+    end
+
+
     def self.update!(array)
       array.each do |attributes|
         state_attributes = attributes.delete('state')

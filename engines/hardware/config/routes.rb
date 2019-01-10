@@ -5,12 +5,15 @@ Hardware::Engine.routes.draw do
     resources :kinds do
       collection do
         get :states
+        get :index_json
       end
       resources :states, except: :index
     end
     resources :items do
       collection do
         post :update_max_date
+        post :json_update
+        get :index_json
       end
       post :update_state
     end
