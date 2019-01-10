@@ -1,21 +1,27 @@
 source "https://rubygems.org"
 gem "rake"
 gem "rails", "~> 4.2"
+platforms :jruby do
+  gem "activerecord-jdbcpostgresql-adapter", "~> 1.3.21"
+end
+gem "pg", "~> 0.18", platform: :ruby
 gem "responders", "~> 2.0"
 gem "uglifier", ">= 1.3.0"
 gem "bootstrap_form"
-gem "activerecord-jdbcpostgresql-adapter", '~> 1.3.0', platform: :jruby
-gem "pg", "~> 0.18", platform: :ruby
 gem 'rails_email_preview', '~> 2.0.6'
 gem 'left_join'
 gem 'traco'
 gem 'lmtp', github: 'apaokin/ruby-lmtp', require: false
 gem 'rubyzip', '>= 1.0.0', require: false
 
+gem 'therubyracer' # for execjs
+
 group :development do
   gem "letter_opener"
   gem "quiet_assets"
   gem "pry-rails"
+  gem "rails-erd"
+  gem 'railroady'
   gem "better_errors"
   gem 'rails_db'
   gem 'i18n-tasks', '~> 0.9.21'
@@ -23,8 +29,7 @@ end
 
 gem "sinatra", ">= 1.3.0", :require => nil
 
-gem "mina", github: "zhum/mina", require: false
-# gem "mina-systemd", require: false
+gem "mina" #, github: "zhum/mina", require: false
 #gem "mina-rbenv-addons", require: false
 #gem "mina-foreman", github: "mina-deploy/mina-foreman"
 #gem "mina-foreman", github: "asabourin/mina-foreman", require: false
@@ -42,7 +47,7 @@ gem "sessions",       path: "engines/sessions"
 gem "statistics",     path: "engines/statistics"
 gem "wiki",           path: "engines/wiki"
 gem "announcements",  path: "engines/announcements"
-gem "jd",             path: 'engines/jd'
+gem "jobstat",        path: 'engines/jobstat'
 gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
 gem "hardware",       path: "engines/hardware"

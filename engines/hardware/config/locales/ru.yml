@@ -22,7 +22,7 @@ ru:
         current_state: Текущее состояния
         last_state_description: Описание текущего состояния
         states: Все состояния, в которых этот объект когда-то был
-        last_state: Текущее состояния
+        last_state: Текущее состояние
       hardware/state:
         name: Название
         description: Описание
@@ -35,6 +35,7 @@ ru:
         description: Описание состояния
         reason: Причина изменения состояния
         updated_at: Обновлено
+        created_at: Создано
       hardware/kind:
         name: Название
         description: Описание

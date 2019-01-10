@@ -1,24 +1,32 @@
 div class="page-header"
   h1 = t(".title")
-= bootstrap_form_for @search, method: :get, url: admin_sureties_path, layout: :horizontal, role: "autosubmit" do |f|
-  = f.text_field :id_eq, label: "#", autofocus: true
-  = f.autocomplete_field :author_id_eq,{label: Core::Surety.human_attribute_name(:author), source:  main_app.users_path,include_blank: true} do |val|
-    -User.find(val).full_name_with_email
-  = f.autocomplete_field :members_id_in,{label: Core::Surety.human_attribute_name(:members), source:  main_app.users_path, include_blank: true}, multiple: true do |val|
-    -User.find(val).full_name_with_email
-  = f.autocomplete_field :project_organization_id_eq,{ label: Core::Organization.model_name.human, source: core.organizations_path, include_blank: true} do |val|
-    -Core::Organization.find(val).name_with_id
-  = f.autocomplete_field :project_id_eq,{label: Core::Project.model_name.human, source:  core.projects_path},include_blank: true do |id|
-    -Core::Project.find(id).title
-  = f.select :state_in, Core::Surety.human_state_names_with_original, {label: Core::Surety.human_attribute_name(:state)}, multiple: true
-  - options = { include_blank: true, 'data-date-start-date': '2012.1.1', 'data-date-end-date': '0d', class: "datepicker" }
-  = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
-  = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
-  = f.form_group :scans_id_not_null,label: {text: Core::Surety.human_attribute_name(:scans)} do
-    = f.check_box :scans_id_not_null,label: ''
-  = display_all_tag
+
+= bootstrap_form_for @search, method: :get, url: admin_sureties_path, layout: :vertical, role: "autosubmit" do |f|
+  div class="container"
+    div class="col-md-3"
+      = f.select :state_in, Core::Surety.human_state_names_with_original, {label: Core::Surety.human_attribute_name(:state)}, multiple: true
+      = f.autocomplete_field :author_id_eq,{label: Core::Surety.human_attribute_name(:author), source:  main_app.users_path,include_blank: true} do |val|
+        -User.find(val).full_name_with_email
+
+    div class="col-md-3"
+      = f.autocomplete_field :project_id_eq,{label: Core::Project.model_name.human, source:  core.projects_path},include_blank: true do |id|
+        -Core::Project.find(id).title
+      = f.autocomplete_field :members_id_in,{label: Core::Surety.human_attribute_name(:members), source:  main_app.users_path, include_blank: true}, multiple: true do |val|
+        -User.find(val).full_name_with_email
+    div class="col-md-3"
+      = f.text_field :id_eq, label: "#", autofocus: true
+      = f.autocomplete_field :project_organization_id_eq,{ label: Core::Organization.model_name.human, source: core.organizations_path, include_blank: true} do |val|
+        -Core::Organization.find(val).name_with_id
+
+    div class="col-md-3"
+      - options = { include_blank: true, 'data-date-start-date': '2012.1.1', 'data-date-end-date': '0d', class: "datepicker" }
+      = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
+      = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
   = f.form_group
     = f.submit t("actions.find"), class: "btn btn-primary"
+    = f.form_group :scans_id_not_null,label: {text: Core::Surety.human_attribute_name(:scans)} do
+      = f.check_box :scans_id_not_null,label: ''
+    = display_all_tag
 
 = safe_paginate @sureties
 = render "table", sureties: @sureties

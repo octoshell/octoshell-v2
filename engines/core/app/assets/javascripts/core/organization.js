@@ -96,5 +96,5 @@ function apply_select_to(elem,path,extra_params = {})
         return { results: data.records, pagination:{more: more }}
       },
     }
-  select.select2(options);
+  select.select2 && select.select2(options);
 }

@@ -1,0 +1,466 @@
+- def_icon = {'icon'=>'fas fa-exclamation-triangle', 'color'=>'color-regular'}
+
+b[:drms_job_id]
+
+a href='/jobstat/account/list/index' Вернуться к списку запусков
+br
+- id=@job[:drms_job_id]
+h3 = "Информация по задаче № #{id}"
+
+div class="row"
+  div class="col-md-4"
+    //fixme! translate
+    h3 = "Общая информация"
+    table class="table table-bordered table-striped"
+      tr
+        td
+          | Суперкомпьютер
+        td
+          = @job[:cluster]
+      tr
+        td
+          | ID задачи
+        td
+          = id
+      tr
+        td
+          | Логин
+        td
+          = @job[:login]
+      tr
+        td
+          | Статус завершения задачи
+        td
+          = @job[:state]
+      tr
+        td
+          | Раздел суперкомпьютера
+        td
+          = @job[:partition]
+      tr
+        td
+          | Число ядер
+        td
+          = @job[:num_cores]
+      tr
+        td
+          | Число узлов
+        td
+          = @job[:num_nodes]
+      tr
+        td
+          | Постановка в очередь
+        td
+          = @job[:submit_time].strftime("%D %T")
+      tr
+        td
+          | Начало счета
+        td
+          = @job[:start_time].strftime("%D %T")
+      tr
+        td
+          | Конец счета
+        td
+          = @job[:end_time].strftime("%D %T")
+      tr
+        td
+          | Время счета (часы)
+        td
+          = number_with_precision(@job.get_duration_hours, :precision => 1)
+
+  div class="col-md-4"
+    //fixme! translate
+    h3 = "Производительность"
+    table class="table table-bordered table-striped"
+      tr style="font-weight:bold"
+        td
+          | Метрика
+        td
+          | Значение
+        td
+          | Общая оценка
+      tr
+        td
+          | Средняя загрузка ЦПУ (%)
+        td
+          = format_float_or_nil(@job_perf[:cpu_user])
+        td class="job_metric_#{@ranking[:cpu_user]}"
+          = @ranking[:cpu_user]
+      tr
+        td
+          | Среднее #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
+
+        td
+          = format_float_or_nil(@job_perf[:loadavg])
+        td class="job_metric_#{@ranking[:loadavg]}"
+          = @ranking[:loadavg]
+      tr
+        td
+          | Среднее #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
+
+        td
+          = format_float_or_nil(@job_perf[:ipc])
+        td class="job_metric_#{@ranking[:ipc]}"
+          = @ranking[:ipc]
+      tr
+        td
+          | Средняя загрузка ГПУ (%)
+        td
+          = format_float_or_nil(@job_perf[:gpu_load])
+        td class="job_metric_#{@ranking[:gpu_load]}"
+          = @ranking[:gpu_load]
+      tr
+        td
+          | Интенсивность передачи данных по MPI (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_rcv_data_mpi])
+        td class="job_metric_#{@ranking[:ib_rcv_data_mpi]}"
+          = @ranking[:ib_rcv_data_mpi]
+      /tr
+        td
+          | Передано данных по MPI сети (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_xmit_data_mpi])
+        td class="job_metric_#{@ranking[:ib_xmit_data_mpi]}"
+          = @ranking[:ib_xmit_data_mpi]
+      tr
+        td
+          | Интенсивность чтения из файловой системы (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_rcv_data_fs])
+        td class="job_metric_#{@ranking[:ib_rcv_data_fs]}"
+          = @ranking[:ib_rcv_data_fs]
+      tr
+        td
+          | Интенсивность записи в файловую систему (МБ/с)
+        td
+          = format_float_or_nil(@job_perf[:ib_xmit_data_fs])
+        td class="job_metric_#{@ranking[:ib_xmit_data_fs]}"
+          = @ranking[:ib_xmit_data_fs]
+
+  div class="col-md-4"
+    //fixme! translate
+    h3 = "Базовые свойства"
+    table class="table table-bordered table-striped"
+      - if @job.get_classes.length > 0
+        - @job.get_classes.each do |cond|
+          tr
+            td
+              = cond.description
+      - else
+        tr
+          td
+            //fixme! translate
+            = "Необычных свойств не обнаружено"
+
+p
+  | Строка запуска:&nbsp;&nbsp; #{@job[:command]}
+
+br
+
+//fixme! translate
+h3 = "Найденные потенциальные проблемы с эффективностью"
+
+p В данном разделе приведен список проблем с эффективностью, которые были найдены для данной задачи. Для каждой проблемы приведено ее описание (какой признак возникновения проблемы был обнаружен), предположение (в чем, на наш взгляд, может заключаться причина возникновения проблемы) и рекомендация (что мы советуем сделать для ее устранения). Во многих случаях в рекомендации указано, какой тип дальнейшего анализа стоит проводить; реализацию этого функционала планируется выполнить в будущем.
+p Возможность оценки корректности и/или изменения обнаруженных проблем с эффективностью также планируется добавить в ближайшем будущем. Сейчас эта возможность реализована только на общей странице со списком задач.
+table class="table table-bordered table-striped"
+  tr
+    th
+      | Тип
+    th
+      //fixme! translate
+      | Описание
+    th
+      //fixme! translate
+      | Предположение
+    th
+      //fixme! translate
+      | Рекомендация
+
+  - rules=@job.get_rules(@current_user)
+  - if rules.length > 0
+    - rules.each do |cond|
+      - cond_name=cond.name
+      tr
+        td
+          // current feedback icon
+          - fb=@feedbacks.select{|x| x['condition']==cond_name}[0] || {}
+          i id="af-#{id}-#{cond}" class="#{@agree_flags[fb.fetch('klass',99)]}"
+          /'fa-ok agreed-flag'
+          |&nbsp;
+          // rule icon
+          - icon = @rules_plus['groups'].fetch(cond.group,def_icon)
+          i class="fa-fw align-left inline #{icon['icon']} #{icon['color']}"
+
+          // "why hide?" dialog
+          - tint = @filters.any?{|x|x==cond_name} ? "tinted" : ""
+          button id="btn-hide-#{cond_name}" class="btn-danger #{tint}" onClick="all_pre_hide_rule('#{cond_name}');$('#text_hide_rule_#{cond_name}').focus();" title="Скрыть правило/снова показывать"
+            i class="fa-fw far fa-bell-slash"
+          div class="octo-popup content" id="hide_rule_#{cond_name}"
+            form onSubmit="all_hide_rule('#{cond_name}',false); return false;"
+              div class="centered x-white"
+                | Поясните, почему Вы хотите скрыть правило в выдачах результатов расчётов?
+              input type="text" id="text_hide_rule_#{cond_name}" class="fullwidth" style="display: block"
+              div class="centered x-white"
+                button class="btn-info" type="submit"
+                  | Скрыть правило!
+                button onClick="$('#hide_rule_#{cond_name}').removeClass('target'); return false;"
+                  | Передумал
+          a class="octo-close-popup" onClick="$('#hide_rule_#{cond_name}').removeClass('target'); return false"
+          | &nbsp;
+          
+          // "I disagree with rule" button
+          button class="btn-warning disagree-button" onClick="popup_show('disagree#{id}_#{cond_name}','question_#{id}_#{cond_name}');" title="Не согласен!"
+            i class="#{@agree_flags[1]}"
+            /"far fa-angry"
+          |&nbsp;
+          // "Disagree" dialog
+          div class="octo-popup container" id="popup_disagree#{id}_#{cond_name}"
+            form onSubmit="popup_hide('disagree#{id}_#{cond_name}');disagree('#{id}','#{cond_name}',0); return false;"
+              div class="centered"
+                | Поясните, почему Вы не согласны с оценкой правила?
+              input type="text" id="question_#{id}_#{cond_name}" class="fullwidth"
+              div class="centered"
+                button class="btn-info" type="submit"
+                  | Отправить!
+                button class="btn-info" onClick="return popup_hide('disagree#{id}_#{cond_name}')"
+                  | Передумал
+          a class="octo-close-popup" onClick="return popup_hide('disagree#{id}_#{cond_name}')"
+            
+          button class="btn-warning" onClick="popup_show('agree#{id}_#{cond_name}','question_#{id}_#{cond_name}');" title="Согласен с оценкой."
+            i class="#{@agree_flags[0]}"
+          |&nbsp;
+          // 'Agree' dialog
+          div class="octo-popup container" id="popup_agree#{id}_#{cond_name}"
+            form onSubmit="popup_hide('agree#{id}_#{cond_name}'); agree('#{id}','#{cond_name}',0,''); return false;"
+              div class="centered"
+                button class="btn-info" type="submit"
+                  | Да, я согласен с этим правилом для этой задачи.
+                button class="btn-info" onClick="return popup_hide('agree#{id}_#{cond_name}')"
+                  | Передумал
+          a class="octo-close-popup2" onClick="return popup_hide('agree#{id}_#{cond_name}')"
+
+        td
+          = cond.description
+        td
+          = cond.suggestion
+        td
+          = cond.text_recommendation
+  - else
+    tr
+      td colspan="4"
+        //fixme! translate
+        = "Проблем не найдено"
+
+br
+
+h3 = "Динамика поведения задачи во время выполнения"
+
+p #{ link_to "Более подробное описание", "https://graphit.parallel.ru:5001/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36) } 
+
+div class="row"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Загрузка ЦПУ (0% .. 100%)"
+    div id="g_cpu"
+  div class="col-md-4" style="height: 250px"
+    h4 #{ link_to "LoadAVG", "https://en.wikipedia.org/wiki/Load_(computing)" }
+    div id="g_loadavg"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Использование MPI (МБ/с)"
+    div id="g_ib_mpi"
+
+div class="row"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Загрузка ГПУ (0% .. 100%)"
+    div id="g_gpu"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 #{ link_to "IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle" }
+    div id="g_ipc"
+  div class="col-md-4" style="height: 250px"
+    //fixme! translate
+    h4 = "Использование файловой системы (МБ/с)"
+    div id="g_ib_fs"
+
+script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"
+
+javascript:
+
+  var filters=#{{@filters.to_json}}
+  var current_user=#{{@current_user.id}};
+
+  function DrawSingleGraph(target, sensor_data, max)
+  {
+    for(var i = 0; i < sensor_data.length; i++)
+      sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'время');
+    data.addColumn('number', 'значение');
+
+    data.addRows(sensor_data);
+
+    var options = {
+      hAxis: {
+        //fixme! translate
+        title: 'Время',
+        format: 'HH:mm',
+      },
+      vAxis: {
+        minValue: 0
+      },
+      colors: ['#8080ff'],
+      chartArea: {'width': '85%'},
+      legend: {'position': 'none'},
+    };
+
+    if(max) options.vAxis.maxValue = max;
+
+    var chart = new google.visualization.LineChart(document.getElementById(target));
+    chart.draw(data, options);
+  }
+
+  function DrawSendRecvGraph(target, sensor_data)
+  {
+    for(var i = 0; i < sensor_data.length; i++)
+    {
+      sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
+      sensor_data[i][1] /= 1024 * 1024;
+      sensor_data[i][2] /= 1024 * 1024;
+    }
+
+    var data = new google.visualization.DataTable();
+    //fixme! translate
+    data.addColumn('date', 'время');
+    //fixme! translate
+    data.addColumn('number', 'передано MB/s');
+    //fixme! translate
+    data.addColumn('number', 'получено MB/s');
+
+    data.addRows(sensor_data);
+
+    var options = {
+      hAxis: {
+        //fixme! translate
+        title: 'Время',
+        format: 'HH:mm'
+      },
+      vAxis: {
+        minValue: 0,
+        format: "short"
+      },
+      colors: ['#8080ff', '#ff8080'],
+      chartArea: {'width': '80%', 'top' : '10%', 'bottom': '20%'},
+      legend: {'position': 'bottom'},
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById(target));
+    chart.draw(data, options);
+  }
+
+  function DrawGraphs()
+  {
+     DrawSingleGraph("g_cpu",  #{{ raw @cpu_digest_data.to_json }} , 100);
+     DrawSingleGraph("g_gpu",  #{{ raw @gpu_digest_data.to_json }} , 100);
+     DrawSingleGraph("g_loadavg",  #{{ raw @loadavg_digest_data.to_json }} );
+     DrawSingleGraph("g_ipc",  #{{ raw @ipc_digest_data.to_json }} );
+     DrawSendRecvGraph("g_ib_mpi",  #{{ raw @mpi_digest_data.to_json }} );
+     DrawSendRecvGraph("g_ib_fs",  #{{ raw @fs_digest_data.to_json }} );
+
+  }
+
+  $(document).ready(function(){
+    google.charts.load('current', {packages: ['corechart', 'line']});
+    google.charts.setOnLoadCallback(DrawGraphs);
+  });
+
+
+/__END__
+          div id="job_info_#{index}" class="octo-popup"
+            a class="octo-popup-close" onClick="$('#job_info_#{index}').removeClass('target')"&times;
+            - if perf_data_present
+              - if job_cond.size > 0
+                - job_cond.each do |cond|
+                  div class="cond-div #{@filters.include?(cond) ? 'hidden' : 'visible'}" data-rule-div="#{cond}"
+                    // current feedback icon
+                    - feedback=@jobs_plus[job.drms_job_id]['feedback']
+                    i id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[feedback.fetch(cond,99)]}"
+                    /'fa-ok agreed-flag'
+                    | &nbsp;
+                    
+                    // "hide rule" button
+                    button class="btn-danger" onClick="popup_show('hide#{job.drms_job_id}_#{cond}','question_hide#{job.drms_job_id}_#{cond}');" title="Скрыть правило"
+                      i class="far fa-bell-slash"
+                    | &nbsp; 
+
+                    // "I disagree with rule" button
+                    button class="btn-warning disagree-button" onClick="popup_show('disagree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="Не согласен!"
+                      i class="#{@agree_flags[1]}"
+                      /"far fa-angry"
+                    | &nbsp; 
+                    
+                    button class="btn-warning" onClick="popup_show('agree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="Согласен с оценкой."
+                      i class="#{@agree_flags[0]}"
+                    | &nbsp; 
+                    
+                    // rule icon
+                    - rule = @rules_plus['rules'].fetch(cond, nil)
+                    - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
+                    a href="all_rules#go-#{cond}"
+                      i class="em15 fa-fw align-left inline #{icon['icon']} #{icon['color']}" title="Перейти к описанию правила"
+                    | &nbsp; 
+
+                    = @rules_plus['rules'].fetch(cond,{}).fetch('description','Ой, у нас тут ошибка с описанием правила, сообщите нам об этом, пожалуйста.')
+
+                    // agree/disagree one rule dialog
+                    /div class="octo-popup2 container" id="vote-#{job.drms_job_id}-#{cond}"
+                      a class="btn" onClick="agree('#{job.drms_job_id}','#{cond}');$('#vote-#{job.drms_job_id}-#{cond}').removeClass('target')"
+                        i class="far fa-thumbs-up agreed-flag"
+                        | Согласен с правилом!
+                      br
+                      a class="btn" onClick="disagree('#{job.drms_job_id}','#{cond}');$('#vote-#{job.drms_job_id}-#{cond}').removeClass('target')"
+                        i class="far fa-thumbs-down agreed-flag"
+                        | Не согласен с правилом!
+                      br
+                    /a class="octo-close-popup2" onClick="$('#vote-#{job.drms_job_id}-#{cond}').removeClass('target')"
+
+                    // "why hide?" dialog
+                    div class="octo-popup2 container" id="popup_hide#{job.drms_job_id}_#{cond}"
+                        /div class="content container"
+                        form onSubmit="popup_hide('hide#{job.drms_job_id}_#{cond}');hide_rule(#{job.drms_job_id},'#{cond}'); return false;"
+                          div class="centered"
+                            | Это правило будет скрыто во всех заданиях, в том числе будущих. Поясните, почему Вы хотите скрыть его?
+                          input type="text" id="question_hide#{job.drms_job_id}_#{cond}" class="fullwidth"
+                          div class="centered col-12"
+                            button class="btn-info" type="submit"
+                              | Отправить!
+                            button class="btn-info" onClick="return popup_hide('hide#{job.drms_job_id}_#{cond}');"
+                              | Передумал
+                    a class="octo-close-popup2" onClick="return popup_hide('hide#{job.drms_job_id}_#{cond}');"
+
+
+                    // "Disagree" dialog
+                    div class="octo-popup2 container" id="popup_disagree#{job.drms_job_id}_#{cond}"
+                      form onSubmit="popup_hide('disagree#{job.drms_job_id}_#{cond}');disagree('#{job.drms_job_id}','#{cond}',0); return false;"
+                        div class="centered"
+                          | Поясните, почему Вы не согласны с оценкой правила?
+                        input type="text" id="question_#{job.drms_job_id}_#{cond}" class="fullwidth"
+                        div class="centered"
+                          button class="btn-info" type="submit"
+                            | Отправить!
+                          button class="btn-info" onClick="return popup_hide('disagree#{job.drms_job_id}_#{cond}')"
+                            | Передумал
+                    a class="octo-close-popup2" onClick="return popup_hide('disagree#{job.drms_job_id}_#{cond}')"
+
+                    // 'Agree' dialog
+                    div class="octo-popup2 container" id="popup_agree#{job.drms_job_id}_#{cond}"
+                      form onSubmit="popup_hide('agree#{job.drms_job_id}_#{cond}'); agree('#{job.drms_job_id}','#{cond}',0,''); return false;"
+                        div class="centered"
+                          button class="btn-info" type="submit"
+                            | Да, я согласен с этим правилом для этой задачи.
+                          button class="btn-info" onClick="return popup_hide('agree#{job.drms_job_id}_#{cond}')"
+                            | Передумал
+                    a class="octo-close-popup2" onClick="return popup_hide('agree#{job.drms_job_id}_#{cond}')"

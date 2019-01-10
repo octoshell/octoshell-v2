@@ -34,7 +34,7 @@ module Sessions
       event :edit do
         transitions :from => :submitted, :to => :filling
         transitions :from => :exceeded, :to => :postfilling, :after => :fill_fields
-        transitions :from => :postfilling, :to => :postfilling
+        transitions :from => :postfilling, :to => :postfilling, :after => :fill_fields
         transitions :from => :postdated, :to => :postfilling
       end
 

@@ -1,10 +1,14 @@
 div class="page-header"
   h1 = t(".title", default: "Surveys list")
 
-= bootstrap_form_for @search, method: :get, url: user_surveys_path, layout: :horizontal do |f|
-  = f.collection_select :session_id_eq, Sessions::Session.all, :id, :description, label: t('.session')
-  = f.collection_select :project_id_eq, current_user.owned_projects, :id, :title, label: Sessions::UserSurvey.human_attribute_name(:project), include_blank: true
-  = f.select :state_in, Sessions::UserSurvey.state_names(:state).map { |n| [Sessions::UserSurvey.human_state_name(n), n] }, { label: Sessions::UserSurvey.human_attribute_name(:state), include_blank: true }, { multiple: true }
+= bootstrap_form_for @search, method: :get, url: user_surveys_path, layout: :vertical do |f|
+  div class="container"
+    div class="col-md-4"
+      = f.collection_select :session_id_eq, Sessions::Session.all, :id, :description, label: t('.session')
+    div class="col-md-4"
+      = f.collection_select :project_id_eq, current_user.owned_projects, :id, :title, label: Sessions::UserSurvey.human_attribute_name(:project), include_blank: true
+    div class="col-md-4"
+      = f.select :state_in, Sessions::UserSurvey.state_names(:state).map { |n| [Sessions::UserSurvey.human_state_name(n), n] }, { label: Sessions::UserSurvey.human_attribute_name(:state), include_blank: true }, { multiple: true }
 
   = f.form_group do
     = f.primary t("actions.find")

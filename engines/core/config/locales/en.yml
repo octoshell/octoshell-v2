@@ -338,7 +338,7 @@ en:
 
     no_file_selected: You forgot to attach a CSV-file
     bad_csv_file: "Oops,  it is impossible to  parse the file... Please check file format and encoding(encoding must be UTF-8)"
-
+    duplicated_invite: 'This user is already invited.'
   core:
     notificators:
       check:

@@ -22,8 +22,8 @@ en:
     sessions_warning:
       html: "Re-registrations <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
     profile: Profile
-    job_stat: Jobs statistics
-    job_table: Jobs
+    job_stat: Statistics
+    job_table: Efficiency
     comments: Comments
     packages: Packages
   admin_submenu:

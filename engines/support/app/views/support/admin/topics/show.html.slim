@@ -39,5 +39,5 @@ h3 = Support::UserTopic.model_name.human
       th = Support::UserTopic.human_attribute_name(:required)
     - @topic.user_topics.each do |user_topic|
       tr
-        td = user_topic.user.full_name
+        td = link_to user_topic.user.full_name, main_app.admin_user_path(user_topic.user)
         td = user_topic.required

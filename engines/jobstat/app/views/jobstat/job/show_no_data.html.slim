@@ -1,0 +1,80 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+css:
+  .job_metric_low {
+    background-color: #ff8080
+  }
+
+  .job_metric_average {
+    background-color: #ffff80
+  }
+
+  .job_metric_good {
+    background-color: #80ff80
+  }
+
+h1 = "По техническим причинам данные мониторинга для этой задачи остутсвуют - анализ не возможен"
+
+h1 = "Информация о задаче #{@job[:drms_job_id]}"
+
+= @job[:command]
+
+div class="row"
+  div class="col-md-4"
+    h3 = "Общая информация"
+    table class="table table-bordered table-striped"
+      tr
+        td
+          | Cluster
+        td
+          = @job[:cluster]
+      tr
+        td
+          | Job id
+        td
+          = @job[:drms_job_id]
+      tr
+        td
+          | Login
+        td
+          = @job[:login]
+      tr
+        td
+          | State
+        td
+          = @job[:state]
+      tr
+        td
+          | Partition
+        td
+          = @job[:partition]
+      tr
+        td
+          | Num cores
+        td
+          = @job[:num_cores]
+      tr
+        td
+          | Num nodes
+        td
+          = @job[:num_nodes]
+      tr
+        td
+          | Submit time
+        td
+          = @job[:submit_time].strftime("%D %T")
+      tr
+        td
+          | Start time
+        td
+          = @job[:start_time].strftime("%D %T")
+      tr
+        td
+          | End time
+        td
+          = @job[:end_time].strftime("%D %T")
+      tr
+        td
+          | Duration (hours)
+        td
+          = number_with_precision(@job.get_duration_hours, :precision => 1)

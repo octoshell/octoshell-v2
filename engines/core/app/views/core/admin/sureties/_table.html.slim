@@ -40,9 +40,9 @@
         td
           ul class="list-unstyled"
             - surety.members.each do |user|
-              li = user.full_name
+              li = link_to user.full_name, main_app.admin_user_path(user)
         td
-          - state = { "generated"=> "primary", "confirmed"=> "warning", "active" => "success", "closed" => "danger" }[surety.state_name]
+          - state = { "generated"=> "primary", "confirmed"=> "warning", "active" => "success", "closed" => "danger", "rejected" => "danger" }[surety.state_name]
           span class="label label-#{state}" = surety.human_state_name
         td
           = l surety.created_at.to_date

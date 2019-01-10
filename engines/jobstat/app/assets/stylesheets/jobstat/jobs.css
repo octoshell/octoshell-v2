@@ -1,0 +1,383 @@
+i.color-regular {
+  color: black;
+}
+
+i.color-red {
+  color: red;
+}
+
+i.color-orange {
+  color: orange;
+}
+
+i.color-green {
+  color: green;
+}
+
+/************************************/
+/*  Usage:
+  div class="accordion"
+    input type="checkbox" id="one"
+    label for="one">LABEL
+
+    article collapsed text
+
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+
+.accordion label{
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.accordion input + label:before {
+  content: '\f105';
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+}
+
+.accordion input:checked + label:before {
+  content: '\f107';
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+}
+
+.accordion input:checked + label,
+.accordion input:checked + label:hover{
+    text-shadow: 0px 1px 1px rgba(255,255,255, 0.6);
+    box-shadow: 
+        0px 0px 0px 1px rgba(155,155,155,0.3), 
+        0px 2px 2px rgba(0,0,0,0.1);
+}
+
+.accordion label:hover:after,
+.accordion input:checked + label:hover:after{
+  content: '';
+  position: absolute;
+}
+
+/* .accordion input:checked + label:hover:after {
+    background-image: url(http://netcribe.com/example/arrow_up.png);
+}
+ */
+.accordion input{
+  display: none;
+}
+
+.accordion article{
+  overflow: hidden;
+  max-height: 0px;
+  position: relative;
+  -webkit-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -moz-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -o-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -ms-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+}
+
+.accordion input:checked ~ article{
+  -webkit-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -moz-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -o-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  -ms-transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+  transition: max-height 0.5s ease-in-out, box-shadow 0.6s linear;
+
+  max-height: 500px;
+}
+
+
+input:checked ~ *.hh{
+  border-color: orange;
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 2px;
+  background-color: #eee;
+}
+
+
+
+input.hide-login-data:checked ~ .table>tbody>tr>.login-data, input.hide-login-data:checked ~ .table>thead>tr>.login-data{
+  display: none;
+}
+
+input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:checked ~ .table>thead>tr>.perf-data{
+  display: none;
+}
+
+
+.job_metric_low {
+  background-color: #ff8080  !important;
+}
+
+.job_metric_average {
+  background-color: #ffff80  !important;
+}
+
+.job_metric_good {
+  background-color: #80ff80  !important;
+}
+
+.task_state_COMPLETED {
+  background-color: #80FF80  !important;
+}
+
+.task_state_COMPLETING {
+  background-color: #FFA580  !important;
+}
+
+.task_state_CANCELLED {
+  background-color: #80EEFF  !important;
+}
+
+.task_state_FAILED {
+  background-color: #FF8080  !important;
+}
+
+.task_state_TIMEOUT {
+  background-color: #FF00FF  !important;
+}
+
+.task_state_NODE_FAIL {
+  background-color: #BB0000  !important;
+}
+
+ /* Popup container */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+  visibility: hidden;
+  width: 260px;
+  background-color: #ccc;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #ccc transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .active {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+.hidden_box {
+  visibility: hidden;
+  display: none; 
+}
+
+.hidden_box .active {
+  visibility: visible;
+  display: table-row; 
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+@font-face {
+  font-family: 'signals';
+  src: url('/fonts/signals-font.woff') format('woff'),
+       url('/fonts/signals-font.ttf') format('truetype'),
+       url('/fonts/signals-font.svg#signals') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class*='icon-signal-']:before{
+  display: inline-block;
+   font-family: 'signals';
+   font-style: normal;
+   font-weight: normal;
+   line-height: 1;
+}
+
+.icon-signal-0:before{content:'a';}
+.icon-signal-1:before{content:'b';}
+.icon-signal-2:before{content:'c';}
+.icon-signal-3:before{content:'d';}
+.icon-signal-4:before{content:'e';}
+
+.em2 {
+  font-size: 2em;
+}  
+.em15 {
+  font-size: 1.5em;
+}  
+.em12 {
+  font-size: 1.2em;
+}  
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 400px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  opacity: 0;
+}
+
+
+@media screen and (min-width: 768px) {
+  .dropdown-content {
+    min-width: 700px;
+  }
+}
+
+@media screen and (min-width: 992px){
+  .dropdown-content {
+    min-width: 950px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .dropdown-content {
+    min-width: 1100px;
+  }
+}
+
+.show {
+  display: block;
+  opacity: 1;
+  transition: opacity 1000ms;
+}
+.dropdown-content .close {
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  text-decoration: none;
+  color: #111;
+  cursor: pointer;
+}
+.dropdown-content .close:hover {
+  color: red;
+}
+
+.inline {
+  display: inline;
+}
+
+.centered-popup {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  top: 5%;
+  bottom: 5%;
+  left: 5%;
+  z-index: -5;
+  opacity: 0;
+}
+
+@media (min-width: 992px) {
+  .centered-popup {
+    width: 50%;
+    height: 50%;
+    top: 25%;
+    bottom: 25%;
+    left: 25%;
+    z-index: -5;
+    opacity: 0;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .centered-popup {
+    position: absolute;
+    width: 20%;
+    height: 20%;
+    top: 40%;
+    bottom: 40%;
+    left: 40%;
+    z-index: -5;
+    opacity: 0;
+  }
+}
+
+.centered-popup .popuptext {
+  visibility: visible; /*hidden;*/
+  width: 100%;
+  background-color: #ccc;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.centered-popup .active {
+  visibility: visible;
+  z-index: 5;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+.cond-div.visible {
+  visibility: visible;
+}
+
+.cond-div.hidden {
+  visibility: hidden;
+}
+
+.table.fixed-layout {
+  table-layout: fixed;
+}
+
+.td.th.icon-x2-width, .th.icon-x2-width {
+  width: 3em;
+}
+
+
+.tinted {
+  opacity: 0.3;
+}
+
+.gray-text {
+  color: gray;
+}

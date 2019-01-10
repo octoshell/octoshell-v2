@@ -6,9 +6,14 @@ class Synchronizer
     @project = access.project
     @cluster = access.cluster
     @project_group = access.project_group_name
-    @connection_to_cluster = Net::SSH.start(@cluster.host,
-                                            @cluster.admin_login,
-                                            keys: [mock_ssh_key_path(@cluster.private_key)])
+    begin
+      @connection_to_cluster = Net::SSH.start(@cluster.host,
+        @cluster.admin_login,
+        keys: [mock_ssh_key_path(@cluster.private_key)])
+    rescue => e
+      logger.info "Synchronizer error: #{e.message} (access=#{access})."
+      nil
+    end
   end
 
   def mock_ssh_key_path(key)
@@ -25,7 +30,7 @@ class Synchronizer
     sync_project_members
     sync_quotas if cluster.quotas.any?
 
-    connection_to_cluster.close
+    connection_to_cluster.close if connection_to_cluster
     cluster.log("--- END SYNC for project #{project.id}", project)
     access.touch
   end
@@ -41,7 +46,11 @@ class Synchronizer
     #     result = data
     #   end
     # end
-    result = connection_to_cluster.exec!(command)
+    result = 
+      connection_to_cluster ?
+      connection_to_cluster.exec!(command) :
+      'Failed to connect cluster'
+
     cluster.log("\t  result: #{result}", project) if log_result
     result
   end
@@ -73,6 +82,10 @@ class Synchronizer
 
   ### - project members sync
   def sync_project_members
+    unless connection_to_cluster
+      cluster.log("No connection to cluster")
+      return false
+    end
     if project.active?
       project.members.each do |member|
         member_state_on_cluster = check_member_state_on_cluster(member)
@@ -153,6 +166,7 @@ class Synchronizer
   end
 
   def upload_credential(credential)
+    return unless connection_to_cluster
     credential_path = mock_ssh_key_path(credential.public_key)
     scp_session = Net::SCP.new(connection_to_cluster)
     scp_session.upload!(credential_path, credential_path)

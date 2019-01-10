@@ -12,8 +12,9 @@ module Hardware
 
     def index_json
       json = Kind.all.map do |k|
-        puts k.states.inspect
-        k.attributes.merge(states: k.states.map { |s| s.attributes.merge(transitions_to: s.to_states.map(&:attributes)) } )
+        k.attributes.merge(states: k.states.map do |s|
+          s.attributes.merge(transitions_to: s.to_states.map(&:attributes))
+        end)
       end
       render json: json
     end

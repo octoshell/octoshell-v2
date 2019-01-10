@@ -1,0 +1,20 @@
+[Unit]
+Description=Octoshell web server
+After=network.target auditd.service octoshell.service
+ConditionPathExists=!/etc/octoshell_not_to_be_run
+
+PartOf=octoshell.service
+BindsTo=octoshell.service
+
+[Service]
+EnvironmentFile=-/var/www/octoshell2/env
+WorkingDirectory=/var/www/octoshell2/
+ExecStart=/var/www/octoshell2/run_current /home/octoadmin/.rbenv/libexec/rbenv exec bundle exec puma -e production --config config/puma.rb
+KillMode=process
+
+Restart=on-failure
+User=octoadmin
+
+
+[Install]
+Alias=octoshell-web.service

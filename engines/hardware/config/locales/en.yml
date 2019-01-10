@@ -29,6 +29,8 @@ en:
         description: State description
         reason: Reason for change of state
         updated_at: Updated at
+        created_at: Created at
+
       hardware/kind:
         name: Name
         description: Description

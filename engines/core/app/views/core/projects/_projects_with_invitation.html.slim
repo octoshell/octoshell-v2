@@ -14,6 +14,6 @@ table class="table table-hover"
             li = link_to project.title, project
             li = mark_project_state(project)
         td
-          = project.owner.full_name_with_email
+          = link_to project.owner.full_name_with_email, main_app.user_path(project.owner)
         td
           = link_to t(".join_project"), edit_project_member_path(project, member), class: "btn btn-primary"

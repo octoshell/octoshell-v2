@@ -67,7 +67,7 @@ module Sessions
     end
 
     def not_sent?
-      pending? || filling?
+      pending? || filling? || postfilling?
     end
 
     def to_s
@@ -131,7 +131,7 @@ module Sessions
       notify_experts_about_submitted_reports if reports.where(:state=>:submitted).any?
       notify_exports_about_assessing_reports if reports.where(:state=>:assessing).any?
 
-      user_surveys.where(:state=>[:pending, :filling]).map(&:postdate!)
+      user_surveys.where(:state=>[:pending, :filling, :postfilling]).map(&:postdate!)
     end
 
     def notify_experts_about_submitted_reports

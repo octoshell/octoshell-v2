@@ -1,0 +1,24 @@
+### transport/40_transport_to_rails
+#####################################################
+transport_to_rails:
+  driver = lmtp
+  socket = /var/www/octoshell2/mail.sock
+  batch_max = 200
+  #allow suffixes/prefixes (default unset)
+  rcpt_include_affixes
+#####################################################
+### end transport/40_transport_to_rails
+#####################################################
+
+
+
+#################################
+### router/10_rails
+#####################################################
+to_rails_mail:
+  condition = ${if def:h_Auto-Submitted: {${if eq {$h_Auto-Submitted:}{no} {1}{0}}} {1} }
+  condition = ${lookup {$local_part@$domain} lsearch {/etc/route_to_rails} {1} {0}}
+  driver = accept
+  transport = transport_to_rails
+### router/50_rails
+#################################

@@ -5,18 +5,23 @@ html
     = favicon_link_tag 'favicon.ico'
     = favicon_link_tag 'apple-touch-icon-precomposed.png', type: 'image/png'
     = favicon_link_tag 'apple-touch-icon-precomposed.png', rel: 'apple-touch-icon', type: 'image/png'
-    link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"
+    //link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"
+    link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous"
     /[ if lt IE 9 ]
       script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"
     script type="text/javascript" src="https://www.google.com/jsapi"
     = stylesheet_link_tag "application", media: "all"
     - if @extra_css
-      = stylesheet_link_tag @extra_css, media: "all"
+      - [@extra_css].flatten.each do |css|
+        = stylesheet_link_tag "#{css}", media: "all"
+    = javascript_include_tag "application"
+    - if @extra_js
+      - [@extra_js].flatten.each do |js|
+        = javascript_include_tag "#{js}"
+    = csrf_meta_tags
     javascript:
       window.env = "#{Rails.env}"
       window.locale = "#{I18n.locale}"
-    = csrf_meta_tags
-    = javascript_include_tag "application"
   body
     div class="navbar navbar-default navbar-static-top" role="navigation"
       div class="container"
@@ -44,5 +49,7 @@ html
 
       div id="footer"
         = link_to t('.maintaining_organization'), 'http://parallel.ru/cluster', target: '_blank'
+        span class="version"
+          | Ver #{Octoshell::Version.full_ver}
         br
         | Created by #{link_to('Evrone', 'http://evrone.ru')}

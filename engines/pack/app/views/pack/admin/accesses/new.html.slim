@@ -5,11 +5,11 @@ div class="page-header"
   div id="enab"
     =f.radio_button  "who_type", "User", label: t("user"),class: 'hid-decision'
     = f.autocomplete_field :who_id,label: t("user"), source:  main_app.users_path
-      -f.object.who.full_name_with_email if f.object.who.is_a? ::User
+      - f.object.who.full_name_with_email if f.object.who.is_a? ::User
   br
     =f.radio_button  "who_type", "Core::Project",label: t("project"),class: 'hid-decision'
     = f.autocomplete_field :who_id, label: t("project"), source:  core.projects_path do
-      -f.object.who.title if f.object.who.is_a? Core::Project
+      - f.object.who.title if f.object.who.is_a? Core::Project
   br
     =f.radio_button  "who_type", "Group", label: t("group"),class: 'hid-decision'
     = f.collection_select :who_id, Group.all, :id, :name, label: t("group")

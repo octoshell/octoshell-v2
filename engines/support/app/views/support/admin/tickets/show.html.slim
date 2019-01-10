@@ -94,16 +94,17 @@ div class="page-header"
       small = link_to t("actions.show_empty_fields"), "#", id: "empty-fields-opener"
 
 
-div.col-xs-6
-  h3 = Support::Ticket.human_attribute_name(:subscribers)
-  div id="ticket-subscribers"
-    = render "subscribers_form", ticket: @ticket
-div.col-xs-6
-  h3 = Support::Ticket.human_attribute_name(:responsible)
-  div id="ticket-responsible"
-    = render "responsible_form", ticket: @ticket
+div.row
+  div.col-xs-6
+    h3 = Support::Ticket.human_attribute_name(:subscribers)
+    div id="ticket-subscribers"
+      = render "subscribers_form", ticket: @ticket
+  div.col-xs-6
+    h3 = Support::Ticket.human_attribute_name(:responsible)
+    div id="ticket-responsible"
+      = render "responsible_form", ticket: @ticket
 
-div class="panel panel-default"
+div class="row panel panel-default"
   div class="panel-heading"
     h4
       = Support::Ticket.human_attribute_name(:message)

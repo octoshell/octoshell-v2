@@ -22,7 +22,7 @@ module Hardware
 
     def self.to_a(records = Item.all)
       records.map do |r|
-        r.attributes.merge(state: r&.last_items_state&.attributes)
+        r.attributes.except('lock_version').merge(state: r&.last_items_state&.attributes&.except('id', 'item_id'))
       end
     end
 

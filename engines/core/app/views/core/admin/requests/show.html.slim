@@ -19,14 +19,14 @@ div class="well btn-toolbar"
 table class="table table-bordered"
   tr
     th = Core::Project.human_attribute_name(:title)
-    td = @request.project.title
+    td = link_to @request.project.title, admin_project_path(@request.project)
   tr
     th = Core::Request.human_attribute_name(:creator)
     td
       table class="table table-bordered table-condensed"
         tr
           th class="span3" = Core::Request.human_attribute_name(:creator)
-          td = @request.owner
+          td = link_to @request.owner, main_app.admin_user_path(@request.owner)
         tr
           th #{t('.active_projects')}
           td = @request.owner.projects.where(:state=>:active).count
@@ -37,7 +37,7 @@ table class="table table-bordered"
         -if @request.changed_by
             tr
               th = Core::Request.human_attribute_name(:changed_by)
-              td =  @request.changed_by.full_name
+              td = link_to @request.changed_by.full_name, main_app.admin_user_path(@request.changed_by)
         tr
           th #{t('.reg_date')}
           td
@@ -56,7 +56,7 @@ table class="table table-bordered"
       table class="table table-bordered table-condensed"
         tr
           th class="span3" = Core::Organization.model_name.human
-          td = @request.project.organization
+          td = link_to @request.project.organization, admin_project_path(@request.project.organization)
         tr
           th #{t('.users_num')}
           td = @request.project.organization.users.where(:access_state=>:active).count

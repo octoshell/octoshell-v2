@@ -1,3 +1,6 @@
+Русская версия ниже.
+For russian version see below.
+
 # README
 Octoshell - access management system for HPC centers. This project is based on Ruby on Rails framework(4.2)
 https://users.parallel.ru/
@@ -5,25 +8,54 @@ https://users.parallel.ru/
 
 ## Installation and starting
 
-1. install rbenv (https://github.com/rbenv/rbenv)
+We assume, that all below is doing as user `octo` (or root, if it is said 'as root'). You can use another user. Please, note, that linux account `octo` and database role `octo` are not connected, but we prefer to use the same name for both cases.
+
+1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev`)
+1. install as root redis (under debian/ubuntu: `sudo apt-get install redis`)
+1. install postgresql (under debian/ubuntu: `sudo apt-get install postgresql postgresql-server-dev-all`)
+1. as root add database user octo: `sudo -u postgres createuser -s octo`
+1. as root set database password: `sudo -u postgres psql` then enter `\password octo` and enter password. Exit with `\q`.
+1. enable and start redis and postgresql (e.g. `systemctl enable redis; systemctl enable postgresql; systemctl start redis; systemctl start postgresql`)
+1. as user install rbenv (e.g. `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
+1. make sure rbenv is loaded automatically, by adding to ~/.bashrc these lines:
+
+```
+  export PATH=~/.rbenv/bin:$PATH
+  eval "$(rbenv init -)"
+```
+1. reopen your terminal session or execute lines from point above in console
 1. install ruby:
-		rbenv install 2.5.1
-		rbenv local 2.5.1
-1. `gem install bundler`
-1. `bundle install`
-1. install redis
-1. install postgresql
-1. `git clone`
-1. add database user octo: `sudo -u postgres createuser -s octo`
-1. set database password: `sudo -u postgres psql` then enter `\password octo` and enter password. Exit with `\q`.
-1. fill database password in `config/database.yml`
-1. `bin/rake db:setup`
-1. optional run tests: `bin/rspec .`
-1. After "seeds" example cluster will be created. You should login to your cluster as root, create new user 'octo'. Login as `admin@octoshell.ru` in web-application. Go to "Admin/Cluster control" and edit "Test cluster". Copy `octo` public key from web to /home/octo/.ssh/authorized_keys.
-1. `rake assets:precompile` (Downloading pages without precompilation  and   config.assets.debug = true can take significant amount of time)
-1. Start production sidekiq: `./run-sidekiq` (`dev-sidekiq` for development)
-1. Start production server: `./run` (`dev` for development)
-1. Enter as admin with login `admin@octoshell.ru` and password `123456`
+
+```
+  rbenv install 2.5.1
+  rbenv local 2.5.1
+```
+
+1. execute `gem install bundler`
+1. execute `bundle install`
+1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
+1. go to cloned directory (`cd octoshell-v2`)
+1. copy `config/database.yml.example` into `config/database.yml`
+1. fill database parameters and password in `config/database.yml`
+1. execute `bundle install`
+1. execute `bundle exec rake db:setup`
+1. execute `bundle exec rake assets:precompile` (Downloading pages without precompilation  and   config.assets.debug = true can take significant amount of time)
+
+Now you can test all in **development** mode, just execute `./dev` and wait for 'Use Ctrl-C to stop'. Open 'http://localhost:5000/' to access application.
+To test delayed actions, such as email send, cluster sync, start sidekiq in development mode: `dev-sidekiq`.
+
+Enter as admin with login `admin@octoshell.ru` and password `123456`
+
+To run in **production** mode:
+
+1. as root install nginx (`sudo apt-get install nginx`)
+1. as root copy nginx config file (`cp nginx-octo.conf /etc/nginx/sites-enabled/`), restart nginx (`systemctl restart nginx`)
+1. as root move your app into /var/www: `mkdir /var/www/octoshell2; mv ~octo/octoshell-v2 /var/www/octoshell2/current`)
+1. Start production sidekiq: `./run-sidekiq`
+1. Start production server: `./run`
+1. To add cluster sync you should login to your cluster as root, create new user 'octo'. Login as `admin@octoshell.ru` in web-application. Go to "Admin/Cluster control" and edit "Test cluster". Copy `octo` public key from web to /home/octo/.ssh/authorized_keys.
+
+Best way is to test in development mode and then do deploy on production (or stage) server. See **Deploy** section for more details.
 
 ## Hacks
 
@@ -52,27 +84,137 @@ Example:
 
 You may need to notify administrators using support tickets (requests). Special class was designed to do it. Its functionality is very similar to ActionMailer::Base class (`engines/support/lib/support/notificator.rb`). Example: `engines/core/app/notificators/core/notificator.rb  engines/core/lib/core/checkable.rb`. Be careful with the `topic_name` method. It must be used only inside "action" method like `Notificator.check`. Pay special attention that the `new` method is not used here explicitly and method_missing is used to set correct options.    
 
+
+## Deploy
+
+1. Prepare deploy server (1-10 from above)
+1. Make sure you can ssh to deploy server without password
+1. `git clone`
+1. Rename `deploy_env.sample` to `deploy_env` and fill right environment
+1. `./do_deploy_setup`
+1. `./do_deploy`
+1. `./deploy_copy_files`
+1. `./do_after_1_deploy`
+1. ssh to deploy server and start all by `systemctl start octoshell`
+
+All deploys after this can be done by `git fetch; ./do_deploy`, and then on deploy server `systemctl restart octoshell`.
+
+# Fork and improve!
+
+You can help us and other users of Octoshell by writting usefull cool features etc.
+Please, note, that from 2019 we are using Conventional Commits standart for commits: each commit comment should have this form:
+
+    <type>(scope): description
+
+    Full description. If it has two or more points, each point should start with '* '.
+
+Types:
+
+|Type|Description|
+|---|---|
+|docs 	|Documantation update|
+|uix    |User interface changes|
+|feat 	|New functions and features|
+|fix 	|Bug fixes|
+|perf 	|Performance improvement|
+|refactor |Just refactoring|
+|revert |Back to old code!|
+|style 	|Code style fixes|
+|test 	|Adding and improving tests|
+
+Scope: one of engines or 'base' for main app or other files (README, deployment, etc).
+
 # README
+
 Базовое приложение для модульной версии octoshell.
 
 ## Установка и запуск
 
-1. установить rbenv (например `curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash`)
-1. установить jdk (желательно oracle).
-1. установить jruby-9.0.5.0 (`rbenv install jruby-9.0.5.0`; `rbenv local jruby-9.0.5.0`)
-1. `gem install bundler`
-1. `bundle install`
-1. установить redis
-1. установить postgresql
-1. `git clone`
-1. добавить пользователя БД octo: `sudo -u postgres createuser -s octo`
-1. установить пароль для пользоватедя БД: `sudo -u postgres psql` then enter `\password octo` and enter password. Exit with `\q`.
-1. прописать пароль в `config/database.yml`
-1. `bin/rake db:setup`
-1. запустить тесты (по желанию): `bin/rspec .`
-1. После прогона сидов создастся тестовый «кластер». Для синхронизации с ним необходимо доступ на него под пользователем root. Затем залогиниться в приложение как администратор `admin@octoshell.ru`. В «Админке проектов» зайти в раздел «Управление кластерами» и открыть Тестовый кластер. Скопировать публичный ключ админа кластера (по умолчанию `octo`) в /home/octo/.ssh/authorized_keys.
-1. Запустить sidekiq: `./run-sidekiq`
-1. Запустить сервер: `./run`
-1. Войти по адресу `http://localhost:3000/` с логином `admin@octoshell.ru` и паролем `12345`
+Далее считаем, что установка производится под пользователем `octo` (или `root`, если сказано `под рутом`). Можно использовать другое имя пользователя. Отметим, что имя пользователя и имя роли базы данных не обязаны совпадать, но мы используем одинаковые.
 
-Процедура деплоя на удалённый серввер сделана через mina: `bundle exec mina deploy`. См. документация на mina.
+1. под рутом ставим пакеты (debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev`)
+1. под рутом ставим redis (debian/ubuntu: `sudo apt-get install redis`)
+1. под рутом ставим postgresql (debian/ubuntu: `sudo apt-get install postgresql postgresql-server-dev-all`)
+1. под рутом добавим роль для БД octo: `sudo -u postgres createuser -s octo`
+1. под рутом зададим роли пароль: `sudo -u postgres psql`, вводим `\password octo` и вводим пароль. Выход: `\q`.
+1. под рутом включаем и запускаем redis и postgresql (например `systemctl enable redis; systemctl enable postgresql; systemctl start redis; systemctl start postgresql`)
+1. под пользователем ставим rbenv (проще всего так: `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
+1. в ~/.bashrc пользователя должны быть добавлены эти строки, чтобы работал rbenv:
+
+```
+  export PATH=~/.rbenv/bin:$PATH
+  eval "$(rbenv init -)"
+```
+1. запускаем новое окно терминала или терминальную сессию или просто выполняем в консоли строки из предыдущего пункта.
+1. ставим ruby:
+
+```
+  rbenv install 2.5.1
+  rbenv local 2.5.1
+```
+
+1. выполняем `gem install bundler`
+1. выполняем `bundle install`
+1. выполняем `git clone https://github.com/octoshell/octoshell-v2.git`
+1. переходим в созданный каталог (`cd octoshell-v2`)
+1. копируем `config/database.yml.example` в `config/database.yml`
+1. вписываем параметры БД и пароль в `config/database.yml`
+1. выполняем `bundle install`
+1. выполняем `bundle exec rake db:setup`
+1. выполняем `bundle exec rake assets:precompile`
+
+Теперь можно запустить всё в **development** режиме, просто выполнив `./dev` и подождав строчки 'Use Ctrl-C to stop'. В браузере открываем 'http://localhost:5000/'.
+Чтобы протестировать отложенные операции, такие как рассылка email, синхронизация с кластером и т.п., запускаем sidekiq в development режиме: `dev-sidekiq`.
+
+В браузере вводим логин `admin@octoshell.ru` и пароль `123456`
+
+Для запуска в **production** режиме:
+
+1. под рутом ставим nginx (`sudo apt-get install nginx`)
+1. под рутом копируем конфиг nginx-а (`cp nginx-octo.conf /etc/nginx/sites-enabled/`), перезапускаем nginx (`systemctl restart nginx`)
+1. под рутом перемещаем каталог приложения в /var/www: `mkdir /var/www/octoshell2; mv ~octo/octoshell-v2 /var/www/octoshell2/current`)
+1. запускаем production sidekiq: `./run-sidekiq`
+1. запускаем production server: `./run`
+1. для синхронизации с кластером, заходим как root на кластер, создаём пользователя 'octo'. Входим как `admin@octoshell.ru` в приложение. Идём в "Admin/Cluster control" редактируем "Test cluster" (или новый). Копируем открытый ключ `octo` из web-странички в /home/octo/.ssh/authorized_keys.
+
+Лучше всего потестировать приложение в development режиме, а потом выполнить деплой на рабочий (или тестовый) сервер, см. раздел **Деплой**.
+
+
+## Деплой
+
+1. Подготовьте сервер деплоя (пп. 1-10 из раздела "Установка...")
+1. Убедитесь, что вы можете входить на сервер деплоя по ssh без пароля
+1. `git clone`
+1. Переименовать `deploy_env.sample` в `deploy_env` и внесите нужные правки
+1. `./do_deploy_setup`
+1. `./do_deploy`
+1. `./deploy_copy_files`
+1. `./do_after_1_deploy`
+1. Войдите на сервер деплоя и запустите сервисы `systemctl start octoshell`
+
+Последующие деплои можно выполнять командой `git fetch; ./do_deploy` и последующим перезапуском сервиса на сервере `systemctl restart octoshell`.
+
+# Форкни и улучши!
+
+Вы можете помочь нам и другим пользователям улучшить Октошелл, создав новые крутые фишки и прочее, мы всегда рады новой функциональности.
+Пожалуйста, помните, что с 2019 года мы используем стандарт Conventional Commits: каждый комментарий к коммиту должен иметь вид:
+
+    <тип>(область): описание
+
+    Полное описание. Если в описании более одного пункта, каждый долен начинаться с '* '.
+
+Типы:
+
+|Type|Description|
+|---|---|
+|docs 	|Обновление документации|
+|uix    |Исправления в интерфейсе пользователя|
+|feat 	|Добавление нового функционала|
+|fix 	|Исправление ошибок|
+|perf 	|Изменения направленные на улучшение производительности|
+|refactor |	Правки кода без исправления ошибок или добавления новых функций|
+|revert |	Откат на предыдущие коммиты|
+|style 	|Правки по кодстайлу (табы, отступы, точки, запятые и т.д.)|
+|test 	|Добавление тестов|
+
+Область - один из engines или 'base' для основного приложения или других файлов (типа README, деплоя, и т.п.)

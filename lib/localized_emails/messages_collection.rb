@@ -9,7 +9,11 @@ module LocalizedEmails
     end
 
     def deliver!
-      mails.each(&:deliver!)
+      begin
+        mails.each(&:deliver!)
+      rescue => e
+        logger.info "Email Deliver error: #{e.message}"
+      end
     end
   end
 end

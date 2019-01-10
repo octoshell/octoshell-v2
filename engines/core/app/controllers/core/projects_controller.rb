@@ -83,9 +83,13 @@ module Core
     end
 
     def invite_member
-      @project = current_user.owned_projects.find(params[:id])
-      @project.invite_member(params.fetch(:member)[:id])
-      @project.save
+      begin
+        @project = current_user.owned_projects.find(params[:id])
+        @project.invite_member(params.fetch(:member)[:id])
+        @project.save
+      rescue ActiveRecord::RecordNotUnique 
+        flash[:alert] = t('flash.duplicated_invite')
+      end
 
       unless @project.errors.empty?
         flash[:alert] = @project.errors.full_messages.to_sentence

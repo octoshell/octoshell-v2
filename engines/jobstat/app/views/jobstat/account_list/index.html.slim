@@ -1,0 +1,388 @@
+- @finish_states={'COMPLETED'=>'far fa-grin-beam','NODE_FAIL'=>'far fa-grimace','FAILED'=>'far fa-frown','CANCELLED'=>'far fa-meh-rolling-eyes','TIMEOUT'=>'far fa-flushed'}
+
+// pass ruby variables to js
+- group_plus = @rules_plus['groups']
+- def_icon = {'icon'=>'far fa-exclamation-triangle', 'color'=>'color-regular'}
+
+javascript:
+  var jobs=#{{@jobs_plus.to_json}}
+  var jobs_feedback=#{{@jobs_feedback.to_json}}
+  var current_user=#{@current_user.id}
+  var agree_flags=#{{@agree_flags.to_json}}
+  var rules_plus=#{{@rules_plus.to_json}}
+  var filters=#{{@filters.to_json}}
+  var emails=#{{@emails.to_json}}
+
+  var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
+  // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
+  $(function(){
+    var len=filters.length;
+    if (len>0) {
+      $('#hidden_count').text('Скрыто проблем с производительностью: '+len)
+    }
+    else {
+      $('#hidden_count').text('Нет скрытых проблем с производительностью.')
+    }
+    // mark hidden rules
+    filters.forEach(function(rule){
+      $("#btn-hide-"+rule).addClass("tinted")
+    })
+    // mark disabled email notifications
+    emails.forEach(function(rule){
+      $("#btn-email-"+rule).addClass("tinted")
+    })
+  });
+
+h3 Информация о завершенных задачах
+
+p На данной странице вы можете посмотреть информацию о ваших задачах, а также оценить эффективность их выполнения. Для отображения только интересующих задач укажите ниже требуемые фильтры.
+
+= render "form"
+
+div class='thanks' id='thanks_box'
+  div &nbsp;
+  div class="thanks-text"
+    | Спасибо!
+  div &nbsp;
+
+- if @notice
+  p style = 'color:#FF0000;' = @notice
+
+  /button onClick="$('#agree_all_confirmation').addClass('target')" id='agree_all'
+    | Я согласен с оценками моих запусков
+  /div class="octo-popup" id="agree_all_confirmation"
+    /div class="content"
+    form onSubmit="$('#agree_all_confirmation').removeClass('target');agree_all(); return false"
+      div class="centered"
+        | Все замечания без оценок по Вашим запускам будут отмечены как 
+        strong "согласен с оценкой"
+      div class="centered"
+        button class="btn-info" type="submit"
+          | Да, я согласен со всеми оценками!
+        button onClick="$('#agree_all_confirmation').removeClass('target'); return false"
+          | Передумал
+  /a class="octo-close-popup" onClick="$('#agree_all_confirmation').removeClass('target'); return false"
+
+  /| Не согласны с оценкой запусков?
+  /div id='disagree_reason_box' style="display: none; width: 100%" class="feedback_div"
+    br
+    | Выберите задачи в списке ниже (левый столбец), и правила, которые сработали неверно (в списке ниже):
+    div style="width: 100%" id="disagree_rules" class="feedback_list"
+      | - Пока не выбраны задачи, поэтому в списке нет правил...
+    br
+    | Поясните, почему Вы не согласны с этими правилами?
+    input type='text' id='disagree_reason' style="right: 0px; width: 99%"
+    br
+  /button id="disagree_button" onClick="multi_job_feedback()" alt="Не согласен!"
+    | Жмите тут!
+div
+  br
+  p 
+    | В столбце "Найденные проблемы" указаны потенциальные проблемы с эффективностью, обнаруженные для данной задачи. Чтобы посмотреть их краткое описание, скрыть их видимость или прокомментировать их применимость к задаче, необходимо нажать на значок 
+    i class="fas fa-bars"
+    | . Значок соответствует типу найденной потенциальной проблемы (неэффективность работы с MPI, низкая локальность обращений в память и т.д.). Цвет обозначает ее критичность (красный – радикальное снижение эффективности или программа работает некорректно, черный – заметное снижение эффективности, зеленый – проблем не найдено).
+  p Подробное описание найденных потенциальных проблем с эффективностью, а также другая информация о производительности на выбранной задаче, приведены на отдельной странице. Чтобы попасть на эту страницу, необходимо нажать на ID соответствующей задачи.
+  p 
+    | Посмотреть список всех потенциальных проблем с эффективностью, настроить их отображение или содержание, а также предложить свое новое правило для обнаружения проблем с эффективностью можно на 
+    a href='all_rules' этой странице
+    |.
+  p 
+    | Есть общие пожелания или замечания? Отправьте 
+    a href='mailto://feedback-octoshell@parallel.ru' e-mail
+    | . А лучше - напишите 
+    a href="/support/tickets/new" здесь.
+div
+  button onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
+    | Я не согласен с некоторыми оценками...
+  div id="mass_notok" class='roll-down col-12 gray-round-background'
+    p Выберите нужные запуски галочками в левом столбце.
+      В области ниже будут показаны правила, общие для выбранных запусков.
+      Выберите все правила, с которыми Вы не согласны и отправьте нам отзыв.
+
+    div id="disagree_rules" class="feedback_list col-12"
+      | - Пока не выбраны задачи, поэтому в списке нет правил...
+
+    button onclick="$('#mass_notok_confirm').addClass('target')"
+      | Отправить отзыв
+    button onclick="$('#mass_notok').removeClass('target'); restore_disagree();"
+      | Передумал оставлять отзыв
+
+    div id="mass_notok_confirm" class="octo-popup"
+      | Поясните, почему Вы не согласны с этими правилами?
+      input type='text' id='disagree_reason' style="right: 0px; width: 99%"
+      div class="centered"
+        button class="btn-info" onClick="multi_job_feedback(); $('#mass_notok').removeClass('target'); $('#mass_agree').removeClass('target'); $('#mass_notok_confirm').removeClass('target')"
+          | Отправить!
+        button class="btn-info" onClick="$('#mass_notok_confirm').removeClass('target');"
+          | Передумал
+    a class="octo-close-popup" onClick="$('#mass_notok_confirm').removeClass('target'); return false"
+
+
+div class="perf-table"
+  /p
+    | Sort by &nbsp;
+    a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="0" num nodes
+    | &nbsp;
+    a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="1" duration
+    | &nbsp;
+    a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="2" core*hours
+  input type="checkbox" class="hide-login-data" id="hide-login-checkbox" checked=1
+  label for="hide-login-checkbox" Скрыть логин/раздел
+  br
+  input type="checkbox" class="hide-perf-data" id="hide-perf-checkbox"
+  label for="hide-perf-checkbox" Скрыть данные производительности
+
+  h3
+    - if @total_count==0
+      | Нет задач с такими параметрами...
+    - else
+      | Показаны задачи: #{@params[:offset]}..#{@params[:offset].to_i + @shown} из #{@total_count}
+  p id="hidden_count"
+  table
+    tr
+      td
+        - if @params[:offset].to_i >= @PER_PAGE
+          a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i - @PER_PAGE)}" <<<
+      td width="10px"
+      td
+        - if @jobs.length == 100
+          a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
+  table id="jobs" class="table table-bordered tablesorter-default"
+    thead
+      tr
+        th data-sorter="false"
+          p
+            |
+        th data-sorter="false"
+          p title="список потенциальных(sic!) проблем, возникших при работе приложения"
+            | Найденные проблемы
+        th
+          p title="номер задачи в менеджере ресурсов (slurm)"
+            | ID задачи
+        th class="login-data"
+          p title="логин, под которым было запущено приложение"
+            | Логин
+        th class="login-data"
+          p title="раздел суперкомпьютера, на котором было выполнено приложение"
+            | Раздел
+        th
+          p title="время начала счёта"
+            | Начало счета
+        th
+          p title="время окончания счёта"
+            | Конец счета
+        th class="icon-x2-width"
+          p title="статус завершения расчёта"
+            | Статус
+        th
+          p title="в штуках"
+            | Число узлов
+        th
+          p title="время в часах"
+            | Время счета (часы)
+        th
+          p title="произведение числа занятых ядер процессора на время расчёта<br>все ядра одного узла считаются занятыми даже если на них не было реального счёта"
+            | Размер задачи (ЦПУ-часы)
+        th class="perf-data"
+          p title="в процентах от полной загрузки"
+            | Загрузка ЦПУ
+        th class="perf-data"
+          p title="в процентах от полной загрузки"
+            | Загрузка ГПУ
+        th class="perf-data"
+          p title="среднее число активных процессов"
+            | Load average
+        th class="perf-data"
+          p title="среднее число инструкций, выполненных за такт"
+            | IPC
+        th class="perf-data"
+          p title="в мегабайтах/сек"
+            | Получено байт по MPI (МБ/с)
+        th class="perf-data"
+          p title="в мегабайтах/сек"
+            | Передано байт по MPI (МБ/с)
+    - index=1
+    - @jobs.each do |job|
+      - index+=1
+      - job_performance = job.get_performance
+      - job_ranking = job.get_ranking
+      - #job_cond = job.get_rules @current_user #@jobs_plus[job.drms_job_id]['rules']
+      - job_cond = @jobs_plus[job.drms_job_id]['rules'].keys
+      - perf_data_present=!job_performance[:cpu_user].nil?
+      tr id="job_row_#{job.drms_job_id}" data-jobid="#{job.drms_job_id}" data-info-state="#{perf_data_present ? 0 : -1}"
+        td
+          input type="checkbox" class="job_check" style="display: none;" data-job-id="#{job.drms_job_id}" onChange="job_check_clicked(#{job.drms_job_id})"
+          a class="red-on-hover" onClick="$('#job_info_#{index}').addClass('target')" title="Подробнее о правилах, скрыть/прокомментировать правила"
+            i class="fas fa-bars"
+          // feedback dropdown window
+          div id="job_info_#{index}" class="octo-popup"
+            a class="octo-popup-close" onClick="$('#job_info_#{index}').removeClass('target')"&times;
+            - if perf_data_present
+              - if job_cond.size > 0
+                - job_cond.each do |cond|
+                  div class="cond-div #{@filters.include?(cond) ? 'hidden' : 'visible'}" data-rule-div="#{cond}"
+                    // current feedback icon
+                    - feedback=@jobs_plus[job.drms_job_id]['feedback']
+                    i id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[feedback.fetch(cond,99)]}"
+                    /'fa-ok agreed-flag'
+                    | &nbsp;
+                    
+                    // "hide rule" button
+                    button class="btn-danger" onClick="popup_show('hide#{job.drms_job_id}_#{cond}','question_hide#{job.drms_job_id}_#{cond}');" title="Скрыть правило"
+                      i class="far fa-bell-slash"
+                    | &nbsp; 
+
+                    // "I disagree with rule" button
+                    button class="btn-warning disagree-button" onClick="popup_show('disagree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="Не согласен!"
+                      i class="#{@agree_flags[1]}"
+                      /"far fa-angry"
+                    | &nbsp; 
+                    
+                    button class="btn-warning" onClick="popup_show('agree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="Согласен с оценкой."
+                      i class="#{@agree_flags[0]}"
+                    | &nbsp; 
+                    
+                    // rule icon
+                    - rule = @rules_plus['rules'].fetch(cond, nil)
+                    - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
+                    a href="all_rules#go-#{cond}"
+                      i class="em15 fa-fw align-left inline #{icon['icon']} #{icon['color']}" title="Перейти к описанию правила"
+                    | &nbsp; 
+
+                    = @rules_plus['rules'].fetch(cond,{}).fetch('description','Ой, у нас тут ошибка с описанием правила, сообщите нам об этом, пожалуйста.')
+
+                    // agree/disagree one rule dialog
+                    /div class="octo-popup2 container" id="vote-#{job.drms_job_id}-#{cond}"
+                      a class="btn" onClick="agree('#{job.drms_job_id}','#{cond}');$('#vote-#{job.drms_job_id}-#{cond}').removeClass('target')"
+                        i class="far fa-thumbs-up agreed-flag"
+                        | Согласен с правилом!
+                      br
+                      a class="btn" onClick="disagree('#{job.drms_job_id}','#{cond}');$('#vote-#{job.drms_job_id}-#{cond}').removeClass('target')"
+                        i class="far fa-thumbs-down agreed-flag"
+                        | Не согласен с правилом!
+                      br
+                    /a class="octo-close-popup2" onClick="$('#vote-#{job.drms_job_id}-#{cond}').removeClass('target')"
+
+                    // "why hide?" dialog
+                    div class="octo-popup2 container" id="popup_hide#{job.drms_job_id}_#{cond}"
+                        /div class="content container"
+                        form onSubmit="popup_hide('hide#{job.drms_job_id}_#{cond}');hide_rule(#{job.drms_job_id},'#{cond}'); return false;"
+                          div class="centered"
+                            | Это правило будет скрыто во всех заданиях, в том числе будущих. Поясните, почему Вы хотите скрыть его?
+                          input type="text" id="question_hide#{job.drms_job_id}_#{cond}" class="fullwidth"
+                          div class="centered col-12"
+                            button class="btn-info" type="submit"
+                              | Отправить!
+                            button class="btn-info" onClick="return popup_hide('hide#{job.drms_job_id}_#{cond}');"
+                              | Передумал
+                    a class="octo-close-popup2" onClick="return popup_hide('hide#{job.drms_job_id}_#{cond}');"
+
+
+                    // "Disagree" dialog
+                    div class="octo-popup2 container" id="popup_disagree#{job.drms_job_id}_#{cond}"
+                      form onSubmit="popup_hide('disagree#{job.drms_job_id}_#{cond}');disagree('#{job.drms_job_id}','#{cond}',0); return false;"
+                        div class="centered"
+                          | Поясните, почему Вы не согласны с оценкой правила?
+                        input type="text" id="question_#{job.drms_job_id}_#{cond}" class="fullwidth"
+                        div class="centered"
+                          button class="btn-info" type="submit"
+                            | Отправить!
+                          button class="btn-info" onClick="return popup_hide('disagree#{job.drms_job_id}_#{cond}')"
+                            | Передумал
+                    a class="octo-close-popup2" onClick="return popup_hide('disagree#{job.drms_job_id}_#{cond}')"
+
+                    // 'Agree' dialog
+                    div class="octo-popup2 container" id="popup_agree#{job.drms_job_id}_#{cond}"
+                      form onSubmit="popup_hide('agree#{job.drms_job_id}_#{cond}'); agree('#{job.drms_job_id}','#{cond}',0,''); return false;"
+                        div class="centered"
+                          button class="btn-info" type="submit"
+                            | Да, я согласен с этим правилом для этой задачи.
+                          button class="btn-info" onClick="return popup_hide('agree#{job.drms_job_id}_#{cond}')"
+                            | Передумал
+                    a class="octo-close-popup2" onClick="return popup_hide('agree#{job.drms_job_id}_#{cond}')"
+              - else
+                i class="em2 fas fa-fw fa-check color-green"
+                | Всё в порядке, замечаний нет!
+            - else
+              p 
+                | Нет данных о задаче :(
+          a class="octo-close-popup" onClick="$('#job_info_#{index}').removeClass('target')"
+        td
+          - if perf_data_present
+            - if job_cond.size > 0
+              - hidden_count=0
+              - job_cond.each do |cond|
+                - rule = @rules_plus['rules'].fetch(cond, nil)
+                - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
+                - hidden_count+=1 if @filters.include?(cond)
+                a href="all_rules#go-#{cond}" class="em12 #{@filters.include?(cond) ? 'hidden' : 'visible'}"
+                  i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{@rules_plus['rules'].fetch(cond,{}).fetch('description','...')}" data-rule-div="#{cond}"
+                |  
+              - if hidden_count>0
+                - hidden=@jobs_plus[job.drms_job_id]['filtered']
+                span class="gray-text hidden_rules_count" data-id="#{job.drms_job_id}" title="Число скрытых правил" +#{hidden}
+            - else
+              /= image_tag "ok.png", size: "20", border: 2
+              i class="fas fa-fw fa-check em12 color-green" title="Всё в порядке, замечаний нет!"
+          - else
+            p 
+              | Нет данных...
+        td
+          - d="Подробнее про этот запуск\nИмя задачи: #{job.get_command}"
+          p title="#{d}"
+            = link_to(job.drms_job_id, job)
+        td class="login-data" = job.login
+        td class="login-data" = job.partition
+        td = job.start_time.strftime('%F %T')
+        td = job.end_time.strftime('%F %T')
+        td class="task_state_#{job.state} centered"
+          /i class="em15 #{@finish_states.fetch(job.state, 'fas fa-meh-blank')}" title="#{job.state}"
+          = job.state.downcase
+        td
+          / class="sorter-metrics1"
+          /| #{job.num_nodes}/#{number_with_precision(job.get_duration_hours, :precision => 1)}/#{number_with_precision(job.get_cpuh, :precision => 1)}
+          = job.num_nodes
+        td
+          = number_with_precision(job.get_duration_hours, :precision => 1)
+        /td = number_with_precision(job.get_duration_hours, :precision => 1)
+
+        /td = number_with_precision(job.get_cpuh, :precision => 1)
+
+        /td = "🎖" * Math.log(job.num_nodes * (job.end_time - job.start_time) / 86400 + 2, 2).to_i
+
+        - stars=Math.log(job.num_nodes * (job.end_time - job.start_time) / 86400 + 2, 2)
+        - stars=4 if stars>4
+        td
+          i class="icon-signal-#{stars.to_i} em2 centered" data-stars="#{stars}"
+          br
+          = number_with_precision(job.get_cpuh, :precision => 1)
+          /== '<i class="fas fa-star"></i>' * stars.to_i
+          /== '<i class="fas fa-star-half-alt"></i>' * (stars-stars.to_i > 0.5 ? 1 : 0)
+
+        td class="perf-data job_metric_#{job_ranking[:cpu_user]}"
+          = number_with_precision(job_performance[:cpu_user], :precision => 1)
+
+        td class="perf-data job_metric_#{job_ranking[:gpu_load]}"
+          = number_with_precision(job_performance[:gpu_load], :precision => 1)
+
+        td class="perf-data job_metric_#{job_ranking[:loadavg]}"
+          = number_with_precision(job_performance[:loadavg], :precision => 1)
+
+        td class="perf-data job_metric_#{job_ranking[:ipc]}"
+          = number_with_precision(job_performance[:ipc] && job_performance[:ipc], :precision => 2)
+
+        td class="perf-data job_metric_#{job_ranking[:ib_rcv_data_mpi]}"
+          = number_with_precision(job_performance[:ib_rcv_data_mpi], :precision => 1)
+
+        td class="perf-data job_metric_#{job_ranking[:ib_xmit_data_mpi]}"
+          = number_with_precision(job_performance[:ib_xmit_data_mpi], :precision => 1)
+
+table
+  tr
+    td
+      - if @params[:offset].to_i >= @PER_PAGE
+        a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i - @PER_PAGE)}" <<< 
+    td width="10px"
+    td
+      - if @jobs.length == 100
+        a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
