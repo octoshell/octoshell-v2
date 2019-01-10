@@ -15,6 +15,7 @@ div class="panel-body"
 div class="panel panel-default"
   div class="panel-heading"
     = link_to t(".new_item"), new_admin_item_path, class: "btn btn-default"
+    = link_to t(".index_json"), index_json_admin_items_path, class: "btn btn-success"
 
   = render "table", items: @items
   = safe_paginate @items

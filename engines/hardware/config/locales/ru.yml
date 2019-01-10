@@ -57,6 +57,7 @@ ru:
           only_deleted: Показать устройства только с удаленным состоянием
           new_item: Новое устройство
           title: Список устройств
+          index_json: JSON представление
         items_states_table:
           no_items_states: Нет состояний
         new:
@@ -74,6 +75,7 @@ ru:
         index:
           new_kind: Новый вид
           title: Виды устройств
+          index_json: JSON представление
         new:
           title: Новый вид устойств
         show:

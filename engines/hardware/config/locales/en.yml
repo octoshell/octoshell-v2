@@ -53,6 +53,8 @@ en:
           new_item: New device
           title: Devices list
           only_deleted: Show devices of deleted state
+          index_json: JSON representation
+
         items_states_table:
           no_items_states: No states
         new:
@@ -68,6 +70,7 @@ en:
         edit:
           title: Edit device kind
         index:
+          index_json: JSON representation
           new_kind: New device kind
           title: Device kinds
         new:

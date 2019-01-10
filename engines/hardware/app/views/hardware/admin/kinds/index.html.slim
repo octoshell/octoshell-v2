@@ -4,6 +4,7 @@ div class="page-header"
 div class="panel panel-default"
   div class="panel-heading"
     = link_to t(".new_kind"), new_admin_kind_path, class: "btn btn-default"
+    = link_to t(".index_json"), index_json_admin_kinds_path, class: "btn btn-success"
 
   div class="panel-body"
     = render "table", kinds: @kinds
