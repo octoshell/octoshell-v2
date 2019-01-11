@@ -43,7 +43,7 @@ module Hardware
     end
 
     def self.update_state(item, hash)
-      if !hash['state_id'] || hash['state_id'].to_i == item.last_items_state&.id
+      if !hash['state_id'] || hash['state_id'].to_i == item.last_items_state&.state_id
         item.last_items_state.update!(hash)
       else
         item.items_states.create!(hash)

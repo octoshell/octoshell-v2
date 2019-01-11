@@ -66,6 +66,21 @@ module Hardware
                                                                       state_id: @state1.id )
     end
 
+    it "updates item without change of state with given id" do
+      @item = create(:hardware_item, kind: @kind)
+      @item.items_states.create!(state_id: @state1.id)
+      ItemsUpdaterService.update!(['id' => @item.id.to_s,
+                                   'name_ru' => 'unique_name',
+                                   'kind_id' => @kind.id,
+                                   'state' => { 'state_id' => @state1.id, 'reason_en' => 'I want' }])
+      expect(Item.last).to have_attributes(name_ru: 'unique_name', kind_id: @kind.id)
+      expect(Item.find(@item.id).last_items_state).to have_attributes(reason_en: 'I want',
+                                                                      state_id: @state1.id )
+    end
+
+
+
+
     it "doesn't create state because no state id specified" do
       @item = create(:hardware_item)
       expect{
