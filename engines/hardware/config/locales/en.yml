@@ -85,6 +85,7 @@ en:
       states:
         edit:
           title: Edit state
+          do_not_touch_deleted: Better do not touch this state
         new:
           title: New state
         show:

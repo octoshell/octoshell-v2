@@ -21,9 +21,6 @@ div class="panel-body"
     = f.form_group do
       = f.submit t("actions.find"), class: "btn btn-primary"
 div class="panel panel-default"
-  div class="panel-heading"
-    = link_to t(".new_item"), new_admin_item_path, class: "btn btn-default"
-
   = render "table", items_states: @items_states
   = safe_paginate @items
   =javascript_tag do
