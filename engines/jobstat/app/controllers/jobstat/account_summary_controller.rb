@@ -60,6 +60,9 @@ module Jobstat
         @total_cluster_data[job.cluster] = [val, entry].transpose.map {|x| x.reduce(:+)}
         @total_data = [@total_data, entry].transpose.map {|x| x.reduce(:+)}
       end
+      logger.info("statistic data")
+      logger.info(@data)
+      logger.info(@total_cluster_data)
     end
   end
 end

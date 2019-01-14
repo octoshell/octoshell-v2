@@ -8,6 +8,914 @@ div
   br
   h1 = "Всего"
 
+  javascript:
+    var temp1 = JSON.parse("#{@data.to_json}".replace(/&quot;/g, '"'));
+    console.log(temp1);
+    var data = {"name": "launches", "children": []};
+    var data1 = {"name": "launches", "children": []};
+    var data2 = {"name": "launches", "children": []};
+    var data3 = {"name": "launches", "children": []};
+
+    var i = 0;
+    for (key in temp1) {
+      data.children.push({"name": key, "children": []});
+      data1.children.push({"name": key, "children": []});
+      var j = 0;
+      for (key1 in temp1[key]) {
+            data.children[i].children.push({"name": key1, "children": []});
+            data1.children[i].children.push({"name": key1, "children": []});
+            for (key2 in temp1[key][key1]) {
+              data.children[i].children[j].children.push({"name": key2, "size": temp1[key][key1][key2][0]});
+              data1.children[i].children[j].children.push({"name": key2, "size": temp1[key][key1][key2][1]});
+            }
+            j++;
+      }
+      i++;
+    }
+    var temp2 = {};
+    for (key in temp1) {
+      for (key1 in temp1[key]) {
+        for (key2 in temp1[key][key1]) {
+          if (typeof(temp2[key2]) == "undefined") {
+            temp2[key2] = {};
+          }
+          if (typeof(temp2[key2][key]) == "undefined") {
+            temp2[key2][key] = {};
+          }
+          if (typeof(temp2[key2][key][key1]) == "undefined") {
+            temp2[key2][key][key1] = [0, 0, 0];
+          }
+          temp2[key2][key][key1][0] += temp1[key][key1][key2][0];
+          temp2[key2][key][key1][1] += temp1[key][key1][key2][1];
+          temp2[key2][key][key1][2] += temp1[key][key1][key2][2];
+        }
+      }
+    }
+    i = 0;
+    for (key in temp2) {
+      data2.children.push({"name": key, "children": []});
+      data3.children.push({"name": key, "children": []});
+      var j = 0;
+      for (key1 in temp2[key]) {
+            data2.children[i].children.push({"name": key1, "children": []});
+            data3.children[i].children.push({"name": key1, "children": []});
+            for (key2 in temp2[key][key1]) {
+              data2.children[i].children[j].children.push({"name": key2, "size": temp2[key][key1][key2][0]});
+              data3.children[i].children[j].children.push({"name": key2, "size": temp2[key][key1][key2][1]});
+            }
+            j++;
+      }
+      i++;
+    }
+    /*data = {
+      "name": "launches",
+      "children": [
+        {
+          "name": "lomonosov2",
+          "children": [
+            {
+              "name": "low_io",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 40581
+                },
+                {
+                  "name": "FAILED",
+                  "size": 19985
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 551
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 194
+                },
+                {
+                  "name": "RUNNING",
+                  "size": 10
+                },
+                {
+                  "name": "NODE_FAIL",
+                  "size": 6
+                }
+              ]
+            },
+            {
+              "name": "compute",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 182
+                },
+                {
+                  "name": "FAILED",
+                  "size": 111
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 51
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 15
+                },
+                {
+                  "name": "RUNNING",
+                  "size": 1
+                },
+                {
+                  "name": "NODE_FAIL",
+                  "size": 1
+                }
+              ]
+            },
+            {
+              "name": "test",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 169
+                },
+                {
+                  "name": "FAILED",
+                  "size": 150
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 88
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 31
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "lomonosov",
+          "children": [
+            {
+              "name": "low_io",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 20290.5
+                },
+                {
+                  "name": "FAILED",
+                  "size": 9992.5
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 275.5
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 97
+                },
+                {
+                  "name": "RUNNING",
+                  "size": 5
+                },
+                {
+                  "name": "NODE_FAIL",
+                  "size": 3
+                }
+              ]
+            },
+            {
+              "name": "compute",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 91
+                },
+                {
+                  "name": "FAILED",
+                  "size": 55.5
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 25.5
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 7.5
+                },
+                {
+                  "name": "RUNNING",
+                  "size": 0.5
+                },
+                {
+                  "name": "NODE_FAIL",
+                  "size": 0.5
+                }
+              ]
+            },
+            {
+              "name": "test",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 84.5
+                },
+                {
+                  "name": "FAILED",
+                  "size": 75
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 44
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 15.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+    data1 = {
+      "name": "launches",
+      "children": [
+        {
+          "name": "lomonosov2",
+          "children": [
+            {
+              "name": "low_io",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 968530.01
+                },
+                {
+                  "name": "FAILED",
+                  "size": 62325.5
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 711285.72
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 297321.65
+                },
+                {
+                  "name": "RUNNING",
+                  "size": 39900
+                },
+                {
+                  "name": "NODE_FAIL",
+                  "size": 2097.19
+                }
+              ]
+            },
+            {
+              "name": "compute",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 405695.01
+                },
+                {
+                  "name": "FAILED",
+                  "size": 195049.57
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 18890.46
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 117376.22
+                },
+                {
+                  "name": "RUNNING",
+                  "size": 998.36
+                },
+                {
+                  "name": "NODE_FAIL",
+                  "size": 21115.11
+                }
+              ]
+            },
+            {
+              "name": "test",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 218.86
+                },
+                {
+                  "name": "FAILED",
+                  "size": 74.32
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 186.02
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 491.14
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "lomonosov",
+          "children": [
+            {
+              "name": "low_io",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 484265.005
+                },
+                {
+                  "name": "FAILED",
+                  "size": 31162.75
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 355642.86
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 148660.825
+                },
+                {
+                  "name": "RUNNING",
+                  "size": 19950
+                },
+                {
+                  "name": "NODE_FAIL",
+                  "size": 1048.595
+                }
+              ]
+            },
+            {
+              "name": "compute",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 202847.505
+                },
+                {
+                  "name": "FAILED",
+                  "size": 97524.785
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 9445.23
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 58688.11
+                },
+                {
+                  "name": "RUNNING",
+                  "size": 499.18
+                },
+                {
+                  "name": "NODE_FAIL",
+                  "size": 10557.555
+                }
+              ]
+            },
+            {
+              "name": "test",
+              "children": [
+                {
+                  "name": "COMPLETED",
+                  "size": 109.43
+                },
+                {
+                  "name": "FAILED",
+                  "size": 37.16
+                },
+                {
+                  "name": "CANCELLED",
+                  "size": 93.01
+                },
+                {
+                  "name": "TIMEOUT",
+                  "size": 245.57
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+    data2 = {
+      "name": "launches",
+      "children": [
+        {
+          "name": "COMPLETED",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 20290},
+                {"name": "compute", "size": 91},
+                {"name": "test", "size": 85}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 40581},
+                {"name": "compute", "size": 182},
+                {"name": "test", "size": 169}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "FAILED",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 9992},
+                {"name": "compute", "size": 26},
+                {"name": "test", "size": 75}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 19985},
+                {"name": "compute", "size": 51},
+                {"name": "test", "size": 150}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "CANCELLED",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 275},
+                {"name": "compute", "size": 66},
+                {"name": "test", "size": 44}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 551},
+                {"name": "compute", "size": 111},
+                {"name": "test", "size": 88}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "TIMEOUT",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 97},
+                {"name": "compute", "size": 8},
+                {"name": "test", "size": 15}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 194},
+                {"name": "compute", "size": 15},
+                {"name": "test", "size": 31}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "RUNNING",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 5},
+                {"name": "compute", "size": 1}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 10},
+                {"name": "compute", "size": 1}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "NODE_FAIL",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 3},
+                {"name": "compute", "size": 0}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 6},
+                {"name": "compute", "size": 1}
+              ]
+            }
+          ]
+        }
+      ]
+    };
+    data3 = {
+      "name": "launches",
+      "children": [
+        {
+          "name": "COMPLETED",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 968530.01 / 2},
+                {"name": "compute", "size": 405695.01 / 2},
+                {"name": "test", "size": 218.86 / 2}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 968530.01},
+                {"name": "compute", "size": 405695.01},
+                {"name": "test", "size": 218.86}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "FAILED",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 62325.5 / 2},
+                {"name": "compute", "size": 18890.46 / 2},
+                {"name": "test", "size": 74.32 / 2}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 62325.5},
+                {"name": "compute", "size": 18890.46},
+                {"name": "test", "size": 74.32}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "CANCELLED",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 711285.72 / 2},
+                {"name": "compute", "size": 195049.57 / 2},
+                {"name": "test", "size": 186.02 / 2}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 711285.72},
+                {"name": "compute", "size": 195049.57},
+                {"name": "test", "size": 186.02}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "TIMEOUT",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 297321.65 / 2},
+                {"name": "compute", "size": 117376.22 / 2},
+                {"name": "test", "size": 491.14 / 2}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 297321.65},
+                {"name": "compute", "size": 117376.22},
+                {"name": "test", "size": 491.14}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "RUNNING",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 39900 / 2},
+                {"name": "compute", "size": 998.36 / 2}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 39900},
+                {"name": "compute", "size": 998.36}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "NODE_FAIL",
+          "children": [
+            {
+              "name": "lomonosov",
+              "children": [
+                {"name": "low_io", "size": 2097.19 / 2},
+                {"name": "compute", "size": 21115.11 / 2}
+              ]
+            },
+            {
+              "name": "lomonosov2",
+              "children": [
+                {"name": "low_io", "size": 2097.19},
+                {"name": "compute", "size": 21115.11}
+              ]
+            }
+          ]
+        }
+      ]
+    };*/
+
+    width = 1200;
+    radius = width / 16;
+    format = d3.format(",d");
+    arc = d3.arc()
+            .startAngle(d => d.x0)
+            .endAngle(d => d.x1)
+            .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.02))
+            .padRadius(radius * 1.5)
+            .innerRadius(function(d) {
+              if (d.y0 < 1.5) {
+                return d.y0 * radius * 0.8;
+              } else if (d.y0 < 2.5) {
+                return d.y0 * radius * 1.07;
+              }
+              return d.y0 * radius * 1.03;
+            })
+            .outerRadius(function(d) {
+              if (d.y0 < 1.5) {
+                return d.y1 * radius * 1.07 - 1;
+              } else if (d.y0 < 2.5) {
+                return d.y1 * radius * 1.03 - 1;
+              }
+              return d.y1 * radius - 1;
+            })
+
+    // functions
+    function partition(data, labels) {
+        const root = d3.hierarchy(data)
+                      .sum(d => d.size)
+                      .sort((a, b) => b.value - a.value);
+        return d3.partition().size([2 * Math.PI, root.height + 1])(root);
+    }
+
+    function arcVisible(d) {
+    return d.y1 <= 4 && d.y0 >= 1 && d.x1 > d.x0;
+    }
+
+    function labelVisible(d) {
+    return d.y1 <= 4 && d.y0 >= 1 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.03;
+    }
+
+    function labelTransform(d) {
+    const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+    var y;
+    if (d.y0 < 1.5) {
+      y = (d.y0 + d.y1) / 2 * radius * 0.94 - 1;
+    } else if (d.y0 < 2.5) {
+      y = (d.y0 + d.y1) / 2 * radius * 1.05 - 1;
+    } else {
+      y = (d.y0 + d.y1) / 2 * radius * 1.01 - 1;
+    }
+    return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
+    }
+
+    function total_count(data) {
+      var sum = 0;
+      if (typeof(data.children[0].size) != "undefined") {
+        for (x in data.children) {
+          sum += data.children[x].size;
+        }
+        return sum;
+      }
+      for (x in data.children) {
+        sum += total_count(data.children[x]);
+      }
+      return Math.ceil(100 * sum) / 100;
+    }
+
+    function draw(svg, data, labels, x, y, type) {
+        const root = partition(data);
+        color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
+        console.log(data);
+
+        external_color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children[0].children.length + 1));
+        var bord = 2;
+        if (type == "external") {
+          external_color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children[0].children[0].children.length + 1));
+          var bord = 3;
+        }
+
+        root.each(d => d.current = d);
+
+        const g = svg.append("g")
+          .attr("transform", `translate(${x},${y})`);
+
+        const path = g.append("g")
+        .selectAll("path")
+        .data(root.descendants().slice(1))
+        .enter().append("path")
+          .attr("fill", function(d) {
+            if (d.depth >= bord) {
+              while (d.depth > bord) d = d.parent; 
+              return external_color(d.data.name);
+            }
+            while (d.depth > 1) d = d.parent; 
+            return color(d.data.name);
+          })
+          .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
+          .attr("d", d => arc(d.current));
+
+        path.filter(d => d.children)
+          .style("cursor", "pointer")
+          .on("click", clicked);
+
+        path.append("title")
+          .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
+
+        const label = g.append("g")
+          .attr("pointer-events", "none")
+          .attr("text-anchor", "middle")
+          .style("background-color", "white")
+          .style("user-select", "none")
+        .selectAll("text")
+        .data(root.descendants().slice(1))
+        .enter().append("text")
+          .attr("id", d => "label" + d.depth)
+          .attr("dy", "0.35em")
+          .attr("fill-opacity", d => +labelVisible(d.current))
+          .attr("transform", d => labelTransform(d.current))
+          .text(d => d.data.name);
+
+        const parent = g.append("circle")
+          .datum(root)
+          .attr("r", radius)
+          .attr("fill", "none")
+          .attr("pointer-events", "all")
+          .on("click", clicked);
+
+        var label1 = g.append("text")
+                      .attr("text-anchor", "middle")
+                      .attr("transform", "translate(0, -15)")
+                      .style("font-size", "14px")
+                      .text(labels[0]);
+        var label2 = g.append("text")
+                      .attr("text-anchor", "middle")
+                      .style("font-size", "14px")
+                      .text(labels[1]);
+        var label3 = g.append("text")
+                      .attr("text-anchor", "middle")
+                      .attr("transform", "translate(0, 15)")
+                      .style("font-size", "14px")
+                      .text(total_count(data) + " total");
+
+        function clicked(p) {
+          parent.datum(p.parent || root);
+
+          root.each(d => d.target = {
+            x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+            x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+            y0: Math.max(0, d.y0 - p.depth),
+            y1: Math.max(0, d.y1 - p.depth)
+          });
+
+          const t = g.transition().duration(750);
+
+          // Transition the data on all arcs, even the ones that aren’t visible,
+          // so that if this transition is interrupted, entering arcs will start
+          // the next transition from the desired position.
+          path.transition(t)
+              .tween("data", d => {
+                const i = d3.interpolate(d.current, d.target);
+                return t => d.current = i(t);
+              })
+            .filter(function(d) {
+              return +this.getAttribute("fill-opacity") || arcVisible(d.target);
+            })
+              .attr("fill-opacity", d => arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0)
+              .attrTween("d", d => () => arc(d.current));
+
+          label.filter(function(d) {
+              return +this.getAttribute("fill-opacity") || labelVisible(d.target);
+            }).transition(t)
+              .attr("fill-opacity", d => +labelVisible(d.target))
+              .attrTween("transform", d => () => labelTransform(d.current));
+        }
+    }
+
+    function label_click() {
+      var label_id = d3.select(this).attr("label");
+      d3.selectAll("text")
+        .filter(function() {
+          return d3.select(this).attr("id") == label_id;
+        })
+        .style("opacity", function() {
+          return (+d3.select(this).style("opacity") + 1) % 2;
+        });
+    }
+
+    window.onload = function() {
+        buttons = d3.selectAll("div")
+                .filter(function() {
+                  return d3.select(this).attr("id") == "svg";
+                })
+                .append("g");
+        
+        buttons.append("div")
+              .text("Internal labels")
+              .attr("label", "label1")
+              .attr("class", "button")
+              .style("background", "#6699CC")
+              .style("float", "left")
+              .on("click", label_click);
+
+        buttons.append("div")
+              .text("Middle labels")
+              .attr("label", "label2")
+              .attr("class", "button")
+              .style("background", "#6699CC")
+              .style("float", "left")
+              .on("click", label_click);
+
+        buttons.append("div")
+              .text("External labels")
+              .attr("label", "label3")
+              .attr("class", "button")
+              .style("background", "#6699CC")
+              .style("float", "left")
+              .on("click", label_click);
+
+        //svg
+        const svg = d3.selectAll("div")
+                    .filter(function() {
+                      return d3.select(this).attr("id") == "svg";
+                    })
+                    .append("svg")
+                    .style("width", width)
+                    .style("height", width)
+                    .style("font", "10px sans-serif");
+
+        // data
+        draw(svg, data, ["jobs", "by systems"], width / 4, width / 4, "external");
+
+        // data1
+        draw(svg, data1, ["core hours", "by systems"], 3 * width / 4, width / 4, "external");
+
+        // data2
+        draw(svg, data2, ["jobs", "by status"], width / 4, 3 * width / 4);
+
+        // data3
+        draw(svg, data3, ["core hours", "by status"], 3 * width / 4, 3 * width / 4);
+
+        
+
+        return svg.node();
+    };
+
+  = @total_cluster_data.to_json
+
   table class="tablesorter-blue"
     thead
       tr
@@ -48,3 +956,5 @@ div
               td = @data[cluster][partition][state][0]
               td = @data[cluster][partition][state][1]
               td = @data[cluster][partition][state][2]
+
+  div id = "svg"
