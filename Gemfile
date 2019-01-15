@@ -50,6 +50,7 @@ gem "announcements",  path: "engines/announcements"
 gem "jobstat",        path: 'engines/jobstat'
 gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
+gem "hardware",       path: "engines/hardware"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"

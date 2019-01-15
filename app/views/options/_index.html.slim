@@ -1,0 +1,15 @@
+p
+  h4 = Option.model_name.human
+  p
+    table
+      tr
+          th class="col-xs-3"
+            =Option.human_attribute_name "name"
+          th class="col-xs-9"
+            =Option.human_attribute_name "value"
+      -rec.options.each do |opt|
+        tr
+          td class="col-xs-3"
+            =opt.readable_name
+          td class="col-xs-9"
+            =opt.readable_value

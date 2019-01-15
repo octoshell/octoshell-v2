@@ -218,4 +218,3 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 |test 	|Добавление тестов|
 
 Область - один из engines или 'base' для основного приложения или других файлов (типа README, деплоя, и т.п.)
-

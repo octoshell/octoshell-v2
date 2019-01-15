@@ -227,7 +227,5 @@ module ReceiveEmails
                                                      ticket: ticket)
       expect(Support::Reply.last.attachment.url.split('/').last).to eq 'attachments.zip'
     end
-
-
   end
 end

@@ -28,6 +28,6 @@ legend = Core::Project.human_attribute_name :card
 
 = render "core/admin/projects/members"
 = render "core/admin/projects/sureties"
-= render_attachments(@project,:files)
-= render_attachments(@project,:tags)
 = render_attachments(@project,:comments)
+= render_attachments(@project,:tags)
+= render_attachments(@project,:files)

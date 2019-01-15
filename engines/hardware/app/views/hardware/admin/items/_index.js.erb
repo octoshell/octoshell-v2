@@ -1,0 +1,25 @@
+function alter_select2(state_select, kind_select,first = false){
+  if (kind_select.select2('val') && kind_select.select2('val').length == 1){
+    var id = kind_select.select2('val')[0];
+    $.getJSON('/hardware/admin/kinds/states', {kind_id: id},function(data){
+      state_select.select2({data: data});
+      if(first){
+        var array = <%=raw params[:q] && (params[:q][:current_state_date] || []).select(&:present?) || [] %>;
+        state_select.val(array).trigger('change');
+      }
+
+    });
+  }
+
+}
+$(document).ready(function(){
+  var state_select = $('#q_current_state_date');
+  var kind_select = $('#q_kind_id_in');
+  var id =  $('#q_kind_id_in').select2('val');
+
+  $(document).on("change","#q_kind_id_in", function() {
+    state_select.empty();
+    alter_select2(state_select,kind_select);
+  });
+  alter_select2(state_select,kind_select,true);
+});

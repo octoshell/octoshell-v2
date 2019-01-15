@@ -1,0 +1,110 @@
+---
+ru:
+  admin_submenu:
+    hardware: Аппаратура
+  activerecord:
+    errors:
+      models:
+        hardware/state:
+          attributes:
+            base:
+              restrict_dependent_destroy:
+                many: Нельзя удалить состояние с существующими устройствами
+    models:
+      hardware/item: "Устройство"
+      hardware/state: "Состояние устройства"
+      hardware/kind: "Вид устройств"
+    attributes:
+      hardware/item:
+        kind_id: Вид
+        name: Название
+        description: Описание
+        current_state: Текущее состояния
+        last_state_description: Описание текущего состояния
+        states: Все состояния, в которых этот объект когда-то был
+        last_state: Текущее состояние
+      hardware/state:
+        name: Название
+        description: Описание
+        reason: Причина изменения состояния
+        updated_at: Обновлено
+        from_states: Состояния, из которых средства могут перейти в это состояние
+        to_states: Состояния, в которые могут перейти средства с этим состоянием
+      hardware/items_state:
+        name: Название
+        description: Описание состояния
+        reason: Причина изменения состояния
+        updated_at: Обновлено
+        created_at: Создано
+      hardware/kind:
+        name: Название
+        description: Описание
+  hardware:
+    admin:
+      items_states:
+        index:
+          created_before: Созданы до
+          created_after: Созданы после
+          item_name_en_cont: Название устройства(en) содержит
+          item_name_ru_cont: Название устройства(ru) содержит
+          title: Состояния
+        table:
+          no_items_states: Нет состояний
+      items:
+        edit:
+          title: Редактировать устройства
+        index:
+          only_deleted: Показать устройства только с удаленным состоянием
+          new_item: Новое устройство
+          title: Список устройств
+          index_json: JSON представление
+        items_states_table:
+          no_items_states: Нет состояний
+        new:
+          title: Новое устройство
+        show:
+          state_manipulation: Управление состоянием
+        table:
+          confirm: Вы действительно хотите удалить?
+          no_items: Нет устройств
+        update_state:
+          stale: Перед Вами кто-то обновил состояние объекта. Повторите вашу попытку
+      kinds:
+        edit:
+          title: Редактировать вид устройства
+        index:
+          new_kind: Новый вид
+          title: Виды устройств
+          index_json: JSON представление
+        new:
+          title: Новый вид устойств
+        show:
+          items: Устройства
+          new_item: Новое устройство
+          new_state: Новое состояние
+        table:
+          confirm: Вы действительно хотите  удалить вид устройства?
+          no_kinds: Нет видов устройств
+      states:
+        edit:
+          do_not_touch_deleted: Лучше не трогайте состояние удаленного устройства
+          title: Редактировать состояние
+        new:
+          title: Новое состояние
+        show:
+          go_to_kind: Перейти к виду устройств
+        states_table:
+          no_states: Нет состояний
+        table:
+          confirm: Вы действительно хотите удалить состояние?
+          no_states: Нет состояний
+    engine_submenu:
+      items: Устройства
+      kinds: Виды устройств
+      items_states: Состояния устройств
+    self_error: Self error
+  layouts:
+    hardware:
+      admin:
+        max_date: Не показывать изменения начиная с
+        remove_max_date: Состояние на сегодня

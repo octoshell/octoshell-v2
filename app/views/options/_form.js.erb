@@ -1,0 +1,29 @@
+function applySelectToOptionValue(selectValue, id){
+  var path = " /options/" + id + "/values";
+  var id = selectValue.select2('val');
+  // alert(id);
+  selectValue.select2('destroy');
+  selectValue.html('');
+  $.getJSON(path, function( data ) {
+    selectValue.select2({data: data});
+    selectValue.val(id).trigger('change');
+  });
+}
+
+
+$(document).on('select2:select','.attach-category', function (e) {
+  var selectValue = $(this).parents('.option-container').find('.attach-value');
+  applySelectToOptionValue(selectValue,e.params.data.id);
+});
+
+
+
+$(document).on('nested:fieldAdded', function(event){
+  apply_select();
+});
+apply_select();
+$('.attach-category').each(function(indx, element){
+  element = $(element);
+  var selectValue = element.parents('.option-container').find('.attach-value');
+  applySelectToOptionValue(selectValue,element.children("option:selected").val());
+});
