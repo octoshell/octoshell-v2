@@ -12,7 +12,7 @@ ActiveRecord::Base.transaction do
   Group.default!
   users = []
   3.times do |i|
-    user = User.create!(email: "user#{i.next}@octoshell.ru",
+    user = User.first_or_create(email: "user#{i.next}@octoshell.ru",
                         password: "123456", password_confirmation: '123456',
                         access_state: 'active')
     user.activate!
@@ -24,8 +24,7 @@ ActiveRecord::Base.transaction do
   admin.activate!
   admin.groups << Group.superadmins
   admin.access_state='active'
-  admin.save!
-
+  admin.save
 
 
 
@@ -48,10 +47,10 @@ ActiveRecord::Base.transaction do
   Core::Organization.create!(name: 'Test MSU', city: city, country: country,
                              kind: Core::OrganizationKind.first )
   Core::Employment.create!(user: admin, organization: Core::Organization.first)
-  rake = Rake.application
-  rake.init
-  rake.load_rakefile
-  rake['comments:create_wiki_page'].invoke
+  # rake = Rake.application
+  # rake.init
+  # rake.load_rakefile
+  # rake['comments:create_wiki_page'].invoke
   # rake['comments:recreate_attachable_abilities'].invoke
 
 

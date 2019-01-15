@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 export HOST="http://localhost:5000"
 export CLUSTER="lomonosov-2"
 
-LAST_ID=`psql -h localhost -U octo -t new_octoshell -c ' select max(drms_job_id) from jobstat_jobs;'`
+LAST_ID=`psql -h localhost -U octo -t new_octoshell2 -c ' select max(drms_job_id) from jobstat_jobs;'`
 
 JOB_ID=$((LAST_ID+1))
 
@@ -12,18 +12,18 @@ JOB_ID=$((LAST_ID+1))
 # exit 0
 
 INFO='{
-  "account": "fake_account", 
+  "account": "user1_1", 
   "command": "fake_command", 
   "job_id": '"$JOB_ID"', 
   "nodelist": "n48418", 
   "num_cores": 14, 
   "num_nodes": 1, 
-  "partition": "compute", 
+  "partition": "low_io", 
   "priority": 4294729060, 
-  "state": "COMPLETED", 
-  "t_end": 1542274525, 
-  "t_start": 1542015324, 
-  "t_submit": 1542015324, 
+  "state": "RUNNING", 
+  "t_end": 1544310112, 
+  "t_start": 1543223712, 
+  "t_submit": 1542223712, 
   "task_id": 0, 
   "timelimit": 259200, 
   "workdir": "fake_workdir"
