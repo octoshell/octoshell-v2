@@ -23,7 +23,7 @@ module Sessions
     end
 
     def personal?
-      name =~ /персональный/i
+      !only_for_project_owners
     end
 
     def template_survey_id

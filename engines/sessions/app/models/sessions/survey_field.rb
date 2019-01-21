@@ -28,9 +28,9 @@ module Sessions
     validates :kind, presence: true
     validates_translated :name, presence: true
 
-    def name
-      self[self.class.current_locale_column(:name)].to_s.html_safe
-    end
+    # def name
+    #   self[self.class.current_locale_column(:name)].to_s.html_safe
+    # end
 
     def collection_values
       collection.each_line.find_all(&:present?).map(&:strip)
