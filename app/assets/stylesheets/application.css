@@ -17,6 +17,21 @@
  *= require_self
  *= require_tree .
  */
+ 
+.button {
+  color: white;
+  font-family: Arial;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 9px;
+  border-width: 2px;
+  border-color: white;
+  font-weight: 600;
+  text-align: center;
+  padding: 7px 15px;
+  opacity: 0.9;
+  cursor: pointer;
+}
 
 .return-btn-container {
   padding-top: 4em;

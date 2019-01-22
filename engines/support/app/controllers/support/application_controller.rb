@@ -2,7 +2,7 @@ module Support
   class ApplicationController < ActionController::Base
     include AuthMayMay
     layout "layouts/application"
-    
+
     before_filter :journal_user
 
     def journal_user

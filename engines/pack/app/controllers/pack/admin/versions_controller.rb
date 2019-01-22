@@ -51,6 +51,9 @@ module Pack
       if @version.save
         redirect_to admin_package_version_path(@package, @version)
       else
+        @version.version_options.each do |o|
+          puts  o.errors.to_h.inspect
+        end
         render :edit
       end
 

@@ -4,11 +4,9 @@ div class="page-header"
 = bootstrap_form_for @search, url: admin_requests_path, method: :get, layout: :horizontal do |f|
   div class="container"
     div class="col-md-6"
-      = f.autocomplete_field :project_id_eq,{ label: Core::Request.human_attribute_name(:project), source: core.projects_path}
-      / do |val|
+      = f.autocomplete_field :project_id_eq,{ label: Core::Request.human_attribute_name(:project), source: core.projects_path} do |val|
         -Core::Project.find(val).title
-      = f.autocomplete_field :creator_id_eq,{ label: Core::Request.human_attribute_name(:creator), source: owners_finder_admin_users_path}
-      / do |val|
+      = f.autocomplete_field :creator_id_eq,{ label: Core::Request.human_attribute_name(:creator), source: owners_finder_admin_users_path} do |val|
         -User.find(val).full_name_with_email
 
     div class="col-md-6"

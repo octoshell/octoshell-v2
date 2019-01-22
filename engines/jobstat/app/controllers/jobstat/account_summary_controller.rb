@@ -18,7 +18,7 @@ module Jobstat
 
       @params = defaults.merge(params.symbolize_keys)
 
-      query_logins = (@params[:all_logins] & @all_logins)
+      query_logins = (@params[:all_logins] & @all_logins[0])
 
       @jobs = Job.where "start_time > ? AND end_time < ?",
                         DateTime.parse(@params[:start_time]),
@@ -60,6 +60,9 @@ module Jobstat
         @total_cluster_data[job.cluster] = [val, entry].transpose.map {|x| x.reduce(:+)}
         @total_data = [@total_data, entry].transpose.map {|x| x.reduce(:+)}
       end
+      logger.info("statistic data")
+      logger.info(@data)
+      logger.info(@total_cluster_data)
     end
   end
 end

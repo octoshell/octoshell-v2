@@ -1,0 +1,12 @@
+= bootstrap_form_for [:admin, @state.kind, @state] do |f|
+  -Hardware::State.locale_columns(:name).each do |column|
+    = f.text_field column
+  -Hardware::State.locale_columns(:description).each do |column|
+    = f.text_area column
+  = f.hidden_field :lock_version
+  = f.hidden_field :kind_id
+  = f.collection_check_boxes :from_state_ids, @state.kind.states - [@state], :id, :name, label: Hardware::State.human_attribute_name(:from_states)
+  = f.collection_check_boxes :to_state_ids, @state.kind.states - [@state], :id, :name, label: Hardware::State.human_attribute_name(:to_states)
+
+  = f.form_group do
+    = f.submit t("actions.save")
