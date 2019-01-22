@@ -15,5 +15,4 @@ Jobstat::Engine.routes.draw do
   post 'job/performance' => "api#post_performance"
   post 'job/digest' => "api#post_digest"
   post 'job/tags' => "api#post_tags"
-  post 'job/test' => "api#post_test"
 end
