@@ -1,0 +1,26 @@
+
+
+- if @records
+      div  class="panel-body"
+        table  class="table table-hover"
+          tr
+            th #{t("name", default: "Package name")}
+            th
+          -@records.each do |r|
+            tr
+              -puts r.inspect
+              td class="col-xs-4" = link_to r.name, admin_options_category_path(r)
+              td
+                div class="btn-group pull-right"
+                  = link_to t("edit", default: "edit"), edit_admin_options_category_path(r), class: "btn btn-default btn-sm"
+                  button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                    span class="caret"
+                  ul class="dropdown-menu" role="menu"
+                    - name = t("delete", default: "delete")
+                    - confirm = t(".confirm", default: "Are You sure?")
+                    - data = { method: :delete, confirm: confirm }
+                    li class="text-left"
+                      = link_to name, admin_options_category_path(r), data: data, class: "text-danger"
+- else
+    div class="panel-body"
+        p = t(".no_found")

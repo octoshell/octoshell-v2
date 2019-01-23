@@ -1,0 +1,27 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="panel-body"
+  = bootstrap_form_for @search, url: admin_items_states_path, method: :get, layout: :horizontal do |f|
+    = f.collection_select :state_kind_id_in, Hardware::Kind.all, :id, :name ,{label: Hardware::Kind.model_name.human}, multiple: true
+    = f.collection_select :state_id_in, [], :id, :name ,{label: Hardware::State.model_name.human}, multiple: true
+    div class="col-md-6"
+      = f.text_field :item_name_en_cont, {label: t('.item_name_en_cont')}
+      = f.text_field :item_name_ru_cont, {label: t('.item_name_ru_cont')}
+    div class="col-md-6"
+      = f.text_field :created_at_gt, common_datepicker_options.merge(label: t('.created_after'))
+      = f.text_field :created_at_lt, common_datepicker_options.merge(label: t('.created_before'))
+
+
+    /= f.collection_select :current_state_date, [], :id, :name ,{label: Hardware::State.model_name.human}, multiple: true
+    /= f.text_field :name_ru_cont, {label: Hardware::Item.human_attribute_name(:name_ru)}
+    /= f.text_field :name_en_cont, {label: Hardware::Item.human_attribute_name(:name_en)}
+
+    = display_all_tag
+    = f.form_group do
+      = f.submit t("actions.find"), class: "btn btn-primary"
+div class="panel panel-default"
+  = render "table", items_states: @items_states
+  = safe_paginate @items
+  =javascript_tag do
+    =render partial: 'index',formats: :js

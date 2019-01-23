@@ -1,0 +1,23 @@
+- if kinds.any?
+  table class="table table-bordered"
+    tr
+      th class="col-xs-1" #
+      th class="col-xs-7" = Hardware::Kind.human_attribute_name(:name)
+    - kinds.each do |kind|
+      tr
+        td = kind.id
+        td = link_to kind.name, [:admin, kind]
+        td
+          div class="btn-group pull-right"
+            = link_to t("actions.edit", default: "edit"), [:edit, :admin, kind], class: "btn btn-default btn-sm"
+            button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+              span class="caret"
+            ul class="dropdown-menu" role="menu"
+              - name = t("actions.delete", default: "delete")
+              - confirm = t(".confirm", default: "Are you sure?")
+              - data = { method: :delete, confirm: confirm }
+              li class="text-left"
+                = link_to name, [:admin, kind], data: data, class: "text-danger"
+
+- else
+  p = t(".no_kinds")

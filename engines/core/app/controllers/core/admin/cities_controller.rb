@@ -17,6 +17,12 @@ module Core
       end
     end
 
+    def merge
+      to = Core::City.find(params[:merge_id])
+      Core::City.find(params[:id]).merge_with! to
+      redirect_to [:admin, to]
+    end
+
     def new
       @city = City.new
       country_id = params[:country_id]

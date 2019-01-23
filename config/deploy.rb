@@ -33,7 +33,7 @@ set :keep_releases, 5
 #set :foreman_app, 'octoshell3'
 #old set :shared_paths, %w(public/fonts public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)
 set :shared_dirs, %w(public/uploads log public/fonts public/assets)
-set :shared_files, %w(config/puma.rb config/settings.yml config/database.yml)
+set :shared_files, %w(config/puma.rb config/settings.yml config/database.yml config/secrets.yml)
 set :rails_env, 'production'
 set :force_asset_precompile, true
 

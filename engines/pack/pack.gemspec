@@ -7,7 +7,7 @@ require "pack/version"
 Gem::Specification.new do |s|
   s.name        = "pack"
   s.version     = Pack::VERSION
-  s.authors     = ["Andrey Paokin"]
+  s.authors     = ["Andrei Paokin"]
   s.email       = ["andrejpaokin@yandex.ru"]
   s.homepage    = "https://github.com/octoshell/octoshell-v2"
   s.summary     = "A pack engine for octoshell"

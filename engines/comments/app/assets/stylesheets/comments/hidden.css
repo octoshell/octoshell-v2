@@ -43,7 +43,7 @@
      background-image: url(http://netcribe.com/example/arrow_up.png);
 }
   */
-.attachable-hidden input{
+.attachable-hidden > input{
    display: none;
 }
 
