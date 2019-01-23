@@ -18,9 +18,9 @@ en:
     tickets_warning:
       html: "Support <span class=\"badge warning\"><i class=\"fa fa-bell\"></i></span>"
     tickets: "Support"
-    sessions: "Re-registrations"
+    sessions: "Reregistrations"
     sessions_warning:
-      html: "Re-registrations <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
+      html: "Reregistrations <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
     profile: Profile
     job_stat: Statistics
     job_table: Efficiency
@@ -53,7 +53,7 @@ en:
     critical_technologies: "Critical technologies"
     organizations: "Organizations"
     organization_kinds: "Organization kinds"
-    sessions: "Re-registrations"
+    sessions: "Reregistrations"
     reports: "Reports"
     report_submit_denial_reasons: "Reasons for refusal to provide a report"
     statistics: "Statistics"

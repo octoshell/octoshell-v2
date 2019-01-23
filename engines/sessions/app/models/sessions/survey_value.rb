@@ -43,7 +43,7 @@ module Sessions
     end
 
     def allowed_values
-      field.collection_values
+      field.localized_collection_values
     end
 
     def has_presence_validator?

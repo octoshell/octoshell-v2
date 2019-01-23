@@ -1,21 +1,22 @@
 - value=[] if value.to_s==''
+- print  field.inspect 
 div class="row" data-max-values="#{field.max_values}"
   div class="form-group"
-    - if field.collection_values.size < 10
+    - if field.localized_collection_values.size < 10
       div class="col-xs-8"
-        - field.collection_values.each do |var|
+        - field.localized_collection_values.each do |var|
           div class="checkbox"
             label
               = check_box "fields[#{field.id}]", '', { checked: value && value.include?(var) }, var, ""
               = var
         - unless field.strict_collection?
-          - custom_value = ((value || []) - field.collection_values).keep_if(&:present?)
+          - custom_value = ((value || []) - field.localized_collection_values).keep_if(&:present?)
           - custom_value = custom_value.empty? ? nil : custom_value.first
           div class="custom-answer"
             = text_field_tag "fields[#{field.id}][]", custom_value, placeholder: t('.user_value')
     - else
-      - size, i = field.collection_values.size, 0
-      - field.collection_values.in_groups(3, false).each do |collection|
+      - size, i = field.localized_collection_values.size, 0
+      - field.localized_collection_values.in_groups(3, false).each do |collection|
         div class="col-xs-3"
           - collection.each do |var|
             - i = i + 1
@@ -24,7 +25,7 @@ div class="row" data-max-values="#{field.max_values}"
                 = check_box "fields[#{field.id}]", '', { checked: value && value.include?(var) }, var, ""
                 = var
             - if !field.strict_collection? && size == i
-              - custom_value = (value || [] - field.collection_values).keep_if(&:present?)
+              - custom_value = (value || [] - field.localized_collection_values).keep_if(&:present?)
               - custom_value = custom_value.empty? ? nil : custom_value.first
               div class="custom-answer"
                 = text_field_tag "fields[#{field.id}][]", custom_value, placeholder: t('.user_value')
