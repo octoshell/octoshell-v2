@@ -34,7 +34,7 @@ en:
         calculate_now: "Calculate now"
     sessions:
       index:
-        title: "Re-registrations stats"
+        title: "Reregistrations stats"
         refresh_rate: "Data is updated every 3 months"
         calculate_now: "Calculate now"
     shared:

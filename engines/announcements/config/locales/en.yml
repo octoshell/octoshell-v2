@@ -48,7 +48,7 @@ en:
           managed_project_statuses: "Manages projects with statuses"
           participated_project_statuses: "Participates in projects with statuses"
           has_account_on_clusters: "Cluster account exists"
-          rereg_participated: "Participated in Re-registration"
+          rereg_participated: "Participated in Reregistration"
           has_rereg_report_statuses: "Has reports with status"
           has_survey_statuses: "Has surveys with status"
           users_found: "Users have been found"

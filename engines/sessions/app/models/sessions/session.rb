@@ -82,9 +82,11 @@ module Sessions
     end
 
     def create_personal_user_surveys
-      personal_survey = surveys.find { |s| s.personal? }
-      User.with_active_projects.merge(involved_projects).find_each do |user|
-        user.surveys.create!(session: self, survey: personal_survey)
+      personal_surveys = surveys.where(only_for_project_owners: false)
+      personal_surveys.each do |personal_survey|
+        User.with_active_projects.merge(involved_projects).find_each do |user|
+          user.surveys.create!(session: self, survey: personal_survey)
+        end
       end
     end
 
