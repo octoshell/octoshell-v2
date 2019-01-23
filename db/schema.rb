@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181130150333) do
+ActiveRecord::Schema.define(version: 20190107141259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,16 @@ ActiveRecord::Schema.define(version: 20181130150333) do
   end
 
   add_index "announcements", ["created_by_id"], name: "index_announcements_on_created_by_id", using: :btree
+
+  create_table "category_values", force: :cascade do |t|
+    t.integer  "options_category_id"
+    t.string   "value_ru"
+    t.string   "value_en"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "category_values", ["options_category_id"], name: "index_category_values_on_options_category_id", using: :btree
 
   create_table "comments_comments", force: :cascade do |t|
     t.text     "text"
@@ -311,6 +321,21 @@ ActiveRecord::Schema.define(version: 20181130150333) do
   add_index "core_members", ["user_id", "project_id"], name: "index_core_members_on_user_id_and_project_id", unique: true, using: :btree
   add_index "core_members", ["user_id"], name: "index_core_members_on_user_id", using: :btree
 
+  create_table "core_notices", force: :cascade do |t|
+    t.integer  "sourceable_id"
+    t.string   "sourceable_type"
+    t.integer  "linkable_id"
+    t.string   "linkable_type"
+    t.text     "message"
+    t.integer  "count"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "category"
+  end
+
+  add_index "core_notices", ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id", using: :btree
+  add_index "core_notices", ["sourceable_type", "sourceable_id"], name: "index_core_notices_on_sourceable_type_and_sourceable_id", using: :btree
+
   create_table "core_organization_departments", force: :cascade do |t|
     t.integer "organization_id"
     t.string  "name",            limit: 255
@@ -508,6 +533,55 @@ ActiveRecord::Schema.define(version: 20181130150333) do
     t.datetime "updated_at"
   end
 
+  create_table "hardware_items", force: :cascade do |t|
+    t.string   "name_ru"
+    t.string   "name_en"
+    t.text     "description_ru"
+    t.text     "description_en"
+    t.integer  "lock_version"
+    t.integer  "kind_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "hardware_items_states", force: :cascade do |t|
+    t.integer  "item_id"
+    t.integer  "state_id"
+    t.text     "reason_en"
+    t.text     "reason_ru"
+    t.text     "description_en"
+    t.text     "description_ru"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "hardware_kinds", force: :cascade do |t|
+    t.string   "name_ru"
+    t.string   "name_en"
+    t.text     "description_ru"
+    t.text     "description_en"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "hardware_states", force: :cascade do |t|
+    t.string   "name_ru"
+    t.string   "name_en"
+    t.text     "description_ru"
+    t.text     "description_en"
+    t.integer  "lock_version"
+    t.integer  "kind_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "hardware_states_links", force: :cascade do |t|
+    t.integer  "from_id"
+    t.integer  "to_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "jobstat_data_types", force: :cascade do |t|
     t.string   "name"
     t.string   "type",       limit: 1
@@ -589,6 +663,26 @@ ActiveRecord::Schema.define(version: 20181130150333) do
   end
 
   add_index "jobstat_string_data", ["job_id"], name: "index_jobstat_string_data_on_job_id", using: :btree
+
+  create_table "options", force: :cascade do |t|
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "name_ru"
+    t.string   "name_en"
+    t.text     "value_ru"
+    t.text     "value_en"
+    t.integer  "category_value_id"
+    t.integer  "options_category_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  create_table "options_categories", force: :cascade do |t|
+    t.string   "name_ru"
+    t.string   "name_en"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "pack_access_tickets", id: false, force: :cascade do |t|
     t.integer "access_id"

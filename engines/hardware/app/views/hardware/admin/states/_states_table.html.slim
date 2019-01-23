@@ -1,0 +1,5 @@
+-if  states.any?
+	- states.map do |state|
+		p = link_to state.name, [:admin, state.kind, state]
+-else
+	= t('.no_states')

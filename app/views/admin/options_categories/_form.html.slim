@@ -1,0 +1,11 @@
+=bootstrap_nested_form_for [:admin,@option],layout: :horizontal do |f|
+  -::OptionsCategory.locale_columns(:name).each do |column|
+    = f.text_field column
+  legend = Pack::CategoryValue.model_name.human
+  = f.link_to_add t(".add_value"), :category_values
+  = f.fields_for :category_values do |ff|
+    - ::CategoryValue.locale_columns(:value).each do |column|
+      = ff.text_field column
+    = ff.link_to_remove t(".remove_value"), class: "fa fa-times text-danger"
+  =f.form_group do
+    = f.submit t("buttons.save", default: "Save")

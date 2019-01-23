@@ -4,7 +4,8 @@
   = f.collection_select :responsible_id, User.support, :id, :full_name_with_email unless @ticket.new_record?
   = f.text_field :subject
   = f.text_field :url
-  = f.text_area :message, rows: 14, class: 'edit-markdown'
+  = markdown_area f,:message, rows: 14
+
   = f.file_field :attachment
   = f.collection_select :topic_id, Support::Topic.common_theme, :id, :name_with_parents
   = autocomplete f, name: :project_id, label: Support::Ticket.human_attribute_name(:project), source: core.projects_path, include_blank: true
