@@ -7,6 +7,7 @@ end
 gem "pg", "~> 0.18", platform: :ruby
 gem "responders", "~> 2.0"
 gem "uglifier", ">= 1.3.0"
+gem "sassc-rails"
 gem "bootstrap_form"
 gem 'rails_email_preview', '~> 2.0.6'
 gem 'left_join'

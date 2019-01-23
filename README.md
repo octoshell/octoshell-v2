@@ -8,14 +8,16 @@ https://users.parallel.ru/
 
 ## Installation and starting
 
-We assume, that all below is doing as user `octo` (or root, if it is said 'as root'). You can use another user. Please, note, that linux account `octo` and database role `octo` are not connected, but we prefer to use the same name for both cases.
+We assume, that all below is doing as user `octo` (or root, if it is said 'as root'). You can use another user. Please, note, that linux account `octo` and database role `octo` are not connected, but we prefer to use the same name for both cases. You can create user by command like `adduser octo`
 
-1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev`)
-1. install as root redis (under debian/ubuntu: `sudo apt-get install redis`)
-1. install postgresql (under debian/ubuntu: `sudo apt-get install postgresql postgresql-server-dev-all`)
-1. as root add database user octo: `sudo -u postgres createuser -s octo`
+1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo`)
+1. install as root redis (under debian/ubuntu: `sudo apt-get install -y redis-server redis-tools`)
+1. install postgresql (under debian/ubuntu: `sudo apt-get install -y postgresql postgresql-server-dev-all`)
+1. as root add database user octo: `sudo -u postgres bash -c "psql -c \"CREATE USER octo WITH PASSWORD 'HERE_COMES_YOUR_DESIRED_PASSWORD';\""`
 1. as root set database password: `sudo -u postgres psql` then enter `\password octo` and enter password. Exit with `\q`.
 1. enable and start redis and postgresql (e.g. `systemctl enable redis; systemctl enable postgresql; systemctl start redis; systemctl start postgresql`)
+1. check if your postgresql is listening 127.0.0.1 port 5432 (e.g. `ss -lpn |grep 5432`). If it is not, check postgresql config files (in debian/ubuntu - /etc/postgresql/VERSION/main/postgresql.conf, 'port' parameter)
+1. create databases: `for database in new_octoshell new_octoshell_test new_octoshell_development; do sudo -u postgres createdb -O octo $database; done`
 1. as user install rbenv (e.g. `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
 1. make sure rbenv is loaded automatically, by adding to ~/.bashrc these lines:
 
@@ -28,16 +30,15 @@ We assume, that all below is doing as user `octo` (or root, if it is said 'as ro
 
 ```
   rbenv install 2.5.1
-  rbenv local 2.5.1
+  rbenv global 2.5.1
 ```
 
 1. execute `gem install bundler`
-1. execute `bundle install`
 1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
-1. go to cloned directory (`cd octoshell-v2`)
+1. go into cloned directory `cd octoshell-v2`
+1. execute `bundle install`
 1. copy `config/database.yml.example` into `config/database.yml`
 1. fill database parameters and password in `config/database.yml`
-1. execute `bundle install`
 1. execute `bundle exec rake db:setup`
 1. execute `bundle exec rake assets:precompile` (Downloading pages without precompilation  and   config.assets.debug = true can take significant amount of time)
 
@@ -105,14 +106,14 @@ All deploys after this can be done by `git fetch; ./do_deploy`, and then on depl
 
 ## Установка и запуск
 
-Далее считаем, что установка производится под пользователем `octo` (или `root`, если сказано `под рутом`). Можно использовать другое имя пользователя. Отметим, что имя пользователя и имя роли базы данных не обязаны совпадать, но мы используем одинаковые.
+Далее считаем, что установка производится под пользователем `octo` (или `root`, если сказано `под рутом`). Можно использовать другое имя пользователя. Отметим, что имя пользователя и имя роли базы данных не обязаны совпадать, но мы используем одинаковые. Пользователя можно создать, например, командой `adduser octo`
 
-1. под рутом ставим пакеты (debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev`)
-1. под рутом ставим redis (debian/ubuntu: `sudo apt-get install redis`)
-1. под рутом ставим postgresql (debian/ubuntu: `sudo apt-get install postgresql postgresql-server-dev-all`)
-1. под рутом добавим роль для БД octo: `sudo -u postgres createuser -s octo`
-1. под рутом зададим роли пароль: `sudo -u postgres psql`, вводим `\password octo` и вводим пароль. Выход: `\q`.
+1. под рутом ставим пакеты (debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo`)
+1. под рутом ставим redis (debian/ubuntu: `sudo apt-get install -y redis-server redis-tools`)
+1. под рутом ставим postgresql (debian/ubuntu: `sudo apt-get install -y postgresql postgresql-server-dev-all`)
+1. под рутом добавим роль для БД octo: `sudo -u postgres bash -c "psql -c \"CREATE USER octo WITH PASSWORD 'ТУТ_ПАРОЛЬ_ПОЛЬЗОВАТЕЛЯ_БД';\""`
 1. под рутом включаем и запускаем redis и postgresql (например `systemctl enable redis; systemctl enable postgresql; systemctl start redis; systemctl start postgresql`)
+1. проверяем, что postgresql слушает на 127.0.0.1 порт 5432 (например `ss -lpn |grep 5432`). Если нет, проверяем настройки postgresql (в debian/ubuntu - /etc/postgresql/VERSION/main/postgresql.conf, строчка 'port')
 1. под пользователем ставим rbenv (проще всего так: `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
 1. в ~/.bashrc пользователя должны быть добавлены эти строки, чтобы работал rbenv:
 
@@ -125,16 +126,15 @@ All deploys after this can be done by `git fetch; ./do_deploy`, and then on depl
 
 ```
   rbenv install 2.5.1
-  rbenv local 2.5.1
+  rbenv global 2.5.1
 ```
 
 1. выполняем `gem install bundler`
-1. выполняем `bundle install`
 1. выполняем `git clone https://github.com/octoshell/octoshell-v2.git`
-1. переходим в созданный каталог (`cd octoshell-v2`)
+1. переходим в созданный каталог `cd octoshell-v2`
+1. выполняем `bundle install`
 1. копируем `config/database.yml.example` в `config/database.yml`
 1. вписываем параметры БД и пароль в `config/database.yml`
-1. выполняем `bundle install`
 1. выполняем `bundle exec rake db:setup`
 1. выполняем `bundle exec rake assets:precompile`
 
