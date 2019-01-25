@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: core_projects
+#
+#  id                         :integer          not null, primary key
+#  title                      :string(255)      not null
+#  state                      :string(255)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  organization_id            :integer
+#  organization_department_id :integer
+#  kind_id                    :integer
+#  first_activation_at        :datetime
+#  finished_at                :datetime
+#  estimated_finish_date      :datetime
+#
+
 module Core
   class Project < ActiveRecord::Base
 

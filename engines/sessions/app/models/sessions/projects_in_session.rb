@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: sessions_projects_in_sessions
+#
+#  id         :integer          not null, primary key
+#  session_id :integer
+#  project_id :integer
+#
+
 module Sessions
   class ProjectsInSession < ActiveRecord::Base
     belongs_to :project, class_name: "Core::Project"

@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: sessions_sessions
+#
+#  id             :integer          not null, primary key
+#  state          :string(255)
+#  description_ru :text
+#  motivation_ru  :text
+#  started_at     :datetime
+#  ended_at       :datetime
+#  receiving_to   :datetime
+#  description_en :text
+#  motivation_en  :text
+#
+
 # Перерегистрация
 # В процессе перерегистрации пользователи присылают на оценку отчёты Reports,
 # а также заполняют опросники Surveys, создавая UserSurveys.

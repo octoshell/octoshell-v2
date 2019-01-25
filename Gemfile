@@ -17,6 +17,7 @@ gem 'rubyzip', '>= 1.0.0', require: false
 gem 'therubyracer' # for execjs
 
 group :development do
+  gem "annotate"
   gem "letter_opener"
   gem "quiet_assets"
   gem "pry-rails"

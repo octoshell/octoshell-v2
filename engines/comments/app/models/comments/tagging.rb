@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: comments_taggings
+#
+#  id              :integer          not null, primary key
+#  tag_id          :integer
+#  attachable_id   :integer          not null
+#  attachable_type :string           not null
+#  user_id         :integer
+#  context_id      :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
 module Comments
   class Tagging < ActiveRecord::Base
     DEFAUlT_PER = 20

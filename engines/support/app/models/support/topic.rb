@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: support_topics
+#
+#  id                :integer          not null, primary key
+#  name_ru           :string(255)
+#  parent_id         :integer
+#  created_at        :datetime
+#  updated_at        :datetime
+#  name_en           :string
+#  template_en       :text
+#  template_ru       :text
+#  visible_on_create :boolean          default(TRUE)
+#
+
 # endcoding: utf-8
 
 module Support

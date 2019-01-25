@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: pack_clustervers
+#
+#  id              :integer          not null, primary key
+#  core_cluster_id :integer
+#  version_id      :integer
+#  created_at      :datetime
+#  updated_at      :datetime
+#  active          :boolean
+#  path            :string
+#
+
 module Pack
   class Clusterver < ActiveRecord::Base
     delegate :name,to: :core_cluster

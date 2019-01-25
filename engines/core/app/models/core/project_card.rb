@@ -1,5 +1,28 @@
 # encoding: utf-8
 
+# == Schema Information
+#
+# Table name: core_project_cards
+#
+#  id           :integer          not null, primary key
+#  project_id   :integer
+#  name         :text
+#  en_name      :text
+#  driver       :text
+#  en_driver    :text
+#  strategy     :text
+#  en_strategy  :text
+#  objective    :text
+#  en_objective :text
+#  impact       :text
+#  en_impact    :text
+#  usage        :text
+#  en_usage     :text
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
+
 # Карточка проекта
 module Core
   class ProjectCard < ActiveRecord::Base

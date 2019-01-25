@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: support_tickets
+#
+#  id                      :integer          not null, primary key
+#  topic_id                :integer
+#  project_id              :integer
+#  cluster_id              :integer
+#  surety_id               :integer
+#  reporter_id             :integer
+#  subject                 :string(255)
+#  message                 :text
+#  state                   :string(255)
+#  url                     :string(255)
+#  attachment              :string(255)
+#  created_at              :datetime
+#  updated_at              :datetime
+#  responsible_id          :integer
+#  attachment_file_name    :string(255)
+#  attachment_content_type :string(255)
+#  attachment_file_size    :integer
+#  attachment_updated_at   :datetime
+#
+
 module Support
   class Ticket < ActiveRecord::Base
 

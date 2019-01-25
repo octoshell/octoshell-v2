@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: core_requests
+#
+#  id            :integer          not null, primary key
+#  project_id    :integer          not null
+#  cluster_id    :integer          not null
+#  state         :string(255)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  cpu_hours     :integer
+#  gpu_hours     :integer
+#  hdd_size      :integer
+#  group_name    :string(255)
+#  creator_id    :integer
+#  comment       :text
+#  reason        :text
+#  changed_by_id :integer
+#
+
 module Core
   class Request < ActiveRecord::Base
 

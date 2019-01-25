@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: announcements
+#
+#  id            :integer          not null, primary key
+#  title_ru      :string(255)
+#  reply_to      :string(255)
+#  body_ru       :text
+#  attachment    :string(255)
+#  is_special    :boolean
+#  state         :string(255)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  created_by_id :integer
+#  title_en      :string
+#  body_en       :text
+#
+
 class Announcement < ActiveRecord::Base
 
   translates :title, :body

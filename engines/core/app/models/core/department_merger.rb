@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: core_department_mergers
+#
+#  id                   :integer          not null, primary key
+#  source_department_id :integer
+#  to_organization_id   :integer
+#  to_department_id     :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#
+
 module Core
   class DepartmentMerger < ActiveRecord::Base
     belongs_to :source_department,

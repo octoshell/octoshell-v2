@@ -1,5 +1,17 @@
 # encoding: utf-8
 
+# == Schema Information
+#
+# Table name: sessions_survey_values
+#
+#  id              :integer          not null, primary key
+#  value           :text
+#  survey_field_id :integer
+#  user_id         :integer
+#  user_survey_id  :integer
+#
+
+
 # Значение поля для опроса
 # В процессе заполнения опроса Survey пользователь создаёт UserSurvey, заполняя
 # SurveyFields из Survey значениями SurveyValue.

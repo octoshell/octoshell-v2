@@ -1,3 +1,11 @@
+# == Schema Information
+#
+# Table name: comments_tags
+#
+#  id   :integer          not null, primary key
+#  name :string
+#
+
 module Comments
   class Tag < ActiveRecord::Base
     validates :name, presence: true

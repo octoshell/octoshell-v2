@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: core_members
+#
+#  id                         :integer          not null, primary key
+#  user_id                    :integer          not null
+#  project_id                 :integer          not null
+#  owner                      :boolean          default(FALSE)
+#  login                      :string(255)
+#  project_access_state       :string(255)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  organization_id            :integer
+#  organization_department_id :integer
+#
+
 module Core
   class Member < ActiveRecord::Base
 

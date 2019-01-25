@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: hardware_items
+#
+#  id             :integer          not null, primary key
+#  name_ru        :string
+#  name_en        :string
+#  description_ru :text
+#  description_en :text
+#  lock_version   :integer
+#  kind_id        :integer
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+
 module Hardware
   class Item < ActiveRecord::Base
     translates :name, :description, fallback: :any

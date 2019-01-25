@@ -41,8 +41,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'factory_girl_rails'
   s.test_files = Dir["spec/**/*"]
 
-
-
-
-
+  s.add_development_dependency "annotate"
 end

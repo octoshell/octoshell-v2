@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: sessions_report_replies
+#
+#  id         :integer          not null, primary key
+#  report_id  :integer
+#  user_id    :integer
+#  message    :text
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 # Ответ на отчет
 module Sessions
   class ReportReply < ActiveRecord::Base

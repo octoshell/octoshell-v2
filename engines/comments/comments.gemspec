@@ -22,5 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 4.2.6"
   s.add_dependency 'active_record_union'
   s.add_dependency 'translit'
+  s.add_development_dependency "annotate"
 
 end

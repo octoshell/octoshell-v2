@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: core_organization_departments
+#
+#  id              :integer          not null, primary key
+#  organization_id :integer
+#  name            :string(255)
+#  checked         :boolean          default(FALSE)
+#
+
 module Core
   class OrganizationDepartment < ActiveRecord::Base
     include MergeDepartments

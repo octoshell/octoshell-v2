@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: options_categories
+#
+#  id         :integer          not null, primary key
+#  name_ru    :string
+#  name_en    :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class OptionsCategory < ActiveRecord::Base
   has_many :category_values, inverse_of: :options_category, dependent: :destroy
   has_many :strict_options, inverse_of: :options_category,

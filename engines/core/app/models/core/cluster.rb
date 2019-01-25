@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: core_clusters
+#
+#  id                 :integer          not null, primary key
+#  name_ru            :string(255)      not null
+#  host               :string(255)      not null
+#  description        :text
+#  public_key         :text
+#  private_key        :text
+#  admin_login        :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  available_for_work :boolean          default(TRUE)
+#  name_en            :string
+#
+
 module Core
   class Cluster < ActiveRecord::Base
 
@@ -6,6 +23,9 @@ module Core
     has_many :requests, inverse_of: :cluster, dependent: :destroy
     has_many :accesses, inverse_of: :cluster, dependent: :destroy
     has_many :projects, through: :accesses
+
+    has_many :partitions, inverse_of: :cluster, dependent: :destroy
+    accepts_nested_attributes_for :partitions, allow_destroy: true
 
     has_many :logs, class_name: "ClusterLog", inverse_of: :cluster, dependent: :destroy
 

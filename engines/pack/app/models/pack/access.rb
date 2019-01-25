@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: pack_accesses
+#
+#  id                  :integer          not null, primary key
+#  version_id          :integer
+#  who_id              :integer
+#  who_type            :string
+#  status              :string
+#  created_by_id       :integer
+#  created_at          :datetime
+#  updated_at          :datetime
+#  end_lic             :date
+#  new_end_lic         :date
+#  allowed_by_id       :integer
+#  lock_version        :integer          default(0), not null
+#  new_end_lic_forever :boolean          default(FALSE)
+#
+
 module Pack
   class Access < ActiveRecord::Base
     include AASM
