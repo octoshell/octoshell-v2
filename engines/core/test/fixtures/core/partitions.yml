@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name_ru: MyString
+  name_en: MyString
+  core_cluster_id: 
+  resources: MyString
+
+two:
+  name_ru: MyString
+  name_en: MyString
+  core_cluster_id: 
+  resources: MyString
