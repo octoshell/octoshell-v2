@@ -534,6 +534,10 @@ en:
           help: "You can set default resources quotas values by clicking on \"+ add quota\". These values will be used by users to create resource quota request."
           add_quota: "+ add quota"
           remove_quota: "remove quota"
+          add_partition: "+ add partition"
+          remove_partition: "remove partition"
+          partitions: "Partitions"
+
       cluster_logs:
         index:
           title: "Clusters logs"

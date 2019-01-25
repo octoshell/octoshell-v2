@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190107141259) do
+ActiveRecord::Schema.define(version: 20190125111222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -366,6 +366,14 @@ ActiveRecord::Schema.define(version: 20190107141259) do
   add_index "core_organizations", ["city_id"], name: "index_core_organizations_on_city_id", using: :btree
   add_index "core_organizations", ["country_id"], name: "index_core_organizations_on_country_id", using: :btree
   add_index "core_organizations", ["kind_id"], name: "index_core_organizations_on_kind_id", using: :btree
+
+  create_table "core_partitions", force: :cascade do |t|
+    t.string  "name"
+    t.integer "cluster_id"
+    t.string  "resources"
+  end
+
+  add_index "core_partitions", ["cluster_id"], name: "index_core_partitions_on_cluster_id", using: :btree
 
   create_table "core_project_cards", force: :cascade do |t|
     t.integer  "project_id"
