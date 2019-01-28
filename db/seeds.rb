@@ -9,6 +9,7 @@ ActiveRecord::Base.transaction do
   #   next if table == 'schema_migrations'
   #   ActiveRecord::Base.connection.execute("TRUNCATE #{table}")
   # end
+  puts 'Running seeds'
   Group.default!
   users = []
   3.times do |i|
@@ -48,10 +49,13 @@ ActiveRecord::Base.transaction do
   Core::Organization.create!(name: 'Test MSU', city: city, country: country,
                              kind: Core::OrganizationKind.first )
   Core::Employment.create!(user: admin, organization: Core::Organization.first)
-  rake = Rake.application
-  rake.init
-  rake.load_rakefile
-  rake['comments:create_wiki_page'].invoke
+  Comments.create_wiki_page
+  Comments.create_abilities
+
+  # rake = Rake.application
+  # rake.init
+  # rake.load_rakefile
+  # rake['comments:create_wiki_page'].invoke
   # rake['comments:recreate_attachable_abilities'].invoke
 
 
