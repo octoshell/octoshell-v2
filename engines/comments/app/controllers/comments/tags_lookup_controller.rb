@@ -2,6 +2,8 @@ require_dependency "comments/application_controller"
 
 module Comments
   class TagsLookupController < ApplicationController
+    before_action :check_abilities, only: %i[edit update]
+
     def index
       q_form
       @q = Tagging.allowed(current_user.id)
@@ -36,6 +38,19 @@ module Comments
       @q.context_id_eq = context_id
     end
 
+    def edit
+      @tag = Tag.find(params[:id])
+    end
+
+    def update
+      @tag = Tag.find(params[:id])
+      if @tag.update(tag_params)
+        redirect_to tags_lookup_path(@tag)
+      else
+        render :edit
+      end
+    end
+
     def destroy
       @tagging = Tagging.where(id: params[:id]).join_user_groups(current_user.id).first
       if @tagging.can_update?(current_user.id)
@@ -53,6 +68,10 @@ module Comments
 
 
     private
+
+    def tag_params
+      params.require(:tag).permit(:name)
+    end
 
     def q_form
       @models_list = []

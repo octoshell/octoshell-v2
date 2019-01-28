@@ -7,7 +7,12 @@ module Comments
       attrs = %i[created_at_lt created_at_gt updated_at_gt updated_at_lt]
       params.require(:q).permit(attrs)
     end
-    
+
+    def check_abilities
+      authorize! :manage, :comments_engine
+    end
+
+
     before_filter :journal_user
 
     def journal_user
