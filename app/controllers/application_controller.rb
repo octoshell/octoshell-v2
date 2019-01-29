@@ -13,9 +13,12 @@ class ApplicationController < ActionController::Base
 
   def check_notices
     return unless current_user
+    return if request[:controller] =~ /\/admin\//
     Core::Notice.where(sourceable: current_user, category: 1).each do |note|
+      text = "#{note.message} - #{note.linkable.drms_job_id}"
+      next if flash[:alert] && flash[:alert].include?(text)
       job=note.linkable
-      flash["job-#{job.id}"] = note.message
+      flash_message :alert, text
     end
   end
 end

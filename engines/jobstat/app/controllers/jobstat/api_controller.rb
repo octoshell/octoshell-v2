@@ -30,7 +30,7 @@ module Jobstat
         linkable: job,
         category: 1)
       note.save!
-      logger.info checker_prefix + ": new notice for #{job.drms_job_id}"
+      logger.info "#{CHECKER_PREFIX}: new notice for #{job.drms_job_id}"
     end
 
     def remove_notice(job, user)

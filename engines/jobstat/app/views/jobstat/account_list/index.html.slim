@@ -6,10 +6,10 @@
 
 h3 Информация о завершенных задачах
 
-- @notes=Core::Notice.where(sourceable: @current_user)
-- @notes.each do |n|
-  div 
-    | #{n.message} (#{n.linkable ? n.linkable.state : '---'})
+/ - @notes=Core::Notice.where(sourceable: @current_user)
+/ - @notes.each do |n|
+/   div 
+/     | #{n.message} (#{n.linkable ? n.linkable.state : '---'})
 
 button onclick="startIntro()" intro
 
