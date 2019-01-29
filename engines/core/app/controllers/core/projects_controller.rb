@@ -88,11 +88,11 @@ module Core
         @project.invite_member(params.fetch(:member)[:id])
         @project.save
       rescue ActiveRecord::RecordNotUnique 
-        flash[:alert] = t('flash.duplicated_invite')
+        flash_message :alert, t('flash.duplicated_invite')
       end
 
       unless @project.errors.empty?
-        flash[:alert] = @project.errors.full_messages.to_sentence
+        flash_message :alert, @project.errors.full_messages.to_sentence
       end
 
       redirect_to @project

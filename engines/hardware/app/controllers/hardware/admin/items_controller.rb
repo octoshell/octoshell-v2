@@ -78,7 +78,7 @@ module Hardware
     def update_state
       @item = Item.find(params[:item_id])
       if params[:items_states_count].to_i != @item.items_states.count
-        flash[:error] = t('.stale')
+        flash_message :error, t('.stale')
       else
         @state = State.find_by!(State.current_locale_column(:name) => params[:commit],
                                 kind: @item.kind)

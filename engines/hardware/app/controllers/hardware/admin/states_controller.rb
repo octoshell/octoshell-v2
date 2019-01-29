@@ -39,7 +39,7 @@ module Hardware
     def destroy
       @state = State.find(params[:id])
       unless @state.destroy
-        flash[:error] = @state.errors.full_messages
+        flash :error, @state.errors.full_messages
         redirect_to [:admin, @state.kind, @state]
         return
       end

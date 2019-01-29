@@ -38,7 +38,7 @@ module Core
     def activate_or_reject
       @request = Request.find(params[:id])
       unless params[:request][:reason].present?
-        flash[:error] = t('.reason_empty')
+        flash_message :error, t('.reason_empty')
         redirect_to [:admin, @request]
         return
       end
