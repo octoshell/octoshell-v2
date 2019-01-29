@@ -39,6 +39,15 @@ module Jobstat
       @total_cluster_data = {}
       @total_data = [0, 0, 0]
 
+      @cluster_by_name = Hash.new Core::Cluster.all.map { |c| [c.name_en, c] }
+      seed=Core::Partition.preload(:cluster).all.map { |p|
+        p.resources =~ /cores:(\d+)/
+        cores = $1.to_i
+        p.resources =~ /gpus:(\d+)/
+        gpus = $1.to_i
+        ["#{p.cluster.name}//#{p.name}", [cores,gpus]]
+      }
+      @cluster_part_by_name = Hash[seed]
       @jobs.each do |job|
         entry = [0,0,0]
 
@@ -47,19 +56,15 @@ module Jobstat
           next if cluster.nil?
           partition = Core::Partition.where(cluster: cluster, name: job.partition).last
           next if partition.nil?
-          partition.resources =~ /cores:(\d+)/
-          cores = $1.to_i
-          partition.resources =~ /gpus:(\d+)/
-          gpus = $1.to_i
-          #partition = cluster.partitions[job.partition]
-          logger.info "cores=#{cores}, gpus=#{gpus}, sum=#{job.sum}"
+          part="#{cluster}//#{partition}"
+          res=@cluster_part_by_name[part] || [0,0]
 
           cluster_data = @data.fetch(job.cluster, {})
           partition_data = cluster_data.fetch(job.partition, {})
 
           entry = [job.count,
-            job.sum * cores,
-            job.sum * gpus]
+            job.sum * res[0],
+            job.sum * res[1]]
         rescue => e
           Rails.logger.error("error in statistics for job: #{job.cluster} #{job.state} #{job.partition}: #{e.message}")
           next
