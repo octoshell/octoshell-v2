@@ -18,7 +18,14 @@ module Jobstat
 
       @params = defaults.merge(params.symbolize_keys)
 
-      query_logins = (@params[:all_logins] & @all_logins[0])
+      query_logins = @projects.map{|_,login| login}.flatten.uniq
+      req_logins=(@params[:all_logins] || []).reject{|x| x==''}
+      unless req_logins.include?('ALL') || req_logins.length==0
+        query_logins = (req_logins & query_logins)
+      end
+      @params[:all_logins]=query_logins
+
+      #query_logins = (@params[:all_logins] & @all_logins[0])
 
       @jobs = Job.where "start_time > ? AND end_time < ?",
                         DateTime.parse(@params[:start_time]),
@@ -27,7 +34,6 @@ module Jobstat
       @jobs = @jobs.where(login: query_logins)
       @jobs = @jobs.select('EXTRACT( hours from SUM(num_nodes * (end_time - start_time))) as sum, count(*) as count, cluster, partition, state')
       @jobs = @jobs.group(:cluster, :partition, :state).order(:cluster, :partition, :state)
-
 # compresss data list to hash
       @data = {}
       @total_cluster_data = {}
@@ -37,17 +43,25 @@ module Jobstat
         entry = [0,0,0]
 
         begin
-          cluster = @clusters[job.cluster]
-          partition = cluster.partitions[job.partition]
+          cluster = Core::Cluster.where(name_en: job.cluster).last
+          next if cluster.nil?
+          partition = Core::Partition.where(cluster: cluster, name: job.partition).last
+          next if partition.nil?
+          partition.resources =~ /cores:(\d+)/
+          cores = $1.to_i
+          partition.resources =~ /gpus:(\d+)/
+          gpus = $1.to_i
+          #partition = cluster.partitions[job.partition]
+          logger.info "cores=#{cores}, gpus=#{gpus}, sum=#{job.sum}"
 
           cluster_data = @data.fetch(job.cluster, {})
           partition_data = cluster_data.fetch(job.partition, {})
 
           entry = [job.count,
-            job.sum * partition["cores"],
-            job.sum * partition["gpus"]]
-        rescue Exception
-          Rails.logger.error("error in statistics for job: #{job.cluster} #{job.state} #{job.partition}")
+            job.sum * cores,
+            job.sum * gpus]
+        rescue => e
+          Rails.logger.error("error in statistics for job: #{job.cluster} #{job.state} #{job.partition}: #{e.message}")
           next
         end
 
