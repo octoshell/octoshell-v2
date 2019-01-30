@@ -11,6 +11,9 @@ module Jobstat
                   :owned_logins => []
       }
 
+      @extra_css=['jobstat/application'] #, 'jobstat/introjs.min']
+      @extra_js=['jobstat/application'] #, 'jobstat/intro.min']
+
       @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
       @all_logins=get_select_options_by_projects @projects
       #@owned_logins = get_owned_logins
