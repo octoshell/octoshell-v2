@@ -1,9 +1,9 @@
 module Jd
-  class ApplicationController < ActionController::Base
-    include AuthMayMay
+  class ApplicationController < ::ApplicationController
+    #include AuthMayMay
     layout "layouts/application"
 
-    protect_from_forgery with: :exception
+    #protect_from_forgery with: :exception
 
 
     @@systems = Rails.configuration.jd_systems
