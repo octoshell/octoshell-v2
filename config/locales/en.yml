@@ -1,4 +1,6 @@
 en:
+  bad_jobs: "Bad jobs: "
+  bad_job: "Bad job: "
   options:
     fields:
       remove_option: Remove option

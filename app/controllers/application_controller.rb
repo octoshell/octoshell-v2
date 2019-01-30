@@ -15,11 +15,19 @@ class ApplicationController < ActionController::Base
   def check_notices
     return unless current_user
     return if request[:controller] =~ /\/admin\//
-    Core::Notice.where(sourceable: current_user, category: 1).each do |note|
-      text = raw note.message
-      next if flash[:alert] && flash[:alert].include?(text)
-      job=note.linkable
-      flash_message :alert, text
+
+    #FIXME: each category should be processed separately in outstanding code
+    notices = Core::Notice.where(sourceable: current_user, category: 1)
+    return if notices.count==0
+
+    list=[]
+    notices.each do |note|
+      list << note.message
+      #next if flash[:'alert-badjobs'] && flash[:'alert-badjobs'].include?(text)
+      #job=note.linkable
     end
+    text = "#{notices.count==1 ? t('bad_job') : t('bad_jobs')} #{list.join '; '}"
+    flash.now[:'alert-badjobs'] = raw text
+    
   end
 end

@@ -26,7 +26,7 @@ module Jobstat
       Core::Notice.where(sourceable: user, linkable: job, category: 1).destroy_all
       note=Core::Notice.create(
         sourceable: user,
-        message: "bad job - #{view_context.link_to job.drms_job_id, jobstat.job_path(job)}",
+        message: view_context.link_to(job.drms_job_id, jobstat.job_path(job)),
         linkable: job,
         category: 1)
       note.save!
