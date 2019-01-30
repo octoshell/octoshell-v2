@@ -307,8 +307,10 @@ div class="perf-table"
             p 
               | Нет данных...
         td
-          - d="Подробнее про этот запуск\nИмя задачи: #{job.get_command}"
+          - d="Подробнее про этот запуск\nИмя задачи: #{job.get_command}\nУзлы: #{job.nodelist}"
           p title="#{d}"
+            i class="fa fa-hand-point-right gray-text"
+            | &nbsp;
             = link_to(job.drms_job_id, job)
         td class="login-data" = job.login
         td class="login-data" = job.partition

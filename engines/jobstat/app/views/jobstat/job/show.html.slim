@@ -69,6 +69,11 @@ div class="row"
           | Время счета (часы)
         td
           = number_with_precision(@job.get_duration_hours, :precision => 1)
+      tr
+        td
+          | Список узлов
+        td
+          = @job[:nodelist]
 
   div class="col-md-4"
     //fixme! translate
