@@ -2,7 +2,12 @@
   br
   div class="flash-message"
     - flash.each do |type, message|
-      - message.each do |msg|
+      - if message.kind_of? String
         div class = "alert #{bootstrap_class_for(type)} alert-dismissable fade in"
           button type="button" class="close" data-dismiss="alert" aria-hidden="true" &times;
-          = msg
+          = message
+      - else
+        - message.each do |msg|
+          div class = "alert #{bootstrap_class_for(type)} alert-dismissable fade in"
+            button type="button" class="close" data-dismiss="alert" aria-hidden="true" &times;
+            = msg
