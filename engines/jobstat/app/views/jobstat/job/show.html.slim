@@ -53,17 +53,17 @@ div class="row"
         td
           | Постановка в очередь
         td
-          = @job[:submit_time].strftime("%D %T")
+          = @job[:submit_time].strftime("%F %T (%Z)")
       tr
         td
           | Начало счета
         td
-          = @job[:start_time].strftime("%D %T")
+          = @job[:start_time].strftime("%F %T (%Z)")
       tr
         td
           | Конец счета
         td
-          = @job[:end_time].strftime("%D %T")
+          = @job[:end_time].strftime("%F %T (%Z)")
       tr
         td
           | Время счета (часы)
