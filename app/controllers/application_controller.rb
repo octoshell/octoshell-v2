@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
 
   include ControllerHelper
+  include ActionView::Helpers::OutputSafetyHelper
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -15,7 +16,7 @@ class ApplicationController < ActionController::Base
     return unless current_user
     return if request[:controller] =~ /\/admin\//
     Core::Notice.where(sourceable: current_user, category: 1).each do |note|
-      text = "#{note.message} - #{note.linkable.drms_job_id}"
+      text = raw note.message
       next if flash[:alert] && flash[:alert].include?(text)
       job=note.linkable
       flash_message :alert, text
