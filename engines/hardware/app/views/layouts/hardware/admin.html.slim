@@ -1,0 +1,18 @@
+- content_for :admin_engine_submenu do
+  br
+  ul class="nav nav-pills"
+    - hardware_admin_submenu_items.each do |item|
+      li class="#{"active" if item.active?(request.fullpath)}"
+        = link_to item.name, item.url
+  = bootstrap_form_tag url: update_max_date_admin_items_path do |f|
+    = f.form_group :max_date,label: {text: t('.max_date')} do
+      = text_field_tag 'hardware_max_date', session[:hardware_max_date], class: 'datepicker'
+    /= link_to  t(".remove_max_date"),'', class: "fa fa-times text-danger", id: 'remove_max_date'
+    = f.form_group do
+      = f.submit t("actions.save")
+      = f.submit t(".remove_max_date")
+javascript:
+ $('button#remove_max_date').click(function(){
+
+ });
+= render template: "layouts/application"

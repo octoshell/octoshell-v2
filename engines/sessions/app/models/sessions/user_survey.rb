@@ -1,5 +1,20 @@
 # encoding: utf-8
 
+# == Schema Information
+#
+# Table name: sessions_user_surveys
+#
+#  id         :integer          not null, primary key
+#  user_id    :integer
+#  session_id :integer
+#  survey_id  :integer
+#  project_id :integer
+#  state      :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+
 # Опрос, который заполняет пользователь
 module Sessions
   class UserSurvey < ActiveRecord::Base

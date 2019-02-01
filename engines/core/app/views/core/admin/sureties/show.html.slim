@@ -25,7 +25,7 @@ table class="table table-bordered"
   tr
     th = Core::Surety.human_attribute_name(:state)
     td
-      - state = { "generated"=> "primary", "confirmed"=> "warning", "active"=> "success", "closed"=> "danger" }[@surety.state_name]
+      - state = { "generated"=> "primary", "confirmed"=> "warning", "active"=> "success", "closed"=> "danger", "rejected" => "danger" }[@surety.state_name.to_s]
       span class="label label-#{state}" = @surety.human_state_name
   tr
     th = Core::Surety.human_attribute_name(:document)
@@ -37,7 +37,7 @@ table class="table table-bordered"
   -if @surety.changed_by
       tr
         th = Core::Surety.human_attribute_name(:changed_by)
-        td = link_to @surety.changed_by.full_name main_app.admin_user_path(@surety.changed_by)
+        td = link_to @surety.changed_by.full_name, main_app.admin_user_path(@surety.changed_by)
 
 
 - if @surety.scans.any?

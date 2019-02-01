@@ -10,13 +10,21 @@ div class="panel panel-default"
         tr
           th = Core::Cluster.human_attribute_name("name")
           th = Core::Cluster.human_attribute_name("host")
+          th = Core::Cluster.human_attribute_name('partitions')
           th = t(".quotas_info")
           th
         - @clusters.each do |cluster|
           tr
-            td class="col-xs-4" = link_to cluster.name, admin_cluster_path(cluster)
-            td class="col-xs-2" = cluster.host
-            td class="col-xs-4" = cluster.quotas_info
+            td class="col-xs-3" = link_to cluster.name, admin_cluster_path(cluster)
+            td class="col-xs-3" = cluster.host
+            td class="col-xs-3"
+              ul
+                - cluster.partitions.each do |part|
+                  li
+                    b = part.name
+                    | &nbsp;
+                    = part.resources
+            td class="col-xs-3" = cluster.quotas_info
             td
               div class="btn-group pull-right"
                 = link_to t(".edit"), edit_admin_cluster_path(cluster), class: "btn btn-default btn-sm"

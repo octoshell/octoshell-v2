@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: pack_version_options
+#
+#  id                  :integer          not null, primary key
+#  version_id          :integer
+#  name_ru             :string
+#  value_ru            :text
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  name_en             :string
+#  value_en            :string
+#  category_value_id   :integer
+#  options_category_id :integer
+#
+
 module Pack
   class VersionOption < ActiveRecord::Base
     belongs_to :version, inverse_of: :version_options

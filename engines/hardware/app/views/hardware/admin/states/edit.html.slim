@@ -1,0 +1,7 @@
+div class="page-header"
+  h1 = t(".title", default: "Edit Organization Type")
+  -if Hardware::DELETED[:name_en] == @state.name_en
+    font color='red'
+      = t('.do_not_touch_deleted')
+
+= render "form"

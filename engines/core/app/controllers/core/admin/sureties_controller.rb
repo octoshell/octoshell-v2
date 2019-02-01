@@ -41,7 +41,7 @@ module Core
     def activate_or_reject
       @surety = find_surety(params[:surety_id])
       unless params[:surety][:reason].present?
-        flash[:error] = t('.reason_empty')
+        flash_message :error, t('.reason_empty')
         redirect_to_surety @surety
         return
       end

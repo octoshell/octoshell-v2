@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: abilities
+#
+#  id         :integer          not null, primary key
+#  action     :string(255)
+#  subject    :string(255)
+#  group_id   :integer
+#  available  :boolean          default(FALSE)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 # Модель доступа к действию для группы пользователей
 class Ability < ActiveRecord::Base
   Definition = Struct.new(:action, :subject)

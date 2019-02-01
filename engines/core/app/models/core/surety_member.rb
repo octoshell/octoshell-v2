@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: core_surety_members
+#
+#  id                         :integer          not null, primary key
+#  user_id                    :integer
+#  surety_id                  :integer
+#  organization_id            :integer
+#  organization_department_id :integer
+#
+
 module Core
   class SuretyMember < ActiveRecord::Base
     belongs_to :user, class_name: Core.user_class

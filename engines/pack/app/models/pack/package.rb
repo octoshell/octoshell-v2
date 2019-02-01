@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: pack_packages
+#
+#  id             :integer          not null, primary key
+#  name_ru        :string
+#  created_at     :datetime
+#  updated_at     :datetime
+#  description_ru :text
+#  deleted        :boolean          default(FALSE), not null
+#  description_en :text
+#  name_en        :string
+#
+
 module Pack
   class Package < ActiveRecord::Base
 

@@ -18,6 +18,7 @@ gem 'rubyzip', '>= 1.0.0', require: false
 gem 'therubyracer' # for execjs
 
 group :development do
+  gem "annotate"
   gem "letter_opener"
   gem "quiet_assets"
   gem "pry-rails"
@@ -51,6 +52,7 @@ gem "announcements",  path: "engines/announcements"
 gem "jobstat",        path: 'engines/jobstat'
 gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
+gem "hardware",       path: "engines/hardware"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"

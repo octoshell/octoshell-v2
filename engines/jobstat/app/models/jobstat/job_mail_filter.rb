@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: jobstat_job_mail_filters
+#
+#  id        :integer          not null, primary key
+#  condition :string
+#  user_id   :integer
+#
+
 module Jobstat
   class JobMailFilter < ActiveRecord::Base
     # condition

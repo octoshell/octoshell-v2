@@ -1,4 +1,17 @@
 # encoding: utf-8
+
+# == Schema Information
+#
+# Table name: core_employment_position_names
+#
+#  id           :integer          not null, primary key
+#  name_ru      :string(255)
+#  autocomplete :text
+#  created_at   :datetime
+#  updated_at   :datetime
+#  name_en      :string
+#
+
 #
 # Название позиции в организации
 module Core

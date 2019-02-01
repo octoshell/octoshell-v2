@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: core_accesses
+#
+#  id                 :integer          not null, primary key
+#  project_id         :integer          not null
+#  cluster_id         :integer          not null
+#  state              :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  project_group_name :string(255)
+#
+
 module Core
   class Access < ActiveRecord::Base
 

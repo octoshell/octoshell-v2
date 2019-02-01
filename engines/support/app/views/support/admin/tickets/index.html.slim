@@ -10,10 +10,10 @@ div class="page-header"
       = f.autocomplete_field :reporter_id_eq,{label: Core.user_class.model_name.human ,source:  main_app.users_path},include_blank: true
       /do |id|
         -User.find(id).full_name_with_email
-      / do |id|
-        -Core::Project.find(id).title
     div class="col-md-3"
-      = f.autocomplete_field :project_id_eq,{label: t('.project') ,source:  core.projects_path},include_blank: true
+      = f.autocomplete_field :project_id_eq,{label: t('.project') ,source:  core.projects_path},include_blank: true do |id|
+       -Core::Project.find(id).title
+
       = f.collection_select :topic_id_eq, Support::Topic.leaf_topics, :id, :name_with_parents, label: Support::Ticket.human_attribute_name(:topic), include_blank: true
       = f.collection_select :responsible_id_eq, (Support.user_class.support | Support.user_class.superadmins), :id, :full_name, label: Support::Ticket.human_attribute_name(:responsible), include_blank: true
     div class="col-md-3"

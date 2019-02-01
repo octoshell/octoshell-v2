@@ -10,7 +10,8 @@ module Support
     end
 
     def not_authorized
-      redirect_to main_app.root_path, alert: t("flash.not_authorized")
+      flash_message :alert, t("flash.not_authorized")
+      redirect_to main_app.root_path
     end
 
     def journal_user

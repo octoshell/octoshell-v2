@@ -30,7 +30,7 @@ en:
 
   activerecord:
     models:
-      sessions/session: "Re-registration"
+      sessions/session: "Reregistration"
       sessions/report: "Report"
       sessions/survey_value: "Value"
       sessions/survey: "Survey"
@@ -168,7 +168,7 @@ en:
         maintained_by: "Parallel information technologies laboratory, RCC MSU."
       new_report:
         subject: "You have to fill the \"%{title}\" project report"
-        session_started: "Re-registration has been started"
+        session_started: "Reregistration has been started"
         session_deadline: "You must provide a report on your work to %{to_date} on your %{pid}:\"%{title}\" project in the re-registration."
         report_form: "The report must be submitted in the following form:"
         report_form10: "Project/research name."
@@ -187,14 +187,14 @@ en:
         attention: "ATTENTION"
         attention1: "If you delay the sending of the report, the project will be blocked."
         attention2: "If the report is rated as \"unsatisfactory\", the project will be closed."
-        surveys_notification: "Also, as part of the re-registration, surveys were created for you and other project members, which must be completed and sent to %{to_date}. If the survey is overdue, the user's account will be blocked. You can open the \"Re-registration\" tab and go to the \"Polls\" section to fill out the questionnaires"
+        surveys_notification: "Also, as part of the re-registration, surveys were created for you and other project members, which must be completed and sent to %{to_date}. If the survey is overdue, the user's account will be blocked. You can open the \"Reregistration\" tab and go to the \"Polls\" section to fill out the questionnaires"
       notify_expert_about_assessing_reports:
         subject: "You have %{count} unrated reports"
         msg_num_reports: "You should rate the %{reports} unrated reports."
         msg_speedup_assessment: "Please rate them as quickly as possible."
       notify_experts_about_submitted_reports:
         subject: " %{count} reports are awaiting evaluation"
-        msg_num_reports: "The \"%{session}\" Re-registration is nearing completion, but %{reports} reports have not taken for evaluation yet and are awaiting consideration."
+        msg_num_reports: "The \"%{session}\" Reregistration is nearing completion, but %{reports} reports have not taken for evaluation yet and are awaiting consideration."
         msg_speedup_assessment: "Please rate them as quickly as possible."
       postdated_report_on_project:
         subject: "You have not sent a report №%{id} in time"
@@ -251,12 +251,12 @@ en:
     admin:
       sessions:
         create:
-          session_is_successfully_created: "Re-registration is created. Select projects that will participate in the re-registration."
+          session_is_successfully_created: "Reregistration is created. Select projects that will participate in the re-registration."
         index:
-          title: "Re-registrations list"
+          title: "Reregistrations list"
           new_session: "Create re-registration"
         new:
-          title: "Re-registration creation"
+          title: "Reregistration creation"
         show:
           started_at: "started at %{date}"
           ended_at: "ended at %{date}"
@@ -266,7 +266,7 @@ en:
           show_graphs: "Show stats"
           start_session: "Start"
           end_session: "Finish"
-          session_arcvhive: "Re-registration data archive"
+          session_arcvhive: "Reregistration data archive"
           session_archive_link_msg: "Download_link will be sent by email."
           session_archive_create: "Create archive"
           graphs_alert:
@@ -283,7 +283,7 @@ en:
         new:
           title: "Graph addition"
         index:
-          title: "Re-registration %{session_name} stats"
+          title: "Reregistration %{session_name} stats"
           back_to_session: "Back to re-registration"
           add_graph: "Add chart"
           edit: "Edit"
@@ -318,7 +318,7 @@ en:
       reports:
         index:
           title: "List of project reports"
-          session: "Re-registration"
+          session: "Reregistration"
           expert: "Expert"
           figures: "Illustrations"
           presentation: "Statement"
@@ -382,7 +382,7 @@ en:
 
     surveys:
       teaser:
-        session: "Re-registration"
+        session: "Reregistration"
         msg_incomplete: "You have unsent or rejected surveys and / or a report."
         msg_submit: "You have to submit a report"
         msg_not_later: "not later than"
@@ -412,13 +412,13 @@ en:
         title: "Title"
         project: "Project"
         status: "Status"
-        session: "Re-registration"
+        session: "Reregistration"
         no_surveys: "No surveys"
       table:
         title: "Title"
         project: "Project"
         status: "Status"
-        session: "Re-registration"
+        session: "Reregistration"
         no_surveys: "No surveys"
       show:
         complete: "Pass"
@@ -427,12 +427,12 @@ en:
         edit: "Edit"
       index:
         title: "Surveys list"
-        session: "Re-registration"
+        session: "Reregistration"
 
     reports:
       index:
         title: "Projects reports list"
-        session: "Re-registration"
+        session: "Reregistration"
       show:
         title: "The \"%{project_title}\" project report  in the «%{session_name}» re-registration"
         report_submit_denial_reason: "Report submit denial reason"
@@ -457,7 +457,7 @@ en:
         project: "Project"
         status: "Status"
         complete_by: "Must be submitted before"
-        session: "Re-registration"
+        session: "Reregistration"
         report_id: "Report No.%{id}"
         no_reports: "No reports"
       table:
@@ -465,7 +465,7 @@ en:
         project: "Project"
         status: "Status"
         complete_by: "Must be submitted before"
-        session: "Re-registration"
+        session: "Reregistration"
         report_id: "Report No.%{id}"
         no_reports: "No reports"
       edit:

@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: support_replies
+#
+#  id                      :integer          not null, primary key
+#  author_id               :integer
+#  ticket_id               :integer
+#  message                 :text
+#  attachment              :string(255)
+#  created_at              :datetime
+#  updated_at              :datetime
+#  attachment_file_name    :string(255)
+#  attachment_content_type :string(255)
+#  attachment_file_size    :integer
+#  attachment_updated_at   :datetime
+#
+
 module Support
   class Reply < ActiveRecord::Base
     mount_uploader :attachment, AttachmentUploader

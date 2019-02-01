@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: comments_file_attachments
+#
+#  id              :integer          not null, primary key
+#  file            :string
+#  description     :text
+#  attachable_id   :integer          not null
+#  attachable_type :string           not null
+#  user_id         :integer          not null
+#  context_id      :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
 module Comments
   class FileAttachment < ActiveRecord::Base
     mount_uploader :file, FileUploader

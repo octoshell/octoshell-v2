@@ -1,5 +1,30 @@
 # encoding: utf-8
 
+# == Schema Information
+#
+# Table name: sessions_reports
+#
+#  id                        :integer          not null, primary key
+#  session_id                :integer
+#  project_id                :integer
+#  author_id                 :integer
+#  expert_id                 :integer
+#  state                     :string(255)
+#  materials                 :string(255)
+#  materials_file_name       :string(255)
+#  materials_content_type    :string(255)
+#  materials_file_size       :integer
+#  materials_updated_at      :datetime
+#  illustration_points       :integer
+#  summary_points            :integer
+#  statement_points          :integer
+#  created_at                :datetime
+#  updated_at                :datetime
+#  submit_denial_reason_id   :integer
+#  submit_denial_description :text
+#
+
+
 # Отчет о проделанной работе по проекту.
 module Sessions
   class Report < ActiveRecord::Base

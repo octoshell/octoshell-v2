@@ -25,5 +25,7 @@ Gem::Specification.new do |s|
   # s.add_dependency "bootstrap_form"
   s.add_dependency "maymay"
 
+  s.add_development_dependency "annotate"
+
   s.test_files = Dir["spec/**/*"]
 end

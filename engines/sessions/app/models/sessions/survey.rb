@@ -1,4 +1,17 @@
 # encoding: utf-8
+
+# == Schema Information
+#
+# Table name: sessions_surveys
+#
+#  id                      :integer          not null, primary key
+#  session_id              :integer
+#  kind_id                 :integer
+#  name_ru                 :string(255)
+#  only_for_project_owners :boolean
+#  name_en                 :string
+#
+
 #
 # Опрос. Набор вопросов пользователям.
 # Нужен для сбора статистики использования ресурсов по результатам работы.
@@ -23,7 +36,7 @@ module Sessions
     end
 
     def personal?
-      name =~ /персональный/i
+      !only_for_project_owners
     end
 
     def template_survey_id

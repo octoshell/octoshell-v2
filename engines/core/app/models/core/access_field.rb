@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: core_access_fields
+#
+#  id            :integer          not null, primary key
+#  access_id     :integer
+#  quota         :integer
+#  used          :integer          default(0)
+#  quota_kind_id :integer
+#
+
 module Core
   class AccessField < ActiveRecord::Base
     belongs_to :access

@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: comments_comments
+#
+#  id              :integer          not null, primary key
+#  text            :text
+#  attachable_id   :integer          not null
+#  attachable_type :string           not null
+#  user_id         :integer          not null
+#  context_id      :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
 module Comments
   class Comment < ActiveRecord::Base
     include Attachable

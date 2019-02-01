@@ -1,5 +1,24 @@
 # encoding: utf-8
 
+# == Schema Information
+#
+# Table name: core_sureties
+#
+#  id             :integer          not null, primary key
+#  project_id     :integer
+#  state          :string(255)
+#  comment        :string(255)
+#  boss_full_name :string(255)
+#  boss_position  :string(255)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  document       :string(255)
+#  author_id      :integer
+#  reason         :text
+#  changed_by_id  :integer
+#
+
+
 module Core
   class Surety < ActiveRecord::Base
     include Exportable

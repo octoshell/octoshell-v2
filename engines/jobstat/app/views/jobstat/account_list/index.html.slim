@@ -6,6 +6,11 @@
 
 h3 Информация о завершенных задачах
 
+/ - @notes=Core::Notice.where(sourceable: @current_user)
+/ - @notes.each do |n|
+/   div 
+/     | #{n.message} (#{n.linkable ? n.linkable.state : '---'})
+
 button onclick="startIntro()" intro
 
 p id="intro-step1" data-step="1" На данной странице вы можете посмотреть информацию о ваших задачах, а также оценить эффективность их выполнения. Для отображения только интересующих задач укажите ниже требуемые фильтры.
@@ -302,8 +307,10 @@ div class="perf-table"
             p 
               | Нет данных...
         td
-          - d="Подробнее про этот запуск\nИмя задачи: #{job.get_command}"
+          - d="Подробнее про этот запуск\nИмя задачи: #{job.get_command}\nУзлы: #{job.nodelist}"
           p title="#{d}"
+            i class="fa fa-hand-point-right gray-text"
+            | &nbsp;
             = link_to(job.drms_job_id, job)
         td class="login-data" = job.login
         td class="login-data" = job.partition

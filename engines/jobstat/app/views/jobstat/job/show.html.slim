@@ -1,8 +1,8 @@
 - def_icon = {'icon'=>'fas fa-exclamation-triangle', 'color'=>'color-regular'}
-div
-  = @jobs_plus.to_s
+/ div
+/   = @jobs_plus.to_s
   
-b[:drms_job_id]
+/b[:drms_job_id]
 
 a href='/jobstat/account/list/index' Вернуться к списку запусков
 br
@@ -53,22 +53,27 @@ div class="row"
         td
           | Постановка в очередь
         td
-          = @job[:submit_time].strftime("%D %T")
+          = @job[:submit_time].strftime("%F %T (%Z)")
       tr
         td
           | Начало счета
         td
-          = @job[:start_time].strftime("%D %T")
+          = @job[:start_time].strftime("%F %T (%Z)")
       tr
         td
           | Конец счета
         td
-          = @job[:end_time].strftime("%D %T")
+          = @job[:end_time].strftime("%F %T (%Z)")
       tr
         td
           | Время счета (часы)
         td
           = number_with_precision(@job.get_duration_hours, :precision => 1)
+      tr
+        td
+          | Список узлов
+        td
+          = @job[:nodelist]
 
   div class="col-md-4"
     //fixme! translate

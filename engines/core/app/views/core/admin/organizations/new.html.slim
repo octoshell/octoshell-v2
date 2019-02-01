@@ -4,7 +4,7 @@ div class="page-header"
 = bootstrap_form_for [:admin, @organization], layout: :horizontal do |f|
   = f.text_field :name
   = f.text_field :abbreviation
-  = f.collection_select :kind_id, Core::OrganizationKind.order(:name), :id, :name, include_blank: true
+  = f.collection_select :kind_id, Core::OrganizationKind.order(Core::OrganizationKind.current_locale_column(:name)), :id, :name, include_blank: true
   = render partial: 'city_form', locals: {f: f},formats: :html
 
   = f.form_group do

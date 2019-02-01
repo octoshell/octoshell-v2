@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: jobstat_jobs
+#
+#  id           :integer          not null, primary key
+#  cluster      :string(32)
+#  drms_job_id  :integer
+#  drms_task_id :integer
+#  login        :string(32)
+#  partition    :string(32)
+#  submit_time  :datetime
+#  start_time   :datetime
+#  end_time     :datetime
+#  timelimit    :integer
+#  command      :string(1024)
+#  state        :string(32)
+#  num_cores    :integer
+#  num_nodes    :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  nodelist     :text
+#
+
 require 'yaml/store'
 # require "uri"
 # require "net/http"

@@ -41,19 +41,22 @@ module Jobstat
       @agree_flags=Job.agree_flags
 
       begin
-        @fake_data=params[:fake_data] || 0
+        @fake_data=params[:fake_data].to_i
         if @fake_data!=0
           @jobs=Job.where(drms_job_id: 869867)
           @total_count=1
         else
           @jobs = get_jobs(@params, query_logins)
+          #logger.info "JOBS: #{@jobs}"
           @total_count = @jobs.count
           @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
         end
         @shown = @jobs.length
 
         # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
-        @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''}
+        @filters=Job::get_filters(current_user).map { |x|
+          x['filters']
+        }.flatten.uniq.reject{|x| x==''}
         # -> [cond1,cond2,...]
 
         @jobs.each{|j|
@@ -103,50 +106,50 @@ module Jobstat
       # FIXME!!!!!! (see all_rules)
       @emails = JobMailFilter.filters_for_user current_user.id
 
-      @fake_data=params[:fake_data] || 0
+      @fake_data=params[:fake_data].to_i
       if @fake_data!=0
-          @jobs_plus[1000]={
-            'cluster' => 'lomonosov-1',
-            'drms_job_id' => '1000',
-            'drms_task_id' => '1000',
-            'login' => 'tester',
-            'partition' => 'test',
-            'submit_time' => '2011-01-10 10:10:10',
-            'start_time' => '2011-01-10 10:20:10',
-            'end_time' => '2011-01-10 20:20:10',
-            'timelimit' => '24:00:00',
-            'command' => 'do_test',
-            'state' => 'COMPLETED',
-            'num_cores' => '10',
-            'num_nodes' => '1',
-            'rules' => {
-              'rule_disbalance_cpu_la' => 'Заметный дисбаланс внутри узлов либо активность сильно отличается на разных узлах.',
-              'rule_node_disbalance' => 'Данные мониторинга сильно отличаются для разных узлов -> скорее всего, имеет место разбалансировка. Правило имеет смысл учитывать, если не сработали более конкретные правила',
-            }
+        @jobs_plus[1000]={
+          'cluster' => 'lomonosov-1',
+          'drms_job_id' => '1000',
+          'drms_task_id' => '1000',
+          'login' => 'tester',
+          'partition' => 'test',
+          'submit_time' => '2011-01-10 10:10:10',
+          'start_time' => '2011-01-10 10:20:10',
+          'end_time' => '2011-01-10 20:20:10',
+          'timelimit' => '24:00:00',
+          'command' => 'do_test',
+          'state' => 'COMPLETED',
+          'num_cores' => '10',
+          'num_nodes' => '1',
+          'rules' => {
+            'rule_disbalance_cpu_la' => 'Заметный дисбаланс внутри узлов либо активность сильно отличается на разных узлах.',
+            'rule_node_disbalance' => 'Данные мониторинга сильно отличаются для разных узлов -> скорее всего, имеет место разбалансировка. Правило имеет смысл учитывать, если не сработали более конкретные правила',
           }
-          
-          @jobs_plus[1100]={
-            'cluster' => 'lomonosov-1',
-            'drms_job_id' => '1100',
-            'drms_task_id' => '1100',
-            'login' => 'tester',
-            'partition' => 'test',
-            'submit_time' => '2011-01-11 10:10:10',
-            'start_time' => '2011-01-11 10:20:10',
-            'end_time' => '2011-01-11 20:20:10',
-            'timelimit' => '24:00:00',
-            'command' => 'do_test_2',
-            'state' => 'COMPLETED',
-            'num_cores' => '100',
-            'num_nodes' => '10',
-            'rules' => {
-              'rule_mpi_issues' => 'Низкая активность использования вычислительных ресурсов при высокой интенсивности использования MPI сети.',
-              'rule_mpi_packets' => 'Размер MPI пакетов слишком маленький.',
-            }
+        }
+        
+        @jobs_plus[1100]={
+          'cluster' => 'lomonosov-1',
+          'drms_job_id' => '1100',
+          'drms_task_id' => '1100',
+          'login' => 'tester',
+          'partition' => 'test',
+          'submit_time' => '2011-01-11 10:10:10',
+          'start_time' => '2011-01-11 10:20:10',
+          'end_time' => '2011-01-11 20:20:10',
+          'timelimit' => '24:00:00',
+          'command' => 'do_test_2',
+          'state' => 'COMPLETED',
+          'num_cores' => '100',
+          'num_nodes' => '10',
+          'rules' => {
+            'rule_mpi_issues' => 'Низкая активность использования вычислительных ресурсов при высокой интенсивности использования MPI сети.',
+            'rule_mpi_packets' => 'Размер MPI пакетов слишком маленький.',
           }
-          @jobs_feedback[1000]={
+        }
+        @jobs_feedback[1000]={
 
-          }
+        }
       end
     end
 

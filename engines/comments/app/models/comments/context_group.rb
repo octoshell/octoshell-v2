@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: comments_context_groups
+#
+#  id         :integer          not null, primary key
+#  context_id :integer          not null
+#  group_id   :integer          not null
+#  type_ab    :integer          not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 module Comments
   class ContextGroup < ActiveRecord::Base
     belongs_to :context

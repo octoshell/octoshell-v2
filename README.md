@@ -100,6 +100,31 @@ You may need to notify administrators using support tickets (requests). Special 
 
 All deploys after this can be done by `git fetch; ./do_deploy`, and then on deploy server `systemctl restart octoshell`.
 
+# Fork and improve!
+
+You can help us and other users of Octoshell by writting usefull cool features etc.
+Please, note, that from 2019 we are using Conventional Commits standart for commits: each commit comment should have this form:
+
+    <type>(scope): description
+
+    Full description. If it has two or more points, each point should start with '* '.
+
+Types:
+
+|Type|Description|
+|---|---|
+|docs 	|Documantation update|
+|uix    |User interface changes|
+|feat 	|New functions and features|
+|fix 	|Bug fixes|
+|perf 	|Performance improvement|
+|refactor |Just refactoring|
+|revert |Back to old code!|
+|style 	|Code style fixes|
+|test 	|Adding and improving tests|
+
+Scope: one of engines or 'base' for main app or other files (README, deployment, etc).
+
 # README
 
 Базовое приложение для модульной версии octoshell.
@@ -169,3 +194,27 @@ All deploys after this can be done by `git fetch; ./do_deploy`, and then on depl
 
 Последующие деплои можно выполнять командой `git fetch; ./do_deploy` и последующим перезапуском сервиса на сервере `systemctl restart octoshell`.
 
+# Форкни и улучши!
+
+Вы можете помочь нам и другим пользователям улучшить Октошелл, создав новые крутые фишки и прочее, мы всегда рады новой функциональности.
+Пожалуйста, помните, что с 2019 года мы используем стандарт Conventional Commits: каждый комментарий к коммиту должен иметь вид:
+
+    <тип>(область): описание
+
+    Полное описание. Если в описании более одного пункта, каждый долен начинаться с '* '.
+
+Типы:
+
+|Type|Description|
+|---|---|
+|docs 	|Обновление документации|
+|uix    |Исправления в интерфейсе пользователя|
+|feat 	|Добавление нового функционала|
+|fix 	|Исправление ошибок|
+|perf 	|Изменения направленные на улучшение производительности|
+|refactor |	Правки кода без исправления ошибок или добавления новых функций|
+|revert |	Откат на предыдущие коммиты|
+|style 	|Правки по кодстайлу (табы, отступы, точки, запятые и т.д.)|
+|test 	|Добавление тестов|
+
+Область - один из engines или 'base' для основного приложения или других файлов (типа README, деплоя, и т.п.)

@@ -16,8 +16,10 @@ table class="table table-condenced"
   tr
     th = Core::Surety.human_attribute_name(:state)
     td
-      - state = { generated: "primary", confirmed: "warning", active: "success", closed: "danger" }[@surety.state_name.to_sym]
+      - state = { generated: "primary", confirmed: "warning", active: "success", closed: "danger", rejected: "danger" }[@surety.state_name.to_sym]
       span class="label label-#{state}" = @surety.human_state_name
+      br
+      span = @surety.reason
 
 div class="deliver-surety"
   div class="step clearfix"

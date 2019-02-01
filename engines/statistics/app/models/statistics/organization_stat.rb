@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: statistics_organization_stats
+#
+#  id         :integer          not null, primary key
+#  kind       :string(255)
+#  data       :text
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 module Statistics
   class OrganizationStat < ActiveRecord::Base
     KINDS = [ :by_kind,

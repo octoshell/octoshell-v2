@@ -1,0 +1,15 @@
+= bootstrap_nested_form_for [:admin, @item] do |f|
+  = f.collection_select :kind_id, Hardware::Kind.all, :id, :name
+  -Hardware::Item.locale_columns(:name).each do |column|
+    = f.text_field column
+  -Hardware::Item.locale_columns(:description).each do |column|
+    = f.text_field column
+  -if @item.last_items_state
+    h3 = Hardware::Item.human_attribute_name(:last_item)
+    = f.fields_for :last_items_state, @item.last_items_state do |ff|
+      -Hardware::ItemsState.locale_columns(:reason, :description).each do |column|
+        = ff.text_field column
+    = render partial: 'options/fields',locals: {f: f}
+
+  = f.form_group do
+    = f.submit t("actions.save")

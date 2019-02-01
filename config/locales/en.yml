@@ -1,4 +1,12 @@
 en:
+  bad_jobs: "Bad jobs: "
+  bad_job: "Bad job: "
+  options:
+    fields:
+      remove_option: Remove option
+      with_category: Autocompleted
+      without_category: Not autocompleted
+      new: New option
   model_translation:
     ru: 'in russian'
     en: 'in english'
@@ -12,15 +20,16 @@ en:
     tickets_warning:
       html: "Support <span class=\"badge warning\"><i class=\"fa fa-bell\"></i></span>"
     tickets: "Support"
-    sessions: "Re-registrations"
+    sessions: "Reregistrations"
     sessions_warning:
-      html: "Re-registrations <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
+      html: "Reregistrations <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
     profile: Profile
     job_stat: Statistics
     job_table: Efficiency
     comments: Comments
     packages: Packages
   admin_submenu:
+    options: Options
     emails: Emails
     comments: "Comments"
     cities: "Cities"
@@ -46,7 +55,7 @@ en:
     critical_technologies: "Critical technologies"
     organizations: "Organizations"
     organization_kinds: "Organization kinds"
-    sessions: "Re-registrations"
+    sessions: "Reregistrations"
     reports: "Reports"
     report_submit_denial_reasons: "Reasons for refusal to provide a report"
     statistics: "Statistics"
@@ -72,6 +81,10 @@ en:
       profile: "Profile"
       group: "User group"
       ability: "Ability"
+      options_category: Category of options
+      category_value: Values from category
+      option: Options
+
     attributes:
       user:
         groups: "Groups"
@@ -86,6 +99,18 @@ en:
         receive_special_mails: "Use my email for service newsletters"
       group:
         name: "Name"
+      options_category:
+        name: Category
+        values: Values
+      category_value:
+        value: Value
+      option:
+        name: Name of option
+        value: Value
+        category_value_id: Value from values list for categories
+        options_category_id: Option of category
+
+
 
   users:
     edit:
@@ -150,6 +175,8 @@ en:
       manage: Full access to Wiki pages
     packages:
       manage: Full access to Packages
+    hardware:
+      manage: Full access to Packages
     requests:
       manage: "Full access to Resource requests"
     settings:
@@ -203,6 +230,21 @@ en:
       manage: "Full access to newsletters"
 
   admin:
+    options_categories:
+      form:
+        add_value: Add value
+        remove_value: Remove value
+      new:
+        title: New category
+      index:
+        new: New category
+        title: Category for option
+      edit:
+        title: Category edition
+      table:
+        confirm: Do u want to remove this category of options?
+        no_found: No categories for  options
+
     groups:
       index:
         title: "User groups"

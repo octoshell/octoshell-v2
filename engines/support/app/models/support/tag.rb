@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: support_tags
+#
+#  id         :integer          not null, primary key
+#  name_ru    :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#  name_en    :string
+#
+
 # Тег тикета
 module Support
   class Tag < ActiveRecord::Base

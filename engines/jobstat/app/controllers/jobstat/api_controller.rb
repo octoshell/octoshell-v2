@@ -4,10 +4,6 @@ module Jobstat
       drms_job_id = params["job_id"]
       drms_task_id = params.fetch("task_id", 0)
 
-      if params["state"] == 'RUNNING'
-        return
-      end
-
       Job.where(drms_job_id: drms_job_id, drms_task_id: drms_task_id).first_or_create
           .update({cluster: params["cluster"],
                    login: params["account"],
@@ -16,11 +12,53 @@ module Jobstat
                    start_time: Time.at(params["t_start"]).utc.to_datetime,
                    end_time: Time.at(params["t_end"]).utc.to_datetime,
                    timelimit: params["timelimit"],
+                   nodelist: params["nodelist"],
                    command: params["command"],
                    state: params["state"],
                    num_cores: params["num_cores"],
                    num_nodes: params["num_nodes"],
                   })
+    end
+
+    CHECKER_PREFIX = '[                checker                ]'
+
+    def add_notice(job, user)
+      Core::Notice.where(sourceable: user, linkable: job, category: 1).destroy_all
+      note=Core::Notice.create(
+        sourceable: user,
+        message: view_context.link_to(job.drms_job_id, jobstat.job_path(job)),
+        linkable: job,
+        category: 1)
+      note.save!
+      logger.info "#{CHECKER_PREFIX}: new notice for #{job.drms_job_id}"
+    end
+
+    def remove_notice(job, user)
+      Core::Notice.where(sourceable: user, linkable: job, category: 1).destroy_all
+      logger.info CHECKER_PREFIX + ": removed notice for #{job.drms_job_id}"
+    end
+
+    def group_match(job, user)
+      job.get_rules(user).each { |r|
+        return true if r.group == 'disaster'
+      }
+      return false
+    end
+
+    def time_match(job)
+      return job.end_time > Time.new && job.state != 'COMPLETED'
+    end
+
+    def check_job(job)
+      logger.info CHECKER_PREFIX + ": checking job #{job.id}: state = #{job.state}, end_time = #{job.end_time}"
+
+      user = Core::Member.where(login: job.login).take.user
+
+      if group_match(job, user) && time_match(job)
+        add_notice(job, user)
+      else
+        remove_notice(job, user)
+      end
     end
 
     def post_tags
@@ -35,6 +73,8 @@ module Jobstat
       tags.each do |name|
         StringDatum.where(job_id: job.id, name: "tag", value: name).first_or_create()
       end
+
+      check_job(job)
     end
 
     def post_performance

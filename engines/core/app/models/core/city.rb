@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: core_cities
+#
+#  id         :integer          not null, primary key
+#  country_id :integer
+#  title_ru   :string(255)
+#  title_en   :string(255)
+#  checked    :boolean          default(FALSE)
+#
+
 module Core
   class City < ActiveRecord::Base
     include Checkable
@@ -55,7 +66,7 @@ module Core
     end
 
     def as_json(options)
-      { id: id, text: title_ru }
+      { id: id, text: "#{title}, #{country.title}" }
     end
 
     def to_json_with_titles
@@ -65,5 +76,15 @@ module Core
     def titles
       "#{title_ru}|#{title_en}"
     end
+
+    def merge_with!(city)
+      ActiveRecord::Base.transaction do
+        Organization.where(city_id: id).each do |o|
+          o.update!(city: city, country: city.country)
+        end
+        destroy!
+      end
+    end
+
   end
 end
