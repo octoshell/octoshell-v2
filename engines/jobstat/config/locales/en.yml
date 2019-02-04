@@ -1,0 +1,141 @@
+en:
+  jobstat:
+    account_list:
+      form:
+        from: 'From'
+        to: 'To'
+        statuses: "Job finish states"
+        logins: "Logins"
+        cluster: "Cluster"
+        partitions: "Supercomputer partitions"
+        show: "Show"
+        only_long: "Only jobs longer than 15 minutes"
+
+      index:
+        finished_tasks: "Information about finished jobs"
+        intro_start: >-
+          Here you can view information about your jobs and estimate their
+          execution efficiency. Use filters below to view only specified jobs.
+        thank_you: Thank you!
+        info_1: >
+          In "Found problems" column potential jobs execution problems are
+          shown. Click 
+        info_2: >-
+          icon to show short problem description, hide it or
+          send us comment about its siutability. Icon shows problem type
+          (MPI inefficient use, low memory use locality, etc.). Icon color shows
+          importance level (red - major efficiency lowerage or incorrect program
+          behavior, black - noticable efficiency lowerage, green - no problems
+          were found).
+        info_3: >-
+          Detailed description of found efficiency problems and other information
+          about job performance can be found on special page. To go to that page
+          click ID of selected job.
+        info_4: >-
+          You can find all potential efficiency problems list, tune visibility
+          of selected problems, suggest us new rule to detect new problem 
+        this_page: "here"
+        any_questions: "Any questions or notices? Send us "
+        ticket_better: ". Or better - write us "
+        here: "here."
+        i_dont_agree: "I don't agree some estimations..."
+        disagree_info: >
+          Select jobs in left column.
+          In the area below would be shown rules, common to selected jobs.
+          Select all rules, you don't agree and send us your comment.
+        no_rules: "- No selected jobs yet, so no rules in list..."
+        send_feedback: "Send comment"
+        dont_send_feedback: "I changed my mind"
+        why_dont_agree: "Please, tell us why you don't agree with this?"
+        send: "Send!"
+        not_send: "Change my mind"
+        hide_login: "Hile login/partition"
+        hide_performance: "Hide performance info"
+        no_such_tasks: "No such jobs..."
+        shown_tasks: "Show jobs: "
+        of: " from "
+        problems_found: "Found problems"
+        task_id: "job ID"
+        login_info: "login, used to run job"
+        login: "Login"
+        partition_info: "supercomputer partition used to run job"
+        partition: "Partition"
+        start_info: "time of job start"
+        start_time: "Job start"
+        end_info: "time of job finish"
+        end_time: "Job end"
+        status_info: "job finish status"
+        status: "Status"
+        nodes_info: "number of nodes"
+        nodes:  "Nodes count"
+        time_info: "job run time in hours"
+        time: "Run time (hours)"
+        task_size_info: >-
+          production of used cores number and run time<br>
+          all cores of node are supposed to be used, even if job didn't use
+          them for computations
+        task_size: "Job size (core-hours)"
+        cpu_info: "in percents of full load"
+        cpu_load: "CPU load"
+        gpu_info: "in percents of full load"
+        gpu_load: "GPU load"
+        la_info: "average count of active processes"
+        la: "Load average"
+        ipc_info: "average CPU instructions, executed per tick"
+        ipc: "IPC"
+        mpi_rcv_info: "in MB/sec"
+        mpi_rcv: "Received bytes via MPI (MB/sec)"
+        mpi_send_info: "in MB/sec"
+        mpi_send: "Sent bytes via MPI (MB/sec)"
+        rules_info: "more details about rules, hide/comment rules"
+        hide_rule_button: "Hide rule"
+        not_agree_button: "I disagree!"
+        agree_button: "I agree with estimation"
+        rule_descr: "Go to rule description"
+        rule_error: "Oops, we have trouble with this rule description, please, inform us!"
+        why_hide: "This rule will be hidden in all jobs, including future jobs. Please, tell us why you want to hide it?"
+        why_disagree: "Why don't you agree with this rule estimation?"
+        agree_rule: "Yes, I agree with this rule estimation"
+        no_notices: "All OK, no notices!"
+        no_task_info: "No job info :("
+        anomaly_task_info: "Very low all resources activity."
+        hidden_count: "Hidden rules count"
+        no_info: "No data..."
+        more_task_info: "More information\nJob name:"
+        intro_tour: "Intro tour"
+        intro-step1: >-
+          Hello! Here we show (usually) all executed jobs and 
+          <span style="color: green">potential</span> efficiency problems.
+          Now we\'ll show you an example with fake jobs, please watch how to use
+          this system!
+        intro-step2: >-
+          First, select time diapasone and logins (by default all logins will be
+          used), then click "Show" <span style="color: green">(now click
+          "Next" and wait to page update).</span>
+        intro-step3: >-
+          <span style="color: red">Please, wait to page update, do not click Next...</span>
+        intro-step4: >-
+          Here is short job information. You can sort this table, clicking columns headers.
+        intro-step5a: >-
+          If you click here, you\'ll see detailed list of all found problems with
+          buttons.
+          <br><button class="btn-danger"><i class="far fa-bell-slash">
+          </i></button> - this would hide this problem type in all jobs. You can
+          restore its visibility later on page with all rules.
+          <br><button class="btn-warning"><i class="far 
+        intro-step5b: >-
+          "></i></button> - click this is you think, this problem in not
+          relevant to this job<br>
+          <button class="btn-warning"><i class="far 
+        intro-step5c: >-
+          "></i></button> - and this, if you think that problem is relevant, we
+          need this information too.
+        intro-step6: >-
+          This is the list of all found <strong>potential</strong> problems.
+          Move the mouse over an icon and you\'ll see a short problem description,
+          click the icon and you\'ll see a page with details and recomendations.
+          <br><br>That\'s all, if you would like to repeat, press "Intro tour" button
+        hidden_count_perf: "Efficiency problems hidden: "
+        no_perf_problems: no hidden efficiency problems.
+        finish_tour: >-
+          Finish the tour? You can repeat it later by pressing \"Intro tour\"
