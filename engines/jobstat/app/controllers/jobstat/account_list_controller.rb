@@ -41,32 +41,82 @@ module Jobstat
       @agree_flags=Job.agree_flags
 
       begin
-        @fake_data=params[:fake_data].to_i
-        if @fake_data!=0
-          @jobs=Job.where(drms_job_id: 869867)
-          @total_count=1
-        else
-          @jobs = get_jobs(@params, query_logins)
-          #logger.info "JOBS: #{@jobs}"
-          @total_count = @jobs.count
-          @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
-        end
-        @shown = @jobs.length
-
         # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
         @filters=Job::get_filters(current_user).map { |x|
           x['filters']
         }.flatten.uniq.reject{|x| x==''}
         # -> [cond1,cond2,...]
 
-        @jobs.each{|j|
-          rules=j.get_rules(@current_user)
-          @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0}
-          rules.each{|r|
-            @jobs_plus[j.drms_job_id]['rules'][r.name] = r.description
-            @jobs_plus[j.drms_job_id]['filtered']+=1 if @filters.include? r.name
+        @fake_data = params[:fake_data].to_i
+        @start_intro = 0
+        note=Core::Notice.where(sourceable: current_user, category: 2, message: 'intro:jobstat').take
+        if note.nil?
+          Core::Notice.create(sourceable: current_user, category: 2, message: 'intro:jobstat').save
+          @start_intro = 1
+          @fake_data = 10
+        end
+
+        params[:fake_data]=@fake_data
+        if @fake_data!=0
+          cluster=Core::Cluster.last
+          now=DateTime.now
+          j=OpenStruct.new
+          j.id = 1
+          j.cluster = cluster.name_en
+          j.drms_job_id = '1'
+          j.drms_task_id = 0
+          j.login = 'my_login'
+          j.partition = Core::Partition.where(cluster: cluster).last
+          j.submit_time = now-1
+          j.start_time = now-1/8r
+          j.end_time = now
+          j.timelimit = 1000000
+          j.command = "world_optimizer"
+          j.state = "COMPLETED"
+          j.num_cores = 256
+          j.num_nodes = 1
+          j.nodelist = "node-0001"
+          j.get_duration_hours = 2.5
+          j.rules={'rule_anomaly' => 'It seems to be hang...'}
+          j.filtered = 0
+          j.get_performance={
+            :cpu_user => 10,
+            :gpu_load => 20,
+            :loadavg => 15,
+            :ipc => 0.1,
+            :ib_rcv_data_mpi => 123000,
+            :ib_xmit_data_mpi => 123000,
           }
-        }
+          j.get_ranking={
+            :cpu_user => 'low',
+            :gpu_load => 'low',
+            :loadavg => 'average',
+            :ipc => 'average',
+            :ib_rcv_data_mpi => 'low',
+            :ib_xmit_data_mpi => 'low',
+          }
+          @jobs=[j]
+
+          #Job.where(drms_job_id: 869867)
+          @total_count=1
+          @jobs_plus['1']=j
+          @jobs_feedback['1']={ }
+        else
+          @jobs = get_jobs(@params, query_logins)
+          #logger.info "JOBS: #{@jobs}"
+          @total_count = @jobs.count
+          @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
+
+          @jobs.each{|j|
+            rules=j.get_rules(@current_user)
+            @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0}
+            rules.each{|r|
+              @jobs_plus[j.drms_job_id]['rules'][r.name] = r.description
+              @jobs_plus[j.drms_job_id]['filtered']+=1 if @filters.include? r.name
+            }
+          }
+        end
+        @shown = @jobs.length
         @jobs=@jobs.to_a
       rescue => e
         logger.info "account_list_controller:index: #{e.message}; #{e.backtrace.join("\n")}"
@@ -74,7 +124,7 @@ module Jobstat
       end
 
       joblist=@jobs.map{|j| j.drms_job_id}
-      #logger.info "JOBLIST: #{joblist.inspect}"
+      logger.info "JOBLIST: #{joblist.inspect}"
       jobs_feedback=Job::get_feedback_job(params[:user].to_i, joblist) || {}
       #logger.info "JOBLIST got: #{jobs_feedback}"
       #[{user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string, condition=string},{...}]
@@ -106,51 +156,49 @@ module Jobstat
       # FIXME!!!!!! (see all_rules)
       @emails = JobMailFilter.filters_for_user current_user.id
 
-      @fake_data=params[:fake_data].to_i
-      if @fake_data!=0
-        @jobs_plus[1000]={
-          'cluster' => 'lomonosov-1',
-          'drms_job_id' => '1000',
-          'drms_task_id' => '1000',
-          'login' => 'tester',
-          'partition' => 'test',
-          'submit_time' => '2011-01-10 10:10:10',
-          'start_time' => '2011-01-10 10:20:10',
-          'end_time' => '2011-01-10 20:20:10',
-          'timelimit' => '24:00:00',
-          'command' => 'do_test',
-          'state' => 'COMPLETED',
-          'num_cores' => '10',
-          'num_nodes' => '1',
-          'rules' => {
-            'rule_disbalance_cpu_la' => 'Заметный дисбаланс внутри узлов либо активность сильно отличается на разных узлах.',
-            'rule_node_disbalance' => 'Данные мониторинга сильно отличаются для разных узлов -> скорее всего, имеет место разбалансировка. Правило имеет смысл учитывать, если не сработали более конкретные правила',
-          }
-        }
+      logger.info "JOBSPLUS: #{@jobs_plus.inspect}"
+      # @fake_data=params[:fake_data].to_i
+      # if @fake_data!=0
+      #   @jobs_plus['1']={
+      #     'cluster' => 'lomonosov-1',
+      #     'drms_job_id' => '1000',
+      #     'drms_task_id' => '1000',
+      #     'login' => 'tester',
+      #     'partition' => 'test',
+      #     'submit_time' => '2011-01-10 10:10:10',
+      #     'start_time' => '2011-01-10 10:20:10',
+      #     'end_time' => '2011-01-10 20:20:10',
+      #     'timelimit' => '24:00:00',
+      #     'command' => 'do_test',
+      #     'state' => 'COMPLETED',
+      #     'num_cores' => '10',
+      #     'num_nodes' => '1',
+      #     'rules' => {
+      #       'rule_disbalance_cpu_la' => 'Заметный дисбаланс внутри узлов либо активность сильно отличается на разных узлах.',
+      #       'rule_node_disbalance' => 'Данные мониторинга сильно отличаются для разных узлов -> скорее всего, имеет место разбалансировка. Правило имеет смысл учитывать, если не сработали более конкретные правила',
+      #     }
+      #   }
         
-        @jobs_plus[1100]={
-          'cluster' => 'lomonosov-1',
-          'drms_job_id' => '1100',
-          'drms_task_id' => '1100',
-          'login' => 'tester',
-          'partition' => 'test',
-          'submit_time' => '2011-01-11 10:10:10',
-          'start_time' => '2011-01-11 10:20:10',
-          'end_time' => '2011-01-11 20:20:10',
-          'timelimit' => '24:00:00',
-          'command' => 'do_test_2',
-          'state' => 'COMPLETED',
-          'num_cores' => '100',
-          'num_nodes' => '10',
-          'rules' => {
-            'rule_mpi_issues' => 'Низкая активность использования вычислительных ресурсов при высокой интенсивности использования MPI сети.',
-            'rule_mpi_packets' => 'Размер MPI пакетов слишком маленький.',
-          }
-        }
-        @jobs_feedback[1000]={
-
-        }
-      end
+      #   @jobs_plus[1100]={
+      #     'cluster' => 'lomonosov-1',
+      #     'drms_job_id' => '1100',
+      #     'drms_task_id' => '1100',
+      #     'login' => 'tester',
+      #     'partition' => 'test',
+      #     'submit_time' => '2011-01-11 10:10:10',
+      #     'start_time' => '2011-01-11 10:20:10',
+      #     'end_time' => '2011-01-11 20:20:10',
+      #     'timelimit' => '24:00:00',
+      #     'command' => 'do_test_2',
+      #     'state' => 'COMPLETED',
+      #     'num_cores' => '100',
+      #     'num_nodes' => '10',
+      #     'rules' => {
+      #       'rule_mpi_issues' => 'Низкая активность использования вычислительных ресурсов при высокой интенсивности использования MPI сети.',
+      #       'rule_mpi_packets' => 'Размер MPI пакетов слишком маленький.',
+      #     }
+      #   }
+      #end
     end
 
     def feedback
