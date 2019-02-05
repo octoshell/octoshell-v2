@@ -34,3 +34,12 @@ vendor/
 deploy/
 tests/
 
+.ruby-version
+
+*~
+*.bak
+*.old
+
+Gemfile.lock
+config/database.yml
+engines/jobstat/cache.yaml
