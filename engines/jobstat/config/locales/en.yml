@@ -1,22 +1,35 @@
 en:
   jobstat:
+    common:
+      hide_show: "Hide rule/Show it again"
+      why_hide: "Please, tell us why do you want to hide this rule?"
+      hide: "Hide rule!"
+      not_hide: "Changed my mind"
+      why_dont_agree: "Please, tell us why you don't agree with this?"
+      send: "Send!"
+      not_send: "Change my mind"
+      agree_button: "I agree with estimation"
+      agree_rule: "Yes, I agree with this rule estimation"
+      la: "Load average"
+      ipc: "IPC"
+
     account_list:
       form:
         from: 'From'
         to: 'To'
-        statuses: "Job finish states"
         logins: "Logins"
         cluster: "Cluster"
+        statuses: "Job finish states"
         partitions: "Supercomputer partitions"
         show: "Show"
         only_long: "Only jobs longer than 15 minutes"
 
       index:
         finished_tasks: "Information about finished jobs"
+        thank_you: Thank you!
         intro_start: >-
           Here you can view information about your jobs and estimate their
           execution efficiency. Use filters below to view only specified jobs.
-        thank_you: Thank you!
         info_1: >
           In "Found problems" column potential jobs execution problems are
           shown. Click 
@@ -35,8 +48,7 @@ en:
           You can find all potential efficiency problems list, tune visibility
           of selected problems, suggest us new rule to detect new problem 
         this_page: "here"
-        any_questions: "Any questions or notices? Send us "
-        ticket_better: ". Or better - write us "
+        any_questions: "Any questions or notices? Write us "
         here: "here."
         i_dont_agree: "I don't agree some estimations..."
         disagree_info: >
@@ -46,9 +58,6 @@ en:
         no_rules: "- No selected jobs yet, so no rules in list..."
         send_feedback: "Send comment"
         dont_send_feedback: "I changed my mind"
-        why_dont_agree: "Please, tell us why you don't agree with this?"
-        send: "Send!"
-        not_send: "Change my mind"
         hide_login: "Hile login/partition"
         hide_performance: "Hide performance info"
         no_such_tasks: "No such jobs..."
@@ -80,9 +89,7 @@ en:
         gpu_info: "in percents of full load"
         gpu_load: "GPU load"
         la_info: "average count of active processes"
-        la: "Load average"
         ipc_info: "average CPU instructions, executed per tick"
-        ipc: "IPC"
         mpi_rcv_info: "in MB/sec"
         mpi_rcv: "Received bytes via MPI (MB/sec)"
         mpi_send_info: "in MB/sec"
@@ -90,12 +97,10 @@ en:
         rules_info: "more details about rules, hide/comment rules"
         hide_rule_button: "Hide rule"
         not_agree_button: "I disagree!"
-        agree_button: "I agree with estimation"
         rule_descr: "Go to rule description"
         rule_error: "Oops, we have trouble with this rule description, please, inform us!"
         why_hide: "This rule will be hidden in all jobs, including future jobs. Please, tell us why you want to hide it?"
         why_disagree: "Why don't you agree with this rule estimation?"
-        agree_rule: "Yes, I agree with this rule estimation"
         no_notices: "All OK, no notices!"
         no_task_info: "No job info :("
         anomaly_task_info: "Very low all resources activity."
@@ -158,18 +163,12 @@ en:
         send: "Send!"
         not_send: "Changed my mind"
         all_rules_list: "List of all rules for jobs efficiency valuation"
-        hide_show: "Hide rule/Show it again"
-        why_hide: "Please, tell us why do you want to hide this rule?"
-        hide: "Hide rule!"
-        not_hide: "Changed my mind"
         rule_suggesttion: "Send suggestion about the rule"
         your_comments: "Write your comments as detailed as possible:"
         comment: "Send my comment!"
         not_comment: "Changed my mind"
         possible_cause: "Suggested cause:"
         recommendation: "Recommendations:"
-
-
 
     account_summary:
       show:
@@ -186,4 +185,61 @@ en:
         to: "To"
         logins: "Logins"
         show: "Show"
-        
+
+    job:
+      show:
+        return: "Return to jobs list"
+        job_info: "Information on job # %{id}"
+        common: "Common information"
+        supercomputer: "Supercomputer"
+        job_id: "Job ID"
+        login: "Login"
+        status: "Job status"
+        partition: "Partition"
+        cores: "Cores number"
+        nodes: "Nodes number"
+        queued: "Submit time"
+        start: "Start time"
+        end: "End time"
+        time: "Computate time (hours)"
+        nodes: "nodes list"
+        perf: "Performance"
+        metric: "Metric"
+        value: "Value"
+        estimation: "Short valuation"
+        cpu_avg: "Average CPU load (%)"
+        avg: "Average %{link}"
+        gpu_avg: "Average GPU load (%)"
+        mpi: "MPI data communication intensity (MB/s)"
+        fs_read: "FS read intensity (MB/s)"
+        fs_write: "FS write intensity (MB/s)"
+        base: "Base features"
+        no_strange: "No suspicious features found"
+        command_line: "Command line: %{line}"
+        potential: "Found efficiency problems"
+        descr1: >-
+          Here you can found list of efficiency problems, which were detected for
+          this job. For each problem its description (which basis was detected),
+          suggestion (what could cause this problem by our opinion) and
+          recommendations (what we are suggest to do for you) are listed.
+          In many cases recomendation includes type of analysis, suggested to be
+          performed; we will improve this function in the future.
+        descr2: >-
+          Abilities to estimate correctness and changing of detected efficiency
+          problems are planned in the future. Now this ability is implemented
+          only on all jobs list page. 
+        type: "Type"
+        description: "Description"
+        suggestion: "Suggestion"
+        recomendation: "Recommendation"
+        no_problems: "No problems found"
+        dynamics: "Program execution dynamics"
+        details: "Detailed description"
+        cpu_percent: "CPU load (0% .. 100%)"
+        mpi: "MPI usage (MB/s)"
+        gpu_percent: "GPU load (0% .. 100%)"
+        fs: "FS usage (MB/s)"
+        time: "Time"
+        value: "Value"
+        sent: "MB sent"
+        received: "MB received"

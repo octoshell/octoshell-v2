@@ -35,8 +35,8 @@ div
     |.
   p 
     = t('.any_questions')
-    a href='mailto://feedback-octoshell@parallel.ru' e-mail
-    = t('.ticket_better')
+    /a href='mailto://feedback-octoshell@parallel.ru' e-mail
+    /= t('.ticket_better')
     a href="/support/tickets/new" = t('.here')
 div
   button onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
@@ -53,13 +53,13 @@ div
       = t('.dont_send_feedback')
 
     div id="mass_notok_confirm" class="octo-popup"
-      = t('.why_dont_agree')
+      = t('jobstat.common.why_dont_agree')
       input type='text' id='disagree_reason' style="right: 0px; width: 99%"
       div class="centered"
         button class="btn-info" onClick="multi_job_feedback(); $('#mass_notok').removeClass('target'); $('#mass_agree').removeClass('target'); $('#mass_notok_confirm').removeClass('target')"
-          = t('.send')
+          = t('jobstat.common.send')
         button class="btn-info" onClick="$('#mass_notok_confirm').removeClass('target');"
-          = t('.not_send')
+          = t('jobstat.common.not_send')
     a class="octo-close-popup" onClick="$('#mass_notok_confirm').removeClass('target'); return false"
 
 
@@ -140,10 +140,10 @@ div class="perf-table"
             =t('.gpu_load')
         th class="perf-data"
           p title="#{t('.la_info')}"
-            = t('.la')
+            = t('jobstat.common.la')
         th class="perf-data"
           p title="#{t('.ipc_info')}"
-            = t('.ipc')
+            = t('jobstat.common.ipc')
         th class="perf-data"
           p title="#{t('.mpi_rcv_info')}"
             = t('.mpi_rcv')
@@ -193,7 +193,7 @@ div class="perf-table"
                       i class="#{@agree_flags[1]}"
                     | &nbsp; 
                     
-                    button class="btn-warning" onClick="popup_show('agree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="#{t('.agree_button')}" id=('fake_hide' if @fake_ok!=0) data-disable-interaction=1 data-step="7"
+                    button class="btn-warning" onClick="popup_show('agree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="#{t('jobstat.common.agree_button')}" id=('fake_hide' if @fake_ok!=0) data-disable-interaction=1 data-step="7"
                       i class="#{@agree_flags[0]}"
                     | &nbsp; 
                     
@@ -239,9 +239,9 @@ div class="perf-table"
                       form onSubmit="popup_hide('agree#{job.drms_job_id}_#{cond}'); agree('#{job.drms_job_id}','#{cond}',0,''); return false;"
                         div class="centered"
                           button class="btn-info" type="submit"
-                            = t('.agree_rule')
+                            = t('jobstat.common.agree_rule')
                           button class="btn-info" onClick="return popup_hide('agree#{job.drms_job_id}_#{cond}')"
-                            = t('.not_send')
+                            = t('jobstat.common.not_send')
                     a class="octo-close-popup2" onClick="return popup_hide('agree#{job.drms_job_id}_#{cond}')"
               - else
                 i class="em2 fas fa-fw fa-check color-green"

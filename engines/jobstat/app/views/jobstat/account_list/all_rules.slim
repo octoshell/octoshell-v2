@@ -35,18 +35,18 @@ section class="accordion"
       label for="rule-#{r[0]}"
         | &nbsp;
         - tint = @filters.any?{|x|x==r[0]} ? "tinted" : ""
-        button id="btn-hide-#{r[0]}" class="btn-danger #{tint}" onClick="all_pre_hide_rule('#{r[0]}');$('#text_hide_rule_#{r[0]}').focus();" title="#{t('.hide_show')}"
+        button id="btn-hide-#{r[0]}" class="btn-danger #{tint}" onClick="all_pre_hide_rule('#{r[0]}');$('#text_hide_rule_#{r[0]}').focus();" title="#{t('jobstat.common.hide_show')}"
           i class="fa-fw far fa-bell-slash"
         div class="octo-popup content" id="hide_rule_#{r[0]}"
           form onSubmit="all_hide_rule('#{r[0]}',false); return false;"
             div class="centered x-white"
-              = t('.why_hide')
+              = t('jobstat.common.why_hide')
             input type="text" id="text_hide_rule_#{r[0]}" class="fullwidth" style="display: block"
             div class="centered x-white"
               button class="btn-info" type="submit"
-                = t('.hide')
+                = t('jobstat.common.hide')
               button onClick="$('#hide_rule_#{r[0]}').removeClass('target'); return false;"
-                = t('.not_hide')
+                = t('jobstat.common.not_hide')
         a class="octo-close-popup" onClick="$('#hide_rule_#{r[0]}').removeClass('target'); return false"
         | &nbsp;
 
