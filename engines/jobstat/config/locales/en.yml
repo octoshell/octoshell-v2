@@ -139,3 +139,51 @@ en:
         no_perf_problems: no hidden efficiency problems.
         finish_tour: >-
           Finish the tour? You can repeat it later by pressing \"Intro tour\"
+
+
+      all_rules:
+        rules_list: "All available rules list"
+        rules_list_descr: >-
+          On this page you can find detailed descriptions of all rules, used
+          at this moment to detect possible efficiency problems. For each rule
+          you can suggest us your notices. Also you can hide rule, then it
+          wouldn't be shown for your jobs.
+        return_to_list: "Return to jobs list"
+        open_descriptions: "Open all descriptions"
+        close_descriptions: "Close all descriptions"
+        suggest_new_rule: "I want to suggest a new rule"
+        enter_suggestions: >-
+          Please, write your suggestions about new job valuation rule here.
+          Try to describe your suggestions as much detailed as possible.
+        send: "Send!"
+        not_send: "Changed my mind"
+        all_rules_list: "List of all rules for jobs efficiency valuation"
+        hide_show: "Hide rule/Show it again"
+        why_hide: "Please, tell us why do you want to hide this rule?"
+        hide: "Hide rule!"
+        not_hide: "Changed my mind"
+        rule_suggesttion: "Send suggestion about the rule"
+        your_comments: "Write your comments as detailed as possible:"
+        comment: "Send my comment!"
+        not_comment: "Changed my mind"
+        possible_cause: "Suggested cause:"
+        recommendation: "Recommendations:"
+
+
+
+    account_summary:
+      show:
+        jobs_statisctics: "Statistics on all submitted jobs"
+        total: "Total"
+        supercomputer: "Supercomputer"
+        count: "Count"
+        cpu: "CPU core*hours"
+        gpu: "GPU*hours"
+        partition: "Partition"
+        status: "Status"
+      form:
+        from: "From"
+        to: "To"
+        logins: "Logins"
+        show: "Show"
+        

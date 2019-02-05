@@ -1,12 +1,10 @@
-/== '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/css/theme.blue.min.css"></script>'
-
 div
-  h1 = "Statistics on all submitted jobs"
+  h1 = t('.jobs_statisctics')
 
   = render "form"
 
   br
-  h1 = "Всего"
+  h1 = t('.total')
 
   javascript:
     var temp1 = JSON.parse("#{@data.to_json}".replace(/&quot;/g, '"'));
@@ -318,10 +316,10 @@ div
   table class="tablesorter-blue"
     thead
       tr
-        td style="width: 50%" = "Суперкомпьютер"
-        td = "Количество"
-        td = "ЦПУ ядро * час"
-        td = "ГПУ * час"
+        td style="width: 50%" = t('.supercomputer')
+        td = t('.count')
+        td = t('.cpu')
+        td = t('.gpu')
     tbody
       - @total_cluster_data.each do |key, value|
         tr
@@ -330,7 +328,7 @@ div
           td = value[1]
           td = value[2]
       tr
-        td = "Всего"
+        td = t('.total')
         td = @total_data[0]
         td = @total_data[1]
         td = @total_data[2]
@@ -340,11 +338,11 @@ div
     table class="tablesorter-blue"
       thead
         tr
-          td style="width: 25%" = "Раздел"
-          td style="width: 25%" = "Статус"
-          td = "Количество"
-          td = "ЦПУ ядро * час"
-          td = "ГПУ * час"
+          td style="width: 25%" = t('.partition')
+          td style="width: 25%" = t('.status')
+          td = t('.count')
+          td = t('.cpu')
+          td = t('.gpu')
       tbody
         - @data[cluster].keys.each do |partition|
           - @data[cluster][partition].keys.each_with_index do |state, index|

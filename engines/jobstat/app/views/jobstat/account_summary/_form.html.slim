@@ -1,8 +1,8 @@
 div class="container"
   = bootstrap_form_tag(method: "get") do |f|
     div class="row"
-      = f.text_field("start_time", class: "datepicker", value: @params[:start_time], label: "From", wrapper: {class: 'col-md-3'})
-      = f.text_field("end_time", class: "datepicker", value: @params[:end_time], label: "To", wrapper: {class: 'col-md-3'})
-      = f.select("all_logins", options_for_select(@all_logins[0],@all_logins[1]), {label: 'Логины'}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.text_field("start_time", class: "datepicker", value: @params[:start_time], label: t('.from'), wrapper: {class: 'col-md-3'})
+      = f.text_field("end_time", class: "datepicker", value: @params[:end_time], label: t('.to'), wrapper: {class: 'col-md-3'})
+      = f.select("all_logins", options_for_select(@all_logins[0],@all_logins[1]), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
     div class="row"
-      = f.submit "Show", class: 'col-md-1'
+      = f.submit t('.show'), class: 'col-md-1'
