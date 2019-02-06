@@ -15,27 +15,33 @@ ActiveRecord::Base.transaction do
     user = User.first_or_create(email: "user#{i.next}@octoshell.ru",
                         password: "123456", password_confirmation: '123456',
                         access_state: 'active')
+    p=user.profile
+    p.first_name = "User_#{i}"
+    p.middle_name = "Jr."
+    p.last_name = "Tester"
     user.activate!
     user.save
+    user.access_state='active'
     users << user
   end
   admin = User.create!(email: "admin@octoshell.ru",
                        password: "123456", password_confirmation: '123456')
+  p=admin.profile
+  p.first_name = "Admin"
+  p.middle_name = "Jr."
+  p.last_name = "Tester"
   admin.activate!
   admin.groups << Group.superadmins
   admin.access_state='active'
   admin.save
 
 
-
-
   #
   #
   # create projects prerequisites
 
-  country = Core::Country.create!(title_en: 'Russia', title_ru: 'Россия')
-
-  city = Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country)
+  country = Core::Country.create!(title_en: 'Russia', title_ru: 'Россия', checked: true)
+  city = Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country, checked: true)
 
   Core::Cluster.create!(host: 'localhost', admin_login: 'octo', name: 'test')
   Core::Credential.create!(user: admin, name: 'example key', public_key: Core::Cluster.first.public_key)
@@ -45,13 +51,15 @@ ActiveRecord::Base.transaction do
   Core::ResearchArea.create!(name: 'Математика')
   Core::ProjectKind.create!(name: 'Исследовательский')
   Core::Organization.create!(name: 'Test MSU', city: city, country: country,
-                             kind: Core::OrganizationKind.first )
+                             kind: Core::OrganizationKind.first, checked: true )
   Core::Employment.create!(user: admin, organization: Core::Organization.first)
+  3.times do |i|
+    Core::Employment.create!(user: users[i], organization: Core::Organization.first)
+  end
   # rake = Rake.application
   # rake.init
   # rake.load_rakefile
   # rake['comments:create_wiki_page'].invoke
   # rake['comments:recreate_attachable_abilities'].invoke
-
 
 end
