@@ -48,6 +48,8 @@ function loadData(funct = null){
   disableForm();
   $.getJSON( url,params, function( data ) {
     enableForm();
+    form.getControlByPath("group_id").setValue(group_id);
+    form.getControlByPath("group_id").getControlEl().trigger('change');
     loadCheckboxData(data);
   });
 }
