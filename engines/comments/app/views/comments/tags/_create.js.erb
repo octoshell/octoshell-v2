@@ -34,7 +34,6 @@
 									"names":{
 										"title": names_title,
 	                  "enum": tags_names,
-	                  "default": ' '
 									},
 	                "name": {
 										"title": name_label,
@@ -52,7 +51,7 @@
 	      },
 	  		"options":{
 	        "focus": "",
-	        "hideInitValidationError":true,
+	        // "hideInitValidationError":true,
 	  			"fields":{
 	          "tag":{
 	            "fields":{
@@ -99,6 +98,12 @@
 	                  "submit": {
 	                      "title": "<%= t 'buttons.save'%>",
 	                      "click": function(e) {
+													// this.validate(true);
+													// this.refreshValidationState(true);
+													// if (!this.isValid(true)) {
+													// 		return;
+													// }
+
 	                        var promise = this.ajaxSubmit();
 	                        var elem = main_element.find("#messages");
 	                        elem.empty();
@@ -122,6 +127,9 @@
 	      "postRender": function(control) {
 					form = control;
 	        apply_select();
+					val = form.children[0].childrenByPropertyId['context_id']
+					.getControlEl().val();
+					form.children[0].childrenByPropertyId['context_id'].setValue(val);
 	      }
 	  });
 }
