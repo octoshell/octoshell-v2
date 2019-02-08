@@ -5,5 +5,7 @@
         li class="#{"active" if item.active?(request.fullpath)}"
           = link_to item.name, item.url
       li
-        = link_to t('comments.rake.short_name'), Wiki::Engine.routes.url_helpers.page_path(Comments.wiki_id)
+        /= link_to t('comments.rake.short_name'), Wiki::Engine.routes.url_helpers.page_path(Comments.wiki_id)
+        = display_wiki_link(:comments_guide)
+
 = render template: "layouts/application"

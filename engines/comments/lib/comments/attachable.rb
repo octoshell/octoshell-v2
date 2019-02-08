@@ -9,7 +9,7 @@ module Comments
     end
 
     def can_update?(user_id)
-      upd == 't' || self.user_id == user_id
+      upd || self.user_id == user_id
     end
 
     def attachable_name
@@ -33,8 +33,10 @@ module Comments
         arg = arg.to_a if arg.is_a?(ActiveRecord::Relation) && arg.loaded?
         if arg.is_a? ActiveRecord::Relation
           join_table = arg.table_name
-          joins("INNER JOIN #{join_table} on #{join_table}.id = #{table_name}.attachable_id").
-            merge arg
+          joins("INNER JOIN #{join_table} on
+            #{join_table}.id = #{table_name}.attachable_id
+            AND #{table_name}.attachable_type = '#{arg.klass.name}' ").
+            merge(arg)
         elsif arg.is_a? Array
           unless arg.empty? || arg.all? { |x| x.is_a? arg.first.class }
             raise ArgumentError, 'Argument must be an array of elements of the same class'

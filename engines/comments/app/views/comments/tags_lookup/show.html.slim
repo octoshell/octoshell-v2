@@ -1,6 +1,8 @@
 -if @taggings.any?
   h2
     =@tag.name
+    -if may? :manage, :comments_engine
+      = link_to "", edit_tags_lookup_path(@tag), class: "fa fa-pencil-square"
 
 = bootstrap_form_for @q, url: tags_lookup_path(@tag), method: :get, layout: :horizontal do |f|
   = f.select :attachable_type_eq, @models_list, label:  Comments::Tagging.human_attribute_name("attachable_class_name"), include_blank: true
