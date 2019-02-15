@@ -216,6 +216,22 @@ module Jobstat
       }      
     end
 
+    def get_expert_projects
+      project_ids = Sessions::Report.where(expert_id: current_user.id)
+        .where(state: 'assessing').where('created_at > ?', Date.today.strftime("%Y.01.01")).pluck(:project_id)
+      projects = Core::Project.where(id: project_ids)
+
+      result = Hash.new {|hash, key| hash[key] = []}
+      projects.each do |project|
+        project.members.each do |member|
+          result[project].push(member.login)
+        end
+      end
+
+      result
+    end
+
+
     def get_select_options_by_projects projects, selected=[]
       list=[]
       dis=[]
