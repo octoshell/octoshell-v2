@@ -93,27 +93,22 @@ module Jobstat
     def get_ranking
       performance = get_performance
       
+      low_str = 'low'
+      average_str = 'average'
+      high_str = 'high'
+
       {
-        cpu_user: get_one_rank(performance[:cpu_user], 'low', 20, 'average', 80, 'good'),
-        # get_cpu_user_ranking(performance[:cpu_user]),
-        instructions: get_one_rank(performance[:instructions], 'low', 100000000, 'average', 400000000, 'good'),
-        # get_instructions_ranking(performance[:instructions]),
-        gpu_load: get_one_rank(performance[:gpu_load], 'low', 20, 'average', 80, 'good'),
-        # get_gpu_load_ranking(performance[:gpu_load]),
+        cpu_user: get_one_rank(performance[:cpu_user], low_str, 20, average_str, 80, good_str),
+        instructions: get_one_rank(performance[:instructions], low_str, 100000000, average_str, 400000000, good_str),
+        gpu_load: get_one_rank(performance[:gpu_load], low_str, 20, average_str, 80, good_str),
         loadavg: (cluster=='lomonosov-1' ?
-          get_one_rank(performance[:loadavg], 'low', 2, 'average', 7, 'good', 15, 'low') :
-          get_one_rank(performance[:loadavg], 'low', 2, 'average', 7, 'good', 29, 'low')),
-        # get_loadavg_ranking(performance[:loadavg], cluster),
-        ipc: get_one_rank(performance[:ipc], 'low', 0.5, 'average', 1.0, 'good'),
-        # get_ipc_ranking(performance[:ipc]),
-        ib_xmit_data_fs: get_one_rank(performance[:ib_xmit_data_fs], 'low', 10, 'average', 100, 'good'),
-        # get_ib_xmit_data_fs_ranking(performance[:ib_xmit_data_fs]),
-        ib_rcv_data_fs: get_one_rank(performance[:ib_rcv_data_fs], 'low', 10, 'average', 100, 'good'),
-        # get_ib_rcv_data_fs_ranking(performance[:ib_rcv_data_fs]),
-        ib_xmit_data_mpi: get_one_rank(performance[:ib_xmit_data_mpi], 'low', 10, 'average', 100, 'good'),
-        #get_ib_xmit_data_mpi_ranking(performance[:ib_xmit_data_mpi]),
-        ib_rcv_data_mpi: get_one_rank(performance[:ib_rcv_data_mpi], 'low', 10, 'average', 100, 'good'),
-        # get_ib_rcv_data_mpi_ranking(performance[:ib_rcv_data_mpi]),
+          get_one_rank(performance[:loadavg], low_str, 2, average_str, 7, good_str, 15, low_str) :
+          get_one_rank(performance[:loadavg], low_str, 2, average_str, 7, good_str, 29, low_str)),
+        ipc: get_one_rank(performance[:ipc], low_str, 0.5, average_str, 1.0, good_str),
+        ib_xmit_data_fs: get_one_rank(performance[:ib_xmit_data_fs], low_str, 10, average_str, 100, good_str),
+        ib_rcv_data_fs: get_one_rank(performance[:ib_rcv_data_fs], low_str, 10, average_str, 100, good_str),
+        ib_xmit_data_mpi: get_one_rank(performance[:ib_xmit_data_mpi], low_str, 10, average_str, 100, good_str),
+        ib_rcv_data_mpi: get_one_rank(performance[:ib_rcv_data_mpi], low_str, 10, average_str, 100, good_str),
       }
     end
 
