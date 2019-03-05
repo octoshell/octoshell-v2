@@ -41,6 +41,10 @@ module Core
       fields.map(&:to_s).join(" | ")
     end
 
+    def log message
+      logger.info message
+    end
+
     # Требования к теребоньке.
     #
     # Выполнять все действия в по одному ssh-соединению
