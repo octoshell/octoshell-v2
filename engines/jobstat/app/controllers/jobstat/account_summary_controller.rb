@@ -15,6 +15,10 @@ module Jobstat
       @extra_js=['jobstat/application'] #, 'jobstat/intro.min']
 
       @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
+      @expert_projects=get_expert_projects
+
+      @projects = @projects.merge(@expert_projects)
+
       @all_logins=get_select_options_by_projects @projects
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins

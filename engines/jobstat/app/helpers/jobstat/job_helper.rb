@@ -8,142 +8,6 @@ module Jobstat
       end
     end
 
-    def get_cpu_user_ranking(value)
-      if value.nil?
-        ""
-      elsif value < 20
-        "low"
-      elsif value < 80
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_instructions_ranking(value)
-      if value.nil?
-        ""
-      elsif value < 100000000
-        "low"
-      elsif value < 400000000
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_loadavg_ranking(value, cluster)
-      if value.nil?
-        return ""
-      end
-
-      if cluster == "lomonosov-1"
-        if value < 2
-          "low"
-        elsif value < 7
-          "average"
-        elsif value < 15
-          "good"
-        else
-          "low"
-        end
-      elsif cluster == "lomonosov-2"
-        if value < 2
-          "low"
-        elsif value < 7
-          "average"
-        elsif value < 29
-          "good"
-        else
-          "low"
-        end
-      end
-    end
-
-    def get_ipc_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if value < 0.5
-        "low"
-      elsif value < 1.0
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_gpu_load_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if value < 20
-        "low"
-      elsif value < 80
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_ib_rcv_data_fs_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if value < 10
-        "low"
-      elsif value < 100
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_ib_xmit_data_fs_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if value < 10
-        "low"
-      elsif value < 100
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_ib_rcv_data_mpi_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if value < 10
-        "low"
-      elsif value < 100
-        "average"
-      else
-        "good"
-      end
-    end
-
-    def get_ib_xmit_data_mpi_ranking(value)
-      if value.nil?
-        return ""
-      end
-
-      if value < 10
-        "low"
-      elsif value < 100
-        "average"
-      else
-        "good"
-      end
-    end
-
     def get_one_rank(value, *arr)
       if value.nil?
         return ""
@@ -214,6 +78,21 @@ module Jobstat
       all_projects.merge!(get_involved_projects(current_user)){|key,old_val,new_val|
         old_val.concat(new_val).uniq
       }      
+    end
+
+    def get_expert_projects
+      project_ids = Sessions::Report.where(expert_id: current_user.id)
+        .where(state: 'assessing').where('created_at > ?', Date.today.strftime("%Y.01.01")).pluck(:project_id)
+      projects = Core::Project.where(id: project_ids)
+
+      result = Hash.new {|hash, key| hash[key] = []}
+      projects.each do |project|
+        project.members.each do |member|
+          result[project].push(member.login)
+        end
+      end
+
+      result
     end
 
     def get_select_options_by_projects projects, selected=[]
