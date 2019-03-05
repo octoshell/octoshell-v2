@@ -46,8 +46,8 @@ module Face
     def common_datepicker_options
     {
       include_blank: true, label_col: "col-sm-4", control_col: "col-sm-8",
-      :'data-date-start-date' => "#{DateTime.now.year}.01.01",
-      :'data-date-end-date' => '0d', class: "datepicker"
+      #:'data-date-start-date' => "#{DateTime.now.year}.01.01",
+      :'data-date-end-date' => '1d', class: "datepicker"
     }
     end
 
