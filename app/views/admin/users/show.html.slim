@@ -1,22 +1,33 @@
-h3
-  - state = { closed: "danger", active: "success" }[@user.access_state_name.to_sym]
-  span class="label label-#{state}" = @user.human_access_state_name
-
-- if may? :manage, :users
-  div class="well btn-toolbar"
+div class="well btn-toolbar"
+  - if may? :manage, :users
     = link_to t(".login_as_user"), main_app.login_as_user_path(@user), class: "btn btn-success"
     = link_to t(".edit_groups_involvement"), [:edit, :admin, @user], class: "btn btn-default"
     = link_to t(".delete_user"), [:admin, @user], method: :delete, class: "btn btn-danger"
-  div class="well btn-toolbar"
-    = link_to t(".block_user"), [:block_access, :admin, @user], method: :post, class: "btn btn-danger" unless @user.closed?
-    = link_to t(".unblock_user"), [:unblock_access, :admin, @user], method: :post, class: "btn btn-success" unless @user.active?
+    /div class="well btn-toolbar"
 
 div class="row"
-  div class="page-header"
-    h1 = @user.full_name
-    h4 = @user.email
-    h4 #{User.human_attribute_name(:credentials)}: #{@user.credentials.where(state: :active).any? ? t('.present') : t('.none')}
-    h4 #{t('.reg_date')}: #{l @user.created_at.to_date} (#{(Date.current - @user.created_at.to_date).to_i} #{t('.days_short')})
+    /div class="page-header"
+    h2
+      = @user.full_name
+      | (
+      = @user.email
+      | )  
+
+      - state = { closed: "danger", active: "success" }[@user.access_state_name.to_sym]
+      span class="label label-#{state}" = @user.human_access_state_name
+      span
+        |  
+      = link_to t(".block_user"), [:block_access, :admin, @user], method: :post, class: "btn btn-danger" unless @user.closed?
+      = link_to t(".unblock_user"), [:unblock_access, :admin, @user], method: :post, class: "btn btn-success" unless @user.active?
+
+    h4 
+      = User.human_attribute_name(:credentials)
+      | :
+      - if @user.credentials.where(state: :active).any?
+        span class="label label-success" = t('.present')
+      - else
+        span class="label label-danger" = t('.none')
+    h4 = "#{t('.reg_date')}: #{l @user.created_at.to_date} (#{(Date.current - @user.created_at.to_date).to_i} #{t('.days_short')})"
 
 h4 = User.human_attribute_name(:groups)
 ul class="list-unstyled"
