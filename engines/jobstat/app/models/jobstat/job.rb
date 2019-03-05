@@ -98,17 +98,17 @@ module Jobstat
       high_str = 'high'
 
       {
-        cpu_user: get_one_rank(performance[:cpu_user], low_str, 20, average_str, 80, good_str),
-        instructions: get_one_rank(performance[:instructions], low_str, 100000000, average_str, 400000000, good_str),
-        gpu_load: get_one_rank(performance[:gpu_load], low_str, 20, average_str, 80, good_str),
+        cpu_user: get_one_rank(performance[:cpu_user], low_str, 20, average_str, 80, high_str),
+        instructions: get_one_rank(performance[:instructions], low_str, 100000000, average_str, 400000000, high_str),
+        gpu_load: get_one_rank(performance[:gpu_load], low_str, 20, average_str, 80, high_str),
         loadavg: (cluster=='lomonosov-1' ?
-          get_one_rank(performance[:loadavg], low_str, 2, average_str, 7, good_str, 15, low_str) :
-          get_one_rank(performance[:loadavg], low_str, 2, average_str, 7, good_str, 29, low_str)),
-        ipc: get_one_rank(performance[:ipc], low_str, 0.5, average_str, 1.0, good_str),
-        ib_xmit_data_fs: get_one_rank(performance[:ib_xmit_data_fs], low_str, 10, average_str, 100, good_str),
-        ib_rcv_data_fs: get_one_rank(performance[:ib_rcv_data_fs], low_str, 10, average_str, 100, good_str),
-        ib_xmit_data_mpi: get_one_rank(performance[:ib_xmit_data_mpi], low_str, 10, average_str, 100, good_str),
-        ib_rcv_data_mpi: get_one_rank(performance[:ib_rcv_data_mpi], low_str, 10, average_str, 100, good_str),
+          get_one_rank(performance[:loadavg], low_str, 2, average_str, 7, high_str, 15, low_str) :
+          get_one_rank(performance[:loadavg], low_str, 2, average_str, 7, high_str, 29, low_str)),
+        ipc: get_one_rank(performance[:ipc], low_str, 0.5, average_str, 1.0, high_str),
+        ib_xmit_data_fs: get_one_rank(performance[:ib_xmit_data_fs], low_str, 10, average_str, 100, high_str),
+        ib_rcv_data_fs: get_one_rank(performance[:ib_rcv_data_fs], low_str, 10, average_str, 100, high_str),
+        ib_xmit_data_mpi: get_one_rank(performance[:ib_xmit_data_mpi], low_str, 10, average_str, 100, high_str),
+        ib_rcv_data_mpi: get_one_rank(performance[:ib_rcv_data_mpi], low_str, 10, average_str, 100, high_str),
       }
     end
 
