@@ -18,7 +18,7 @@ class Authentication::PasswordsController < Authentication::ApplicationControlle
     if @user = User.load_from_reset_password_token(params[:token])
       auto_login @user
     else
-      flash_message :notice? t("authentication.flash.user_is_not_registered")
+      flash_message :notice, t("authentication.flash.user_is_not_registered")
     end
 
     redirect_to main_app.root_path
