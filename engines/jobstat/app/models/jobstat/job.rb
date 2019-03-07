@@ -129,15 +129,15 @@ module Jobstat
       max_priority = {}
 
       entries.each do |condition|
-        current_priority = max_priority.fetch(condition.group, 0)
+        current_priority = max_priority.fetch(condition['group'], 0)
 
-        if condition.priority > current_priority
-          max_priority[condition.group] = condition.priority
+        if condition['priority'] > current_priority
+          max_priority[condition['group']] = condition['priority']
         end
       end
 
       entries.each do |condition|
-        if condition.priority >= max_priority[condition.group]
+        if condition['priority'] >= max_priority[condition['group']]
           result.push(condition)
         end
       end
@@ -145,19 +145,19 @@ module Jobstat
       result
     end
 
-    def get_thresholds
-      slice(Conditions.instance.thresholds, get_tags)
-    end
+    # def get_thresholds
+    #   slice(Conditions.instance.thresholds, get_tags)
+    # end
 
     def get_classes
-      priority_filtration(slice(Conditions.instance.classes, get_tags))
+      priority_filtration(slice(Job.rules['groups'], get_tags))
     end
 
     def get_rules user
       filters=Job::get_filters(user)|| []
       tags=get_tags
       tags=tags - filters
-      priority_filtration(slice(Conditions.instance.rules, tags))
+      priority_filtration(slice(Job.rules['rules'], tags))
     end
 
     # def get_cached data
@@ -265,15 +265,17 @@ module Jobstat
       }
     end
 
-    def self.load_rules
-      rules={}
-      begin
-        File.open("engines/jobstat/config/rules-plus.json", "r") { |file|
-          rules=JSON.load(file)
-        }
-      rescue
+    def self.rules force_reload=false
+      if @rules.nil? || force_reload
+        @rules={}
+        begin
+          File.open("engines/jobstat/config/rules-plus.json", "r") { |file|
+            @rules=JSON.load(file)
+          }
+        rescue
+        end
       end
-      rules
+      @rules
     end
 
     private

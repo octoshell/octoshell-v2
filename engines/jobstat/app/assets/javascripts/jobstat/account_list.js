@@ -17,23 +17,6 @@ $(document).ready(function() {
           return x;*/
       },
     },
-    // textSorter: {
-    //   '.triplesort': function(a, b, direction, column, table) {
-    //     // this is the original sort method from tablesorter 2.0.3
-    //     var item = $(table).attr('data-triple-sort')
-    //     if (typeof(item) === 'undefined') {
-    //       console.log("Warning! No data-triple-sort specified...")
-    //       item = '0'
-    //     } else {
-    //       item = parseInt(item)
-    //     }
-    //     // format data for normalization
-    //     var x = parseFloat(a.split('/')[item])
-    //     var y = parseFloat(b.split('/')[item])
-    //       //console.log("sorting-by: "+item+"a="+a+" b="+b+" x="+x+" y="+y)
-    //     return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    //   },
-    // },
   });
 
   $(".sorting").click(function() {
@@ -52,29 +35,6 @@ $(document).ready(function() {
     $t.attr('data-direction', (parseInt(dir, 10) + 1) % 2);
     return false;
   });
-
-  // function silent_submit(response) {
-  //   console.log(response)
-  // }
-
-  // function submit_and_reload(response) {
-  //   console.log(response)
-  //   location.reload()
-  // }
-
-  // $("#feedback_job_rule").submit(function() {
-  //   $.post($(this).attr('action'), $(this).serialize(), silent_submit)
-  //   return false
-  // })
-  // $("#feedback_jobs").submit(function() {
-  //   $.post($(this).attr('action'), $(this).serialize(), silent_submit)
-  //   return false
-  // })
-  // $("#feedback_rule").submit(function() {
-  //   $.post($(this).attr('action'), $(this).serialize(), submit_and_reload)
-  //   return false
-  // })
-
 });
 
 

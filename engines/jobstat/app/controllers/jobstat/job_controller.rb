@@ -59,7 +59,7 @@ module Jobstat
       cpu_user = FloatDatum.where(job_id: @job.id, name: "cpu_user").take
 
       @agree_flags=Job.agree_flags
-      @rules_plus=Job.load_rules
+      @rules_plus=Job.rules
       @filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''}
 
       if cpu_user.nil? || cpu_user.value.nil?

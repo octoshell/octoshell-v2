@@ -29,7 +29,7 @@ module Jobstat
       @all_logins[0]=['ALL']+@all_logins[0]
       #@all_logins[1][:selected]<<['ALL'] if req_logins.length==0
 
-      @rules_plus=Job.load_rules
+      @rules_plus=Job.rules
       @jobs=[]
       @jobs_plus={}
 
@@ -60,47 +60,67 @@ module Jobstat
         if @fake_data!=0
           cluster=Core::Cluster.last
           now=DateTime.now
-          j=OpenStruct.new
-          j.id = 1
-          j.cluster = cluster.name_en
-          j.drms_job_id = '1'
-          j.drms_task_id = 0
-          j.login = 'my_login'
-          j.partition = Core::Partition.where(cluster: cluster).last
-          j.submit_time = now-1
-          j.start_time = now-1/8r
-          j.end_time = now
-          j.timelimit = 1000000
-          j.command = "world_optimizer"
-          j.state = "COMPLETED"
-          j.num_cores = 256
-          j.num_nodes = 1
-          j.nodelist = "node-0001"
-          j.get_duration_hours = 2.5
-          j.rules={'rule_anomaly' => 'It seems to be hang...'}
-          j.filtered = 0
-          j.get_performance={
-            :cpu_user => 10,
-            :gpu_load => 20,
-            :loadavg => 15,
-            :ipc => 0.1,
-            :ib_rcv_data_mpi => 123000,
-            :ib_xmit_data_mpi => 123000,
-          }
-          j.get_ranking={
-            :cpu_user => 'low',
-            :gpu_load => 'low',
-            :loadavg => 'average',
-            :ipc => 'average',
-            :ib_rcv_data_mpi => 'low',
-            :ib_xmit_data_mpi => 'low',
-          }
+          j=OpenStruct.new(
+            id: 1,
+            cluster: cluster.name_en,
+            drms_job_id: '1',
+            drms_task_id: 0,
+            login: 'my_login',
+            partition: Core::Partition.where(cluster: cluster).last.name,
+            submit_time: now-1,
+            start_time: now-2/8r,
+            end_time: now,
+            timelimit: 1000000,
+            command: "world_optimizer",
+            state: "COMPLETED",
+            num_cores: 256,
+            num_nodes: 1,
+            nodelist: "node-0001",
+            get_duration_hours: 6,
+            rules:{'rule_anomaly' => 'It seems to be hang...'},
+            filtered: 0,
+            get_performance: { cpu_user: 10, gpu_load: 20,
+              loadavg: 15, ipc: 0.1, ib_rcv_data_mpi: 123000, ib_xmit_data_mpi: 123000,
+            },
+            get_ranking: {cpu_user: 'low', gpu_load: 'low', loadavg: 'average',
+              ipc: 'average', ib_rcv_data_mpi: 'low', ib_xmit_data_mpi: 'low',
+            }
+          )
           @jobs=[j]
+          @jobs << OpenStruct.new(
+            id: 2,
+            cluster: cluster.name_en,
+            drms_job_id: '2',
+            drms_task_id: 0,
+            login: 'my_login',
+            partition: Core::Partition.where(cluster: cluster).last.name,
+            submit_time: now-7/8r,
+            start_time: now-2/8r,
+            end_time: now-1/8r,
+            timelimit: 1000000,
+            command: "optimized_world_optimizer",
+            state: "COMPLETED",
+            num_cores: 12800,
+            num_nodes: 2000,
+            nodelist: "node-[0002-2001]",
+            get_duration_hours: 3,
+            rules:{'rule_disbalance_cpu_la' => 'Заметный дисбаланс внутри узлов либо активность сильно отличается на разных узлах.',
+                   'rule_cpu_gpu' => "Задача слабо использует CPU при высокой загрузке GPU."},
+            filtered: 0,
+            get_performance: { cpu_user: 1, gpu_load: 53,
+              loadavg: 1.23, ipc: 0.01112, ib_rcv_data_mpi: 12112, ib_xmit_data_mpi: 12676,
+            },
+            get_ranking: {cpu_user: 'low', gpu_load: 'average', loadavg: 'low',
+              ipc: 'low', ib_rcv_data_mpi: 'low', ib_xmit_data_mpi: 'low',
+            }
+          )
 
           #Job.where(drms_job_id: 869867)
-          @total_count=1
+          @total_count=2
           @jobs_plus['1']=j
           @jobs_feedback['1']={ }
+          @jobs_plus['2']=@jobs[1]
+          @jobs_feedback['2']={ }
         else
           @jobs = get_jobs(@params, query_logins)
           #logger.info "JOBS: #{@jobs}"
@@ -110,9 +130,10 @@ module Jobstat
           @jobs.each{|j|
             rules=j.get_rules(@current_user)
             @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0}
-            rules.each{|r|
-              @jobs_plus[j.drms_job_id]['rules'][r.name] = r.description
-              @jobs_plus[j.drms_job_id]['filtered']+=1 if @filters.include? r.name
+            rules.each{|d,r|
+              logger.info "----> #{d} / #{r.inspect}"
+              @jobs_plus[j.drms_job_id]['rules'][r['name']] = r['description']
+              @jobs_plus[j.drms_job_id]['filtered']+=1 if @filters.include? r['name']
             }
           }
         end
@@ -124,7 +145,7 @@ module Jobstat
       end
 
       joblist=@jobs.map{|j| j.drms_job_id}
-      logger.info "JOBLIST: #{joblist.inspect}"
+      #logger.info "JOBLIST: #{joblist.inspect}"
       jobs_feedback=Job::get_feedback_job(params[:user].to_i, joblist) || {}
       #logger.info "JOBLIST got: #{jobs_feedback}"
       #[{user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string, condition=string},{...}]
@@ -245,7 +266,7 @@ module Jobstat
     def all_rules
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
-      @rules_plus=Job.load_rules
+      @rules_plus=Job.rules
       @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq
       @current_user=current_user
 
