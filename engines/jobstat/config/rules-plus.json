@@ -87,7 +87,7 @@
     "rule_cpu_gpu": {
       "index": 70,
       "is_enabled": 1,
-      "description": "Задача слабо использует CPU при высокой загрузке GPU. ",
+      "description": "Задача слабо использует CPU при высокой загрузке GPU.",
       "comment": "class_gpu_pure",
       "src_file": "rules_tag_based.py",
       "group": "gpu_based",

@@ -69,7 +69,7 @@ div class="row"
         td
           =t('.nodes')
         td
-          = @job[:nodelist]
+          = @job[:nodelist].gsub(',',', ')
 
   div class="col-md-4"
     //fixme! translate
@@ -171,11 +171,12 @@ table class="table table-bordered table-striped"
   - if rules.length > 0
     - rules.each do |cond|
       - cond_name=cond.name
-      tr
+      tr style=("background-color: Orange;" if cond.group=='disaster')
         td
           // current feedback icon
-          - fb=@feedbacks.select{|x| x['condition']==cond_name}[0] || {}
-          i id="af-#{id}-#{cond}" class="#{@agree_flags[fb.fetch('klass',99)]}"
+          - fb = @feedbacks.select{|x| x['condition']==cond_name}[0] || {}
+          - flag_index = fb.fetch('klass',99)
+          i id="af-#{id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
           |&nbsp;
           // rule icon
           - icon = @rules_plus['groups'].fetch(cond.group,def_icon)

@@ -1,27 +1,12 @@
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+h1 = t('.no-data')
 
-css:
-  .job_metric_low {
-    background-color: #ff8080
-  }
-
-  .job_metric_average {
-    background-color: #ffff80
-  }
-
-  .job_metric_good {
-    background-color: #80ff80
-  }
-
-h1 = "По техническим причинам данные мониторинга для этой задачи остутсвуют - анализ не возможен"
-
-h1 = "Информация о задаче #{@job[:drms_job_id]}"
+h1 = t('.data_on_job', job: @job[:drms_job_id])
 
 = @job[:command]
 
 div class="row"
   div class="col-md-4"
-    h3 = "Общая информация"
+    h3 = t('.common_info')
     table class="table table-bordered table-striped"
       tr
         td
@@ -78,3 +63,18 @@ div class="row"
           | Duration (hours)
         td
           = number_with_precision(@job.get_duration_hours, :precision => 1)
+
+script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"
+css:
+  .job_metric_low {
+    background-color: #ff8080
+  }
+
+  .job_metric_average {
+    background-color: #ffff80
+  }
+
+  .job_metric_good {
+    background-color: #80ff80
+  }
+
