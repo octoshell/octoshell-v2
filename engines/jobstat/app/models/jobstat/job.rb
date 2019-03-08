@@ -271,6 +271,7 @@ module Jobstat
         begin
           File.open("engines/jobstat/config/rules-plus.json", "r") { |file|
             @rules=JSON.load(file)
+            @rules['rules'].keys.each{|k| @rules['rules'][k]['name']=k}
           }
         rescue
         end
