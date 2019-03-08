@@ -140,7 +140,7 @@ div class="row"
         - @job.get_classes.each do |cond|
           tr
             td
-              = cond.description
+              = cond['description']
       - else
         tr
           td
@@ -170,8 +170,8 @@ table class="table table-bordered table-striped"
   - rules=@job.get_rules(@current_user)
   - if rules.length > 0
     - rules.each do |cond|
-      - cond_name=cond.name
-      tr style=("background-color: Orange;" if cond.group=='disaster')
+      - cond_name=cond['name']
+      tr style=("background-color: #ffcccc;" if cond['group']=='disaster')
         td
           // current feedback icon
           - fb = @feedbacks.select{|x| x['condition']==cond_name}[0] || {}
@@ -179,7 +179,7 @@ table class="table table-bordered table-striped"
           i id="af-#{id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
           |&nbsp;
           // rule icon
-          - icon = @rules_plus['groups'].fetch(cond.group,def_icon)
+          - icon = @rules_plus['groups'].fetch(cond['group'],def_icon)
           i class="fa-fw align-left inline #{icon['icon']} #{icon['color']}"
 
           // "why hide?" dialog
@@ -231,11 +231,14 @@ table class="table table-bordered table-striped"
           a class="octo-close-popup2" onClick="return popup_hide('agree#{id}_#{cond_name}')"
 
         td
-          = cond.description
+          strong class="hidden_name" style="display: none;"
+            | id=
+            = cond['name']
+          = cond['description']
         td
-          = cond.suggestion
+          = cond['suggestion']
         td
-          = cond.text_recommendation
+          = cond['text_recommendation']
   - else
     tr
       td colspan="4"
@@ -287,14 +290,14 @@ javascript:
       sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
 
     var data = new google.visualization.DataTable();
-    data.addColumn('date', #{{t('.time')}} );
-    data.addColumn('number', #{{t('.value')}});
+    data.addColumn('date', "#{{t('.time')}}" );
+    data.addColumn('number', "#{{t('.value')}}");
 
     data.addRows(sensor_data);
 
     var options = {
       hAxis: {
-        title: #{{t('.time')}},
+        title: "#{{t('.time')}}",
         format: 'HH:mm',
       },
       vAxis: {
@@ -321,15 +324,15 @@ javascript:
     }
 
     var data = new google.visualization.DataTable();
-    data.addColumn('date', #{{t('.time')}});
-    data.addColumn('number', #{{t('.sent')}});
-    data.addColumn('number', #{{t('.received')}});
+    data.addColumn('date', '#{{t('.time')}}');
+    data.addColumn('number', '#{{t('.sent')}}');
+    data.addColumn('number', '#{{t('.received')}}');
 
     data.addRows(sensor_data);
 
     var options = {
       hAxis: {
-        title: #{{t('.time')}},
+        title: '#{{t('.time')}}',
         format: 'HH:mm'
       },
       vAxis: {
@@ -359,5 +362,12 @@ javascript:
   $(document).ready(function(){
     google.charts.load('current', {packages: ['corechart', 'line']});
     google.charts.setOnLoadCallback(DrawGraphs);
+
+    document.onkeyup=function(e) {
+      if (e.ctrlKey && e.which == 89){
+        $(".hidden_name").css('display','block')
+      }
+    };
+    
   });
 
