@@ -10,12 +10,14 @@ table class="table table-striped"
   tr
     th = Core::Cluster.human_attribute_name(:host)
     th = Core::Cluster.human_attribute_name(:admin_login)
+    th = Core::Cluster.human_attribute_name(:description)
     th = t(".partitions")
     th = t(".quotas_info")
     th = Core::Cluster.human_attribute_name(:available_for_work)
   tr
     td = @cluster.host
     td = @cluster.admin_login
+    td = @cluster.description
     td
       ul
         - @cluster.partitions.each do |part|

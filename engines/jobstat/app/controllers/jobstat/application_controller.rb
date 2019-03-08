@@ -41,14 +41,19 @@ module Jobstat
       }
 
       @clusters = {}
+      part_opt = []
       Core::Cluster.where(available_for_work: true).each{|c|
-        name=c.name_ru
-        if name.nil? || name==''
-          name=c.name_en
-        end
-        @clusters[name]=ClusterConfig.new(c.name, c.description)
+        #name=c.name_ru
+        #if name.nil? || name==''
+        #  name=c.name_en
+        #end
+        name=c.name
+        @clusters[name]=ClusterConfig.new(name, c.description)
         @clusters[name].states=slurm_states
+        #logger.warn "#{name}--#{c.description}: #{part_opt.inspect}"
+        #logger.warn "===> #{@clusters.inspect}"
       }
+      @partitions_options = part_opt.flatten.uniq
 
       # lom1.states = slurm_states
       # lom2.states = slurm_states
@@ -74,9 +79,9 @@ module Jobstat
       @default_cluster = Core::Cluster.last.description #"lomonosov-2"
 
       @states_options = slurm_states.keys
-      @partitions_options = Core::Cluster.where(available_for_work: true).map{|c|
-        c.partitions.map{|p| p.name}
-      }.flatten.uniq
+      #@partitions_options = Core::Cluster.where(available_for_work: true).map{|c|
+      #  c.partitions.map{|p| p.name}
+      #}.flatten.uniq
       #lom1.partitions.keys + lom2.partitions.keys
 
     end

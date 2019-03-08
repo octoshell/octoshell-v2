@@ -60,7 +60,7 @@ module Core
 
     def cluster_params
       params.require(:cluster).permit(:name, :host, :admin_login,
-                                      :available_for_work,
+                                      :available_for_work, :description,
                                       *Core::Cluster.locale_columns(:name),
                                       partitions_attributes: [:id, :_destroy,
                                                               :name, :resources],

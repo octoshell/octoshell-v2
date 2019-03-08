@@ -7,6 +7,7 @@ div class="row"
     = f.form_group do
       = f.check_box :available_for_work
     = f.text_field :admin_login
+    = f.text_field :description
     br
     p =t(".partitions")
     = f.fields_for :partitions, layout: :horizontal do |part_form|

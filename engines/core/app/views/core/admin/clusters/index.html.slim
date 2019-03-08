@@ -10,6 +10,7 @@ div class="panel panel-default"
         tr
           th = Core::Cluster.human_attribute_name("name")
           th = Core::Cluster.human_attribute_name("host")
+          th = Core::Cluster.human_attribute_name("description")
           th = Core::Cluster.human_attribute_name('partitions')
           th = t(".quotas_info")
           th
@@ -17,6 +18,7 @@ div class="panel panel-default"
           tr
             td class="col-xs-3" = link_to cluster.name, admin_cluster_path(cluster)
             td class="col-xs-3" = cluster.host
+            td class="col-xs-3" = cluster.description
             td class="col-xs-3"
               ul
                 - cluster.partitions.each do |part|
