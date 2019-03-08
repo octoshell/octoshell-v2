@@ -416,9 +416,9 @@ module Jobstat
     end
 
     def get_jobs(params, query_logins)
-      jobs = Job.where "start_time > ? AND end_time < ?",
+      jobs = Job.where "start_time > ? AND start_time < ?",
         DateTime.parse(params[:start_time]),
-        DateTime.parse(params[:end_time])
+        DateTime.parse(params[:end_time])+1
 
       jobs = jobs.where(state: @params[:states]) unless params[:states].include?("ALL")
       jobs = jobs.where(partition: @params[:partitions]) unless params[:partitions].include?("ALL")
