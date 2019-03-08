@@ -189,7 +189,8 @@ div class="perf-table"
                   div class="cond-div #{@filters.include?(cond) ? 'hidden' : 'visible'}" data-rule-div="#{cond}"
                     // current feedback icon
                     - feedback=@jobs_plus[job.drms_job_id]['feedback']
-                    i id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[feedback.fetch(cond,99)]}"
+                    - flag_index = feedback.fetch('klass',99)
+                    i id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
                     /'fa-ok agreed-flag'
                     | &nbsp;
                     
@@ -274,7 +275,6 @@ div class="perf-table"
                 - hidden_count+=1 if @filters.include?(cond)
                 a href="all_rules#go-#{cond}" class="em12 #{@filters.include?(cond) ? 'hidden' : 'visible'}"
                   i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{@rules_plus['rules'].fetch(cond,{}).fetch('description','...')}" data-rule-div="#{cond}"
-                = "*** #{rule}/#{cond}/#{@jobs_plus[job.drms_job_id]['rules']} ***"
                 |  
               - if hidden_count>0
                 - hidden = @jobs_plus[job.drms_job_id]['filtered']
