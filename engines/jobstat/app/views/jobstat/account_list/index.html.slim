@@ -40,15 +40,22 @@ div
     /= t('.ticket_better')
     a href="/support/tickets/new" = t('.here')
 div
-  div class="row"
-    button class="col-md-3 full-height" onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
+  button class="btn btn-default" onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
       = t('.i_dont_agree')
-    button class="col-md-3 full-height" onClick="window.open('all_rules','_self')"
+  |  
+  | &nbsp;&nbsp;&nbsp;
+  button class="btn btn-default" onClick="window.open('all_rules','_self')"
       = t('.rules_list')
-    button class="col-md-3 full-height" onClick="window.open('/support/tickets/new','_self')"
+  |  
+  | &nbsp;&nbsp;&nbsp;
+  button class="btn btn-default" onClick="window.open('/support/tickets/new')"
       = t('.questions')
-    button class="col-md-3 full-height" onClick="window.open('/wiki/pages/27-efficiency','_self')"
+  |  
+  | &nbsp;&nbsp;&nbsp;
+  button class="btn btn-default" onClick="window.open('/wiki/pages/2-efficiency')"
       = t('.support')
+  |  
+  | &nbsp;&nbsp;&nbsp;
   div id="mass_notok" class='roll-down col-12 gray-round-background'
     p = t('.disagree_info')
 
@@ -79,6 +86,15 @@ div class="perf-table"
     a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="1" duration
     | &nbsp;
     a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="2" core*hours
+  br
+  input type="checkbox" class="hide-login-data" id="hide-login-checkbox" checked=1
+  label for="hide-login-checkbox" = t('.hide_login')
+  |  
+  | &nbsp;
+  | &nbsp;
+  input type="checkbox" class="hide-perf-data" id="hide-perf-checkbox"
+  label for="hide-perf-checkbox" = t('.hide_performance')
+
   h3
     - if @total_count==0
       = t('.no_such_tasks')
@@ -97,11 +113,6 @@ div class="perf-table"
       td
         - if @jobs.length == 100
           a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
-
-  input type="checkbox" class="hide-login-data" id="hide-login-checkbox" checked=1
-  label for="hide-login-checkbox" = t('.hide_login')
-  input type="checkbox" class="hide-perf-data" id="hide-perf-checkbox"
-  label for="hide-perf-checkbox" = t('.hide_performance')
 
   table id="jobs" class="table table-bordered tablesorter-default"
     thead

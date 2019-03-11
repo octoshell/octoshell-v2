@@ -137,9 +137,9 @@ module Core
     end
 
     def setup_default_filter
-      params[:q] ||= { state_in: ['confirmed'],
+      params[:q] ||= { state_in: [], #['confirmed'],
                        project_id_eq: '',
-                       scans_id_not_null: '1' }
+                       scans_id_not_null: '0' }
     end
   end
 end
