@@ -115,7 +115,7 @@ input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:
   background-color: #ffff80  !important;
 }
 
-.job_metric_good {
+.job_metric_high {
   background-color: #80ff80  !important;
 }
 
