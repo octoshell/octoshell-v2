@@ -164,7 +164,7 @@ module Jobstat
     end
 
     def get_rules user
-      filters=Job::get_filters(user)|| []
+      filters=Job::get_filters(user)|| [] # TODO:FILTERS
       tags=get_tags
       tags=tags - filters # remove rules wich are filtered out
       tags=tags - get_not_public_rules() # remove rules wich are not public
@@ -202,7 +202,7 @@ module Jobstat
     end
 
     def self.get_filters user
-
+      return [] # TODO:FILTERS
       # user=get_user login
       # user_id=nil
       # if user
