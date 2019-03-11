@@ -150,14 +150,25 @@ module Jobstat
     # end
 
     def get_classes
-      priority_filtration(slice(Job.rules['groups'], get_tags))
+      priority_filtration(slice(Job.rules['classes'], get_tags))
+    end
+
+    def get_not_public_rules()
+      result = []
+      Job.rules['rules'].each do |rule, data|
+        if data['public'] == 0
+          result.push(data['name'])
+        end
+      end
+      result
     end
 
     def get_rules user
       filters=Job::get_filters(user)|| []
       tags=get_tags
-      tags=tags - filters
-      priority_filtration(slice(Job.rules['rules'], tags))
+      tags=tags - filters # remove rules wich are filtered out
+      tags=tags - get_not_public_rules() # remove rules wich are not public
+      priority_filtration(slice(Job.rules['rules'], tags)) # sort by groups priority
     end
 
     # def get_cached data

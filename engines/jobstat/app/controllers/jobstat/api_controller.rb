@@ -40,7 +40,7 @@ module Jobstat
 
     def group_match(job, user)
       job.get_rules(user).each { |r|
-        return true if r.group == 'disaster'
+        return true if r['group'] == 'disaster'
       }
       return false
     end
