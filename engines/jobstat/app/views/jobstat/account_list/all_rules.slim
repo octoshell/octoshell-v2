@@ -27,7 +27,7 @@ a class="octo-close-popup" onClick="$('#suggest_new_rule').removeClass('target')
 
 section class="accordion"
   h4 =t('.all_rules_list')
-  - @rules_plus['rules'].sort{|a,b| a[1]['index'] <=> b[1]['index']}.each do |r|
+  - @rules_plus['rules'].select{|r,v| v['public']==1}.sort{|a,b| a[1]['index'] <=> b[1]['index']}.each do |r|
     - rule=r[1]
     - icon = group_plus.fetch(rule['group'],def_icon)
     div id="go-#{r[0]}"
