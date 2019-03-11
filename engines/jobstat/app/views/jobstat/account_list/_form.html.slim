@@ -3,7 +3,7 @@ div class="container" id="intro-step2" data-disable-interaction="1"
     div class="row"
       = f.text_field("start_time", class: "datepicker", value: @params[:start_time], label: t('.from'), wrapper: {class: 'col-md-3'})
       = f.text_field("end_time", class: "datepicker", value: @params[:end_time], label: t('.to'), wrapper: {class: 'col-md-3'})
-      = f.select("cluster", options_for_select(@clusters.map{|name,c| [name, c.id]}), {label: t('.cluster')}, {wrapper: {class: 'col-md-3'}})
+      = f.select("cluster", options_for_select(@clusters.map{|name,c| [name, c.id]}.reverse), {label: t('.cluster')}, {wrapper: {class: 'col-md-3'}})
       /,@params[:cluster]
     div class="row"
       = f.select("all_logins", options_for_select(@all_logins[0],@all_logins[1]), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
