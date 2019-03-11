@@ -98,11 +98,11 @@ input:checked ~ *.hh{
 
 
 
-input.hide-login-data:checked ~ .table>tbody>tr>.login-data, input.hide-login-data:checked ~ .table>thead>tr>.login-data{
+input.hide-login-data:checked ~ .table>tbody>tr>td.login-data, input.hide-login-data:checked ~ .table>thead>tr>th.login-data{
   display: none;
 }
 
-input.hide-perf-data:checked ~ .table>tbody>tr>.perf-data, input.hide-perf-data:checked ~ .table>thead>tr>.perf-data{
+input.hide-perf-data:checked ~ .table>tbody>tr>td.perf-data, input.hide-perf-data:checked ~ .table>thead>tr>th.perf-data{
   display: none;
 }
 

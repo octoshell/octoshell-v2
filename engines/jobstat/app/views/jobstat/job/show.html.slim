@@ -98,14 +98,6 @@ div class="row"
           = @ranking[:loadavg]
       tr
         td
-          == t('.avg', link: link_to("IPC", "https://en.wikipedia.org/wiki/Instructions_per_cycle"))
-
-        td
-          = format_float_or_nil(@job_perf[:ipc])
-        td class="job_metric_#{@ranking[:ipc]}"
-          = @ranking[:ipc]
-      tr
-        td
           =t('.gpu_avg')
         td
           = format_float_or_nil(@job_perf[:gpu_load])
@@ -165,7 +157,7 @@ table class="table table-bordered table-striped"
     th
       =t('.suggestion')
     th
-      =t('.recommendation')
+      =t('.recomendation')
 
   - rules=@job.get_rules(@current_user)
   - if rules.length > 0
@@ -275,9 +267,7 @@ div class="row"
     h4 = t('.gpu_percent')
     div id="g_gpu"
   div class="col-md-4" style="height: 250px"
-    h4
-      == link_to t('jobstat.common.ipc'), "https://en.wikipedia.org/wiki/Instructions_per_cycle"
-    div id="g_ipc"
+    p
   div class="col-md-4" style="height: 250px"
     h4 = t('.fs')
     div id="g_ib_fs"
@@ -361,7 +351,6 @@ javascript:
      DrawSingleGraph("g_cpu",  #{{ raw @cpu_digest_data.to_json }} , 100);
      DrawSingleGraph("g_gpu",  #{{ raw @gpu_digest_data.to_json }} , 100);
      DrawSingleGraph("g_loadavg",  #{{ raw @loadavg_digest_data.to_json }} );
-     DrawSingleGraph("g_ipc",  #{{ raw @ipc_digest_data.to_json }} );
      DrawSendRecvGraph("g_ib_mpi",  #{{ raw @mpi_digest_data.to_json }} );
      DrawSendRecvGraph("g_ib_fs",  #{{ raw @fs_digest_data.to_json }} );
 

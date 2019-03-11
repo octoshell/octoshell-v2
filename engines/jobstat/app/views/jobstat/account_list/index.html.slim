@@ -79,14 +79,6 @@ div class="perf-table"
     a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="1" duration
     | &nbsp;
     a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="2" core*hours
-  div class="row"
-    span class="col-md-5"
-      input type="checkbox" class="hide-login-data" id="hide-login-checkbox" checked=1
-      label for="hide-login-checkbox" = t('.hide_login')
-    span class="col-md-5"
-      input type="checkbox" class="hide-perf-data" id="hide-perf-checkbox"
-      label for="hide-perf-checkbox" = t('.hide_performance')
-
   h3
     - if @total_count==0
       = t('.no_such_tasks')
@@ -105,6 +97,11 @@ div class="perf-table"
       td
         - if @jobs.length == 100
           a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
+
+  input type="checkbox" class="hide-login-data" id="hide-login-checkbox" checked=1
+  label for="hide-login-checkbox" = t('.hide_login')
+  input type="checkbox" class="hide-perf-data" id="hide-perf-checkbox"
+  label for="hide-perf-checkbox" = t('.hide_performance')
 
   table id="jobs" class="table table-bordered tablesorter-default"
     thead
@@ -151,9 +148,6 @@ div class="perf-table"
         th class="perf-data"
           p title="#{t('.la_info')}"
             = t('jobstat.common.la')
-        th class="perf-data"
-          p title="#{t('.ipc_info')}"
-            = t('jobstat.common.ipc')
         th class="perf-data"
           p title="#{t('.mpi_rcv_info')}"
             = t('.mpi_rcv')
@@ -322,9 +316,6 @@ div class="perf-table"
 
         td class="perf-data job_metric_#{job_ranking[:loadavg]}"
           = number_with_precision(job_performance[:loadavg], :precision => 1)
-
-        td class="perf-data job_metric_#{job_ranking[:ipc]}"
-          = number_with_precision(job_performance[:ipc] && job_performance[:ipc], :precision => 2)
 
         td class="perf-data job_metric_#{job_ranking[:ib_rcv_data_mpi]}"
           = number_with_precision(job_performance[:ib_rcv_data_mpi], :precision => 1)
