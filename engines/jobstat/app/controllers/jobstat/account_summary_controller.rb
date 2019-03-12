@@ -59,14 +59,14 @@ module Jobstat
         entry = [0,0,0]
 
         begin
-          cluster = Core::Cluster.where(name_en: job.cluster).last
+          cluster = Core::Cluster.where(description: job.cluster).last
           next if cluster.nil?
           partition = Core::Partition.where(cluster: cluster, name: job.partition).last
           next if partition.nil?
           part="#{cluster}//#{partition}"
           res=@cluster_part_by_name[part] || [0,0]
 
-          cluster_data = @data.fetch(job.cluster, {})
+          cluster_data = @data.fetch(cluster, {})
           partition_data = cluster_data.fetch(job.partition, {})
 
           entry = [job.count,
@@ -79,11 +79,11 @@ module Jobstat
 
         partition_data[job.state] = entry
         cluster_data[job.partition] = partition_data
-        @data[job.cluster] = cluster_data
+        @data[cluster] = cluster_data
 
-        val = @total_cluster_data.fetch(cluster.id, [0, 0, 0])
+        val = @total_cluster_data.fetch(cluster, [0, 0, 0])
 
-        @total_cluster_data[job.cluster] = [val, entry].transpose.map {|x| x.reduce(:+)}
+        @total_cluster_data[cluster] = [val, entry].transpose.map {|x| x.reduce(:+)}
         @total_data = [@total_data, entry].transpose.map {|x| x.reduce(:+)}
       end
       logger.info("statistic data")
