@@ -8,6 +8,10 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_jobstat_data_types_on_name  (name)
+#
 
 module Jobstat
   class DataType < ActiveRecord::Base

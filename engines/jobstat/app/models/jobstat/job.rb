@@ -4,21 +4,30 @@
 #
 #  id           :integer          not null, primary key
 #  cluster      :string(32)
-#  drms_job_id  :integer
-#  drms_task_id :integer
-#  login        :string(32)
-#  partition    :string(32)
-#  submit_time  :datetime
-#  start_time   :datetime
-#  end_time     :datetime
-#  timelimit    :integer
 #  command      :string(1024)
-#  state        :string(32)
+#  end_time     :datetime
+#  login        :string(32)
+#  nodelist     :text
 #  num_cores    :integer
 #  num_nodes    :integer
+#  partition    :string(32)
+#  start_time   :datetime
+#  state        :string(32)
+#  submit_time  :datetime
+#  timelimit    :integer
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  nodelist     :text
+#  drms_job_id  :integer
+#  drms_task_id :integer
+#
+# Indexes
+#
+#  index_jobstat_jobs_on_end_time     (end_time)
+#  index_jobstat_jobs_on_login        (login)
+#  index_jobstat_jobs_on_partition    (partition)
+#  index_jobstat_jobs_on_start_time   (start_time)
+#  index_jobstat_jobs_on_state        (state)
+#  index_jobstat_jobs_on_submit_time  (submit_time)
 #
 
 require 'yaml/store'

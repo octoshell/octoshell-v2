@@ -1,29 +1,34 @@
 # encoding: utf-8
-
 # == Schema Information
 #
 # Table name: sessions_reports
 #
 #  id                        :integer          not null, primary key
-#  session_id                :integer
-#  project_id                :integer
-#  author_id                 :integer
-#  expert_id                 :integer
-#  state                     :string(255)
+#  illustration_points       :integer
 #  materials                 :string(255)
-#  materials_file_name       :string(255)
 #  materials_content_type    :string(255)
+#  materials_file_name       :string(255)
 #  materials_file_size       :integer
 #  materials_updated_at      :datetime
-#  illustration_points       :integer
-#  summary_points            :integer
+#  state                     :string(255)
 #  statement_points          :integer
+#  submit_denial_description :text
+#  summary_points            :integer
 #  created_at                :datetime
 #  updated_at                :datetime
+#  author_id                 :integer
+#  expert_id                 :integer
+#  project_id                :integer
+#  session_id                :integer
 #  submit_denial_reason_id   :integer
-#  submit_denial_description :text
 #
-
+# Indexes
+#
+#  index_sessions_reports_on_author_id   (author_id)
+#  index_sessions_reports_on_expert_id   (expert_id)
+#  index_sessions_reports_on_project_id  (project_id)
+#  index_sessions_reports_on_session_id  (session_id)
+#
 
 # Отчет о проделанной работе по проекту.
 module Sessions

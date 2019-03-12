@@ -1,17 +1,20 @@
 # encoding: utf-8
-
 # == Schema Information
 #
 # Table name: core_employment_positions
 #
 #  id                          :integer          not null, primary key
-#  employment_id               :integer
 #  name                        :string(255)
 #  value                       :string(255)
 #  created_at                  :datetime
 #  updated_at                  :datetime
+#  employment_id               :integer
 #  employment_position_name_id :integer
 #  field_id                    :integer
+#
+# Indexes
+#
+#  index_core_employment_positions_on_employment_id  (employment_id)
 #
 
 #

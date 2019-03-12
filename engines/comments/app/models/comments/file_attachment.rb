@@ -3,14 +3,20 @@
 # Table name: comments_file_attachments
 #
 #  id              :integer          not null, primary key
-#  file            :string
-#  description     :text
-#  attachable_id   :integer          not null
 #  attachable_type :string           not null
-#  user_id         :integer          not null
-#  context_id      :integer
+#  description     :text
+#  file            :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  attachable_id   :integer          not null
+#  context_id      :integer
+#  user_id         :integer          not null
+#
+# Indexes
+#
+#  attach_index                                   (attachable_id,attachable_type)
+#  index_comments_file_attachments_on_context_id  (context_id)
+#  index_comments_file_attachments_on_user_id     (user_id)
 #
 
 module Comments

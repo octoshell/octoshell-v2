@@ -3,9 +3,13 @@
 # Table name: core_cluster_quotas
 #
 #  id            :integer          not null, primary key
-#  cluster_id    :integer          not null
 #  value         :integer
+#  cluster_id    :integer          not null
 #  quota_kind_id :integer
+#
+# Indexes
+#
+#  index_core_cluster_quotas_on_cluster_id  (cluster_id)
 #
 
 module Core

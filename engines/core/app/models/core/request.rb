@@ -3,19 +3,26 @@
 # Table name: core_requests
 #
 #  id            :integer          not null, primary key
-#  project_id    :integer          not null
-#  cluster_id    :integer          not null
+#  comment       :text
+#  cpu_hours     :integer
+#  gpu_hours     :integer
+#  group_name    :string(255)
+#  hdd_size      :integer
+#  reason        :text
 #  state         :string(255)
 #  created_at    :datetime
 #  updated_at    :datetime
-#  cpu_hours     :integer
-#  gpu_hours     :integer
-#  hdd_size      :integer
-#  group_name    :string(255)
-#  creator_id    :integer
-#  comment       :text
-#  reason        :text
 #  changed_by_id :integer
+#  cluster_id    :integer          not null
+#  creator_id    :integer
+#  project_id    :integer          not null
+#
+# Indexes
+#
+#  index_core_requests_on_changed_by_id  (changed_by_id)
+#  index_core_requests_on_cluster_id     (cluster_id)
+#  index_core_requests_on_creator_id     (creator_id)
+#  index_core_requests_on_project_id     (project_id)
 #
 
 module Core

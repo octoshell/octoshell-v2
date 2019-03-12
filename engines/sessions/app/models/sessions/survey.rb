@@ -1,15 +1,19 @@
 # encoding: utf-8
-
 # == Schema Information
 #
 # Table name: sessions_surveys
 #
 #  id                      :integer          not null, primary key
-#  session_id              :integer
-#  kind_id                 :integer
+#  name_en                 :string
 #  name_ru                 :string(255)
 #  only_for_project_owners :boolean
-#  name_en                 :string
+#  kind_id                 :integer
+#  session_id              :integer
+#
+# Indexes
+#
+#  index_sessions_surveys_on_kind_id     (kind_id)
+#  index_sessions_surveys_on_session_id  (session_id)
 #
 
 #

@@ -4,11 +4,15 @@
 #
 #  id         :integer          not null, primary key
 #  action     :string(255)
-#  subject    :string(255)
-#  group_id   :integer
 #  available  :boolean          default(FALSE)
+#  subject    :string(255)
 #  created_at :datetime
 #  updated_at :datetime
+#  group_id   :integer
+#
+# Indexes
+#
+#  index_abilities_on_group_id  (group_id)
 #
 
 # Модель доступа к действию для группы пользователей

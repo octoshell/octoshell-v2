@@ -3,8 +3,12 @@
 # Table name: core_surety_scans
 #
 #  id        :integer          not null, primary key
-#  surety_id :integer
 #  image     :string(255)
+#  surety_id :integer
+#
+# Indexes
+#
+#  index_core_surety_scans_on_surety_id  (surety_id)
 #
 
 module Core

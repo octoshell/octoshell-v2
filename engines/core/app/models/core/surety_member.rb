@@ -3,10 +3,16 @@
 # Table name: core_surety_members
 #
 #  id                         :integer          not null, primary key
-#  user_id                    :integer
-#  surety_id                  :integer
-#  organization_id            :integer
 #  organization_department_id :integer
+#  organization_id            :integer
+#  surety_id                  :integer
+#  user_id                    :integer
+#
+# Indexes
+#
+#  index_core_surety_members_on_organization_id  (organization_id)
+#  index_core_surety_members_on_surety_id        (surety_id)
+#  index_core_surety_members_on_user_id          (user_id)
 #
 
 module Core

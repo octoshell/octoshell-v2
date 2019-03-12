@@ -3,12 +3,18 @@
 # Table name: core_accesses
 #
 #  id                 :integer          not null, primary key
-#  project_id         :integer          not null
-#  cluster_id         :integer          not null
+#  project_group_name :string(255)
 #  state              :string(255)
 #  created_at         :datetime
 #  updated_at         :datetime
-#  project_group_name :string(255)
+#  cluster_id         :integer          not null
+#  project_id         :integer          not null
+#
+# Indexes
+#
+#  index_core_accesses_on_cluster_id                 (cluster_id)
+#  index_core_accesses_on_project_id                 (project_id)
+#  index_core_accesses_on_project_id_and_cluster_id  (project_id,cluster_id) UNIQUE
 #
 
 module Core

@@ -4,11 +4,15 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string
-#  job_id     :integer
-#  value      :float
 #  time       :datetime
+#  value      :float
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  job_id     :integer
+#
+# Indexes
+#
+#  index_jobstat_digest_float_data_on_job_id  (job_id)
 #
 
 module Jobstat

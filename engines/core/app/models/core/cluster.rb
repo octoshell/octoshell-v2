@@ -3,16 +3,21 @@
 # Table name: core_clusters
 #
 #  id                 :integer          not null, primary key
-#  name_ru            :string(255)      not null
-#  host               :string(255)      not null
-#  description        :text
-#  public_key         :text
-#  private_key        :text
 #  admin_login        :string(255)
+#  available_for_work :boolean          default(TRUE)
+#  description        :text
+#  host               :string(255)      not null
+#  name_en            :string
+#  name_ru            :string(255)      not null
+#  private_key        :text
+#  public_key         :text
 #  created_at         :datetime
 #  updated_at         :datetime
-#  available_for_work :boolean          default(TRUE)
-#  name_en            :string
+#
+# Indexes
+#
+#  index_core_clusters_on_private_key  (private_key) UNIQUE
+#  index_core_clusters_on_public_key   (public_key) UNIQUE
 #
 
 module Core

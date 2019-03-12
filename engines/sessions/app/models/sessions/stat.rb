@@ -1,18 +1,22 @@
 # encoding: utf-8
-
 # == Schema Information
 #
 # Table name: sessions_stats
 #
 #  id              :integer          not null, primary key
-#  session_id      :integer
-#  survey_field_id :integer
+#  cache           :text
 #  group_by        :string(255)      default("count")
 #  weight          :integer          default(0)
 #  organization_id :integer
-#  cache           :text
+#  session_id      :integer
+#  survey_field_id :integer
 #
-
+# Indexes
+#
+#  index_sessions_stats_on_session_id                      (session_id)
+#  index_sessions_stats_on_session_id_and_organization_id  (session_id,organization_id)
+#  index_sessions_stats_on_session_id_and_survey_field_id  (session_id,survey_field_id)
+#
 
 # Статистика по перерегистрации
 require "csv"

@@ -3,13 +3,17 @@
 # Table name: comments_group_classes
 #
 #  id         :integer          not null, primary key
-#  class_name :string
-#  obj_id     :integer
-#  group_id   :integer
 #  allow      :boolean          not null
+#  class_name :string
 #  type_ab    :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  group_id   :integer
+#  obj_id     :integer
+#
+# Indexes
+#
+#  index_comments_group_classes_on_group_id  (group_id)
 #
 
 module Comments

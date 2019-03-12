@@ -3,11 +3,16 @@
 # Table name: comments_context_groups
 #
 #  id         :integer          not null, primary key
-#  context_id :integer          not null
-#  group_id   :integer          not null
 #  type_ab    :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  context_id :integer          not null
+#  group_id   :integer          not null
+#
+# Indexes
+#
+#  index_comments_context_groups_on_context_id  (context_id)
+#  index_comments_context_groups_on_group_id    (group_id)
 #
 
 module Comments

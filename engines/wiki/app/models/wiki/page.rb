@@ -3,13 +3,17 @@
 # Table name: wiki_pages
 #
 #  id         :integer          not null, primary key
-#  name_ru    :string(255)
+#  content_en :text
 #  content_ru :text
+#  name_en    :string
+#  name_ru    :string(255)
 #  url        :string(255)
 #  created_at :datetime
 #  updated_at :datetime
-#  name_en    :string
-#  content_en :text
+#
+# Indexes
+#
+#  index_wiki_pages_on_url  (url) UNIQUE
 #
 
 module Wiki

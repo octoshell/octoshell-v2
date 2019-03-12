@@ -3,12 +3,16 @@
 # Table name: core_project_invitations
 #
 #  id         :integer          not null, primary key
-#  project_id :integer          not null
-#  user_fio   :string(255)      not null
+#  language   :string           default("ru")
 #  user_email :string(255)      not null
+#  user_fio   :string(255)      not null
 #  created_at :datetime
 #  updated_at :datetime
-#  language   :string           default("ru")
+#  project_id :integer          not null
+#
+# Indexes
+#
+#  index_core_project_invitations_on_project_id  (project_id)
 #
 
 module Core

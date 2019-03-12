@@ -3,15 +3,19 @@
 # Table name: pack_version_options
 #
 #  id                  :integer          not null, primary key
-#  version_id          :integer
+#  name_en             :string
 #  name_ru             :string
+#  value_en            :string
 #  value_ru            :text
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  name_en             :string
-#  value_en            :string
 #  category_value_id   :integer
 #  options_category_id :integer
+#  version_id          :integer
+#
+# Indexes
+#
+#  index_pack_version_options_on_version_id  (version_id)
 #
 
 module Pack

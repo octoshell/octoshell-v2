@@ -3,12 +3,17 @@
 # Table name: pack_clustervers
 #
 #  id              :integer          not null, primary key
-#  core_cluster_id :integer
-#  version_id      :integer
-#  created_at      :datetime
-#  updated_at      :datetime
 #  active          :boolean
 #  path            :string
+#  created_at      :datetime
+#  updated_at      :datetime
+#  core_cluster_id :integer
+#  version_id      :integer
+#
+# Indexes
+#
+#  index_pack_clustervers_on_core_cluster_id  (core_cluster_id)
+#  index_pack_clustervers_on_version_id       (version_id)
 #
 
 module Pack

@@ -3,20 +3,24 @@
 # Table name: sessions_survey_fields
 #
 #  id                :integer          not null, primary key
-#  survey_id         :integer
-#  kind              :string(255)
 #  collection        :text
-#  max_values        :integer          default(1)
-#  weight            :integer          default(0)
-#  name_ru           :text
-#  required          :boolean          default(FALSE)
 #  entity            :string(255)
-#  strict_collection :boolean          default(FALSE)
+#  hint_en           :string
 #  hint_ru           :string(255)
+#  kind              :string(255)
+#  max_values        :integer          default(1)
+#  name_en           :string
+#  name_ru           :text
 #  reference_type    :string(255)
 #  regexp            :string(255)
-#  hint_en           :string
-#  name_en           :string
+#  required          :boolean          default(FALSE)
+#  strict_collection :boolean          default(FALSE)
+#  weight            :integer          default(0)
+#  survey_id         :integer
+#
+# Indexes
+#
+#  index_sessions_survey_fields_on_survey_id  (survey_id)
 #
 
 # Поле опроса

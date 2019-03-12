@@ -3,11 +3,15 @@
 # Table name: support_field_values
 #
 #  id         :integer          not null, primary key
-#  field_id   :integer
-#  ticket_id  :integer
 #  value      :text
 #  created_at :datetime
 #  updated_at :datetime
+#  field_id   :integer
+#  ticket_id  :integer
+#
+# Indexes
+#
+#  index_support_field_values_on_ticket_id  (ticket_id)
 #
 
 module Support

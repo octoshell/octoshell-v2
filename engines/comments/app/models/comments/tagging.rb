@@ -3,13 +3,20 @@
 # Table name: comments_taggings
 #
 #  id              :integer          not null, primary key
-#  tag_id          :integer
-#  attachable_id   :integer          not null
 #  attachable_type :string           not null
-#  user_id         :integer
-#  context_id      :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  attachable_id   :integer          not null
+#  context_id      :integer
+#  tag_id          :integer
+#  user_id         :integer
+#
+# Indexes
+#
+#  att_contex_index                                              (tag_id,attachable_id,attachable_type,context_id) UNIQUE
+#  index_comments_taggings_on_attachable_type_and_attachable_id  (attachable_type,attachable_id)
+#  index_comments_taggings_on_context_id                         (context_id)
+#  index_comments_taggings_on_user_id                            (user_id)
 #
 
 module Comments

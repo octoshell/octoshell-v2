@@ -3,13 +3,19 @@
 # Table name: comments_comments
 #
 #  id              :integer          not null, primary key
-#  text            :text
-#  attachable_id   :integer          not null
 #  attachable_type :string           not null
-#  user_id         :integer          not null
-#  context_id      :integer
+#  text            :text
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  attachable_id   :integer          not null
+#  context_id      :integer
+#  user_id         :integer          not null
+#
+# Indexes
+#
+#  index_comments_comments_on_attachable_type_and_attachable_id  (attachable_type,attachable_id)
+#  index_comments_comments_on_context_id                         (context_id)
+#  index_comments_comments_on_user_id                            (user_id)
 #
 
 module Comments

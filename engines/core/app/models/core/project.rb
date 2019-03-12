@@ -3,16 +3,23 @@
 # Table name: core_projects
 #
 #  id                         :integer          not null, primary key
-#  title                      :string(255)      not null
+#  estimated_finish_date      :datetime
+#  finished_at                :datetime
+#  first_activation_at        :datetime
 #  state                      :string(255)
+#  title                      :string(255)      not null
 #  created_at                 :datetime
 #  updated_at                 :datetime
-#  organization_id            :integer
-#  organization_department_id :integer
 #  kind_id                    :integer
-#  first_activation_at        :datetime
-#  finished_at                :datetime
-#  estimated_finish_date      :datetime
+#  organization_department_id :integer
+#  organization_id            :integer
+#
+# Indexes
+#
+#  index_core_projects_on_kind_id                     (kind_id)
+#  index_core_projects_on_organization_department_id  (organization_department_id)
+#  index_core_projects_on_organization_id             (organization_id)
+#  index_core_projects_on_state                       (state)
 #
 
 module Core

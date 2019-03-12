@@ -1,19 +1,24 @@
 # encoding: utf-8
-
 # == Schema Information
 #
 # Table name: sessions_user_surveys
 #
 #  id         :integer          not null, primary key
-#  user_id    :integer
-#  session_id :integer
-#  survey_id  :integer
-#  project_id :integer
 #  state      :string(255)
 #  created_at :datetime
 #  updated_at :datetime
+#  project_id :integer
+#  session_id :integer
+#  survey_id  :integer
+#  user_id    :integer
 #
-
+# Indexes
+#
+#  index_sessions_user_surveys_on_project_id                (project_id)
+#  index_sessions_user_surveys_on_session_id                (session_id)
+#  index_sessions_user_surveys_on_session_id_and_survey_id  (session_id,survey_id)
+#  index_sessions_user_surveys_on_user_id                   (user_id)
+#
 
 # Опрос, который заполняет пользователь
 module Sessions

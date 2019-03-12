@@ -3,21 +3,25 @@
 # Table name: pack_versions
 #
 #  id               :integer          not null, primary key
-#  name_ru          :string
+#  cost             :integer
+#  delete_on_expire :boolean          default(FALSE), not null
+#  deleted          :boolean          default(FALSE), not null
+#  description_en   :text
 #  description_ru   :text
-#  package_id       :integer
+#  end_lic          :date
+#  lock_col         :integer          default(0), not null
+#  name_en          :string
+#  name_ru          :string
+#  service          :boolean          default(FALSE), not null
+#  state            :string
 #  created_at       :datetime
 #  updated_at       :datetime
-#  cost             :integer
-#  end_lic          :date
-#  state            :string
-#  lock_col         :integer          default(0), not null
-#  deleted          :boolean          default(FALSE), not null
-#  service          :boolean          default(FALSE), not null
-#  delete_on_expire :boolean          default(FALSE), not null
+#  package_id       :integer
 #  ticket_id        :integer
-#  description_en   :text
-#  name_en          :string
+#
+# Indexes
+#
+#  index_pack_versions_on_package_id  (package_id)
 #
 
 module Pack

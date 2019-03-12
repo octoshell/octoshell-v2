@@ -3,11 +3,15 @@
 # Table name: pack_category_values
 #
 #  id                  :integer          not null, primary key
-#  options_category_id :integer
-#  value_ru            :string
 #  value_en            :string
+#  value_ru            :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  options_category_id :integer
+#
+# Indexes
+#
+#  index_pack_category_values_on_options_category_id  (options_category_id)
 #
 
 module Pack
