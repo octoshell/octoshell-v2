@@ -114,11 +114,6 @@ div class="perf-table"
         - if @jobs.length == 100
           a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
 
-  input type="checkbox" class="hide-login-data" id="hide-login-checkbox" checked=1
-  label for="hide-login-checkbox" = t('.hide_login')
-  input type="checkbox" class="hide-perf-data" id="hide-perf-checkbox"
-  label for="hide-perf-checkbox" = t('.hide_performance')
-
   table id="jobs" class="table table-bordered tablesorter-default"
     thead
       tr id="table-header"
