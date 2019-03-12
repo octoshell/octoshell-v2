@@ -46,13 +46,13 @@ module Jobstat
       @total_cluster_data = {}
       @total_data = [0, 0, 0]
 
-      @cluster_by_name = Hash.new Core::Cluster.all.map { |c| [c.name_en, c] }
+      @cluster_by_name = Hash.new Core::Cluster.all.map { |c| [c.description, c] }
       seed=Core::Partition.preload(:cluster).all.map { |p|
         p.resources =~ /cores:(\d+)/
         cores = $1.to_i
         p.resources =~ /gpus:(\d+)/
         gpus = $1.to_i
-        ["#{p.cluster.name}//#{p.name}", [cores,gpus]]
+        ["#{p.cluster.description}//#{p.name}", [cores,gpus]]
       }
       @cluster_part_by_name = Hash[seed]
       @jobs.each do |job|
@@ -63,7 +63,7 @@ module Jobstat
           next if cluster.nil?
           partition = Core::Partition.where(cluster: cluster, name: job.partition).last
           next if partition.nil?
-          part="#{cluster}//#{partition}"
+          part="#{cluster.description}//#{partition.name}"
           res=@cluster_part_by_name[part] || [0,0]
 
           cluster_data = @data.fetch(cluster, {})
@@ -86,9 +86,6 @@ module Jobstat
         @total_cluster_data[cluster] = [val, entry].transpose.map {|x| x.reduce(:+)}
         @total_data = [@total_data, entry].transpose.map {|x| x.reduce(:+)}
       end
-      logger.info("statistic data")
-      logger.info(@data)
-      logger.info(@total_cluster_data)
     end
   end
 end
