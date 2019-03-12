@@ -40,6 +40,5 @@ tests/
 *.bak
 *.old
 
-Gemfile.lock
 config/database.yml
 engines/jobstat/cache.yaml
