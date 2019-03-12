@@ -60,7 +60,8 @@ module Jobstat
 
       @agree_flags=Job.agree_flags
       @rules_plus=Job.rules
-      @filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''}
+      #@filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''} # TODO:FILTERS
+      @filters=[]
 
       if cpu_user.nil? || cpu_user.value.nil?
         render :show_no_data
