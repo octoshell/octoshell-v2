@@ -34,7 +34,10 @@ Octoshell::Application.configure do
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
   config.middleware.insert(0, Rack::Sendfile, config.action_dispatch.x_sendfile_header)
 
+  config.logger = Logger.new(config.paths['log'].first, 'weekly', 5.megabytes)
+  config.logger.level = Logger::DEBUG
   config.log_tags = [:remote_ip, lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
+  config.colorize_logging = false
 
   # Raise an error on page load if there are pending migrations
   config.active_record.migration_error = :page_load
