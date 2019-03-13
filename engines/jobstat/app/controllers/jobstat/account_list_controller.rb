@@ -4,7 +4,7 @@ module Jobstat
   class AccountListController < ApplicationController
     include JobHelper
 
-    FEEDBACK_HOST = "http://graphit.parallel.ru:8123"
+    #FEEDBACK_HOST = Rails.application.config.octo_feedback_host
 
     def index
       #@owned_logins = get_owned_logins
@@ -248,7 +248,7 @@ module Jobstat
     def feedback_multi_jobs parm
       #"0"=>{"user"=>"1234", "cluster"=>"lomonosov-2", "job_id"=>"615023",
       #      "task_id"=>"0", "class"=>"0", "feedback"=>"ooops"},
-      uri=URI(FEEDBACK_HOST + "/api/feedback-job")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-job")
       #user=UID_octoshell(int), class=int(0=ok,1=not_ok), cluster=string, job_id=int, task_id=int, condition=string, feedback=string.
       if !parm.kind_of?(Enumerable)
         logger.info("Ooooops! feedback_all_jobs got bad argument: #{parm}") 
@@ -277,7 +277,7 @@ module Jobstat
 
     def feedback_proposal parm
       #http://graphit.parallel.ru:8123/api/feedback-proposal?user=1&cluster=lomonosov-2&job_id=585183&task_id=0&feedback=something-something
-      uri=URI(FEEDBACK_HOST + "/api/feedback-proposal")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-proposal")
 
       req={
         user: parm[:user].to_i,
@@ -323,7 +323,7 @@ module Jobstat
       if cond.to_s == ''
         return 500, 'bad condition (empty)'
       end
-      uri=URI(FEEDBACK_HOST + "/api/filters")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/filters")
 
       filters=Job::get_filters(current_user)
         .map { |x| x['filters'] }
@@ -358,7 +358,7 @@ module Jobstat
       #FIXME! move address to config
       #  user=UID_octoshell(int), cluster=string(список через запятую), account=string(список через запятую), condition=string, feedback=string.
 
-      uri=URI(FEEDBACK_HOST + "/api/feedback-job")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-job")
       req={
         user: parm[:user].to_i,
         cluster: parm[:cluster] || 'all',
@@ -386,7 +386,7 @@ module Jobstat
     def feedback_rule_only parm
       #TODO make caching for not confirmed sends
 
-      uri=URI(FEEDBACK_HOST + "/api/feedback-condition")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-condition")
       req={
         user: parm[:user].to_i,
         :class => parm[:class] || 0,
