@@ -87,7 +87,7 @@ module Core
         @project = current_user.owned_projects.find(params[:id])
         @project.invite_member(params.fetch(:member)[:id])
         @project.save
-      rescue ActiveRecord::RecordNotUnique 
+      rescue ActiveRecord::RecordNotUnique
         flash_message :alert, t('flash.duplicated_invite')
       end
 
@@ -145,7 +145,7 @@ module Core
 
     def resend_invitations
       @project = current_user.owned_projects.find(params[:id])
-      @project.invitations.all.map(&:send_email_to_user)
+      @project.invitations.all.each(&:send_email_to_user_with_save)
       redirect_to @project
     end
 
