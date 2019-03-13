@@ -179,7 +179,7 @@ module Jobstat
       # FIXME!!!!!! (see all_rules)
       @emails = JobMailFilter.filters_for_user current_user.id
 
-      logger.info "JOBSPLUS: #{@jobs_plus.inspect}"
+      #logger.info "JOBSPLUS: #{@jobs_plus.inspect}"
       # @fake_data=params[:fake_data].to_i
       # if @fake_data!=0
       #   @jobs_plus['1']={
