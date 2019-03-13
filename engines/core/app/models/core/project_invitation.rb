@@ -19,11 +19,15 @@ module Core
   class ProjectInvitation < ActiveRecord::Base
     belongs_to :project
 
-    after_create :send_email_to_user
+    after_commit :send_email_to_user, on: :create
+
+    def send_email_to_user_with_save
+      send_email_to_user
+      touch
+    end
 
     def send_email_to_user
       Core::MailerWorker.perform_async(:invitation_to_octoshell, [id, language])
-      touch
     end
 
   end
