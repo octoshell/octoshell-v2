@@ -39,6 +39,7 @@ module Jobstat
       partitions=@params[:partitions].reject{|x| x==''}
       @params[:states]='ALL' if states.length==0
       @params[:partitions]='ALL' if partitions.length==0
+      @partitions_options=['ALL']+Core::Partition.all.map{|x| x.name}
 
       @agree_flags=Job.agree_flags
 
