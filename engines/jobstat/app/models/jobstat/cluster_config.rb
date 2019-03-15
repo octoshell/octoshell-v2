@@ -1,3 +1,5 @@
+#TODO: refactor (may be delete it?)
+#
 module Jobstat
   class ClusterConfig
     attr_accessor :name, :id, :partitions, :states
