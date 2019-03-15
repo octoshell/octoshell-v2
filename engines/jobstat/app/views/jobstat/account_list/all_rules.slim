@@ -6,11 +6,11 @@ p = t('.rules_list_descr')
 div
   a href="index" = t('.return_to_list')
 
-button onClick="$('.rule-checkbox').prop('checked', true);"
+button class="btn btn-default" onClick="$('.rule-checkbox').prop('checked', true);"
   = t('.open_descriptions')
-button onClick="$('.rule-checkbox').prop('checked', false);"
+button class="btn btn-default" onClick="$('.rule-checkbox').prop('checked', false);"
   = t('.close_descriptions')
-button onClick="$('#suggest_new_rule').addClass('target');$('#suggest_new_rule_text').focus()"
+button class="btn btn-default" onClick="$('#suggest_new_rule').addClass('target');$('#suggest_new_rule_text').focus()"
   = t('.suggest_new_rule')
   // "why hide?" dialog
 div class="octo-popup content" id="suggest_new_rule"
