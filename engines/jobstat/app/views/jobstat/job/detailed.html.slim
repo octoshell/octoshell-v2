@@ -1,4 +1,5 @@
 - require 'base64'
+- require 'json'
 
 h1 = @detailed_info[:type_text]
 - man_list = @detailed_info['manual'].split("\n")
@@ -11,7 +12,9 @@ p
 p
   |
     Для того чтобы выполнить данный тип анализа, необходимо выполнить следующие шаги:
-  - guid = Base64.encode64("#{@job_id}*#{@analysis_id}")
+  - guid_array = [@analysis_id, @job.cluster, @job.drms_job_id, @job.drms_task_id]
+  /- guid = Base64.encode64("#{@job_id}*#{@analysis_id}")
+  - guid = guid_array.to_json
   - man_list.each do |step|
       br
       = step
