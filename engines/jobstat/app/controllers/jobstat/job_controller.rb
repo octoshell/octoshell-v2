@@ -72,5 +72,21 @@ module Jobstat
       job = Job.where(drms_job_id: params["drms_job_id"], cluster: params["cluster"]).take
       redirect_to :action => 'show', :id => job.id
     end
+
+
+
+    def detailed
+      #render plain: Job.rules['detailed'][:id].inspect
+      @detailed_info = Job.rules['detailed'][params[:analysis_id]]
+      @analysis_id = params[:analysis_id]
+      @job_id = params[:job_id]
+      if @detailed_info.nil?
+          render :detailed_no_data
+      end
+    end
+
+    def detailed_no_data
+      
+    end
   end
 end

@@ -246,6 +246,18 @@ table class="table table-bordered table-striped"
 
 br
 
+//// Part about detailed analysis
+- type_list = @rules_plus['detailed']
+p
+  |
+    Доступны следующие типы детального анализа:
+  - type_list.each do |step|
+      br
+      a href= "detailed?analysis_id=#{step[0]}&job_id=#{id}" #{step[1]['type_text']} (#{step[1]['soft_text']})
+
+//// end of part about detailed analysis
+
+
 h3 = t('.dynamics')
 
 p = link_to(t('.details'), "https://graphit.parallel.ru:5001/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36))

@@ -8,6 +8,8 @@ Jobstat::Engine.routes.draw do
   # post 'account/list/feedback_rule' => "account_list#feedback_rule"
   get 'account/summary/show' => "account_summary#show"
 
+  get 'job/detailed' => "job#detailed"
+
   resources :job
 
   get 'job/:cluster/:drms_job_id' => "job#show_direct"
