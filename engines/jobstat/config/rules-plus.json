@@ -1171,5 +1171,191 @@
       "text_recommendation":"Рекомендуется сменить раздел.",
       "module_recommendation":"---"
     }
-  }
+  },
+  "detailed":{
+    "dynamics_jd": {
+        "index": 1,
+        "type_text": "Анализ динамики выполнения приложения",
+        "type_name": "dynamics",
+        "soft_text": "JobDigest",
+        "soft_name": "jd",
+        "manual": "1. JobDigest\n2. ???\n3. Profit!"
+    },
+    "monitoring_dimmon": {
+        "index": 2,
+        "type_text": "Более детальный мониторинг",
+        "type_name": "monitoring",
+        "soft_text": "DimMon",
+        "soft_name": "dimmon",
+        "manual": "1. DimMon\n2. ???\n3. Profit!"
+    },
+    "profiling_mpip": {
+        "index": 3,
+        "type_text": "Анализ MPI-программ -> Профилировка",
+        "type_name": "profiling",
+        "soft_text": "mpiP",
+        "soft_name": "mpip",
+        "manual": "1. Скомпилировать программу, указав ключ для сбора дебаг информации (обычно -g).\n2. Слинковать программу, добавив в конце *-L/opt/software/mpip/lib -lmpiP -lm /lib64/libbfd-2.23.52.0.1-30.el7.so*\n3. Запустить в обычном режиме.\n4. Выполнить команду: *./upload <filename> <guid>*"
+    },
+    "profiling_scalasca": {
+        "index": 4,
+        "type_text": "Анализ MPI-программ -> Профилировка",
+        "type_name": "profiling",
+        "soft_text": "Scalasca",
+        "soft_name": "scalasca",
+        "manual": "1. Scalasca\n2. ???\n3. Profit!"
+    },
+    "tracing_vampir": {
+        "index": 5,
+        "type_text": "Анализ MPI-программ -> Трассировка",
+        "type_name": "tracing",
+        "soft_text": "Vampir",
+        "soft_name": "vampir",
+        "manual": "1. Vampir\n2. ???\n3. Profit!"
+    },
+    "tracing_scalasca": {
+        "index": 6,
+        "type_text": "Анализ MPI-программ -> Трассировка",
+        "type_name": "tracing",
+        "soft_text": "Scalasca",
+        "soft_name": "scalasca",
+        "manual": "1. Scalasca\n2. ???\n3. Profit!"
+    },
+    "tracing_itac": {
+        "index": 7,
+        "type_text": "Анализ MPI-программ -> Трассировка",
+        "type_name": "tracing",
+        "soft_text": "ITAC",
+        "soft_name": "itac",
+        "manual": "1. ITAC\n2. ???\n3. Profit!"
+    },
+    "thread_ompp": {
+        "index": 8,
+        "type_text": "Анализ многопоточной программы",
+        "type_name": "thread",
+        "soft_text": "ompP",
+        "soft_name": "ompp",
+        "manual": "1. ompP\n2. ???\n3. Profit!"
+    },
+    "thread_vtune": {
+        "index": 9,
+        "type_text": "Анализ многопоточной программы",
+        "type_name": "thread",
+        "soft_text": "VTune",
+        "soft_name": "vtune",
+        "manual": "1. Vtune\n2. ???\n3. Profit!"
+    },
+    "mem.eff_valgrind": {
+        "index": 10,
+        "type_text": "Анализ работы с памятью -> Эффективность",
+        "type_name": "mem.eff",
+        "soft_text": "Valgrind",
+        "soft_name": "valgrind",
+        "manual": "1. Valgrind\n2. ???\n3. Profit!"
+    },
+    "mem.eff_vtune": {
+        "index": 11,
+        "type_text": "Анализ работы с памятью -> Эффективность",
+        "type_name": "mem.eff",
+        "soft_text": "VTune",
+        "soft_name": "vtune",
+        "manual": "1. Vtune\n2. ???\n3. Profit!"
+    },
+    "mem.corr_valgrind": {
+        "index": 12,
+        "type_text": "Анализ работы с памятью -> Корректность",
+        "type_name": "mem.corr",
+        "soft_text": "Valgrind",
+        "soft_name": "valgrind",
+        "manual": "1. Valgrind\n2. ???\n3. Profit!"
+    },
+    "mem.corr_inspector": {
+        "index": 13,
+        "type_text": "Анализ работы с памятью -> Корректность",
+        "type_name": "mem.corr",
+        "soft_text": "Intel Inspector",
+        "soft_name": "inspector",
+        "manual": "1. Inspector\n2. ???\n3. Profit!"
+    },
+    "serial_vtune": {
+        "index": 14,
+        "type_text": "Общий анализ последовательных программ",
+        "type_name": "serial",
+        "soft_text": "VTune",
+        "soft_name": "vtune",
+        "manual": "1. Vtune\n2. ???\n3. Profit!"
+    },
+    "io_vtune": {
+        "index": 15,
+        "type_text": "Анализ ввода/вывода",
+        "type_name": "io",
+        "soft_text": "VTune",
+        "soft_name": "vtune",
+        "manual": "1. Vtune\n2. ???\n3. Profit!"
+    },
+    "network_jd": {
+        "index": 16,
+        "type_text": "Анализ сетевой активности",
+        "type_name": "network",
+        "soft_text": "JobDigest",
+        "soft_name": "jd",
+        "manual": "1. JobDigest\n2. ???\n3. Profit!"
+    },
+    "low.level_papi": {
+        "index": 17,
+        "type_text": "Низкоуровневый анализ",
+        "type_name": "low.level",
+        "soft_text": "PAPI",
+        "soft_name": "papi",
+        "manual": "1. PAPI\n2. ???\n3. Profit!"
+    },
+    "low.level_vtune": {
+        "index": 18,
+        "type_text": "Низкоуровневый анализ",
+        "type_name": "low.level",
+        "soft_text": "VTune",
+        "soft_name": "vtune",
+        "manual": "1. Vtune\n2. ???\n3. Profit!"
+    },
+    "accelerator_nsight": {
+        "index": 19,
+        "type_text": "Анализ работы с ускорителями",
+        "type_name": "accelerator",
+        "soft_text": "NVidia NSight Systems",
+        "soft_name": "nsight",
+        "manual": "1. NSIGHT\n2. ???\n3. Profit!"
+    },
+    "scalability_???": {
+        "index": 20,
+        "type_text": "Анализ масштабируемости",
+        "type_name": "scalability",
+        "soft_text": "???",
+        "soft_name": "???",
+        "manual": "1. ???\n2. ???\n3. Profit!"
+    },
+    "series_???": {
+        "index": 21,
+        "type_text": "Анализ серии запусков",
+        "type_name": "series",
+        "soft_text": "???",
+        "soft_name": "???",
+        "manual": "1. ???\n2. ???\n3. Profit!"
+    },
+    "prediction_valgrind": {
+        "index": 22,
+        "type_text": "Прогноз поведения программы",
+        "type_name": "prediction",
+        "soft_text": "Valgrind",
+        "soft_name": "valgrind",
+        "manual": "1. Valgrind\n2. ???\n3. Profit!"
+    },
+    "prediction_threadspotter": {
+        "index": 23,
+        "type_text": "Прогноз поведения программы",
+        "type_name": "prediction",
+        "soft_text": "Threadspotter",
+        "soft_name": "threadspotter",
+        "manual": "1. Threadspotter\n2. ???\n3. Profit!"
+    }
+ }
 }

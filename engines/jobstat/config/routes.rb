@@ -9,6 +9,8 @@ Jobstat::Engine.routes.draw do
   get 'account/summary/show' => "account_summary#show"
   get 'account/summary/download' => "account_summary#download"
 
+  get 'job/detailed' => "job#detailed"
+
   resources :job
 
   get 'job/:cluster/:drms_job_id' => "job#show_direct"

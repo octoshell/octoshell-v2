@@ -1,0 +1,23 @@
+- require 'base64'
+
+h1 = @detailed_info[:type_text]
+- man_list = @detailed_info['manual'].split("\n")
+
+p
+  <b>Тип анализа:</b> #{@detailed_info['type_text']}
+  br
+  <b>Используемый инструмент анализа:</b> #{@detailed_info['type_text']}
+
+p
+  |
+    Для того чтобы выполнить данный тип анализа, необходимо выполнить следующие шаги:
+  - guid = Base64.encode64("#{@job_id}*#{@analysis_id}")
+  - man_list.each do |step|
+      br
+      = step
+p
+  = "В конце необходимо выполнить команду: ./upload #{guid} <enter_output_filename> <enter_job_id>"
+
+= form_tag url: "analyze?id=#{@analysis_id}", method: "get" do
+  = submit_tag("Analyze") 
+
