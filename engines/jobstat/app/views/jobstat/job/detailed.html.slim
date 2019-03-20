@@ -13,13 +13,18 @@ p
   |
     Для того чтобы выполнить данный тип анализа, необходимо выполнить следующие шаги:
   - guid_array = [@analysis_id, @job.cluster, @job.drms_job_id, @job.drms_task_id]
-  /- guid = Base64.encode64("#{@job_id}*#{@analysis_id}")
   - guid = guid_array.to_json
+  /- guid = Base64.encode64(guid)
   - man_list.each do |step|
       br
       = step
-p
-  = "В конце необходимо выполнить команду: ./upload #{guid} <enter_output_filename> <enter_job_id>"
+
+p = "В конце необходимо выполнить на кластере команду, указав имя выходного файла анализатора и ID задачи:"
+code
+  = "/opt/analysis/upload -i '#{guid}' -f "
+  b = "<ENTER_OUTPUT_FILENAME>"
+  = " -j "
+  b = "<ENTER_JOB_ID>"
 
 = form_tag url: "analyze?id=#{@analysis_id}", method: "get" do
   = submit_tag("Analyze") 
