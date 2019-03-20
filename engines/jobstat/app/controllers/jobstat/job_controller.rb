@@ -76,10 +76,9 @@ module Jobstat
 
 
     def detailed
-      #render plain: Job.rules['detailed'][:id].inspect
       @detailed_info = Job.rules['detailed'][params[:analysis_id]]
       @analysis_id = params[:analysis_id]
-      @job_id = params[:job_id]
+      @job = Job.find(params[:id])
       if @detailed_info.nil?
           render :detailed_no_data
       end
