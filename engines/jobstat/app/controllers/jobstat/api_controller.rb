@@ -79,6 +79,30 @@ module Jobstat
       check_job(job)
     end
 
+    def post_detailed
+      cluster = @json["cluster"]
+      drms_job_id = @json["job_id"]
+      drms_task_id = @json.fetch("task_id", 0)
+
+      origin_cluster = @json["origin_cluster"]
+      origin_drms_job_id = @json["origin_job_id"]
+      origin_drms_task_id = @json.fetch("origin_task_id", 0)
+
+      tags = @json["tags"]
+      job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+      origin_job = Job.where(cluster: origin_cluster, drms_job_id: origin_drms_job_id, drms_task_id: origin_drms_task_id).first()
+
+      job.initiatees << origin_job
+      origin_job.initiator = job
+
+      return if tags.nil?
+      tags.each do |name|
+        StringDatum.where(job_id: job.id, name: "tag", value: name).first_or_create()
+      end
+
+      check_job(job)
+    end
+
     def post_performance
       cluster = @json["cluster"]
       drms_job_id = @json["job_id"]
