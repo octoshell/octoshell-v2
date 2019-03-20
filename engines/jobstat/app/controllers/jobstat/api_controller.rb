@@ -54,7 +54,7 @@ module Jobstat
 
     def check_job(job)
       logger.info CHECKER_PREFIX + ": checking job #{job.id}: state = #{job.state}, end_time = #{job.end_time}"
-
+      logger.info "EVERYTHING ABOUT JOB: #{job.inspect}"
       user = Core::Member.where(login: job.login).take.user
 
       if group_match(job, user) && time_match(job)

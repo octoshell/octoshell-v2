@@ -38,6 +38,8 @@ require 'yaml/store'
 module Jobstat
   class Job < ApplicationRecord
     include JobHelper
+    has_many :initiatees, class_name: "Job", foreign_key: "initiator_id"
+    belongs_to :initiator, class_name: "Job"
 
     def get_duration_hours
       (end_time - start_time) / 3600
