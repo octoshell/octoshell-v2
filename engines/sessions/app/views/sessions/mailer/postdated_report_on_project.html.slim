@@ -2,7 +2,7 @@
 
 h5 #{t('.msg_postdated', id: @report.id, pid: @report.project.id, title: @report.project.title, session: @report.session.description)}
 
-p #{t('.msg_progect_blocked')}
+p #{t('.msg_project_blocked')}
 p #{t('.if_decline_submitting1')} «#{t('.decline_submitting')}», #{t('.if_decline_submitting2')}
 p = link_to t('.complete_report'), sessions.report_url(@report)
 

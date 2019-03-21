@@ -27,7 +27,7 @@ module Sessions
 
     def update
       @report = get_report(params[:id])
-      if @report.update(report_params[:report])
+      if @report.update(report_params)
         @report.save
         redirect_to reports_path
       else
@@ -44,7 +44,7 @@ module Sessions
 
     def replies
       @report = get_report(params[:report_id])
-      @reply = @report.replies.build(report_params[:report_reply]) do |reply|
+      @reply = @report.replies.build(reply_params) do |reply|
         reply.user = current_user
       end
       @reply.save
@@ -53,25 +53,22 @@ module Sessions
 
     def submit
       @report = get_report(params[:report_id])
-      if report_params[:report].present? && report_params[:report][:materials].present?
-        @report.update(report_params[:report])
-        @report.submit! unless @report.submitted?
-        @report.save
-        redirect_to @report
-      else
+      if params[:report].nil? || report_params[:report_material].empty?
         redirect_to @report, alert: t("flash.you_must_provide_report_materials")
+        return
       end
-    end
-
-    def resubmit
-      @report = get_report(params[:report_id])
-      if report_params[:report].present? && report_params[:report][:materials].present?
-        @report.update(report_params[:report])
-        @report.resubmit if @report.rejected?
-        @report.save
+      if @report.update(report_params)
+        if @report.rejected?
+          @report.resubmit!
+        else
+          @report.submit if @report.may_submit?
+        end
         redirect_to @report
       else
-        redirect_to @report, alert: t("flash.you_must_provide_report_materials")
+        @reply = @report.replies.build do |reply|
+          reply.user = current_user
+        end
+        render :show
       end
     end
 
@@ -79,7 +76,7 @@ module Sessions
 
     def default_index_params
       if s = Session.current
-        params[:session_id_eq] = s.id
+        params[:session_id_in] = s.id
       end
       params
     end
@@ -88,11 +85,15 @@ module Sessions
       current_user.reports.find(id)
     end
 
+    def reply_params
+      params.require(:report_reply).permit(:message)
+    end
+
+
     def report_params
-      params.permit(report: [ :submit_denial_reason_id,
+      params.require(:report).permit( :submit_denial_reason_id,
                               :submit_denial_description,
-                              :materials ],
-                    report_reply: [ :message ])
+                              :materials, report_material: %i[ materials id])
     end
   end
 end

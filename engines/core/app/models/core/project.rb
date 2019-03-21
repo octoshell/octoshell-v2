@@ -161,8 +161,11 @@ module Core
       event :activate do
         transitions :from => :pending, :to => :active
         after do
-          update(first_activation_at: Time.current)
           synchronize!
+        end
+
+        before do
+          self.first_activation_at = Time.current
         end
 
       end

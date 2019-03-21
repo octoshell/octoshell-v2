@@ -138,6 +138,7 @@ en:
   errors:
     format: "! '%{attribute} %{message}'"
     messages:
+      extension_whitelist_error: You have downloaded file of unsuitable format
       invalid_transition: 'It is impossible to "%{event}". "%{model}" in "%{state}" state.'
       accepted: needs to be accepted"
       blank: "can not be empty"

@@ -120,7 +120,7 @@ module Face
     end
 
     def markdown(text)
-      CommonMarker.render_html(text, :DEFAULT).html_safe
+      CommonMarker.render_html(text, :UNSAFE).html_safe
     end
   end
 end

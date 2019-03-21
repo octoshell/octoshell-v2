@@ -100,6 +100,8 @@ en:
         value: "Answer"
       sessions/report_submit_denial_reason:
         name: "Name"
+      sessions/report_material:
+        materials: "Materials"
 
     aasm:
       sessions/report:
@@ -211,7 +213,7 @@ en:
         subject: "Your report №%{id} have been rated by expert."
         msg_report_assessed: "Your report  No. %{id} for the %{pid}:«%{title}» project has been rated by expert  for  the «%{session}» re-registration."
         assessment: "Mark (on a five-point scale from 2 to 5):"
-        assessment_bad: "Unfortunately, your report has at least one \"unsatisfactory\" mark, which entails closing the project at the end of the re-registration."
+        assessment_bad: "Unfortunately, your report has at least one \"unsatisfactory\" mark, which entails closing the project."
         assessment_ok: "Your report has passed the re-registration!"
         msg_future_note: "Please take into account the remarks and wishes of the expert (if any) in the subsequent work on the project."
         illustration_points: "Illustrations"
@@ -333,7 +335,7 @@ en:
           report_submit_denial_reason: "Report submit denial reason"
           motivation_to_keep_the_project: "Motivation to keep the project"
           report_file: "Report files"
-          report_file_updated: "Updated"
+          report_file_added: "Added"
           report_file_size: "Size"
           download_report_file: "Download files"
           no_report_file: "No report files"
@@ -439,13 +441,13 @@ en:
         motivation_to_keep_the_project: "Motivation to keep the project"
         start_report_completion: "Start report completion"
         decline_submitting: "I can not provide an adequate report text"
-        updated: "Updated"
+        added: "Added"
         size: "Size"
         download_report_file: "Download report files"
         if_decline_submitting: "If you can not provide a report, press the button «"
         attach_report_file: "Attach report file"
         update_report_file: "Update report file"
-        report_file_help: "Zip archive, no more than 20MB, in the archive - in addition to the text of the report, at least one with the extension of the graphic file type (at least one illustration)"
+        report_file_help: "Zip archive, no more than 20MB, in the archive - in addition to the text of the report, at least one with the extension of the graphic file type (at least one illustration). All versions of your materials will be saved."
         report_evaluation: "Marks"
         not_evaluated: "Not rated"
         conversation: "Conversation"

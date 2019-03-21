@@ -6,8 +6,8 @@ module Sessions
     prepend FileTranslit
     storage :file
 
-    def extension_white_list
-      %w(zip rar gz 7z)
+    def extension_whitelist
+      %w(zip rar gz 7z txt pdf)
     end
 
     def store_dir
