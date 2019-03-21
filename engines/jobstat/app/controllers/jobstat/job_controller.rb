@@ -76,7 +76,7 @@ module Jobstat
 
 
     def detailed
-      @detailed_info = Job.rules['detailed'][params[:analysis_id]]
+      @detailed_info = Job.rules['detailed_analysis_types'][params[:analysis_id]]
       @analysis_id = params[:analysis_id]
       @job = Job.find(params[:id])
       if @detailed_info.nil?
