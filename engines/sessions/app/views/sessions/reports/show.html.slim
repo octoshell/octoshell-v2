@@ -39,7 +39,7 @@ div class="page-header"
         = bootstrap_form_for @report, url: [@report, :submit], layout: :horizontal, multipart: true do |f|
           -editted_material = @report.report_materials.detect {|m| m.new_record? } ||  @report.report_materials.new
           = f.fields_for editted_material  do |ff|
-            = ff.file_field :materials, help: t('.report_file_help')
+            = ff.file_field :materials, help: t('.report_file_help', fs: Sessions::ReportMaterialsUploader.new.extension_whitelist.join(', '))
           = f.form_group do
             = f.submit t("actions.send")
 

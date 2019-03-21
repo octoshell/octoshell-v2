@@ -447,7 +447,7 @@ en:
         if_decline_submitting: "If you can not provide a report, press the button «"
         attach_report_file: "Attach report file"
         update_report_file: "Update report file"
-        report_file_help: "Zip archive, no more than 20MB, in the archive - in addition to the text of the report, at least one with the extension of the graphic file type (at least one illustration). All versions of your materials will be saved."
+        report_file_help: "%{fs} archive, no more than 20MB, in the archive - in addition to the text of the report, at least one with the extension of the graphic file type (at least one illustration). All versions of your materials will be saved."
         report_evaluation: "Marks"
         not_evaluated: "Not rated"
         conversation: "Conversation"

@@ -7,7 +7,7 @@ module Sessions
     storage :file
 
     def extension_whitelist
-      %w(zip rar gz 7z txt pdf)
+      %w(zip rar gz 7z)
     end
 
     def store_dir
