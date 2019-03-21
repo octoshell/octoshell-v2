@@ -2,362 +2,89 @@
   "groups":{  
     "disaster":{  
       "index":1,
+      "name":"disaster",
       "type":"rule",
-      "description":"",
       "icon":"far fa-times-circle",
       "color":"color-red",
-      "alt":""
+      "alt":null
     },
     "disbalance":{  
       "index":2,
+      "name":"disbalance",
       "type":"rule",
-      "description":"",
       "icon":"fas fa-balance-scale",
       "color":"color-regular",
       "alt":"stream ? chart-bar ? sort-amount-up ?"
     },
     "general_low_efficiency":{  
       "index":3,
+      "name":"general_low_efficiency",
       "type":"rule",
-      "description":"",
       "icon":"fas fa-balance-scale",
       "color":"color-regular",
       "alt":"(а можно кстати взять такой же как disaster, только окрасить в оранжевый/желтый)"
     },
     "gpu_based":{  
       "index":4,
+      "name":"gpu_based",
       "type":"rule",
-      "description":"",
       "icon":"fas fa-tachometer-alt",
       "color":"color-regular",
-      "alt":""
+      "alt":null
     },
     "incorrect_behavior":{  
       "index":5,
+      "name":"incorrect_behavior",
       "type":"rule",
-      "description":"",
       "icon":"fas fa-ban",
       "color":"color-regular",
-      "alt":""
+      "alt":null
     },
     "inefficient_mpi":{  
       "index":6,
+      "name":"inefficient_mpi",
       "type":"rule",
-      "description":"",
       "icon":"fas fa-exchange-alt",
       "color":"color-regular",
-      "alt":""
+      "alt":null
     },
     "inefficient_network_packets":{  
       "index":7,
+      "name":"inefficient_network_packets",
       "type":"rule",
-      "description":"",
       "icon":"fas fa-project-diagram",
       "color":"color-regular",
-      "alt":""
+      "alt":null
     },
     "serial_like_jobs":{  
       "index":8,
+      "name":"serial_like_jobs",
       "type":"rule",
-      "description":"",
       "icon":"fas fa-laptop",
       "color":"color-regular",
       "alt":"desktop"
     },
     "suspicious_and_not_communicative":{  
       "index":9,
+      "name":"suspicious_and_not_communicative",
       "type":"rule",
-      "description":"",
       "icon":"fas fa-comment-slash",
       "color":"color-regular",
-      "alt":""
+      "alt":null
     },
     "wrong_partition":{  
       "index":10,
+      "name":"wrong_partition",
       "type":"rule",
-      "description":"",
       "icon":"fas fa-random",
       "color":"color-regular",
-      "alt":""
-    }
-  },
-  "thresholds":{  
-    "thr_high_loadavg":{  
-      "index":1,
-      "is_enabled":1,
-      "public":1,
-      "description":"LoadAVG > 32",
-      "comment":"LoadAVG > 32",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_loadavg":{  
-      "index":2,
-      "is_enabled":1,
-      "public":1,
-      "description":"LoadAVG < 4",
-      "comment":"LoadAVG < 4",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_cpu_user":{  
-      "index":3,
-      "is_enabled":1,
-      "public":1,
-      "description":"CPU user load > 80%",
-      "comment":"CPU user load > 80%",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_cpu_user":{  
-      "index":4,
-      "is_enabled":1,
-      "public":1,
-      "description":"CPU user load < 10%",
-      "comment":"CPU user load < 10%",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_cpu_system":{  
-      "index":5,
-      "is_enabled":1,
-      "public":1,
-      "description":"CPU system load > 10%",
-      "comment":"CPU system load > 10%",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_cpu_system":{  
-      "index":6,
-      "is_enabled":1,
-      "public":1,
-      "description":"CPU system load < 5%",
-      "comment":"CPU system load < 5%",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_cpu_irq":{  
-      "index":7,
-      "is_enabled":1,
-      "public":1,
-      "description":"CPU irq load > 10%",
-      "comment":"CPU irq load > 10%",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_cpu_irq":{  
-      "index":8,
-      "is_enabled":1,
-      "public":1,
-      "description":"CPU irq load < 1%",
-      "comment":"CPU irq load < 1%",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_cpu_nice":{  
-      "index":9,
-      "is_enabled":1,
-      "public":1,
-      "description":"CPU nice load > 3%",
-      "comment":"CPU nice load > 10%",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_cpu_nice":{  
-      "index":10,
-      "is_enabled":1,
-      "public":1,
-      "description":"CPU nice load < 1%",
-      "comment":"CPU nice load < 1%",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_cpu_iowait":{  
-      "index":11,
-      "is_enabled":1,
-      "public":1,
-      "description":"CPU IO wait > 1%",
-      "comment":"CPU IO wait > 1%",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_cpu_iowait":{  
-      "index":12,
-      "is_enabled":1,
-      "public":1,
-      "description":"CPU IO wait < 0.1%",
-      "comment":"CPU IO wait < 0.1%",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_gpu_load":{  
-      "index":13,
-      "is_enabled":1,
-      "public":1,
-      "description":"GPU load > 80%",
-      "comment":"GPU load > 80%",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_gpu_load":{  
-      "index":14,
-      "is_enabled":1,
-      "public":1,
-      "description":"GPU load < 10%",
-      "comment":"GPU load < 10%",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_ib_mpi":{  
-      "index":15,
-      "is_enabled":1,
-      "public":1,
-      "description":"MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s",
-      "comment":"MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_ib_mpi":{  
-      "index":16,
-      "is_enabled":1,
-      "public":1,
-      "description":"MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
-      "comment":"MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_ib_fs":{  
-      "index":17,
-      "is_enabled":1,
-      "public":1,
-      "description":"FS IB speed (recv OR xmit)  > 1 * 10 ** 8 B/s",
-      "comment":"FS IB speed (recv OR xmit)  > 1 * 10 ** 8 B/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_ib_fs":{  
-      "index":18,
-      "is_enabled":1,
-      "public":1,
-      "description":"FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
-      "comment":"FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_ib":{  
-      "index":19,
-      "is_enabled":1,
-      "public":1,
-      "description":"High MPI and FS IB speed (MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s AND FS IB speed (recv OR xmit)  > 2.5 * 10 ** 8 B/s)",
-      "comment":"High MPI and FS IB speed (MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s AND FS IB speed (recv OR xmit)  > 2.5 * 10 ** 8 B/s)",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_ib":{  
-      "index":20,
-      "is_enabled":1,
-      "public":1,
-      "description":"Low MPI and FS IB speed (MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s AND FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s)",
-      "comment":"Low MPI and FS IB speed (MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s AND FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s)",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_mem_load":{  
-      "index":21,
-      "is_enabled":1,
-      "public":1,
-      "description":"mem load >  7 * 10 ** 8 B/s",
-      "comment":"mem load >  7 * 10 ** 8 B/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_mem_load":{  
-      "index":22,
-      "is_enabled":1,
-      "public":1,
-      "description":"mem load <  1 * 10 ** 8 B/s",
-      "comment":"mem load <  0.5 * 10 ** 8 B/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_mem_store":{  
-      "index":23,
-      "is_enabled":1,
-      "public":1,
-      "description":"mem load > 2.5 * 10 ** 8 B/s",
-      "comment":"mem load > 2.5 * 10 ** 8 B/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_mem_store":{  
-      "index":24,
-      "is_enabled":1,
-      "public":1,
-      "description":"mem load < 0.5 * 10 ** 8 B/s",
-      "comment":"mem load < 0.5 * 10 ** 8 B/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_l1_cache_miss":{  
-      "index":25,
-      "is_enabled":1,
-      "public":1,
-      "description":"l1 miss > 5 * 10 ** 7 misses/s",
-      "comment":"l1 miss > 5 * 10 ** 7 misses/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_l1_cache_miss":{  
-      "index":26,
-      "is_enabled":1,
-      "public":1,
-      "description":"l1 miss < 2.5 * 10 ** 6 misses/s",
-      "comment":"l1 miss < 2.5 * 10 ** 6 misses/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_l2_cache_miss":{  
-      "index":27,
-      "is_enabled":1,
-      "public":1,
-      "description":"l1 miss > 2 * 10 ** 7 misses/s",
-      "comment":"l1 miss > 2 * 10 ** 7 misses/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_l2_cache_miss":{  
-      "index":28,
-      "is_enabled":1,
-      "public":1,
-      "description":"l1 miss < 3 * 10 ** 6 misses/s",
-      "comment":"l1 miss < 3 * 10 ** 6 misses/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_llc_cache_miss":{  
-      "index":29,
-      "is_enabled":1,
-      "public":1,
-      "description":"l1 miss > 2 * 10 ** 6 misses/s",
-      "comment":"l1 miss > 2 * 10 ** 6 misses/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_llc_cache_miss":{  
-      "index":30,
-      "is_enabled":1,
-      "public":1,
-      "description":"l1 miss < 1 * 10 ** 5 misses/s",
-      "comment":"l1 miss < 1 * 10 ** 3 misses/s",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_network_sparsity":{  
-      "index":31,
-      "is_enabled":1,
-      "public":1,
-      "description":"num_nodes > 1 AND network locality > 4",
-      "comment":"num_nodes > 1 AND network locality > 4",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_network_sparsity":{  
-      "index":32,
-      "is_enabled":1,
-      "public":1,
-      "description":"num_nodes > 1 AND network locality < 2",
-      "comment":"num_nodes > 1 AND network locality < 2",
-      "src_file":"thresholds.py"
-    },
-    "thr_high_ipc":{  
-      "index":33,
-      "is_enabled":0,
-      "public":0,
-      "description":"IPC > 2.25",
-      "comment":"IPC > 2.25",
-      "src_file":"thresholds.py"
-    },
-    "thr_low_ipc":{  
-      "index":34,
-      "is_enabled":0,
-      "public":0,
-      "description":"IPC < 0.75",
-      "comment":"IPC < 0.75",
-      "src_file":"thresholds.py"
+      "alt":null
     }
   },
   "classes":{  
     "class_high_cpu_at_la":{  
       "index":1,
+      "name":"class_high_cpu_at_la",
       "is_enabled":1,
       "public":1,
       "description":"Слишком высокая загрузка процессора при данном уровне loadavg",
@@ -370,6 +97,7 @@
     },
     "class_less_suspicious":{  
       "index":2,
+      "name":"class_less_suspicious",
       "is_enabled":1,
       "public":1,
       "description":"Задача слабо использует вычислительные ресурсы СК",
@@ -382,6 +110,7 @@
     },
     "class_low_cpu_at_la":{  
       "index":3,
+      "name":"class_low_cpu_at_la",
       "is_enabled":1,
       "public":1,
       "description":"Слишком низкая загрузка процессора при данном уровне loadavg",
@@ -394,6 +123,7 @@
     },
     "class_sc_appropriate":{  
       "index":4,
+      "name":"class_sc_appropriate",
       "is_enabled":1,
       "public":1,
       "description":"Задача хорошо использует ресурсы СК",
@@ -406,6 +136,7 @@
     },
     "class_suspicious":{  
       "index":5,
+      "name":"class_suspicious",
       "is_enabled":1,
       "public":1,
       "description":"Задача практически не использует вычислительные ресурсы СК",
@@ -418,6 +149,7 @@
     },
     "class_gpu_hybrid_good":{  
       "index":6,
+      "name":"class_gpu_hybrid_good",
       "is_enabled":1,
       "public":1,
       "description":"Задача хорошо испольует и GPU и CPU",
@@ -430,6 +162,7 @@
     },
     "class_gpu_pure":{  
       "index":7,
+      "name":"class_gpu_pure",
       "is_enabled":1,
       "public":1,
       "description":"Задача использует только GPU",
@@ -442,6 +175,7 @@
     },
     "class_low_ib_high_gpu":{  
       "index":8,
+      "name":"class_low_ib_high_gpu",
       "is_enabled":1,
       "public":1,
       "description":"Задача активно испольузет GPU, а узлы мало общаются между собой",
@@ -454,6 +188,7 @@
     },
     "class_short":{  
       "index":9,
+      "name":"class_short",
       "is_enabled":1,
       "public":1,
       "description":"Короткая задача (< 15 минут)",
@@ -466,6 +201,7 @@
     },
     "class_super_short":{  
       "index":10,
+      "name":"class_super_short",
       "is_enabled":1,
       "public":1,
       "description":"Очень короткая задача (< 6 минут)",
@@ -478,6 +214,7 @@
     },
     "class_bad_locality":{  
       "index":11,
+      "name":"class_bad_locality",
       "is_enabled":1,
       "public":1,
       "description":"Задача имеет низкую локальность обращений в память",
@@ -490,6 +227,7 @@
     },
     "class_data_intensive":{  
       "index":12,
+      "name":"class_data_intensive",
       "is_enabled":1,
       "public":1,
       "description":"Задача активно работает с памятью",
@@ -502,6 +240,7 @@
     },
     "class_good_locality":{  
       "index":13,
+      "name":"class_good_locality",
       "is_enabled":1,
       "public":1,
       "description":"Задача имеет высокую локальность обращений в память",
@@ -514,6 +253,7 @@
     },
     "class_low_avg_mem_usage":{  
       "index":14,
+      "name":"class_low_avg_mem_usage",
       "is_enabled":1,
       "public":1,
       "description":"Слишком низкая интенсивность работы с памятью.",
@@ -526,6 +266,7 @@
     },
     "class_weird_locality":{  
       "index":15,
+      "name":"class_weird_locality",
       "is_enabled":1,
       "public":1,
       "description":"Задача имеет необычную локальность обращений в память",
@@ -538,6 +279,7 @@
     },
     "class_comm_data":{  
       "index":16,
+      "name":"class_comm_data",
       "is_enabled":1,
       "public":1,
       "description":"В задаче много MPI коммуникаций",
@@ -550,6 +292,7 @@
     },
     "class_comm_packets":{  
       "index":17,
+      "name":"class_comm_packets",
       "is_enabled":1,
       "public":1,
       "description":"Задача шлёт много MPI пакетов",
@@ -562,6 +305,7 @@
     },
     "class_not_comm":{  
       "index":18,
+      "name":"class_not_comm",
       "is_enabled":1,
       "public":1,
       "description":"В задаче мало MPI коммуникаций",
@@ -574,6 +318,7 @@
     },
     "class_big_job_not_comm":{  
       "index":19,
+      "name":"class_big_job_not_comm",
       "is_enabled":1,
       "public":1,
       "description":"Задача занимает много узлов, но MPI коммуникаций совсем мало.",
@@ -586,6 +331,7 @@
     },
     "class_serial":{  
       "index":20,
+      "name":"class_serial",
       "is_enabled":1,
       "public":1,
       "description":"Одноядерная задача",
@@ -598,6 +344,7 @@
     },
     "class_single":{  
       "index":21,
+      "name":"class_single",
       "is_enabled":1,
       "public":1,
       "description":"Одноузловая задача",
@@ -610,6 +357,7 @@
     },
     "class_ml_initial_data_read":{  
       "index":22,
+      "name":"class_ml_initial_data_read",
       "is_enabled":1,
       "public":0,
       "description":"Активное чтение входных данных в начале запуска",
@@ -622,6 +370,7 @@
     },
     "class_ml_final_data_write":{  
       "index":23,
+      "name":"class_ml_final_data_write",
       "is_enabled":0,
       "public":0,
       "description":"Активная запись выходных данных в конце запуска",
@@ -634,6 +383,7 @@
     },
     "class_ml_activity_decrease":{  
       "index":24,
+      "name":"class_ml_activity_decrease",
       "is_enabled":0,
       "public":0,
       "description":"Постепенное снижение активности работы задачи",
@@ -645,9 +395,269 @@
       "criticalness":3
     }
   },
+  "detailed_analysis_types":{  
+    "dynamics-jd":{  
+      "index":1,
+      "analysis_id":"dynamics-jd",
+      "type_text":"Анализ динамики выполнения приложения",
+      "type_name":"dynamics",
+      "soft_text":"JobDigest",
+      "soft_name":"jd",
+      "manual":"1. JobDigest2. ???3. Profit!"
+    },
+    "monitoring-dimmon":{  
+      "index":2,
+      "analysis_id":"monitoring-dimmon",
+      "type_text":"Более детальный мониторинг",
+      "type_name":"monitoring",
+      "soft_text":"DimMon",
+      "soft_name":"dimmon",
+      "manual":"1. DimMon2. ???3. Profit!"
+    },
+    "profiling-mpip":{  
+      "index":3,
+      "analysis_id":"profiling-mpip",
+      "type_text":"Анализ MPI-программ -> Профилировка",
+      "type_name":"profiling",
+      "soft_text":"mpiP",
+      "soft_name":"mpip",
+      "manual":"1. (Опционально) Скомпилировать программу, указав ключ для сбора дебаг информации (обычно -g).2. Запустить программу с предзагрузкой библиотеки анализа \"LD_PRELOAD=/opt/software/mpip/libmpiP.so sbatch ... <стандартная строка запуска>\""
+    },
+    "profiling-scalasca":{  
+      "index":4,
+      "analysis_id":"profiling-scalasca",
+      "type_text":"Анализ MPI-программ -> Профилировка",
+      "type_name":"profiling",
+      "soft_text":"Scalasca",
+      "soft_name":"scalasca",
+      "manual":"1. Scalasca2. ???3. Profit!"
+    },
+    "tracing-vampir":{  
+      "index":5,
+      "analysis_id":"tracing-vampir",
+      "type_text":"Анализ MPI-программ -> Трассировка",
+      "type_name":"tracing",
+      "soft_text":"Vampir",
+      "soft_name":"vampir",
+      "manual":"1. Vampir2. ???3. Profit!"
+    },
+    "tracing-scalasca":{  
+      "index":6,
+      "analysis_id":"tracing-scalasca",
+      "type_text":"Анализ MPI-программ -> Трассировка",
+      "type_name":"tracing",
+      "soft_text":"Scalasca",
+      "soft_name":"scalasca",
+      "manual":"1. Scalasca2. ???3. Profit!"
+    },
+    "tracing-itac":{  
+      "index":7,
+      "analysis_id":"tracing-itac",
+      "type_text":"Анализ MPI-программ -> Трассировка",
+      "type_name":"tracing",
+      "soft_text":"ITAC",
+      "soft_name":"itac",
+      "manual":"1. ITAC2. ???3. Profit!"
+    },
+    "thread-ompp":{  
+      "index":8,
+      "analysis_id":"thread-ompp",
+      "type_text":"Анализ многопоточной программы",
+      "type_name":"thread",
+      "soft_text":"ompP",
+      "soft_name":"ompp",
+      "manual":"1. ompP2. ???3. Profit!"
+    },
+    "thread-vtune":{  
+      "index":9,
+      "analysis_id":"thread-vtune",
+      "type_text":"Анализ многопоточной программы",
+      "type_name":"thread",
+      "soft_text":"VTune",
+      "soft_name":"vtune",
+      "manual":"1. Vtune2. ???3. Profit!"
+    },
+    "mem_eff-valgrind":{  
+      "index":10,
+      "analysis_id":"mem_eff-valgrind",
+      "type_text":"Анализ работы с памятью -> Эффективность",
+      "type_name":"mem_eff",
+      "soft_text":"Valgrind",
+      "soft_name":"valgrind",
+      "manual":"1. Valgrind2. ???3. Profit!"
+    },
+    "mem_eff-vtune":{  
+      "index":11,
+      "analysis_id":"mem_eff-vtune",
+      "type_text":"Анализ работы с памятью -> Эффективность",
+      "type_name":"mem_eff",
+      "soft_text":"VTune",
+      "soft_name":"vtune",
+      "manual":"1. Vtune2. ???3. Profit!"
+    },
+    "mem_corr-valgrind":{  
+      "index":12,
+      "analysis_id":"mem_corr-valgrind",
+      "type_text":"Анализ работы с памятью -> Корректность",
+      "type_name":"mem_corr",
+      "soft_text":"Valgrind",
+      "soft_name":"valgrind",
+      "manual":"1. Valgrind2. ???3. Profit!"
+    },
+    "mem_corr-inspector":{  
+      "index":13,
+      "analysis_id":"mem_corr-inspector",
+      "type_text":"Анализ работы с памятью -> Корректность",
+      "type_name":"mem_corr",
+      "soft_text":"Intel Inspector",
+      "soft_name":"inspector",
+      "manual":"1. Inspector2. ???3. Profit!"
+    },
+    "serial-vtune":{  
+      "index":14,
+      "analysis_id":"serial-vtune",
+      "type_text":"Общий анализ последовательных программ",
+      "type_name":"serial",
+      "soft_text":"VTune",
+      "soft_name":"vtune",
+      "manual":"1. Vtune2. ???3. Profit!"
+    },
+    "io-vtune":{  
+      "index":15,
+      "analysis_id":"io-vtune",
+      "type_text":"Анализ ввода/вывода",
+      "type_name":"io",
+      "soft_text":"VTune",
+      "soft_name":"vtune",
+      "manual":"1. Vtune2. ???3. Profit!"
+    },
+    "network-jd":{  
+      "index":16,
+      "analysis_id":"network-jd",
+      "type_text":"Анализ сетевой активности",
+      "type_name":"network",
+      "soft_text":"JobDigest",
+      "soft_name":"jd",
+      "manual":"1. JobDigest2. ???3. Profit!"
+    },
+    "low_level-papi":{  
+      "index":17,
+      "analysis_id":"low_level-papi",
+      "type_text":"Низкоуровневый анализ",
+      "type_name":"low_level",
+      "soft_text":"PAPI",
+      "soft_name":"papi",
+      "manual":"1. PAPI2. ???3. Profit!"
+    },
+    "low_level-vtune":{  
+      "index":18,
+      "analysis_id":"low_level-vtune",
+      "type_text":"Низкоуровневый анализ",
+      "type_name":"low_level",
+      "soft_text":"VTune",
+      "soft_name":"vtune",
+      "manual":"1. Vtune2. ???3. Profit!"
+    },
+    "accelerator-nsight":{  
+      "index":19,
+      "analysis_id":"accelerator-nsight",
+      "type_text":"Анализ работы с ускорителями",
+      "type_name":"accelerator",
+      "soft_text":"NVidia NSight Systems",
+      "soft_name":"nsight",
+      "manual":"1. NSIGHT2. ???3. Profit!"
+    },
+    "scalability-???":{  
+      "index":20,
+      "analysis_id":"scalability-???",
+      "type_text":"Анализ масштабируемости",
+      "type_name":"scalability",
+      "soft_text":"???",
+      "soft_name":"???",
+      "manual":"1. ???2. ???3. Profit!"
+    },
+    "series-???":{  
+      "index":21,
+      "analysis_id":"series-???",
+      "type_text":"Анализ серии запусков",
+      "type_name":"series",
+      "soft_text":"???",
+      "soft_name":"???",
+      "manual":"1. ???2. ???3. Profit!"
+    },
+    "prediction-valgrind":{  
+      "index":22,
+      "analysis_id":"prediction-valgrind",
+      "type_text":"Прогноз поведения программы",
+      "type_name":"prediction",
+      "soft_text":"Valgrind",
+      "soft_name":"valgrind",
+      "manual":"1. Valgrind2. ???3. Profit!"
+    },
+    "prediction-threadspotter":{  
+      "index":23,
+      "analysis_id":"prediction-threadspotter",
+      "type_text":"Прогноз поведения программы",
+      "type_name":"prediction",
+      "soft_text":"Threadspotter",
+      "soft_name":"threadspotter",
+      "manual":"1. Threadspotter2. ???3. Profit!"
+    }
+  },
+  "profiling-mpip":{  
+    "profiling-mpip-low_pe":{  
+      "index":1,
+      "name":"profiling-mpip-low_pe",
+      "is_enabled":1,
+      "public":1,
+      "description":"Задача обладает низкой параллельной эффективностью (т.е. неэффективно разделены вычисления между процессами и/или неэффективно выполняется обмен данными).",
+      "comment":"PoP метрика PE меньше порога.",
+      "src_file":"mpip_rules.py",
+      "group":"mpip",
+      "priority":1,
+      "confidence":3,
+      "criticalness":2,
+      "suggestion":"Вероятно, работа с MPI организована неэффективно.",
+      "text_recommendation":"Анализ MPI программ -> Трассировка",
+      "module_recommendation":"mpi_tracing"
+    },
+    "profiling-mpip-low_lb":{  
+      "index":2,
+      "name":"profiling-mpip-low_lb",
+      "is_enabled":1,
+      "public":1,
+      "description":"Присутствует дисбаланс вычислительной нагрузки между процессами.",
+      "comment":"PoP метрика LB меньше порога.",
+      "src_file":"mpip_rules.py",
+      "group":"mpip",
+      "priority":1,
+      "confidence":3,
+      "criticalness":3,
+      "suggestion":"Разбалансировка нагрузки между узлами.",
+      "text_recommendation":"Анализ MPI программ -> Трассировка",
+      "module_recommendation":"mpi_tracing"
+    },
+    "profiling-mpip-low_comme":{  
+      "index":3,
+      "name":"profiling-mpip-low_comme",
+      "is_enabled":1,
+      "public":1,
+      "description":"В программе много времени тратится на выполнение обмена данными, во время которого отсутствует полезная вычислительная нагрузка.",
+      "comment":"PoP метрика CommE меньше порога.",
+      "src_file":"mpip_rules.py",
+      "group":"mpip",
+      "priority":1,
+      "confidence":3,
+      "criticalness":3,
+      "suggestion":"Выполнение MPI операций, вероятно, занимает слишком много времени, требуется оптимизация.",
+      "text_recommendation":"Анализ MPI программ -> Трассировка",
+      "module_recommendation":"mpi_tracing"
+    }
+  },
   "rules":{  
     "rule_ml_anomaly":{  
       "index":1,
+      "правда фидбек пока":"rule_ml_anomaly",
       "is_enabled":1,
       "public":1,
       "description":"Задача выполняется аномально неэффективно.",
@@ -663,6 +673,7 @@
     },
     "rule_anomaly":{  
       "index":2,
+      "правда фидбек пока":"rule_anomaly",
       "is_enabled":1,
       "public":1,
       "description":"Чрезвычайно низкая активность использования всех доступных ресурсов.",
@@ -678,6 +689,7 @@
     },
     "rule_ml_job_hang":{  
       "index":3,
+      "правда фидбек пока":"rule_ml_job_hang",
       "is_enabled":1,
       "public":0,
       "description":"Согласно данным мониторинга, задача зависла.",
@@ -693,6 +705,7 @@
     },
     "rule_avg_disbalance":{  
       "index":4,
+      "правда фидбек пока":"rule_avg_disbalance",
       "is_enabled":0,
       "public":0,
       "description":"Интенсивность использования ресурсов сильно отличается на разных узлах.",
@@ -708,6 +721,7 @@
     },
     "rule_node_disbalance":{  
       "index":5,
+      "правда фидбек пока":"rule_node_disbalance",
       "is_enabled":0,
       "public":0,
       "description":"Данные мониторинга сильно отличаются для разных узлов -> скорее всего, имеет место разбалансировка. Правило имеет смысл учитывать, если не сработали более конкретные правила",
@@ -723,6 +737,7 @@
     },
     "rule_disbalance_cpu_la":{  
       "index":6,
+      "правда фидбек пока":"rule_disbalance_cpu_la",
       "is_enabled":1,
       "public":1,
       "description":"Заметный дисбаланс внутри узлов либо активность сильно отличается на разных узлах.",
@@ -738,6 +753,7 @@
     },
     "rule_mem_disbalance":{  
       "index":7,
+      "правда фидбек пока":"rule_mem_disbalance",
       "is_enabled":1,
       "public":1,
       "description":"Заметный дисбаланс внутри узлов по использовании памяти.",
@@ -753,6 +769,7 @@
     },
     "rule_ml_suspicious":{  
       "index":8,
+      "правда фидбек пока":"rule_ml_suspicious",
       "is_enabled":1,
       "public":1,
       "description":"Данная задача обладает подозрительно низкой эффективностью выполнения, по сравнению с остальными задачами на данном суперкомпьютере. Скорее всего, в задаче присутствуют существенные проблемы с эффективностью.",
@@ -768,6 +785,7 @@
     },
     "rule_low_ipc":{  
       "index":9,
+      "правда фидбек пока":"rule_low_ipc",
       "is_enabled":0,
       "public":0,
       "description":"Скорость выполнения инструкций слишком мала. При этом не наблюдается высокой внешней активности (расчетов на ГПУ или передачи данных по сети).",
@@ -783,21 +801,23 @@
     },
     "rule_ml_low_job_activity":{  
       "index":10,
+      "правда фидбек пока":"rule_ml_low_job_activity",
       "is_enabled":0,
       "public":0,
       "description":"Число процессов, активно используюющих вычислительные ресурсы, слишком мало.",
       "comment":"Сработал тип Дениса low_job_activity.",
       "src_file":"rules_integral_based.py",
       "group":"general_low_efficiency",
-      "priority":"",
-      "confidence":"",
-      "criticalness":"",
-      "suggestion":"",
-      "text_recommendation":"",
-      "module_recommendation":""
+      "priority":null,
+      "confidence":null,
+      "criticalness":null,
+      "suggestion":null,
+      "text_recommendation":null,
+      "module_recommendation":null
     },
     "rule_high_la":{  
       "index":11,
+      "правда фидбек пока":"rule_high_la",
       "is_enabled":1,
       "public":0,
       "description":"Создано слишком большое количество потоков на узлах.",
@@ -813,6 +833,7 @@
     },
     "rule_ml_stall":{  
       "index":12,
+      "правда фидбек пока":"rule_ml_stall",
       "is_enabled":1,
       "public":0,
       "description":"Согласно данным мониторинга, задача некоторое время была зависшей, однако затем ее выполнение продолжилось в нормальном режиме.",
@@ -828,6 +849,7 @@
     },
     "rule_ml_cold_start":{  
       "index":13,
+      "правда фидбек пока":"rule_ml_cold_start",
       "is_enabled":1,
       "public":0,
       "description":"Согласно данным мониторинга, активность задачи сразу после запуска была очень низкой.",
@@ -843,6 +865,7 @@
     },
     "rule_cpu_gpu":{  
       "index":14,
+      "правда фидбек пока":"rule_cpu_gpu",
       "is_enabled":1,
       "public":1,
       "description":"Задача слабо использует CPU при высокой загрузке GPU. ",
@@ -858,6 +881,7 @@
     },
     "rule_more_cpu_gpu":{  
       "index":15,
+      "правда фидбек пока":"rule_more_cpu_gpu",
       "is_enabled":1,
       "public":1,
       "description":"Задача практически не использует CPU при высокой загрузке GPU.",
@@ -873,6 +897,7 @@
     },
     "rule_mpi_disbalance":{  
       "index":16,
+      "правда фидбек пока":"rule_mpi_disbalance",
       "is_enabled":1,
       "public":1,
       "description":"Большой дислабанс на узлах между средним объемом передаваемых и получаемых данных по MPI сети.",
@@ -888,6 +913,7 @@
     },
     "rule_irq_iowait":{  
       "index":17,
+      "правда фидбек пока":"rule_irq_iowait",
       "is_enabled":1,
       "public":1,
       "description":"Слишком высокая IRQ или IOWAIT загрузка.",
@@ -903,6 +929,7 @@
     },
     "rule_nice":{  
       "index":18,
+      "правда фидбек пока":"rule_nice",
       "is_enabled":1,
       "public":1,
       "description":"Слишком высокая NICE загрузка.",
@@ -918,6 +945,7 @@
     },
     "rule_mpi_many_operations":{  
       "index":19,
+      "правда фидбек пока":"rule_mpi_many_operations",
       "is_enabled":0,
       "public":0,
       "description":"Низкая интенсивность использования MPI сети, однако число MPI операций велико.",
@@ -933,6 +961,7 @@
     },
     "rule_mpi_high_system":{  
       "index":20,
+      "правда фидбек пока":"rule_mpi_high_system",
       "is_enabled":1,
       "public":1,
       "description":"Работа с коммуникационнной сетью занимает слишком много системных ресурсов.",
@@ -948,6 +977,7 @@
     },
     "rule_mpi_bad_locality":{  
       "index":21,
+      "правда фидбек пока":"rule_mpi_bad_locality",
       "is_enabled":1,
       "public":1,
       "description":"Задача активно работает с MPI сетью, но сетевая локальность плохая (узлы СК расположены далеко друг от друга).",
@@ -963,6 +993,7 @@
     },
     "rule_mpi_issues":{  
       "index":22,
+      "правда фидбек пока":"rule_mpi_issues",
       "is_enabled":1,
       "public":1,
       "description":"Низкая активность использования вычислительных ресурсов при высокой интенсивности использования MPI сети.",
@@ -978,6 +1009,7 @@
     },
     "rule_mpi_small_packets":{  
       "index":23,
+      "правда фидбек пока":"rule_mpi_small_packets",
       "is_enabled":1,
       "public":1,
       "description":"Слишком маленькие средние размеры MPI IB пакетов при достаточно высокой интенсивности использования коммуникационной сети.",
@@ -993,6 +1025,7 @@
     },
     "rule_fs_small_packets":{  
       "index":24,
+      "правда фидбек пока":"rule_fs_small_packets",
       "is_enabled":1,
       "public":1,
       "description":"Слишком маленькие средние размеры ФС IB пакетов при достаточно высокой интенсивности использования коммуникационной сети.",
@@ -1008,6 +1041,7 @@
     },
     "rule_mpi_packets":{  
       "index":25,
+      "правда фидбек пока":"rule_mpi_packets",
       "is_enabled":1,
       "public":1,
       "description":"Размер MPI пакетов слишком маленький.",
@@ -1023,6 +1057,7 @@
     },
     "rule_one_active_process":{  
       "index":26,
+      "правда фидбек пока":"rule_one_active_process",
       "is_enabled":1,
       "public":1,
       "description":"В даной задаче обнаружен только 1 активный процесс на узел, при этом интенсивность использования памяти, GPU или сети невысока.",
@@ -1038,6 +1073,7 @@
     },
     "rule_normal_serial":{  
       "index":27,
+      "правда фидбек пока":"rule_normal_serial",
       "is_enabled":1,
       "public":1,
       "description":"Последовательная задача",
@@ -1053,6 +1089,7 @@
     },
     "rule_not_effective":{  
       "index":28,
+      "правда фидбек пока":"rule_not_effective",
       "is_enabled":1,
       "public":1,
       "description":"Низкая активность использования всех доступных ресурсов (процессоров, памяти, коммуникационной сети, графических ускорителей).",
@@ -1068,6 +1105,7 @@
     },
     "rule_bad_mem":{  
       "index":29,
+      "правда фидбек пока":"rule_bad_mem",
       "is_enabled":1,
       "public":1,
       "description":"Низкая активность использования вычислительных ресурсов при высокой интенсивности работы с памятью.",
@@ -1083,6 +1121,7 @@
     },
     "rule_bad_locality":{  
       "index":30,
+      "правда фидбек пока":"rule_bad_locality",
       "is_enabled":1,
       "public":1,
       "description":"Низкая активность работы задачи при низкой локальности обращений в память.",
@@ -1098,6 +1137,7 @@
     },
     "rule_locality":{  
       "index":31,
+      "правда фидбек пока":"rule_locality",
       "is_enabled":1,
       "public":1,
       "description":"Высокая интенсивность работы с памятью при низкой локальности обращений в память.",
@@ -1113,6 +1153,7 @@
     },
     "rule_cache":{  
       "index":32,
+      "правда фидбек пока":"rule_cache",
       "is_enabled":1,
       "public":1,
       "description":"Низкая активность работы задачи при высокой интенсивности работы с памятью и низкой локальности обращений в память.",
@@ -1128,6 +1169,7 @@
     },
     "rule_interleave":{  
       "index":33,
+      "правда фидбек пока":"rule_interleave",
       "is_enabled":1,
       "public":1,
       "description":"Низкая активность работы задачи при высокой интенсивности работы с памятью и высокой локальности обращений в память.",
@@ -1143,6 +1185,7 @@
     },
     "rule_wrong_partition_gpu":{  
       "index":34,
+      "правда фидбек пока":"rule_wrong_partition_gpu",
       "is_enabled":1,
       "public":1,
       "description":"Задача запущена в разделе для GPU задач, однако практически не использует графические процессоры.",
@@ -1158,6 +1201,7 @@
     },
     "rule_wrong_partition_io":{  
       "index":35,
+      "правда фидбек пока":"rule_wrong_partition_io",
       "is_enabled":0,
       "public":0,
       "description":"Задача запущена в разделе для задач с невысокими требованиям к скорости вовода/вывода, однако в этой задаче интенсивность ввода/вывода велика.",
@@ -1172,190 +1216,312 @@
       "module_recommendation":"---"
     }
   },
-  "detailed":{
-    "dynamics_jd": {
-        "index": 1,
-        "type_text": "Анализ динамики выполнения приложения",
-        "type_name": "dynamics",
-        "soft_text": "JobDigest",
-        "soft_name": "jd",
-        "manual": "1. JobDigest\n2. ???\n3. Profit!"
+  "thresholds":{  
+    "thr_high_loadavg":{  
+      "index":1,
+      "name":"thr_high_loadavg",
+      "is_enabled":1,
+      "public":1,
+      "description":"LoadAVG > 32",
+      "comment":"LoadAVG > 32",
+      "src_file":"thresholds.py"
     },
-    "monitoring_dimmon": {
-        "index": 2,
-        "type_text": "Более детальный мониторинг",
-        "type_name": "monitoring",
-        "soft_text": "DimMon",
-        "soft_name": "dimmon",
-        "manual": "1. DimMon\n2. ???\n3. Profit!"
+    "thr_low_loadavg":{  
+      "index":2,
+      "name":"thr_low_loadavg",
+      "is_enabled":1,
+      "public":1,
+      "description":"LoadAVG < 4",
+      "comment":"LoadAVG < 4",
+      "src_file":"thresholds.py"
     },
-    "profiling_mpip": {
-        "index": 3,
-        "type_text": "Анализ MPI-программ -> Профилировка",
-        "type_name": "profiling",
-        "soft_text": "mpiP",
-        "soft_name": "mpip",
-        "manual": "1. Скомпилировать программу, указав ключ для сбора дебаг информации (обычно -g).\n2. Слинковать программу, добавив в конце *-L/opt/software/mpip/lib -lmpiP -lm /lib64/libbfd-2.23.52.0.1-30.el7.so*\n3. Запустить в обычном режиме."
+    "thr_high_cpu_user":{  
+      "index":3,
+      "name":"thr_high_cpu_user",
+      "is_enabled":1,
+      "public":1,
+      "description":"CPU user load > 80%",
+      "comment":"CPU user load > 80%",
+      "src_file":"thresholds.py"
     },
-    "profiling_scalasca": {
-        "index": 4,
-        "type_text": "Анализ MPI-программ -> Профилировка",
-        "type_name": "profiling",
-        "soft_text": "Scalasca",
-        "soft_name": "scalasca",
-        "manual": "1. Scalasca\n2. ???\n3. Profit!"
+    "thr_low_cpu_user":{  
+      "index":4,
+      "name":"thr_low_cpu_user",
+      "is_enabled":1,
+      "public":1,
+      "description":"CPU user load < 10%",
+      "comment":"CPU user load < 10%",
+      "src_file":"thresholds.py"
     },
-    "tracing_vampir": {
-        "index": 5,
-        "type_text": "Анализ MPI-программ -> Трассировка",
-        "type_name": "tracing",
-        "soft_text": "Vampir",
-        "soft_name": "vampir",
-        "manual": "1. Vampir\n2. ???\n3. Profit!"
+    "thr_high_cpu_system":{  
+      "index":5,
+      "name":"thr_high_cpu_system",
+      "is_enabled":1,
+      "public":1,
+      "description":"CPU system load > 10%",
+      "comment":"CPU system load > 10%",
+      "src_file":"thresholds.py"
     },
-    "tracing_scalasca": {
-        "index": 6,
-        "type_text": "Анализ MPI-программ -> Трассировка",
-        "type_name": "tracing",
-        "soft_text": "Scalasca",
-        "soft_name": "scalasca",
-        "manual": "1. Scalasca\n2. ???\n3. Profit!"
+    "thr_low_cpu_system":{  
+      "index":6,
+      "name":"thr_low_cpu_system",
+      "is_enabled":1,
+      "public":1,
+      "description":"CPU system load < 5%",
+      "comment":"CPU system load < 5%",
+      "src_file":"thresholds.py"
     },
-    "tracing_itac": {
-        "index": 7,
-        "type_text": "Анализ MPI-программ -> Трассировка",
-        "type_name": "tracing",
-        "soft_text": "ITAC",
-        "soft_name": "itac",
-        "manual": "1. ITAC\n2. ???\n3. Profit!"
+    "thr_high_cpu_irq":{  
+      "index":7,
+      "name":"thr_high_cpu_irq",
+      "is_enabled":1,
+      "public":1,
+      "description":"CPU irq load > 10%",
+      "comment":"CPU irq load > 10%",
+      "src_file":"thresholds.py"
     },
-    "thread_ompp": {
-        "index": 8,
-        "type_text": "Анализ многопоточной программы",
-        "type_name": "thread",
-        "soft_text": "ompP",
-        "soft_name": "ompp",
-        "manual": "1. ompP\n2. ???\n3. Profit!"
+    "thr_low_cpu_irq":{  
+      "index":8,
+      "name":"thr_low_cpu_irq",
+      "is_enabled":1,
+      "public":1,
+      "description":"CPU irq load < 1%",
+      "comment":"CPU irq load < 1%",
+      "src_file":"thresholds.py"
     },
-    "thread_vtune": {
-        "index": 9,
-        "type_text": "Анализ многопоточной программы",
-        "type_name": "thread",
-        "soft_text": "VTune",
-        "soft_name": "vtune",
-        "manual": "1. Vtune\n2. ???\n3. Profit!"
+    "thr_high_cpu_nice":{  
+      "index":9,
+      "name":"thr_high_cpu_nice",
+      "is_enabled":1,
+      "public":1,
+      "description":"CPU nice load > 3%",
+      "comment":"CPU nice load > 10%",
+      "src_file":"thresholds.py"
     },
-    "mem.eff_valgrind": {
-        "index": 10,
-        "type_text": "Анализ работы с памятью -> Эффективность",
-        "type_name": "mem.eff",
-        "soft_text": "Valgrind",
-        "soft_name": "valgrind",
-        "manual": "1. Valgrind\n2. ???\n3. Profit!"
+    "thr_low_cpu_nice":{  
+      "index":10,
+      "name":"thr_low_cpu_nice",
+      "is_enabled":1,
+      "public":1,
+      "description":"CPU nice load < 1%",
+      "comment":"CPU nice load < 1%",
+      "src_file":"thresholds.py"
     },
-    "mem.eff_vtune": {
-        "index": 11,
-        "type_text": "Анализ работы с памятью -> Эффективность",
-        "type_name": "mem.eff",
-        "soft_text": "VTune",
-        "soft_name": "vtune",
-        "manual": "1. Vtune\n2. ???\n3. Profit!"
+    "thr_high_cpu_iowait":{  
+      "index":11,
+      "name":"thr_high_cpu_iowait",
+      "is_enabled":1,
+      "public":1,
+      "description":"CPU IO wait > 1%",
+      "comment":"CPU IO wait > 1%",
+      "src_file":"thresholds.py"
     },
-    "mem.corr_valgrind": {
-        "index": 12,
-        "type_text": "Анализ работы с памятью -> Корректность",
-        "type_name": "mem.corr",
-        "soft_text": "Valgrind",
-        "soft_name": "valgrind",
-        "manual": "1. Valgrind\n2. ???\n3. Profit!"
+    "thr_low_cpu_iowait":{  
+      "index":12,
+      "name":"thr_low_cpu_iowait",
+      "is_enabled":1,
+      "public":1,
+      "description":"CPU IO wait < 0.1%",
+      "comment":"CPU IO wait < 0.1%",
+      "src_file":"thresholds.py"
     },
-    "mem.corr_inspector": {
-        "index": 13,
-        "type_text": "Анализ работы с памятью -> Корректность",
-        "type_name": "mem.corr",
-        "soft_text": "Intel Inspector",
-        "soft_name": "inspector",
-        "manual": "1. Inspector\n2. ???\n3. Profit!"
+    "thr_high_gpu_load":{  
+      "index":13,
+      "name":"thr_high_gpu_load",
+      "is_enabled":1,
+      "public":1,
+      "description":"GPU load > 80%",
+      "comment":"GPU load > 80%",
+      "src_file":"thresholds.py"
     },
-    "serial_vtune": {
-        "index": 14,
-        "type_text": "Общий анализ последовательных программ",
-        "type_name": "serial",
-        "soft_text": "VTune",
-        "soft_name": "vtune",
-        "manual": "1. Vtune\n2. ???\n3. Profit!"
+    "thr_low_gpu_load":{  
+      "index":14,
+      "name":"thr_low_gpu_load",
+      "is_enabled":1,
+      "public":1,
+      "description":"GPU load < 10%",
+      "comment":"GPU load < 10%",
+      "src_file":"thresholds.py"
     },
-    "io_vtune": {
-        "index": 15,
-        "type_text": "Анализ ввода/вывода",
-        "type_name": "io",
-        "soft_text": "VTune",
-        "soft_name": "vtune",
-        "manual": "1. Vtune\n2. ???\n3. Profit!"
+    "thr_high_ib_mpi":{  
+      "index":15,
+      "name":"thr_high_ib_mpi",
+      "is_enabled":1,
+      "public":1,
+      "description":"MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s",
+      "comment":"MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s",
+      "src_file":"thresholds.py"
     },
-    "network_jd": {
-        "index": 16,
-        "type_text": "Анализ сетевой активности",
-        "type_name": "network",
-        "soft_text": "JobDigest",
-        "soft_name": "jd",
-        "manual": "1. JobDigest\n2. ???\n3. Profit!"
+    "thr_low_ib_mpi":{  
+      "index":16,
+      "name":"thr_low_ib_mpi",
+      "is_enabled":1,
+      "public":1,
+      "description":"MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
+      "comment":"MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
+      "src_file":"thresholds.py"
     },
-    "low.level_papi": {
-        "index": 17,
-        "type_text": "Низкоуровневый анализ",
-        "type_name": "low.level",
-        "soft_text": "PAPI",
-        "soft_name": "papi",
-        "manual": "1. PAPI\n2. ???\n3. Profit!"
+    "thr_high_ib_fs":{  
+      "index":17,
+      "name":"thr_high_ib_fs",
+      "is_enabled":1,
+      "public":1,
+      "description":"FS IB speed (recv OR xmit)  > 1 * 10 ** 8 B/s",
+      "comment":"FS IB speed (recv OR xmit)  > 1 * 10 ** 8 B/s",
+      "src_file":"thresholds.py"
     },
-    "low.level_vtune": {
-        "index": 18,
-        "type_text": "Низкоуровневый анализ",
-        "type_name": "low.level",
-        "soft_text": "VTune",
-        "soft_name": "vtune",
-        "manual": "1. Vtune\n2. ???\n3. Profit!"
+    "thr_low_ib_fs":{  
+      "index":18,
+      "name":"thr_low_ib_fs",
+      "is_enabled":1,
+      "public":1,
+      "description":"FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
+      "comment":"FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
+      "src_file":"thresholds.py"
     },
-    "accelerator_nsight": {
-        "index": 19,
-        "type_text": "Анализ работы с ускорителями",
-        "type_name": "accelerator",
-        "soft_text": "NVidia NSight Systems",
-        "soft_name": "nsight",
-        "manual": "1. NSIGHT\n2. ???\n3. Profit!"
+    "thr_high_ib":{  
+      "index":19,
+      "name":"thr_high_ib",
+      "is_enabled":1,
+      "public":1,
+      "description":"High MPI and FS IB speed (MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s AND FS IB speed (recv OR xmit)  > 2.5 * 10 ** 8 B/s)",
+      "comment":"High MPI and FS IB speed (MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s AND FS IB speed (recv OR xmit)  > 2.5 * 10 ** 8 B/s)",
+      "src_file":"thresholds.py"
     },
-    "scalability_???": {
-        "index": 20,
-        "type_text": "Анализ масштабируемости",
-        "type_name": "scalability",
-        "soft_text": "???",
-        "soft_name": "???",
-        "manual": "1. ???\n2. ???\n3. Profit!"
+    "thr_low_ib":{  
+      "index":20,
+      "name":"thr_low_ib",
+      "is_enabled":1,
+      "public":1,
+      "description":"Low MPI and FS IB speed (MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s AND FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s)",
+      "comment":"Low MPI and FS IB speed (MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s AND FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s)",
+      "src_file":"thresholds.py"
     },
-    "series_???": {
-        "index": 21,
-        "type_text": "Анализ серии запусков",
-        "type_name": "series",
-        "soft_text": "???",
-        "soft_name": "???",
-        "manual": "1. ???\n2. ???\n3. Profit!"
+    "thr_high_mem_load":{  
+      "index":21,
+      "name":"thr_high_mem_load",
+      "is_enabled":1,
+      "public":1,
+      "description":"mem load >  7 * 10 ** 8 B/s",
+      "comment":"mem load >  7 * 10 ** 8 B/s",
+      "src_file":"thresholds.py"
     },
-    "prediction_valgrind": {
-        "index": 22,
-        "type_text": "Прогноз поведения программы",
-        "type_name": "prediction",
-        "soft_text": "Valgrind",
-        "soft_name": "valgrind",
-        "manual": "1. Valgrind\n2. ???\n3. Profit!"
+    "thr_low_mem_load":{  
+      "index":22,
+      "name":"thr_low_mem_load",
+      "is_enabled":1,
+      "public":1,
+      "description":"mem load <  1 * 10 ** 8 B/s",
+      "comment":"mem load <  0.5 * 10 ** 8 B/s",
+      "src_file":"thresholds.py"
     },
-    "prediction_threadspotter": {
-        "index": 23,
-        "type_text": "Прогноз поведения программы",
-        "type_name": "prediction",
-        "soft_text": "Threadspotter",
-        "soft_name": "threadspotter",
-        "manual": "1. Threadspotter\n2. ???\n3. Profit!"
+    "thr_high_mem_store":{  
+      "index":23,
+      "name":"thr_high_mem_store",
+      "is_enabled":1,
+      "public":1,
+      "description":"mem load > 2.5 * 10 ** 8 B/s",
+      "comment":"mem load > 2.5 * 10 ** 8 B/s",
+      "src_file":"thresholds.py"
+    },
+    "thr_low_mem_store":{  
+      "index":24,
+      "name":"thr_low_mem_store",
+      "is_enabled":1,
+      "public":1,
+      "description":"mem load < 0.5 * 10 ** 8 B/s",
+      "comment":"mem load < 0.5 * 10 ** 8 B/s",
+      "src_file":"thresholds.py"
+    },
+    "thr_high_l1_cache_miss":{  
+      "index":25,
+      "name":"thr_high_l1_cache_miss",
+      "is_enabled":1,
+      "public":1,
+      "description":"l1 miss > 5 * 10 ** 7 misses/s",
+      "comment":"l1 miss > 5 * 10 ** 7 misses/s",
+      "src_file":"thresholds.py"
+    },
+    "thr_low_l1_cache_miss":{  
+      "index":26,
+      "name":"thr_low_l1_cache_miss",
+      "is_enabled":1,
+      "public":1,
+      "description":"l1 miss < 2.5 * 10 ** 6 misses/s",
+      "comment":"l1 miss < 2.5 * 10 ** 6 misses/s",
+      "src_file":"thresholds.py"
+    },
+    "thr_high_l2_cache_miss":{  
+      "index":27,
+      "name":"thr_high_l2_cache_miss",
+      "is_enabled":1,
+      "public":1,
+      "description":"l1 miss > 2 * 10 ** 7 misses/s",
+      "comment":"l1 miss > 2 * 10 ** 7 misses/s",
+      "src_file":"thresholds.py"
+    },
+    "thr_low_l2_cache_miss":{  
+      "index":28,
+      "name":"thr_low_l2_cache_miss",
+      "is_enabled":1,
+      "public":1,
+      "description":"l1 miss < 3 * 10 ** 6 misses/s",
+      "comment":"l1 miss < 3 * 10 ** 6 misses/s",
+      "src_file":"thresholds.py"
+    },
+    "thr_high_llc_cache_miss":{  
+      "index":29,
+      "name":"thr_high_llc_cache_miss",
+      "is_enabled":1,
+      "public":1,
+      "description":"l1 miss > 2 * 10 ** 6 misses/s",
+      "comment":"l1 miss > 2 * 10 ** 6 misses/s",
+      "src_file":"thresholds.py"
+    },
+    "thr_low_llc_cache_miss":{  
+      "index":30,
+      "name":"thr_low_llc_cache_miss",
+      "is_enabled":1,
+      "public":1,
+      "description":"l1 miss < 1 * 10 ** 5 misses/s",
+      "comment":"l1 miss < 1 * 10 ** 3 misses/s",
+      "src_file":"thresholds.py"
+    },
+    "thr_high_network_sparsity":{  
+      "index":31,
+      "name":"thr_high_network_sparsity",
+      "is_enabled":1,
+      "public":1,
+      "description":"num_nodes > 1 AND network locality > 4",
+      "comment":"num_nodes > 1 AND network locality > 4",
+      "src_file":"thresholds.py"
+    },
+    "thr_low_network_sparsity":{  
+      "index":32,
+      "name":"thr_low_network_sparsity",
+      "is_enabled":1,
+      "public":1,
+      "description":"num_nodes > 1 AND network locality < 2",
+      "comment":"num_nodes > 1 AND network locality < 2",
+      "src_file":"thresholds.py"
+    },
+    "thr_high_ipc":{  
+      "index":33,
+      "name":"thr_high_ipc",
+      "is_enabled":0,
+      "public":0,
+      "description":"IPC > 2.25",
+      "comment":"IPC > 2.25",
+      "src_file":"thresholds.py"
+    },
+    "thr_low_ipc":{  
+      "index":34,
+      "name":"thr_low_ipc",
+      "is_enabled":0,
+      "public":0,
+      "description":"IPC < 0.75",
+      "comment":"IPC < 0.75",
+      "src_file":"thresholds.py"
     }
- }
+  }
 }

@@ -96,9 +96,25 @@ module Jobstat
       return data
     end
 
+    def get_not_public_tags()
+      result = []
+      sections = get_primary_types + get_detailed_types
+
+      sections.each do |section_name|
+
+        (Job.rules[section_name] || {}).each do |condition, fields|
+          if fields['public'] == 0
+            result << condition
+          end
+
+        end
+      end
+      result
+    end
 
     def get_tags
       tags=StringDatum.where(job_id: id, name: "tag").pluck(:value)
+      tags - get_not_public_tags
     end
 
     def get_ranking
@@ -156,29 +172,47 @@ module Jobstat
       result
     end
 
-    # def get_thresholds
-    #   slice(Conditions.instance.thresholds, get_tags)
-    # end
+    def get_thresholds
+      slice(Job.rules['thresholds'], get_tags)
+    end
+
+    def get_detailed_by_type(type)
+      slice(Job.rules[type], get_tags)
+    end
+
+    def get_primary_types
+      ['classes', 'thresholds', 'rules']
+    end
+
+    def get_detailed_types
+      types = []
+
+      Job.rules['detailed_analysis_types'].each do |name, _|
+        types << name
+      end
+
+      types
+    end
+
+    def get_detailed
+      result = {}
+
+      get_detailed_types.each do |type|
+        result = result.merge(Job.rules[type] || {})
+      end
+
+      slice(result, get_tags)
+    end
 
     def get_classes
       priority_filtration(slice(Job.rules['classes'], get_tags))
     end
 
-    def get_not_public_rules()
-      result = []
-      Job.rules['rules'].each do |rule, data|
-        if data['public'] == 0
-          result.push(data['name'])
-        end
-      end
-      result
-    end
-
     def get_rules user
       filters=Job::get_filters(user)|| [] # TODO:FILTERS
-      tags=get_tags
-      tags=tags - filters # remove rules wich are filtered out
-      tags=tags - get_not_public_rules() # remove rules wich are not public
+
+      tags=get_tags - filters # remove rules wich are filtered out
+
       priority_filtration(slice(Job.rules['rules'], tags)) # sort by groups priority
     end
 
