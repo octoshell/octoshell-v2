@@ -11,7 +11,7 @@
 #
 
 module Support
-  class UserTopic < ActiveRecord::Base
+  class UserTopic < ApplicationRecord
     belongs_to :topic
     belongs_to :user
     validates :topic, :user, presence: true

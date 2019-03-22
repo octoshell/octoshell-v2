@@ -16,9 +16,9 @@
 #
 
 module Core
-  class Credential < ActiveRecord::Base
+  class Credential < ApplicationRecord
 
-    belongs_to :user, class_name: Core.user_class,
+    belongs_to :user, class_name: Core.user_class.to_s,
                       foreign_key: :user_id, inverse_of: :credentials
 
     validates :user, :public_key, :name, presence: true

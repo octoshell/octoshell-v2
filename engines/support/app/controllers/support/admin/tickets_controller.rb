@@ -1,7 +1,7 @@
 # coding: utf-8
 module Support
   class Admin::TicketsController < Admin::ApplicationController
-    before_filter :setup_default_filter, only: :index
+    before_action :setup_default_filter, only: :index
 
     #autocomplete :ticket, :project
 

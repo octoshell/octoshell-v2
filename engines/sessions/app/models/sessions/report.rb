@@ -32,7 +32,7 @@
 
 # Отчет о проделанной работе по проекту.
 module Sessions
-  class Report < ActiveRecord::Base
+  class Report < ApplicationRecord
 
     POINT_RANGE = (0..5)
     belongs_to :session

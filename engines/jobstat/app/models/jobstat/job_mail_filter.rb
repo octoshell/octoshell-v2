@@ -8,7 +8,7 @@
 #
 
 module Jobstat
-  class JobMailFilter < ActiveRecord::Base
+  class JobMailFilter < ApplicationRecord
     # condition
 
     belongs_to :user

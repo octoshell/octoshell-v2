@@ -1,6 +1,6 @@
 module Support
   class RepliesController < ApplicationController
-    before_filter :require_login
+    before_action :require_login
 
     def create
       @reply = Reply.new(reply_params)

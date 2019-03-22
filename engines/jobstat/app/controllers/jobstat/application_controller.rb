@@ -2,7 +2,7 @@ module Jobstat
   class ApplicationController < ::ApplicationController
     layout "layouts/application"
 
-    before_filter :require_login, :load_defaults #, :journal_user
+    before_action :require_login, :load_defaults #, :journal_user
 
     def load_defaults
       #TODO: load defaults from file

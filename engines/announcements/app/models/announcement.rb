@@ -20,7 +20,7 @@
 #  index_announcements_on_created_by_id  (created_by_id)
 #
 
-class Announcement < ActiveRecord::Base
+class Announcement < ApplicationRecord
 
   translates :title, :body
 

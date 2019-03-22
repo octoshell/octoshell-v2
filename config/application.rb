@@ -1,14 +1,17 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
 require 'rails/all'
 require 'decorators'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env)
+Bundler.require(*Rails.groups)
 
 module Octoshell
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.0
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -25,6 +28,10 @@ module Octoshell
     config.jd_systems = {}
 
     config.cache_store = :memory_store, { size: 128.megabytes, expires_in: 600 }
-    config.active_record.raise_in_transactional_callbacks = true
+    #config.active_record.raise_in_transactional_callbacks = true
+
+    # RAILS5
+    #config.action_controller.per_form_csrf_tokens = true
+    #config.action_controller.forgery_protection_origin_check = true
   end
 end

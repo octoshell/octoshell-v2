@@ -15,6 +15,6 @@
 #
 
 module Jobstat
-  class FloatDatum < ActiveRecord::Base
+  class FloatDatum < ApplicationRecord
   end
 end

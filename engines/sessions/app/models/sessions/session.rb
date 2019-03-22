@@ -18,7 +18,7 @@
 # а также заполняют опросники Surveys, создавая UserSurveys.
 
 module Sessions
-  class Session < ActiveRecord::Base
+  class Session < ApplicationRecord
 
     translates :description, :motivation
 

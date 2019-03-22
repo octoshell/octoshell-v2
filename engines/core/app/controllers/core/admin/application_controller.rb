@@ -1,6 +1,6 @@
 module Core
   class Admin::ApplicationController < Core::ApplicationController
-    before_filter :authorize_admins, :journal_user 
+    before_action :authorize_admins, :journal_user 
 
     def authorize_admins
       authorize! :access, :admin

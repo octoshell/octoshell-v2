@@ -21,11 +21,11 @@
 #
 
 module Support
-  class Reply < ActiveRecord::Base
+  class Reply < ApplicationRecord
     mount_uploader :attachment, AttachmentUploader
     mount_uploader :export_attachment, ReplyAttachmentUploader, mount_on: :attachment_file_name
 
-    belongs_to :author, class_name: Support.user_class, foreign_key: :author_id
+    belongs_to :author, class_name: Support.user_class.to_s, foreign_key: :author_id
     belongs_to :ticket
 
     validates :author, :ticket, :message, presence: true

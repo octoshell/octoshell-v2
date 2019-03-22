@@ -21,7 +21,7 @@
 #
 
 module Core
-  class Cluster < ActiveRecord::Base
+  class Cluster < ApplicationRecord
 
     translates :name
 

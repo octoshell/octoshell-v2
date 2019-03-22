@@ -12,8 +12,8 @@
 #  receive_special_mails :boolean          default(TRUE)
 #
 
-class Profile < ActiveRecord::Base
-  belongs_to :user, class_name: User,
+class Profile < ApplicationRecord
+  belongs_to :user, class_name: User.to_s,
                     inverse_of: :profile
 
   def full_name

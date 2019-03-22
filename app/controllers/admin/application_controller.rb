@@ -1,7 +1,7 @@
 # coding: utf-8
 class Admin::ApplicationController < ApplicationController
   include AuthMayMay
-  before_filter :authorize_admins!
+  before_action :authorize_admins!
 
 private
 

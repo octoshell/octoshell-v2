@@ -1,4 +1,4 @@
 module Wiki
-  class Task < ActiveRecord::Base
+  class Task < ApplicationRecord
   end
 end

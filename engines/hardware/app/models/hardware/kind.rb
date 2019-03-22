@@ -12,7 +12,7 @@
 #
 
 module Hardware
-  class Kind < ActiveRecord::Base
+  class Kind < ApplicationRecord
     translates :name, :description, fallback: :any
     validates_translated :name, presence: true
     validates :name_ru, uniqueness: true, if: proc { |k| k.name_ru.present? }

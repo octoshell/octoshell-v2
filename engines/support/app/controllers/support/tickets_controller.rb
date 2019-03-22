@@ -1,8 +1,8 @@
 # coding: utf-8
 module Support
   class TicketsController < ApplicationController
-    before_filter :require_login
-    before_filter :setup_default_filter, only: :index
+    before_action :require_login
+    before_action :setup_default_filter, only: :index
 
     def index
       @search = current_user.tickets.search(params[:q])

@@ -16,7 +16,7 @@
 #
 
 # Модель доступа к действию для группы пользователей
-class Ability < ActiveRecord::Base
+class Ability < ApplicationRecord
   Definition = Struct.new(:action, :subject)
 
   belongs_to :group

@@ -12,7 +12,7 @@
 #  index_announcement_recipients_on_user_id          (user_id)
 #
 
-class AnnouncementRecipient < ActiveRecord::Base
+class AnnouncementRecipient < ApplicationRecord
   belongs_to :user, class_name: "User"
   belongs_to :announcement
 end

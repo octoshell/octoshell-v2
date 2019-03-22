@@ -15,7 +15,7 @@
 #
 
 module Support
-  class Field < ActiveRecord::Base
+  class Field < ApplicationRecord
     has_and_belongs_to_many :topics, join_table: :support_topics_fields
 
     translates :name, :hint

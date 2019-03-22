@@ -1,6 +1,6 @@
 module Core
   class EmploymentsController < Core::ApplicationController
-    before_filter :require_login
+    before_action :require_login
 
     def new
       @employment = current_user.employments.build do |employment|

@@ -10,7 +10,7 @@
 #
 
 module Hardware
-  class StatesLink < ActiveRecord::Base
+  class StatesLink < ApplicationRecord
     belongs_to :from, class_name: "State"
     belongs_to :to, class_name: "State"
     validate do

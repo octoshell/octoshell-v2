@@ -14,7 +14,7 @@
 #
 
 module Hardware
-  class Item < ActiveRecord::Base
+  class Item < ApplicationRecord
     translates :name, :description, fallback: :any
     belongs_to :kind, inverse_of: :items
 

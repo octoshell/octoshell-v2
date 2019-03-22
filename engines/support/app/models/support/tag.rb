@@ -11,7 +11,7 @@
 
 # Тег тикета
 module Support
-  class Tag < ActiveRecord::Base
+  class Tag < ApplicationRecord
     attr_accessor :merge_id
 
     translates :name

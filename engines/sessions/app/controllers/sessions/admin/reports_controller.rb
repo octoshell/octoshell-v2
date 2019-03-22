@@ -1,6 +1,6 @@
 module Sessions
   class Admin::ReportsController < Admin::ApplicationController
-    before_filter { authorize! :manage, :reports }
+    before_action { authorize! :manage, :reports }
 
     def index
       @search = Report.search(params[:q] || default_index_params)

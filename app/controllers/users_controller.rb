@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :require_login
+  before_action :require_login
 
   def index
     respond_to do |format|

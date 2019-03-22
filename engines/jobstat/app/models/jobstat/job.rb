@@ -36,7 +36,7 @@ require 'yaml/store'
 # require "net/https"
 
 module Jobstat
-  class Job < ActiveRecord::Base
+  class Job < ApplicationRecord
     include JobHelper
 
     def get_duration_hours
