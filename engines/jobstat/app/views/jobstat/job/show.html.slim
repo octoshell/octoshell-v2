@@ -159,7 +159,7 @@ table class="table table-bordered table-striped"
     th
       =t('.recomendation')
 
-  - rules=@job.get_rules(@current_user)
+  - rules=@job.get_rules(@current_user) + @job.get_detailed
   - if rules.length > 0
     - rules.each do |cond|
       - cond_name=cond['name']
@@ -247,6 +247,18 @@ table class="table table-bordered table-striped"
 br
 
 //// Part about detailed analysis
+- count_initiatees = @job.initiatees.length
+- if count_initiatees != 0 
+  p 
+    | Найденные инициированные задачи:
+    br
+    - @job.initiatees.each do |cond|
+      - link = "#{cond.id}"
+      a href="#{link}" Job id = #{link}
+      br
+- else
+  p Инициированных задач не найдено.
+  br
 - type_list = @rules_plus['detailed_analysis_types']
 p
   |
