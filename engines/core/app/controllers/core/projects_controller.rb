@@ -1,5 +1,6 @@
 module Core
   class ProjectsController < Core::ApplicationController
+    before_action :filter_blocked_users, except: :index
     def index
       respond_to do |format|
         format.html do

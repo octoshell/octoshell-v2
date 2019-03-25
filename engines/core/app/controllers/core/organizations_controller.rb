@@ -2,6 +2,9 @@ module Core
   class OrganizationsController < Core::ApplicationController
     respond_to :json
 
+    before_action :filter_blocked_users, except: :index
+
+
     def index
       @organizations = Organization.finder(params[:q])
       json = {

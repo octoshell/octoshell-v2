@@ -24,6 +24,11 @@ module Sessions
       result
     end
 
+    def form_report_points
+      [[0, t('sessions.evaluate_helper.without_mark')]] +
+        (1..5).map { |n| [n, n.to_s] }
+    end
+
     def session_state_label(session)
       case session.state_name
       when :pending then

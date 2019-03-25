@@ -78,7 +78,7 @@ module Sessions
     def user_postdated_survey_and_blocked(user_survey_id)
       @user_survey = Sessions::UserSurvey.find(user_survey_id)
       @user = @user_survey.user
-      mail to: @user.email, subject: t(".subject", name: @user_survey.survey.name, title: @user_survey.project.title)
+      mail to: @user.email, subject: t(".subject", name: @user_survey.survey.name)
     end
   end
 end
