@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190125111222) do
+ActiveRecord::Schema.define(version: 20190321105523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -331,7 +331,6 @@ ActiveRecord::Schema.define(version: 20190125111222) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "category"
-    t.integer  "type"
   end
 
   add_index "core_notices", ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id", using: :btree
@@ -810,6 +809,15 @@ ActiveRecord::Schema.define(version: 20190125111222) do
   add_index "sessions_projects_in_sessions", ["project_id"], name: "index_sessions_projects_in_sessions_on_project_id", using: :btree
   add_index "sessions_projects_in_sessions", ["session_id", "project_id"], name: "i_on_project_and_sessions_ids", unique: true, using: :btree
   add_index "sessions_projects_in_sessions", ["session_id"], name: "index_sessions_projects_in_sessions_on_session_id", using: :btree
+
+  create_table "sessions_report_materials", force: :cascade do |t|
+    t.string   "materials"
+    t.string   "materials_content_type"
+    t.integer  "materials_file_size"
+    t.integer  "report_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "sessions_report_replies", force: :cascade do |t|
     t.integer  "report_id"
