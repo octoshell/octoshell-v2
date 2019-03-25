@@ -76,6 +76,9 @@ function disagree(jobid, rule, mass, text) {
     data: {'feedback': feedback, 'type': 'feedback_rule'},
   }).always(function( msg ) {
     restore_disagree()
+    if(typeof(jobs[jobid]['feedback'])==='undefined'){
+      jobs[jobid]['feedback']={}
+    }
     jobs[jobid]['feedback'][rule]={'class': 1}
     update_jobs_agree('')
     show_thanks(I18n.t('jobstat.common.thanks_for_feedback'))
@@ -98,13 +101,17 @@ function agree(jobid, rule, mass, text) {
     condition: rule,
     feedback: text ? text : $("#question_" + jobid + '_' + rule).val(),
   }
+  var jid=jobid
   $.ajax({
     type: "POST",
     url: feedback_url,
     data: {'feedback': feedback, 'type': 'feedback_rule'},
   }).always(function( msg ) {
     restore_disagree()
-    jobs[jobid]['feedback'][rule]={'class': 0}
+    if(typeof(jobs[jobid]['feedback'])==='undefined'){
+      jobs[jobid]['feedback']={}
+    }
+    jobs[jid]['feedback'][rule]={'class': 0}
     update_jobs_agree('')
     show_thanks(I18n.t('jobstat.common.thanks_for_feedback'))
   });

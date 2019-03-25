@@ -31,7 +31,7 @@ module Jobstat
     end
 
     def show
-      @job = Job.find(params["id"])
+      @job = Job.find(params[:id])
       @jobs_plus={@job.drms_job_id => [:id, :cluster, :drms_job_id, :drms_task_id, :login, :partition, :submit_time, :start_time, :end_time, :timelimit, :command, :state, :num_cores, :num_nodes].map{|i| [i.to_s, @job[i]]}.to_h}
       @feedbacks=Job::get_feedback_job(params[:user].to_i, @job.id) || {}
 

@@ -4,23 +4,7 @@ module Jobstat
 
     before_filter :require_login, :load_defaults #, :journal_user
 
-#    rescue_from MayMay::Unauthorized, with: :not_authorized
-
-#    def journal_user
-#      logger.info "JOURNAL: url=#{request.url}/#{request.method}; user_id=#{current_user ? current_user.id : 'none'}"
-#    end
-
-#    def not_authenticated
-#      redirect_to main_app.root_path, alert: t("flash.not_logged_in")
-#    end
-#
-#    def not_authorized
-#      redirect_to main_app.root_path, alert: t("flash.not_authorized")
-#    end
-
-
     def load_defaults
-      #FIXME!
       #TODO: load defaults from file
 
       return if @PER_PAGE
@@ -50,10 +34,11 @@ module Jobstat
         name=c.name
         @clusters[name]=ClusterConfig.new(name, c.description)
         @clusters[name].states=slurm_states
+        part_opt << c.partitions.map { |p| p.name }
         #logger.warn "#{name}--#{c.description}: #{part_opt.inspect}"
         #logger.warn "===> #{@clusters.inspect}"
       }
-      @partitions_options = part_opt.flatten.uniq
+      @partitions_options = [part_opt, 'ALL'].flatten.uniq
 
       # lom1.states = slurm_states
       # lom2.states = slurm_states

@@ -120,7 +120,12 @@ module Face
     end
 
     def markdown(text)
-      CommonMarker.render_html(text, :UNSAFE).html_safe
+      CommonMarker.render_html(text, :DEFAULT,[:table,:autolink,:strikethrough]).html_safe
     end
+
+    def wiki_markdown(text)
+      CommonMarker.render_html(text, [:DEFAULT, :UNSAFE],[:table,:autolink,:strikethrough]).html_safe
+    end
+
   end
 end
