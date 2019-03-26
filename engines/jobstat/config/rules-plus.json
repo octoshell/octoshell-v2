@@ -605,9 +605,9 @@
     }
   },
   "profiling-mpip":{  
-    "profiling-mpip-low_pe":{  
+    "mpip_low_pe":{  
       "index":1,
-      "name":"profiling-mpip-low_pe",
+      "name":"mpip_low_pe",
       "is_enabled":1,
       "public":1,
       "description":"Задача обладает низкой параллельной эффективностью (т.е. неэффективно разделены вычисления между процессами и/или неэффективно выполняется обмен данными).",
@@ -621,9 +621,9 @@
       "text_recommendation":"Анализ MPI программ -> Трассировка",
       "module_recommendation":"mpi_tracing"
     },
-    "profiling-mpip-low_lb":{  
+    "mpip_low_lb":{  
       "index":2,
-      "name":"profiling-mpip-low_lb",
+      "name":"mpip_low_lb",
       "is_enabled":1,
       "public":1,
       "description":"Присутствует дисбаланс вычислительной нагрузки между процессами.",
@@ -637,9 +637,9 @@
       "text_recommendation":"Анализ MPI программ -> Трассировка",
       "module_recommendation":"mpi_tracing"
     },
-    "profiling-mpip-low_comme":{  
+    "mpip_low_comme":{  
       "index":3,
-      "name":"profiling-mpip-low_comme",
+      "name":"mpip_low_comme",
       "is_enabled":1,
       "public":1,
       "description":"В программе много времени тратится на выполнение обмена данными, во время которого отсутствует полезная вычислительная нагрузка.",
