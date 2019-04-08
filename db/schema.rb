@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_28_224516) do
+ActiveRecord::Schema.define(version: 2020_05_15_110709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -358,6 +358,16 @@ ActiveRecord::Schema.define(version: 2019_10_28_224516) do
     t.index ["user_id"], name: "index_core_members_on_user_id"
   end
 
+  create_table "core_notice_show_options", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "notice_id"
+    t.boolean "hidden", default: false, null: false
+    t.boolean "resolved", default: false, null: false
+    t.string "answer"
+    t.index ["notice_id"], name: "index_core_notice_show_options_on_notice_id"
+    t.index ["user_id"], name: "index_core_notice_show_options_on_user_id"
+  end
+
   create_table "core_notices", id: :serial, force: :cascade do |t|
     t.integer "sourceable_id"
     t.string "sourceable_type"
@@ -368,6 +378,10 @@ ActiveRecord::Schema.define(version: 2019_10_28_224516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category"
+    t.string "kind"
+    t.datetime "show_from"
+    t.datetime "show_till"
+    t.integer "active"
     t.index ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id"
     t.index ["sourceable_type", "sourceable_id"], name: "index_core_notices_on_sourceable_type_and_sourceable_id"
   end
@@ -696,6 +710,7 @@ ActiveRecord::Schema.define(version: 2019_10_28_224516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "nodelist"
+    t.integer "initiator_id"
     t.index ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true
     t.index ["end_time"], name: "index_jobstat_jobs_on_end_time"
     t.index ["login"], name: "index_jobstat_jobs_on_login"
@@ -1175,7 +1190,7 @@ ActiveRecord::Schema.define(version: 2019_10_28_224516) do
     t.string "event", null: false
     t.integer "whodunnit"
     t.text "object"
-    t.integer "session_id"
+    t.string "session_id"
     t.datetime "created_at"
     t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"

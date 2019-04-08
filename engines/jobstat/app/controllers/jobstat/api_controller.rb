@@ -87,9 +87,9 @@ module Jobstat
       drms_job_id = @json["job_id"]
       drms_task_id = @json.fetch("task_id", 0)
 
-      origin_cluster = @json["origin_cluster"]
-      origin_drms_job_id = @json["origin_job_id"]
-      origin_drms_task_id = @json.fetch("origin_task_id", 0)
+      origin_cluster = @json["origin"]["cluster"]
+      origin_drms_job_id = @json["origin"]["job_id"]
+      origin_drms_task_id = @json["origin"].fetch("task_id", 0)
 
       tags = @json["tags"]
       job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
@@ -153,10 +153,23 @@ module Jobstat
       DigestFloatDatum.where(job_id: job.id, name: params["name"]).destroy_all
 
       params["data"].each do |entry|
-	      DigestFloatDatum.where(job_id: job.id, name: params["name"], time: Time.at(entry["time"]).utc.to_datetime).first_or_create
+      DigestFloatDatum.where(job_id: job.id, name: params["name"], time: Time.at(entry["time"]).utc.to_datetime).first_or_create
           .update({value: entry["avg"]})
       end
     end
+
+    def check_exist
+      cluster = params["cluster"]
+      drms_job_id = params["job_id"]
+      drms_task_id = params.fetch("task_id", 0)
+
+      @job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+
+      render :status => 404 unless @job
+    end
+
+    before_filter :parse_request
+    #before_filter :parse_request, :authenticate_from_token!, only: [:push]
 
     protected
 
@@ -168,7 +181,7 @@ module Jobstat
     end
 
     def parse_request
-      @json = JSON.parse(request.body.read)
+      @json = JSON.parse(request.body.read) rescue {}
     end
   end
 end
