@@ -84,9 +84,9 @@ module Jobstat
       drms_job_id = @json["job_id"]
       drms_task_id = @json.fetch("task_id", 0)
 
-      origin_cluster = @json["origin_cluster"]
-      origin_drms_job_id = @json["origin_job_id"]
-      origin_drms_task_id = @json.fetch("origin_task_id", 0)
+      origin_cluster = @json["origin"]["cluster"]
+      origin_drms_job_id = @json["origin"]["job_id"]
+      origin_drms_task_id = @json["origin"].fetch("task_id", 0)
 
       tags = @json["tags"]
       job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
@@ -155,6 +155,16 @@ module Jobstat
       end
     end
 
+    def check_exist
+      cluster = params["cluster"]
+      drms_job_id = params["job_id"]
+      drms_task_id = params.fetch("task_id", 0)
+
+      @job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+
+      render :status => 404 unless @job
+    end
+
     before_filter :parse_request
     #before_filter :parse_request, :authenticate_from_token!, only: [:push]
 
@@ -168,7 +178,7 @@ module Jobstat
     end
 
     def parse_request
-      @json = JSON.parse(request.body.read)
+      @json = JSON.parse(request.body.read) rescue {}
     end
   end
 end
