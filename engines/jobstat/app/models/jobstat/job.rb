@@ -198,7 +198,7 @@ module Jobstat
       result = {}
 
       get_detailed_types.each do |type|
-        result = result.merge(Job.rules[type] || {})
+        result = result.merge(Job.rules['detailed'][type] || {})
       end
 
       slice(result, get_tags)
