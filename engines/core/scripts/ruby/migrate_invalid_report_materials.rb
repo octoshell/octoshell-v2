@@ -15,9 +15,7 @@ module Sessions
     extension = old_file_path.split('.')[-1]
 
     new_report_material = nil
-    # return if %w[txt pdf].exclude? extension.downcase
-
-    if %w(zip rar gz 7z txt pdf).include? extension.downcase
+    if %w(zip rar gz 7z).include? extension.downcase
       new_report_material = report.report_materials.new(materials:
         ActionDispatch::Http::UploadedFile.new(filename: new_name_unchanged, tempfile: old_file))
     else
@@ -41,11 +39,15 @@ module Sessions
     old_file.close
   end
 
+  ids = [0, 1230, 1325, 1402, 5124, 5205, 4404, 4489, 4509, 4539,
+        4615, 4712, 4788, 4744, 4867, 4985, 5070, 5057, 5077, 4783, 5066, 4953]
 
   ActiveRecord::Base.transaction do
     csv = CSV.open('migrate_reports.log', 'w')
     csv << %w[id file_path errors updated_at]
     Report.all.each do |report|
+      next if ids.exclude? report.id
+
       puts "processing report id: #{report.id}"
       if report.materials.file.present?
         save!(report.materials.file.file, report,csv)
