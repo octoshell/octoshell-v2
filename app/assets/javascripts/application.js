@@ -10,6 +10,8 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require i18n.js
+//= require i18n/translations
 //= require face/application
 //= require core/application
 //= require support/application

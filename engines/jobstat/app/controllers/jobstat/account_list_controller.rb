@@ -4,7 +4,7 @@ module Jobstat
   class AccountListController < ApplicationController
     include JobHelper
 
-    FEEDBACK_HOST = "http://graphit.parallel.ru:8123"
+    #FEEDBACK_HOST = Rails.application.config.octo_feedback_host
 
     def index
       #@owned_logins = get_owned_logins
@@ -27,9 +27,8 @@ module Jobstat
         query_logins = (req_logins & query_logins)
       end
       @params[:all_logins]=query_logins
-      @all_logins=get_select_options_by_projects @projects, query_logins
-      @all_logins[0]=['ALL']+@all_logins[0]
-      #@all_logins[1][:selected]<<['ALL'] if req_logins.length==0
+      #@all_logins=get_select_options_by_projects @projects, query_logins
+      @all_logins=get_grp_select_options_by_projects @projects, query_logins
 
       @rules_plus=Job.rules
       @jobs=[]
@@ -178,49 +177,6 @@ module Jobstat
       # FIXME!!!!!! (see all_rules)
       @emails = JobMailFilter.filters_for_user current_user.id
 
-      logger.info "JOBSPLUS: #{@jobs_plus.inspect}"
-      # @fake_data=params[:fake_data].to_i
-      # if @fake_data!=0
-      #   @jobs_plus['1']={
-      #     'cluster' => 'lomonosov-1',
-      #     'drms_job_id' => '1000',
-      #     'drms_task_id' => '1000',
-      #     'login' => 'tester',
-      #     'partition' => 'test',
-      #     'submit_time' => '2011-01-10 10:10:10',
-      #     'start_time' => '2011-01-10 10:20:10',
-      #     'end_time' => '2011-01-10 20:20:10',
-      #     'timelimit' => '24:00:00',
-      #     'command' => 'do_test',
-      #     'state' => 'COMPLETED',
-      #     'num_cores' => '10',
-      #     'num_nodes' => '1',
-      #     'rules' => {
-      #       'rule_disbalance_cpu_la' => 'Заметный дисбаланс внутри узлов либо активность сильно отличается на разных узлах.',
-      #       'rule_node_disbalance' => 'Данные мониторинга сильно отличаются для разных узлов -> скорее всего, имеет место разбалансировка. Правило имеет смысл учитывать, если не сработали более конкретные правила',
-      #     }
-      #   }
-        
-      #   @jobs_plus[1100]={
-      #     'cluster' => 'lomonosov-1',
-      #     'drms_job_id' => '1100',
-      #     'drms_task_id' => '1100',
-      #     'login' => 'tester',
-      #     'partition' => 'test',
-      #     'submit_time' => '2011-01-11 10:10:10',
-      #     'start_time' => '2011-01-11 10:20:10',
-      #     'end_time' => '2011-01-11 20:20:10',
-      #     'timelimit' => '24:00:00',
-      #     'command' => 'do_test_2',
-      #     'state' => 'COMPLETED',
-      #     'num_cores' => '100',
-      #     'num_nodes' => '10',
-      #     'rules' => {
-      #       'rule_mpi_issues' => 'Низкая активность использования вычислительных ресурсов при высокой интенсивности использования MPI сети.',
-      #       'rule_mpi_packets' => 'Размер MPI пакетов слишком маленький.',
-      #     }
-      #   }
-      #end
     end
 
     def feedback
@@ -247,7 +203,7 @@ module Jobstat
     def feedback_multi_jobs parm
       #"0"=>{"user"=>"1234", "cluster"=>"lomonosov-2", "job_id"=>"615023",
       #      "task_id"=>"0", "class"=>"0", "feedback"=>"ooops"},
-      uri=URI(FEEDBACK_HOST + "/api/feedback-job")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-job")
       #user=UID_octoshell(int), class=int(0=ok,1=not_ok), cluster=string, job_id=int, task_id=int, condition=string, feedback=string.
       if !parm.kind_of?(Enumerable)
         logger.info("Ooooops! feedback_all_jobs got bad argument: #{parm}") 
@@ -276,7 +232,7 @@ module Jobstat
 
     def feedback_proposal parm
       #http://graphit.parallel.ru:8123/api/feedback-proposal?user=1&cluster=lomonosov-2&job_id=585183&task_id=0&feedback=something-something
-      uri=URI(FEEDBACK_HOST + "/api/feedback-proposal")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-proposal")
 
       req={
         user: parm[:user].to_i,
@@ -322,7 +278,7 @@ module Jobstat
       if cond.to_s == ''
         return 500, 'bad condition (empty)'
       end
-      uri=URI(FEEDBACK_HOST + "/api/filters")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/filters")
 
       filters=Job::get_filters(current_user)
         .map { |x| x['filters'] }
@@ -357,7 +313,7 @@ module Jobstat
       #FIXME! move address to config
       #  user=UID_octoshell(int), cluster=string(список через запятую), account=string(список через запятую), condition=string, feedback=string.
 
-      uri=URI(FEEDBACK_HOST + "/api/feedback-job")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-job")
       req={
         user: parm[:user].to_i,
         cluster: parm[:cluster] || 'all',
@@ -385,7 +341,7 @@ module Jobstat
     def feedback_rule_only parm
       #TODO make caching for not confirmed sends
 
-      uri=URI(FEEDBACK_HOST + "/api/feedback-condition")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-condition")
       req={
         user: parm[:user].to_i,
         :class => parm[:class] || 0,

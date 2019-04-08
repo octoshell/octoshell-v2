@@ -95,19 +95,29 @@ module Jobstat
       result
     end
 
-    def get_select_options_by_projects projects, selected=[]
-      list=[]
+    def get_grp_select_options_by_projects projects, selected=[]
+      list=[['ALL',['ALL']]]
       dis=[]
       projects.each{|proj,logins|
         p="---- #{shorten(proj.title,32)} ----"
-        list << p
-        dis << p
-        list.concat(logins)
+        list << [p,logins]
       }
-      [list, {selected: selected, disabled: dis}]
-      #debug [["-- RNF --","vadim", "shvets", "-- Worlid domination --", "vurdizm", "wasabiko", "ivanov", "-- Postgraduate play --", "afanasievily_251892", "gumerov_219059"], selected: selected, disabled: ["-- RNF --","-- Worlid domination --","-- Postgraduate play --"]]
-      #options_for_select(list, selected: selected, disabled: dis)
+      {list: list, options: {selected: selected, disabled: dis}}
     end
+
+    # def get_select_options_by_projects projects, selected=[]
+    #   list=[]
+    #   dis=[]
+    #   projects.each{|proj,logins|
+    #     p="---- #{shorten(proj.title,32)} ----"
+    #     list << p
+    #     dis << p
+    #     list.concat(logins)
+    #   }
+    #   [list, {selected: selected, disabled: dis}]
+    #   #debug [["-- RNF --","vadim", "shvets", "-- Worlid domination --", "vurdizm", "wasabiko", "ivanov", "-- Postgraduate play --", "afanasievily_251892", "gumerov_219059"], selected: selected, disabled: ["-- RNF --","-- Worlid domination --","-- Postgraduate play --"]]
+    #   #options_for_select(list, selected: selected, disabled: dis)
+    # end
 
     def shorten name, len
       l=name.length

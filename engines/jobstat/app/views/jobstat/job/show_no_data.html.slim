@@ -1,68 +1,77 @@
-h1 = t('.no-data')
+h1 = t('jobstat.job.show.no-data')
 
-h1 = t('.data_on_job', job: @job[:drms_job_id])
+a href='/jobstat/account/list/index'
+  = t('jobstat.job.show.return')
 
-= @job[:command]
+h1 = t('jobstat.job.show.data_on_job', job: @job.drms_job_id)
 
 div class="row"
   div class="col-md-4"
-    h3 = t('.common_info')
+    h3 = t('jobstat.job.show.common_info')
     table class="table table-bordered table-striped"
       tr
         td
-          | Cluster
+          = t('jobstat.job.show.supercomputer')
         td
           = @job[:cluster]
       tr
         td
-          | Job id
+          =t('jobstat.job.show.job_id')
         td
           = @job[:drms_job_id]
       tr
         td
-          | Login
+          = t('jobstat.job.show.login')
         td
           = @job[:login]
       tr
         td
-          | State
+          =t('jobstat.job.show.status')
         td
           = @job[:state]
       tr
         td
-          | Partition
+          = t('jobstat.job.show.partition')
         td
           = @job[:partition]
       tr
         td
-          | Num cores
+          =t('jobstat.job.show.cores')
         td
           = @job[:num_cores]
       tr
         td
-          | Num nodes
+          =t('jobstat.job.show.nodes')
         td
           = @job[:num_nodes]
       tr
         td
-          | Submit time
+          =t('jobstat.job.show.queued')
         td
-          = @job[:submit_time].strftime("%D %T")
+          = @job[:submit_time].strftime("%F %T (%Z)")
       tr
         td
-          | Start time
+          =t('jobstat.job.show.start')
         td
-          = @job[:start_time].strftime("%D %T")
+          = @job[:start_time].strftime("%F %T (%Z)")
       tr
         td
-          | End time
+          =t('jobstat.job.show.end')
         td
-          = @job[:end_time].strftime("%D %T")
+          = @job[:end_time].strftime("%F %T (%Z)")
       tr
         td
-          | Duration (hours)
+          =t('jobstat.job.show.time')
         td
           = number_with_precision(@job.get_duration_hours, :precision => 1)
+      tr
+        td
+          =t('jobstat.job.show.nodes')
+        td
+          = @job[:nodelist].gsub(',',', ')
+
+p
+  =t('jobstat.job.show.command_line', line: raw(@job.command))
 
 script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"
 css:

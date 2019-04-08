@@ -3,12 +3,11 @@ div class="container" id="intro-step2" data-disable-interaction="1"
     div class="row"
       = f.text_field("start_time", class: "datepicker", value: @params[:start_time], label: t('.from'), wrapper: {class: 'col-md-3'})
       = f.text_field("end_time", class: "datepicker", value: @params[:end_time], label: t('.to'), wrapper: {class: 'col-md-3'})
-      = f.select("cluster", options_for_select(@clusters.map{|name,c| [name, c.id]}.reverse), {label: t('.cluster')}, {wrapper: {class: 'col-md-3'}})
-      /,@params[:cluster]
+      = f.select("cluster", options_for_select(@clusters.map{|name,c| [name, c.id]}.sort{|a,b| a[0]<=>b[0]}, @params[:cluster]), {label: t('.cluster')}, {wrapper: {class: 'col-md-3'}})
     div class="row"
-      = f.select("all_logins", options_for_select(@all_logins[0],@all_logins[1]), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("all_logins", grouped_options_for_select(@all_logins[:list],@all_logins[:options]), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
       = f.select("states", ["ALL"] + @states_options, {label: t('.statuses'), selected: @params[:states]}, {multiple: true, wrapper: {class: 'col-md-3'}})
-      = f.select("partitions", ["ALL"] + @partitions_options, {label: t('.partitions'), selected: @params[:partitions]}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("partitions", @partitions_options, {label: t('.partitions'), selected: @params[:partitions]}, {multiple: true, wrapper: {class: 'col-md-3'}})
     div class="row"
       = f.submit t('.show'), class: 'col-md-1 btn btn-success'
       span class='col-md-1'
@@ -30,4 +29,6 @@ javascript:
     }
 
     $("#_only_long").prop('checked', #{@params[:only_long].to_i == 1});
+    // dirty hack to force select2 select to show SELECTED item...
+    $("#_clusrter").select2().select2('val',$("#_clusrter").val());
   });

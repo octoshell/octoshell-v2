@@ -116,6 +116,7 @@ ru:
             assessed: "Оценен"
             exceeded: "Просрочен"
             postdated: "Отправлен с опозданием"
+            postfilling: "Заполняется с опознанием"
           events:
             accept: "Начать заполнение"
             decline_submitting: "Не могу предоставить адекватный текст отчета"
@@ -142,6 +143,7 @@ ru:
             submitted: "Отправлен"
             exceeded: "Просрочен"
             postdated: "Отправлен с опозданием"
+            postfilling: "Заполняется с опознанием"
           events:
             fill: "Ответить на вопросы"
             submit: "Отправить"

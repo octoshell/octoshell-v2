@@ -1,6 +1,7 @@
 Octoshell::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  config.octo_feedback_host = 'http://graphit.parallel.ru:8123'
   # Code is not reloaded between requests.
   config.cache_classes = true
 
@@ -45,11 +46,16 @@ Octoshell::Application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   #config.force_ssl = true
 
+  config.logger = Logger.new(config.paths['log'].first, 'weekly', 5.megabytes)
+  config.log_tags = [:remote_ip, lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
+  config.logger.level = Logger::DEBUG
+  config.colorize_logging = false
   # Set to :debug to see everything in the log.
-  config.log_level = :info
+  #config.log_level = :warn
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
+  config.log_tags = [ lambda{|r| Rime.now}, :remote_ip ]
 
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
