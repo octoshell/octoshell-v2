@@ -15,8 +15,6 @@ module Sessions
     extension = old_file_path.split('.')[-1]
 
     new_report_material = nil
-    # return if %w[txt pdf].exclude? extension.downcase
-
     if %w(zip rar gz 7z txt pdf).include? extension.downcase
       new_report_material = report.report_materials.new(materials:
         ActionDispatch::Http::UploadedFile.new(filename: new_name_unchanged, tempfile: old_file))
