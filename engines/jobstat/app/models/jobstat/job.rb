@@ -325,9 +325,8 @@ module Jobstat
       if @rules.nil? || force_reload
         @rules={}
         begin
-          File.open("engines/jobstat/config/rules-plus.json", "r") { |file|
+          File.open("engines/jobstat/config/conditions.json", "r") { |file|
             @rules=JSON.load(file)
-            @rules['rules'].keys.each{|k| @rules['rules'][k]['name']=k}
           }
         rescue
         end
