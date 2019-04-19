@@ -270,7 +270,7 @@ ru:
           списком задач.
         type: "Тип"
         description: "Описание"
-        suggestion: "Предположение"
+        supposition: "Предположение"
         recomendation: "Рекомендация"
         no_problems: "Проблем не найдено"
         dynamics: "Динамика поведения задачи во время выполнения"

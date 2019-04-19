@@ -220,7 +220,7 @@ en:
         descr1: >-
           Here you can found list of efficiency problems, which were detected for
           this job. For each problem its description (which basis was detected),
-          suggestion (what could cause this problem by our opinion) and
+          supposition (what could cause this problem by our opinion) and
           recommendations (what we are suggest to do for you) are listed.
           In many cases recomendation includes type of analysis, suggested to be
           performed; we will improve this function in the future.
@@ -230,7 +230,7 @@ en:
           only on all jobs list page. 
         type: "Type"
         description: "Description"
-        suggestion: "Suggestion"
+        supposition: "Supposition"
         recomendation: "Recommendation"
         no_problems: "No problems found"
         dynamics: "Program execution dynamics"
