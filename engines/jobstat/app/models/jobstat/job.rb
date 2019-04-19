@@ -96,27 +96,6 @@ module Jobstat
       return data
     end
 
-    def get_not_public_tags()
-      result = []
-      sections = get_primary_types + get_detailed_types
-
-      sections.each do |section_name|
-
-        (Job.rules[section_name] || {}).each do |condition, fields|
-          if fields['public'] == 0
-            result << condition
-          end
-
-        end
-      end
-      result
-    end
-
-    def get_tags
-      tags=StringDatum.where(job_id: id, name: "tag").pluck(:value)
-      tags - get_not_public_tags
-    end
-
     def get_ranking
       performance = get_performance
       
@@ -172,17 +151,46 @@ module Jobstat
       result
     end
 
-    def get_thresholds
-      slice(Job.rules['thresholds'], get_tags)
+    def get_not_public_by_type(types)
+      result = []
+
+      types.each do |section_name|
+        (Job.rules[section_name] || {}).each do |condition, fields|
+          if fields['public'] == 0
+            result << condition
+          end
+        end
+      end
+      result
     end
 
-    def get_detailed_by_type(type)
-      slice(Job.rules[type], get_tags)
-    end
-
+# primary
     def get_primary_types
       ['classes', 'thresholds', 'rules']
     end
+
+    def get_primary_names
+      names = StringDatum.where(job_id: id, name: "tag").pluck(:value)
+      names - get_not_public_by_type(get_primary_types)
+    end
+
+    def get_thresholds
+      slice(Job.rules['thresholds'], get_primary_names)
+    end
+
+    def get_classes
+      priority_filtration(slice(Job.rules['classes'], get_primary_names))
+    end
+
+    def get_rules user
+      filters = Job::get_filters(user)|| [] # TODO:FILTERS
+
+      names = get_primary_names - filters # remove rules wich are filtered out
+
+      priority_filtration(slice(Job.rules['rules'], names)) # sort by groups priority
+    end
+
+# detailed
 
     def get_detailed_types
       types = []
@@ -194,6 +202,11 @@ module Jobstat
       types
     end
 
+    def get_detailed_names
+      names = StringDatum.where(job_id: id, name: "detailed").pluck(:value)
+      names - get_not_public_by_type(get_detailed_types)
+    end
+
     def get_detailed
       result = {}
 
@@ -201,19 +214,11 @@ module Jobstat
         result = result.merge(Job.rules['detailed'][type] || {})
       end
 
-      slice(result, get_tags)
+      slice(result, get_detailed_names)
     end
 
-    def get_classes
-      priority_filtration(slice(Job.rules['classes'], get_tags))
-    end
-
-    def get_rules user
-      filters=Job::get_filters(user)|| [] # TODO:FILTERS
-
-      tags=get_tags - filters # remove rules wich are filtered out
-
-      priority_filtration(slice(Job.rules['rules'], tags)) # sort by groups priority
+    def get_detailed_by_type(type)
+      slice(Job.rules[type], get_detailed_names)
     end
 
     # def get_cached data

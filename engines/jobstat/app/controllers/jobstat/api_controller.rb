@@ -69,7 +69,7 @@ module Jobstat
       tags = @json["tags"]
       job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
 
-      StringDatum.where(job_id: job.id).destroy_all
+      StringDatum.where(job_id: job.id, name: "tag").destroy_all
 
       return if tags.nil?
       tags.each do |name|
@@ -95,9 +95,11 @@ module Jobstat
       job.initiatees << origin_job
       origin_job.initiator = job
 
+      StringDatum.where(job_id: job.id, name: "detailed").destroy_all
+
       return if tags.nil?
       tags.each do |name|
-        StringDatum.where(job_id: job.id, name: "tag", value: name).first_or_create()
+        StringDatum.where(job_id: job.id, name: "detailed", value: name).first_or_create()
       end
 
       check_job(job)
