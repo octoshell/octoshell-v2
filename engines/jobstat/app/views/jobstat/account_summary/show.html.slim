@@ -145,7 +145,6 @@ javascript:
                 });
         }
 
-
         // Prep the tooltip bits, initial display is hidden
         var tooltip = svg.append("g")
             .attr("class", "tooltip")
@@ -171,10 +170,53 @@ div
 
   = render "form"
 
+  h2 = "Навигация"
+  h3 = "Общая статистика"
+  ul
+    li
+      h4
+        <a href="#stat_01" id="back">Общие характеристики</a>
+  h3 = "Статистика по проектам"
+  ul
+    li
+      h4
+        <a href="#stat_02" id="back">Топ-K проектов по статусам</a>
+    li
+      h4
+        <a href="#stat_03" id="back">Топ-K проектов по логинам</a>
+  h3 = "Статистика по логинам"
+  ul
+    li
+      h4
+        <a href="#stat_04" id="back">Распределение запусков по логинам</a>
+    li
+      h4
+        <a href="#stat_05" id="back">Топ-K логинов по статусам</a>
+  h3 = "Статистика по статусам"
+  ul
+    li
+      h4
+        <a href="#stat_06" id="back">Распределение запусков по статусам</a>
+  h3 = "Топы по логинам"
+  ul
+    li
+      h4
+        <a href="#stat_07" id="back">Топ-K запусков задач по логинам</a>
+    li
+      h4
+        <a href="#stat_08" id="back">Топ-K ресурсов по логинам</a>
+  h3 = "Топы по пользователям"
+  ul
+    li
+      h4
+        <a href="#stat_09" id="back">Топ-K запусков задач по пользователям</a>
+    li
+      h4
+        <a href="#stat_10" id="back">Топ-K ресурсов по пользователям</a>
   br
-  h1 = t('.total')
 
-
+  / br
+  / h1 = t('.total')
   br
   div id="stat_01"
     h1 = "Общие Характеристики"
