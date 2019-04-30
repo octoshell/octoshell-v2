@@ -59,18 +59,22 @@ module Jobstat
       result
     end
 
+    def get_all_logins
+      return (get_owned_logins.flatten + get_involved_logins.flatten).uniq
+    end
+
     def get_owned_logins
       owned_projects = get_owned_projects(current_user)
       owned_projects.map {|_, value| value}.uniq
       #FIXME! Just for test
-      ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
+      # ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
     end
 
     def get_involved_logins
       involved_projects = get_involved_projects(current_user)
       involved_projects.values.uniq
       #FIXME! Just for test
-      ["vadim"]
+      #["vadim"]
     end
 
     def get_all_projects
