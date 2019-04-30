@@ -151,6 +151,10 @@ h3 = Support::Ticket.human_attribute_name(:replies)
         = f.primary t(".send_and_show_result"), name: :show_self
         - if @next_ticket.present?
           = f.primary t(".send_and_show_next"), name: :show_next
-= render_attachments(@ticket,:comments)
-= render_attachments(@ticket,:tags)
-= render_attachments(@ticket,:files)
+div.row
+  div.col-sm-12.col-md-4
+    = render_attachments(@ticket,:comments)
+  div.col-sm-12.col-md-4
+    = render_attachments(@ticket,:tags)
+  div.col-sm-12.col-md-4
+    = render_attachments(@ticket,:files)

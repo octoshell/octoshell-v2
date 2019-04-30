@@ -92,7 +92,7 @@ module Core
 
     def on_activate
       #!!! after_transition [:closed, :finihed, :blocked, :cancelled, :suspended] => :active do |project, transition|
-      accesses.where(state: :closed).map(&:reopen!)
+      accesses.where(state: :closed).map{|a| a.reopen!; a.save}
       members.where(:project_access_state=>:suspended).map(&:activate!)
       ::Core::MailerWorker.perform_async(:project_activated, id)
       synchronize!

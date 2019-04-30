@@ -41,6 +41,15 @@ module Jobstat
       @extra_css=['jobstat/application'] #, 'jobstat/introjs.min']
       @extra_js=['jobstat/application'] #, 'jobstat/intro.min']
 
+      @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
+      @expert_projects=get_expert_projects
+
+      @projects = @projects.merge(@expert_projects)
+
+      #get_select_options_by_projects @projects
+      #@owned_logins = get_owned_logins
+      #@involved_logins = get_involved_logins
+
       @params = defaults.merge(params.symbolize_keys)
       @projects=get_all_projects # {project: [login1,...], prj2: [login2,...]}
       @logins=get_owned_logins.flatten.uniq
@@ -248,6 +257,31 @@ module Jobstat
             }
           )
         ] 
+      }
+      @params[:all_logins]=query_logins
+
+      @all_logins=@all_logins=get_grp_select_options_by_projects @projects, query_logins
+      #query_logins = (@params[:all_logins] & @all_logins[0])
+
+      @jobs = Job.where "start_time > ? AND end_time < ?",
+                        DateTime.parse(@params[:start_time]),
+                        DateTime.parse(@params[:end_time])
+
+      @jobs = @jobs.where(login: query_logins)
+      @jobs = @jobs.select('EXTRACT( hours from SUM(num_nodes * (end_time - start_time))) as sum, count(*) as count, cluster, partition, state')
+      @jobs = @jobs.group(:cluster, :partition, :state).order(:cluster, :partition, :state)
+# compresss data list to hash
+      @data = {}
+      @total_cluster_data = {}
+      @total_data = [0, 0, 0]
+
+      @cluster_by_name = Hash.new Core::Cluster.all.map { |c| [c.description, c] }
+      seed=Core::Partition.preload(:cluster).all.map { |p|
+        p.resources =~ /cores:(\d+)/
+        cores = $1.to_i
+        p.resources =~ /gpus:(\d+)/
+        gpus = $1.to_i
+        ["#{p.cluster.description}//#{p.name}", [cores,gpus]]
       }
       @statistics_data3_logins2 = @selected_jobs_by_date.map { |x| 
         { "date" => x.first }.merge(@statistics_data3_logins_default).merge(

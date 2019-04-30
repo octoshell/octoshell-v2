@@ -797,7 +797,7 @@ ru:
         msg_intitation_csv_col: "email, Фамилия Имя Отчество, язык"
         msg_invitation_csv_example: "Пример"
         msg_invitation_csv_example_body1: "gav@abyrvalg.com,Шариков Полиграф Полиграфович,en"
-        msg_invitation_csv_example_body2: "filipp@mail.ru,Преображенский Филипп Филиппович"
+        msg_invitation_csv_example_body2: "filipp@mail.ru,Преображенский Филипп Филиппович,ru"
         invitation_csv_file: "Файл формата .csv в кодировке UTF-8."
         invitation_upload: "Загрузить"
         members_invited: "Приглашенные пользователи"
