@@ -19,7 +19,7 @@ module Jobstat
 
       @projects = @projects.merge(@expert_projects)
 
-      @all_logins=get_select_options_by_projects @projects
+      #get_select_options_by_projects @projects
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
 
@@ -32,6 +32,7 @@ module Jobstat
       end
       @params[:all_logins]=query_logins
 
+      @all_logins=@all_logins=get_grp_select_options_by_projects @projects, query_logins
       #query_logins = (@params[:all_logins] & @all_logins[0])
 
       @jobs = Job.where "start_time > ? AND end_time < ?",
