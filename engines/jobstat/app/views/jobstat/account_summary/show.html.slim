@@ -1,357 +1,872 @@
+javascript:
+    function calculateTotal(data, index) {
+        return data.map(hash => {
+            var result = {};
+            var total = 0;
+
+            for (var key in hash) {
+                result[key] = hash[key];
+                if (key == index)
+                    continue;
+                total += hash[key];
+            }
+
+            result.total = total;
+            return result;
+        });
+    }
+
+    function drawStackedBarChart(id, data, keys, index) {
+        // calculate total amount
+        var data = calculateTotal(data, index);
+
+        // create the svg
+        var margin = {top: 20, right: 20, bottom: 100, left: 40},
+            width = 960 - margin.left - margin.right,
+            height = 560 - margin.top - margin.bottom;
+        var svg = d3.select("#" + id).append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom);
+        var g = svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // set x axis labels stide
+        var MAXTICKS = 50;
+        var domain = data.map(function (d) { return d[index]; });
+        var stride = Math.ceil(domain.length / MAXTICKS);
+        var ticks = domain.filter(function(v, i) { return i % stride === 0; });
+
+        // set x scale
+        var x = d3.scaleBand()
+            .rangeRound([0, width])
+            .paddingInner(0.09)
+            .align(8);
+
+        // set y scale
+        var y = d3.scaleLinear()
+            .rangeRound([height, 0]);
+
+        // set the colors
+        var z = d3.scaleOrdinal(d3.schemeSet2);
+
+        x.domain(data.map(function (d) {
+            return d[index];
+        }));
+
+        y.domain([0, d3.max(data, function (d) {
+            return d["total"];
+        })]).nice();
+
+        z.domain(keys);
+
+        g.append("g")
+            .selectAll("g")
+            .data(d3.stack().keys(keys)(data))
+            .enter().append("g")
+            .attr("fill", function (d) {
+                return z(d.key);
+            })
+            .selectAll("rect")
+            .data(function (d) {
+                return d;
+            })
+            .enter().append("rect")
+            .attr("x", function (d) {
+                return x(d.data[index]);
+            })
+            .attr("y", function (d) {
+                return y(d[1]);
+            })
+            .attr("height", function (d) {
+                return y(d[0]) - y(d[1]);
+            })
+            .attr("width", x.bandwidth())
+            .on("mouseover", function () {
+                tooltip.style("display", null);
+            })
+            .on("mouseout", function () {
+                tooltip.style("display", "none");
+            })
+            .on("mousemove", function (d) {
+                var xPosition = d3.mouse(this)[0] - 5;
+                var yPosition = d3.mouse(this)[1] - 20;
+                var value = d[1] - d[0];
+
+                tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+                tooltip.select("text").text("Val: " + value);
+            });
+
+        g.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x).tickValues(ticks))
+            .selectAll("text")
+            .attr("y", 0)
+            .attr("x", 9)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(65)")
+            .style("text-anchor", "start");
+
+        g.append("g")
+            .attr("class", "axis")
+            .call(d3.axisLeft(y).ticks(null, "s"))
+            .append("text")
+            .attr("x", 2)
+            .attr("y", y(y.ticks().pop()) + 0.5)
+            .attr("dy", "0.35em")
+            .attr("fill", "#000")
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "start");
+
+        if (keys.length <= 7) {
+            var legend = g.append("g")
+                .attr("font-family", "sans-serif")
+                .attr("font-size", 10)
+                .attr("text-anchor", "end")
+                .selectAll("g")
+                .data(keys.slice().reverse())
+                .enter().append("g")
+                .attr("transform", function (d, i) {
+                    return "translate(0," + i * 20 + ")";
+                });
+
+            legend.append("rect")
+                .attr("x", width - 19)
+                .attr("width", 19)
+                .attr("height", 19)
+                .attr("fill", z);
+
+            legend.append("text")
+                .attr("x", width - 24)
+                .attr("y", 9.5)
+                .attr("dy", "0.32em")
+                .text(function (d) {
+                    return d;
+                });
+        }
+
+        // Prep the tooltip bits, initial display is hidden
+        var tooltip = svg.append("g")
+            .attr("class", "tooltip")
+            .style("opacity", 0.8)
+            .style("display", "none");
+
+        tooltip.append("rect")
+            .attr("width", 100)
+            .attr("height", 30)
+            .attr("fill", "green");
+
+        tooltip.append("text")
+            .attr("x", 50)
+            .attr("y", 15)
+            .attr("dy", "0.4em")
+            .style("text-anchor", "middle")
+            .attr("font-size", "12px")
+            .attr("font-weight", "bold");
+    }
+
 div
   h1 = t('.jobs_statisctics')
 
   = render "form"
 
+  h2 = "Навигация"
+  h3 = "Общая статистика"
+  ul
+    li
+      h4
+        <a href="#stat_01" id="back">Общие характеристики</a>
+  h3 = "Статистика по проектам"
+  ul
+    li
+      h4
+        <a href="#stat_02" id="back">Топ-K проектов по статусам</a>
+    li
+      h4
+        <a href="#stat_03" id="back">Топ-K проектов по логинам</a>
+  h3 = "Статистика по логинам"
+  ul
+    li
+      h4
+        <a href="#stat_04" id="back">Распределение запусков по логинам</a>
+    li
+      h4
+        <a href="#stat_05" id="back">Топ-K логинов по статусам</a>
+  h3 = "Статистика по статусам"
+  ul
+    li
+      h4
+        <a href="#stat_06" id="back">Распределение запусков по статусам</a>
+  h3 = "Топы по логинам"
+  ul
+    li
+      h4
+        <a href="#stat_07" id="back">Топ-K запусков задач по логинам</a>
+    li
+      h4
+        <a href="#stat_08" id="back">Топ-K ресурсов по логинам</a>
+  h3 = "Топы по пользователям"
+  ul
+    li
+      h4
+        <a href="#stat_09" id="back">Топ-K запусков задач по пользователям</a>
+    li
+      h4
+        <a href="#stat_10" id="back">Топ-K ресурсов по пользователям</a>
   br
-  h1 = t('.total')
 
+  / br
+  / h1 = t('.total')
+  br
+  div id="stat_01"
+    h1 = "Общие Характеристики"
+    details
+      summary = "Табличка"
+      table class="table table-hover"
+        thead
+        tr
+          th = "Тип"
+          th = "min"
+          th = "max"
+          th = "mean"
+          th = "median"
+          th = "sum"
+
+        tbody
+        - if @selected_jobs.length > 0
+          tr
+            td = "Количество запусков"
+            td = format("%.1f", @statistics_data1_run_map[:min])
+            td = format("%.1f", @statistics_data1_run_map[:max])
+            td = format("%.1f", @statistics_data1_run_map[:mean])
+            td = format("%.1f", @statistics_data1_run_map[:median])
+            td = format("%.1f", @statistics_data1_run_map[:sum])
+
+          tr
+            td = "Объем ресурсов"
+            td = format("%.1f", @statistics_data1_res_map[:min])
+            td = format("%.1f", @statistics_data1_res_map[:max])
+            td = format("%.1f", @statistics_data1_res_map[:mean])
+            td = format("%.1f", @statistics_data1_res_map[:median])
+            td = format("%.1f", @statistics_data1_res_map[:sum])
+        - else
+          tr
+            td = "Количество запусков"
+            td = "N/A"
+            td = "N/A"
+            td = "N/A"
+            td = "N/A"
+            td = "N/A"
+
+          tr
+            td = "Объем ресурсов"
+            td = "N/A"
+            td = "N/A"
+            td = "N/A"
+            td = "N/A"
+            td = "N/A"
+
+  br
+  h1 = "Проекты"
+  br
+    div id="stat_02"
+      h3 = "Распределение топ-#{@max_tops} проектов по статусам задач"
+      h4 = link_to 'Export', action: 'download', data: @statistics_data6_top_res_hash
+    br
+    div id="test4"
+    javascript:
+        var data = #{{@top_projects_by_states.to_json}};
+        var keys = #{{@top_projects_by_states_keys.to_json}};
+        drawStackedBarChart("test4", data, keys, "project");
+    div id="stat_03"
+      h3 = "Распределение топ-#{@max_tops} проектов по логинам пользователей"
+      h4 = link_to 'Export', action: 'download', data: @statistics_data6_top_res_hash
+    br
+    div id="test5"
+    javascript:
+        var data = #{{@top_projects_by_logins.to_json}};
+        var keys = #{{@top_projects_by_logins_keys.to_json}};
+        drawStackedBarChart("test5", data, keys, "project");
+
+  br
+  h1 = "Логины"
+  br
+  div id="stat_04"
+    h3 = "Распределение запусков по логинам"
+    h4 = link_to 'Export', action: 'download', data: @statistics_data3_logins2
+    details
+      summary = "Табличка"
+      table class="table table-hover"
+        thead
+        tr
+          th = "Дата запуска"
+          - @selected_logins.each do |login|
+            th = login
+        tbody
+        - @statistics_data3_logins.each do |x|
+          tr
+            td = x.first
+            - x.last.each do |login, count|
+              td = count
+  br
+  div id="stacked_3"
   javascript:
-    var temp1 = JSON.parse("#{@data.to_json}".replace(/&quot;/g, '"'));
-    console.log(temp1);
-    var data = {"name": "launches", "children": []};
-    var data1 = {"name": "launches", "children": []};
-    var data2 = {"name": "launches", "children": []};
-    var data3 = {"name": "launches", "children": []};
+      var format = #{{@formatting.to_json}};
+      var data = #{{@statistics_data3_logins2.to_json}};
+      var keys =  #{{@selected_logins.to_json}};
 
-    var i = 0;
-    for (key in temp1) {
-      data.children.push({"name": key, "children": []});
-      data1.children.push({"name": key, "children": []});
-      var j = 0;
-      for (key1 in temp1[key]) {
-            data.children[i].children.push({"name": key1, "children": []});
-            data1.children[i].children.push({"name": key1, "children": []});
-            for (key2 in temp1[key][key1]) {
-              data.children[i].children[j].children.push({"name": key2, "size": temp1[key][key1][key2][0]});
-              data1.children[i].children[j].children.push({"name": key2, "size": temp1[key][key1][key2][1]});
-            }
-            j++;
-      }
-      i++;
-    }
-    var temp2 = {};
-    for (key in temp1) {
-      for (key1 in temp1[key]) {
-        for (key2 in temp1[key][key1]) {
-          if (typeof(temp2[key2]) == "undefined") {
-            temp2[key2] = {};
-          }
-          if (typeof(temp2[key2][key]) == "undefined") {
-            temp2[key2][key] = {};
-          }
-          if (typeof(temp2[key2][key][key1]) == "undefined") {
-            temp2[key2][key][key1] = [0, 0, 0];
-          }
-          temp2[key2][key][key1][0] += temp1[key][key1][key2][0];
-          temp2[key2][key][key1][1] += temp1[key][key1][key2][1];
-          temp2[key2][key][key1][2] += temp1[key][key1][key2][2];
-        }
-      }
-    }
-    i = 0;
-    for (key in temp2) {
-      data2.children.push({"name": key, "children": []});
-      data3.children.push({"name": key, "children": []});
-      var j = 0;
-      for (key1 in temp2[key]) {
-            data2.children[i].children.push({"name": key1, "children": []});
-            data3.children[i].children.push({"name": key1, "children": []});
-            for (key2 in temp2[key][key1]) {
-              data2.children[i].children[j].children.push({"name": key2, "size": temp2[key][key1][key2][0]});
-              data3.children[i].children[j].children.push({"name": key2, "size": temp2[key][key1][key2][1]});
-            }
-            j++;
-      }
-      i++;
-    }
+      drawStackedBarChart("stacked_3", data, keys, "date");
 
-    width = 1150;
-    radius = width / 16;
-    format = d3.format(",d");
-    arc = d3.arc()
-            .startAngle(d => d.x0)
-            .endAngle(d => d.x1)
-            .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.02))
-            .padRadius(radius * 1.5)
-            .innerRadius(function(d) {
-              if (d.y0 < 1.5) {
-                return d.y0 * radius * 0.8;
-              } else if (d.y0 < 2.5) {
-                return d.y0 * radius * 1.07;
-              }
-              return d.y0 * radius * 1.03;
-            })
-            .outerRadius(function(d) {
-              if (d.y0 < 1.5) {
-                return d.y1 * radius * 1.07 - 1;
-              } else if (d.y0 < 2.5) {
-                return d.y1 * radius * 1.03 - 1;
-              }
-              return d.y1 * radius - 1;
-            })
+  br
+  div id="stat_05"
+    h3 = "Распределение топ-#{@max_tops} логинов по статусам задач"
+    h4 = link_to 'Export', action: 'download', data: @statistics_data6_top_res_hash
+  br
+  div id="test3"
+  javascript:
+      var data = #{{@top_logins_by_state.to_json}};
+      var keys = #{{@top_logins_by_state_keys.to_json}};
+      drawStackedBarChart("test3", data, keys, "login");
 
-    // functions
-    function partition(data, labels) {
-        const root = d3.hierarchy(data)
-                      .sum(d => d.size)
-                      .sort((a, b) => b.value - a.value);
-        return d3.partition().size([2 * Math.PI, root.height + 1])(root);
-    }
+  br
+  h1 = "Cтатусы"
+  br
+  div id="stat_06"
+    h3 = "Распределение запусков по статусам"
+    h4 = link_to 'Export', action: 'download', data: @statistics_data2_states2
+    details
+      summary = "Табличка"
+      table class="table table-hover"
+        thead
+        tr
+          th = "Дата запуска"
+          - @selected_jobs_states.each do |state|
+            th = state
+        tbody
+        - @statistics_data2_states.each do |x|
+          tr
+            td = x.first
+            - x.last.each do |state, count|
+              td = count
+  br
+  div id="stacked_2"
+  javascript:
+      var format = #{{@formatting.to_json}};
+      var data = #{{@statistics_data2_states2.to_json}};
+      var keys =  #{{@selected_jobs_states.to_json}};
+      drawStackedBarChart("stacked_2", data, keys, "date");
 
-    function arcVisible(d) {
-    return d.y1 <= 4 && d.y0 >= 1 && d.x1 > d.x0;
-    }
+  br
+  h1 = "Топы запусков и ресурсов"
+  br
+  div id="stat_07"
+    h3 = "Распределение запусков задач по логинам"
+    h4 = link_to 'Export', action: 'download', data: @statistics_data5_top_run_hash
+    details
+      summary = "Табличка"
+      table class="table table-hover"
+        thead
+        tr
+          th = "Логин"
+          th = "Количество"
+        tbody
+        - @statistics_data5_top_run.each do |x|
+          tr
+            td = x.first
+            td = x.last
+  div id="stack_4"
+  javascript:
+    var margin = { top: 20, right: 20, bottom: 30, left: 50 },
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom,
+        svg = d3.select("#" + "stack_4").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g");
 
-    function labelVisible(d) {
-    return d.y1 <= 4 && d.y0 >= 1 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.03;
-    }
+    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+        y = d3.scaleLinear().rangeRound([height, 0]);
+    var g = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    function labelTransform(d) {
-    const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
-    var y;
-    if (d.y0 < 1.5) {
-      y = (d.y0 + d.y1) / 2 * radius * 0.94 - 1;
-    } else if (d.y0 < 2.5) {
-      y = (d.y0 + d.y1) / 2 * radius * 1.05 - 1;
-    } else {
-      y = (d.y0 + d.y1) / 2 * radius * 1.01 - 1;
-    }
-    return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
-    }
+    data = #{{ @statistics_data5_top_run_hash.to_json }};
 
-    function total_count(data) {
-      var sum = 0;
-      if (typeof(data.children[0].size) != "undefined") {
-        for (x in data.children) {
-          sum += data.children[x].size;
-        }
-        return sum;
-      }
-      for (x in data.children) {
-        sum += total_count(data.children[x]);
-      }
-      return Math.ceil(100 * sum) / 100;
-    }
+    x.domain(data.map(function (d) {
+        return d.login;
+    }));
+    y.domain([0, d3.max(data, function (d) {
+        return d.count;
+    })]);
 
-    function draw(svg, data, labels, x, y, type) {
-        const root = partition(data);
-        color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
-        console.log(data);
+    g.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", "translate(0," + (height + 5) + ")")
+        .call(d3.axisBottom(x));
+    g.append("g")
+        .attr("class", "axis axis--y")
+        .call(d3.axisLeft(y))
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Frequency");
 
-        external_color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children[0].children.length + 1));
-        var bord = 2;
-        if (type == "external") {
-          external_color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children[0].children[0].children.length + 1));
-          var bord = 3;
-        }
-
-        root.each(d => d.current = d);
-
-        const g = svg.append("g")
-          .attr("transform", `translate(${x},${y})`);
-
-        const path = g.append("g")
-        .selectAll("path")
-        .data(root.descendants().slice(1))
-        .enter().append("path")
-          .attr("fill", function(d) {
-            if (d.depth >= bord) {
-              while (d.depth > bord) d = d.parent; 
-              return external_color(d.data.name);
-            }
-            while (d.depth > 1) d = d.parent; 
-            return color(d.data.name);
-          })
-          .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
-          .attr("d", d => arc(d.current));
-
-        path.filter(d => d.children)
-          .style("cursor", "pointer")
-          .on("click", clicked);
-
-        path.append("title")
-          .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
-
-        const label = g.append("g")
-          .attr("pointer-events", "none")
-          .attr("text-anchor", "middle")
-          .style("background-color", "white")
-          .style("user-select", "none")
-        .selectAll("text")
-        .data(root.descendants().slice(1))
-        .enter().append("text")
-          .attr("id", d => "label" + d.depth)
-          .attr("dy", "0.35em")
-          .attr("fill-opacity", d => +labelVisible(d.current))
-          .attr("transform", d => labelTransform(d.current))
-          .text(d => d.data.name);
-
-        const parent = g.append("circle")
-          .datum(root)
-          .attr("r", radius)
-          .attr("fill", "none")
-          .attr("pointer-events", "all")
-          .on("click", clicked);
-
-        var label1 = g.append("text")
-                      .attr("text-anchor", "middle")
-                      .attr("transform", "translate(0, -11)")
-                      .style("font-size", "14px")
-                      .text(labels[0]);
-        var label2 = g.append("text")
-                      .attr("text-anchor", "middle")
-                      .attr("transform", "translate(0, 4)")
-                      .style("font-size", "14px")
-                      .text(labels[1]);
-        var label3 = g.append("text")
-                      .attr("text-anchor", "middle")
-                      .attr("transform", "translate(0, 19)")
-                      .style("font-size", "14px")
-                      .text(total_count(data) + " total");
-
-        function clicked(p) {
-          parent.datum(p.parent || root);
-
-          root.each(d => d.target = {
-            x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
-            x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
-            y0: Math.max(0, d.y0 - p.depth),
-            y1: Math.max(0, d.y1 - p.depth)
-          });
-
-          const t = g.transition().duration(750);
-
-          // Transition the data on all arcs, even the ones that aren’t visible,
-          // so that if this transition is interrupted, entering arcs will start
-          // the next transition from the desired position.
-          path.transition(t)
-              .tween("data", d => {
-                const i = d3.interpolate(d.current, d.target);
-                return t => d.current = i(t);
-              })
-            .filter(function(d) {
-              return +this.getAttribute("fill-opacity") || arcVisible(d.target);
-            })
-              .attr("fill-opacity", d => arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0)
-              .attrTween("d", d => () => arc(d.current));
-
-          label.filter(function(d) {
-              return +this.getAttribute("fill-opacity") || labelVisible(d.target);
-            }).transition(t)
-              .attr("fill-opacity", d => +labelVisible(d.target))
-              .attrTween("transform", d => () => labelTransform(d.current));
-        }
-    }
-
-    function label_click() {
-      var label_id = d3.select(this).attr("label");
-      d3.selectAll("text")
-        .filter(function() {
-          return d3.select(this).attr("id") == label_id;
+    g.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function (d) {
+            return x(d.login);
         })
-        .style("opacity", function() {
-          return (+d3.select(this).style("opacity") + 1) % 2;
+        .attr("y", function (d) {
+            return y(d.count);
+        })
+        .attr("width", x.bandwidth())
+        .attr("height", function (d) {
+            return height - y(d.count);
         });
-    }
+    g.selectAll(".bar")
+        .attr("fill", function (d) {
+            return "steelblue";
+        });
 
-    window.onload = function() {
-        buttons = d3.selectAll("div")
-                .filter(function() {
-                  return d3.select(this).attr("id") == "svg";
-                })
-                .append("g");
-        
-        buttons.append("div")
-              .text("Internal labels")
-              .attr("label", "label1")
-              .attr("class", "button")
-              .style("background", "#6699CC")
-              .style("float", "left")
-              .on("click", label_click);
-
-        buttons.append("div")
-              .text("Middle labels")
-              .attr("label", "label2")
-              .attr("class", "button")
-              .style("background", "#6699CC")
-              .style("float", "left")
-              .on("click", label_click);
-
-        buttons.append("div")
-              .text("External labels")
-              .attr("label", "label3")
-              .attr("class", "button")
-              .style("background", "#6699CC")
-              .style("float", "left")
-              .on("click", label_click);
-
-        //svg
-        const svg = d3.selectAll("div")
-                    .filter(function() {
-                      return d3.select(this).attr("id") == "svg";
-                    })
-                    .append("svg")
-                    .style("width", width)
-                    .style("height", width)
-                    .style("font", "10px sans-serif");
-
-        // data
-        draw(svg, data, ["jobs", "by systems"], width / 4, width / 4, "external");
-
-        // data1
-        draw(svg, data1, ["core hours", "by systems"], 3 * width / 4, width / 4, "external");
-
-        // data2
-        draw(svg, data2, ["jobs", "by status"], width / 4, 3 * width / 4);
-
-        // data3
-        draw(svg, data3, ["core hours", "by status"], 3 * width / 4, 3 * width / 4);
-
-        
-
-        return svg.node();
-    };
-
-  table class="tablesorter-blue"
-    thead
-      tr
-        td style="width: 50%" = t('.supercomputer')
-        td = t('.count')
-        td = t('.cpu')
-        td = t('.gpu')
-    tbody
-      - @total_cluster_data.each do |cluster, value|
+  div id="stat_08"
+    h3 = "Распределение ресурсов по логинам"
+    h4 = link_to 'Export', action: 'download', data: @statistics_data6_top_res_hash
+    details
+      summary = "Табличка"
+      table class="table table-hover"
+        thead
         tr
-          td = cluster.name
-          td = value[0]
-          td = value[1]
-          td = value[2]
-      tr
-        td = t('.total')
-        td = @total_data[0]
-        td = @total_data[1]
-        td = @total_data[2]
+          th = "Логин"
+          th = "Количество"
+        tbody
+        - @statistics_data6_top_res.each do |x|
+          tr
+            td = x.first
+            td = x.last
+  div id="stack_5"
+  javascript:
+    var margin = { top: 20, right: 20, bottom: 30, left: 50 },
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom,
+        svg = d3.select("#" + "stack_5").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g");
 
-  - @data.keys.each do |cluster|
-    h1 = cluster.name
-    table class="tablesorter-blue"
-      thead
-        tr
-          td style="width: 25%" = t('.partition')
-          td style="width: 25%" = t('.status')
-          td = t('.count')
-          td = t('.cpu')
-          td = t('.gpu')
-      tbody
-        - @data[cluster].keys.each do |partition|
-          - @data[cluster][partition].keys.each_with_index do |state, index|
-            tr
-              - if index == 0
-                td rowspan = @data[cluster][partition].keys.length #{partition}
-              td = "#{state}"
-              td = @data[cluster][partition][state][0]
-              td = @data[cluster][partition][state][1]
-              td = @data[cluster][partition][state][2]
+    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+        y = d3.scaleLinear().rangeRound([height, 0]);
+    var g = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  div id = "svg"
+    var data = #{{ @statistics_data6_top_res_hash.to_json }};
+
+    x.domain(data.map(function (d) {
+        return d.login;
+    }));
+    y.domain([0, d3.max(data, function (d) {
+        return d.count;
+    })]);
+
+    g.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", "translate(0," + (height + 5) + ")")
+        .call(d3.axisBottom(x));
+    g.append("g")
+        .attr("class", "axis axis--y")
+        .call(d3.axisLeft(y))
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Frequency");
+
+    g.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function (d) {
+            return x(d.login);
+        })
+        .attr("y", function (d) {
+            return y(d.count);
+        })
+        .attr("width", x.bandwidth())
+        .attr("height", function (d) {
+            return height - y(d.count);
+        });
+    g.selectAll(".bar")
+        .attr("fill", function (d) {
+            return "steelblue";
+        });
+
+  br
+  div id="stat_09"
+    h3 = "Распределение запусков задач по пользователям"
+    div id="test"
+    javascript:
+      var data = #{{@top_run_by_user.to_json}};
+      var keys = #{{@logins.to_json}};
+      drawStackedBarChart("test", data, keys, "user");
+
+  br
+  div id="stat_10"
+    h3 = "Распределение ресурсов по пользователям"
+    div id="test2"
+    javascript:
+        var data = #{{@top_res_by_user.to_json}};
+        var keys = #{{@logins.to_json}};
+        drawStackedBarChart("test2", data, keys, "user");
+
+  / javascript:
+  /   var temp1 = JSON.parse("#{@data.to_json}".replace(/&quot;/g, '"'));
+  /   console.log(temp1);
+  /   var data = {"name": "launches", "children": []};
+  /   var data1 = {"name": "launches", "children": []};
+  /   var data2 = {"name": "launches", "children": []};
+  /   var data3 = {"name": "launches", "children": []};
+
+  /   var i = 0;
+  /   for (key in temp1) {
+  /     data.children.push({"name": key, "children": []});
+  /     data1.children.push({"name": key, "children": []});
+  /     var j = 0;
+  /     for (key1 in temp1[key]) {
+  /           data.children[i].children.push({"name": key1, "children": []});
+  /           data1.children[i].children.push({"name": key1, "children": []});
+  /           for (key2 in temp1[key][key1]) {
+  /             data.children[i].children[j].children.push({"name": key2, "size": temp1[key][key1][key2][0]});
+  /             data1.children[i].children[j].children.push({"name": key2, "size": temp1[key][key1][key2][1]});
+  /           }
+  /           j++;
+  /     }
+  /     i++;
+  /   }
+  /   var temp2 = {};
+  /   for (key in temp1) {
+  /     for (key1 in temp1[key]) {
+  /       for (key2 in temp1[key][key1]) {
+  /         if (typeof(temp2[key2]) == "undefined") {
+  /           temp2[key2] = {};
+  /         }
+  /         if (typeof(temp2[key2][key]) == "undefined") {
+  /           temp2[key2][key] = {};
+  /         }
+  /         if (typeof(temp2[key2][key][key1]) == "undefined") {
+  /           temp2[key2][key][key1] = [0, 0, 0];
+  /         }
+  /         temp2[key2][key][key1][0] += temp1[key][key1][key2][0];
+  /         temp2[key2][key][key1][1] += temp1[key][key1][key2][1];
+  /         temp2[key2][key][key1][2] += temp1[key][key1][key2][2];
+  /       }
+  /     }
+  /   }
+  /   i = 0;
+  /   for (key in temp2) {
+  /     data2.children.push({"name": key, "children": []});
+  /     data3.children.push({"name": key, "children": []});
+  /     var j = 0;
+  /     for (key1 in temp2[key]) {
+  /           data2.children[i].children.push({"name": key1, "children": []});
+  /           data3.children[i].children.push({"name": key1, "children": []});
+  /           for (key2 in temp2[key][key1]) {
+  /             data2.children[i].children[j].children.push({"name": key2, "size": temp2[key][key1][key2][0]});
+  /             data3.children[i].children[j].children.push({"name": key2, "size": temp2[key][key1][key2][1]});
+  /           }
+  /           j++;
+  /     }
+  /     i++;
+  /   }
+
+  /   width = 1150;
+  /   radius = width / 16;
+  /   format = d3.format(",d");
+  /   arc = d3.arc()
+  /           .startAngle(d => d.x0)
+  /           .endAngle(d => d.x1)
+  /           .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.02))
+  /           .padRadius(radius * 1.5)
+  /           .innerRadius(function(d) {
+  /             if (d.y0 < 1.5) {
+  /               return d.y0 * radius * 0.8;
+  /             } else if (d.y0 < 2.5) {
+  /               return d.y0 * radius * 1.07;
+  /             }
+  /             return d.y0 * radius * 1.03;
+  /           })
+  /           .outerRadius(function(d) {
+  /             if (d.y0 < 1.5) {
+  /               return d.y1 * radius * 1.07 - 1;
+  /             } else if (d.y0 < 2.5) {
+  /               return d.y1 * radius * 1.03 - 1;
+  /             }
+  /             return d.y1 * radius - 1;
+  /           })
+
+  /   // functions
+  /   function partition(data, labels) {
+  /       const root = d3.hierarchy(data)
+  /                     .sum(d => d.size)
+  /                     .sort((a, b) => b.value - a.value);
+  /       return d3.partition().size([2 * Math.PI, root.height + 1])(root);
+  /   }
+
+  /   function arcVisible(d) {
+  /   return d.y1 <= 4 && d.y0 >= 1 && d.x1 > d.x0;
+  /   }
+
+  /   function labelVisible(d) {
+  /   return d.y1 <= 4 && d.y0 >= 1 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.03;
+  /   }
+
+  /   function labelTransform(d) {
+  /   const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+  /   var y;
+  /   if (d.y0 < 1.5) {
+  /     y = (d.y0 + d.y1) / 2 * radius * 0.94 - 1;
+  /   } else if (d.y0 < 2.5) {
+  /     y = (d.y0 + d.y1) / 2 * radius * 1.05 - 1;
+  /   } else {
+  /     y = (d.y0 + d.y1) / 2 * radius * 1.01 - 1;
+  /   }
+  /   return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
+  /   }
+
+  /   function total_count(data) {
+  /     var sum = 0;
+  /     if (typeof(data.children[0].size) != "undefined") {
+  /       for (x in data.children) {
+  /         sum += data.children[x].size;
+  /       }
+  /       return sum;
+  /     }
+  /     for (x in data.children) {
+  /       sum += total_count(data.children[x]);
+  /     }
+  /     return Math.ceil(100 * sum) / 100;
+  /   }
+
+  /   function draw(svg, data, labels, x, y, type) {
+  /       const root = partition(data);
+  /       color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
+  /       console.log(data);
+
+  /       external_color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children[0].children.length + 1));
+  /       var bord = 2;
+  /       if (type == "external") {
+  /         external_color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children[0].children[0].children.length + 1));
+  /         var bord = 3;
+  /       }
+
+  /       root.each(d => d.current = d);
+
+  /       const g = svg.append("g")
+  /         .attr("transform", `translate(${x},${y})`);
+
+  /       const path = g.append("g")
+  /       .selectAll("path")
+  /       .data(root.descendants().slice(1))
+  /       .enter().append("path")
+  /         .attr("fill", function(d) {
+  /           if (d.depth >= bord) {
+  /             while (d.depth > bord) d = d.parent; 
+  /             return external_color(d.data.name);
+  /           }
+  /           while (d.depth > 1) d = d.parent; 
+  /           return color(d.data.name);
+  /         })
+  /         .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
+  /         .attr("d", d => arc(d.current));
+
+  /       path.filter(d => d.children)
+  /         .style("cursor", "pointer")
+  /         .on("click", clicked);
+
+  /       path.append("title")
+  /         .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
+
+  /       const label = g.append("g")
+  /         .attr("pointer-events", "none")
+  /         .attr("text-anchor", "middle")
+  /         .style("background-color", "white")
+  /         .style("user-select", "none")
+  /       .selectAll("text")
+  /       .data(root.descendants().slice(1))
+  /       .enter().append("text")
+  /         .attr("id", d => "label" + d.depth)
+  /         .attr("dy", "0.35em")
+  /         .attr("fill-opacity", d => +labelVisible(d.current))
+  /         .attr("transform", d => labelTransform(d.current))
+  /         .text(d => d.data.name);
+
+  /       const parent = g.append("circle")
+  /         .datum(root)
+  /         .attr("r", radius)
+  /         .attr("fill", "none")
+  /         .attr("pointer-events", "all")
+  /         .on("click", clicked);
+
+  /       var label1 = g.append("text")
+  /                     .attr("text-anchor", "middle")
+  /                     .attr("transform", "translate(0, -11)")
+  /                     .style("font-size", "14px")
+  /                     .text(labels[0]);
+  /       var label2 = g.append("text")
+  /                     .attr("text-anchor", "middle")
+  /                     .attr("transform", "translate(0, 4)")
+  /                     .style("font-size", "14px")
+  /                     .text(labels[1]);
+  /       var label3 = g.append("text")
+  /                     .attr("text-anchor", "middle")
+  /                     .attr("transform", "translate(0, 19)")
+  /                     .style("font-size", "14px")
+  /                     .text(total_count(data) + " total");
+
+  /       function clicked(p) {
+  /         parent.datum(p.parent || root);
+
+  /         root.each(d => d.target = {
+  /           x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+  /           x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+  /           y0: Math.max(0, d.y0 - p.depth),
+  /           y1: Math.max(0, d.y1 - p.depth)
+  /         });
+
+  /         const t = g.transition().duration(750);
+
+  /         // Transition the data on all arcs, even the ones that aren’t visible,
+  /         // so that if this transition is interrupted, entering arcs will start
+  /         // the next transition from the desired position.
+  /         path.transition(t)
+  /             .tween("data", d => {
+  /               const i = d3.interpolate(d.current, d.target);
+  /               return t => d.current = i(t);
+  /             })
+  /           .filter(function(d) {
+  /             return +this.getAttribute("fill-opacity") || arcVisible(d.target);
+  /           })
+  /             .attr("fill-opacity", d => arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0)
+  /             .attrTween("d", d => () => arc(d.current));
+
+  /         label.filter(function(d) {
+  /             return +this.getAttribute("fill-opacity") || labelVisible(d.target);
+  /           }).transition(t)
+  /             .attr("fill-opacity", d => +labelVisible(d.target))
+  /             .attrTween("transform", d => () => labelTransform(d.current));
+  /       }
+  /   }
+
+  /   function label_click() {
+  /     var label_id = d3.select(this).attr("label");
+  /     d3.selectAll("text")
+  /       .filter(function() {
+  /         return d3.select(this).attr("id") == label_id;
+  /       })
+  /       .style("opacity", function() {
+  /         return (+d3.select(this).style("opacity") + 1) % 2;
+  /       });
+  /   }
+
+  /   window.onload = function() {
+  /       buttons = d3.selectAll("div")
+  /               .filter(function() {
+  /                 return d3.select(this).attr("id") == "svg";
+  /               })
+  /               .append("g");
+        
+  /       buttons.append("div")
+  /             .text("Internal labels")
+  /             .attr("label", "label1")
+  /             .attr("class", "button")
+  /             .style("background", "#6699CC")
+  /             .style("float", "left")
+  /             .on("click", label_click);
+
+  /       buttons.append("div")
+  /             .text("Middle labels")
+  /             .attr("label", "label2")
+  /             .attr("class", "button")
+  /             .style("background", "#6699CC")
+  /             .style("float", "left")
+  /             .on("click", label_click);
+
+  /       buttons.append("div")
+  /             .text("External labels")
+  /             .attr("label", "label3")
+  /             .attr("class", "button")
+  /             .style("background", "#6699CC")
+  /             .style("float", "left")
+  /             .on("click", label_click);
+
+  /       //svg
+  /       const svg = d3.selectAll("div")
+  /                   .filter(function() {
+  /                     return d3.select(this).attr("id") == "svg";
+  /                   })
+  /                   .append("svg")
+  /                   .style("width", width)
+  /                   .style("height", width)
+  /                   .style("font", "10px sans-serif");
+
+  /       // data
+  /       draw(svg, data, ["jobs", "by systems"], width / 4, width / 4, "external");
+
+  /       // data1
+  /       draw(svg, data1, ["core hours", "by systems"], 3 * width / 4, width / 4, "external");
+
+  /       // data2
+  /       draw(svg, data2, ["jobs", "by status"], width / 4, 3 * width / 4);
+
+  /       // data3
+  /       draw(svg, data3, ["core hours", "by status"], 3 * width / 4, 3 * width / 4);
+
+        
+
+  /       return svg.node();
+  /   };
+
+  / table class="tablesorter-blue"
+  /   thead
+  /     tr
+  /       td style="width: 50%" = t('.supercomputer')
+  /       td = t('.count')
+  /       td = t('.cpu')
+  /       td = t('.gpu')
+  /   tbody
+  /     - @total_cluster_data.each do |cluster, value|
+  /       tr
+  /         td = cluster.name
+  /         td = value[0]
+  /         td = value[1]
+  /         td = value[2]
+  /     tr
+  /       td = t('.total')
+  /       td = @total_data[0]
+  /       td = @total_data[1]
+  /       td = @total_data[2]
+
+  / - @data.keys.each do |cluster|
+  /   h1 = cluster.name
+  /   table class="tablesorter-blue"
+  /     thead
+  /       tr
+  /         td style="width: 25%" = t('.partition')
+  /         td style="width: 25%" = t('.status')
+  /         td = t('.count')
+  /         td = t('.cpu')
+  /         td = t('.gpu')
+  /     tbody
+  /       - @data[cluster].keys.each do |partition|
+  /         - @data[cluster][partition].keys.each_with_index do |state, index|
+  /           tr
+  /             - if index == 0
+  /               td rowspan = @data[cluster][partition].keys.length #{partition}
+  /             td = "#{state}"
+  /             td = @data[cluster][partition][state][0]
+  /             td = @data[cluster][partition][state][1]
+  /             td = @data[cluster][partition][state][2]
+
+  / div id = "svg"

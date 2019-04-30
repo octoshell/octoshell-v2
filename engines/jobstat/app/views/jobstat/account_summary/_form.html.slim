@@ -1,8 +1,17 @@
 div class="container"
   = bootstrap_form_tag(method: "get") do |f|
     div class="row"
+      = f.select("cluster", options_for_select(["ALL"] + @clusters.keys, selected: @params[:cluster]), {label: "Вычислительная система"}, {multiple: true, wrapper: {class: 'col-md-3'}})
       = f.text_field("start_time", class: "datepicker", value: @params[:start_time], label: t('.from'), wrapper: {class: 'col-md-3'})
       = f.text_field("end_time", class: "datepicker", value: @params[:end_time], label: t('.to'), wrapper: {class: 'col-md-3'})
+    div class="row"
+      = f.select("projects", options_for_select(["ALL"] + @project_hash.keys, selected: @params[:projects]), {label: "Проекты"}, {multiple: true, wrapper: {class: 'col-md-9'}})
+    div class="row"
+      = f.select("logins", options_for_select(["ALL"] + @logins, selected: @params[:logins]), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("states", options_for_select(["ALL"] + @states_options, selected: @params[:states]), {label: "Статусы"}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("granulation", options_for_select(["День", "Неделя", "Месяц", "Год"], selected: @params[:granulation]), {label: "Грануляция"}, {multiple: false, wrapper: {class: 'col-md-3'}})
+    div class="row"
+      = f.number_field "max_tops", value: @params[:max_tops], wrapper: {class: 'col-md-3'}, label: "Макс. кол-во топов"
       = f.select("all_logins", grouped_options_for_select(@all_logins[:list],@all_logins[:options]), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
       /= f.select("all_logins", options_for_select(@all_logins[0],@all_logins[1]), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
     div class="row"

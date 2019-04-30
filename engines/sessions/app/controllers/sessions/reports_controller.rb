@@ -61,7 +61,7 @@ module Sessions
         if @report.rejected?
           @report.resubmit!
         else
-          @report.submit if @report.may_submit?
+          @report.submit! if @report.may_submit?
         end
         redirect_to @report
       else
