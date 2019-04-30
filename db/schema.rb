@@ -331,6 +331,7 @@ ActiveRecord::Schema.define(version: 20190321105523) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "category"
+    t.integer  "type"
   end
 
   add_index "core_notices", ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id", using: :btree
