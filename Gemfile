@@ -17,6 +17,7 @@ gem 'rubyzip', '>= 1.0.0', require: false
 
 gem 'therubyracer' # for execjs
 gem 'i18n-js'
+gem 'groupdate'
 
 group :development do
   gem "annotate"
