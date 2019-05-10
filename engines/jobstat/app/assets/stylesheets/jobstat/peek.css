@@ -1,0 +1,162 @@
+.pk-plot div, .pk-legend div {
+  margin: 0!important;
+}
+
+/*
+  make it easy to clear floats
+*/
+
+.pk-clear-after::after {
+  clear: both;
+  height: 0;
+  visibility: hidden;
+  display: block;
+  content:" ";
+}
+
+/*
+  chart
+*/
+
+.pk-chart {
+  margin: 0;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.pk-plot {
+  margin: 0;
+  float: left;
+  display: table; /*make left-container stretch to height of chart*/
+}
+
+.pk-yLabelContainer {
+  display: table-cell; /*make left-container stretch to height of chart*/
+  vertical-align: middle;
+  position: relative; /*make container the closest positioned ancestor for yLabel: http://stackoverflow.com/questions/28741562*/
+}
+
+.pk-yLabel {
+  text-align: center;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  transform: rotate(-90deg);
+  transform-origin: top left;
+}
+
+.pk-mainContainer {
+  /*display: table-cell;*/
+}
+
+.pk-title {
+  text-align: center;
+  overflow: hidden;
+  font-weight: bold;
+}
+
+.pk-xLabel {
+  text-align: center;
+  overflow: hidden;
+}
+
+.pk-svgContainer {
+  line-height: 0;
+}
+
+.pk-svgContainer svg {
+  line-height: 14px;
+}
+
+/**********************************************************************************************************************/
+
+/*
+  axes
+*/
+
+.pk-axis path, .pk-axis line, .pk-fakeAxis {
+  fill: none;
+  stroke: black;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.pk-axis text {
+  font-size: 11px;
+  fill: #444; /*match the body color*/
+}
+
+.pk-grid {
+  stroke: lightgrey;
+  shape-rendering: crispEdges;
+}
+
+.pk-grid path {
+    stroke-width: 0;
+}
+
+/**********************************************************************************************************************/
+
+/*
+  legends
+*/
+
+.pk-legendContainer {
+  margin: 0;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.pk-legend {
+  margin: 0;
+  float: left;
+  padding-left: 10px;
+}
+
+.pk-legend div {
+  /*inherited line height*/
+}
+
+.pk-keyContainer {
+  display: inline-block;
+  vertical-align: middle;
+  height: 16px;
+}
+
+.pk-keyText {
+  margin: 0;
+	padding-left: 4px;
+  vertical-align: middle;
+}
+
+/**********************************************************************************************************************/
+
+/*
+  lines
+*/
+
+.pk-line {
+  fill: none;
+}
+
+.pk-area {
+  stroke-width: 0;
+}
+
+circle {
+  stroke-width: 2px;
+}
+
+.pk-tooltip {
+  position: absolute;
+  min-width: 100px;
+  padding: 4px;
+  border-radius: 4px;
+  background-color: rgba(235, 235, 235, .75);
+  display: none;
+}
+
+.pk-tooltip p {
+  margin: 0;
+}

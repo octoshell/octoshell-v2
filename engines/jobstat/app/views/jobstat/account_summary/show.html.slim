@@ -36,15 +36,9 @@ javascript:
         var stride = Math.ceil(domain.length / MAXTICKS);
         var ticks = domain.filter(function(v, i) { return i % stride === 0; });
 
-        // set x scale
-        var x = d3.scaleBand()
-            .rangeRound([0, width])
-            .paddingInner(0.09)
-            .align(8);
-
-        // set y scale
-        var y = d3.scaleLinear()
-            .rangeRound([height, 0]);
+        // set x/y scale 
+        var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+            y = d3.scaleLinear().rangeRound([height, 0]);
 
         // set the colors
         var z = d3.scaleOrdinal(d3.schemeSet2);
@@ -165,9 +159,478 @@ javascript:
             .attr("font-weight", "bold");
     }
 
+javascript:
+  function drawTopBarChart(id, data) {
+    var margin = { top: 20, right: 20, bottom: 30, left: 50 },
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom,
+        svg = d3.select("#" + id).append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g");
+
+    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+        y = d3.scaleLinear().rangeRound([height, 0]);
+    var g = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    x.domain(data.map(function (d) {
+        return d.login;
+    }));
+    y.domain([0, d3.max(data, function (d) {
+        return d.count;
+    })]);
+
+    g.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", "translate(0," + (height + 0) + ")")
+        .call(d3.axisBottom(x));
+    g.append("g")
+        .attr("class", "axis axis--y")
+        .call(d3.axisLeft(y))
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Frequency");
+
+    g.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function (d) {
+            return x(d.login);
+        })
+        .attr("y", function (d) {
+            return y(d.count);
+        })
+        .attr("width", x.bandwidth())
+        .attr("height", function (d) {
+            return height - y(d.count);
+        });
+    g.selectAll(".bar")
+        .attr("fill", function (d) {
+            return "steelblue";
+        });
+  }
+
 div
   h1 = t('.jobs_statisctics')
 
+  = render "form"
+
+br
+h2 = "Навигация"
+h4 = "Хронология"
+ul
+  li
+    h5
+      <a href="#stat_01" id="back">Статусы</a>
+  li
+    h5
+      <a href="#stat_02" id="back">Логины</a>
+  - if User.superadmins.include?(current_user)
+    li
+      h5
+        <a href="#stat_03" id="back">Проекты</a>
+
+h4 = "Топы"
+ul
+  - if User.superadmins.include?(current_user)
+    li
+      h5
+        <a href="#stat_04" id="back">Проекты</a>
+    li
+      h5
+        <a href="#stat_05" id="back">Пользователи</a>
+  li
+    h5
+      <a href="#stat_06" id="back">Логины</a>
+br
+
+
+div id="stat_01"
+  br
+  h2 = "Хронология статусов"
+
+  br
+  div id="stacked-bar-1-chart" style={:width=>"550px"}
+  div id="stacked-bar-1-legend"
+
+  br
+
+  br
+  div id="stacked-bar-2-chart"
+  div id="stacked-bar-2-legend"
+
+  br
+
+div id="stat_02"
+  br
+  h2 = "Хронология логинов"
+
+  br
+  div id="stacked-bar-3-chart"
+  div id="stacked-bar-3-legend"
+
+  br
+
+  br
+  div id="stacked-bar-4-chart"
+  div id="stacked-bar-4-legend"
+
+  br
+
+div id="stat_03"
+  - if User.superadmins.include?(current_user)
+    br
+    h2 = "Хронология проектов"
+
+    br
+    div id="stacked-bar-5-chart"
+    div id="stacked-bar-5-legend"
+
+    br
+
+    br
+    div id="stacked-bar-6-chart"
+    div id="stacked-bar-6-legend"
+
+    br
+
+div id="stat_04"
+  - if User.superadmins.include?(current_user)
+    br
+    h2 = "Топ проектов"
+
+    br
+    div id="stacked-bar-7-chart"
+    div id="stacked-bar-7-legend"
+
+    br
+
+    br
+    div id="stacked-bar-8-chart"
+    div id="stacked-bar-8-legend"
+
+    br
+
+    br
+    div id="stacked-bar-9-chart"
+    div id="stacked-bar-9-legend"
+
+    br
+
+    br
+    div id="stacked-bar-10-chart"
+    div id="stacked-bar-10-legend"
+
+    br
+
+div id="stat_06"
+  br
+  h2 = "Топ логинов"
+
+  br
+  div id="stacked-bar-11-chart"
+  div id="stacked-bar-11-legend"
+
+  br
+
+  br
+  div id="stacked-bar-12-chart"
+  div id="stacked-bar-12-legend"
+
+  br
+
+div id="stat_05"
+  - if User.superadmins.include?(current_user)
+    br
+    h2 = "Топ пользователей"
+
+    br
+    div id="stacked-bar-13-chart"
+    div id="stacked-bar-13-legend"
+
+    br
+
+    br
+    div id="stacked-bar-14-chart"
+    div id="stacked-bar-14-legend"
+
+    br
+
+    br
+    div id="stacked-bar-15-chart"
+    div id="stacked-bar-15-legend"
+
+    br
+
+    br
+    div id="stacked-bar-16-chart"
+    div id="stacked-bar-16-legend"
+
+javascript:
+  var formatting = #{{@formatting.to_json}};
+  format = formatting;
+
+  var data1 = #{{@state_runs.to_json}};
+  console.log("Data1: ", data1);
+  var chart = new Cartesian("#stacked-bar-1-chart");
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Хронология статусов";
+  chart.plot.yLabel = "Количество запусков";
+  chart.plot.xLabel = "";
+  chart.draw(data1);
+  var legend = new Legend("#stacked-bar-1-legend");
+  legend.hasOpacity = true;
+  legend.draw(data1);
+
+  var data2 = #{{@state_resources.to_json}};
+  console.log("Data2: ", data2);
+  var chart = new Cartesian("#stacked-bar-2-chart");
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Хронология статусов";
+  chart.plot.yLabel = "Объем ресурсов";
+  chart.plot.xLabel = "";
+  chart.draw(data2);
+  var legend = new Legend("#stacked-bar-2-legend");
+  legend.hasOpacity = true;
+  legend.draw(data2);
+
+  var data3 = #{{@login_runs.to_json}};
+  console.log("Data3: ", data3);
+  var chart = new Cartesian("#stacked-bar-3-chart");
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Хронология логинов";
+  chart.plot.yLabel = "Количество запусков";
+  chart.plot.xLabel = "";
+  chart.draw(data3);
+  var legend = new Legend("#stacked-bar-3-legend");
+  legend.hasOpacity = true;
+  legend.draw(data3);
+
+  var data4 = #{{@login_resources.to_json}};
+  console.log("Data4: ", data4);
+  var chart = new Cartesian("#stacked-bar-4-chart");
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Хронология логинов";
+  chart.plot.yLabel = "Объем ресурсов";
+  chart.plot.xLabel = "";
+  chart.draw(data4);
+  var legend = new Legend("#stacked-bar-4-legend");
+  legend.hasOpacity = true;
+  legend.draw(data4);
+
+  var data5 = #{{@project_runs.to_json}};
+  console.log("Data5: ", data5);
+  var chart = new Cartesian("#stacked-bar-5-chart");
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Хронология проектов";
+  chart.plot.yLabel = "Количество запусков";
+  chart.plot.xLabel = "";
+  chart.draw(data5);
+  var legend = new Legend("#stacked-bar-5-legend");
+  legend.hasOpacity = true;
+  legend.draw(data5);
+
+  var data6 = #{{@project_resources.to_json}};
+  console.log("Data6: ", data6);
+  var chart = new Cartesian("#stacked-bar-6-chart");
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Хронология проектов";
+  chart.plot.yLabel = "Объем ресурсов";
+  chart.plot.xLabel = "";
+  chart.draw(data6);
+  var legend = new Legend("#stacked-bar-6-legend");
+  legend.hasOpacity = true;
+  legend.draw(data6);
+  
+  var data7 = #{{@top_project_state_runs.to_json}};
+  console.log("Data7: ", data7);
+  var chart = new Cartesian("#stacked-bar-7-chart");
+  chart.xAxisType = 'ordinal';
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Топ проектов по статусам";
+  chart.plot.yLabel = "Количество запусков";
+  chart.plot.xLabel = "";
+  chart.draw(data7);
+  var legend = new Legend("#stacked-bar-7-legend");
+  legend.hasOpacity = true;
+  legend.draw(data7);
+
+  var data8 = #{{@top_project_state_resources.to_json}};
+  console.log("Data8: ", data8);
+  var chart = new Cartesian("#stacked-bar-8-chart");
+  chart.xAxisType = 'ordinal';
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Топ проектов по статусам";
+  chart.plot.yLabel = "Объем ресурсов";
+  chart.plot.xLabel = "";
+  chart.draw(data8);
+  var legend = new Legend("#stacked-bar-8-legend");
+  legend.hasOpacity = true;
+  legend.draw(data8);
+
+  var data9 = #{{@top_project_login_runs.to_json}};
+  console.log("Data9: ", data9);
+  var chart = new Cartesian("#stacked-bar-9-chart");
+  chart.xAxisType = 'ordinal';
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Топ проектов по логинам";
+  chart.plot.yLabel = "Количество запусков";
+  chart.plot.xLabel = "";
+  chart.draw(data9);
+  var legend = new Legend("#stacked-bar-9-legend");
+  legend.hasOpacity = true;
+  legend.draw(data9);
+
+  var data10 = #{{@top_project_login_resources.to_json}};
+  console.log("Data10: ", data10);
+  var chart = new Cartesian("#stacked-bar-10-chart");
+  chart.xAxisType = 'ordinal';
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Топ проектов по логинам";
+  chart.plot.yLabel = "Объем ресурсов";
+  chart.plot.xLabel = "";
+  chart.draw(data10);
+  var legend = new Legend("#stacked-bar-10-legend");
+  legend.hasOpacity = true;
+  legend.draw(data10);
+
+  var data11 = #{{@top_login_state_runs.to_json}};
+  console.log("Data11: ", data11);
+  var chart = new Cartesian("#stacked-bar-11-chart");
+  chart.xAxisType = 'ordinal';
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Топ логинов по статусам";
+  chart.plot.yLabel = "Количество запусков";
+  chart.plot.xLabel = "";
+  chart.draw(data11);
+  var legend = new Legend("#stacked-bar-11-legend");
+  legend.hasOpacity = true;
+  legend.draw(data11);
+
+  var data12 = #{{@top_login_state_resources.to_json}};
+  console.log("Data12: ", data12);
+  var chart = new Cartesian("#stacked-bar-12-chart");
+  chart.xAxisType = 'ordinal';
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Топ логинов по статусам";
+  chart.plot.yLabel = "Объем ресурсов";
+  chart.plot.xLabel = "";
+  chart.draw(data12);
+  var legend = new Legend("#stacked-bar-12-legend");
+  legend.hasOpacity = true;
+  legend.draw(data12);
+
+  var data13 = #{{@top_user_state_runs.to_json}};
+  console.log("Data13: ", data13);
+  var chart = new Cartesian("#stacked-bar-13-chart");
+  chart.xAxisType = 'ordinal';
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Топ пользователей по статусам";
+  chart.plot.yLabel = "Количество запусков";
+  chart.plot.xLabel = "";
+  chart.draw(data13);
+  var legend = new Legend("#stacked-bar-13-legend");
+  legend.hasOpacity = true;
+  legend.draw(data13);
+
+  var data14 = #{{@top_user_state_resources.to_json}};
+  console.log("Data14: ", data14);
+  var chart = new Cartesian("#stacked-bar-14-chart");
+  chart.xAxisType = 'ordinal';
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Топ пользователей по статусам";
+  chart.plot.yLabel = "Объем ресурсов";
+  chart.plot.xLabel = "";
+  chart.draw(data14);
+  var legend = new Legend("#stacked-bar-14-legend");
+  legend.hasOpacity = true;
+  legend.draw(data14);
+
+  var data15 = #{{@top_user_login_runs.to_json}};
+  console.log("Data15: ", data15);
+  var chart = new Cartesian("#stacked-bar-15-chart");
+  chart.xAxisType = 'ordinal';
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Топ пользователей по логинам";
+  chart.plot.yLabel = "Количество запусков";
+  chart.plot.xLabel = "";
+  chart.draw(data15);
+  var legend = new Legend("#stacked-bar-15-legend");
+  legend.hasOpacity = true;
+  legend.draw(data15);
+
+  var data16 = #{{@top_user_login_resources.to_json}};
+  console.log("Data16: ", data16);
+  var chart = new Cartesian("#stacked-bar-16-chart");
+  chart.xAxisType = 'ordinal';
+  chart.data.isStacked = true;
+  chart.bars.visible = true;
+  chart.lines.visible = false;
+  chart.bars.hasOpacity = true;
+  chart.plot.title = "Топ пользователей по логинам";
+  chart.plot.yLabel = "Объем ресурсов";
+  chart.plot.xLabel = "";
+  chart.draw(data16);
+  var legend = new Legend("#stacked-bar-16-legend");
+  legend.hasOpacity = true;
+  legend.draw(data16);
+
+
+  
+
+/ div
+  h1 = t('.jobs_statisctics')
+    
   = render "form"
 
   h2 = "Навигация"
@@ -376,60 +839,8 @@ div
             td = x.last
   div id="stack_4"
   javascript:
-    var margin = { top: 20, right: 20, bottom: 30, left: 50 },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
-        svg = d3.select("#" + "stack_4").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g");
-
-    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-        y = d3.scaleLinear().rangeRound([height, 0]);
-    var g = svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    data = #{{ @statistics_data5_top_run_hash.to_json }};
-
-    x.domain(data.map(function (d) {
-        return d.login;
-    }));
-    y.domain([0, d3.max(data, function (d) {
-        return d.count;
-    })]);
-
-    g.append("g")
-        .attr("class", "axis axis--x")
-        .attr("transform", "translate(0," + (height + 5) + ")")
-        .call(d3.axisBottom(x));
-    g.append("g")
-        .attr("class", "axis axis--y")
-        .call(d3.axisLeft(y))
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", "0.71em")
-        .attr("text-anchor", "end")
-        .text("Frequency");
-
-    g.selectAll(".bar")
-        .data(data)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", function (d) {
-            return x(d.login);
-        })
-        .attr("y", function (d) {
-            return y(d.count);
-        })
-        .attr("width", x.bandwidth())
-        .attr("height", function (d) {
-            return height - y(d.count);
-        });
-    g.selectAll(".bar")
-        .attr("fill", function (d) {
-            return "steelblue";
-        });
+    var data = #{{ @statistics_data5_top_run_hash.to_json }};
+    drawTopBarChart("stack_4", data);
 
   div id="stat_08"
     h3 = "Распределение ресурсов по логинам"
@@ -448,60 +859,8 @@ div
             td = x.last
   div id="stack_5"
   javascript:
-    var margin = { top: 20, right: 20, bottom: 30, left: 50 },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
-        svg = d3.select("#" + "stack_5").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g");
-
-    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-        y = d3.scaleLinear().rangeRound([height, 0]);
-    var g = svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
     var data = #{{ @statistics_data6_top_res_hash.to_json }};
-
-    x.domain(data.map(function (d) {
-        return d.login;
-    }));
-    y.domain([0, d3.max(data, function (d) {
-        return d.count;
-    })]);
-
-    g.append("g")
-        .attr("class", "axis axis--x")
-        .attr("transform", "translate(0," + (height + 5) + ")")
-        .call(d3.axisBottom(x));
-    g.append("g")
-        .attr("class", "axis axis--y")
-        .call(d3.axisLeft(y))
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", "0.71em")
-        .attr("text-anchor", "end")
-        .text("Frequency");
-
-    g.selectAll(".bar")
-        .data(data)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", function (d) {
-            return x(d.login);
-        })
-        .attr("y", function (d) {
-            return y(d.count);
-        })
-        .attr("width", x.bandwidth())
-        .attr("height", function (d) {
-            return height - y(d.count);
-        });
-    g.selectAll(".bar")
-        .attr("fill", function (d) {
-            return "steelblue";
-        });
+    drawTopBarChart("stack_5", data);
 
   br
   div id="stat_09"
