@@ -49,13 +49,29 @@ module Jobstat
       # include all logins from owned projects
 
       result = Hash.new {|hash, key| hash[key] = []}
+      is_admin = User.superadmins.include?(user)
+      is_expert = Sessions::Report.all.map{|x| x.expert_id}.include?(user.id)
 
-      user.owned_projects.each do |project|
-        project.members.each do |member|
-          result[project].push(member.login)
+      if is_admin
+        Core::Project.all.each do |project|
+          project.members.each do |member|
+            result[project].push(member.login)
+          end
         end
+      elsif is_expert
+        ids = expert_group.map{|x| x.project_id}
+        Core::Project.where(id: ids).each do |project|
+          project.members.each do |member|
+            result[project].push(member.login)
+          end
+        end
+      else
+        user.owned_projects.each do |project|
+          project.members.each do |member|
+            result[project].push(member.login)
+          end
+        end  
       end
-
       result
     end
 
@@ -83,45 +99,6 @@ module Jobstat
         old_val.concat(new_val).uniq
       }      
     end
-
-    def get_expert_projects
-      project_ids = Sessions::Report.where(expert_id: current_user.id)
-        .where(state: 'assessing').where('created_at > ?', Date.today.strftime("%Y.01.01")).pluck(:project_id)
-      projects = Core::Project.where(id: project_ids)
-
-      result = Hash.new {|hash, key| hash[key] = []}
-      projects.each do |project|
-        project.members.each do |member|
-          result[project].push(member.login)
-        end
-      end
-
-      result
-    end
-
-    def get_grp_select_options_by_projects projects, selected=[]
-      list=[['ALL',['ALL']]]
-      dis=[]
-      projects.each{|proj,logins|
-        p="---- #{shorten(proj.title,32)} ----"
-        list << [p,logins]
-      }
-      {list: list, options: {selected: selected, disabled: dis}}
-    end
-
-    # def get_select_options_by_projects projects, selected=[]
-    #   list=[]
-    #   dis=[]
-    #   projects.each{|proj,logins|
-    #     p="---- #{shorten(proj.title,32)} ----"
-    #     list << p
-    #     dis << p
-    #     list.concat(logins)
-    #   }
-    #   [list, {selected: selected, disabled: dis}]
-    #   #debug [["-- RNF --","vadim", "shvets", "-- Worlid domination --", "vurdizm", "wasabiko", "ivanov", "-- Postgraduate play --", "afanasievily_251892", "gumerov_219059"], selected: selected, disabled: ["-- RNF --","-- Worlid domination --","-- Postgraduate play --"]]
-    #   #options_for_select(list, selected: selected, disabled: dis)
-    # end
 
     def shorten name, len
       l=name.length
