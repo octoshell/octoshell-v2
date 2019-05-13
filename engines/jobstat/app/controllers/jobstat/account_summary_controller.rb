@@ -23,6 +23,14 @@ module Jobstat
       # redirect_to :action => "show"
     end
 
+    def calculate_resources_used(job)
+      time_end = Time.parse(job.end_time.to_s)
+      time_start = Time.parse(job.start_time.to_s)
+      time_diff = time_end.minus_with_coercion(time_start)
+      time_hours = (time_diff / 3600).round
+      return time_hours * job.num_cores
+    end
+
     def show
       colors = [
         "#f8f3f6", "#ffdead", "#ffd700", "#1b50c7", "#cdad00",
@@ -118,9 +126,9 @@ module Jobstat
       clusters = @params[:cluster]
       unless clusters.nil? || clusters.length == 0
         if clusters.include?(all_value)
-          @selected_clusters = Core::Cluster.all.map { |c| c.name_en }
+          @selected_clusters = Core::Cluster.all.map { |c| c.description }
         else
-          @selected_clusters = Core::Cluster.all.map { |c| c.name_en }
+          @selected_clusters = Core::Cluster.all.map { |c| c.description }
                                                 .select { |key| clusters.include?(key.to_s) }
         end
       end
@@ -132,14 +140,13 @@ module Jobstat
       @selected_jobs = Job.where "start_time > ? AND end_time < ?",
                                   start_time,
                                   end_time
-                                  
       @selected_jobs = @selected_jobs.where(:login => @selected_logins)
       @selected_jobs = @selected_jobs.where(:cluster => @selected_clusters)
       @selected_jobs = @selected_jobs.where(state: @params[:states]) unless @params[:states].include?("ALL")
 
       @selected_jobs_states = @selected_jobs.pluck(:state).uniq
 
-      @filtered_jobs = @selected_jobs.to_a
+      @filtered_jobs = @selected_jobs.all.to_a
 
       # Apply granulation
       @formatting = "%Y week %W"
@@ -162,14 +169,6 @@ module Jobstat
       end
     
       @filtered_dates = @filtered_jobs.map{|d,j| d}
-
-      def calculate_resources_used(job)
-        time_end = Time.parse(job.end_time.to_s)
-        time_start = Time.parse(job.start_time.to_s)
-        time_diff = time_end.minus_with_coercion(time_start)
-        time_hours = (time_diff / 3600).round
-        return time_hours * job.num_cores
-      end
 
       # ========================
       # Хронология Статусов
@@ -260,7 +259,11 @@ module Jobstat
 
       # топы логинов
       @_top_login_runs = @selected_jobs.group_by{|j| j.login}.sort_by{|login, jobs| -jobs.count}.map{|k,v|k}[0..._top_stack]
-      @_top_login_resources = @selected_jobs.group_by{|j| j.login}.sort_by{|login, jobs| jobs.map{|j| -calculate_resources_used(j)}.reduce(:+)}.map{|k,v|k}[0..._top_stack]
+      @_top_login_resources = @selected_jobs.group_by{|j| j.login}.sort_by{|login, jobs|
+        jobs.map{|j|
+          -calculate_resources_used(j)
+        }.reduce(:+)
+      }.map{|k,v|k}[0..._top_stack]
       
       # топы проектов
       @_top_project_runs = {}
@@ -278,7 +281,7 @@ module Jobstat
       end
 
       @_top_project_runs = @_top_project_runs.sort_by{|project, jobs| -jobs.count}.map{|k,v|k}[0..._top_stack]
-      @_top_project_resources = @_top_project_resources.sort_by{|project, jobs| -jobs.map{|j| -calculate_resources_used(j)}.reduce(:+)}.map{|k,v|k}[0..._top_stack]
+      #@_top_project_resources = @_top_project_resources.sort_by{|project, jobs| -jobs.map{|j| -calculate_resources_used(j)}.reduce(:+)}.map{|k,v|k}[0..._top_stack]
 
       # =====
 
@@ -505,8 +508,15 @@ module Jobstat
       end
 
       # select project keys (descending)
-      @selected_project_ids_runs = @top_project_jobs.sort_by{|proj,jobs| -jobs.count}.map{|k,v|k}[0...@max_tops]
-      @selected_project_ids_resources = @top_project_jobs.sort_by{|proj,jobs| jobs.map{|j| -calculate_resources_used(j)}.reduce(:+)}.map{|k,v|k}[0...@max_tops]
+      @selected_project_ids_runs = @top_project_jobs.sort_by{|_,jobs| -jobs.count}.map{|k,v|k}[0...@max_tops]
+      @selected_project_ids_resources = @top_project_jobs.sort_by{|p,jobs|
+        res = jobs.map{|j|
+          -calculate_resources_used(j)
+        }
+        res.reduce(:+) || 0
+      }.map{
+        |k,v| k
+      }[0...@max_tops]
 
       # =========
       # Топы проектов по статусам
@@ -713,8 +723,14 @@ module Jobstat
       end
 
       # select login keys (descending)
-      @selected_login_ids_runs = @top_login_jobs.sort_by{|proj,jobs| -jobs.count}.map{|k,v|k}[0...@max_tops]
-      @selected_login_ids_resources = @top_login_jobs.sort_by{|proj,jobs| jobs.map{|j| -calculate_resources_used(j)}.reduce(:+)}.map{|k,v|k}[0...@max_tops]
+      @selected_login_ids_runs = @top_login_jobs.sort_by{|_,jobs| -jobs.count}.map{|k,v|k}[0...@max_tops]
+      @selected_login_ids_resources = @top_login_jobs.sort_by{|_,jobs|
+        jobs.map{|j|
+          -calculate_resources_used(j)
+        }.reduce(:+) || 0
+      }.map{|k,v|
+        k
+      }[0...@max_tops]
 
       # === 
       # Топ логинов по статусам
@@ -826,7 +842,13 @@ module Jobstat
 
       # select user keys (descending)
       @selected_user_ids_runs = @top_user_jobs.sort_by{|user,jobs| -jobs.count}.map{|k,v|k}[0...@max_tops]
-      @selected_user_ids_resources = @top_user_jobs.sort_by{|user,jobs| jobs.map{|j| -calculate_resources_used(j)}.reduce(:+)}.map{|k,v|k}[0...@max_tops]
+      @selected_user_ids_resources = @top_user_jobs.sort_by{|user,jobs|
+        jobs.map{|j|
+          -calculate_resources_used(j)
+        }.reduce(:+) || 0
+      }.map{|k,v|
+        k
+      }[0...@max_tops]
 
 
       # ===========
