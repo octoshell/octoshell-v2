@@ -144,11 +144,15 @@ module Jobstat
       _top_stack = @stack_max_tops
 
       # топы логинов
-      @_top_login_runs = @selected_jobs.group_by{|j| j.login}.sort_by{|login, jobs| -jobs.count}.map{|k,v|k}[0..._top_stack]
+      @_top_login_runs = @selected_jobs.group_by{|j| j.login}.sort_by{|login, jobs|
+        -jobs.count
+      }.map{|k,v|
+        k
+      }[0..._top_stack]
       @_top_login_resources = @selected_jobs.group_by{|j| j.login}.sort_by{|login, jobs|
         jobs.map{|j|
           -calculate_resources_used(j)
-        }.reduce(:+)
+        }.reduce(:+) || 0
       }.map{|k,v|k}[0..._top_stack]
       
       # топы проектов
@@ -166,8 +170,18 @@ module Jobstat
         @_top_project_resources[project_id] += [job]
       end
 
-      @_top_project_runs = @_top_project_runs.sort_by{|project, jobs| -jobs.count}.map{|k,v|k}[0..._top_stack]
-      @_top_project_resources = @_top_project_resources.sort_by{|project, jobs| -jobs.map{|j| -calculate_resources_used(j)}.reduce(:+)}.map{|k,v|k}[0..._top_stack]
+      @_top_project_runs = @_top_project_runs.sort_by{|project, jobs|
+        -jobs.count
+      }.map{|k,v|
+        k
+      }[0..._top_stack]
+      @_top_project_resources = @_top_project_resources.sort_by{|project, jobs|
+        -(jobs.map{|j|
+          -calculate_resources_used(j)
+        }.reduce(:+) || 0)
+      }.map{|k,v|
+        k
+      }[0..._top_stack]
       # ===========
 
       # ========================
