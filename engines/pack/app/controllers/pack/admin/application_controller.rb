@@ -4,7 +4,6 @@ module Pack
 
     before_filter :check_abilities, :journal_user
     def check_abilities
-
       authorize! :manage, :packages
     end
 

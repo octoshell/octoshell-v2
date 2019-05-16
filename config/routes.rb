@@ -2,7 +2,6 @@ require "sidekiq/web"
 require "admin_constraint"
 
 Octoshell::Application.routes.draw do
-  mount RailsAdmin::Engine => '/other_admin', as: 'rails_admin'
   mount RailsEmailPreview::Engine, at: '/admin/emails'
   # This line mounts Wiki routes at /wiki by default.
   mount Wiki::Engine, :at => "/wiki"

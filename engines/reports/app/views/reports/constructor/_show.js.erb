@@ -599,11 +599,7 @@ $("#main-form").alpaca({
   }
 
   init_where();
-  $("#main-form").alpaca('get').getControlByPath('class_name').setValue('Core::Cluster');
   $("#main-form").alpaca('get').getControlByPath('class_name').getControlEl().trigger('change');
-
-
-
   var button = $('<button> <%= t(".add_join")%> </button>');
   button.click(function(){
     new_join($("#main-form").alpaca('get').getControlByPath('association'));
