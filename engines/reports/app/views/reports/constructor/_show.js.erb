@@ -1,0 +1,639 @@
+<% @alpaca_raw_json.each do |key, value| %>
+  var <%= key %> =  <%= raw value.to_json %>;
+<% end %>
+
+$.alpaca.Fields.AttributeField = $.alpaca.Fields.ObjectField.extend({
+    getFieldType: function() {
+        return "attribute";
+    }
+});
+Alpaca.registerFieldClass("attribute", Alpaca.Fields.AttributeField);
+
+
+
+var where_container;
+var attributes_template = $('#attributes_template').html();
+
+var aggregate = ['COUNT', 'SUM', 'MIN', 'MAX','AVG'];
+var initTwbs;
+
+function build_table(data, pages, page){
+  var head = data[0];
+  var data = data.splice(1,data.length - 1);
+  var element = $('table#result');
+  var string = '';
+  string = string.concat('<tr>');
+  $.each(head, function( index, value ) {
+    string = string.concat(`<th> ${value} </th>\n`);
+  });
+
+  string = string.concat('</tr>');
+  $.each(data, function( index, value ) {
+    string = string.concat('<tr>');
+    $.each(value, function( index, value ) {
+      string = string.concat(`<td> ${value} </td>\n`);
+    });
+    string = string.concat('</tr>');
+
+  });
+  element.html(string);
+
+  var twbs = $("#pagination");
+  twbs.twbsPagination('destroy');
+  initTwbs = true;
+  twbs.ruTwbsPagination({
+    totalPages: pages,
+    startPage: page,
+    onPageClick: function (event, page) {
+      if(initTwbs){
+        return;
+      }
+      initTwbs = true;
+      send_array(page);
+    }
+  });
+  initTwbs = false;
+
+
+}
+
+
+
+
+
+function checkbox_changed(e){
+  if(this.parent.childrenByPropertyId.on || this.parent.childrenByPropertyId.class_name){
+    var array = [this.parent.childrenByPropertyId.alias.getValue()];
+  }else{
+    var array = this.parent.path.split('/');
+    array.splice(0,2);
+  }
+
+
+
+  var elem = $(e.target).select2('data')[0];
+  var value = elem.id;
+  var label = elem.text;
+  if(array.length > 0){
+    label = array.join('.') + '.' + label;
+  }
+  if(array.length > 0){
+    value = array.join('.') + '.' + value;
+  }
+  this.setValue('');
+  this.refresh();
+  var attributes_element = $("#main-form").alpaca('get').getControlByPath('attributes');
+
+  attributes_element.resolveItemSchemaOptions(function(itemSchema, itemOptions, circular) {
+      var insertionPoint = attributes_element.children.length;
+      var itemData = Alpaca.createEmptyDataInstance(itemSchema);
+      itemData.label = label;
+      itemData.value = value;
+      var copiedOptions = jQuery.extend(true,{}, itemOptions);
+      attributes_element.addItem(insertionPoint, itemSchema, copiedOptions, itemData, function(item) {
+        apply_select();
+      });
+  });
+}
+
+function new_association(e){
+  var self = this;
+  var class_name = $("#main-form").alpaca('get')
+                  .getControlByPath('class_name').getValue();
+  var path = this.path.split('/');
+  path[0] = class_name;
+  path.splice(1, 1);
+  path[path.length-1] = this.getValue();
+  $.ajax({
+    dataType: "json",
+    url: "<%= class_info_constructor_index_path %>",
+    success: function( json ) {
+        self.assocs = {};
+        self.assocs.enum = json.associations;
+        self.assocs.optionLabels = json.associations_labels;
+        self.assocs.attributes = json.attributes;
+        self.assocs.labels = json.types;
+        where_container.append(json.attributes, json.types, path);
+
+    },
+    async: false,
+    data: {
+      assocs: path
+    }
+  });
+  if(self.parent.childrenByPropertyId[this.getValue()]){
+    alert('<%=t(".selected")%>');
+    return;
+  }
+  var schema = {
+    "title": this.getValue(),
+    "type": "object",
+    "properties":{
+      "join_type":{
+        "type": "string",
+        "title": '<%= t(".join_type") %>',
+        "enum": ['inner', 'left'],
+        "required": true,
+      },
+      "all_attributes": {
+        "title": '<%= t(".choose_attributes") %>',
+        "enum": self.assocs.attributes
+      },
+      "list":{
+        "title": '<%= t(".link") %>',
+        "enum": self.assocs.enum,
+      }
+    }
+  };
+  var options = {
+    "type": "object",
+    "fields":{
+      "join_type":{
+        "optionLabels": ['<%= t(".inner_join") %>', '<%= t(".left_join") %>']
+      },
+      "all_attributes": {
+        "type": "select",
+        "optionLabels": self.assocs.labels,
+        "onFieldChange": checkbox_changed
+      },
+      "list":{
+        "type": "select",
+        "optionLabels": self.assocs.optionLabels,
+        "onFieldChange": new_association
+      }
+    }
+  };
+
+  var data = {
+    "join_type": "inner"
+  }
+
+  this.parent.addItem(this.getValue(), schema, options,
+  data, this.parent.children[self.parent.children.length -1].getId(), function(item) {
+    var last_index = self.parent.children.length -1;
+      var last = self.parent.children[last_index].containerItemEl;
+      var first = self.parent.children[last_index-1].containerItemEl;
+      self.setValue(null);
+      self.refresh();
+      apply_select();
+      var button = $('<button> <%= t(".delete")%> </button>');
+      var cur_elem = self.parent.children[self.parent.children.length -1];
+      button.click(function(){
+        var array = cur_elem.path.split('/');
+        array.splice(0,2);
+        var begin = array.join('.');
+        var attributes_element = $("#main-form").alpaca('get').getControlByPath('attributes');
+        attributes_element.children = attributes_element.children.filter(word => !word.getValue().label.startsWith(begin));
+        attributes_element.refresh();
+        where_container.remove(begin);
+        self.parent.removeItem(cur_elem.propertyId);
+      });
+        self.parent.children[self.parent.children.length -1].children[0].domEl.prepend(button);
+  });
+
+
+
+}
+
+
+function new_join(elem){
+
+  var schema = {
+    "type": "object",
+    "properties":{
+      "join_table":{
+        "title": '<%= t(".join_table") %>',
+        "enum": class_options,
+      },
+      "alias":{
+        "title": '<%= t(".alias") %>',
+        "type": "string"
+      },
+      "join_type":{
+        "type": "string",
+        "title": '<%= t(".join_type") %>',
+        "enum": ['inner', 'left'],
+        "required": true,
+      },
+      "on":{
+        "title": '<%= t(".on") %>',
+        "type": "string"
+
+      },
+      "all_attributes": {
+        "title": '<%= t(".choose_attributes") %>',
+      }
+    }
+  };
+  var options = {
+    "type": "object",
+    "fields":{
+      "join_type":{
+        "optionLabels": ['<%= t(".inner_join") %>', '<%= t(".left_join") %>']
+      },
+      "join_table":{
+        "optionLabels": class_options,
+        "onFieldChange": function(e){
+          var self = this;
+          $.getJSON( "<%= class_info_constructor_index_path %>", { assocs: [this.getValue()]} )
+            .done(function( json ) {
+
+              var par = self.parent;
+              var prefix = 'c_'.concat(json.table_name);
+              where_container.append(json.attributes, json.types, [0, prefix]);
+
+              var al = par.childrenByPropertyId.all_attributes;
+              al.schema.enum = json.attributes;
+              al.options.optionLabels = json.types;
+              where_container.remove(self.parent.childrenByPropertyId.alias.getValue());
+
+              par.childrenByPropertyId.alias.setValue(prefix);
+              al.refresh();
+              par.childrenByPropertyId.alias.refresh();
+              apply_select();
+              console.log(where_container.items);
+            });
+
+        }
+
+      },
+      "all_attributes": {
+        "type": "select",
+        "onFieldChange": checkbox_changed
+      },
+      "alias":{
+        "onFieldChange":function(e){
+          var old_value = this.old_value;
+          var new_value = this.getValue();
+          if(old_value && old_value != '')
+            where_container.replace(old_value, this.getValue());
+        },
+        "events":{
+          "focusin":function(){
+            this.old_value = this.getValue();
+          }
+        }
+      }
+    }
+  };
+
+  var data = {
+    "join_type": "inner"
+  }
+  var propertyId = "custom-join-" + new Date().getTime();
+
+  elem.addItem(propertyId, schema, options,
+  data, elem.children[elem.children.length -1].getId(), function(item) {
+    apply_select();
+    bind_autocomplete(elem.children[elem.children.length-1].childrenByPropertyId.on.containerItemEl);
+    var button = $('<button> <%= t(".delete")%> </button>');
+    var cur_elem = elem.children[elem.children.length -1];
+    button.click(function(){
+      var begin = cur_elem.childrenByPropertyId.alias.getValue();
+      where_container.remove(begin);
+      elem.removeItem(cur_elem.propertyId);
+      return false;
+    });
+      cur_elem.children[0].domEl.prepend(button);
+
+
+  });
+
+
+}
+
+function bind_autocomplete(element) {
+    function split( val ) {
+      return val.split( /(,|\s|=|\(|\)|\+|\-|\/)+/ );
+
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+
+    (element.find('input, textarea'))
+      // don't navigate away from the field on tab when selecting an item
+      .on( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+             where_container.items.map(a => a.enum), extractLast( request.term ) ) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          // this.value = terms.join( ", " );
+          this.value = terms.join("");
+
+          return false;
+        }
+      });
+  }
+
+
+$("#main-form").alpaca({
+    "data": {
+      "per": 20,
+    },
+    "schema": {
+        "type": "object",
+        "properties": {
+              "class_name":{
+                "title": '<%= t(".class_name") %>',
+                "enum": class_options,
+                "required": true
+              },
+              "alias":{
+                "title": '<%= t(".alias") %>',
+                "disabled": true
+              },
+              "all_attributes":{
+                "title": '<%= t(".choose_attributes") %>'
+              },
+              "attributes":{
+                "title": '<%= t(".attributes") %>',
+                "required": true,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value":{
+                    },
+                    "label":{
+                    },
+                    "aggregate":{
+                      "enum": aggregate
+                    },
+                    "order":{
+                      "type": "array",
+                      "enum": ["ASC", "DESC", "GROUP"],
+                    },
+
+                  }
+                }
+
+              },
+              "association":{
+                "type": "object",
+                "properties":{
+                  "list":{
+                    "title": '<%= t(".link") %>',
+                  }
+                }
+              },
+              "having":{
+                "title": '<%= t(".having") %>',
+                "type": "string"
+              },
+              "where":{
+                "title": '<%= t(".where") %>',
+                "type": "string"
+              },
+              "per":{
+                "title": '<%= t(".per") %>',
+                "type": "number"
+              }
+
+
+
+        }
+    },
+    "options":{
+      "focus":"",
+      "hideInitValidationError":true,
+      "fields":{
+            "class_name":{
+              "type": "select",
+              "optionLabels": class_labels,
+              "onFieldChange": function(e) {
+                var self = this;
+                $.getJSON( "<%= class_info_constructor_index_path %>", { assocs: [this.getValue()]} )
+                  .done(function( json ) {
+                    var al = $("#main-form").alpaca('get').getControlByPath('all_attributes');
+
+                    al.schema.enum = json.attributes;
+                    al.options.optionLabels = json.types;
+                    where_container.assign(json.attributes, json.types, json.table_name);
+                    al.refresh();
+                    self.parent.childrenByPropertyId.alias.setValue(json.table_name);
+                    var attributes_elem = $("#main-form").alpaca('get').getControlByPath('attributes');
+                    if(attributes_elem.children.length > 0){
+                      attributes_elem.children.splice(0,attributes_elem.children.length);
+                    }
+                    attributes_elem.refresh();
+                    var al = $("#main-form").alpaca('get').getControlByPath('association');
+                    var schema = {
+                      "type": "object"
+                    };
+                    var options = {
+                      "type": "object"
+                    }
+                    al.children[0].schema.enum = json.associations;
+                    al.children[0].options.optionLabels = json.associations_labels;
+                    while(al.children.length > 1){
+                      al.removeItem(al.children[1].propertyId);
+                    }
+
+                    al.children[0].setValue('');
+                    al.children[0].refresh();
+                    apply_select();
+                  });
+              }
+            },
+            "alias":{
+              "disabled": true,
+            },
+            "all_attributes":{
+              "type": "select",
+              "onFieldChange": checkbox_changed
+            },
+            "attributes":{
+              "type": "array",
+              "toolbar":{
+                "actions":[{
+                  "action": "add",
+                  "enabled": false,
+                  "click": function(){
+                    this.handleToolBarAddItemClick(function(item) {
+                    });
+
+                  }
+                }]
+              },
+              "actionbar": {
+                "actions": [{
+                              "action": "add",
+                              "enabled": false
+                            }
+                ]
+              },
+              "items": {
+                "type": "attribute",
+                "fields":{
+                  "aggregate":{
+                    "type": "select"
+                  },
+                  "value": {
+                    "hidden": true
+                  },
+                  "order": {
+                    "type": "checkbox"
+                 },
+                 "label":{
+                   "type": "textarea",
+                   "disabled": true,
+                   "rows":3
+                 }
+                }
+              }
+            },
+            "association":{
+              "type": "object",
+              "fields":{
+                "list":{
+                  "type": "select",
+                  "onFieldChange": new_association
+                }
+              }
+            },
+            "having":{
+              "type": "textarea"
+            },
+            "where":{
+              "type": "textarea"
+            }
+
+      },
+      "form": {
+            "attributes": {
+                "method": "post",
+                "action": "<%=csv_constructor_index_path%>"
+            },
+            "buttons": {
+                "submit": {
+                    "title": '<%= t(".csv") %>',
+                    "click": function(e) {
+                      $.ajax({
+                        type: 'POST',
+                        url: "<%=csv_constructor_index_path%>",
+                        data: this.getValue(),
+                      }).done(function(arg) {
+
+                        let csvContent = "data:text/csv;charset=utf-8,"
+                            + arg.data;
+                        var encodedUri = encodeURI(csvContent);
+                        var link = document.createElement("a");
+                        link.setAttribute("href", encodedUri);
+                        link.setAttribute("download", "results.csv");
+                        document.body.appendChild(link); // Required for FF
+                        link.click();
+                        $('#db-error').empty();
+                      }).fail(function( jqXHR, textStatus ) {
+                        $('#db-error').text(jqXHR.responseText);
+                      });
+                    }
+                },
+                "array": {
+                    "title": '<%= t(".array") %>',
+                    "click": function(e) {
+                      send_array();
+
+                    }
+                }
+
+        }
+    },
+    "view": {
+        "layout": {
+            "template": "<%=j render partial: 'form_layout' %>",
+            "bindings": {
+                "class_name": "column-1",
+                "all_attributes": "column-1",
+                "association": "column-1",
+                "alias": "column-1",
+                "attributes" : "column-2",
+                "having": "column-2",
+                "where": "column-2",
+                "per": "column-2"
+
+            }
+        },
+        "templates": {
+            "container-attribute": attributes_template,
+        },
+        "callbacks": {
+        }
+
+    }
+
+  },
+  "postRender": function(control) {
+    apply_select();
+    var attributes = $("#main-form").alpaca('get').getControlByPath('attributes');
+    attributes.old_refresh = attributes.refresh;
+
+    attributes.refresh = function(callback){
+      var self = this;
+      var new_callback = function(callback){
+        if(callback)
+          callback.call(self);
+        apply_select();
+      };
+      self.old_refresh(new_callback);
+  }
+
+  init_where();
+  $("#main-form").alpaca('get').getControlByPath('class_name').setValue('Core::Cluster');
+  $("#main-form").alpaca('get').getControlByPath('class_name').getControlEl().trigger('change');
+
+
+
+  var button = $('<button> <%= t(".add_join")%> </button>');
+  button.click(function(){
+    new_join($("#main-form").alpaca('get').getControlByPath('association'));
+    return false;
+  });
+
+  $("#main-form").alpaca('get').getControlByPath('association').domEl.find('div.alpaca-container').prepend(button);
+  bind_autocomplete($("#main-form").alpaca('get').getControlByPath('where').containerItemEl);
+  bind_autocomplete($("#main-form").alpaca('get').getControlByPath('having').containerItemEl);
+
+
+}});
+
+
+function send_array(page){
+  var self = $("#main-form").alpaca('get');
+  self.refreshValidationState(true);
+  if (!self.isValid(true)) return;
+
+  var data = self.getValue();
+  data.page = page;
+  $.ajax({
+    type: 'POST',
+    dataType: 'json',
+    url: "<%=array_constructor_index_path%>",
+    data: data,
+  }).done(function(arg) {
+    $('#db-error').empty();
+    build_table(arg.data, arg.pages, arg.page);
+  }).fail(function( jqXHR, textStatus ) {
+    $('#db-error').text(jqXHR.responseText);
+  });
+}

@@ -29,6 +29,7 @@ ru:
   admin_submenu:
     options: Опции
     emails: Emails
+    reports_engine: Конструктор запросов
     comments: "Комментарии"
     cities: "Города"
     countries: "Страны"

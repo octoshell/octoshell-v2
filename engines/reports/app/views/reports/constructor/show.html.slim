@@ -1,0 +1,14 @@
+div class="page-header"
+  h1 = t(".title")
+div.col-xs-6#test-div style="word-break:break-all;"
+  /= Array.new(20, 'cccccccc').join('.')
+div#main-form
+p style="padding: 20px;"
+  font#db-error color='red'
+table#result.table.table-hover
+
+ul id="pagination" class="pagination-sm"
+= render partial: 'views'
+=javascript_tag do
+  = render partial: 'where',formats: :js
+  = render partial: 'show',formats: :js

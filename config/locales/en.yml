@@ -29,6 +29,7 @@ en:
   admin_submenu:
     options: Options
     emails: Emails
+    reports_engine: Query constructor
     comments: "Comments"
     cities: "Cities"
     countries: "Countries"
