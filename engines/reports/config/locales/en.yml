@@ -9,6 +9,7 @@ en:
         attributes: Attributes
         choose_attributes: Choose attribute for Select
         class_name: Name of class
+        condition: Expression
         csv: Show in CSV file
         delete: Delete
         having: Having
@@ -21,4 +22,6 @@ en:
         per: Amount of record on a single page
         selected: This assocation has been already selected
         title: Query constructor
+        to_sql: Show sql
         where: Where
+        loading: Loading...

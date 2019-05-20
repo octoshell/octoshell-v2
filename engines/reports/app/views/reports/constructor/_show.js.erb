@@ -92,9 +92,34 @@ function checkbox_changed(e){
       var copiedOptions = jQuery.extend(true,{}, itemOptions);
       attributes_element.addItem(insertionPoint, itemSchema, copiedOptions, itemData, function(item) {
         apply_select();
+        finish_rendering_attributes(attributes_element);
       });
   });
 }
+
+function finish_rendering_one_attribute(elem){
+  var options = jQuery.extend(true,{}, elem.options);
+  if(elem.getValue().label){
+    options.fields.value.hidden = true;
+    options.fields.alias.hidden = true;
+  }else{
+    options.fields.label.hidden = true;
+  }
+  elem.options = options;
+  elem.refresh(function(){
+    bind_autocomplete(elem.childrenByPropertyId.value.containerItemEl);
+  });
+
+}
+function finish_rendering_attributes(elem){
+  $.each(elem.children, function( index, value ) {
+    finish_rendering_one_attribute(value);
+  });
+
+}
+
+
+
 
 function new_association(e){
   var self = this;
@@ -187,6 +212,7 @@ function new_association(e){
         attributes_element.refresh();
         where_container.remove(begin);
         self.parent.removeItem(cur_elem.propertyId);
+        return false;
       });
         self.parent.children[self.parent.children.length -1].children[0].domEl.prepend(button);
   });
@@ -251,7 +277,6 @@ function new_join(elem){
               al.refresh();
               par.childrenByPropertyId.alias.refresh();
               apply_select();
-              console.log(where_container.items);
             });
 
         }
@@ -273,6 +298,10 @@ function new_join(elem){
             this.old_value = this.getValue();
           }
         }
+      },
+      "on":{
+        "type": "textarea",
+        "rows": 5
       }
     }
   };
@@ -302,18 +331,26 @@ function new_join(elem){
 
 }
 
+function regex(){
+  return /(,|\s|=|\(|\)|\+|\-|\/)+/;
+}
+
 function bind_autocomplete(element) {
     function split( val ) {
-      return val.split( /(,|\s|=|\(|\)|\+|\-|\/)+/ );
+      return val.split(regex());
 
     }
     function extractLast( term ) {
       return split( term ).pop();
     }
+    // element.find('input, textarea').each(function index(i, e){
+    //   console.log(e);
+    //   console.log(e.selectionStart);
+    // });
 
-    (element.find('input, textarea'))
+    element.find('input, textarea').each(function(i, e){
       // don't navigate away from the field on tab when selecting an item
-      .on( "keydown", function( event ) {
+      $(e).on( "keydown", function( event ) {
         if ( event.keyCode === $.ui.keyCode.TAB &&
             $( this ).autocomplete( "instance" ).menu.active ) {
           event.preventDefault();
@@ -322,29 +359,59 @@ function bind_autocomplete(element) {
       .autocomplete({
         minLength: 0,
         source: function( request, response ) {
+          // console.log(extractLast(request.term.substring(0, e.selectionStart)));
           // delegate back to autocomplete, but extract the last term
           response( $.ui.autocomplete.filter(
-             where_container.items.map(a => a.enum), extractLast( request.term ) ) );
+             where_container.items.map(a => a.enum), extractLast( request.term.substring(0, e.selectionStart) ) ) );
         },
         focus: function() {
           // prevent value inserted on focus
           return false;
         },
         select: function( event, ui ) {
-          var terms = split( this.value );
+          // var terms = split( this.value.substring(0, e.selectionStart) );
           // remove the current input
-          terms.pop();
+          // terms.pop();
+          var selectedValue =  ui.item.value;
           // add the selected item
-          terms.push( ui.item.value );
+          // terms.push( ui.item.value );
           // add placeholder to get the comma-and-space at the end
-          terms.push( "" );
-          // this.value = terms.join( ", " );
-          this.value = terms.join("");
-
+          // terms.push( "" );
+          var start = e.selectionStart - 1;
+          var length = this.value.length;
+          var i, right_index;
+          for(i = start; i!=-1; i = i - 1){
+            if(regex().test(this.value[i])) break;
+          }
+          for(right_index = start; right_index < length; right_index = right_index + 1){
+            if(regex().test(this.value[right_index])) break;
+          }
+          var length = this.value.length;
+          var right = this.value.substring(right_index, length);
+          this.value = this.value.substring(0, i+1) + selectedValue + right;
+          setCaretPosition(e, i+1 + selectedValue.length);
           return false;
         }
       });
+    });
   }
+
+  function setCaretPosition(ctrl, pos) {
+    // Modern browsers
+    if (ctrl.setSelectionRange) {
+      ctrl.focus();
+      ctrl.setSelectionRange(pos, pos);
+
+    // IE8 and below
+    } else if (ctrl.createTextRange) {
+      var range = ctrl.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', pos);
+      range.moveStart('character', pos);
+      range.select();
+    }
+  }
+
 
 
 $("#main-form").alpaca({
@@ -374,11 +441,15 @@ $("#main-form").alpaca({
                   "type": "object",
                   "properties": {
                     "value":{
+                      "title": '<%= t(".condition") %>',
+                      "required": true
+
                     },
                     "label":{
                     },
-                    "aggregate":{
-                      "enum": aggregate
+                    "alias":{
+                      "title": '<%= t(".alias") %>',
+                      "required": true
                     },
                     "order":{
                       "type": "array",
@@ -468,29 +539,60 @@ $("#main-form").alpaca({
               "toolbar":{
                 "actions":[{
                   "action": "add",
-                  "enabled": false,
+                  "enabled": true,
                   "click": function(){
+                    var self = this;
                     this.handleToolBarAddItemClick(function(item) {
+                      finish_rendering_attributes(self);
                     });
 
                   }
                 }]
               },
+              "animate": false,
               "actionbar": {
                 "actions": [{
                               "action": "add",
-                              "enabled": false
+                              "enabled": true,
+                              "click": function(key, action, itemIndex) {
+                                    var self = this;
+                                    this.handleActionBarAddItemClick(itemIndex, function(item) {
+                                      finish_rendering_attributes(self);
+                                    });
+                                }
+                            },
+                            {
+                              "action": "up",
+                              "click": function(key, action, itemIndex) {
+                                  var self = this;
+                                  this.handleActionBarMoveItemUpClick(itemIndex, function(item) {
+                                      finish_rendering_attributes(self);
+                                  });
+                                }
+                            },
+                            {
+                              "action": "down",
+                              "enabled": true,
+                              "click": function(key, action, itemIndex) {
+                                  var self = this;
+                                  this.handleActionBarMoveItemDownClick(itemIndex, function(item) {
+                                      finish_rendering_attributes(self);
+                                  });
+                                }
                             }
                 ]
               },
               "items": {
-                "type": "attribute",
+                "type": "object",
                 "fields":{
-                  "aggregate":{
-                    "type": "select"
+                  "alias":{
+                    // "type": "string"
                   },
                   "value": {
-                    "hidden": true
+                    // "hidden": true
+                    "type": "textarea",
+                    "rows":3
+
                   },
                   "order": {
                     "type": "checkbox"
@@ -529,6 +631,7 @@ $("#main-form").alpaca({
                 "submit": {
                     "title": '<%= t(".csv") %>',
                     "click": function(e) {
+                      $('#db-error').text('<%= t(".loading") %>');
                       $.ajax({
                         type: 'POST',
                         url: "<%=csv_constructor_index_path%>",
@@ -544,8 +647,10 @@ $("#main-form").alpaca({
                         document.body.appendChild(link); // Required for FF
                         link.click();
                         $('#db-error').empty();
+                        $('#sql').empty();
                       }).fail(function( jqXHR, textStatus ) {
                         $('#db-error').text(jqXHR.responseText);
+                        $('#sql').empty();
                       });
                     }
                 },
@@ -553,9 +658,31 @@ $("#main-form").alpaca({
                     "title": '<%= t(".array") %>',
                     "click": function(e) {
                       send_array();
-
+                    }
+                },
+                "to_sql": {
+                    "title": '<%= t(".to_sql") %>',
+                    "click": function(e) {
+                      this.refreshValidationState(true);
+                      if (!this.isValid(true)) return;
+                      var data = this.getValue();
+                      $('#db-error').text('<%= t(".loading") %>');
+                      $.ajax({
+                        type: 'POST',
+                        url: "<%=to_sql_constructor_index_path%>",
+                        data: this.getValue(),
+                      }).done(function(arg) {
+                        console.log(arg);
+                        $('#sql').text(arg);
+                      }).fail(function( jqXHR, textStatus ) {
+                        $('#db-error').text(jqXHR.responseText);
+                        $('#sql').empty();
+                      }).always(function( jqXHR, textStatus ) {
+                        $('#db-error').empty();
+                      });
                     }
                 }
+
 
         }
     },
@@ -586,17 +713,17 @@ $("#main-form").alpaca({
   "postRender": function(control) {
     apply_select();
     var attributes = $("#main-form").alpaca('get').getControlByPath('attributes');
-    attributes.old_refresh = attributes.refresh;
+    // attributes.old_refresh = attributes.refresh;
 
-    attributes.refresh = function(callback){
-      var self = this;
-      var new_callback = function(callback){
-        if(callback)
-          callback.call(self);
-        apply_select();
-      };
-      self.old_refresh(new_callback);
-  }
+    // attributes.refresh = function(callback){
+    //   var self = this;
+    //   var new_callback = function(callback){
+    //     if(callback)
+    //       callback.call(self);
+    //     apply_select();
+    //   };
+    //   self.old_refresh(new_callback);
+  // }
 
   init_where();
   $("#main-form").alpaca('get').getControlByPath('class_name').getControlEl().trigger('change');
@@ -621,6 +748,7 @@ function send_array(page){
 
   var data = self.getValue();
   data.page = page;
+  $('#db-error').text('<%= t(".loading") %>');
   $.ajax({
     type: 'POST',
     dataType: 'json',
@@ -628,8 +756,10 @@ function send_array(page){
     data: data,
   }).done(function(arg) {
     $('#db-error').empty();
+    $('#sql').empty();
     build_table(arg.data, arg.pages, arg.page);
   }).fail(function( jqXHR, textStatus ) {
     $('#db-error').text(jqXHR.responseText);
+    $('#sql').empty();
   });
 }

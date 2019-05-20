@@ -16,6 +16,20 @@ module Reports
       expect(ConstructorService.new(hash).to_a).to eq [{"core_cities.title_ru"=>"Москва"}, {"core_cities.title_ru"=>"Воронеж"}]
     end
 
+    it "usual select" do
+      # puts User.all.to_a.map(&:email).inspect
+      # create(:city, title_ru: 'Воронеж')
+      hash = {
+                "class_name"=>"Core::City",
+                "attributes"=>{"0"=>{"value"=>"core_cities.title_ru", "label"=>"core_cities.title_ru|string"},
+                               "1"=>{"value"=>"UPPER(core_cities.title_ru)", "alias" => "u"}}
+              }
+      expect(ConstructorService.new(hash).to_a).to eq [{"core_cities.title_ru"=>"Москва", "u" => "МОСКВА"}]
+
+      # expect(ConstructorService.new(hash).to_a).to eq [{"core_cities.title_ru"=>"Москва"}, {"core_cities.title_ru"=>"Воронеж"}]
+    end
+
+
     it "order by query" do
       create(:city, title_ru: 'Воронеж')
       hash = {"class_name"=>"Core::City", "attributes"=>{"0"=>{"value"=>"core_cities.title_ru",

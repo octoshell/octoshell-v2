@@ -5,6 +5,8 @@ Reports::Engine.routes.draw do
 			get :class_info
 			post :csv
 			post :array
+			post :to_sql
+
 		end
 	end
 end

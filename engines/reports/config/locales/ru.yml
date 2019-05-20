@@ -1,3 +1,4 @@
+---
 ru:
   reports:
     constructor:
@@ -9,6 +10,7 @@ ru:
         attributes: Атрибуты
         choose_attributes: Выберите атрибуты для Select
         class_name: Название Класса
+        condition: Выражение
         csv: Показать в CSV
         delete: Удалить
         having: Having
@@ -21,4 +23,6 @@ ru:
         per: Количество записей на одной странице
         selected: Эта ассоциация уже выбрана!
         title: Конструктор запросов
+        to_sql: Показать SQL
         where: Where
+        loading: Идет загрузка...

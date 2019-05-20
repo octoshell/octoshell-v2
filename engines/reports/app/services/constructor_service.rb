@@ -76,24 +76,16 @@ module Reports
 
     def human_alias(hash)
       string = ''
-      string << "#{hash[:aggregate]}_" if hash[:aggregate]
       string << [hash[:human_prefix], hash[:column]].compact.join('.')
       string
     end
 
     def db_alias(hash)
-      [hash[:aggregate], hash[:db_prefix], hash[:column]].compact.join('_')
+      [hash[:db_prefix], hash[:column]].compact.join('_')
     end
 
     def db_source(hash)
-      string = ''
-      db = "#{hash[:db_prefix]}.#{hash[:column]}"
-      if hash[:aggregate]
-        string = "#{hash[:aggregate]}(#{db})"
-      else
-        string = db
-      end
-      string
+      "#{hash[:db_prefix]}.#{hash[:column]}"
     end
 
     def put_select
@@ -114,12 +106,23 @@ module Reports
         raise "error" if val.count == 2
         "#{db_source(a)} #{val.first}"
       end
+      @order += @complex_attributes.select do |a|
+        a[2].include?('ASC') || a[2].include?('DESC')
+      end.map do |a|
+        order = a[2]
+        val = order.select { |elem| %w[ASC DESC].include?(elem) }
+        raise "error" if val.count == 2
+        "#{a.second} #{val.first}"
+      end
     end
 
     def put_group
       @group =  @attributes.select do |a|
         a[:order].include?('GROUP')
       end.map { |v| db_source(v) }
+      @group += @complex_attributes.select do |a|
+        a[2].include?('GROUP')
+      end.map(&:second)
     end
 
     def deep_copy(o)
@@ -203,16 +206,18 @@ module Reports
         []
       )
       scan_all_joins
-
+      @complex_attributes = []
       @attributes = []
       hash.values.each do |v|
         value = v['value']
         path = value.split('.')[0..-2]
         column = value.split('.').last
-        attribute = { aggregate: v['aggregate'] ? v['aggregate'].downcase : nil,
+        attribute = {
                       order: Array(v['order']),
                       column: column }
-        if path.first == @activerecord_class.table_name
+        if !v['label']
+          @complex_attributes <<  [value, v['alias'], Array(v['order'])]
+        elsif path.first == @activerecord_class.table_name
           attribute[:db_prefix] = @activerecord_class.table_name
           attribute[:human_prefix] = @activerecord_class.table_name
         elsif @custom_join_aliases.include?(path.first)
@@ -224,7 +229,7 @@ module Reports
           attribute[:human_prefix] = path.join('.')
 
         end
-        @attributes << attribute
+        @attributes << attribute if v['label']
       end
 
     end
@@ -261,6 +266,17 @@ module Reports
       end
     end
 
+
+    def gsub_one_string!(str)
+      @human_to_db.sort_by do |key, _value|
+        - key.count('.')
+      end.map do |a|
+        key = a.first
+        value = a.second
+        str = gsub(str, key, value)
+      end
+      str
+    end
 
     def gsub_all!
       @human_to_db.sort_by do |key, _value|
@@ -325,6 +341,7 @@ module Reports
       rel = @activerecord_class.order(@order).group(@group)
                                .joins(@inner_join).left_join(@left_join)
                                .having(@having).where(@where).select(@select)
+                               .select(@complex_attributes.map { |c| [gsub_one_string!(c.first), c.second ].join(' AS ') })
       @custom_join_strings.each do |s|
         rel = rel.joins(s)
       end
@@ -343,21 +360,30 @@ module Reports
       form_relation.to_sql
     end
 
-
     def to_2d_array
       a = to_a
-      [head(a.first)] + a.map(&:values)
+      [head(a.first)] + lightweight_to_a
     end
 
     def find_human_alias(key)
       attribute = @attributes.detect { |a| db_alias(a) == key }
-      human_alias(attribute)
+      if attribute
+        human_alias(attribute)
+      else
+        key
+      end
     end
 
     def head(row)
       return unless row
 
       row.keys
+    end
+
+    def lightweight_to_a
+      ActiveRecord::Base.connection.execute(form_relation.to_sql).map do |a|
+        a.values
+      end
     end
 
     def to_a

@@ -41,5 +41,15 @@ module Reports
       end
     end
 
+    def to_sql
+      params.permit!
+      begin
+        @constructor = ConstructorService.new_for_csv(params.to_h)
+        render plain: @constructor.to_sql
+      rescue ActiveRecord::StatementInvalid => e
+        render status: 400, plain: e.to_s
+      end
+    end
+
   end
 end
