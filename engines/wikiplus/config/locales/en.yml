@@ -1,0 +1,30 @@
+en:
+  activerecord:
+    models:
+      wikiplus/page: "Wikiplus page"
+    attributes:
+      wikiplus/page:
+        name: "Name"
+        url: "url"
+        content: "Content"
+        sortid: "sort id"
+
+  buttons:
+    save: "Save"
+
+  wikiplus:
+    markdown_help: "<a href=\"http://daringfireball.net/projects/markdown/syntax\">Markdown</a> is used for markdown"
+    pages:
+      new:
+        title: "New page"
+      edit:
+        title: "Page edition"
+      index:
+        title: "Octoshell wikiplus"
+        new_page: "New page"
+        edit: "Edit"
+        delete: "Delete"
+        confirm: "Are you sure you want to delete this page?"
+        no_pages_found: "No wikiplus pages have been created yet."
+        name: "Name"
+        link: "Links"
