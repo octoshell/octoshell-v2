@@ -1,0 +1,8 @@
+div class="page-header"
+  h1 = File.basename(@image.image.url)
+
+
+div class = "image"
+  <p> #{link_to File.basename(@image.image.url), @image.image.url, target: :blank} #{number_to_human_size(@image.image.size)}</p>
+  <p> <img src = "#{@image.image.url}" alt="" ></p>
+  <p> url = #{@image.image.url} </p>
