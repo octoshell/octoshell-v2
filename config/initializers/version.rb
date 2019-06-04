@@ -2,7 +2,7 @@ module Octoshell
   class Version
     class <<self
       RAILS_ENV=Rails.env
-      VER='2.0.2'
+      VER='2.0.3'
       GIT_VER=`git describe --always`
 
       def ver
