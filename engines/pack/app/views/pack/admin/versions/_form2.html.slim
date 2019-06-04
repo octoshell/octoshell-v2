@@ -12,7 +12,8 @@
           - Pack::Version.locale_columns(:name).each do |column|
             = f.text_field column
           - Pack::Version.locale_columns(:description).each do |column|
-            = f.text_area column,rows:3
+            /= f.text_area column,rows:3
+            = markdown_area f,column,rows:3
           = f.number_field :cost
           -if @package.deleted
             =t 'notice.pack_deleted'
