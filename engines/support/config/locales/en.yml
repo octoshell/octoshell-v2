@@ -143,12 +143,13 @@ en:
           title: Request No%{id}
           accept: Accept
           no_replies: No replies
-          new_reply: New reply
-          create_reply_template: Create reply template from current reply
-
           send: Send
+          tags-etc: Tags/files/comments
           send_and_show_result: Send and show result
           send_and_show_next: Send and show next ticket
+          new_reply: New reply
+          create_reply_template: Create reply template from current reply
+          attach: Attach file
 
       tags:
         index:
@@ -222,8 +223,9 @@ en:
         problem_solved: "Have your problem been solved? Press "
         new_reply: New reply
         no_replies: No replies
-
         if_not: "If not, press "
+        attach: "Attach file: "
+
       new:
         title: New request
       edit:
