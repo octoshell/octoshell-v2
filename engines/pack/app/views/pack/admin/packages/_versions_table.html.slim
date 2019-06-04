@@ -28,7 +28,7 @@
 				- for version in records
 					tr
 						td  =link_to version.name, admin_package_version_path(version.package_id,version.id)
-						td  #{version.description}
+						td  #{markdown version.description}
 						td 	#{version.end_lic_readable}
 						td
 							=render "pack/packages/clustervers",clustervers: version.clustervers
