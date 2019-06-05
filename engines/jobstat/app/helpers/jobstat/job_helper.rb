@@ -44,7 +44,7 @@ module Jobstat
       result
     end
 
-    def get_owned_projects(user)
+    def get_owned_projects(user,extended_results=false)
       # get hash with projects and logins for user
       # include all logins from owned projects
 
@@ -52,17 +52,19 @@ module Jobstat
       is_admin = User.superadmins.include?(user)
       is_expert = Sessions::Report.all.map{|x| x.expert_id}.include?(user.id)
 
-      if is_admin
-        Core::Project.all.each do |project|
-          project.members.each do |member|
-            result[project].push(member.login)
+      if extended_results
+        if is_admin
+          Core::Project.all.each do |project|
+            project.members.each do |member|
+              result[project].push(member.login)
+            end
           end
-        end
-      elsif is_expert
-        ids = expert_group.map{|x| x.project_id}
-        Core::Project.where(id: ids).each do |project|
-          project.members.each do |member|
-            result[project].push(member.login)
+        elsif is_expert
+          ids = expert_group.map{|x| x.project_id}
+          Core::Project.where(id: ids).each do |project|
+            project.members.each do |member|
+              result[project].push(member.login)
+            end
           end
         end
       else
@@ -79,8 +81,8 @@ module Jobstat
       return (get_owned_logins.flatten + get_involved_logins.flatten).uniq
     end
 
-    def get_owned_logins
-      owned_projects = get_owned_projects(current_user)
+    def get_owned_logins extended_results=false
+      owned_projects = get_owned_projects(current_user,extended_results)
       owned_projects.map {|_, value| value}.uniq
       #FIXME! Just for test
       # ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]

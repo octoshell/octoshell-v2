@@ -9,6 +9,9 @@ module Jobstat
     def index
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
+      #
+      # !!! FIXME   adding 'true' argument returns ALL available projects (for admins/experts)
+      #             use it for admin version
       @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
       @params = get_defaults.merge(params.symbolize_keys)
       @total_count = 0

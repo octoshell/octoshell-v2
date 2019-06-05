@@ -32,6 +32,8 @@ module Jobstat
       @extra_css=['jobstat/application'] #, 'jobstat/introjs.min']
       @extra_js=['jobstat/application'] #, 'jobstat/intro.min']
 
+      # !!! FIXME   adding 'true' argument returns ALL available projects (for admins/experts)
+      #             use it for admin version
       @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
       # @expert_projects=get_expert_projects
       # @projects = @projects.merge(@expert_projects)
@@ -41,11 +43,11 @@ module Jobstat
       #@involved_logins = get_involved_logins
 
       @params = defaults.merge(params.symbolize_keys)
-      @projects=get_all_projects # {project: [login1,...], prj2: [login2,...]}
+      #@projects=get_all_projects # {project: [login1,...], prj2: [login2,...]}
       @logins=get_all_logins.flatten.uniq
 
       @project_hash = {}
-      get_all_projects.each do |project, logins|
+      @projects.each do |project, logins|
         @project_hash["[id: #{project.id}] #{project.title}"] = project
       end
 
@@ -309,7 +311,7 @@ module Jobstat
       # ===========
 
 
-      @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
+      #@projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
       @expert_projects=get_expert_projects
 
       @projects = @projects.merge(@expert_projects)
