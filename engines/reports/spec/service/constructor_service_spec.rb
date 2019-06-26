@@ -68,16 +68,16 @@ module Reports
         {"core_cities.country_id"=>'1', "count_core_cities.id"=>'1'}]
     end
 
-    it ".convert_left_to_inner" do
-      hash =  {"accesses"=>{"join_type"=>"left", "project"=>{"join_type"=>"left",
-              "card"=>{"join_type"=>"inner"}}, "fields"=>{"join_type"=>"left"}}}
+    # it ".convert_left_to_inner" do
+    #   hash =  {"accesses"=>{"join_type"=>"left", "project"=>{"join_type"=>"left",
+    #           "card"=>{"join_type"=>"inner"}}, "fields"=>{"join_type"=>"left"}}}
+    #
+    #   ConstructorService.convert_left_to_inner(hash)
+    #
+    #   expect(hash).to eq("accesses"=>{"join_type"=>"inner", "project"=>{"join_type"=>"inner",
+    #           "card"=>{"join_type"=>"inner"}}, "fields"=>{"join_type"=>"left"}})
+    # end
 
-      ConstructorService.convert_left_to_inner(hash)
-
-      expect(hash).to eq("accesses"=>{"join_type"=>"inner", "project"=>{"join_type"=>"inner",
-              "card"=>{"join_type"=>"inner"}}, "fields"=>{"join_type"=>"left"}})
-
-    end
     it "queries with joins" do
       # country = create(:country, title_en: 'Germany')
       # create(:city, title_en: 'Hamburg', country: country)
