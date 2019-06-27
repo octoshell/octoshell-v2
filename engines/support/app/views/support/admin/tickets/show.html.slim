@@ -125,10 +125,10 @@ div class="row panel panel-default" id="reply"
     h4
       a href="#collapse1" data-toggle="collapse"
         i class="glyphicon glyphicon-chevron-down"
-      | &nbsp; 
-      = Support::Ticket.human_attribute_name(:message)
-      | &nbsp;
-      | (#{l @ticket.created_at} / #{l @ticket.updated_at})
+        | &nbsp; 
+        = Support::Ticket.human_attribute_name(:message)
+        | &nbsp;
+        | (#{l @ticket.created_at} / #{l @ticket.updated_at})
   div class="panel-body panel-collapse collapse" id="collapse1"
     = markdown @ticket.message
     div class="raw-ticket-message" = @ticket.message

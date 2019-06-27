@@ -7,6 +7,7 @@ h5 style="color: 666;" #{t('.topic')}: #{@ticket.topic.name_with_parents}
 p
   strong = @ticket.subject
 
-p = link_to t('.show_ticket_details'), support.admin_ticket_url(@ticket)
+p
+	= link_to t('.show_ticket_details'), polymorphic_url([:admin, @ticket], anchor: 'reply')
 
 = render "footer"

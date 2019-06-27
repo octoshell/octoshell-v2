@@ -26,7 +26,7 @@
         td class="col-xs-5"
           ul class="list-unstyled"
             li
-              strong = link_to ticket, [:admin, ticket]
+              strong = link_to ticket, polymorphic_path([:admin, ticket], anchor: 'reply')
             li
               - state = { "pending" => "danger", "answered_by_support" => "warning", "answered_by_reporter" => "danger", "resolved" => "success", "closed" => "default" }[ticket.state_name]
               span class="label label-#{state}" = ticket.human_state_name
