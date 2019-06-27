@@ -1,0 +1,2935 @@
+  [1m[36m (133.4ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.2ms)[0m  select sqlite_version(*)
+  [1m[36m (144.0ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (99.3ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('0')
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (121.5ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (155.2ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.2ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (114.1ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (142.2ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (138.2ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.1ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (113.1ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (117.3ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (133.2ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.1ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (113.9ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (113.2ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (144.1ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.2ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (123.4ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (131.0ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (144.4ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.1ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (113.9ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (135.1ms)[0m  [1mCREATE TABLE "abilities" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "action" varchar(255), "subject" varchar(255), "group_id" integer, "available" boolean DEFAULT 'f', "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (129.1ms)[0m  [1mCREATE  INDEX "index_abilities_on_group_id" ON "abilities" ("group_id")[0m
+  [1m[35m (144.6ms)[0m  CREATE TABLE "announcement_recipients" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "announcement_id" integer) 
+  [1m[36m (155.7ms)[0m  [1mCREATE  INDEX "index_announcement_recipients_on_announcement_id" ON "announcement_recipients" ("announcement_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_announcement_recipients_on_announcement_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_announcement_recipients_on_announcement_id' AND type='index'
+
+  [1m[36m (155.1ms)[0m  [1mCREATE  INDEX "index_announcement_recipients_on_user_id" ON "announcement_recipients" ("user_id")[0m
+  [1m[35m (144.1ms)[0m  CREATE TABLE "announcements" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title_ru" varchar(255), "reply_to" varchar(255), "body_ru" text, "attachment" varchar(255), "is_special" boolean, "state" varchar(255), "created_at" datetime, "updated_at" datetime, "created_by_id" integer, "title_en" varchar, "body_en" text) 
+  [1m[36m (144.6ms)[0m  [1mCREATE  INDEX "index_announcements_on_created_by_id" ON "announcements" ("created_by_id")[0m
+  [1m[35m (144.4ms)[0m  CREATE TABLE "category_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "options_category_id" integer, "value_ru" varchar, "value_en" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (144.5ms)[0m  [1mCREATE  INDEX "index_category_values_on_options_category_id" ON "category_values" ("options_category_id")[0m
+  [1m[35m (144.3ms)[0m  CREATE TABLE "comments_comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "text" text, "attachable_id" integer NOT NULL, "attachable_type" varchar NOT NULL, "user_id" integer NOT NULL, "context_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (146.0ms)[0m  [1mCREATE  INDEX "index_comments_comments_on_attachable_type_and_attachable_id" ON "comments_comments" ("attachable_type", "attachable_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_comments_on_attachable_type_and_attachable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_comments_on_attachable_type_and_attachable_id' AND type='index'
+
+  [1m[36m (144.3ms)[0m  [1mCREATE  INDEX "index_comments_comments_on_context_id" ON "comments_comments" ("context_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_comments_on_context_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_comments_on_context_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_comments_on_attachable_type_and_attachable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_comments_on_attachable_type_and_attachable_id' AND type='index'
+[0m
+  [1m[35m (143.8ms)[0m  CREATE  INDEX "index_comments_comments_on_user_id" ON "comments_comments" ("user_id")
+  [1m[36m (144.4ms)[0m  [1mCREATE TABLE "comments_context_groups" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "context_id" integer NOT NULL, "group_id" integer NOT NULL, "type_ab" integer NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (155.7ms)[0m  CREATE  INDEX "index_comments_context_groups_on_context_id" ON "comments_context_groups" ("context_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_context_groups_on_context_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_context_groups_on_context_id' AND type='index'
+[0m
+  [1m[35m (154.9ms)[0m  CREATE  INDEX "index_comments_context_groups_on_group_id" ON "comments_context_groups" ("group_id")
+  [1m[36m (144.3ms)[0m  [1mCREATE TABLE "comments_contexts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "name_en" varchar) [0m
+  [1m[35m (144.1ms)[0m  CREATE TABLE "comments_file_attachments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "file" varchar, "description" text, "attachable_id" integer NOT NULL, "attachable_type" varchar NOT NULL, "user_id" integer NOT NULL, "context_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (144.4ms)[0m  [1mCREATE  INDEX "attach_index" ON "comments_file_attachments" ("attachable_id", "attachable_type")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='attach_index' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='attach_index' AND type='index'
+
+  [1m[36m (166.5ms)[0m  [1mCREATE  INDEX "index_comments_file_attachments_on_context_id" ON "comments_file_attachments" ("context_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_file_attachments_on_context_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_file_attachments_on_context_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='attach_index' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='attach_index' AND type='index'
+[0m
+  [1m[35m (132.2ms)[0m  CREATE  INDEX "index_comments_file_attachments_on_user_id" ON "comments_file_attachments" ("user_id")
+  [1m[36m (155.7ms)[0m  [1mCREATE TABLE "comments_group_classes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "class_name" varchar, "obj_id" integer, "group_id" integer, "allow" boolean NOT NULL, "type_ab" integer NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (144.3ms)[0m  CREATE  INDEX "index_comments_group_classes_on_group_id" ON "comments_group_classes" ("group_id")
+  [1m[36m (155.6ms)[0m  [1mCREATE TABLE "comments_taggings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer, "attachable_id" integer NOT NULL, "attachable_type" varchar NOT NULL, "user_id" integer, "context_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (157.1ms)[0m  CREATE  INDEX "index_comments_taggings_on_attachable_type_and_attachable_id" ON "comments_taggings" ("attachable_type", "attachable_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_taggings_on_attachable_type_and_attachable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_taggings_on_attachable_type_and_attachable_id' AND type='index'
+[0m
+  [1m[35m (154.8ms)[0m  CREATE  INDEX "index_comments_taggings_on_context_id" ON "comments_taggings" ("context_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_taggings_on_context_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_taggings_on_context_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_taggings_on_attachable_type_and_attachable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_taggings_on_attachable_type_and_attachable_id' AND type='index'
+
+  [1m[36m (155.3ms)[0m  [1mCREATE UNIQUE INDEX "att_contex_index" ON "comments_taggings" ("tag_id", "attachable_id", "attachable_type", "context_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='att_contex_index' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='att_contex_index' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_taggings_on_context_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_taggings_on_context_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_taggings_on_attachable_type_and_attachable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_taggings_on_attachable_type_and_attachable_id' AND type='index'
+
+  [1m[36m (154.1ms)[0m  [1mCREATE  INDEX "index_comments_taggings_on_user_id" ON "comments_taggings" ("user_id")[0m
+  [1m[35m (155.7ms)[0m  CREATE TABLE "comments_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar) 
+  [1m[36m (155.1ms)[0m  [1mCREATE TABLE "core_access_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "access_id" integer, "quota" integer, "used" integer DEFAULT 0, "quota_kind_id" integer) [0m
+  [1m[35m (166.5ms)[0m  CREATE  INDEX "index_core_access_fields_on_access_id" ON "core_access_fields" ("access_id")
+  [1m[36m (210.9ms)[0m  [1mCREATE TABLE "core_accesses" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer NOT NULL, "cluster_id" integer NOT NULL, "state" varchar(255), "created_at" datetime, "updated_at" datetime, "project_group_name" varchar(255)) [0m
+  [1m[35m (155.8ms)[0m  CREATE  INDEX "index_core_accesses_on_cluster_id" ON "core_accesses" ("cluster_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_accesses_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_accesses_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (188.5ms)[0m  CREATE UNIQUE INDEX "index_core_accesses_on_project_id_and_cluster_id" ON "core_accesses" ("project_id", "cluster_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_accesses_on_project_id_and_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_accesses_on_project_id_and_cluster_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_accesses_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_accesses_on_cluster_id' AND type='index'
+
+  [1m[36m (199.9ms)[0m  [1mCREATE  INDEX "index_core_accesses_on_project_id" ON "core_accesses" ("project_id")[0m
+  [1m[35m (166.3ms)[0m  CREATE TABLE "core_cities" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "country_id" integer, "title_ru" varchar(255), "title_en" varchar(255), "checked" boolean DEFAULT 'f') 
+  [1m[36m (155.7ms)[0m  [1mCREATE  INDEX "index_core_cities_on_country_id" ON "core_cities" ("country_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_cities_on_country_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_cities_on_country_id' AND type='index'
+
+  [1m[36m (177.8ms)[0m  [1mCREATE  INDEX "index_core_cities_on_title_ru" ON "core_cities" ("title_ru")[0m
+  [1m[35m (199.8ms)[0m  CREATE TABLE "core_cluster_logs" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "cluster_id" integer NOT NULL, "message" text NOT NULL, "created_at" datetime, "updated_at" datetime, "project_id" integer) 
+  [1m[36m (394.0ms)[0m  [1mCREATE  INDEX "index_core_cluster_logs_on_cluster_id" ON "core_cluster_logs" ("cluster_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_cluster_logs_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_cluster_logs_on_cluster_id' AND type='index'
+
+  [1m[36m (229.5ms)[0m  [1mCREATE  INDEX "index_core_cluster_logs_on_project_id" ON "core_cluster_logs" ("project_id")[0m
+  [1m[35m (222.0ms)[0m  CREATE TABLE "core_cluster_quotas" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "cluster_id" integer NOT NULL, "value" integer, "quota_kind_id" integer) 
+  [1m[36m (166.3ms)[0m  [1mCREATE  INDEX "index_core_cluster_quotas_on_cluster_id" ON "core_cluster_quotas" ("cluster_id")[0m
+  [1m[35m (166.7ms)[0m  CREATE TABLE "core_clusters" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255) NOT NULL, "host" varchar(255) NOT NULL, "description" text, "public_key" text, "private_key" text, "admin_login" varchar(255), "created_at" datetime, "updated_at" datetime, "available_for_work" boolean DEFAULT 't', "name_en" varchar) 
+  [1m[36m (189.0ms)[0m  [1mCREATE UNIQUE INDEX "index_core_clusters_on_private_key" ON "core_clusters" ("private_key")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_clusters_on_private_key' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_clusters_on_private_key' AND type='index'
+
+  [1m[36m (188.6ms)[0m  [1mCREATE UNIQUE INDEX "index_core_clusters_on_public_key" ON "core_clusters" ("public_key")[0m
+  [1m[35m (189.2ms)[0m  CREATE TABLE "core_countries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title_ru" varchar(255), "title_en" varchar(255), "checked" boolean DEFAULT 'f') 
+  [1m[36m (155.5ms)[0m  [1mCREATE TABLE "core_credentials" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "state" varchar(255), "name" varchar(255) NOT NULL, "public_key" text NOT NULL, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (177.9ms)[0m  CREATE  INDEX "index_core_credentials_on_user_id" ON "core_credentials" ("user_id")
+  [1m[36m (178.0ms)[0m  [1mCREATE TABLE "core_critical_technologies" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "created_at" datetime, "updated_at" datetime, "name_en" varchar) [0m
+  [1m[35m (166.7ms)[0m  CREATE TABLE "core_critical_technologies_per_projects" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "critical_technology_id" integer, "project_id" integer) 
+  [1m[36m (166.8ms)[0m  [1mCREATE  INDEX "icrittechs_on_critical_technologies_per_projects" ON "core_critical_technologies_per_projects" ("critical_technology_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='icrittechs_on_critical_technologies_per_projects' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='icrittechs_on_critical_technologies_per_projects' AND type='index'
+
+  [1m[36m (188.8ms)[0m  [1mCREATE  INDEX "iprojects_on_critical_technologies_per_projects" ON "core_critical_technologies_per_projects" ("project_id")[0m
+  [1m[35m (166.9ms)[0m  CREATE TABLE "core_department_mergers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "source_department_id" integer, "to_organization_id" integer, "to_department_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (168.1ms)[0m  [1mCREATE TABLE "core_direction_of_sciences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "created_at" datetime, "updated_at" datetime, "name_en" varchar) [0m
+  [1m[35m (177.6ms)[0m  CREATE TABLE "core_direction_of_sciences_per_projects" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "direction_of_science_id" integer, "project_id" integer) 
+  [1m[36m (155.7ms)[0m  [1mCREATE  INDEX "idos_on_dos_per_projects" ON "core_direction_of_sciences_per_projects" ("direction_of_science_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='idos_on_dos_per_projects' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='idos_on_dos_per_projects' AND type='index'
+
+  [1m[36m (144.1ms)[0m  [1mCREATE  INDEX "iproject_on_dos_per_projects" ON "core_direction_of_sciences_per_projects" ("project_id")[0m
+  [1m[35m (185.7ms)[0m  CREATE TABLE "core_employment_position_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "employment_position_name_id" integer, "name_ru" varchar, "name_en" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (281.6ms)[0m  [1mCREATE TABLE "core_employment_position_names" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "autocomplete" text, "created_at" datetime, "updated_at" datetime, "name_en" varchar) [0m
+  [1m[35m (144.1ms)[0m  CREATE TABLE "core_employment_positions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "employment_id" integer, "name" varchar(255), "value" varchar(255), "created_at" datetime, "updated_at" datetime, "employment_position_name_id" integer, "field_id" integer) 
+  [1m[36m (144.6ms)[0m  [1mCREATE  INDEX "index_core_employment_positions_on_employment_id" ON "core_employment_positions" ("employment_id")[0m
+  [1m[35m (166.3ms)[0m  CREATE TABLE "core_employments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "organization_id" integer, "primary" boolean, "state" varchar(255), "created_at" datetime, "updated_at" datetime, "organization_department_id" integer) 
+  [1m[36m (166.8ms)[0m  [1mCREATE  INDEX "index_core_employments_on_organization_department_id" ON "core_employments" ("organization_department_id")[0m
+  [1m[35m (155.7ms)[0m  CREATE TABLE "core_members" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "project_id" integer NOT NULL, "owner" boolean DEFAULT 'f', "login" varchar(255), "project_access_state" varchar(255), "created_at" datetime, "updated_at" datetime, "organization_id" integer, "organization_department_id" integer) 
+  [1m[36m (166.5ms)[0m  [1mCREATE  INDEX "index_core_members_on_organization_id" ON "core_members" ("organization_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+
+  [1m[36m (177.2ms)[0m  [1mCREATE  INDEX "index_core_members_on_owner_and_user_id_and_project_id" ON "core_members" ("owner", "user_id", "project_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_owner_and_user_id_and_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_owner_and_user_id_and_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+[0m
+  [1m[35m (144.0ms)[0m  CREATE  INDEX "index_core_members_on_project_access_state" ON "core_members" ("project_access_state")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_project_access_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_project_access_state' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_owner_and_user_id_and_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_owner_and_user_id_and_project_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+[0m
+  [1m[35m (177.6ms)[0m  CREATE  INDEX "index_core_members_on_project_id" ON "core_members" ("project_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_project_access_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_project_access_state' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_owner_and_user_id_and_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_owner_and_user_id_and_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+
+  [1m[36m (199.2ms)[0m  [1mCREATE  INDEX "index_core_members_on_user_id_and_owner" ON "core_members" ("user_id", "owner")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_user_id_and_owner' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_user_id_and_owner' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_project_access_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_project_access_state' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_owner_and_user_id_and_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_owner_and_user_id_and_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+
+  [1m[36m (176.3ms)[0m  [1mCREATE UNIQUE INDEX "index_core_members_on_user_id_and_project_id" ON "core_members" ("user_id", "project_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_user_id_and_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_user_id_and_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_user_id_and_owner' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_user_id_and_owner' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_project_access_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_project_access_state' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_owner_and_user_id_and_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_owner_and_user_id_and_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_members_on_organization_id' AND type='index'
+[0m
+  [1m[35m (165.1ms)[0m  CREATE  INDEX "index_core_members_on_user_id" ON "core_members" ("user_id")
+  [1m[36m (166.7ms)[0m  [1mCREATE TABLE "core_notices" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "sourceable_id" integer, "sourceable_type" varchar, "linkable_id" integer, "linkable_type" varchar, "message" text, "count" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "category" integer, "type" integer) [0m
+  [1m[35m (155.7ms)[0m  CREATE  INDEX "index_core_notices_on_linkable_type_and_linkable_id" ON "core_notices" ("linkable_type", "linkable_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_notices_on_linkable_type_and_linkable_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_notices_on_linkable_type_and_linkable_id' AND type='index'
+[0m
+  [1m[35m (154.7ms)[0m  CREATE  INDEX "index_core_notices_on_sourceable_type_and_sourceable_id" ON "core_notices" ("sourceable_type", "sourceable_id")
+  [1m[36m (155.4ms)[0m  [1mCREATE TABLE "core_organization_departments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "organization_id" integer, "name" varchar(255), "checked" boolean DEFAULT 'f') [0m
+  [1m[35m (155.6ms)[0m  CREATE  INDEX "index_core_organization_departments_on_organization_id" ON "core_organization_departments" ("organization_id")
+  [1m[36m (177.5ms)[0m  [1mCREATE TABLE "core_organization_kinds" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "departments_required" boolean DEFAULT 'f', "created_at" datetime, "updated_at" datetime, "name_en" varchar) [0m
+  [1m[35m (211.2ms)[0m  CREATE TABLE "core_organizations" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "abbreviation" varchar(255), "kind_id" integer, "country_id" integer, "city_id" integer, "created_at" datetime, "updated_at" datetime, "checked" boolean DEFAULT 'f') 
+  [1m[36m (188.7ms)[0m  [1mCREATE  INDEX "index_core_organizations_on_city_id" ON "core_organizations" ("city_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_organizations_on_city_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_organizations_on_city_id' AND type='index'
+
+  [1m[36m (166.0ms)[0m  [1mCREATE  INDEX "index_core_organizations_on_country_id" ON "core_organizations" ("country_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_organizations_on_country_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_organizations_on_country_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_organizations_on_city_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_organizations_on_city_id' AND type='index'
+[0m
+  [1m[35m (166.2ms)[0m  CREATE  INDEX "index_core_organizations_on_kind_id" ON "core_organizations" ("kind_id")
+  [1m[36m (165.0ms)[0m  [1mCREATE TABLE "core_partitions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "cluster_id" integer, "resources" varchar) [0m
+  [1m[35m (189.3ms)[0m  CREATE  INDEX "index_core_partitions_on_cluster_id" ON "core_partitions" ("cluster_id")
+  [1m[36m (133.2ms)[0m  [1mCREATE TABLE "core_project_cards" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer, "name" text, "en_name" text, "driver" text, "en_driver" text, "strategy" text, "en_strategy" text, "objective" text, "en_objective" text, "impact" text, "en_impact" text, "usage" text, "en_usage" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (188.5ms)[0m  CREATE  INDEX "index_core_project_cards_on_project_id" ON "core_project_cards" ("project_id")
+  [1m[36m (189.0ms)[0m  [1mCREATE TABLE "core_project_invitations" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer NOT NULL, "user_fio" varchar(255) NOT NULL, "user_email" varchar(255) NOT NULL, "created_at" datetime, "updated_at" datetime, "language" varchar DEFAULT 'ru') [0m
+  [1m[35m (144.2ms)[0m  CREATE  INDEX "index_core_project_invitations_on_project_id" ON "core_project_invitations" ("project_id")
+  [1m[36m (155.4ms)[0m  [1mCREATE TABLE "core_project_kinds" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "name_en" varchar) [0m
+  [1m[35m (155.5ms)[0m  CREATE TABLE "core_projects" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255) NOT NULL, "state" varchar(255), "created_at" datetime, "updated_at" datetime, "organization_id" integer, "organization_department_id" integer, "kind_id" integer, "first_activation_at" datetime, "finished_at" datetime, "estimated_finish_date" datetime) 
+  [1m[36m (166.3ms)[0m  [1mCREATE  INDEX "index_core_projects_on_kind_id" ON "core_projects" ("kind_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_projects_on_kind_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_projects_on_kind_id' AND type='index'
+
+  [1m[36m (155.5ms)[0m  [1mCREATE  INDEX "index_core_projects_on_organization_department_id" ON "core_projects" ("organization_department_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_projects_on_organization_department_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_projects_on_organization_department_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_projects_on_kind_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_projects_on_kind_id' AND type='index'
+[0m
+  [1m[35m (166.1ms)[0m  CREATE  INDEX "index_core_projects_on_organization_id" ON "core_projects" ("organization_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_projects_on_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_projects_on_organization_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_projects_on_organization_department_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_projects_on_organization_department_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_projects_on_kind_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_projects_on_kind_id' AND type='index'
+[0m
+  [1m[35m (187.6ms)[0m  CREATE  INDEX "index_core_projects_on_state" ON "core_projects" ("state")
+  [1m[36m (133.2ms)[0m  [1mCREATE TABLE "core_quota_kinds" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "measurement_ru" varchar(255), "name_en" varchar, "measurement_en" varchar) [0m
+  [1m[35m (211.0ms)[0m  CREATE TABLE "core_request_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "request_id" integer NOT NULL, "value" integer, "quota_kind_id" integer) 
+  [1m[36m (210.8ms)[0m  [1mCREATE  INDEX "index_core_request_fields_on_request_id" ON "core_request_fields" ("request_id")[0m
+  [1m[35m (179.0ms)[0m  CREATE TABLE "core_requests" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer NOT NULL, "cluster_id" integer NOT NULL, "state" varchar(255), "created_at" datetime, "updated_at" datetime, "cpu_hours" integer, "gpu_hours" integer, "hdd_size" integer, "group_name" varchar(255), "creator_id" integer, "comment" text, "reason" text, "changed_by_id" integer) 
+  [1m[36m (189.2ms)[0m  [1mCREATE  INDEX "index_core_requests_on_changed_by_id" ON "core_requests" ("changed_by_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_requests_on_changed_by_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_requests_on_changed_by_id' AND type='index'
+
+  [1m[36m (132.7ms)[0m  [1mCREATE  INDEX "index_core_requests_on_cluster_id" ON "core_requests" ("cluster_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_requests_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_requests_on_cluster_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_requests_on_changed_by_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_requests_on_changed_by_id' AND type='index'
+[0m
+  [1m[35m (155.1ms)[0m  CREATE  INDEX "index_core_requests_on_creator_id" ON "core_requests" ("creator_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_requests_on_creator_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_requests_on_creator_id' AND type='index'
+[0m
+  [1m[35m (0.3ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_requests_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_requests_on_cluster_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_requests_on_changed_by_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_requests_on_changed_by_id' AND type='index'
+[0m
+  [1m[35m (175.8ms)[0m  CREATE  INDEX "index_core_requests_on_project_id" ON "core_requests" ("project_id")
+  [1m[36m (166.9ms)[0m  [1mCREATE TABLE "core_research_areas" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "group" varchar(255), "created_at" datetime, "updated_at" datetime, "name_en" varchar) [0m
+  [1m[35m (166.9ms)[0m  CREATE TABLE "core_research_areas_per_projects" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "research_area_id" integer, "project_id" integer) 
+  [1m[36m (188.7ms)[0m  [1mCREATE  INDEX "iproject_on_ira_per_projects" ON "core_research_areas_per_projects" ("project_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='iproject_on_ira_per_projects' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='iproject_on_ira_per_projects' AND type='index'
+
+  [1m[36m (177.0ms)[0m  [1mCREATE  INDEX "ira_on_ira_per_projects" ON "core_research_areas_per_projects" ("research_area_id")[0m
+  [1m[35m (155.8ms)[0m  CREATE TABLE "core_sureties" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer, "state" varchar(255), "comment" varchar(255), "boss_full_name" varchar(255), "boss_position" varchar(255), "created_at" datetime, "updated_at" datetime, "document" varchar(255), "author_id" integer, "reason" text, "changed_by_id" integer) 
+  [1m[36m (166.4ms)[0m  [1mCREATE  INDEX "index_core_sureties_on_author_id" ON "core_sureties" ("author_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_sureties_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_sureties_on_author_id' AND type='index'
+
+  [1m[36m (155.4ms)[0m  [1mCREATE  INDEX "index_core_sureties_on_changed_by_id" ON "core_sureties" ("changed_by_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_sureties_on_changed_by_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_sureties_on_changed_by_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_sureties_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_sureties_on_author_id' AND type='index'
+[0m
+  [1m[35m (188.8ms)[0m  CREATE  INDEX "index_core_sureties_on_project_id" ON "core_sureties" ("project_id")
+  [1m[36m (121.8ms)[0m  [1mCREATE TABLE "core_surety_members" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "surety_id" integer, "organization_id" integer, "organization_department_id" integer) [0m
+  [1m[35m (155.6ms)[0m  CREATE  INDEX "index_core_surety_members_on_organization_id" ON "core_surety_members" ("organization_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_surety_members_on_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_surety_members_on_organization_id' AND type='index'
+[0m
+  [1m[35m (186.7ms)[0m  CREATE  INDEX "index_core_surety_members_on_surety_id" ON "core_surety_members" ("surety_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_surety_members_on_surety_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_surety_members_on_surety_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_core_surety_members_on_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_core_surety_members_on_organization_id' AND type='index'
+
+  [1m[36m (287.8ms)[0m  [1mCREATE  INDEX "index_core_surety_members_on_user_id" ON "core_surety_members" ("user_id")[0m
+  [1m[35m (232.1ms)[0m  CREATE TABLE "core_surety_scans" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "surety_id" integer, "image" varchar(255)) 
+  [1m[36m (167.5ms)[0m  [1mCREATE  INDEX "index_core_surety_scans_on_surety_id" ON "core_surety_scans" ("surety_id")[0m
+  [1m[35m (177.6ms)[0m  CREATE TABLE "delayed_jobs" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "priority" integer DEFAULT 0 NOT NULL, "attempts" integer DEFAULT 0 NOT NULL, "handler" text NOT NULL, "last_error" text, "run_at" datetime, "locked_at" datetime, "failed_at" datetime, "locked_by" varchar(255), "queue" varchar(255), "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (155.8ms)[0m  [1mCREATE  INDEX "delayed_jobs_priority" ON "delayed_jobs" ("priority", "run_at")[0m
+  [1m[35m (177.6ms)[0m  CREATE TABLE "groups" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "weight" integer, "system" boolean, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (155.7ms)[0m  [1mCREATE TABLE "hardware_items" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar, "name_en" varchar, "description_ru" text, "description_en" text, "lock_version" integer, "kind_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (166.7ms)[0m  CREATE TABLE "hardware_items_states" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "item_id" integer, "state_id" integer, "reason_en" text, "reason_ru" text, "description_en" text, "description_ru" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (135.1ms)[0m  [1mCREATE TABLE "hardware_kinds" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar, "name_en" varchar, "description_ru" text, "description_en" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (155.7ms)[0m  CREATE TABLE "hardware_states" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar, "name_en" varchar, "description_ru" text, "description_en" text, "lock_version" integer, "kind_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (167.1ms)[0m  [1mCREATE TABLE "hardware_states_links" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "from_id" integer, "to_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (133.2ms)[0m  CREATE TABLE "jobstat_data_types" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "type" varchar(1), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (155.4ms)[0m  [1mCREATE  INDEX "index_jobstat_data_types_on_name" ON "jobstat_data_types" ("name")[0m
+  [1m[35m (177.5ms)[0m  CREATE TABLE "jobstat_digest_float_data" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "job_id" integer(8), "value" float, "time" datetime, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (166.6ms)[0m  [1mCREATE  INDEX "index_jobstat_digest_float_data_on_job_id" ON "jobstat_digest_float_data" ("job_id")[0m
+  [1m[35m (155.8ms)[0m  CREATE TABLE "jobstat_digest_string_data" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "job_id" integer(8), "value" varchar, "time" datetime, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (155.6ms)[0m  [1mCREATE  INDEX "index_jobstat_digest_string_data_on_job_id" ON "jobstat_digest_string_data" ("job_id")[0m
+  [1m[35m (177.7ms)[0m  CREATE TABLE "jobstat_float_data" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "job_id" integer(8), "value" float, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (144.2ms)[0m  [1mCREATE  INDEX "index_jobstat_float_data_on_job_id" ON "jobstat_float_data" ("job_id")[0m
+  [1m[35m (155.5ms)[0m  CREATE TABLE "jobstat_job_mail_filters" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "condition" varchar, "user_id" integer) 
+  [1m[36m (166.2ms)[0m  [1mCREATE TABLE "jobstat_jobs" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "cluster" varchar(32), "drms_job_id" integer(8), "drms_task_id" integer(8), "login" varchar(32), "partition" varchar(32), "submit_time" datetime, "start_time" datetime, "end_time" datetime, "timelimit" integer(8), "command" varchar(1024), "state" varchar(32), "num_cores" integer(8), "num_nodes" integer(8), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "nodelist" text) [0m
+  [1m[35m (189.1ms)[0m  CREATE  INDEX "index_jobstat_jobs_on_end_time" ON "jobstat_jobs" ("end_time")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_end_time' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_end_time' AND type='index'
+[0m
+  [1m[35m (134.9ms)[0m  CREATE  INDEX "index_jobstat_jobs_on_login" ON "jobstat_jobs" ("login")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_login' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_login' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_end_time' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_end_time' AND type='index'
+
+  [1m[36m (176.7ms)[0m  [1mCREATE  INDEX "index_jobstat_jobs_on_partition" ON "jobstat_jobs" ("partition")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_partition' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_partition' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_login' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_login' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_end_time' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_end_time' AND type='index'
+
+  [1m[36m (177.3ms)[0m  [1mCREATE  INDEX "index_jobstat_jobs_on_start_time" ON "jobstat_jobs" ("start_time")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_start_time' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_start_time' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_partition' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_partition' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_login' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_login' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_end_time' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_end_time' AND type='index'
+[0m
+  [1m[35m (164.5ms)[0m  CREATE  INDEX "index_jobstat_jobs_on_state" ON "jobstat_jobs" ("state")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_state' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_start_time' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_start_time' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_partition' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_partition' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_login' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_login' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_jobstat_jobs_on_end_time' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_jobstat_jobs_on_end_time' AND type='index'
+[0m
+  [1m[35m (176.5ms)[0m  CREATE  INDEX "index_jobstat_jobs_on_submit_time" ON "jobstat_jobs" ("submit_time")
+  [1m[36m (155.7ms)[0m  [1mCREATE TABLE "jobstat_string_data" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "job_id" integer(8), "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (211.5ms)[0m  CREATE  INDEX "index_jobstat_string_data_on_job_id" ON "jobstat_string_data" ("job_id")
+  [1m[36m (199.9ms)[0m  [1mCREATE TABLE "options" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "owner_id" integer, "owner_type" varchar, "name_ru" varchar, "name_en" varchar, "value_ru" text, "value_en" text, "category_value_id" integer, "options_category_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (199.7ms)[0m  CREATE TABLE "options_categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar, "name_en" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (155.6ms)[0m  [1mCREATE TABLE "pack_access_tickets" ("access_id" integer, "ticket_id" integer) [0m
+  [1m[35m (144.1ms)[0m  CREATE  INDEX "index_pack_access_tickets_on_access_id" ON "pack_access_tickets" ("access_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_pack_access_tickets_on_access_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_pack_access_tickets_on_access_id' AND type='index'
+[0m
+  [1m[35m (166.2ms)[0m  CREATE  INDEX "index_pack_access_tickets_on_ticket_id" ON "pack_access_tickets" ("ticket_id")
+  [1m[36m (177.8ms)[0m  [1mCREATE TABLE "pack_accesses" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "version_id" integer, "who_id" integer, "who_type" varchar, "status" varchar, "created_by_id" integer, "created_at" datetime, "updated_at" datetime, "end_lic" date, "new_end_lic" date, "allowed_by_id" integer, "lock_version" integer DEFAULT 0 NOT NULL, "new_end_lic_forever" boolean DEFAULT 'f') [0m
+  [1m[35m (122.4ms)[0m  CREATE  INDEX "index_pack_accesses_on_version_id" ON "pack_accesses" ("version_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_pack_accesses_on_version_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_pack_accesses_on_version_id' AND type='index'
+[0m
+  [1m[35m (156.6ms)[0m  CREATE  INDEX "index_pack_accesses_on_who_type_and_who_id" ON "pack_accesses" ("who_type", "who_id")
+  [1m[36m (200.1ms)[0m  [1mCREATE TABLE "pack_category_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "options_category_id" integer, "value_ru" varchar, "value_en" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (188.7ms)[0m  CREATE  INDEX "index_pack_category_values_on_options_category_id" ON "pack_category_values" ("options_category_id")
+  [1m[36m (155.7ms)[0m  [1mCREATE TABLE "pack_clustervers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "core_cluster_id" integer, "version_id" integer, "created_at" datetime, "updated_at" datetime, "active" boolean, "path" varchar) [0m
+  [1m[35m (177.7ms)[0m  CREATE  INDEX "index_pack_clustervers_on_core_cluster_id" ON "pack_clustervers" ("core_cluster_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_pack_clustervers_on_core_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_pack_clustervers_on_core_cluster_id' AND type='index'
+[0m
+  [1m[35m (133.3ms)[0m  CREATE  INDEX "index_pack_clustervers_on_version_id" ON "pack_clustervers" ("version_id")
+  [1m[36m (199.7ms)[0m  [1mCREATE TABLE "pack_options_categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "category_ru" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "category_en" varchar) [0m
+  [1m[35m (177.9ms)[0m  CREATE TABLE "pack_packages" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar, "created_at" datetime, "updated_at" datetime, "description_ru" text, "deleted" boolean DEFAULT 'f' NOT NULL, "description_en" text, "name_en" varchar) 
+  [1m[36m (200.1ms)[0m  [1mCREATE TABLE "pack_version_options" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "version_id" integer, "name_ru" varchar, "value_ru" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "name_en" varchar, "value_en" varchar, "category_value_id" integer, "options_category_id" integer) [0m
+  [1m[35m (155.8ms)[0m  CREATE  INDEX "index_pack_version_options_on_version_id" ON "pack_version_options" ("version_id")
+  [1m[36m (154.9ms)[0m  [1mCREATE TABLE "pack_versions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar, "description_ru" text, "package_id" integer, "created_at" datetime, "updated_at" datetime, "cost" integer, "end_lic" date, "state" varchar, "lock_col" integer DEFAULT 0 NOT NULL, "deleted" boolean DEFAULT 'f' NOT NULL, "service" boolean DEFAULT 'f' NOT NULL, "delete_on_expire" boolean DEFAULT 'f' NOT NULL, "ticket_id" integer, "description_en" text, "name_en" varchar) [0m
+  [1m[35m (166.9ms)[0m  CREATE  INDEX "index_pack_versions_on_package_id" ON "pack_versions" ("package_id")
+  [1m[36m (155.7ms)[0m  [1mCREATE TABLE "profiles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "first_name" varchar(255), "last_name" varchar(255), "middle_name" varchar(255), "about" text, "receive_info_mails" boolean DEFAULT 't', "receive_special_mails" boolean DEFAULT 't') [0m
+  [1m[35m (188.9ms)[0m  CREATE TABLE "sessions_projects_in_sessions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "session_id" integer, "project_id" integer) 
+  [1m[36m (168.1ms)[0m  [1mCREATE  INDEX "index_sessions_projects_in_sessions_on_project_id" ON "sessions_projects_in_sessions" ("project_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_projects_in_sessions_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_projects_in_sessions_on_project_id' AND type='index'
+
+  [1m[36m (155.4ms)[0m  [1mCREATE UNIQUE INDEX "i_on_project_and_sessions_ids" ON "sessions_projects_in_sessions" ("session_id", "project_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='i_on_project_and_sessions_ids' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='i_on_project_and_sessions_ids' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_projects_in_sessions_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_projects_in_sessions_on_project_id' AND type='index'
+[0m
+  [1m[35m (198.8ms)[0m  CREATE  INDEX "index_sessions_projects_in_sessions_on_session_id" ON "sessions_projects_in_sessions" ("session_id")
+  [1m[36m (133.3ms)[0m  [1mCREATE TABLE "sessions_report_materials" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "materials" varchar, "materials_content_type" varchar, "materials_file_size" integer, "report_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (222.5ms)[0m  CREATE TABLE "sessions_report_replies" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "report_id" integer, "user_id" integer, "message" text, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (166.5ms)[0m  [1mCREATE  INDEX "index_sessions_report_replies_on_report_id" ON "sessions_report_replies" ("report_id")[0m
+  [1m[35m (166.9ms)[0m  CREATE TABLE "sessions_report_submit_denial_reasons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "name_en" varchar) 
+  [1m[36m (166.1ms)[0m  [1mCREATE TABLE "sessions_reports" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "session_id" integer, "project_id" integer, "author_id" integer, "expert_id" integer, "state" varchar(255), "materials" varchar(255), "materials_file_name" varchar(255), "materials_content_type" varchar(255), "materials_file_size" integer, "materials_updated_at" datetime, "illustration_points" integer, "summary_points" integer, "statement_points" integer, "created_at" datetime, "updated_at" datetime, "submit_denial_reason_id" integer, "submit_denial_description" text) [0m
+  [1m[35m (188.9ms)[0m  CREATE  INDEX "index_sessions_reports_on_author_id" ON "sessions_reports" ("author_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_reports_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_reports_on_author_id' AND type='index'
+[0m
+  [1m[35m (221.4ms)[0m  CREATE  INDEX "index_sessions_reports_on_expert_id" ON "sessions_reports" ("expert_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_reports_on_expert_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_reports_on_expert_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_reports_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_reports_on_author_id' AND type='index'
+
+  [1m[36m (132.9ms)[0m  [1mCREATE  INDEX "index_sessions_reports_on_project_id" ON "sessions_reports" ("project_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_reports_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_reports_on_project_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_reports_on_expert_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_reports_on_expert_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_reports_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_reports_on_author_id' AND type='index'
+
+  [1m[36m (165.0ms)[0m  [1mCREATE  INDEX "index_sessions_reports_on_session_id" ON "sessions_reports" ("session_id")[0m
+  [1m[35m (144.8ms)[0m  CREATE TABLE "sessions_sessions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "state" varchar(255), "description_ru" text, "motivation_ru" text, "started_at" datetime, "ended_at" datetime, "receiving_to" datetime, "description_en" text, "motivation_en" text) 
+  [1m[36m (199.6ms)[0m  [1mCREATE TABLE "sessions_stats" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "session_id" integer, "survey_field_id" integer, "group_by" varchar(255) DEFAULT 'count', "weight" integer DEFAULT 0, "organization_id" integer, "cache" text) [0m
+  [1m[35m (146.1ms)[0m  CREATE  INDEX "index_sessions_stats_on_session_id_and_organization_id" ON "sessions_stats" ("session_id", "organization_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_stats_on_session_id_and_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_stats_on_session_id_and_organization_id' AND type='index'
+[0m
+  [1m[35m (210.5ms)[0m  CREATE  INDEX "index_sessions_stats_on_session_id_and_survey_field_id" ON "sessions_stats" ("session_id", "survey_field_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_stats_on_session_id_and_survey_field_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_stats_on_session_id_and_survey_field_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_stats_on_session_id_and_organization_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_stats_on_session_id_and_organization_id' AND type='index'
+
+  [1m[36m (132.0ms)[0m  [1mCREATE  INDEX "index_sessions_stats_on_session_id" ON "sessions_stats" ("session_id")[0m
+  [1m[35m (166.6ms)[0m  CREATE TABLE "sessions_survey_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "survey_id" integer, "kind" varchar(255), "collection" text, "max_values" integer DEFAULT 1, "weight" integer DEFAULT 0, "name_ru" text, "required" boolean DEFAULT 'f', "entity" varchar(255), "strict_collection" boolean DEFAULT 'f', "hint_ru" varchar(255), "reference_type" varchar(255), "regexp" varchar(255), "hint_en" varchar, "name_en" varchar) 
+  [1m[36m (155.8ms)[0m  [1mCREATE  INDEX "index_sessions_survey_fields_on_survey_id" ON "sessions_survey_fields" ("survey_id")[0m
+  [1m[35m (155.4ms)[0m  CREATE TABLE "sessions_survey_kinds" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255)) 
+  [1m[36m (155.4ms)[0m  [1mCREATE TABLE "sessions_survey_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "value" text, "survey_field_id" integer, "user_id" integer, "user_survey_id" integer) [0m
+  [1m[35m (155.4ms)[0m  CREATE  INDEX "isurvey_field_and_user" ON "sessions_survey_values" ("survey_field_id", "user_survey_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='isurvey_field_and_user' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='isurvey_field_and_user' AND type='index'
+[0m
+  [1m[35m (154.8ms)[0m  CREATE  INDEX "index_sessions_survey_values_on_user_survey_id" ON "sessions_survey_values" ("user_survey_id")
+  [1m[36m (133.1ms)[0m  [1mCREATE TABLE "sessions_surveys" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "session_id" integer, "kind_id" integer, "name_ru" varchar(255), "only_for_project_owners" boolean, "name_en" varchar) [0m
+  [1m[35m (211.4ms)[0m  CREATE  INDEX "index_sessions_surveys_on_kind_id" ON "sessions_surveys" ("kind_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_surveys_on_kind_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_surveys_on_kind_id' AND type='index'
+[0m
+  [1m[35m (165.9ms)[0m  CREATE  INDEX "index_sessions_surveys_on_session_id" ON "sessions_surveys" ("session_id")
+  [1m[36m (178.1ms)[0m  [1mCREATE TABLE "sessions_user_surveys" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "session_id" integer, "survey_id" integer, "project_id" integer, "state" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (122.0ms)[0m  CREATE  INDEX "index_sessions_user_surveys_on_project_id" ON "sessions_user_surveys" ("project_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_user_surveys_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_user_surveys_on_project_id' AND type='index'
+[0m
+  [1m[35m (167.6ms)[0m  CREATE  INDEX "index_sessions_user_surveys_on_session_id_and_survey_id" ON "sessions_user_surveys" ("session_id", "survey_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_user_surveys_on_session_id_and_survey_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_user_surveys_on_session_id_and_survey_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_user_surveys_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_user_surveys_on_project_id' AND type='index'
+
+  [1m[36m (166.2ms)[0m  [1mCREATE  INDEX "index_sessions_user_surveys_on_session_id" ON "sessions_user_surveys" ("session_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_user_surveys_on_session_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_user_surveys_on_session_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_user_surveys_on_session_id_and_survey_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_user_surveys_on_session_id_and_survey_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_sessions_user_surveys_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_sessions_user_surveys_on_project_id' AND type='index'
+
+  [1m[36m (153.9ms)[0m  [1mCREATE  INDEX "index_sessions_user_surveys_on_user_id" ON "sessions_user_surveys" ("user_id")[0m
+  [1m[35m (155.8ms)[0m  CREATE TABLE "statistics_organization_stats" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "kind" varchar(255), "data" text, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (166.4ms)[0m  [1mCREATE TABLE "statistics_project_stats" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "kind" varchar(255), "data" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (122.0ms)[0m  CREATE TABLE "statistics_session_stats" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "kind" varchar(255), "data" text, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (155.4ms)[0m  [1mCREATE TABLE "statistics_user_stats" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "kind" varchar(255), "data" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (166.6ms)[0m  CREATE TABLE "support_field_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "field_id" integer, "ticket_id" integer, "value" text, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (144.6ms)[0m  [1mCREATE  INDEX "index_support_field_values_on_ticket_id" ON "support_field_values" ("ticket_id")[0m
+  [1m[35m (144.4ms)[0m  CREATE TABLE "support_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "hint_ru" varchar(255), "required" boolean DEFAULT 'f', "contains_source_code" boolean DEFAULT 'f', "url" boolean DEFAULT 'f', "created_at" datetime, "updated_at" datetime, "name_en" varchar, "hint_en" varchar) 
+  [1m[36m (155.6ms)[0m  [1mCREATE TABLE "support_replies" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" integer, "ticket_id" integer, "message" text, "attachment" varchar(255), "created_at" datetime, "updated_at" datetime, "attachment_file_name" varchar(255), "attachment_content_type" varchar(255), "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (155.4ms)[0m  CREATE  INDEX "index_support_replies_on_author_id" ON "support_replies" ("author_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+[0m
+  [1m[35m (155.2ms)[0m  CREATE  INDEX "index_support_replies_on_ticket_id" ON "support_replies" ("ticket_id")
+  [1m[36m (155.3ms)[0m  [1mCREATE TABLE "support_reply_templates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject_ru" varchar(255), "message_ru" text, "subject_en" varchar, "message_en" text) [0m
+  [1m[35m (190.4ms)[0m  CREATE TABLE "support_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "created_at" datetime, "updated_at" datetime, "name_en" varchar) 
+  [1m[36m (155.4ms)[0m  [1mCREATE TABLE "support_tickets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "project_id" integer, "cluster_id" integer, "surety_id" integer, "reporter_id" integer, "subject" varchar(255), "message" text, "state" varchar(255), "url" varchar(255), "attachment" varchar(255), "created_at" datetime, "updated_at" datetime, "responsible_id" integer, "attachment_file_name" varchar(255), "attachment_content_type" varchar(255), "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (178.1ms)[0m  CREATE  INDEX "index_support_tickets_on_cluster_id" ON "support_tickets" ("cluster_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (166.6ms)[0m  CREATE  INDEX "index_support_tickets_on_project_id" ON "support_tickets" ("project_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (199.0ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_reporter_id" ON "support_tickets" ("reporter_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (142.8ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_responsible_id" ON "support_tickets" ("responsible_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (131.1ms)[0m  CREATE  INDEX "index_support_tickets_on_state" ON "support_tickets" ("state")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (130.8ms)[0m  CREATE  INDEX "index_support_tickets_on_topic_id" ON "support_tickets" ("topic_id")
+  [1m[36m (166.6ms)[0m  [1mCREATE TABLE "support_tickets_subscribers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "user_id" integer) [0m
+  [1m[35m (155.7ms)[0m  CREATE UNIQUE INDEX "index_support_tickets_subscribers_on_ticket_id_and_user_id" ON "support_tickets_subscribers" ("ticket_id", "user_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+[0m
+  [1m[35m (155.8ms)[0m  CREATE  INDEX "index_support_tickets_subscribers_on_ticket_id" ON "support_tickets_subscribers" ("ticket_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+
+  [1m[36m (198.9ms)[0m  [1mCREATE  INDEX "index_support_tickets_subscribers_on_user_id" ON "support_tickets_subscribers" ("user_id")[0m
+  [1m[35m (155.4ms)[0m  CREATE TABLE "support_tickets_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "tag_id" integer) 
+  [1m[36m (177.9ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_tag_id" ON "support_tickets_tags" ("tag_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+
+  [1m[36m (445.4ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_ticket_id" ON "support_tickets_tags" ("ticket_id")[0m
+  [1m[35m (144.7ms)[0m  CREATE TABLE "support_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "parent_id" integer, "created_at" datetime, "updated_at" datetime, "name_en" varchar, "template_en" text, "template_ru" text, "visible_on_create" boolean DEFAULT 't') 
+  [1m[36m (166.3ms)[0m  [1mCREATE TABLE "support_topics_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "field_id" integer) [0m
+  [1m[35m (155.8ms)[0m  CREATE TABLE "support_topics_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "tag_id" integer) 
+  [1m[36m (199.6ms)[0m  [1mCREATE TABLE "support_user_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "topic_id" integer, "required" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (144.8ms)[0m  CREATE TABLE "user_groups" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "group_id" integer) 
+  [1m[36m (166.4ms)[0m  [1mCREATE  INDEX "index_user_groups_on_group_id" ON "user_groups" ("group_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_user_groups_on_group_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_user_groups_on_group_id' AND type='index'
+
+  [1m[36m (144.4ms)[0m  [1mCREATE  INDEX "index_user_groups_on_user_id" ON "user_groups" ("user_id")[0m
+  [1m[35m (155.5ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar(255) NOT NULL, "crypted_password" varchar(255), "salt" varchar(255), "created_at" datetime, "updated_at" datetime, "activation_state" varchar(255), "activation_token" varchar(255), "activation_token_expires_at" datetime, "remember_me_token" varchar(255), "remember_me_token_expires_at" datetime, "reset_password_token" varchar(255), "reset_password_token_expires_at" datetime, "reset_password_email_sent_at" datetime, "access_state" varchar(255), "deleted_at" datetime, "last_login_at" datetime, "last_logout_at" datetime, "last_activity_at" datetime, "last_login_from_ip_address" varchar(255), "language" varchar) 
+  [1m[36m (177.7ms)[0m  [1mCREATE  INDEX "index_users_on_activation_token" ON "users" ("activation_token")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_activation_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_activation_token' AND type='index'
+
+  [1m[36m (166.5ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_activation_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_activation_token' AND type='index'
+[0m
+  [1m[35m (188.5ms)[0m  CREATE  INDEX "index_users_on_last_login_at" ON "users" ("last_login_at")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_last_login_at' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_last_login_at' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_activation_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_activation_token' AND type='index'
+[0m
+  [1m[35m (132.7ms)[0m  CREATE  INDEX "index_users_on_remember_me_token" ON "users" ("remember_me_token")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_remember_me_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_remember_me_token' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_last_login_at' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_last_login_at' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_activation_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_activation_token' AND type='index'
+
+  [1m[36m (175.6ms)[0m  [1mCREATE  INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35m (157.4ms)[0m  CREATE TABLE "wiki_pages" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name_ru" varchar(255), "content_ru" text, "url" varchar(255), "created_at" datetime, "updated_at" datetime, "name_en" varchar, "content_en" text) 
+  [1m[36m (155.4ms)[0m  [1mCREATE UNIQUE INDEX "index_wiki_pages_on_url" ON "wiki_pages" ("url")[0m
+  [1m[35m (149.7ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar NOT NULL) 
+  [1m[36m (166.5ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.2ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (88.9ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20190321105523')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM "support_user_topics"
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateSupportTicketTopics (20140827082329)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "support_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "parent_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (142.2ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (177.1ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to CreateSupportTicketTopics (20140827082329)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "support_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "parent_id" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "support_topics_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "tag_id" integer) [0m
+  [1m[35m (0.1ms)[0m  CREATE TABLE "support_topics_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "field_id" integer) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20140827082329"]]
+  [1m[35m (144.0ms)[0m  commit transaction
+Migrating to CreateSupportTickets (20140827134108)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "support_tickets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "project_id" integer, "cluster_id" integer, "surety_id" integer, "reporter_id" integer, "subject" varchar, "message" text, "state" varchar, "url" varchar, "attachment" varchar, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_topic_id" ON "support_tickets" ("topic_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_reporter_id" ON "support_tickets" ("reporter_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_support_tickets_on_project_id" ON "support_tickets" ("project_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_support_tickets_on_cluster_id" ON "support_tickets" ("cluster_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_state" ON "support_tickets" ("state")[0m
+  [1m[35m (0.1ms)[0m  CREATE TABLE "support_tickets_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "tag_id" integer) 
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_ticket_id" ON "support_tickets_tags" ("ticket_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_tags_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_tags_on_ticket_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_tag_id" ON "support_tickets_tags" ("tag_id")[0m
+  [1m[35m (0.1ms)[0m  CREATE TABLE "support_tickets_subscribers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "user_id" integer) 
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_subscribers_on_ticket_id" ON "support_tickets_subscribers" ("ticket_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_subscribers_on_user_id" ON "support_tickets_subscribers" ("user_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_user_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE UNIQUE INDEX "index_support_tickets_subscribers_on_ticket_id_and_user_id" ON "support_tickets_subscribers" ("ticket_id", "user_id")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20140827134108"]]
+  [1m[35m (178.8ms)[0m  commit transaction
+Migrating to CreateSupportFields (20140827144322)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "support_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "hint" varchar, "required" boolean DEFAULT 'f', "contains_source_code" boolean DEFAULT 'f', "url" boolean DEFAULT 'f', "created_at" datetime, "updated_at" datetime) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20140827144322"]]
+  [1m[35m (142.8ms)[0m  commit transaction
+Migrating to CreateSupportFieldValues (20140827145506)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "support_field_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "field_id" integer, "ticket_id" integer, "value" text, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_support_field_values_on_ticket_id" ON "support_field_values" ("ticket_id")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20140827145506"]]
+  [1m[36m (164.5ms)[0m  [1mcommit transaction[0m
+Migrating to CreateSupportTags (20140827145605)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mCREATE TABLE "support_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20140827145605"]]
+  [1m[36m (163.1ms)[0m  [1mcommit transaction[0m
+Migrating to CreateSupportReplies (20140827145710)
+  [1m[35m (0.3ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "support_replies" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" integer, "ticket_id" integer, "message" text, "attachment" varchar, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_support_replies_on_author_id" ON "support_replies" ("author_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_support_replies_on_ticket_id" ON "support_replies" ("ticket_id")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20140827145710"]]
+  [1m[35m (164.0ms)[0m  commit transaction
+Migrating to CreateSupportReplyTemplates (20140827145721)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "support_reply_templates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject" varchar, "message" varchar) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20140827145721"]]
+  [1m[35m (165.1ms)[0m  commit transaction
+Migrating to ChangeTypeOfMessageColumnInReplyTemplates (20140828085833)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  CREATE TEMPORARY TABLE "asupport_reply_templates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject" varchar, "message" varchar) 
+  [1m[36m (0.0ms)[0m  [1mSELECT * FROM "support_reply_templates"[0m
+  [1m[35m (0.2ms)[0m  DROP TABLE "support_reply_templates"
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "support_reply_templates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject" varchar, "message" text) [0m
+  [1m[35m (0.0ms)[0m  SELECT * FROM "asupport_reply_templates"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "asupport_reply_templates"[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20140828085833"]]
+  [1m[36m (144.2ms)[0m  [1mcommit transaction[0m
+Migrating to AddResponsibleAdminToSupportTickets (20140903090001)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "support_tickets" ADD "responsible_id" integer[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_responsible_id" ON "support_tickets" ("responsible_id")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20140903090001"]]
+  [1m[36m (182.6ms)[0m  [1mcommit transaction[0m
+Migrating to AddAttachmentFieldsToTicket (20141110171648)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "support_tickets" ADD "attachment_file_name" varchar[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "support_tickets" ADD "attachment_content_type" varchar
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "support_tickets" ADD "attachment_file_size" integer[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "support_tickets" ADD "attachment_updated_at" datetime
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20141110171648"]]
+  [1m[35m (121.5ms)[0m  commit transaction
+Migrating to AddAttachmentFieldsForReply (20141111125950)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "support_replies" ADD "attachment_file_name" varchar
+  [1m[36m (0.1ms)[0m  [1mALTER TABLE "support_replies" ADD "attachment_content_type" varchar[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "support_replies" ADD "attachment_file_size" integer
+  [1m[36m (0.1ms)[0m  [1mALTER TABLE "support_replies" ADD "attachment_updated_at" datetime[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20141111125950"]]
+  [1m[36m (152.2ms)[0m  [1mcommit transaction[0m
+Migrating to CreateSupportUserTopics (20180831100416)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "support_user_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "topic_id" integer, "required" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20180831100416"]]
+  [1m[36m (174.8ms)[0m  [1mcommit transaction[0m
+Migrating to AddTemplateToSupportTopics (20180901160151)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "support_topics" ADD "template_en" text[0m
+  [1m[35m (0.1ms)[0m  ALTER TABLE "support_topics" ADD "template_ru" text
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20180901160151"]]
+  [1m[35m (110.2ms)[0m  commit transaction
+Migrating to AddVisibleOnCreateToSupportTopics (20180907145616)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "support_topics" ADD "visible_on_create" boolean DEFAULT 't'
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20180907145616"]]
+  [1m[35m (142.4ms)[0m  commit transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_field_values_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_field_values_on_ticket_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_replies_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_replies_on_ticket_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_topic_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_user_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_tags_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_tags_on_ticket_id' AND type='index'
+[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (99.6ms)[0m  [1mCREATE TABLE "support_field_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "field_id" integer, "ticket_id" integer, "value" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (126.1ms)[0m  [1mCREATE  INDEX "index_support_field_values_on_ticket_id" ON "support_field_values" ("ticket_id")[0m
+  [1m[35m (122.0ms)[0m  CREATE TABLE "support_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "hint" varchar, "required" boolean DEFAULT 'f', "contains_source_code" boolean DEFAULT 'f', "url" boolean DEFAULT 'f', "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (155.2ms)[0m  [1mCREATE TABLE "support_replies" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" integer, "ticket_id" integer, "message" text, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (189.3ms)[0m  CREATE  INDEX "index_support_replies_on_author_id" ON "support_replies" ("author_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+[0m
+  [1m[35m (167.7ms)[0m  CREATE  INDEX "index_support_replies_on_ticket_id" ON "support_replies" ("ticket_id")
+  [1m[36m (144.4ms)[0m  [1mCREATE TABLE "support_reply_templates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject" varchar, "message" text) [0m
+  [1m[35m (166.7ms)[0m  CREATE TABLE "support_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (132.9ms)[0m  [1mCREATE TABLE "support_tickets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "project_id" integer, "cluster_id" integer, "surety_id" integer, "reporter_id" integer, "subject" varchar, "message" text, "state" varchar, "url" varchar, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "responsible_id" integer, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (144.8ms)[0m  CREATE  INDEX "index_support_tickets_on_cluster_id" ON "support_tickets" ("cluster_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (132.8ms)[0m  CREATE  INDEX "index_support_tickets_on_project_id" ON "support_tickets" ("project_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (144.3ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_reporter_id" ON "support_tickets" ("reporter_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (121.6ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_responsible_id" ON "support_tickets" ("responsible_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (143.8ms)[0m  CREATE  INDEX "index_support_tickets_on_state" ON "support_tickets" ("state")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (153.9ms)[0m  CREATE  INDEX "index_support_tickets_on_topic_id" ON "support_tickets" ("topic_id")
+  [1m[36m (133.2ms)[0m  [1mCREATE TABLE "support_tickets_subscribers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "user_id" integer) [0m
+  [1m[35m (155.7ms)[0m  CREATE UNIQUE INDEX "index_support_tickets_subscribers_on_ticket_id_and_user_id" ON "support_tickets_subscribers" ("ticket_id", "user_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+[0m
+  [1m[35m (132.7ms)[0m  CREATE  INDEX "index_support_tickets_subscribers_on_ticket_id" ON "support_tickets_subscribers" ("ticket_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+
+  [1m[36m (132.7ms)[0m  [1mCREATE  INDEX "index_support_tickets_subscribers_on_user_id" ON "support_tickets_subscribers" ("user_id")[0m
+  [1m[35m (146.3ms)[0m  CREATE TABLE "support_tickets_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "tag_id" integer) 
+  [1m[36m (155.9ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_tag_id" ON "support_tickets_tags" ("tag_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+
+  [1m[36m (144.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_ticket_id" ON "support_tickets_tags" ("ticket_id")[0m
+  [1m[35m (155.4ms)[0m  CREATE TABLE "support_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "parent_id" integer, "created_at" datetime, "updated_at" datetime, "template_en" text, "template_ru" text, "visible_on_create" boolean DEFAULT 't') 
+  [1m[36m (144.1ms)[0m  [1mCREATE TABLE "support_topics_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "field_id" integer) [0m
+  [1m[35m (166.9ms)[0m  CREATE TABLE "support_topics_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "tag_id" integer) 
+  [1m[36m (155.4ms)[0m  [1mCREATE TABLE "support_user_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "topic_id" integer, "required" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (148.7ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar NOT NULL) 
+  [1m[36m (155.5ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.2ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (109.0ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20180907145616')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM "support_user_topics"
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (127.5ms)[0m  [1mCREATE TABLE "support_field_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "field_id" integer, "ticket_id" integer, "value" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (132.4ms)[0m  [1mCREATE  INDEX "index_support_field_values_on_ticket_id" ON "support_field_values" ("ticket_id")[0m
+  [1m[35m (155.1ms)[0m  CREATE TABLE "support_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "hint" varchar, "required" boolean DEFAULT 'f', "contains_source_code" boolean DEFAULT 'f', "url" boolean DEFAULT 'f', "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (155.7ms)[0m  [1mCREATE TABLE "support_replies" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" integer, "ticket_id" integer, "message" text, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (155.5ms)[0m  CREATE  INDEX "index_support_replies_on_author_id" ON "support_replies" ("author_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+[0m
+  [1m[35m (133.1ms)[0m  CREATE  INDEX "index_support_replies_on_ticket_id" ON "support_replies" ("ticket_id")
+  [1m[36m (144.6ms)[0m  [1mCREATE TABLE "support_reply_templates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject" varchar, "message" text) [0m
+  [1m[35m (144.4ms)[0m  CREATE TABLE "support_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (166.3ms)[0m  [1mCREATE TABLE "support_tickets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "project_id" integer, "cluster_id" integer, "surety_id" integer, "reporter_id" integer, "subject" varchar, "message" text, "state" varchar, "url" varchar, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "responsible_id" integer, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (156.0ms)[0m  CREATE  INDEX "index_support_tickets_on_cluster_id" ON "support_tickets" ("cluster_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (166.1ms)[0m  CREATE  INDEX "index_support_tickets_on_project_id" ON "support_tickets" ("project_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (165.8ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_reporter_id" ON "support_tickets" ("reporter_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (154.3ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_responsible_id" ON "support_tickets" ("responsible_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (143.6ms)[0m  CREATE  INDEX "index_support_tickets_on_state" ON "support_tickets" ("state")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (132.5ms)[0m  CREATE  INDEX "index_support_tickets_on_topic_id" ON "support_tickets" ("topic_id")
+  [1m[36m (157.1ms)[0m  [1mCREATE TABLE "support_tickets_subscribers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "user_id" integer) [0m
+  [1m[35m (156.0ms)[0m  CREATE UNIQUE INDEX "index_support_tickets_subscribers_on_ticket_id_and_user_id" ON "support_tickets_subscribers" ("ticket_id", "user_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+[0m
+  [1m[35m (143.9ms)[0m  CREATE  INDEX "index_support_tickets_subscribers_on_ticket_id" ON "support_tickets_subscribers" ("ticket_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+
+  [1m[36m (143.6ms)[0m  [1mCREATE  INDEX "index_support_tickets_subscribers_on_user_id" ON "support_tickets_subscribers" ("user_id")[0m
+  [1m[35m (155.6ms)[0m  CREATE TABLE "support_tickets_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "tag_id" integer) 
+  [1m[36m (155.5ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_tag_id" ON "support_tickets_tags" ("tag_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+
+  [1m[36m (132.9ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_ticket_id" ON "support_tickets_tags" ("ticket_id")[0m
+  [1m[35m (222.3ms)[0m  CREATE TABLE "support_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "parent_id" integer, "created_at" datetime, "updated_at" datetime, "template_en" text, "template_ru" text, "visible_on_create" boolean DEFAULT 't') 
+  [1m[36m (133.6ms)[0m  [1mCREATE TABLE "support_topics_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "field_id" integer) [0m
+  [1m[35m (244.8ms)[0m  CREATE TABLE "support_topics_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "tag_id" integer) 
+  [1m[36m (188.6ms)[0m  [1mCREATE TABLE "support_user_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "topic_id" integer, "required" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (141.1ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar NOT NULL) 
+  [1m[36m (155.9ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.2ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (111.6ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20180907145616')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM "support_user_topics"
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (117.0ms)[0m  [1mCREATE TABLE "support_field_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "field_id" integer, "ticket_id" integer, "value" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (127.0ms)[0m  [1mCREATE  INDEX "index_support_field_values_on_ticket_id" ON "support_field_values" ("ticket_id")[0m
+  [1m[35m (121.9ms)[0m  CREATE TABLE "support_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "hint" varchar, "required" boolean DEFAULT 'f', "contains_source_code" boolean DEFAULT 'f', "url" boolean DEFAULT 'f', "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (157.2ms)[0m  [1mCREATE TABLE "support_replies" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" integer, "ticket_id" integer, "message" text, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (155.6ms)[0m  CREATE  INDEX "index_support_replies_on_author_id" ON "support_replies" ("author_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+[0m
+  [1m[35m (133.1ms)[0m  CREATE  INDEX "index_support_replies_on_ticket_id" ON "support_replies" ("ticket_id")
+  [1m[36m (177.6ms)[0m  [1mCREATE TABLE "support_reply_templates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject" varchar, "message" text) [0m
+  [1m[35m (133.2ms)[0m  CREATE TABLE "support_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (155.4ms)[0m  [1mCREATE TABLE "support_tickets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "project_id" integer, "cluster_id" integer, "surety_id" integer, "reporter_id" integer, "subject" varchar, "message" text, "state" varchar, "url" varchar, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "responsible_id" integer, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (155.8ms)[0m  CREATE  INDEX "index_support_tickets_on_cluster_id" ON "support_tickets" ("cluster_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (132.9ms)[0m  CREATE  INDEX "index_support_tickets_on_project_id" ON "support_tickets" ("project_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (143.5ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_reporter_id" ON "support_tickets" ("reporter_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (159.2ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_responsible_id" ON "support_tickets" ("responsible_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (138.6ms)[0m  CREATE  INDEX "index_support_tickets_on_state" ON "support_tickets" ("state")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (142.1ms)[0m  CREATE  INDEX "index_support_tickets_on_topic_id" ON "support_tickets" ("topic_id")
+  [1m[36m (200.4ms)[0m  [1mCREATE TABLE "support_tickets_subscribers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "user_id" integer) [0m
+  [1m[35m (112.7ms)[0m  CREATE UNIQUE INDEX "index_support_tickets_subscribers_on_ticket_id_and_user_id" ON "support_tickets_subscribers" ("ticket_id", "user_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+[0m
+  [1m[35m (144.1ms)[0m  CREATE  INDEX "index_support_tickets_subscribers_on_ticket_id" ON "support_tickets_subscribers" ("ticket_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+
+  [1m[36m (177.6ms)[0m  [1mCREATE  INDEX "index_support_tickets_subscribers_on_user_id" ON "support_tickets_subscribers" ("user_id")[0m
+  [1m[35m (155.5ms)[0m  CREATE TABLE "support_tickets_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "tag_id" integer) 
+  [1m[36m (166.7ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_tag_id" ON "support_tickets_tags" ("tag_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+
+  [1m[36m (155.5ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_ticket_id" ON "support_tickets_tags" ("ticket_id")[0m
+  [1m[35m (144.8ms)[0m  CREATE TABLE "support_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "parent_id" integer, "created_at" datetime, "updated_at" datetime, "template_en" text, "template_ru" text, "visible_on_create" boolean DEFAULT 't') 
+  [1m[36m (155.5ms)[0m  [1mCREATE TABLE "support_topics_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "field_id" integer) [0m
+  [1m[35m (133.3ms)[0m  CREATE TABLE "support_topics_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "tag_id" integer) 
+  [1m[36m (155.4ms)[0m  [1mCREATE TABLE "support_user_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "topic_id" integer, "required" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (149.6ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar NOT NULL) 
+  [1m[36m (133.2ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.2ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (125.3ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20180907145616')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM "support_user"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (152.7ms)[0m  [1mCREATE TABLE "support_field_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "field_id" integer, "ticket_id" integer, "value" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (119.5ms)[0m  [1mCREATE  INDEX "index_support_field_values_on_ticket_id" ON "support_field_values" ("ticket_id")[0m
+  [1m[35m (166.7ms)[0m  CREATE TABLE "support_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "hint" varchar, "required" boolean DEFAULT 'f', "contains_source_code" boolean DEFAULT 'f', "url" boolean DEFAULT 'f', "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (134.6ms)[0m  [1mCREATE TABLE "support_replies" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" integer, "ticket_id" integer, "message" text, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (133.3ms)[0m  CREATE  INDEX "index_support_replies_on_author_id" ON "support_replies" ("author_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+[0m
+  [1m[35m (132.5ms)[0m  CREATE  INDEX "index_support_replies_on_ticket_id" ON "support_replies" ("ticket_id")
+  [1m[36m (134.5ms)[0m  [1mCREATE TABLE "support_reply_templates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject" varchar, "message" text) [0m
+  [1m[35m (154.2ms)[0m  CREATE TABLE "support_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (133.6ms)[0m  [1mCREATE TABLE "support_tickets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "project_id" integer, "cluster_id" integer, "surety_id" integer, "reporter_id" integer, "subject" varchar, "message" text, "state" varchar, "url" varchar, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "responsible_id" integer, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (133.1ms)[0m  CREATE  INDEX "index_support_tickets_on_cluster_id" ON "support_tickets" ("cluster_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (166.0ms)[0m  CREATE  INDEX "index_support_tickets_on_project_id" ON "support_tickets" ("project_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (133.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_reporter_id" ON "support_tickets" ("reporter_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (154.5ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_responsible_id" ON "support_tickets" ("responsible_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (120.6ms)[0m  CREATE  INDEX "index_support_tickets_on_state" ON "support_tickets" ("state")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (109.3ms)[0m  CREATE  INDEX "index_support_tickets_on_topic_id" ON "support_tickets" ("topic_id")
+  [1m[36m (155.7ms)[0m  [1mCREATE TABLE "support_tickets_subscribers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "user_id" integer) [0m
+  [1m[35m (144.6ms)[0m  CREATE UNIQUE INDEX "index_support_tickets_subscribers_on_ticket_id_and_user_id" ON "support_tickets_subscribers" ("ticket_id", "user_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+[0m
+  [1m[35m (123.7ms)[0m  CREATE  INDEX "index_support_tickets_subscribers_on_ticket_id" ON "support_tickets_subscribers" ("ticket_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+
+  [1m[36m (132.8ms)[0m  [1mCREATE  INDEX "index_support_tickets_subscribers_on_user_id" ON "support_tickets_subscribers" ("user_id")[0m
+  [1m[35m (155.9ms)[0m  CREATE TABLE "support_tickets_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "tag_id" integer) 
+  [1m[36m (155.4ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_tag_id" ON "support_tickets_tags" ("tag_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+
+  [1m[36m (132.7ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_ticket_id" ON "support_tickets_tags" ("ticket_id")[0m
+  [1m[35m (133.3ms)[0m  CREATE TABLE "support_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "parent_id" integer, "created_at" datetime, "updated_at" datetime, "template_en" text, "template_ru" text, "visible_on_create" boolean DEFAULT 't') 
+  [1m[36m (133.3ms)[0m  [1mCREATE TABLE "support_topics_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "field_id" integer) [0m
+  [1m[35m (167.0ms)[0m  CREATE TABLE "support_topics_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "tag_id" integer) 
+  [1m[36m (166.5ms)[0m  [1mCREATE TABLE "support_user_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "topic_id" integer, "required" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (160.6ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar NOT NULL) 
+  [1m[36m (166.7ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.2ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (134.0ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20180907145616')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM "support_user"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (110.4ms)[0m  [1mCREATE TABLE "support_field_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "field_id" integer, "ticket_id" integer, "value" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (154.9ms)[0m  [1mCREATE  INDEX "index_support_field_values_on_ticket_id" ON "support_field_values" ("ticket_id")[0m
+  [1m[35m (166.6ms)[0m  CREATE TABLE "support_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "hint" varchar, "required" boolean DEFAULT 'f', "contains_source_code" boolean DEFAULT 'f', "url" boolean DEFAULT 'f', "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (133.4ms)[0m  [1mCREATE TABLE "support_replies" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" integer, "ticket_id" integer, "message" text, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (133.6ms)[0m  CREATE  INDEX "index_support_replies_on_author_id" ON "support_replies" ("author_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+[0m
+  [1m[35m (166.6ms)[0m  CREATE  INDEX "index_support_replies_on_ticket_id" ON "support_replies" ("ticket_id")
+  [1m[36m (122.2ms)[0m  [1mCREATE TABLE "support_reply_templates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject" varchar, "message" text) [0m
+  [1m[35m (177.7ms)[0m  CREATE TABLE "support_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (144.5ms)[0m  [1mCREATE TABLE "support_tickets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "project_id" integer, "cluster_id" integer, "surety_id" integer, "reporter_id" integer, "subject" varchar, "message" text, "state" varchar, "url" varchar, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "responsible_id" integer, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (155.3ms)[0m  CREATE  INDEX "index_support_tickets_on_cluster_id" ON "support_tickets" ("cluster_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (134.9ms)[0m  CREATE  INDEX "index_support_tickets_on_project_id" ON "support_tickets" ("project_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (132.4ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_reporter_id" ON "support_tickets" ("reporter_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (120.9ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_responsible_id" ON "support_tickets" ("responsible_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (153.7ms)[0m  CREATE  INDEX "index_support_tickets_on_state" ON "support_tickets" ("state")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (132.3ms)[0m  CREATE  INDEX "index_support_tickets_on_topic_id" ON "support_tickets" ("topic_id")
+  [1m[36m (144.7ms)[0m  [1mCREATE TABLE "support_tickets_subscribers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "user_id" integer) [0m
+  [1m[35m (178.2ms)[0m  CREATE UNIQUE INDEX "index_support_tickets_subscribers_on_ticket_id_and_user_id" ON "support_tickets_subscribers" ("ticket_id", "user_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+[0m
+  [1m[35m (121.6ms)[0m  CREATE  INDEX "index_support_tickets_subscribers_on_ticket_id" ON "support_tickets_subscribers" ("ticket_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+
+  [1m[36m (165.6ms)[0m  [1mCREATE  INDEX "index_support_tickets_subscribers_on_user_id" ON "support_tickets_subscribers" ("user_id")[0m
+  [1m[35m (155.8ms)[0m  CREATE TABLE "support_tickets_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "tag_id" integer) 
+  [1m[36m (167.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_tag_id" ON "support_tickets_tags" ("tag_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+
+  [1m[36m (154.9ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_ticket_id" ON "support_tickets_tags" ("ticket_id")[0m
+  [1m[35m (155.3ms)[0m  CREATE TABLE "support_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "parent_id" integer, "created_at" datetime, "updated_at" datetime, "template_en" text, "template_ru" text, "visible_on_create" boolean DEFAULT 't') 
+  [1m[36m (144.7ms)[0m  [1mCREATE TABLE "support_topics_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "field_id" integer) [0m
+  [1m[35m (157.2ms)[0m  CREATE TABLE "support_topics_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "tag_id" integer) 
+  [1m[36m (155.4ms)[0m  [1mCREATE TABLE "support_user_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "topic_id" integer, "required" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (149.1ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar NOT NULL) 
+  [1m[36m (588.9ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.1ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (112.7ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20180907145616')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+---------------------------------------------------------
+Support::MailerTest: test_has_anchor_#reply_on_new_ticket
+---------------------------------------------------------
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (123.4ms)[0m  [1mCREATE TABLE "support_field_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "field_id" integer, "ticket_id" integer, "value" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (154.6ms)[0m  [1mCREATE  INDEX "index_support_field_values_on_ticket_id" ON "support_field_values" ("ticket_id")[0m
+  [1m[35m (144.5ms)[0m  CREATE TABLE "support_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "hint" varchar, "required" boolean DEFAULT 'f', "contains_source_code" boolean DEFAULT 'f', "url" boolean DEFAULT 'f', "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (155.3ms)[0m  [1mCREATE TABLE "support_replies" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" integer, "ticket_id" integer, "message" text, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (146.1ms)[0m  CREATE  INDEX "index_support_replies_on_author_id" ON "support_replies" ("author_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_replies_on_author_id' AND type='index'
+[0m
+  [1m[35m (132.8ms)[0m  CREATE  INDEX "index_support_replies_on_ticket_id" ON "support_replies" ("ticket_id")
+  [1m[36m (166.5ms)[0m  [1mCREATE TABLE "support_reply_templates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject" varchar, "message" text) [0m
+  [1m[35m (166.9ms)[0m  CREATE TABLE "support_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (144.3ms)[0m  [1mCREATE TABLE "support_tickets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "project_id" integer, "cluster_id" integer, "surety_id" integer, "reporter_id" integer, "subject" varchar, "message" text, "state" varchar, "url" varchar, "attachment" varchar, "created_at" datetime, "updated_at" datetime, "responsible_id" integer, "attachment_file_name" varchar, "attachment_content_type" varchar, "attachment_file_size" integer, "attachment_updated_at" datetime) [0m
+  [1m[35m (155.4ms)[0m  CREATE  INDEX "index_support_tickets_on_cluster_id" ON "support_tickets" ("cluster_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (166.0ms)[0m  CREATE  INDEX "index_support_tickets_on_project_id" ON "support_tickets" ("project_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (166.4ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_reporter_id" ON "support_tickets" ("reporter_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+
+  [1m[36m (154.1ms)[0m  [1mCREATE  INDEX "index_support_tickets_on_responsible_id" ON "support_tickets" ("responsible_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (131.4ms)[0m  CREATE  INDEX "index_support_tickets_on_state" ON "support_tickets" ("state")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_state' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_responsible_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_reporter_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_project_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_on_cluster_id' AND type='index'
+[0m
+  [1m[35m (154.6ms)[0m  CREATE  INDEX "index_support_tickets_on_topic_id" ON "support_tickets" ("topic_id")
+  [1m[36m (155.8ms)[0m  [1mCREATE TABLE "support_tickets_subscribers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "user_id" integer) [0m
+  [1m[35m (155.4ms)[0m  CREATE UNIQUE INDEX "index_support_tickets_subscribers_on_ticket_id_and_user_id" ON "support_tickets_subscribers" ("ticket_id", "user_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+[0m
+  [1m[35m (133.4ms)[0m  CREATE  INDEX "index_support_tickets_subscribers_on_ticket_id" ON "support_tickets_subscribers" ("ticket_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_subscribers_on_ticket_id_and_user_id' AND type='index'
+
+  [1m[36m (178.5ms)[0m  [1mCREATE  INDEX "index_support_tickets_subscribers_on_user_id" ON "support_tickets_subscribers" ("user_id")[0m
+  [1m[35m (121.9ms)[0m  CREATE TABLE "support_tickets_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer, "tag_id" integer) 
+  [1m[36m (167.0ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_tag_id" ON "support_tickets_tags" ("tag_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_support_tickets_tags_on_tag_id' AND type='index'
+
+  [1m[36m (177.9ms)[0m  [1mCREATE  INDEX "index_support_tickets_tags_on_ticket_id" ON "support_tickets_tags" ("ticket_id")[0m
+  [1m[35m (133.1ms)[0m  CREATE TABLE "support_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "parent_id" integer, "created_at" datetime, "updated_at" datetime, "template_en" text, "template_ru" text, "visible_on_create" boolean DEFAULT 't') 
+  [1m[36m (166.5ms)[0m  [1mCREATE TABLE "support_topics_fields" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "field_id" integer) [0m
+  [1m[35m (166.7ms)[0m  CREATE TABLE "support_topics_tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "topic_id" integer, "tag_id" integer) 
+  [1m[36m (166.8ms)[0m  [1mCREATE TABLE "support_user_topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "topic_id" integer, "required" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (152.5ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar NOT NULL) 
+  [1m[36m (155.4ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.1ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (117.9ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20180907145616')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+---------------------------------------------------------
+Support::MailerTest: test_has_anchor_#reply_on_new_ticket
+---------------------------------------------------------
+  [1m[35m (0.0ms)[0m  rollback transaction

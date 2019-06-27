@@ -93,7 +93,8 @@ div class="panel panel-default" id="reply"
 
 - unless @ticket.closed? || @ticket.resolved?
   legend = t(".new_reply")
-  = bootstrap_form_for @ticket.replies.build, layout: :horizontal, multipart: true do |f|
+  = bootstrap_form_for(@ticket.replies.build, html: {multipart: true}) do |f|
+    / layout: :horizontal,
     = f.hidden_field :ticket_id
     = markdown_area f, :message, rows: 5
     /= f.form_group

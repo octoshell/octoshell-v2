@@ -4,10 +4,8 @@ module Support
 
     def create
       p=reply_params
-      logger.info "REPLY_PARAMS=#{p.inspect}"
 
       @reply = Reply.new(p)
-      logger.info "Reply attachment = #{p} / #{@reply.inspect}"
       @reply.author = current_user
 
       if current_user.ticket_ids.include?(@reply.ticket_id) && @reply.save
