@@ -21,6 +21,7 @@ gem 'groupdate'
 
 group :development do
   gem "annotate"
+  gem "sqlite3"
   gem "letter_opener"
   gem "quiet_assets"
   gem "pry-rails"
@@ -29,6 +30,7 @@ group :development do
   gem "better_errors"
   gem 'rails_db'
   gem 'i18n-tasks', '~> 0.9.21'
+  gem 'minitest-reporters'
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil

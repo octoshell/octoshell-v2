@@ -3,8 +3,13 @@ module Support
     before_filter :require_login
 
     def create
-      @reply = Reply.new(reply_params)
+      p=reply_params
+      logger.info "REPLY_PARAMS=#{p.inspect}"
+
+      @reply = Reply.new(p)
+      logger.info "Reply attachment = #{p} / #{@reply.inspect}"
       @reply.author = current_user
+
       if current_user.ticket_ids.include?(@reply.ticket_id) && @reply.save
         redirect_to @reply.ticket
       else
