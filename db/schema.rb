@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190321105523) do
+ActiveRecord::Schema.define(version: 20190627150625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,24 @@ ActiveRecord::Schema.define(version: 20190321105523) do
   end
 
   add_index "announcements", ["created_by_id"], name: "index_announcements_on_created_by_id", using: :btree
+
+  create_table "api_abilities", force: :cascade do |t|
+    t.string   "key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "api_abilities_exports", force: :cascade do |t|
+    t.integer "ability_id"
+    t.integer "export_id"
+  end
+
+  create_table "api_exports", force: :cascade do |t|
+    t.string   "title"
+    t.text     "request"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "category_values", force: :cascade do |t|
     t.integer  "options_category_id"
@@ -331,7 +349,6 @@ ActiveRecord::Schema.define(version: 20190321105523) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "category"
-    t.integer  "type"
   end
 
   add_index "core_notices", ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id", using: :btree
@@ -638,8 +655,8 @@ ActiveRecord::Schema.define(version: 20190321105523) do
   end
 
   create_table "jobstat_jobs", force: :cascade do |t|
-    t.string   "cluster",      limit: 32
-    t.integer  "drms_job_id",  limit: 8
+    t.string   "cluster",      limit: 32,   null: false
+    t.integer  "drms_job_id",  limit: 8,    null: false
     t.integer  "drms_task_id", limit: 8
     t.string   "login",        limit: 32
     t.string   "partition",    limit: 32
@@ -656,6 +673,7 @@ ActiveRecord::Schema.define(version: 20190321105523) do
     t.text     "nodelist"
   end
 
+  add_index "jobstat_jobs", ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true, using: :btree
   add_index "jobstat_jobs", ["end_time"], name: "index_jobstat_jobs_on_end_time", using: :btree
   add_index "jobstat_jobs", ["login"], name: "index_jobstat_jobs_on_login", using: :btree
   add_index "jobstat_jobs", ["partition"], name: "index_jobstat_jobs_on_partition", using: :btree
