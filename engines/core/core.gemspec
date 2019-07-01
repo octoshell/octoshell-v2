@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency "net-ssh"
   s.add_dependency "net-scp"
   s.add_dependency "maymay"
-  s.add_dependency "ransack"
+  s.add_dependency "ransack", "2.1.1"
   s.add_dependency "kaminari"
   s.add_dependency "clbustos-rtf"
   s.add_dependency "mini_magick"

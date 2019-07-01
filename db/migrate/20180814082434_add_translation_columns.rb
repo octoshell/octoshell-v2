@@ -1,4 +1,4 @@
-class AddTranslationColumns < ActiveRecord::Migration
+class AddTranslationColumns < ActiveRecord::Migration[4.2]
   def change
     rename_column :announcements, :title, :title_ru
     add_column :announcements, :title_en, :string

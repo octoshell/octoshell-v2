@@ -1,5 +1,5 @@
 # This migration comes from announcements (originally 20150306132616)
-class CreateAnnouncementRecipients < ActiveRecord::Migration
+class CreateAnnouncementRecipients < ActiveRecord::Migration[4.2]
   def change
     create_table :announcement_recipients do |t|
       t.integer :user_id

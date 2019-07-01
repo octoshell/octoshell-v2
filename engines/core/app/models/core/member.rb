@@ -37,6 +37,10 @@ module Core
       where("lower(login) like :q", q: "%#{q}%").order(:login)
     end)
 
+    before_create do
+      assign_login
+    end
+
     include AASM
     include ::AASM_Additions
     aasm(:project_access_state, :column => :project_access_state) do
@@ -103,10 +107,10 @@ module Core
       end
     end
 
-    def create_or_update
-      assign_login if new_record?
-      super
-    end
+    # def create_or_update
+    #   assign_login if new_record?
+    #   super
+    # end
 
     def toggle_project_access_state!
       if allowed?

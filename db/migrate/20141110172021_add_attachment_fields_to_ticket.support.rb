@@ -1,5 +1,5 @@
 # This migration comes from support (originally 20141110171648)
-class AddAttachmentFieldsToTicket < ActiveRecord::Migration
+class AddAttachmentFieldsToTicket < ActiveRecord::Migration[4.2]
   def change
     add_column :support_tickets, :attachment_file_name, :string
     add_column :support_tickets, :attachment_content_type, :string

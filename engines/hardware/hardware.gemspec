@@ -20,12 +20,12 @@ Gem::Specification.new do |s|
   s.add_dependency "slim"
   s.add_dependency "decorators"
 
-  # s.add_dependency "bootstrap_form"
+  # s.add_dependency "bootstrap_form", ">= 4.2.0"
 
   s.add_dependency "jquery-ui-rails"
   s.add_dependency "aasm"
   s.add_dependency "maymay"
-  s.add_dependency "ransack"
+  s.add_dependency "ransack", "2.1.1"
   s.add_dependency "kaminari"
   s.add_dependency "carrierwave"
   s.add_dependency "mime-types"

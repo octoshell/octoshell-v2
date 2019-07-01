@@ -1,5 +1,5 @@
 # This migration comes from pack (originally 20170509142359)
-class PackInit < ActiveRecord::Migration
+class PackInit < ActiveRecord::Migration[4.2]
   def change
 	  create_table "pack_access_tickets", id: false, force: :cascade do |t|
 	    t.integer "access_id"

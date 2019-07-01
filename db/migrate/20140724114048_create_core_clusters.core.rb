@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140721095500)
-class CreateCoreClusters < ActiveRecord::Migration
+class CreateCoreClusters < ActiveRecord::Migration[4.2]
   def change
     create_table :core_clusters do |t|
       t.string   "name",        null: false

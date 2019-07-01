@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20190125111147)
-class CreateCorePartition < ActiveRecord::Migration
+class CreateCorePartition < ActiveRecord::Migration[4.2]
   def change
     create_table :core_partitions do |t|
       t.string :name

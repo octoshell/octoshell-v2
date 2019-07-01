@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
 
   include ControllerHelper
   include ActionView::Helpers::OutputSafetyHelper
+  helper Face::ApplicationHelper
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -34,6 +35,6 @@ class ApplicationController < ActionController::Base
     end
     text = "#{notices.count==1 ? t('bad_job') : t('bad_jobs')} #{list.join '; '}"
     flash.now[:'alert-badjobs'] = raw text
-    
+
   end
 end

@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140726135747)
-class CreateCoreOrganizations < ActiveRecord::Migration
+class CreateCoreOrganizations < ActiveRecord::Migration[4.2]
   def change
     create_table :core_organizations do |t|
       t.string :name

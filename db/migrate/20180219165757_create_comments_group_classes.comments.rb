@@ -1,5 +1,5 @@
 # This migration comes from comments (originally 20171215093331)
-class CreateCommentsGroupClasses < ActiveRecord::Migration
+class CreateCommentsGroupClasses < ActiveRecord::Migration[4.2]
   def change
     create_table :comments_group_classes do |t|
       t.string :class_name

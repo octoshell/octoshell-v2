@@ -1,5 +1,5 @@
 # This migration comes from comments (originally 20180210120309)
-class CreateCommentsFiles < ActiveRecord::Migration
+class CreateCommentsFiles < ActiveRecord::Migration[4.2]
   def change
     create_table :comments_file_attachments do |t|
       t.string :file
