@@ -1,138 +1,36 @@
+---
 en:
-  types_labels:
-    create_ab: Create
-    read_ab: Read
-    update_ab: Update
-    create_with_context_ab: Сreate with context
-  comments:
-    rake:
-      regexp: '^# Правила доступа к заметкам'
-      url: comments_guide
-      name: 'Модуль комментариев: Правила доступа к заметкам'
-      short_name: 'Правила доступа к заметкам'
-    comments:
-      create:
-        success_message: 'Your coment has been added'
-        errors_message: 'An error occurred while sending the data'
-        write_comment: 'Leave a comment'
-        no_context: No context
-      q:
-        all: Does not matter
-      index:
-        object: Object
-        context: Context
-        loading: 'Loading...'
-        group_l: 'Groups:'
-        list: Comments
-        empty: No comments available
-        created_at_gt: Created after
-        created_at_lt: Created before
-        updated_at_gt: Updated after
-        updated_at_lt: Updated before
-
-      edit:
-        success_message: Comment has been updated
-        errors_message: 'An error occurred while sending the data'
-        discard_title: Cancel
-    tags_lookup:
-      show:
-        no_tags: No records available
-    tags:
-      create:
-        success_message: 'Your tag has been added'
-        errors_message: 'An error occurred while sending the data'
-        write_tag: Leave tags
-        tags: Tags (';' is delimiter )
-        names_title: Add an existing tag
-        no_context: No context
-      q:
-        all: No records available
-        without_context: Without context
-      index:
-        object: Object
-        context: Context
-        loading: 'Loading...'
-        group_l: 'Groups:'
-        list: Tags
-        empty: No tags available
-        context: Context
-        hide: Hide
-      edit:
-        success_message: Tag has been updated
-        errors_message: 'An error occurred while sending the data'
-        discard_title: Cancel
-    files:
-      create:
-        success_message: 'Your file has been added'
-        errors_message: 'An error occurred while sending the data'
-        load_file: Upload file
-        no_context: Without context
-      q:
-        all: Does not matter
-      index:
-        object: Object
-        context: Context
-        loading: Loading...
-        group_l: 'Groups:'
-        list: Files
-        empty: No files available
-        hide: Hide
-      edit:
-        success_message: File has been changed
-        errors_message: 'An error occurred while sending the data'
-        discard_title: Cancel
-
-
-    admin:
-      contexts:
-        index:
-          title: Context
-          new: New context
-        edit:
-          title: Edit context
-        new:
-          title: Create context
-      context_groups:
-        edit:
-          not_created: neither a ban nor a right has not been created yet
-          loading: Loading...
-          success_message: Editing has been successful
-          errors_message: An error occurred on the server
-          context_groups_title: Group abilities for the context
-      group_classes:
-        edit:
-          "true": Allow
-          "false": Ban
-          "none": Do not create any abilities or prohibitions
-          no_obj_id: Not for the whole class
-          y_obj_id: For the whole class
-          obj_type_title: Object type
-          class_defaults_title: Default object abilities
-          class_groups_title: Group abilitites for object
-          not_created: neither a ban nor a right has not been created yet
-          loading: Loading...
-          success_message: Editing has been successful
-          errors_message: An error occurred on the server
-          validator_message: Choose an object
-
-  responses:
-    forbidden: You do not have permissions for this action
-    not_found: One of the edited entries has been deleted
   actions:
     cancel_edit: Cancel edition
-  are_u_sure_delete: Are you sure you want to delete the post?
-  levels_list: Levels
-  permissions_fail: You do not have permissions for this action
-  engine_submenu:
-    group_classes_links: Class-group relationships
-    contexts: Contexts
-    context_groups_links: Context-group relationships
-
   activerecord:
-    models:
-      comments/file_attachment: Files
-      comments/comment: Comments
-      comments/tag: Tags
+    attributes:
+      comments/comment:
+        attachable_id: Object id
+        attachable_type: Object type
+        context: Context
+        text: Text
+      comments/context:
+        name: Name
+      comments/context_group:
+        context: Context
+      comments/file_attachment:
+        attachable_id: Object ID
+        attachable_type: Object type
+        context: Context
+        description: Description
+      comments/group_class:
+        class_name: Class
+        obj_id: Object
+      comments/tag:
+        name: Tag
+      comments/tagging:
+        attachable_class_name: Class name
+        attachable_id: Object ID
+        attachable_name: Object name
+        attachable_type: Object type
+        context: Context
+        first_name: Name
+        last_name: Surname
     errors:
       models:
         comments/level_class:
@@ -140,32 +38,131 @@ en:
             class_name:
               not_exist: This model does not exist
             conflict:
-              exists_similar: You can not associate one object (a list of objects) with different levels
-    attributes:
-      comments/comment:
-        text: Text
+              exists_similar: >-
+                You can not associate one object (a list of objects) with
+                different levels
+    models:
+      comments/comment: Comments
+      comments/file_attachment: Files
+      comments/tag: Tags
+  are_u_sure_delete: Are you sure you want to delete the post?
+  comments:
+    admin:
+      context_groups:
+        edit:
+          context_groups_title: Group abilities for the context
+          errors_message: An error occurred on the server
+          loading: Loading...
+          not_created: neither a ban nor a right has not been created yet
+          success_message: Editing has been successful
+      contexts:
+        edit:
+          title: Edit context
+        index:
+          new: New context
+          title: Context
+        new:
+          title: Create context
+      group_classes:
+        edit:
+          class_defaults_title: Default object abilities
+          class_groups_title: Group abilitites for object
+          errors_message: An error occurred on the server
+          'false': Ban
+          loading: Loading...
+          no_obj_id: Not for the whole class
+          none: Do not create any abilities or prohibitions
+          not_created: neither a ban nor a right has not been created yet
+          obj_type_title: Object type
+          success_message: Editing has been successful
+          'true': Allow
+          validator_message: Choose an object
+          y_obj_id: For the whole class
+    comments:
+      create:
+        errors_message: An error occurred while sending the data
+        no_context: No context
+        success_message: Your coment has been added
+        write_comment: Leave a comment
+      edit:
+        discard_title: Cancel
+        errors_message: An error occurred while sending the data
+        success_message: Comment has been updated
+      index:
         context: Context
-        attachable_type: Object type
-        attachable_id: Object id
-      comments/file_attachment:
-        description: Description
+        created_at_gt: Created after
+        created_at_lt: Created before
+        empty: No comments available
+        group_l: 'Groups:'
+        list: Comments
+        loading: Loading...
+        object: Object
+        updated_at_gt: Updated after
+        updated_at_lt: Updated before
+      q:
+        all: Does not matter
+    files:
+      create:
+        errors_message: An error occurred while sending the data
+        load_file: Upload file
+        no_context: Without context
+        success_message: Your file has been added
+      edit:
+        discard_title: Cancel
+        errors_message: An error occurred while sending the data
+        success_message: File has been changed
+      index:
         context: Context
-        attachable_type: Object type
-        attachable_id: Object ID
-      comments/tagging:
-        attachable_type: Object type
-        attachable_id: Object ID
-        attachable_class_name: Class name
-        attachable_name: Object name
-        first_name: Name
-        last_name: Surname
+        empty: No files available
+        group_l: 'Groups:'
+        hide: Hide
+        list: Files
+        loading: Loading...
+        object: Object
+      q:
+        all: Does not matter
+    rake:
+      name: 'Comments module: rules of notes access'
+      regexp: "^# Правила доступа к заметкам"
+      short_name: rules of notes access
+      url: comments_guide
+    tags:
+      create:
+        errors_message: An error occurred while sending the data
+        names_title: Add an existing tag
+        no_context: No context
+        success_message: Your tag has been added
+        tags: Tags (';' is delimiter )
+        write_tag: Leave tags
+      edit:
+        discard_title: Cancel
+        errors_message: An error occurred while sending the data
+        success_message: Tag has been updated
+      index:
         context: Context
-      comments/tag:
-        name: Tag
-      comments/group_class:
-        class_name: Class
-        obj_id: Object
-      comments/context:
-        name: Name
-      comments/context_group:
-        context: Context
+        empty: No tags available
+        group_l: 'Groups:'
+        hide: Hide
+        list: Tags
+        loading: Loading...
+        object: Object
+      q:
+        all: No records available
+        without_context: Without context
+    tags_lookup:
+      show:
+        no_tags: No records available
+  engine_submenu:
+    context_groups_links: Context-group relationships
+    contexts: Contexts
+    group_classes_links: Class-group relationships
+  levels_list: Levels
+  permissions_fail: You do not have permissions for this action
+  responses:
+    forbidden: You do not have permissions for this action
+    not_found: One of the edited entries has been deleted
+  types_labels:
+    create_ab: Create
+    create_with_context_ab: Сreate with context
+    read_ab: Read
+    update_ab: Update

@@ -1,305 +1,297 @@
+---
 ru:
-  bad_jobs: "Проблемные задачи: "
-  bad_job: "Проблемная задача: "
-  options:
-    fields:
-      remove_option: Удалить опцию
-      with_category: Автозаполнение
-      without_category: Без автозаполнения
-      new: Новая опция
-  model_translation:
-    en: 'на английском'
-    ru: 'на русском'
-
-  main_menu:
-    working_area: "Рабочий кабинет"
-    admin_area: "Кабинет администратора"
-    wiki: "Справка"
-  user_submenu:
-    projects: "Проекты"
-    tickets_warning:
-      html: "Поддержка <span class=\"badge warning\"><i class=\"fa fa-bell\"></i></span>"
-    tickets: "Поддержка"
-    sessions: "Перерегистрации"
-    sessions_warning:
-      html: "Перерегистрации <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
-    profile: Профиль
-    job_stat: Статистика
-    job_table: Эффективность
-    comments: Комментарии
-    packages: Пакеты
-  admin_submenu:
-    options: Опции
-    emails: Emails
-    comments: "Комментарии"
-    cities: "Города"
-    countries: "Страны"
-    projects: "Проекты"
-    project_kinds: "Типы проектов"
-    sureties: "Поручительства"
-    sureties_with_count:
-      html: "Поручительства <span class=\"badge info\">%{count}</span>"
-    requests: "Заявки"
-    requests_with_count:
-      html: "Заявки <span class=\"badge info\">%{count}</span>"
-    support: "Поддержка"
-    support_with_count:
-      html: "Поддержка <span class=\"badge info\">%{count}</span>"
-    clusters: "Кластеры"
-    cluster_logs: "Логи кластеров"
-    quota_kinds: "Виды квот на ресурсы"
-    users: "Пользователи"
-    groups: "Группы доступа"
-    direction_of_sciences: "Направления исследований"
-    research_areas: "Области науки"
-    critical_technologies: "Критические технологии"
-    organizations: "Организации"
-    organization_kinds: "Типы организаций"
-    sessions: "Перерегистрации"
-    reports: "Отчёты"
-    report_submit_denial_reasons: "Причины отказа предоставления отчёта"
-    statistics: "Статистика"
-    announcements: "Рассылка"
-    sidekiq: "Мониторинг очередей выполнения задач"
-  without_pagination:
-    displaying_all_records: Показаны все записи
-    display_all_records: Показать все записи сразу на одной странице(может быть ДОЛГО)
-
-  flash:
-    password_updated: "Пароль обновлён."
-    profile_updated: "Профиль обновлён."
-    not_logged_in: "Вы не вошли в систему. Войдите или зарегистрируйтесь."
-    not_authorized: "У вас недостаточно прав для доступа."
-
+  "!": "!"
+  abilities:
+    accesses:
+      manage: Полный доступ к Ключам на Кластере
+    accounts:
+      manage: Полный доступ к Доступам к Проектам
+    admin:
+      access: Доступ в Кабинет Администратора
+    all:
+      show_all: Возможность просматривать все записи без пагинации
+    announcements:
+      manage: Полный доступ к Рассылкам
+    cluster_fields:
+      manage: Полный доступ к Дополнительным Полям Кластера
+    cluster_projects:
+      manage: Полный доступ к Проектам на Кластере
+    cluster_users:
+      manage: Полный доступ к Пользователям на Кластере
+    clusters:
+      manage: Полный доступ к Кластерам
+    console:
+      access: Доступ в консоль
+    credentials:
+      manage: Полный доступ к Публичным Ключам
+    critical_technologies:
+      manage: Полный доступ к Критическим Технологиям
+    direction_of_sciences:
+      manage: Полный доступ к Направлениям Науки
+    extends:
+      manage: Полный доступ к Расширениям
+    faults:
+      resolve: Решение проблемы пользователя
+    groups:
+      manage: Полный доступ к Группам
+    hardware:
+      manage: Полный доступ к Аппаратуре
+    history_items:
+      access: Просмотр Истории Пользователей
+    images:
+      manage: Полный доступ к Изображениям
+    import_items:
+      manage: Полный доступ к Импорту
+    notices:
+      manage: Полный доступ к объявлениям
+    organization_kinds:
+      manage: Полный доступ к Типам Организации
+    organizations:
+      manage: Полный доступ к Организациям
+    packages:
+      manage: Полный доступ к Пакетам
+    pages:
+      manage: Полный доступ к Страницам Справки
+      show_all: Просмотр всех Страниц Справки
+    position_names:
+      manage: Полный доступ к Названиям Позиций в Организациях
+    project_prefixes:
+      manage: Полный доступ к Префиксам Проектов
+    projects:
+      manage: Полный доступ к Проектам
+      review: Возможность просматривать проекты
+    reports:
+      admin: Полный доступ к отчетам
+      review: Возможность просматривать отчеты
+      supervise: Возможность принимать/отклонять отчеты сданные после срока
+    requests:
+      manage: Полный доступ к Заявкам на ресурсы
+    research_areas:
+      manage: Полный доступ к Областям исследований
+    settings:
+      manage: Полный доступ к Настройкам
+    sureties:
+      activate: Активация поручительства
+      close: Закрытие поручительства
+      confirm: Предварительное одобрение поручительств
+      decline: Отказ в поручительстве
+      manage: Полный доступ к Поручительствам
+      unconfirm: Снятие предварительного одобрение поручительств
+    tasks:
+      manage: Полный доступ к Процедурам
+    ticket_fields:
+      manage: Полный доступ к Дополнительным Полям к Заявкам в Поддержку
+    ticket_questions:
+      manage: Полный доступ к Вопросам к Заявкам в Поддержку
+    ticket_tags:
+      manage: Полный доступ к Тегам
+    ticket_templates:
+      manage: Полный доступ к Шаблонам ответов
+    tickets:
+      manage: Полный доступ к Заявкам в Поддержку
+    users:
+      manage: Полный доступ к Пользователям
   actions:
-    return_to_self_session: "Вернуться в свою сессию"
-    submit: "Отправить"
-
+    return_to_self_session: Вернуться в свою сессию
+    submit: Отправить
   activerecord:
-    models:
-      profile: "Профиль"
-      group: "Группа пользователей"
-      ability: "Возможность"
-      options_category: Категория опций
-      category_value: Значения из категорий
-      option: Опции
     attributes:
-      user:
-        groups: "Группы"
-        group_ids: "Группы"
-        full_name: "ФИО"
-        projects: "Проекты"
-      profile:
-        first_name: "Имя"
-        middle_name: "Отчество"
-        last_name: "Фамилия"
-        receive_info_mails: "Использовать мой email для информационных рассылок"
-        receive_special_mails: "Использовать мой email для служебных рассылок"
+      category_value:
+        value: Значение
       group:
-        name: "Наименование"
+        name: Наименование
+      option:
+        category_value_id: Значение из списка значений для категорий
+        name: Название опции
+        options_category_id: Категория опций
+        value: Значение
       options_category:
         name: Категория
         values: Значения
-      category_value:
-        value: Значение
-      option:
-        name: Название опции
-        value: Значение
-        category_value_id: Значение из списка значений для категорий
-        options_category_id: Категория опций
-
-
-
-  users:
-    edit:
-      title: "Редактирование информации о пользователе"
-      title: "Изменение пароля"
-      minimum_password_length: "Минимум 6 символов"
-      save: "Сохранить"
-    index:
-      title: "Пользователи"
-      email: "Email"
-      is_admin: "Администратор"
-  profiles:
-    form:
-      info_mails_help: "Отметьте, если вы согласны получать информационные рассылки о будущих семинарах и другой полезной информации."
-      special_mails_help: "Отметьте, если вы согласны получать рассылку о состоянии кластеров, профилактических работах и прочей служебной информации."
-      save: "Сохранить"
-    show:
-      is_admin: "Администратор"
-      title: "Профиль"
-      change_password: "Изменить пароль"
-  abilities:
-    accesses:
-      manage: "Полный доступ к Ключам на Кластере"
-    accounts:
-      manage: "Полный доступ к Доступам к Проектам"
-    clusters:
-      manage: "Полный доступ к Кластерам"
-    cluster_fields:
-      manage: "Полный доступ к Дополнительным Полям Кластера"
-    cluster_projects:
-      manage: "Полный доступ к Проектам на Кластере"
-    cluster_users:
-      manage: "Полный доступ к Пользователям на Кластере"
-    critical_technologies:
-      manage: "Полный доступ к Критическим Технологиям"
-    credentials:
-      manage: "Полный доступ к Публичным Ключам"
-    direction_of_sciences:
-      manage: "Полный доступ к Направлениям Науки"
-    extends:
-      manage: "Полный доступ к Расширениям"
-    groups:
-      manage: "Полный доступ к Группам"
-    images:
-      manage: "Полный доступ к Изображениям"
-    import_items:
-      manage: "Полный доступ к Импорту"
-    history_items:
-      access: "Просмотр Истории Пользователей"
-    organizations:
-      manage: "Полный доступ к Организациям"
-    organization_kinds:
-      manage: "Полный доступ к Типам Организации"
-    position_names:
-      manage: "Полный доступ к Названиям Позиций в Организациях"
-    projects:
-      review: "Возможность просматривать проекты"
-      manage: "Полный доступ к Проектам"
-    pages:
-      manage: "Полный доступ к Страницам Справки"
-      show_all: "Просмотр всех Страниц Справки"
-      manage: Полный доступ к Страницам Справки
-      show_all: Просмотр всех Страниц Справки
-    packages:
-      manage: Полный доступ к Пакетам
-    hardware:
-      manage: Полный доступ к Аппаратуре
-
-    requests:
-      manage: "Полный доступ к Заявкам на ресурсы"
-    settings:
-      manage: "Полный доступ к Настройкам"
-    sureties:
-      manage: "Полный доступ к Поручительствам"
-      confirm: "Предварительное одобрение поручительств"
-      unconfirm: "Снятие предварительного одобрение поручительств"
-      activate: "Активация поручительства"
-      close: "Закрытие поручительства"
-      decline: "Отказ в поручительстве"
-    project_prefixes:
-      manage: "Полный доступ к Префиксам Проектов"
-    tasks:
-      manage: "Полный доступ к Процедурам"
-    tickets:
-      manage: "Полный доступ к Заявкам в Поддержку"
-    ticket_fields:
-      manage: "Полный доступ к Дополнительным Полям к Заявкам в Поддержку"
-    ticket_questions:
-      manage: "Полный доступ к Вопросам к Заявкам в Поддержку"
-    ticket_tags:
-      manage: "Полный доступ к Тегам"
-    ticket_templates:
-      manage: "Полный доступ к Шаблонам ответов"
-    users:
-      manage: "Полный доступ к Пользователям"
-    all:
-      show_all: "Возможность просматривать все записи без пагинации"
-    admin:
-      access: "Доступ в Кабинет Администратора"
-    reports:
-      access: "Доступ в раздел отчетов"
-      manage: "Эксперт (по отчетам)"
-      review: "Возможность просматривать отчеты"
-      supervise: "Возможность принимать/отклонять отчеты сданные после срока"
-      admin: "Полный доступ к отчетам"
-    sessions:
-      manage: "Возможность запускать перерегистрацию"
-    user_surveys:
-      access: "Просмотр отчетов пользователя"
-    research_areas:
-      manage: "Полный доступ к Областям исследований"
-    faults:
-      resolve: "Решение проблемы пользователя"
-    console:
-      access: "Доступ в консоль"
-    announcements:
-      manage: "Полный доступ к Рассылкам"
-    notices:
-      manage: "Полный доступ к объявлениям"
-
+      profile:
+        first_name: Имя
+        last_name: Фамилия
+        middle_name: Отчество
+        receive_info_mails: Использовать мой email для информационных рассылок
+        receive_special_mails: Использовать мой email для служебных рассылок
+      user:
+        full_name: ФИО
+        group_ids: Группы
+        groups: Группы
+        projects: Проекты
+    models:
+      ability: Возможность
+      category_value: Значения из категорий
+      group: Группа пользователей
+      option: Опции
+      options_category: Категория опций
+      profile: Профиль
   admin:
+    groups:
+      edit:
+        title: Редактирование группы
+      form:
+        abilities: Права
+      index:
+        default_abilities: Восстановить права по-умолчанию
+        new_group: Добавить группу
+        title: Группы пользователей
+      new:
+        title: Создание группы
     options_categories:
+      edit:
+        title: Редактирование категории
       form:
         add_value: Добавить значение
         remove_value: Удалить значение
-      new:
-        title: Новая категория
       index:
         new: Новая категория
         title: Категории для опций
-      edit:
-        title: Редактирование категории
+      new:
+        title: Новая категория
       table:
         confirm: Вы действительно хотите удалить эту категорию опций?
         no_found: Нет категорий для опцийW
-    groups:
-      index:
-        title: "Группы пользователей"
-        new_group: "Добавить группу"
-        default_abilities: "Восстановить права по-умолчанию"
-      form:
-        abilities: "Права"
-      new:
-        title: "Создание группы"
-      edit:
-        title: "Редактирование группы"
     users:
-      index:
-        title: "Пользователи"
-        managed_project_statuses: "Руководит проектами со статусами"
-        participated_project_statuses: "Участвует в проектах со статусами"
-        has_account_on_clusters: "Есть аккаунт на кластере"
-        rereg_participated: "Участвовал в перерегистрации"
-        has_rereg_report_statuses: "Имеет отчеты в состоянии"
-        has_survey_statuses: "Имеет опросы в состоянии"
-        access_state: "Статус"
-        cluster_access_state_present: "Только с доступом на кластеры"
-
-      table:
-        no_employment:
-          html: "<span class='fa fa-exclamation-triangle text-danger'> не указано место работы</span>"
       edit:
-        title: "Участие пользователя в группах доступа"
-      show:
-        login_as_user: "Зайти под аккаунтом пользователя"
-        edit_groups_involvement: "Редактировать участие в группах"
-        delete_user: "Удалить аккаунт пользователя"
-        block_user: "Заблокировать доступ"
-        unblock_user: "Возобновить доступ"
-        reg_date: "Дата регистрации"
-        days_short: "дн."
-        present: "есть"
-        none: "нет"
+        title: Участие пользователя в группах доступа
+      index:
+        access_state: Статус
+        cluster_access_state_present: Только с доступом на кластеры
+        has_account_on_clusters: Есть аккаунт на кластере
+        has_rereg_report_statuses: Имеет отчеты в состоянии
+        has_survey_statuses: Имеет опросы в состоянии
+        managed_project_statuses: Руководит проектами со статусами
+        participated_project_statuses: Участвует в проектах со статусами
+        rereg_participated: Участвовал в перерегистрации
+        title: Пользователи
       projects_list:
         no_projects_found: Не найдено проектов
-
+      show:
+        block_user: Заблокировать доступ
+        days_short: дн.
+        delete_user: Удалить аккаунт пользователя
+        edit_groups_involvement: Редактировать участие в группах
+        login_as_user: Зайти под аккаунтом пользователя
+        none: нет
+        present: есть
+        reg_date: Дата регистрации
+        unblock_user: Возобновить доступ
+      table:
+        no_employment:
+          html: >-
+            <span class='fa fa-exclamation-triangle text-danger'> не указано
+            место работы</span>
+  admin_submenu:
+    announcements: Рассылка
+    api: API
+    cities: Города
+    cluster_logs: Логи кластеров
+    clusters: Кластеры
+    comments: Комментарии
+    countries: Страны
+    critical_technologies: Критические технологии
+    direction_of_sciences: Направления исследований
+    emails: Emails
+    groups: Группы доступа
+    options: Опции
+    organization_kinds: Типы организаций
+    organizations: Организации
+    project_kinds: Типы проектов
+    projects: Проекты
+    quota_kinds: Виды квот на ресурсы
+    report_submit_denial_reasons: Причины отказа предоставления отчёта
+    reports: Отчёты
+    requests: Заявки
+    requests_with_count:
+      html: Заявки <span class="badge info">%{count}</span>
+    research_areas: Области науки
+    sessions: Перерегистрации
+    sidekiq: Мониторинг очередей выполнения задач
+    statistics: Статистика
+    support: Поддержка
+    support_with_count:
+      html: Поддержка <span class="badge info">%{count}</span>
+    sureties: Поручительства
+    sureties_with_count:
+      html: Поручительства <span class="badge info">%{count}</span>
+    users: Пользователи
+  bad_job: 'Проблемная задача: '
+  bad_jobs: 'Проблемные задачи: '
+  flash:
+    not_authorized: У вас недостаточно прав для доступа.
+    not_logged_in: Вы не вошли в систему. Войдите или зарегистрируйтесь.
+    password_updated: Пароль обновлён.
+    profile_updated: Профиль обновлён.
   helpers:
     page_entries_info:
+      more_pages:
+        display_entries: Показаны <b>%{first}&nbsp;-&nbsp;%{last}</b> из <b>%{total}</b>
       one_page:
         display_entries:
-          zero: "Показано <b>0</b>"
-          one: "Показано <b>1</b>"
-          few: "Показано <b>%{count}</b>"
-          many: "Показаны <b>%{count}</b>"
-          other: "Показаны <b>все %{count}</b>"
-      more_pages:
-        display_entries: "Показаны <b>%{first}&nbsp;-&nbsp;%{last}</b> из <b>%{total}</b>"
+          few: Показано <b>%{count}</b>
+          many: Показаны <b>%{count}</b>
+          one: Показано <b>1</b>
+          other: Показаны <b>все %{count}</b>
+          zero: Показано <b>0</b>
+  main_menu:
+    admin_area: Кабинет администратора
+    wiki: Справка
+    working_area: Рабочий кабинет
+  model_translation:
+    en: на английском
+    ru: на русском
+  options:
+    fields:
+      new: Новая опция
+      remove_option: Удалить опцию
+      with_category: Автозаполнение
+      without_category: Без автозаполнения
+  profiles:
+    form:
+      info_mails_help: >-
+        Отметьте, если вы согласны получать информационные рассылки о будущих
+        семинарах и другой полезной информации.
+      save: Сохранить
+      special_mails_help: >-
+        Отметьте, если вы согласны получать рассылку о состоянии кластеров,
+        профилактических работах и прочей служебной информации.
+    show:
+      change_password: Изменить пароль
+      is_admin: Администратор
+      title: Профиль
+  user_submenu:
+    comments: Комментарии
+    job_stat: Статистика
+    job_table: Эффективность
+    packages: Пакеты
+    profile: Профиль
+    projects: Проекты
+    sessions: Перерегистрации
+    sessions_warning:
+      html: >-
+        Перерегистрации <span class="badge warning"><i class="fa fa-bell">
+        </i></span>
+    tickets: Поддержка
+    tickets_warning:
+      html: Поддержка <span class="badge warning"><i class="fa fa-bell"></i></span>
+  users:
+    edit:
+      minimum_password_length: Минимум 6 символов
+      save: Сохранить
+      title: Изменение пароля
+    index:
+      email: Email
+      is_admin: Администратор
+      title: Пользователи
   views:
     pagination:
-      next: "Следующая"
-      first: "Начало"
-      last: "Конец"
-      previous: "Предыдущая"
+      first: Начало
+      last: Конец
+      next: Следующая
+      previous: Предыдущая
       truncate: "..."
+  without_pagination:
+    display_all_records: Показать все записи сразу на одной странице(может
+      быть ДОЛГО)
+    displaying_all_records: Показаны все записи

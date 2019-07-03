@@ -1,139 +1,36 @@
+---
 ru:
-  types_labels:
-    create_ab: Создание
-    read_ab: Чтение
-    update_ab: Редактирование
-    create_with_context_ab: Создание с контекстом
-  comments:
-    rake:
-      regexp: '^# Правила доступа к заметкам'
-      url: comments_guide
-      name: 'Модуль комментариев: Правила доступа к заметкам'
-      short_name: 'Правила доступа к заметкам'
-    comments:
-      create:
-        success_message: 'Ваш комментарий добавлен'
-        errors_message: 'При отправке данных произошла ошибка'
-        write_comment: 'Оставьте комментарий'
-        no_context: Без контекста
-      q:
-        all: Не имеет значения
-      index:
-        object: Объект
-        context: Контекст
-        loading: Идет загрузка
-        group_l: 'Группы:'
-        list: Комментарии
-        empty: Нет доступных для отображения комментариев
-        created_at_gt: Создан после
-        created_at_lt: Создан до
-        updated_at_gt: Обновлен после
-        updated_at_lt: Обновлен до
-
-      edit:
-        success_message: Комментарий изменен
-        errors_message: При отправке данных произошла ошибка
-        discard_title: Отмена
-    tags_lookup:
-      show:
-        no_tags: Нет записей, доступных для отображения
-    tags:
-      create:
-        success_message: 'Ваш тег добавлен'
-        errors_message: 'При отправке данных произошла ошибка'
-        write_tag: Оставьте теги
-        tags: Теги(через ;)
-        names_title: Добавить существующий тег
-        no_context: Без контекста
-      q:
-        all: Не имеет значения
-        without_context: Нет контекста
-      index:
-        object: Объект
-        context: Контекст
-        loading: Идет загрузка
-        group_l: 'Группы:'
-        list: Теги
-        empty: Нет доступных для отображения тегов
-        context: Контекст
-        hide: Скрыть
-      edit:
-        success_message: Тег изменен
-        errors_message: При отправке данных произошла ошибка
-        discard_title: Отмена
-    files:
-      create:
-        success_message: 'Ваш файл добавлен'
-        errors_message: 'При отправке данных произошла ошибка'
-        load_file: Загрузите файл
-        no_context: Без контекста
-      q:
-        all: Не имеет значения
-      index:
-        object: Объект
-        context: Контекст
-        loading: Идет загрузка
-        group_l: 'Группы:'
-        list: Файлы
-        empty: Нет доступных для отображения файлов
-        context: Контекст
-        hide: Скрыть
-      edit:
-        success_message: Файл изменен
-        errors_message: При отправке данных произошла ошибка
-        discard_title: Отмена
-
-
-    admin:
-      contexts:
-        index:
-          title: Контексты
-          new: Новый контекст
-        edit:
-          title: Редактировать контекст
-        new:
-          title: Создать контекст
-      context_groups:
-        edit:
-          not_created: Пока не создано ни запрета, ни права
-          loading: Идет загрузка
-          success_message: Редактирование прошло успешно
-          errors_message: На сервере произошла ошибка
-          context_groups_title: Права группы для контекста
-      group_classes:
-        edit:
-          "true": Разрешить
-          "false": Запретить
-          "none": Не создавать ни права,ни запрета
-          no_obj_id: Не для всего класса
-          y_obj_id: Для всего класса
-          obj_type_title: Тип объекта
-          class_defaults_title: Стандартные права для объекта
-          class_groups_title: Права группы для объекта
-          not_created: Пока не создано ни запрета, ни права
-          loading: Идет загрузка
-          success_message: Редактирование прошло успешно
-          errors_message: На сервере произошла ошибка
-          validator_message: Выберите объект
-
-  responses:
-    forbidden: У вас нет прав для данного действия
-    not_found: Одна из редактируемых записей была удалена
   actions:
     cancel_edit: отменить редактирование
-  are_u_sure_delete: Вы уверены,что хотите удалить запись?
-  levels_list: Уровни
-  permissions_fail: У вас нет прав для данного действия
-  engine_submenu:
-    group_classes_links: Связи классов и групп
-    contexts: Контексты
-    context_groups_links: Связи контекстов и групп
-
   activerecord:
-    models:
-      comments/file_attachment: Файлы
-      comments/comment: Комментарии
-      comments/tag: Теги
+    attributes:
+      comments/comment:
+        attachable_id: ID объекта
+        attachable_type: Тип объекта
+        context: Контекст
+        text: Текст
+      comments/context:
+        name: Название
+      comments/context_group:
+        context: Контекст
+      comments/file_attachment:
+        attachable_id: ID объекта
+        attachable_type: Тип объекта
+        context: Контекст
+        description: Описание
+      comments/group_class:
+        class_name: Класс
+        obj_id: Объект
+      comments/tag:
+        name: Тег
+      comments/tagging:
+        attachable_class_name: Название класса
+        attachable_id: ID объекта
+        attachable_name: Имя объекта
+        attachable_type: Тип объекта
+        context: Контекст
+        first_name: Имя
+        last_name: Фамилия
     errors:
       models:
         comments/level_class:
@@ -141,32 +38,130 @@ ru:
             class_name:
               not_exist: Такой модели не существует
             conflict:
-              exists_similar: Нельзя  связать один объект(список объектов) с разными уровнями
-    attributes:
-      comments/comment:
-        text: Текст
+              exists_similar: Нельзя  связать один объект(список объектов)
+                с разными уровнями
+    models:
+      comments/comment: Комментарии
+      comments/file_attachment: Файлы
+      comments/tag: Теги
+  are_u_sure_delete: Вы уверены,что хотите удалить запись?
+  comments:
+    admin:
+      context_groups:
+        edit:
+          context_groups_title: Права группы для контекста
+          errors_message: На сервере произошла ошибка
+          loading: Идет загрузка
+          not_created: Пока не создано ни запрета, ни права
+          success_message: Редактирование прошло успешно
+      contexts:
+        edit:
+          title: Редактировать контекст
+        index:
+          new: Новый контекст
+          title: Контексты
+        new:
+          title: Создать контекст
+      group_classes:
+        edit:
+          class_defaults_title: Стандартные права для объекта
+          class_groups_title: Права группы для объекта
+          errors_message: На сервере произошла ошибка
+          'false': Запретить
+          loading: Идет загрузка
+          no_obj_id: Не для всего класса
+          none: Не создавать ни права,ни запрета
+          not_created: Пока не создано ни запрета, ни права
+          obj_type_title: Тип объекта
+          success_message: Редактирование прошло успешно
+          'true': Разрешить
+          validator_message: Выберите объект
+          y_obj_id: Для всего класса
+    comments:
+      create:
+        errors_message: При отправке данных произошла ошибка
+        no_context: Без контекста
+        success_message: Ваш комментарий добавлен
+        write_comment: Оставьте комментарий
+      edit:
+        discard_title: Отмена
+        errors_message: При отправке данных произошла ошибка
+        success_message: Комментарий изменен
+      index:
         context: Контекст
-        attachable_type: Тип объекта
-        attachable_id: ID объекта
-      comments/file_attachment:
-        description: Описание
+        created_at_gt: Создан после
+        created_at_lt: Создан до
+        empty: Нет доступных для отображения комментариев
+        group_l: 'Группы:'
+        list: Комментарии
+        loading: Идет загрузка
+        object: Объект
+        updated_at_gt: Обновлен после
+        updated_at_lt: Обновлен до
+      q:
+        all: Не имеет значения
+    files:
+      create:
+        errors_message: При отправке данных произошла ошибка
+        load_file: Загрузите файл
+        no_context: Без контекста
+        success_message: Ваш файл добавлен
+      edit:
+        discard_title: Отмена
+        errors_message: При отправке данных произошла ошибка
+        success_message: Файл изменен
+      index:
         context: Контекст
-        attachable_type: Тип объекта
-        attachable_id: ID объекта
-      comments/tagging:
-        attachable_type: Тип объекта
-        attachable_id: ID объекта
-        attachable_class_name: Название класса
-        attachable_name: Имя объекта
-        first_name: Имя
-        last_name: Фамилия
+        empty: Нет доступных для отображения файлов
+        group_l: 'Группы:'
+        hide: Скрыть
+        list: Файлы
+        loading: Идет загрузка
+        object: Объект
+      q:
+        all: Не имеет значения
+    rake:
+      name: 'Модуль комментариев: Правила доступа к заметкам'
+      regexp: "^# Правила доступа к заметкам"
+      short_name: Правила доступа к заметкам
+      url: comments_guide
+    tags:
+      create:
+        errors_message: При отправке данных произошла ошибка
+        names_title: Добавить существующий тег
+        no_context: Без контекста
+        success_message: Ваш тег добавлен
+        tags: Теги(через ;)
+        write_tag: Оставьте теги
+      edit:
+        discard_title: Отмена
+        errors_message: При отправке данных произошла ошибка
+        success_message: Тег изменен
+      index:
         context: Контекст
-      comments/tag:
-        name: Тег
-      comments/group_class:
-        class_name: Класс
-        obj_id: Объект
-      comments/context:
-        name: Название
-      comments/context_group:
-        context: Контекст
+        empty: Нет доступных для отображения тегов
+        group_l: 'Группы:'
+        hide: Скрыть
+        list: Теги
+        loading: Идет загрузка
+        object: Объект
+      q:
+        all: Не имеет значения
+        without_context: Нет контекста
+    tags_lookup:
+      show:
+        no_tags: Нет записей, доступных для отображения
+  engine_submenu:
+    context_groups_links: Связи контекстов и групп
+    contexts: Контексты
+    group_classes_links: Связи классов и групп
+  levels_list: Уровни
+  permissions_fail: У вас нет прав для данного действия
+  responses:
+    forbidden: У вас нет прав для данного действия
+    not_found: Одна из редактируемых записей была удалена
+  types_labels:
+    create_ab: Создание
+    create_with_context_ab: Создание с контекстом
+    read_ab: Чтение
+    update_ab: Редактирование

@@ -1,8 +1,31 @@
 ---
 ru:
-  admin_submenu:
-    hardware: Аппаратура
   activerecord:
+    attributes:
+      hardware/item:
+        current_state: Текущее состояния
+        description: Описание
+        kind_id: Вид
+        last_state: Текущее состояние
+        last_state_description: Описание текущего состояния
+        name: Название
+        states: Все состояния, в которых этот объект когда-то был
+      hardware/items_state:
+        created_at: Создано
+        description: Описание состояния
+        name: Название
+        reason: Причина изменения состояния
+        updated_at: Обновлено
+      hardware/kind:
+        description: Описание
+        name: Название
+      hardware/state:
+        description: Описание
+        from_states: Состояния, из которых средства могут перейти в это состояние
+        name: Название
+        reason: Причина изменения состояния
+        to_states: Состояния, в которые могут перейти средства с этим состоянием
+        updated_at: Обновлено
     errors:
       models:
         hardware/state:
@@ -11,53 +34,21 @@ ru:
               restrict_dependent_destroy:
                 many: Нельзя удалить состояние с существующими устройствами
     models:
-      hardware/item: "Устройство"
-      hardware/state: "Состояние устройства"
-      hardware/kind: "Вид устройств"
-    attributes:
-      hardware/item:
-        kind_id: Вид
-        name: Название
-        description: Описание
-        current_state: Текущее состояния
-        last_state_description: Описание текущего состояния
-        states: Все состояния, в которых этот объект когда-то был
-        last_state: Текущее состояние
-      hardware/state:
-        name: Название
-        description: Описание
-        reason: Причина изменения состояния
-        updated_at: Обновлено
-        from_states: Состояния, из которых средства могут перейти в это состояние
-        to_states: Состояния, в которые могут перейти средства с этим состоянием
-      hardware/items_state:
-        name: Название
-        description: Описание состояния
-        reason: Причина изменения состояния
-        updated_at: Обновлено
-        created_at: Создано
-      hardware/kind:
-        name: Название
-        description: Описание
+      hardware/item: Устройство
+      hardware/kind: Вид устройств
+      hardware/state: Состояние устройства
+  admin_submenu:
+    hardware: Аппаратура
   hardware:
     admin:
-      items_states:
-        index:
-          created_before: Созданы до
-          created_after: Созданы после
-          item_name_en_cont: Название устройства(en) содержит
-          item_name_ru_cont: Название устройства(ru) содержит
-          title: Состояния
-        table:
-          no_items_states: Нет состояний
       items:
         edit:
           title: Редактировать устройства
         index:
-          only_deleted: Показать устройства только с удаленным состоянием
-          new_item: Новое устройство
-          title: Список устройств
           index_json: JSON представление
+          new_item: Новое устройство
+          only_deleted: Показать устройства только с удаленным состоянием
+          title: Список устройств
         items_states_table:
           no_items_states: Нет состояний
         new:
@@ -68,14 +59,24 @@ ru:
           confirm: Вы действительно хотите удалить?
           no_items: Нет устройств
         update_state:
-          stale: Перед Вами кто-то обновил состояние объекта. Повторите вашу попытку
+          stale: Перед Вами кто-то обновил состояние объекта. Повторите вашу
+            попытку
+      items_states:
+        index:
+          created_after: Созданы после
+          created_before: Созданы до
+          item_name_en_cont: Название устройства(en) содержит
+          item_name_ru_cont: Название устройства(ru) содержит
+          title: Состояния
+        table:
+          no_items_states: Нет состояний
       kinds:
         edit:
           title: Редактировать вид устройства
         index:
+          index_json: JSON представление
           new_kind: Новый вид
           title: Виды устройств
-          index_json: JSON представление
         new:
           title: Новый вид устойств
         show:
@@ -100,8 +101,8 @@ ru:
           no_states: Нет состояний
     engine_submenu:
       items: Устройства
-      kinds: Виды устройств
       items_states: Состояния устройств
+      kinds: Виды устройств
     self_error: Self error
   layouts:
     hardware:
