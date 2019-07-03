@@ -1,0 +1,16 @@
+div class="well"
+  = link_to t(".new_key_parameter"), new_admin_key_parameter_path, class: "btn btn-default"
+
+table class="table table-striped"
+  tr
+    th class="col-xs-1" #
+    th = Api::KeyParameter.human_attribute_name(:name)
+    th = Api::KeyParameter.human_attribute_name(:default)
+    th = Api::KeyParameter.human_attribute_name(:exports)
+  - @key_parameters.each do |key_parameter|
+    tr
+      td = key_parameter.id
+      td = link_to key_parameter.name, edit_admin_key_parameter_path(key_parameter)
+      td = key_parameter.default
+      td
+        = key_parameter.exports.map{|k| link_to k.title, [:admin, k]}.join(' | ').html_safe

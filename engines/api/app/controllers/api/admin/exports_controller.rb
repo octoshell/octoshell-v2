@@ -1,8 +1,12 @@
-require_dependency "api/application_controller"
+require_dependency "api/admin/application_controller"
 
 module Api
-  class ExportsController < ApplicationController
+  class Admin::ExportsController < Admin::ApplicationController
     before_action :set_export, only: [:show, :edit, :update, :destroy]
+    before_filter :authorize_admins
+    def authorize_admins
+      authorize!(:access, :api_engine)
+    end
 
     # GET /exports
     def index
@@ -24,10 +28,12 @@ module Api
 
     # POST /exports
     def create
-      @export = Export.new(export_params)
+      par = export_params
+      @export = Export.new(par)
 
       if @export.save
-        redirect_to @export, notice: 'Export was successfully created.'
+        redirect_to admin_exports_url, notice: 'Export was successfully created.'
+        #[:admin, @export]
       else
         render :new
       end
@@ -36,7 +42,7 @@ module Api
     # PATCH/PUT /exports/1
     def update
       if @export.update(export_params)
-        redirect_to @export, notice: 'Export was successfully updated.'
+        redirect_to admin_exports_url, notice: 'Export was successfully updated.'
       else
         render :edit
       end
@@ -45,7 +51,7 @@ module Api
     # DELETE /exports/1
     def destroy
       @export.destroy
-      redirect_to exports_url, notice: 'Export was successfully destroyed.'
+      redirect_to admin_exports_url, notice: 'Export was successfully destroyed.'
     end
 
     private
@@ -56,7 +62,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def export_params
-        params.require(:export).permit(:title, :request)
+        params.require(:export).permit(:title, :request, :text, :access_key_ids=>[], :key_parameters => [])
       end
   end
 end

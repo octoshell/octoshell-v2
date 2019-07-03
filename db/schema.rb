@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190627150625) do
+ActiveRecord::Schema.define(version: 20190703134731) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,20 +51,33 @@ ActiveRecord::Schema.define(version: 20190627150625) do
 
   add_index "announcements", ["created_by_id"], name: "index_announcements_on_created_by_id", using: :btree
 
-  create_table "api_abilities", force: :cascade do |t|
+  create_table "api_access_keys", force: :cascade do |t|
     t.string   "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "api_abilities_exports", force: :cascade do |t|
-    t.integer "ability_id"
+  create_table "api_access_keys_exports", force: :cascade do |t|
+    t.integer "access_key_id"
     t.integer "export_id"
   end
 
   create_table "api_exports", force: :cascade do |t|
     t.string   "title"
     t.text     "request"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text     "text"
+  end
+
+  create_table "api_exports_key_parameters", id: false, force: :cascade do |t|
+    t.integer "export_id"
+    t.integer "key_parameter_id"
+  end
+
+  create_table "api_key_parameters", force: :cascade do |t|
+    t.string   "name"
+    t.string   "default"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
