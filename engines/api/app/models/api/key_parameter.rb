@@ -11,6 +11,7 @@
 
 module Api
   class KeyParameter < ActiveRecord::Base
+  	validates :name, uniqueness: true, allow_blank: false, allow_nil: false
   	has_and_belongs_to_many :exports
   end
 end

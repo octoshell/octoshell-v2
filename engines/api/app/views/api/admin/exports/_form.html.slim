@@ -16,5 +16,7 @@
 
   = f.collection_select :key_parameter_ids, Api::KeyParameter.all, :id, :name, {label: t('.export_key_parameters_list')}, {multiple: true}
 
+  = f.check_box :safe
+
   = f.submit :class => "btn btn-default"
 

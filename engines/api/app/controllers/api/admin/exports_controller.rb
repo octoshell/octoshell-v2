@@ -62,7 +62,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def export_params
-        params.require(:export).permit(:title, :request, :text, :access_key_ids=>[], :key_parameters => [])
+        params.require(:export).permit(:title, :request, :text, :safe, :access_key_ids=>[], :key_parameters => [])
       end
   end
 end

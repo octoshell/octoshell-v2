@@ -7,6 +7,7 @@ table class="table table-striped"
     th = Api::KeyParameter.human_attribute_name(:name)
     th = Api::KeyParameter.human_attribute_name(:default)
     th = Api::KeyParameter.human_attribute_name(:exports)
+    th
   - @key_parameters.each do |key_parameter|
     tr
       td = key_parameter.id
@@ -14,3 +15,6 @@ table class="table table-striped"
       td = key_parameter.default
       td
         = key_parameter.exports.map{|k| link_to k.title, [:admin, k]}.join(' | ').html_safe
+      td
+        = link_to [:admin, key_parameter], method: :delete, data: { confirm: 'Are you sure?' }
+          i class="fa fa-times text-danger"

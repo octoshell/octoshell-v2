@@ -15,7 +15,7 @@ module Api
             render plain: "Request '#{params[:req]}' for ability #{access_key.id}(#{access_key.key}) is not allowed.\n", status: 403
           else
             vars = Hash[req.key_parameters.map{|p| [p.name,(params[p.name]||p.default)]}]
-            text = execute_request req.text, vars
+            text = execute_request req.text, vars, req.safe
             render plain: text
           end
         end
@@ -26,7 +26,7 @@ module Api
 
     private
 
-    def execute_request text, args
+    def execute_request text, args, safe=true
       result = nil
       full_text = text.gsub(/%[^% \t]+%/) { |match|
         m = match[1..-2]
@@ -38,7 +38,7 @@ module Api
       }
       ActiveRecord::Base.transaction do
         result = eval full_text
-      raise ActiveRecord::Rollback
+        raise ActiveRecord::Rollback if safe
       end
       result
     end

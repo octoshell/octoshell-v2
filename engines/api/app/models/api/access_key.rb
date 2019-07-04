@@ -10,7 +10,7 @@
 
 module Api
   class AccessKey < ActiveRecord::Base
+  	validates :key, uniqueness: true, allow_blank: false, allow_nil: false
     has_and_belongs_to_many :exports
-    accepts_nested_attributes_for :exports
   end
 end
