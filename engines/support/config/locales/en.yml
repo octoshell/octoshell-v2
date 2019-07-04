@@ -121,34 +121,9 @@ en:
         new:
           title: Create reply template
         show:
-<<<<<<< HEAD
-          title: Request No%{id}
-          accept: Accept
-          no_replies: No replies
-          send: Send
-          tags-etc: Tags/files/comments
-          send_and_show_result: Send and show result
-          send_and_show_next: Send and show next ticket
-          new_reply: New reply
-          create_reply_template: Create reply template from current reply
-          attach: Attach file
-
-||||||| merged common ancestors
-          title: Request No%{id}
-          accept: Accept
-          no_replies: No replies
-          new_reply: New reply
-          create_reply_template: Create reply template from current reply
-
-          send: Send
-          send_and_show_result: Send and show result
-          send_and_show_next: Send and show next ticket
-
-=======
           title: Reply template
         table:
           no_templates: No reply templates
->>>>>>> master
       tags:
         edit:
           title: Edit tag
@@ -186,6 +161,7 @@ en:
           create_reply_template: Create reply template from current reply
           new_reply: New reply
           no_replies: No replies
+          problem_solved: If your problem is solved, press
           send: Send
           send_and_show_next: Send and show next ticket
           send_and_show_result: Send and show result
@@ -250,37 +226,8 @@ en:
         if_not: 'If not, press '
         new_reply: New reply
         no_replies: No replies
-<<<<<<< HEAD
-        if_not: "If not, press "
-        attach: "Attach file: "
-
-      new:
-        title: New request
-      edit:
-        title: Edit request
-
-  errors:
-    messages:
-      wrong_size: "File size is incorrect (must be %{file_size})"
-      size_too_small: "File size is too small (must be %{file_size} at least)"
-      size_too_big: "File size is too big (maximum size: %{file_size})"
-||||||| merged common ancestors
-
-        if_not: "If not, press "
-      new:
-        title: New request
-      edit:
-        title: Edit request
-
-  errors:
-    messages:
-      wrong_size: "File size is incorrect (must be %{file_size})"
-      size_too_small: "File size is too small (must be %{file_size} at least)"
-      size_too_big: "File size is too big (maximum size: %{file_size})"
-=======
         problem_solved: 'Have your problem been solved? Press '
         title: Request No%{id}
       table:
         no_tickets: No requests found
   support_responsible_for: 'Responsible for:'
->>>>>>> master

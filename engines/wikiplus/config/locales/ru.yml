@@ -1,56 +1,54 @@
+---
 ru:
   activerecord:
-    models:
-      wikiplus/page: "Страница wikiplus"
     attributes:
       wikiplus/page:
-        name: "Название"
-        url: "url"
-        content: "Текст"
-        sortid: "Номер страницы"
-
-  buttons:
-    save: "Сохранить"
-
+        content: Текст
+        name: Название
+        sortid: Приоритет страницы
+        url: url
+    models:
+      wikiplus/page: Страница wikiplus
   wikiplus:
     common:
-      edit: "Редактировать!"
-    markdown_help: "Для разметки используется <a href=\"http://daringfireball.net/projects/markdown/syntax\">Markdown</a>"
-    pages:
-      new:
-        title: "Новая страница"
-      edit:
-        title: "Редактирование страницы"
-      index:
-        title: "Справка+ по работе с Octoshell"
-        new_page: "Новая страница"
-        edit: "Редактировать"
-        delete: "Удалить"
-        confirm: "Вы действительно хотите удалить страницу?"
-        no_pages_found: "Ещё не создано ни одной wiki-страницы."
-        name: "Название"
-        link: "Ссылка"
-        createsubpage: ""
-        newsub_page: Создать подстраницу
-        new_image: Загрузить картинку
-        all_images: Все картинки
-      subpageindex:
-        newsub_page: Создать подстраницу
-      _test:
-        title: "Справка+ по работе с Octoshell"
-        new_page: "Новая страница"
-        edit: "Редактировать"
-        delete: "Удалить"
-        confirm: "Вы действительно хотите удалить страницу?"
-        no_pages_found: "Ещё не создано ни одной wiki-страницы."
-        name: "Название"
-        link: "Ссылка"
+      edit: Редактировать!
     images:
       index:
-        title: Список картинок
-        name: Название
-        link: Ссылка
-        preview: Предпросмотр
         delete: Удалить
+        link: Ссылка
+        name: Название
+        preview: Предпросмотр
+        title: Список картинок
       new:
-        title: "Загрузить картинку"
+        title: Загрузить картинку
+    markdown_help: >-
+      Для разметки используется <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
+    pages:
+      _test:
+        confirm: Вы действительно хотите удалить страницу?
+        delete: Удалить
+        edit: Редактировать
+        link: Ссылка
+        name: Название
+        new_page: Новая страница
+        no_pages_found: Ещё не создано ни одной wiki-страницы.
+        title: Справка+ по работе с Octoshell
+      edit:
+        title: Редактирование страницы
+      index:
+        all_images: Все картинки
+        confirm: Вы действительно хотите удалить страницу?
+        createsubpage: ''
+        delete: Удалить
+        edit: Редактировать
+        link: Ссылка
+        name: Название
+        new_image: Загрузить картинку
+        new_page: Новая страница
+        newsub_page: Создать подстраницу
+        no_pages_found: Ещё не создано ни одной wiki-страницы.
+        title: Справка+ по работе с Octoshell
+      new:
+        title: Новая страница
+      subpageindex:
+        newsub_page: Создать подстраницу

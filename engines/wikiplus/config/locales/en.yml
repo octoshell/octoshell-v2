@@ -1,30 +1,55 @@
+---
 en:
   activerecord:
-    models:
-      wikiplus/page: "Wikiplus page"
     attributes:
       wikiplus/page:
-        name: "Name"
-        url: "url"
-        content: "Content"
-        sortid: "sort id"
-
-  buttons:
-    save: "Save"
-
+        content: Text
+        name: Name
+        sortid: Sort priority
+        url: url
+    models:
+      wikiplus/page: Wiki+ page
   wikiplus:
-    markdown_help: "<a href=\"http://daringfireball.net/projects/markdown/syntax\">Markdown</a> is used for markdown"
-    pages:
-      new:
-        title: "New page"
-      edit:
-        title: "Page edition"
+    common:
+      edit: Edit!
+    images:
       index:
-        title: "Octoshell wikiplus"
-        new_page: "New page"
-        edit: "Edit"
-        delete: "Delete"
-        confirm: "Are you sure you want to delete this page?"
-        no_pages_found: "No wikiplus pages have been created yet."
-        name: "Name"
-        link: "Links"
+        delete: Delete
+        link: Link
+        name: Name
+        preview: Preview
+        title: Images list
+      new:
+        title: Upload image
+    markdown_help: >-
+      <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
+      is used for markup
+    pages:
+      _test:
+        confirm: Are you shure to delete page?
+        delete: Delete
+        edit: Edit
+        link: Link
+        name: Name
+        new_page: New page
+        no_pages_found: No any wiki page yes
+        title: Octoshell help
+      edit:
+        title: Page edit
+      index:
+        all_images: All images
+        confirm: Are you shure to delete page?
+        createsubpage: ''
+        delete: Delete
+        edit: Edit
+        link: Link
+        name: Name
+        new_image: Upload image
+        new_page: New page
+        newsub_page: New sub-page
+        no_pages_found: No any wiki page yet
+        title: Octoshell help
+      new:
+        title: New page
+      subpageindex:
+        newsub_page: Create sub-page

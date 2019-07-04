@@ -25,6 +25,3 @@ module Wikiplus
 
   end
 end
-
-
-

@@ -1,5 +1,6 @@
 ---
 ru:
+  "!": "!"
   abilities:
     accesses:
       manage: Полный доступ к Ключам на Кластере
@@ -236,6 +237,7 @@ ru:
   main_menu:
     admin_area: Кабинет администратора
     wiki: Справка
+    wikiplus: Справка+
     working_area: Рабочий кабинет
   model_translation:
     en: на английском

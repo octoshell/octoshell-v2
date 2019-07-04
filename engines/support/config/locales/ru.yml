@@ -121,34 +121,9 @@ ru:
         new:
           title: Создание шаблона
         show:
-<<<<<<< HEAD
-          title: Заявка №%{id}
-          accept: Принять в работу
-          no_replies: Нет сообщений
-          tags-etc: Теги/файлы/комментарии
-          send: Отправить
-          send_and_show_result: Отправить и показать результат
-          send_and_show_next: Отправить и открыть следующий
-          new_reply: Новое сообщение
-          create_reply_template: Создать шаблон из текущего сообщения
-          attach: Приложить файл
-
-||||||| merged common ancestors
-          title: Заявка №%{id}
-          accept: Принять в работу
-          no_replies: Нет сообщений
-          new_reply: Новое сообщение
-          create_reply_template: Создать шаблон из текущего сообщения
-
-          send: Отправить
-          send_and_show_result: Отправить и показать результат
-          send_and_show_next: Отправить и открыть следующий
-
-=======
-          title: Шаблон
+          title: Шаблон No%{id}
         table:
           no_templates: Нет шаблонов
->>>>>>> master
       tags:
         edit:
           title: Редактирование тега
@@ -186,11 +161,12 @@ ru:
           create_reply_template: Создать шаблон из текущего сообщения
           new_reply: Новое сообщение
           no_replies: Нет сообщений
+          problem_solved: Проблема решена? Нажмите
           send: Отправить
           send_and_show_next: Отправить и открыть следующий
           send_and_show_result: Отправить и показать результат
           tags-etc: Теги/файлы/комментарии
-          title: Заявка №%{id}
+          title: 'Заявка №%{id}'
         table:
           no_tickets: Нет тикетов
       topics:
@@ -246,51 +222,13 @@ ru:
       new:
         title: Новая заявка
       show:
-<<<<<<< HEAD
-        title: Заявка №%{id}
-        no_replies: Нет ответов
-        earlier: "Ранее:"
-        problem_solved: "Проблема решена? Нажмите "
-||||||| merged common ancestors
-        title: Заявка №%{id}
-        problem_solved: "Проблема решена? Нажмите "
-=======
         attach: 'Приложить файл: '
-        earlier: 'Ранее:'
-        if_not: 'Если нет, нажмите '
->>>>>>> master
+        earlier: 'Ранее: '
+        if_not: Если нет, нажмите
         new_reply: Новое сообщение
-<<<<<<< HEAD
-        if_not: "Если нет, нажмите "
-        attach: "Приложить файл: "
-      new:
-        title: Новая заявка
-      edit:
-        title: Редактирование заявки
-
-  errors:
-    messages:
-      wrong_size: "размер файла некорректен (должен быть %{file_size})"
-      size_too_small: "файл слишком малого размера (должен быть как минимум %{file_size})"
-      size_too_big: "файл слишком большой (максимальный размер: %{file_size})"
-||||||| merged common ancestors
-        no_replies: Нет ответов
-        if_not: "Если нет, нажмите "
-      new:
-        title: Новая заявка
-      edit:
-        title: Редактирование заявки
-
-  errors:
-    messages:
-      wrong_size: "размер файла некорректен (должен быть %{file_size})"
-      size_too_small: "файл слишком малого размера (должен быть как минимум %{file_size})"
-      size_too_big: "файл слишком большой (максимальный размер: %{file_size})"
-=======
         no_replies: Нет ответов
         problem_solved: 'Проблема решена? Нажмите '
         title: Заявка №%{id}
       table:
         no_tickets: Нет заявок в поддержку
   support_responsible_for: 'Ответственный за:'
->>>>>>> master
