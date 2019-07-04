@@ -3,7 +3,7 @@ module Octoshell
     class <<self
       RAILS_ENV = Rails.env
       VER = '2.7'
-      GIT_VER = `git describe --always`.chomp
+      GIT_VER = `git describe --tags --long`.chomp
 
       def ver
         tag = GIT_VER
