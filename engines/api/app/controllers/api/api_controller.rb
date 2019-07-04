@@ -14,17 +14,33 @@ module Api
           if req.nil?
             render plain: "Request '#{params[:req]}' for ability #{access_key.id}(#{access_key.key}) is not allowed.\n", status: 403
           else
-            text = nil
-            ActiveRecord::Base.transaction do
-              text = eval req.text
-              raise ActiveRecord::Rollback
-            end
+            vars = Hash[req.key_parameters.map{|p| [p.name,(params[p.name]||p.default)]}]
+            text = execute_request req.text, vars
             render plain: text
           end
         end
       rescue => e
         render plain: "Auch! Got error: #{e.message}\n", status: 500
       end
+    end
+
+    private
+
+    def execute_request text, args
+      result = nil
+      full_text = text.gsub(/%[^% \t]+%/) { |match|
+        m = match[1..-2]
+        if args[m]
+          args[m]
+        else
+          match
+        end
+      }
+      ActiveRecord::Base.transaction do
+        result = eval full_text
+      raise ActiveRecord::Rollback
+      end
+      result
     end
   end
 end
