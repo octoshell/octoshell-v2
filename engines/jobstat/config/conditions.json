@@ -677,7 +677,7 @@
             "index": 22,
             "name": "class_ml_initial_data_read",
             "is_enabled": 1,
-            "public": 0,
+            "public": 1,
             "description": "Активное чтение входных данных в начале запуска",
             "comment": "Сработал тип Дениса initial_data_read.",
             "src_file": "classes.py",
@@ -702,8 +702,8 @@
         "class_ml_activity_decrease": {
             "index": 24,
             "name": "class_ml_activity_decrease",
-            "is_enabled": 0,
-            "public": 0,
+            "is_enabled": 1,
+            "public": 1,
             "description": "Постепенное снижение активности работы задачи",
             "comment": "Сработал тип Дениса activity_decrease.",
             "src_file": "classes.py",
@@ -750,7 +750,7 @@
             "index": 3,
             "name": "rule_ml_job_hang",
             "is_enabled": 1,
-            "public": 0,
+            "public": 1,
             "description": "Согласно данным мониторинга, задача зависла.",
             "comment": "Сработал тип Дениса job_hang.",
             "src_file": "rules_integral_based.py",
@@ -826,24 +826,8 @@
             "text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ последовательных программ; 3) Анализ работы с памятью -> Эффективность.",
             "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling,memory_efficiency"
         },
-        "rule_ml_suspicious": {
-            "index": 8,
-            "name": "rule_ml_suspicious",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Данная задача обладает подозрительно низкой эффективностью выполнения, по сравнению с остальными задачами на данном суперкомпьютере. Скорее всего, в задаче присутствуют существенные проблемы с эффективностью.",
-            "comment": "Классификатор Дениса отметил данную задачу как подозрительную.",
-            "src_file": "rules_integral_based.py",
-            "group": "general_low_efficiency",
-            "priority": 1,
-            "confidence": 3,
-            "criticalness": 3,
-            "supposition": "Программа без видимых внешних причин работает недостаточно эффективно, по сравнению с остальными задачами на данном суперкомпьютере. На данном этапе недостаточно информации для определения причин данной неэффективности.",
-            "text_recommendation": "Общий анализ последовательных программ",
-            "module_recommendation": "general_serial_analysis"
-        },
         "rule_low_ipc": {
-            "index": 9,
+            "index": 8,
             "name": "rule_low_ipc",
             "is_enabled": 0,
             "public": 0,
@@ -858,10 +842,42 @@
             "text_recommendation": "Общий анализ последовательных программ",
             "module_recommendation": "general_serial_analysis"
         },
-        "rule_ml_low_job_activity": {
-            "index": 10,
-            "name": "rule_ml_low_job_activity",
+        "rule_ml_cold_start": {
+            "index": 9,
+            "name": "rule_ml_cold_start",
             "is_enabled": 0,
+            "public": 0,
+            "description": "Согласно данным мониторинга, активность задачи сразу после запуска была очень низкой.",
+            "comment": "Сработал тип Дениса cold_start.",
+            "src_file": "rules_integral_based.py",
+            "group": "general_low_efficiency",
+            "priority": 1,
+            "confidence": 3,
+            "criticalness": 3,
+            "supposition": "Вероятно, процесс старта задачи занял продолжительное время (из-за внешних сбоев в системе или проблем в самой задаче).",
+            "text_recommendation": "Рекомендуется проверить корректность запуска.",
+            "module_recommendation": "---"
+        },
+        "rule_ml_suspicious": {
+            "index": 10,
+            "name": "rule_ml_suspicious",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Данная задача обладает подозрительно низкой эффективностью выполнения, по сравнению с остальными задачами на данном суперкомпьютере. Скорее всего, в задаче присутствуют существенные проблемы с эффективностью.",
+            "comment": "Классификатор Дениса отметил данную задачу как подозрительную.",
+            "src_file": "rules_integral_based.py",
+            "group": "general_low_efficiency",
+            "priority": 1,
+            "confidence": 3,
+            "criticalness": 3,
+            "supposition": "Программа без видимых внешних причин работает недостаточно эффективно, по сравнению с остальными задачами на данном суперкомпьютере. На данном этапе недостаточно информации для определения причин данной неэффективности.",
+            "text_recommendation": "Общий анализ последовательных программ",
+            "module_recommendation": "general_serial_analysis"
+        },
+        "rule_ml_low_job_activity": {
+            "index": 11,
+            "name": "rule_ml_low_job_activity",
+            "is_enabled": 1,
             "public": 0,
             "description": "Число процессов, активно используюющих вычислительные ресурсы, слишком мало.",
             "comment": "Сработал тип Дениса low_job_activity.",
@@ -875,7 +891,7 @@
             "module_recommendation": ""
         },
         "rule_high_la": {
-            "index": 11,
+            "index": 12,
             "name": "rule_high_la",
             "is_enabled": 1,
             "public": 0,
@@ -891,10 +907,10 @@
             "module_recommendation": "thread_analysis"
         },
         "rule_ml_stall": {
-            "index": 12,
+            "index": 13,
             "name": "rule_ml_stall",
             "is_enabled": 1,
-            "public": 0,
+            "public": 1,
             "description": "Согласно данным мониторинга, задача некоторое время была зависшей, однако затем ее выполнение продолжилось в нормальном режиме.",
             "comment": "Сработал тип Дениса stall.",
             "src_file": "rules_integral_based.py",
@@ -903,22 +919,6 @@
             "confidence": 3,
             "criticalness": 3,
             "supposition": "Задача некоторое время была зависшей, поэтому ее выполнение может быть некорректным.",
-            "text_recommendation": "Рекомендуется проверить корректность запуска.",
-            "module_recommendation": "---"
-        },
-        "rule_ml_cold_start": {
-            "index": 13,
-            "name": "rule_ml_cold_start",
-            "is_enabled": 1,
-            "public": 0,
-            "description": "Согласно данным мониторинга, активность задачи сразу после запуска была очень низкой.",
-            "comment": "Сработал тип Дениса cold_start.",
-            "src_file": "rules_integral_based.py",
-            "group": "general_low_efficiency",
-            "priority": 1,
-            "confidence": 3,
-            "criticalness": 3,
-            "supposition": "Вероятно, процесс старта задачи занял продолжительное время (из-за внешних сбоев в системе или проблем в самой задаче).",
             "text_recommendation": "Рекомендуется проверить корректность запуска.",
             "module_recommendation": "---"
         },
@@ -936,7 +936,7 @@
             "criticalness": 3,
             "supposition": "Можно попробовать одновременно загружать и CPU, и GPU.",
             "text_recommendation": "Анализ работы с ускорителями",
-            "module_recommendation": "accelerator_analysis"
+            "module_recommendation": "gpu-nvprof_basic"
         },
         "rule_more_cpu_gpu": {
             "index": 15,
@@ -952,7 +952,7 @@
             "criticalness": 4,
             "supposition": "Можно попробовать одновременно загружать и CPU, и GPU.",
             "text_recommendation": "Анализ работы с ускорителями",
-            "module_recommendation": "accelerator_analysis"
+            "module_recommendation": "gpu-nvprof_basic"
         },
         "rule_mpi_disbalance": {
             "index": 16,
@@ -1242,24 +1242,8 @@
             "text_recommendation": "1) Анализ работы с памятью -> Эффективность»;2) Статический анализ.",
             "module_recommendation": "memory_efficiency,static_analysis"
         },
-        "rule_wrong_partition_gpu": {
-            "index": 34,
-            "name": "rule_wrong_partition_gpu",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Задача запущена в разделе для GPU задач, однако практически не использует графические процессоры.",
-            "comment": "partition in GPU_PARTITIONS AND avg_gpu_load < GPU_LOAD_LOW",
-            "src_file": "rules_integral_based.py",
-            "group": "wrong_partition",
-            "priority": 1,
-            "confidence": 4,
-            "criticalness": 4,
-            "supposition": "Неправильно выбран раздел для задачи.",
-            "text_recommendation": "Рекомендуется сменить раздел.",
-            "module_recommendation": "---"
-        },
         "rule_wrong_partition_io": {
-            "index": 35,
+            "index": 34,
             "name": "rule_wrong_partition_io",
             "is_enabled": 0,
             "public": 0,
@@ -1273,6 +1257,249 @@
             "supposition": "Неправильно выбран раздел для задачи.",
             "text_recommendation": "Рекомендуется сменить раздел.",
             "module_recommendation": "---"
+        },
+        "rule_wrong_partition_gpu": {
+            "index": 35,
+            "name": "rule_wrong_partition_gpu",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Задача запущена в разделе для GPU задач, однако практически не использует графические процессоры.",
+            "comment": "partition in GPU_PARTITIONS AND avg_gpu_load < GPU_LOAD_LOW",
+            "src_file": "rules_integral_based.py",
+            "group": "wrong_partition",
+            "priority": 1,
+            "confidence": 4,
+            "criticalness": 4,
+            "supposition": "Неправильно выбран раздел для задачи.",
+            "text_recommendation": "Рекомендуется сменить раздел.",
+            "module_recommendation": "---"
+        }
+    },
+    "detailed_analysis_types": {
+        "dynamics-jd": {
+            "index": 1,
+            "name": "dynamics-jd",
+            "type_text": "Анализ динамики выполнения приложения",
+            "type_name": "dynamics",
+            "soft_text": "JobDigest",
+            "soft_name": "jd",
+            "manual": "1. JobDigest\n2. ???\n3. Profit!"
+        },
+        "monitoring-dimmon": {
+            "index": 2,
+            "name": "monitoring-dimmon",
+            "type_text": "Более детальный мониторинг",
+            "type_name": "monitoring",
+            "soft_text": "DimMon",
+            "soft_name": "dimmon",
+            "manual": "1. DimMon\n2. ???\n3. Profit!"
+        },
+        "profiling-mpip": {
+            "index": 3,
+            "name": "profiling-mpip",
+            "type_text": "Анализ MPI-программ -> Профилировка",
+            "type_name": "profiling",
+            "soft_text": "mpiP",
+            "soft_name": "mpip",
+            "manual": "1. (Опционально) Скомпилировать программу, указав ключ для сбора дебаг информации (обычно -g).\n2. Запустить программу с предзагрузкой библиотеки анализа \"LD_PRELOAD=/opt/software/mpip/libmpiP.so sbatch ... <стандартная строка запуска>\""
+        },
+        "profiling-scalasca": {
+            "index": 4,
+            "name": "profiling-scalasca",
+            "type_text": "Анализ MPI-программ -> Профилировка",
+            "type_name": "profiling",
+            "soft_text": "Scalasca",
+            "soft_name": "scalasca",
+            "manual": "1. Scalasca\n2. ???\n3. Profit!"
+        },
+        "tracing-vampir": {
+            "index": 5,
+            "name": "tracing-vampir",
+            "type_text": "Анализ MPI-программ -> Трассировка",
+            "type_name": "tracing",
+            "soft_text": "Vampir",
+            "soft_name": "vampir",
+            "manual": "1. Vampir\n2. ???\n3. Profit!"
+        },
+        "tracing-scalasca": {
+            "index": 6,
+            "name": "tracing-scalasca",
+            "type_text": "Анализ MPI-программ -> Трассировка",
+            "type_name": "tracing",
+            "soft_text": "Scalasca",
+            "soft_name": "scalasca",
+            "manual": "1. Scalasca\n2. ???\n3. Profit!"
+        },
+        "tracing-itac": {
+            "index": 7,
+            "name": "tracing-itac",
+            "type_text": "Анализ MPI-программ -> Трассировка",
+            "type_name": "tracing",
+            "soft_text": "ITAC",
+            "soft_name": "itac",
+            "manual": "1. ITAC\n2. ???\n3. Profit!"
+        },
+        "thread-ompp": {
+            "index": 8,
+            "name": "thread-ompp",
+            "type_text": "Анализ многопоточной программы",
+            "type_name": "thread",
+            "soft_text": "ompP",
+            "soft_name": "ompp",
+            "manual": "1. ompP\n2. ???\n3. Profit!"
+        },
+        "thread-vtune": {
+            "index": 9,
+            "name": "thread-vtune",
+            "type_text": "Анализ многопоточной программы",
+            "type_name": "thread",
+            "soft_text": "VTune",
+            "soft_name": "vtune",
+            "manual": "1. Vtune\n2. ???\n3. Profit!"
+        },
+        "mem_eff-valgrind": {
+            "index": 10,
+            "name": "mem_eff-valgrind",
+            "type_text": "Анализ работы с памятью -> Эффективность",
+            "type_name": "mem_eff",
+            "soft_text": "Valgrind",
+            "soft_name": "valgrind",
+            "manual": "1. Valgrind\n2. ???\n3. Profit!"
+        },
+        "mem_eff-vtune": {
+            "index": 11,
+            "name": "mem_eff-vtune",
+            "type_text": "Анализ работы с памятью -> Эффективность",
+            "type_name": "mem_eff",
+            "soft_text": "VTune",
+            "soft_name": "vtune",
+            "manual": "1. Vtune\n2. ???\n3. Profit!"
+        },
+        "mem_corr-valgrind": {
+            "index": 12,
+            "name": "mem_corr-valgrind",
+            "type_text": "Анализ работы с памятью -> Корректность",
+            "type_name": "mem_corr",
+            "soft_text": "Valgrind",
+            "soft_name": "valgrind",
+            "manual": "1. Valgrind\n2. ???\n3. Profit!"
+        },
+        "mem_corr-inspector": {
+            "index": 13,
+            "name": "mem_corr-inspector",
+            "type_text": "Анализ работы с памятью -> Корректность",
+            "type_name": "mem_corr",
+            "soft_text": "Intel Inspector",
+            "soft_name": "inspector",
+            "manual": "1. Inspector\n2. ???\n3. Profit!"
+        },
+        "serial-vtune": {
+            "index": 14,
+            "name": "serial-vtune",
+            "type_text": "Общий анализ последовательных программ",
+            "type_name": "serial",
+            "soft_text": "VTune",
+            "soft_name": "vtune",
+            "manual": "1. Vtune\n2. ???\n3. Profit!"
+        },
+        "io-vtune": {
+            "index": 15,
+            "name": "io-vtune",
+            "type_text": "Анализ ввода/вывода",
+            "type_name": "io",
+            "soft_text": "VTune",
+            "soft_name": "vtune",
+            "manual": "1. Vtune\n2. ???\n3. Profit!"
+        },
+        "network-jd": {
+            "index": 16,
+            "name": "network-jd",
+            "type_text": "Анализ сетевой активности",
+            "type_name": "network",
+            "soft_text": "JobDigest",
+            "soft_name": "jd",
+            "manual": "1. JobDigest\n2. ???\n3. Profit!"
+        },
+        "low_level-papi": {
+            "index": 17,
+            "name": "low_level-papi",
+            "type_text": "Низкоуровневый анализ",
+            "type_name": "low_level",
+            "soft_text": "PAPI",
+            "soft_name": "papi",
+            "manual": "1. PAPI\n2. ???\n3. Profit!"
+        },
+        "low_level-vtune": {
+            "index": 18,
+            "name": "low_level-vtune",
+            "type_text": "Низкоуровневый анализ",
+            "type_name": "low_level",
+            "soft_text": "VTune",
+            "soft_name": "vtune",
+            "manual": "1. Vtune\n2. ???\n3. Profit!"
+        },
+        "gpu-nvprof_basic": {
+            "index": 19,
+            "name": "gpu-nvprof_basic",
+            "type_text": "Анализ работы с ускорителями",
+            "type_name": "gpu",
+            "soft_text": "nvprof",
+            "soft_name": "nvprof_basic",
+            "manual": "1. NSIGHT\n2. ???\n3. Profit!"
+        },
+        "gpu-nvprof": {
+            "index": 20,
+            "name": "gpu-nvprof",
+            "type_text": "Анализ работы с ускорителями",
+            "type_name": "gpu",
+            "soft_text": "nvprof",
+            "soft_name": "nvprof",
+            "manual": "1. NSIGHT\n2. ???\n3. Profit!"
+        },
+        "gpu-nsight": {
+            "index": 21,
+            "name": "gpu-nsight",
+            "type_text": "Анализ работы с ускорителями",
+            "type_name": "gpu",
+            "soft_text": "nsight",
+            "soft_name": "nsight",
+            "manual": "1. NSIGHT\n2. ???\n3. Profit!"
+        },
+        "scalability-???": {
+            "index": 22,
+            "name": "scalability-???",
+            "type_text": "Анализ масштабируемости",
+            "type_name": "scalability",
+            "soft_text": "???",
+            "soft_name": "???",
+            "manual": "1. ???\n2. ???\n3. Profit!"
+        },
+        "series-???": {
+            "index": 23,
+            "name": "series-???",
+            "type_text": "Анализ серии запусков",
+            "type_name": "series",
+            "soft_text": "???",
+            "soft_name": "???",
+            "manual": "1. ???\n2. ???\n3. Profit!"
+        },
+        "prediction-valgrind": {
+            "index": 24,
+            "name": "prediction-valgrind",
+            "type_text": "Прогноз поведения программы",
+            "type_name": "prediction",
+            "soft_text": "Valgrind",
+            "soft_name": "valgrind",
+            "manual": "1. Valgrind\n2. ???\n3. Profit!"
+        },
+        "prediction-threadspotter": {
+            "index": 25,
+            "name": "prediction-threadspotter",
+            "type_text": "Прогноз поведения программы",
+            "type_name": "prediction",
+            "soft_text": "Threadspotter",
+            "soft_name": "threadspotter",
+            "manual": "1. Threadspotter\n2. ???\n3. Profit!"
         }
     },
     "detailed": {
@@ -1358,7 +1585,41 @@
                 "module_recommendation": "mpi_tracing"
             }
         },
-        "profiling-nvprof": {
+        "gpu-nvprof_basic": {
+            "nvprof_slow_host_mem": {
+                "index": 1,
+                "name": "nvprof_slow_host_mem",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Передача данных на ГПУ занимает слишком много времени по сравнению с временем счета на ГПУ.",
+                "comment": "transfer_time > kernel_time TODO показывать самые долгие ядра",
+                "src_file": "nvprof.py",
+                "group": "nvprof",
+                "priority": 1,
+                "confidence": 4,
+                "criticalness": 4,
+                "supposition": "Возможно, текущая реализация не подходит для ГПУ.",
+                "text_recommendation": "Следует уменьшить объем данных, копируемых между хостом и ГПУ.",
+                "module_recommendation": "---"
+            },
+            "nvprof_good_host_mem": {
+                "index": 2,
+                "name": "nvprof_good_host_mem",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Анализ не показал проблем с копированием данных между хостом и ГПУ. ",
+                "comment": "transfer_time > kernel_time TODO показывать самые долгие ядра",
+                "src_file": "nvprof.py",
+                "group": "nvprof",
+                "priority": 1,
+                "confidence": 3,
+                "criticalness": 1,
+                "supposition": "Возможно, анализ вычислений на ГПУ поможет выявить проблемы с эффективостью.",
+                "text_recommendation": "Рекомендуется провести анализ эффективности вычислений на ГПУ.",
+                "module_recommendation": "gpu-nvprof"
+            }
+        },
+        "gpu-nvprof": {
             "nvprof_low_sm_activity": {
                 "index": 1,
                 "name": "nvprof_low_sm_activity",
@@ -1454,9 +1715,25 @@
                 "supposition": "В силу SIMD-природы варпа, в рамках одного варпа все потоки одновременно выполняют одну ветвь. При этом если части потоков требуется выполнение другой ветви, то эти потоки будут простаивать.\nПоэтому в данной программе наличие большого числа ветвлений, по всей видимости, приводит к простою существенной части ГПУ ресурсов.",
                 "text_recommendation": "Следует уменьшить число ветвлений среди потоков одного варпа.",
                 "module_recommendation": "gpu-nsight"
+            },
+            "todo_1": {
+                "index": 7,
+                "name": "todo_1",
+                "is_enabled": 0,
+                "public": 0,
+                "description": ".",
+                "comment": "TODO: Добавить roofline от Ильи",
+                "src_file": ".",
+                "group": ".",
+                "priority": 0,
+                "confidence": 0,
+                "criticalness": 0,
+                "supposition": ".",
+                "text_recommendation": ".",
+                "module_recommendation": "."
             }
         },
-        "mem_eff-valgrind": {
+        "mem_corr-valgrind": {
             "valgrind_mem_errors": {
                 "index": 1,
                 "name": "valgrind_mem_errors",
@@ -1666,7 +1943,7 @@
                 "module_recommendation": "---"
             }
         },
-        "mem_corr-valgrind": {
+        "mem_eff-valgrind": {
             "valgrind_bad_temporal_l1": {
                 "index": 1,
                 "name": "valgrind_bad_temporal_l1",
@@ -1730,234 +2007,103 @@
                 "supposition": "Низкая пространственная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
                 "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
                 "module_recommendation": "mem_eff-vtune"
+            },
+            "valgrind_bad_temporal_l1_func": {
+                "index": 5,
+                "name": "valgrind_bad_temporal_l1_func",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "В программе обнаружена функция с очень низкой временной локальностью обращений в L1.",
+                "comment": "стоит поправить это правило, чтобы оно выдавало не только True/False, но и название таких функций",
+                "src_file": "valgrind_perf.py",
+                "group": "valgrind",
+                "priority": 1,
+                "confidence": 3,
+                "criticalness": 3,
+                "supposition": "Низкая временная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "mem_eff-vtune"
+            },
+            "valgrind_bad_temporal_l2_func": {
+                "index": 6,
+                "name": "valgrind_bad_temporal_l2_func",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "В программе обнаружена функция с очень низкой временной локальностью обращений в L2.",
+                "comment": "стоит поправить это правило, чтобы оно выдавало не только True/False, но и название таких функций",
+                "src_file": "valgrind_perf.py",
+                "group": "valgrind",
+                "priority": 1,
+                "confidence": 3,
+                "criticalness": 3,
+                "supposition": "Низкая временная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "mem_eff-vtune"
+            },
+            "valgrind_bad_spatial_l1_func": {
+                "index": 7,
+                "name": "valgrind_bad_spatial_l1_func",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "В программе обнаружена функция с очень низкой пространственной локальностью обращений в L1.",
+                "comment": "стоит поправить это правило, чтобы оно выдавало не только True/False, но и название таких функций",
+                "src_file": "valgrind_perf.py",
+                "group": "valgrind",
+                "priority": 1,
+                "confidence": 3,
+                "criticalness": 3,
+                "supposition": "Низкая пространственная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "mem_eff-vtune"
+            },
+            "valgrind_bad_spatial_l2_func": {
+                "index": 8,
+                "name": "valgrind_bad_spatial_l2_func",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "В программе обнаружена функция с очень низкой пространственной локальностью обращений в L2.",
+                "comment": "стоит поправить это правило, чтобы оно выдавало не только True/False, но и название таких функций",
+                "src_file": "valgrind_perf.py",
+                "group": "valgrind",
+                "priority": 1,
+                "confidence": 3,
+                "criticalness": 3,
+                "supposition": "Низкая пространственная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "mem_eff-vtune"
+            },
+            "todo_1": {
+                "index": 9,
+                "name": "todo_1",
+                "is_enabled": 0,
+                "public": 0,
+                "description": ".",
+                "comment": "TODO: rule_locality для отдельных функций (которые занимают существенную часть программы)",
+                "src_file": ".",
+                "group": ".",
+                "priority": 0,
+                "confidence": 0,
+                "criticalness": 0,
+                "supposition": ".",
+                "text_recommendation": ".",
+                "module_recommendation": "."
+            },
+            "todo_2": {
+                "index": 10,
+                "name": "todo_2",
+                "is_enabled": 0,
+                "public": 0,
+                "description": ".",
+                "comment": "TODO: L1_MISS_HIGH or LLC_MISS_HIGH для отдельных функций (которые занимают существенную часть программы)",
+                "src_file": ".",
+                "group": ".",
+                "priority": 0,
+                "confidence": 0,
+                "criticalness": 0,
+                "supposition": ".",
+                "text_recommendation": ".",
+                "module_recommendation": "."
             }
-        }
-    },
-    "detailed_analysis_types": {
-        "dynamics-jd": {
-            "index": 1,
-            "name": "dynamics-jd",
-            "type_text": "Анализ динамики выполнения приложения",
-            "type_name": "dynamics",
-            "soft_text": "JobDigest",
-            "soft_name": "jd",
-            "manual": "1. JobDigest\n2. ???\n3. Profit!"
-        },
-        "monitoring-dimmon": {
-            "index": 2,
-            "name": "monitoring-dimmon",
-            "type_text": "Более детальный мониторинг",
-            "type_name": "monitoring",
-            "soft_text": "DimMon",
-            "soft_name": "dimmon",
-            "manual": "1. DimMon\n2. ???\n3. Profit!"
-        },
-        "profiling-mpip": {
-            "index": 3,
-            "name": "profiling-mpip",
-            "type_text": "Анализ MPI-программ -> Профилировка",
-            "type_name": "profiling",
-            "soft_text": "mpiP",
-            "soft_name": "mpip",
-            "manual": "1. (Опционально) Скомпилировать программу, указав ключ для сбора дебаг информации (обычно -g).\n2. Запустить программу с предзагрузкой библиотеки анализа \"LD_PRELOAD=/opt/software/mpip/libmpiP.so sbatch ... <стандартная строка запуска>\""
-        },
-        "profiling-scalasca": {
-            "index": 4,
-            "name": "profiling-scalasca",
-            "type_text": "Анализ MPI-программ -> Профилировка",
-            "type_name": "profiling",
-            "soft_text": "Scalasca",
-            "soft_name": "scalasca",
-            "manual": "1. Scalasca\n2. ???\n3. Profit!"
-        },
-        "tracing-vampir": {
-            "index": 5,
-            "name": "tracing-vampir",
-            "type_text": "Анализ MPI-программ -> Трассировка",
-            "type_name": "tracing",
-            "soft_text": "Vampir",
-            "soft_name": "vampir",
-            "manual": "1. Vampir\n2. ???\n3. Profit!"
-        },
-        "tracing-scalasca": {
-            "index": 6,
-            "name": "tracing-scalasca",
-            "type_text": "Анализ MPI-программ -> Трассировка",
-            "type_name": "tracing",
-            "soft_text": "Scalasca",
-            "soft_name": "scalasca",
-            "manual": "1. Scalasca\n2. ???\n3. Profit!"
-        },
-        "tracing-itac": {
-            "index": 7,
-            "name": "tracing-itac",
-            "type_text": "Анализ MPI-программ -> Трассировка",
-            "type_name": "tracing",
-            "soft_text": "ITAC",
-            "soft_name": "itac",
-            "manual": "1. ITAC\n2. ???\n3. Profit!"
-        },
-        "thread-ompp": {
-            "index": 8,
-            "name": "thread-ompp",
-            "type_text": "Анализ многопоточной программы",
-            "type_name": "thread",
-            "soft_text": "ompP",
-            "soft_name": "ompp",
-            "manual": "1. ompP\n2. ???\n3. Profit!"
-        },
-        "thread-vtune": {
-            "index": 9,
-            "name": "thread-vtune",
-            "type_text": "Анализ многопоточной программы",
-            "type_name": "thread",
-            "soft_text": "VTune",
-            "soft_name": "vtune",
-            "manual": "1. Vtune\n2. ???\n3. Profit!"
-        },
-        "mem_eff-valgrind": {
-            "index": 10,
-            "name": "mem_eff-valgrind",
-            "type_text": "Анализ работы с памятью -> Эффективность",
-            "type_name": "mem_eff",
-            "soft_text": "Valgrind",
-            "soft_name": "valgrind",
-            "manual": "1. Valgrind\n2. ???\n3. Profit!"
-        },
-        "mem_eff-vtune": {
-            "index": 11,
-            "name": "mem_eff-vtune",
-            "type_text": "Анализ работы с памятью -> Эффективность",
-            "type_name": "mem_eff",
-            "soft_text": "VTune",
-            "soft_name": "vtune",
-            "manual": "1. Vtune\n2. ???\n3. Profit!"
-        },
-        "mem_corr-valgrind": {
-            "index": 12,
-            "name": "mem_corr-valgrind",
-            "type_text": "Анализ работы с памятью -> Корректность",
-            "type_name": "mem_corr",
-            "soft_text": "Valgrind",
-            "soft_name": "valgrind",
-            "manual": "1. Valgrind\n2. ???\n3. Profit!"
-        },
-        "mem_corr-inspector": {
-            "index": 13,
-            "name": "mem_corr-inspector",
-            "type_text": "Анализ работы с памятью -> Корректность",
-            "type_name": "mem_corr",
-            "soft_text": "Intel Inspector",
-            "soft_name": "inspector",
-            "manual": "1. Inspector\n2. ???\n3. Profit!"
-        },
-        "serial-vtune": {
-            "index": 14,
-            "name": "serial-vtune",
-            "type_text": "Общий анализ последовательных программ",
-            "type_name": "serial",
-            "soft_text": "VTune",
-            "soft_name": "vtune",
-            "manual": "1. Vtune\n2. ???\n3. Profit!"
-        },
-        "io-vtune": {
-            "index": 15,
-            "name": "io-vtune",
-            "type_text": "Анализ ввода/вывода",
-            "type_name": "io",
-            "soft_text": "VTune",
-            "soft_name": "vtune",
-            "manual": "1. Vtune\n2. ???\n3. Profit!"
-        },
-        "network-jd": {
-            "index": 16,
-            "name": "network-jd",
-            "type_text": "Анализ сетевой активности",
-            "type_name": "network",
-            "soft_text": "JobDigest",
-            "soft_name": "jd",
-            "manual": "1. JobDigest\n2. ???\n3. Profit!"
-        },
-        "low_level-papi": {
-            "index": 17,
-            "name": "low_level-papi",
-            "type_text": "Низкоуровневый анализ",
-            "type_name": "low_level",
-            "soft_text": "PAPI",
-            "soft_name": "papi",
-            "manual": "1. PAPI\n2. ???\n3. Profit!"
-        },
-        "low_level-vtune": {
-            "index": 18,
-            "name": "low_level-vtune",
-            "type_text": "Низкоуровневый анализ",
-            "type_name": "low_level",
-            "soft_text": "VTune",
-            "soft_name": "vtune",
-            "manual": "1. Vtune\n2. ???\n3. Profit!"
-        },
-        "gpu-nvprof": {
-            "index": 19,
-            "name": "gpu-nvprof",
-            "type_text": "Анализ работы с ускорителями",
-            "type_name": "gpu",
-            "soft_text": "nvprof",
-            "soft_name": "nvprof",
-            "manual": "1. NSIGHT\n2. ???\n3. Profit!"
-        },
-        "gpu-nsight": {
-            "index": 20,
-            "name": "gpu-nsight",
-            "type_text": "Анализ работы с ускорителями",
-            "type_name": "gpu",
-            "soft_text": "nsight",
-            "soft_name": "nsight",
-            "manual": "1. NSIGHT\n2. ???\n3. Profit!"
-        },
-        "scalability-???": {
-            "index": 21,
-            "name": "scalability-???",
-            "type_text": "Анализ масштабируемости",
-            "type_name": "scalability",
-            "soft_text": "???",
-            "soft_name": "???",
-            "manual": "1. ???\n2. ???\n3. Profit!"
-        },
-        "series-???": {
-            "index": 22,
-            "name": "series-???",
-            "type_text": "Анализ серии запусков",
-            "type_name": "series",
-            "soft_text": "???",
-            "soft_name": "???",
-            "manual": "1. ???\n2. ???\n3. Profit!"
-        },
-        "prediction-valgrind": {
-            "index": 23,
-            "name": "prediction-valgrind",
-            "type_text": "Прогноз поведения программы",
-            "type_name": "prediction",
-            "soft_text": "Valgrind",
-            "soft_name": "valgrind",
-            "manual": "1. Valgrind\n2. ???\n3. Profit!"
-        },
-        "prediction-threadspotter": {
-            "index": 24,
-            "name": "prediction-threadspotter",
-            "type_text": "Прогноз поведения программы",
-            "type_name": "prediction",
-            "soft_text": "Threadspotter",
-            "soft_name": "threadspotter",
-            "manual": "1. Threadspotter\n2. ???\n3. Profit!"
-        },
-        "profiling-nvprof": {
-            "index": 25,
-            "name": "profiling-nvprof",
-            "type_text": "Анализ GPU-программ -> Профилировка",
-            "type_name": "profiling",
-            "soft_text": "NVProf",
-            "soft_name": "nvprof",
-            "manual": "1. nvprof\n2. ???\n3. Profit!"
         }
     }
 }
