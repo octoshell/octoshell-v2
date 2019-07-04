@@ -1,12 +1,12 @@
 module Octoshell
   class Version
     class <<self
-      RAILS_ENV=Rails.env
-      VER='2.0.2'
-      GIT_VER=`git describe --tags`.chomp
+      RAILS_ENV = Rails.env
+      VER = '2.7'
+      GIT_VER = `git describe --always`.chomp
 
       def ver
-        tag=GIT_VER
+        tag = GIT_VER
         tag=='' ? VER : tag
       end
 

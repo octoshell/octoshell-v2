@@ -17,9 +17,11 @@ gem 'rubyzip', '>= 1.0.0', require: false
 
 gem 'therubyracer' # for execjs
 gem 'i18n-js'
+gem 'groupdate'
 
 group :development do
   gem "annotate"
+  gem "sqlite3"
   gem "letter_opener"
   gem "quiet_assets"
   gem "pry-rails"
@@ -28,6 +30,7 @@ group :development do
   gem "better_errors"
   gem 'rails_db'
   gem 'i18n-tasks', '~> 0.9.21'
+  gem 'minitest-reporters'
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil
@@ -55,6 +58,7 @@ gem "jobstat",        path: 'engines/jobstat'
 gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
 gem "hardware",       path: "engines/hardware"
+gem "api",            path: "engines/api"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"

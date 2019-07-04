@@ -91,6 +91,7 @@ div class="panel panel-default" id="reply"
     div class="raw-ticket-message" = @ticket.message
     = link_to t("actions.show_as_text"), "#", class: "raw-text-opener"
 
+<<<<<<< HEAD
 - unless @ticket.closed? || @ticket.resolved?
   legend = t(".new_reply")
   = bootstrap_form_for @ticket.replies.build, layout: :horizontal, multipart: true do |f|
@@ -109,6 +110,28 @@ div class="panel panel-default" id="reply"
       label for='reply_attachment' = t('.attach')
       input style='display: inline;' type='file' name='reply[attachment]' id='reply_attachment'
 
+||||||| merged common ancestors
+=======
+- unless @ticket.closed? || @ticket.resolved?
+  legend = t(".new_reply")
+  = bootstrap_form_for(@ticket.replies.build, html: {multipart: true}) do |f|
+    / layout: :horizontal,
+    = f.hidden_field :ticket_id
+    = markdown_area f, :message, rows: 5
+    /= f.form_group
+    div class="well"
+      - if current_user.id == @ticket.reporter.id
+        = t(".problem_solved")
+        = link_to Support::Ticket.human_state_event_name(:resolve), ticket_resolve_path(@ticket), method: :put, class: "btn btn-success"
+      | &nbsp; 
+      = t(".if_not")
+      = f.submit t("actions.send")
+      /= f.file_field :attachment, wrapper: {:class => 'help-block'}
+      | &nbsp; 
+      label for='reply_attachment' = t('.attach')
+      input style='display: inline;' type='file' name='reply[attachment]' id='reply_attachment'
+
+>>>>>>> master
 h3 = Support::Ticket.human_attribute_name(:replies)
 
 - if @ticket.replies.any?

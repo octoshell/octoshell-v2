@@ -123,6 +123,7 @@ div.row
 div class="row panel panel-default" id="reply"
   div class="panel-heading"
     h4
+<<<<<<< HEAD
       a href="#collapse1" data-toggle="collapse"
         i class="glyphicon glyphicon-chevron-down"
       | &nbsp; 
@@ -130,6 +131,20 @@ div class="row panel panel-default" id="reply"
       | &nbsp;
       | (#{l @ticket.created_at} / #{l @ticket.updated_at})
   div class="panel-body panel-collapse collapse" id="collapse1"
+||||||| merged common ancestors
+      = Support::Ticket.human_attribute_name(:message)
+      |:&nbsp;
+      | (#{l @ticket.created_at} / #{l @ticket.updated_at})
+  div class="panel-body"
+=======
+      a href="#collapse1" data-toggle="collapse"
+        i class="glyphicon glyphicon-chevron-down"
+        | &nbsp; 
+        = Support::Ticket.human_attribute_name(:message)
+        | &nbsp;
+        | (#{l @ticket.created_at} / #{l @ticket.updated_at})
+  div class="panel-body panel-collapse collapse" id="collapse1"
+>>>>>>> master
     = markdown @ticket.message
     div class="raw-ticket-message" = @ticket.message
     = link_to t("actions.show_as_text"), "#", class: "raw-text-opener"

@@ -3,7 +3,7 @@ FactoryBot.define do
     # name "first_package"
     sequence(:name) { |n| "#{n}_package" }
 
-    description "description"
+    description {"description"}
 
     
   end

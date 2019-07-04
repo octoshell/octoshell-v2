@@ -1,145 +1,127 @@
+---
 ru:
-  support_responsible_for: "Ответственный за:"
+  actions:
+    show_as_text: показать как текст
+    show_empty_fields: Показать пустые поля
+    ticket_accepted: Заявка принята в работу
   activerecord:
-    models:
-      support/ticket: Заявка в поддержку
-      support/topic: Тема заявки
-      support/tag: Тег
-      support/field: Дополнительное поле
-      support/reply: Ответ
-      support/reply_template: Шаблон ответа
-      support/user_topic: Ответственные
-    errors:
-      models:
-        support/ticket:
-          equal_to_template: Измените описание проблемы (сейчас там шаблон)
-    attributes:
+    aasm:
       support/ticket:
+        state:
+          events:
+            close: Закрыть
+            reopen: Заново открыть
+            resolve: Вопрос решён!
+          states:
+            answered_by_reporter: Есть ответ от автора
+            answered_by_support: Есть ответ от поддержки
+            closed: Закрыта
+            pending: Ожидает обработки
+            resolved: Решена
+    attributes:
+      support/field:
+        contains_source_code: Поле будет содержать исходный код (логи)
+        hint: 'Подсказка пользователю: что вводить в качестве значения поля'
         name: Название
-        topic: Тема
-        topic_id: Тема
+        required: Обязательное поле
+        url: Содержимое оформить как ссылку
+      support/reply:
+        attachment: Приложенный файл
+        author: Автор
+        author_id: Автор
+        message: Сообщение
+      support/reply_template:
+        message: Сообщение
+        subject: Заголовок
+      support/tag:
+        name: Название
+      support/ticket:
+        attachment: Приложенный файл
+        cluster: Кластер
+        cluster_id: Кластер
+        created_at: Создана
+        message: Описание проблемы
+        name: Название
+        project: Проект
+        project_id: Проект
+        replies: Переписка
         reporter: Автор
         reporter_id: Автор
         reporter_logins: Логины автора
         responsible: Ответственный
         responsible_id: Ответственный
-        project: Проект
-        project_id: Проект
-        cluster: Кластер
-        cluster_id: Кластер
+        state: Статус
+        subject: Проблема
+        subscriber_ids: Подписчики
+        subscribers: Подписчики
         surety: Поручительство
         surety_id: Поручительство
-        tags: Теги
         tag_ids: Теги
-        subscribers: Подписчики
-        subscriber_ids: Подписчики
-        replies: Переписка
-        state: Статус
-        created_at: Создана
+        tags: Теги
+        topic: Тема
+        topic_id: Тема
         updated_at: Последняя активность
         url: url
-        subject: Проблема
-        message: Описание проблемы
-        attachment: Приложенный файл
       support/topic:
-        template: Шаблон
-        visible_on_create: Видна ли при создании заявки пользователем
+        field_ids: Дополнительные поля
+        fields: Дополнительные поля
         name: Наименование
         parent: Родительская тема
         parent_id: Родительская тема
-        tags: Теги по-умолчанию
         tag_ids: Теги по-умолчанию
-        fields: Дополнительные поля
-        field_ids: Дополнительные поля
-      support/tag:
-        name: Название
-      support/field:
-        name: Название
-        required: Обязательное поле
-        url: Содержимое оформить как ссылку
-        contains_source_code: Поле будет содержать исходный код (логи)
-        hint: "Подсказка пользователю: что вводить в качестве значения поля"
-      support/reply:
-        author: Автор
-        author_id: Автор
-        message: Сообщение
-        attachment: Приложенный файл
-      support/reply_template:
-        subject: Заголовок
-        message: Сообщение
+        tags: Теги по-умолчанию
+        template: Шаблон
+        visible_on_create: Видна ли при создании заявки пользователем
       support/user_topic:
         required: Ответственный по умолчанию
-
-    aasm:
-      support/ticket:
-        state:
-          states:
-            pending: Ожидает обработки
-            answered_by_reporter: Есть ответ от автора
-            answered_by_support: Есть ответ от поддержки
-            resolved: Решена
-            closed: Закрыта
-          events:
-            resolve: Вопрос решён!
-            close: Закрыть
-            reopen: Заново открыть
-
+    errors:
+      models:
+        support/ticket:
+          equal_to_template: Измените описание проблемы (сейчас там шаблон)
+    models:
+      support/field: Дополнительное поле
+      support/reply: Ответ
+      support/reply_template: Шаблон ответа
+      support/tag: Тег
+      support/ticket: Заявка в поддержку
+      support/topic: Тема заявки
+      support/user_topic: Ответственные
   engine_submenu:
-    tickets_list: Список заявок
+    fields: Доп. Поля для заявок
     reply_templates: Шаблоны ответов
     tags: Теги
+    tickets_list: Список заявок
     topics: Темы заявок
-    fields: Доп. Поля для заявок
-
-  actions:
-    show_empty_fields: Показать пустые поля
-    show_as_text: показать как текст
-    ticket_accepted: Заявка принята в работу
-
+  errors:
+    messages:
+      size_too_big: 'файл слишком большой (максимальный размер: %{file_size})'
+      size_too_small: файл слишком малого размера (должен быть как минимум
+        %{file_size})
+      wrong_size: размер файла некорректен (должен быть %{file_size})
   support:
-    mailer:
-      header:
-        hello_known_name: Здравствуйте, %{name}!
-        hello_unknown: Здравствуйте!
-      new_ticket:
-        subject: Новая заявка в техподдержку
-        user_created_request: Пользователь %{full_name} создал заявку в поддержку.
-        ticket: Вопрос
-        topic: Тема
-        show_ticket_details: Перейти к заявке
-      new_ticket_reply:
-        subject: Новый ответ в заявке №%{number}
-        show_request_details: Перейти к заявке
-        remain: Не удаляйте эту строку! Вы можете добавить ответ к этой заявке, записав Ваш ответ после следующей пунктирной линии.
-      reply_error:
-        subject: Не удалось оставить ответ к  заявке №%{number} по причине ошибок
-        show_request_details: Перейти к заявке
-        errors: "Ошибки:"
-
-      answered_tickets_notification:
-        subject: Напоминание о зависших заявках в техподдержке
-      footer:
-        octo_regards: С уважением, Octoshell.
-        maintained_by: Лаборатория Параллельных информационных технологий НИВЦ МГУ.
     admin:
-      tickets:
-        index:
-          title: Список заявок в поддержку
-          new_ticket_on_user: Создать тикет на пользователя
-          project: Проект
-          reporter: Автор
-          created_after: Создан после
-          created_before: Создан до
-          updated_after: Обновлён после
-          updated_before: Обновлён до
-          find_by_content: Найти по содержимому
-        table:
-          no_tickets: Нет тикетов
+      fields:
         edit:
-          title: Редактирование заявки
+          title: Редактирование доп. поля
+        index:
+          new_field: Создать дополнительное поле
+          title: Дополнительные поля для заявок
         new:
-          title: Новая заявка на пользователя
+          title: Создание доп. поля
         show:
+          title: Дополнительное поле
+        table:
+          no_records: Нет дополнительных полей
+      reply_templates:
+        edit:
+          title: Редактирование шаблона
+        index:
+          new_reply_template: Создать шаблон
+          title: Шаблоны ответов
+        new:
+          title: Создание шаблона
+        show:
+<<<<<<< HEAD
           title: Заявка №%{id}
           accept: Принять в работу
           no_replies: Нет сообщений
@@ -151,77 +133,134 @@ ru:
           create_reply_template: Создать шаблон из текущего сообщения
           attach: Приложить файл
 
-      tags:
-        index:
-          title: Теги
-          new_tag: Создать тег
-        new:
-          title: Создание тега
-        edit:
-          title: Редактирование тега
-        show:
-          merge_with: Объединить с
-          help: Выбранный тег будет объединен с текущим.
-          tickets_with_tag: Заявки в поддержку с тегом
-        remote_form:
-          add_tag: Добавить тег
-        table:
-          no_tags: Нет тегов
-      reply_templates:
-        index:
-          title: Шаблоны ответов
-          new_reply_template: Создать шаблон
-        new:
-          title: Создание шаблона
-        edit:
-          title: Редактирование шаблона
-        show:
+||||||| merged common ancestors
+          title: Заявка №%{id}
+          accept: Принять в работу
+          no_replies: Нет сообщений
+          new_reply: Новое сообщение
+          create_reply_template: Создать шаблон из текущего сообщения
+
+          send: Отправить
+          send_and_show_result: Отправить и показать результат
+          send_and_show_next: Отправить и открыть следующий
+
+=======
           title: Шаблон
         table:
           no_templates: Нет шаблонов
-      fields:
-        index:
-          title: Дополнительные поля для заявок
-          new_field: Создать дополнительное поле
-        new:
-          title: Создание доп. поля
+>>>>>>> master
+      tags:
         edit:
-          title: Редактирование доп. поля
-        show:
-          title: Дополнительное поле
-        table:
-          no_records: Нет дополнительных полей
-
-      topics:
+          title: Редактирование тега
         index:
-          title: Темы заявок
-          new_topic: Создать тему
+          new_tag: Создать тег
+          title: Теги
         new:
-          title: Создание темы заявок
+          title: Создание тега
+        remote_form:
+          add_tag: Добавить тег
+        show:
+          help: Выбранный тег будет объединен с текущим.
+          merge_with: Объединить с
+          tickets_with_tag: Заявки в поддержку с тегом
+        table:
+          no_tags: Нет тегов
+      tickets:
+        edit:
+          title: Редактирование заявки
+        index:
+          created_after: Создан после
+          created_before: Создан до
+          find_by_content: Найти по содержимому
+          new_ticket_on_user: Создать тикет на пользователя
+          project: Проект
+          reporter: Автор
+          title: Список заявок в поддержку
+          updated_after: Обновлён после
+          updated_before: Обновлён до
+        new:
+          title: Новая заявка на пользователя
+        show:
+          accept: Принять в работу
+          attach: Приложить файл
+          create_reply_template: Создать шаблон из текущего сообщения
+          new_reply: Новое сообщение
+          no_replies: Нет сообщений
+          send: Отправить
+          send_and_show_next: Отправить и открыть следующий
+          send_and_show_result: Отправить и показать результат
+          tags-etc: Теги/файлы/комментарии
+          title: Заявка №%{id}
+        table:
+          no_tickets: Нет тикетов
+      topics:
         edit:
           title: Редактирование темы заявок
-        show:
-          title: Тема заявок
-          new_subtopic: Новая подтема
         form:
           attach: Прикрепить
-
+        index:
+          new_topic: Создать тему
+          title: Темы заявок
+        new:
+          title: Создание темы заявок
+        show:
+          new_subtopic: Новая подтема
+          title: Тема заявок
+    mailer:
+      answered_tickets_notification:
+        subject: Напоминание о зависших заявках в техподдержке
+      footer:
+        maintained_by: Лаборатория Параллельных информационных технологий
+          НИВЦ МГУ.
+        octo_regards: С уважением, Octoshell.
+      header:
+        hello_known_name: Здравствуйте, %{name}!
+        hello_unknown: Здравствуйте!
+      new_ticket:
+        show_ticket_details: Перейти к заявке
+        subject: Новая заявка в техподдержку
+        ticket: Вопрос
+        topic: Тема
+        user_created_request: Пользователь %{full_name} создал заявку в поддержку.
+      new_ticket_reply:
+        remain: >-
+          Не удаляйте эту строку! Вы можете добавить ответ к этой заявке,
+          записав Ваш ответ после следующей пунктирной линии.
+        show_request_details: Перейти к заявке
+        subject: Новый ответ в заявке №%{number}
+      reply_error:
+        errors: 'Ошибки:'
+        show_request_details: Перейти к заявке
+        subject: Не удалось оставить ответ к  заявке №%{number} по причине
+          ошибок
     tickets:
+      edit:
+        title: Редактирование заявки
       index:
-        title: Поддержка
-        new_ticket: Новая заявка
         created_after: Создан после
         created_before: Создан до
+        new_ticket: Новая заявка
+        title: Поддержка
         updated_after: Обновлен после
         updated_before: Обновлен до
-      table:
-        no_tickets: Нет заявок в поддержку
+      new:
+        title: Новая заявка
       show:
+<<<<<<< HEAD
         title: Заявка №%{id}
         no_replies: Нет ответов
         earlier: "Ранее:"
         problem_solved: "Проблема решена? Нажмите "
+||||||| merged common ancestors
+        title: Заявка №%{id}
+        problem_solved: "Проблема решена? Нажмите "
+=======
+        attach: 'Приложить файл: '
+        earlier: 'Ранее:'
+        if_not: 'Если нет, нажмите '
+>>>>>>> master
         new_reply: Новое сообщение
+<<<<<<< HEAD
         if_not: "Если нет, нажмите "
         attach: "Приложить файл: "
       new:
@@ -234,3 +273,24 @@ ru:
       wrong_size: "размер файла некорректен (должен быть %{file_size})"
       size_too_small: "файл слишком малого размера (должен быть как минимум %{file_size})"
       size_too_big: "файл слишком большой (максимальный размер: %{file_size})"
+||||||| merged common ancestors
+        no_replies: Нет ответов
+        if_not: "Если нет, нажмите "
+      new:
+        title: Новая заявка
+      edit:
+        title: Редактирование заявки
+
+  errors:
+    messages:
+      wrong_size: "размер файла некорректен (должен быть %{file_size})"
+      size_too_small: "файл слишком малого размера (должен быть как минимум %{file_size})"
+      size_too_big: "файл слишком большой (максимальный размер: %{file_size})"
+=======
+        no_replies: Нет ответов
+        problem_solved: 'Проблема решена? Нажмите '
+        title: Заявка №%{id}
+      table:
+        no_tickets: Нет заявок в поддержку
+  support_responsible_for: 'Ответственный за:'
+>>>>>>> master

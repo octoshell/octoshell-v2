@@ -111,7 +111,7 @@ module Pack
 
     def create_ticket
       subject = if new_end_lic
-        I18n.t('tickets_access.subject.new_end_lic', who_name: who_name_with_type, user: created_by.full_name, version_name: version_name)
+        I18n.t('tickets_access.subject.new_lic_req', who_name: who_name_with_type, user: created_by.full_name, version_name: version_name)
       elsif status == 'requested'
         I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.full_name, version_name: version_name)
       end
