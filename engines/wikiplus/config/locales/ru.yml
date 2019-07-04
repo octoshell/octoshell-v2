@@ -1,0 +1,56 @@
+ru:
+  activerecord:
+    models:
+      wikiplus/page: "Страница wikiplus"
+    attributes:
+      wikiplus/page:
+        name: "Название"
+        url: "url"
+        content: "Текст"
+        sortid: "Номер страницы"
+
+  buttons:
+    save: "Сохранить"
+
+  wikiplus:
+    common:
+      edit: "Редактировать!"
+    markdown_help: "Для разметки используется <a href=\"http://daringfireball.net/projects/markdown/syntax\">Markdown</a>"
+    pages:
+      new:
+        title: "Новая страница"
+      edit:
+        title: "Редактирование страницы"
+      index:
+        title: "Справка+ по работе с Octoshell"
+        new_page: "Новая страница"
+        edit: "Редактировать"
+        delete: "Удалить"
+        confirm: "Вы действительно хотите удалить страницу?"
+        no_pages_found: "Ещё не создано ни одной wiki-страницы."
+        name: "Название"
+        link: "Ссылка"
+        createsubpage: ""
+        newsub_page: Создать подстраницу
+        new_image: Загрузить картинку
+        all_images: Все картинки
+      subpageindex:
+        newsub_page: Создать подстраницу
+      _test:
+        title: "Справка+ по работе с Octoshell"
+        new_page: "Новая страница"
+        edit: "Редактировать"
+        delete: "Удалить"
+        confirm: "Вы действительно хотите удалить страницу?"
+        no_pages_found: "Ещё не создано ни одной wiki-страницы."
+        name: "Название"
+        link: "Ссылка"
+    images:
+      index:
+        title: Список картинок
+        name: Название
+        link: Ссылка
+        preview: Предпросмотр
+        delete: Удалить
+      new:
+        title: "Загрузить картинку"

@@ -15,6 +15,7 @@ ru:
     working_area: "Рабочий кабинет"
     admin_area: "Кабинет администратора"
     wiki: "Справка"
+    wikiplus: "Справка +"
   user_submenu:
     projects: "Проекты"
     tickets_warning:

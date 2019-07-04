@@ -1,0 +1,9 @@
+div class="row"
+    /div class="col-xs-8"
+    -if @image.image? 
+      <p> <img src = "#{@image.image.url}" width="200" height="200" alt="" > </p> 
+    end
+    = bootstrap_form_for @image do |f|
+      = f.file_field :image
+      = f.form_group do
+        = f.submit t("buttons.save", default: "Save")
