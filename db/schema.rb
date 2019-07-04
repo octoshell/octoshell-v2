@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190429203614) do
+ActiveRecord::Schema.define(version: 20190704084222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,38 @@ ActiveRecord::Schema.define(version: 20190429203614) do
   end
 
   add_index "announcements", ["created_by_id"], name: "index_announcements_on_created_by_id", using: :btree
+
+  create_table "api_access_keys", force: :cascade do |t|
+    t.string   "key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "api_access_keys_exports", force: :cascade do |t|
+    t.integer "access_key_id"
+    t.integer "export_id"
+  end
+
+  create_table "api_exports", force: :cascade do |t|
+    t.string   "title"
+    t.text     "request"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.text     "text"
+    t.boolean  "safe",       default: true
+  end
+
+  create_table "api_exports_key_parameters", id: false, force: :cascade do |t|
+    t.integer "export_id"
+    t.integer "key_parameter_id"
+  end
+
+  create_table "api_key_parameters", force: :cascade do |t|
+    t.string   "name"
+    t.string   "default"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "category_values", force: :cascade do |t|
     t.integer  "options_category_id"
@@ -331,7 +363,6 @@ ActiveRecord::Schema.define(version: 20190429203614) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "category"
-    t.integer  "type"
   end
 
   add_index "core_notices", ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id", using: :btree
@@ -638,8 +669,8 @@ ActiveRecord::Schema.define(version: 20190429203614) do
   end
 
   create_table "jobstat_jobs", force: :cascade do |t|
-    t.string   "cluster",      limit: 32
-    t.integer  "drms_job_id",  limit: 8
+    t.string   "cluster",      limit: 32,   null: false
+    t.integer  "drms_job_id",  limit: 8,    null: false
     t.integer  "drms_task_id", limit: 8
     t.string   "login",        limit: 32
     t.string   "partition",    limit: 32
@@ -656,6 +687,7 @@ ActiveRecord::Schema.define(version: 20190429203614) do
     t.text     "nodelist"
   end
 
+  add_index "jobstat_jobs", ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true, using: :btree
   add_index "jobstat_jobs", ["end_time"], name: "index_jobstat_jobs_on_end_time", using: :btree
   add_index "jobstat_jobs", ["login"], name: "index_jobstat_jobs_on_login", using: :btree
   add_index "jobstat_jobs", ["partition"], name: "index_jobstat_jobs_on_partition", using: :btree
@@ -1143,77 +1175,7 @@ ActiveRecord::Schema.define(version: 20190429203614) do
     t.text     "content_en"
   end
 
-  create_table "wiki_tasks", force: :cascade do |t|
-    t.string   "account"
-    t.integer  "task_id"
-    t.float    "cores_hours"
-    t.string   "workdir"
-    t.text     "nodelist"
-    t.float    "timelimit"
-    t.string   "partition"
-    t.integer  "num_cores"
-    t.datetime "t_start"
-    t.integer  "num_nodes"
-    t.string   "cluster"
-    t.string   "state"
-    t.datetime "t_submit"
-    t.text     "command"
-    t.float    "duration"
-    t.datetime "t_end"
-    t.float    "max_cpu_iowait"
-    t.float    "max_ib_rcv_pckts"
-    t.float    "max_cpu_soft_irq"
-    t.float    "max_cpu_flops"
-    t.float    "max_cpu_idle"
-    t.float    "max_cpu_perf_l1d_repl"
-    t.float    "max_cpu_user"
-    t.float    "max_llc_miss"
-    t.float    "max_ib_xmit_pckts"
-    t.float    "max_mem_store"
-    t.float    "max_loadavg"
-    t.float    "max_ib_xmit_data"
-    t.float    "max_cpu_irq"
-    t.float    "max_cpu_nice"
-    t.float    "max_ib_rcv_data"
-    t.float    "max_cpu_system"
-    t.float    "max_mem_load"
-    t.float    "avg_cpu_iowait"
-    t.float    "avg_ib_rcv_pckts"
-    t.float    "avg_cpu_soft_irq"
-    t.float    "avg_cpu_idle"
-    t.float    "avg_cpu_perf_l1d_repl"
-    t.float    "avg_cpu_user"
-    t.float    "avg_llc_miss"
-    t.float    "avg_ib_xmit_pckts"
-    t.float    "avg_cpu_flops"
-    t.float    "avg_loadavg"
-    t.float    "avg_ib_xmit_data"
-    t.float    "avg_cpu_irq"
-    t.float    "avg_mem_store"
-    t.float    "avg_cpu_nice"
-    t.float    "avg_ib_rcv_data"
-    t.float    "avg_cpu_system"
-    t.float    "avg_mem_load"
-    t.float    "min_cpu_iowait"
-    t.float    "min_mem_store"
-    t.float    "min_cpu_soft_irq"
-    t.float    "min_cpu_idle"
-    t.float    "min_ib_rcv_pckts"
-    t.float    "min_cpu_flops"
-    t.float    "min_cpu_perf_l1d_repl"
-    t.float    "min_cpu_user"
-    t.float    "min_llc_miss"
-    t.float    "min_ib_xmit_pckts"
-    t.float    "min_cpu_system"
-    t.float    "min_loadavg"
-    t.float    "min_ib_xmit_data"
-    t.float    "min_cpu_irq"
-    t.float    "min_cpu_nice"
-    t.float    "min_ib_rcv_data"
-    t.float    "min_mem_load"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-  end
+  add_index "wiki_pages", ["url"], name: "index_wiki_pages_on_url", unique: true, using: :btree
 
   create_table "wikiplus_images", force: :cascade do |t|
     t.string   "image"

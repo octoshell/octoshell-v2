@@ -3,19 +3,19 @@ module Octoshell
     class <<self
       RAILS_ENV=Rails.env
       VER='2.0.2'
-      GIT_VER=`git describe --always`
+      GIT_VER=`git describe --tags`.chomp
 
       def ver
-        tag=`git tag`.chomp
+        tag=GIT_VER
         tag=='' ? VER : tag
       end
 
       def full_ver
-        "#{ver} (#{RAILS_ENV}) #{GIT_VER}"
+        "#{ver} (#{RAILS_ENV})"
       end
 
       def short_ver
-        "#{ver} #{GIT_VER}"
+        ver
       end
 
       def print_ver
