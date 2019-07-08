@@ -140,6 +140,7 @@ ru:
   errors:
     format: "! '%{attribute} %{message}'"
     messages:
+      extension_whitelist_error: Вы загрузили файл неправильного формата 
       invalid_transition: 'Невозможно совершить действие "%{event}". "%{model}" в состоянии "%{state}".'
       accepted: "нужно подтвердить"
       blank: "не может быть пустым"

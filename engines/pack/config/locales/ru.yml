@@ -97,8 +97,8 @@ ru:
       edit_access: Редактировать доступ
     tickets_access:
       subject:
-        requested: "Заявка от %{user} на %{who_name}"
-        new_end_lic: "Заявка на продление от %{user} на %{who_name}"
+        requested: "Заявка от %{user} на %{version_name} для проекта %{who_name}"
+        new_end_lic: "Заявка на продление %{version_name} от %{user} для проекта %{who_name}"
 
     exception_messages:
       not_found: Запись не найдена. Скорее всего, она была удалена.

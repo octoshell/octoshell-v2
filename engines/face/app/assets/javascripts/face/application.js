@@ -9,4 +9,4 @@
 //= require jquery-fileupload/basic
 //= require_directory ./dep
 //= require_directory .
-
+//= require jquery-ui/widgets/autocomplete

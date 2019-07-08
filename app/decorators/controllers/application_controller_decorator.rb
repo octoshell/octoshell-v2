@@ -211,6 +211,9 @@ ActionController::Base.class_eval do
                                      url: main_app.admin_options_categories_path,
                                      regexp: /admin\/options/
                                   ))  if may? :manage, :users
+    menu.add_item(Face::MenuItem.new(name: t("admin_submenu.reports_engine"),
+                                     url: main_app.reports_path,
+                                  ))  if may? :manage, :reports_engine
 
 
     menu.items

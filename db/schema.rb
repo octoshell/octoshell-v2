@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_25_111222) do
+ActiveRecord::Schema.define(version: 2019_03_21_105523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,15 @@ ActiveRecord::Schema.define(version: 2019_01_25_111222) do
     t.string "title_en"
     t.text "body_en"
     t.index ["created_by_id"], name: "index_announcements_on_created_by_id"
+  end
+
+  create_table "articles", force: :cascade do |t|
+    t.integer "person_id"
+    t.string "title"
+    t.text "subject_header"
+    t.text "body"
+    t.string "type"
+    t.boolean "published", default: true
   end
 
   create_table "category_values", id: :serial, force: :cascade do |t|
@@ -497,6 +506,11 @@ ActiveRecord::Schema.define(version: 2019_01_25_111222) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "friends", force: :cascade do |t|
+    t.string "name"
+    t.integer "person_id"
+  end
+
   create_table "groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "weight"
@@ -552,6 +566,17 @@ ActiveRecord::Schema.define(version: 2019_01_25_111222) do
     t.integer "to_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "hobbies", force: :cascade do |t|
+    t.integer "article_id"
+    t.integer "person_id"
+    t.string "name"
+  end
+
+  create_table "hobbies_people", id: false, force: :cascade do |t|
+    t.bigint "person_id", null: false
+    t.bigint "hobby_id", null: false
   end
 
   create_table "jobstat_data_types", id: :serial, force: :cascade do |t|
@@ -743,6 +768,10 @@ ActiveRecord::Schema.define(version: 2019_01_25_111222) do
     t.index ["package_id"], name: "index_pack_versions_on_package_id"
   end
 
+  create_table "people", force: :cascade do |t|
+    t.string "name"
+  end
+
   create_table "profiles", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "first_name"
@@ -759,6 +788,15 @@ ActiveRecord::Schema.define(version: 2019_01_25_111222) do
     t.index ["project_id"], name: "index_sessions_projects_in_sessions_on_project_id"
     t.index ["session_id", "project_id"], name: "i_on_project_and_sessions_ids", unique: true
     t.index ["session_id"], name: "index_sessions_projects_in_sessions_on_session_id"
+  end
+
+  create_table "sessions_report_materials", id: :serial, force: :cascade do |t|
+    t.string "materials"
+    t.string "materials_content_type"
+    t.integer "materials_file_size"
+    t.integer "report_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sessions_report_replies", id: :serial, force: :cascade do |t|

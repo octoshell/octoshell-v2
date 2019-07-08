@@ -44,33 +44,55 @@ module Jobstat
       result
     end
 
-    def get_owned_projects(user)
+    def get_owned_projects(user,extended_results=false)
       # get hash with projects and logins for user
       # include all logins from owned projects
 
       result = Hash.new {|hash, key| hash[key] = []}
+      is_admin = User.superadmins.include?(user)
+      is_expert = Sessions::Report.all.map{|x| x.expert_id}.include?(user.id)
 
-      user.owned_projects.each do |project|
-        project.members.each do |member|
-          result[project].push(member.login)
+      if extended_results
+        if is_admin
+          Core::Project.all.each do |project|
+            project.members.each do |member|
+              result[project].push(member.login)
+            end
+          end
+        elsif is_expert
+          ids = expert_group.map{|x| x.project_id}
+          Core::Project.where(id: ids).each do |project|
+            project.members.each do |member|
+              result[project].push(member.login)
+            end
+          end
         end
+      else
+        user.owned_projects.each do |project|
+          project.members.each do |member|
+            result[project].push(member.login)
+          end
+        end  
       end
-
       result
     end
 
-    def get_owned_logins
-      owned_projects = get_owned_projects(current_user)
+    def get_all_logins
+      return (get_owned_logins.flatten + get_involved_logins.flatten).uniq
+    end
+
+    def get_owned_logins extended_results=false
+      owned_projects = get_owned_projects(current_user,extended_results)
       owned_projects.map {|_, value| value}.uniq
       #FIXME! Just for test
-      ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
+      # ["vadim", "shvets", "vurdizm", "wasabiko", "ivanov", "afanasievily_251892", "gumerov_219059"]
     end
 
     def get_involved_logins
       involved_projects = get_involved_projects(current_user)
       involved_projects.values.uniq
       #FIXME! Just for test
-      ["vadim"]
+      #["vadim"]
     end
 
     def get_all_projects
@@ -104,20 +126,6 @@ module Jobstat
       }
       {list: list, options: {selected: selected, disabled: dis}}
     end
-
-    # def get_select_options_by_projects projects, selected=[]
-    #   list=[]
-    #   dis=[]
-    #   projects.each{|proj,logins|
-    #     p="---- #{shorten(proj.title,32)} ----"
-    #     list << p
-    #     dis << p
-    #     list.concat(logins)
-    #   }
-    #   [list, {selected: selected, disabled: dis}]
-    #   #debug [["-- RNF --","vadim", "shvets", "-- Worlid domination --", "vurdizm", "wasabiko", "ivanov", "-- Postgraduate play --", "afanasievily_251892", "gumerov_219059"], selected: selected, disabled: ["-- RNF --","-- Worlid domination --","-- Postgraduate play --"]]
-    #   #options_for_select(list, selected: selected, disabled: dis)
-    # end
 
     def shorten name, len
       l=name.length

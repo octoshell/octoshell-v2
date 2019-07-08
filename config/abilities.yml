@@ -68,3 +68,5 @@ hardware:
   - manage
 announcements:
   - manage
+reports_engine:
+  - manage

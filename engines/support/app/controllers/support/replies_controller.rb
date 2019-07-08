@@ -3,8 +3,11 @@ module Support
     before_action :require_login
 
     def create
-      @reply = Reply.new(reply_params)
+      p=reply_params
+
+      @reply = Reply.new(p)
       @reply.author = current_user
+
       if current_user.ticket_ids.include?(@reply.ticket_id) && @reply.save
         redirect_to @reply.ticket
       else

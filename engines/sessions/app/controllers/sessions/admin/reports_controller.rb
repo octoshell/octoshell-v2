@@ -3,7 +3,10 @@ module Sessions
     before_action { authorize! :manage, :reports }
 
     def index
-      @search = Report.search(params[:q] || default_index_params)
+      @search = Report.includes([{ project: :research_areas },
+                                 { author: :profile },
+                                 { expert: :profile }, :session])
+                      .search(params[:q] || default_index_params)
       @reports = if (User.superadmins | User.reregistrators).include? current_user
                    @search.result(distinct: true)
                  elsif User.experts.include? current_user
@@ -44,7 +47,7 @@ module Sessions
     def assess
       @report = Report.find(params[:report_id])
       if current_user == @report.expert
-        @report.assign_attributes(report_params[:report])
+        @report.assign_attributes(report_params[:report] || {})
         @report.assess!
         redirect_to [:admin, @report]
       elsif @report.expert.nil? && Sessions.user_class.experts.include?(current_user)
