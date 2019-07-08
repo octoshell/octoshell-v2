@@ -17,9 +17,8 @@ div class="page-header"
     = f.select :reports_state_in, Sessions::Report.human_state_names_with_original, { label: t('.has_rereg_report_statuses')}, include_blank: true,  multiple: true
     = f.select :surveys_state_in, Sessions::UserSurvey.human_state_names_with_original, { label: t('.has_survey_statuses')}, include_blank: true,  multiple: true
     = f.select :access_state_in, User.human_access_state_names, { label: t('.access_state')}, include_blank: true ,  multiple: true
-    /= f.form_group :cluster_access_state_present, label: { text: t(".cluster_access_state_present") } do
-    / = f.check_box :cluster_access_state_present, label: '      '
-    = f.check_box :cluster_access_state_present, label: t(".cluster_access_state_present")
+    = f.form_group :cluster_access_state_present do
+      = f.check_box :cluster_access_state_present, label: t(".cluster_access_state_present")
 
   = f.form_group do
     = display_all_tag

@@ -67,12 +67,12 @@ gem "whenever"
 
 group :test do
   gem "letter_opener"
-  #gem "rspec-rails"
+  gem "rspec-rails"
   gem "activerecord-import", ">= 0.2.0"
   gem 'poltergeist'
   gem "rspec-sidekiq"
   gem 'shoulda-matchers', '~> 4.0'
-  gem "test_after_commit"
+  # gem "test_after_commit"
   gem "database_cleaner"
   gem "factory_bot_rails"
   # gem "factory_girl-seeds"

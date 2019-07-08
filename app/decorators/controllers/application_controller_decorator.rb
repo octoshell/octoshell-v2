@@ -153,7 +153,7 @@ ActionController::Base.class_eval do
                                       regexp: /organizations/})) if may? :manage, :organizations
     menu.add_item(Face::MenuItem.new({name: t("admin_submenu.clusters"),
                                       url: core.admin_clusters_path,
-                                      regexp: /clusters/})) if may? :manage, :clusters
+                                      regexp: %r{admin/clusters/} })) if may? :manage, :clusters
     menu.add_item(Face::MenuItem.new({name: t("admin_submenu.cluster_logs"),
                                       url: core.admin_cluster_logs_path,
                                       regexp: /cluster_logs/})) if may? :manage, :clusters
@@ -168,7 +168,7 @@ ActionController::Base.class_eval do
                                       regexp: /organization_kinds/})) if may? :manage, :organizations
     menu.add_item(Face::MenuItem.new({name: t("admin_submenu.groups"),
                                       url: main_app.admin_groups_path,
-                                      regexp: /groups/})) if may? :manage, :groups
+                                      regexp: %r{admin/groups/} })) if may? :manage, :groups
     menu.add_item(Face::MenuItem.new({name: t("admin_submenu.report_submit_denial_reasons"),
                                       url: sessions.admin_report_submit_denial_reasons_path,
                                       regexp: /report_submit_denial_reasons/})) if may? :manage, :sessions
