@@ -27,7 +27,7 @@ module Sessions
     belongs_to :session
     belongs_to :user, class_name: Sessions.user_class, inverse_of: :surveys
     belongs_to :survey
-    belongs_to :survey_field
+    # belongs_to :survey_field
     belongs_to :project, class_name: "Core::Project"
 
     has_many :values, class_name: "Sessions::SurveyValue", dependent: :destroy

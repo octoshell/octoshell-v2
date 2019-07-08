@@ -57,6 +57,7 @@ gem "jobstat",        path: 'engines/jobstat'
 gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
 gem "hardware",       path: "engines/hardware"
+gem "reports",       path: "engines/reports"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"
