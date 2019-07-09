@@ -21,6 +21,9 @@
 
 module Core
   class Organization < ActiveRecord::Base
+
+    has_paper_trail
+
     remove_spaces :name
     MERGED_ASSOC = [Employment, Member, Project, SuretyMember].freeze
     include MergeOrganzations

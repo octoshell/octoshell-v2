@@ -13,6 +13,9 @@
 
 module Hardware
   class Kind < ActiveRecord::Base
+
+    has_paper_trail
+
     translates :name, :description, fallback: :any
     validates_translated :name, presence: true
     validates :name_ru, uniqueness: true, if: proc { |k| k.name_ru.present? }

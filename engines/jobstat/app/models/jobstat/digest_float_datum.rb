@@ -17,5 +17,8 @@
 
 module Jobstat
   class DigestFloatDatum < ActiveRecord::Base
+
+    has_paper_trail
+
   end
 end

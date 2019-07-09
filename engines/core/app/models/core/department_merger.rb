@@ -12,6 +12,9 @@
 
 module Core
   class DepartmentMerger < ActiveRecord::Base
+
+    has_paper_trail
+
     belongs_to :source_department,
                class_name: 'Core::OrganizationDepartment',
                foreign_key: :source_department_id

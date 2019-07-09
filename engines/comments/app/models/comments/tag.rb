@@ -8,6 +8,9 @@
 
 module Comments
   class Tag < ActiveRecord::Base
+
+    has_paper_trail
+
     validates :name, presence: true
     has_many :taggings, inverse_of: :tag
     def self.allowed_names(user_id)

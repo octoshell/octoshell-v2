@@ -1,0 +1,103 @@
+<%= form_for(form_for_object_from_param(:filter),
+             method: :get,
+             url: "journal",
+             html: { class: 'form' }) do |f| %>
+
+  <div class="form-group" style="display: inline-block; width: 100%">
+     <%=  f.label("Тип события") %><br>
+     <%= f.collection_select :item_type, @item_types, :first, :second, { include_blank: true}, multiple: true %>
+  </div>
+  <br>
+  <div class="form-group" style="display: inline-block;">
+     <%= f.label("Описание события", class: 'control-label') %><br>
+     <%= f.collection_select :event, @events, :first, :second, { include_blank: true}, multiple: true %>
+  </div>
+  <br>
+  <div class="form-group" style="display: inline-block;">
+     <%= f.label("Инициатор", class: 'control-label') %><br>
+     <%= f.collection_select :whodunnit, @emails, :first, :second, { include_blank: true}, multiple: true %>
+  </div>
+  <br>
+  <div class="form-group" style="display: inline-block;">
+     <%= f.label("Изменения", class: 'control-label') %>
+     <%= f.text_field(:object_changes, class: 'form-control') %>
+  </div>
+  <br>
+  <div class="form-group">
+     <%= f.label("Время от") %><br>
+     <%= f.date_field(:time_from_date, value: @time_from_date) %>
+     <%= f.time_field(:time_from_hours, value: @time_from_hours) %>
+  </div>
+  <br>
+  <div class="form-group">
+     <%= f.label("Время до") %><br>
+     <%= f.date_field(:time_to_date, value: @time_to_date) %>
+     <%= f.time_field(:time_to_hours, value: @time_to_hours) %>
+  </div>
+  <br>
+  <div class="form-group">
+     <%= f.label("Группа пользователей", class: 'control-label') %><br>
+     <%= f.collection_select :group_id, @user_groups, :first, :second, { include_blank: true}, multiple: true %>
+  </div>
+
+  <div class="text-left">
+    <%= content_tag(:button,
+                    'Поиск',
+                    type: 'submit',
+                    class: 'btn btn-info') %>
+    <a href="journal?filter[time_from_date]=<%= @lastweek%>" class='btn btn-info'>За неделю</a>
+    <a href="journal?filter[time_from_date]=<%= @lastmonth%>" class='btn btn-info'>За месяц</a>
+  </div>
+<% end %>
+<br>
+<style type="text/css">
+   TABLE {
+    width: auto;
+    border-collapse: collapse;
+   }
+   TD, TH {
+    padding: 3px;
+    text-align: center;
+    border: 1px solid black;
+   }
+</style>
+<table id="versions">
+   <tr>
+    <th>ID</th>
+    <th>Тип события</th>
+    <th>Описание события</th>
+    <th>Инициатор</th>
+    <th>Изменения</th>
+    <th>Время</th>
+   </tr>
+   <% @table.each do |record| %>
+        <tr style= "font-weight:<%= get_if_bold(record.id) %>;color:<%= get_chain_color(record.id)%>" >
+            <td><%= record.id %></td>
+            <td><%= record.item_type %></td>
+            <td><%= record.event %></td>
+            <td><%= record.whodunnit ? User.find(record.whodunnit).email : "Система" %></td>
+            <td><%= record.object_changes %></td>
+            <td><%= record.created_at %></td>
+        </tr>
+    <% end %>
+</table>
+<script>
+function onRowClick(tableId, callback) {
+  var table = document.getElementById(tableId),
+      rows = table.getElementsByTagName("tr"),
+      i;
+  for (i = 0; i < rows.length; i++) {
+      table.rows[i].onclick = function (row) {
+          return function () {
+              callback(row);
+          };
+      }(table.rows[i]);
+  }
+};
+ 
+onRowClick("versions", function (row){
+    var id = row.getElementsByTagName("td")[0].innerHTML
+
+    window.location.href = 'journal?chain[id]=' + id;
+});
+</script>

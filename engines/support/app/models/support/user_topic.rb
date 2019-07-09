@@ -12,6 +12,9 @@
 
 module Support
   class UserTopic < ActiveRecord::Base
+
+    has_paper_trail
+
     belongs_to :topic
     belongs_to :user
     validates :topic, :user, presence: true

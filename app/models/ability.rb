@@ -17,6 +17,9 @@
 
 # Модель доступа к действию для группы пользователей
 class Ability < ActiveRecord::Base
+
+  has_paper_trail
+
   Definition = Struct.new(:action, :subject)
 
   belongs_to :group

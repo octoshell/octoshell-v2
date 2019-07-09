@@ -1,4 +1,7 @@
 class Synchronizer
+
+  has_paper_trail
+
   attr_reader :access, :connection_to_cluster, :project, :cluster
 
   def initialize(access)

@@ -34,6 +34,8 @@
 module Sessions
   class Report < ActiveRecord::Base
 
+    has_paper_trail
+
     POINT_RANGE = (0..5)
     belongs_to :session
     belongs_to :project, class_name: "Core::Project", foreign_key: :project_id

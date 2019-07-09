@@ -28,6 +28,9 @@
 # Карточка проекта
 module Core
   class ProjectCard < ActiveRecord::Base
+
+    has_paper_trail
+
     RU_FIELDS = [:name, :driver, :strategy, :objective, :impact, :usage]
     EN_FIELDS = [:en_name, :en_driver, :en_strategy, :en_objective, :en_impact,
       :en_usage]

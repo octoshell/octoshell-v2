@@ -11,6 +11,9 @@
 
 module Pack
   class OptionsCategory < ActiveRecord::Base
+
+    has_paper_trail
+
     has_many :category_values, inverse_of: :options_category, dependent: :destroy
     has_many :strict_version_options, inverse_of: :options_category,
                                       class_name: VersionOption,

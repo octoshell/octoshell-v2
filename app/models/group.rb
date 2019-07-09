@@ -12,6 +12,9 @@
 
 # Модель группы пользователей
 class Group < ActiveRecord::Base
+
+  has_paper_trail
+
   GroupStrata = Struct.new(:name, :weight)
   SUPERADMINS     = GroupStrata.new( "superadmins",     0 )
   FAULTS_MANAGERS = GroupStrata.new( "faults_managers", 1 )

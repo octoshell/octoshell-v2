@@ -17,6 +17,9 @@
 
 module Comments
   class ContextGroup < ActiveRecord::Base
+
+    has_paper_trail
+
     belongs_to :context
     belongs_to :group
     enum type_ab: %i[read_ab update_ab create_ab]

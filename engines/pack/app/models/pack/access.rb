@@ -24,6 +24,9 @@
 
 module Pack
   class Access < ActiveRecord::Base
+
+    has_paper_trail
+
     include AASM
     include AccessValidator
     include AdminAccessUpdate

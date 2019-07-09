@@ -21,6 +21,9 @@
 # Позиция в организации
 module Core
   class EmploymentPosition < ActiveRecord::Base
+
+    has_paper_trail
+
     belongs_to :employment, inverse_of: :positions
     belongs_to :employment_position_name
     belongs_to :employment_position_field, foreign_key: :field_id

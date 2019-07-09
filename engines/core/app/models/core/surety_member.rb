@@ -17,6 +17,9 @@
 
 module Core
   class SuretyMember < ActiveRecord::Base
+
+    has_paper_trail
+
     belongs_to :user, class_name: Core.user_class
     belongs_to :surety
     belongs_to :organization

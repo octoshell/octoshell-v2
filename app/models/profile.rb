@@ -13,6 +13,9 @@
 #
 
 class Profile < ActiveRecord::Base
+
+  has_paper_trail
+
   belongs_to :user, class_name: User,
                     inverse_of: :profile
 

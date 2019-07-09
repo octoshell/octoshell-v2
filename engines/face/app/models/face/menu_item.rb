@@ -1,5 +1,6 @@
 module Face
   class MenuItem
+
     include ActiveModel::Model
 
     attr_accessor :name, :url, :regexp

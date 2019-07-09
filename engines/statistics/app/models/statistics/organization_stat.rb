@@ -11,6 +11,9 @@
 
 module Statistics
   class OrganizationStat < ActiveRecord::Base
+
+    has_paper_trail
+
     KINDS = [ :by_kind,
               :by_city ].freeze
 

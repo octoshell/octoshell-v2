@@ -18,6 +18,8 @@
 module Core
   class Credential < ActiveRecord::Base
 
+    has_paper_trail
+
     belongs_to :user, class_name: Core.user_class,
                       foreign_key: :user_id, inverse_of: :credentials
 

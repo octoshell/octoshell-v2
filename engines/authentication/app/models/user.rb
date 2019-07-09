@@ -34,6 +34,9 @@
 #
 
 class User < ActiveRecord::Base
+
+  has_paper_trail
+
   authenticates_with_sorcery!
   validates :password, confirmation: true, length: { minimum: 6 }, on: :create
   validates :password, confirmation: true, length: { minimum: 6 }, on: :update, if: :password?

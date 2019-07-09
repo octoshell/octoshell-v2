@@ -12,6 +12,9 @@
 # Тег тикета
 module Support
   class Tag < ActiveRecord::Base
+
+    has_paper_trail
+
     attr_accessor :merge_id
 
     translates :name

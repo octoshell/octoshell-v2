@@ -16,5 +16,8 @@
 
 module Jobstat
   class StringDatum < ActiveRecord::Base
+
+    has_paper_trail
+
   end
 end

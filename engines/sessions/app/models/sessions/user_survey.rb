@@ -24,6 +24,8 @@
 module Sessions
   class UserSurvey < ActiveRecord::Base
 
+    has_paper_trail
+
     belongs_to :session
     belongs_to :user, class_name: Sessions.user_class, inverse_of: :surveys
     belongs_to :survey

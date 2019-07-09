@@ -17,6 +17,9 @@
 # Ответ на отчет
 module Sessions
   class ReportReply < ActiveRecord::Base
+
+    has_paper_trail
+
     belongs_to :report
     belongs_to :user, class_name: Sessions.user_class
 

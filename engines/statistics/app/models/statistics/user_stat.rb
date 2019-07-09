@@ -11,6 +11,9 @@
 
 module Statistics
   class UserStat < ActiveRecord::Base
+
+    has_paper_trail
+
     KINDS = [ :by_organization_kind,
               :by_organization_city,
               :by_msu_subdivisions ]

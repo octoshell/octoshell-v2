@@ -9,6 +9,9 @@
 
 module Jobstat
   class JobMailFilter < ActiveRecord::Base
+
+    has_paper_trail
+
     # condition
 
     belongs_to :user

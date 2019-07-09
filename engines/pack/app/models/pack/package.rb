@@ -15,6 +15,8 @@
 module Pack
   class Package < ActiveRecord::Base
 
+    has_paper_trail
+
     translates :description, :name
 
     self.locking_column = :lock_version

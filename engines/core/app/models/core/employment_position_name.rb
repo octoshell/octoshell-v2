@@ -16,6 +16,9 @@
 # Название позиции в организации
 module Core
   class EmploymentPositionName < ActiveRecord::Base
+
+    has_paper_trail
+
     validates "name_#{I18n.default_locale}", presence: true, uniqueness: true
 
     translates :name

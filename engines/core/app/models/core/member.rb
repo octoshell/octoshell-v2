@@ -27,6 +27,8 @@
 module Core
   class Member < ActiveRecord::Base
 
+    has_paper_trail
+
     belongs_to :user, class_name: Core.user_class, foreign_key: :user_id, inverse_of: :accounts
     belongs_to :project, inverse_of: :members
     belongs_to :organization
