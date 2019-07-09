@@ -16,6 +16,9 @@
 #
 
 class Option < ActiveRecord::Base
+
+  has_paper_trail
+
   belongs_to :owner, inverse_of: :options, polymorphic: true
   belongs_to :category_value, inverse_of: :options
   belongs_to :options_category, inverse_of: :strict_options

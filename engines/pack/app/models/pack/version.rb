@@ -26,6 +26,9 @@
 
 module Pack
   class Version < ActiveRecord::Base
+
+    has_paper_trail
+
     include AASM
     attr_accessor :user_accesses
 

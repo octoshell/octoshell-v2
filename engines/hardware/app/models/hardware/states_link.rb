@@ -11,6 +11,9 @@
 
 module Hardware
   class StatesLink < ActiveRecord::Base
+
+    has_paper_trail
+
     belongs_to :from, class_name: "State"
     belongs_to :to, class_name: "State"
     validate do

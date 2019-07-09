@@ -13,6 +13,9 @@
 #
 
 class AnnouncementRecipient < ActiveRecord::Base
+
+  has_paper_trail
+
   belongs_to :user, class_name: "User"
   belongs_to :announcement
 end

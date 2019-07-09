@@ -22,6 +22,9 @@
 
 module Support
   class Reply < ActiveRecord::Base
+
+    has_paper_trail
+
     mount_uploader :attachment, AttachmentUploader
     #mount_uploader :export_attachment, ReplyAttachmentUploader, mount_on: :attachment_file_name
 

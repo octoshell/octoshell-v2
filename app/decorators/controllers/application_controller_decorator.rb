@@ -212,6 +212,8 @@ ActionController::Base.class_eval do
                                      regexp: /admin\/options/
                                   ))  if may? :manage, :users
 
+    menu.add_item(Face::MenuItem.new(name: "Журнал",
+                                      url: "/core/admin/journal")) if may? :manage, :users
 
     menu.items
   end

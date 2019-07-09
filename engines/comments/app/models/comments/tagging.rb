@@ -21,6 +21,9 @@
 
 module Comments
   class Tagging < ActiveRecord::Base
+
+    has_paper_trail
+
     DEFAUlT_PER = 20
     include Attachable
     validates :tag, presence: true

@@ -10,6 +10,9 @@
 
 module Core
   class Country < ActiveRecord::Base
+
+    has_paper_trail
+
     include Checkable
     has_many :organizations,through: :cities
     has_many :cities, inverse_of: :country, dependent: :destroy

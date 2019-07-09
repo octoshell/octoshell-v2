@@ -18,6 +18,9 @@
 
 module Comments
   class GroupClass < ActiveRecord::Base
+
+    has_paper_trail
+
     enum type_ab: %i[read_ab update_ab create_ab create_with_context_ab]
     belongs_to :group
     validates :type_ab, presence: true

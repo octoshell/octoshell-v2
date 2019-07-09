@@ -15,6 +15,9 @@
 
 module Core
   class AccessField < ActiveRecord::Base
+
+    has_paper_trail
+
     belongs_to :access
     belongs_to :quota_kind
 

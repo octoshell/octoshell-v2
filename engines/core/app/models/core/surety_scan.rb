@@ -13,6 +13,9 @@
 
 module Core
   class SuretyScan < ActiveRecord::Base
+
+    has_paper_trail
+
     belongs_to :surety
 
     mount_uploader :image, SuretyScanUploader

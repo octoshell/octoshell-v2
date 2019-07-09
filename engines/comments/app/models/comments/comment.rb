@@ -20,6 +20,9 @@
 
 module Comments
   class Comment < ActiveRecord::Base
+
+    has_paper_trail
+
     include Attachable
     DEFAUlT_PER = 10
     validates :text, presence: true

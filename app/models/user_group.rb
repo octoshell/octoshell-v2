@@ -14,6 +14,9 @@
 
 # Связь пользователя и группы
 class UserGroup < ActiveRecord::Base
+
+  has_paper_trail
+
   belongs_to :user
   belongs_to :group
 end

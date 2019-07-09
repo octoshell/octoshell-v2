@@ -15,6 +15,9 @@
 
 module Hardware
   class Item < ActiveRecord::Base
+
+    has_paper_trail
+
     translates :name, :description, fallback: :any
     belongs_to :kind, inverse_of: :items
 

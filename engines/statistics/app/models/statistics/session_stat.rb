@@ -11,6 +11,9 @@
 
 module Statistics
   class SessionStat < ActiveRecord::Base
+
+    has_paper_trail
+
     KINDS = [ ]
 
     include StatCollector
