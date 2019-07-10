@@ -89,17 +89,19 @@ module Jobstat
       origin_drms_task_id = @json["origin"].fetch("task_id", 0)
 
       tags = @json["tags"]
+
       job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
       origin_job = Job.where(cluster: origin_cluster, drms_job_id: origin_drms_job_id, drms_task_id: origin_drms_task_id).first()
 
       job.initiatees << origin_job
       origin_job.initiator = job
 
+      StringDatum.where(job_id: job.id, name: "extra_data").first_or_create.update({value: @json["extra_data"].to_json})
+
       StringDatum.where(job_id: job.id, name: "detailed").destroy_all
 
-      return if tags.nil?
-      tags.each do |name|
-        StringDatum.where(job_id: job.id, name: "detailed", value: name).first_or_create()
+      tags and tags.each do |name|
+          StringDatum.where(job_id: job.id, name: "detailed", value: name).first_or_create()
       end
 
       check_job(job)

@@ -202,6 +202,15 @@ module Jobstat
       types
     end
 
+    def get_extra_data
+      extra_data = StringDatum.where(job_id: id, name: "extra_data").first
+      if extra_data
+        return JSON.parse(extra_data.value)
+      else
+        return {}
+      end
+    end
+
     def get_detailed_names
       names = StringDatum.where(job_id: id, name: "detailed").pluck(:value)
       names - get_not_public_by_type(get_detailed_types)
