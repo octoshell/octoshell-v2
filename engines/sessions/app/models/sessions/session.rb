@@ -20,6 +20,8 @@
 module Sessions
   class Session < ApplicationRecord
 
+    has_paper_trail
+
     translates :description, :motivation
 
     belongs_to :personal_survey, class_name: "Survey"

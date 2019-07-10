@@ -23,6 +23,8 @@
 module Core
   class Cluster < ApplicationRecord
 
+    has_paper_trail
+
     translates :name
 
     has_many :requests, inverse_of: :cluster, dependent: :destroy

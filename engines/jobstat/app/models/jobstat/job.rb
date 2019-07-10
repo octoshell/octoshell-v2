@@ -87,9 +87,9 @@ module Jobstat
       # }
 
       data[:ib_rcv_data_fs] /= 1024 * 1024 unless data[:ib_rcv_data_fs].nil?
-      data[:ib_xmit_data_fs] /= 1024 * 1024 unless data[:ib_xmit_data_fs].nil? 
-      data[:ib_rcv_data_mpi] /= 1024 * 1024 unless data[:ib_rcv_data_mpi].nil? 
-      data[:ib_xmit_data_mpi] /= 1024 * 1024 unless data[:ib_xmit_data_mpi].nil? 
+      data[:ib_xmit_data_fs] /= 1024 * 1024 unless data[:ib_xmit_data_fs].nil?
+      data[:ib_rcv_data_mpi] /= 1024 * 1024 unless data[:ib_rcv_data_mpi].nil?
+      data[:ib_xmit_data_mpi] /= 1024 * 1024 unless data[:ib_xmit_data_mpi].nil?
 
       return data
     end
@@ -101,7 +101,7 @@ module Jobstat
 
     def get_ranking
       performance = get_performance
-      
+
       low_str = 'low'
       average_str = 'average'
       high_str = 'high'
@@ -240,7 +240,7 @@ module Jobstat
     def self.post_data(uri,data)
       begin
         Net::HTTP.start(uri.host, uri.port,
-          :use_ssl => uri.scheme == 'https', 
+          :use_ssl => uri.scheme == 'https',
           :verify_mode => OpenSSL::SSL::VERIFY_NONE,
           :read_timeout => 5,
           :opent_imeout => 5,
@@ -305,7 +305,7 @@ module Jobstat
       CacheData.get(id) do
         begin
           Net::HTTP.start(uri.host, uri.port,
-            :use_ssl => uri.scheme == 'https', 
+            :use_ssl => uri.scheme == 'https',
             :verify_mode => OpenSSL::SSL::VERIFY_NONE,
             :read_timeout => 5,
             :opent_imeout => 5,

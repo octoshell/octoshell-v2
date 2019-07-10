@@ -7,6 +7,8 @@
  *= require select2-bootstrap
  *= require bootstrap-datepicker3
  *= require rails_bootstrap_forms
+ *= require bootstrap
+ *= require bootstrap-datetimepicker
  *= require_tree .
  */
 

@@ -1,5 +1,5 @@
-class Ransack::Name
-  def name
-    human
-  end
-end
+# class Ransack::Name
+#   # def name
+#   #   human
+#   # end
+# end

@@ -1,5 +1,15 @@
 class ApplicationController < ActionController::Base
 
+  before_action :set_paper_trail_whodunnit
+
+  def info_for_paper_trail
+    { session_id: request.session.id }
+  end
+
+  # def user_for_paper_trail
+  #   logged_in? ? current_user.id : 0
+  # end
+
   include ControllerHelper
   include ActionView::Helpers::OutputSafetyHelper
   helper Face::ApplicationHelper

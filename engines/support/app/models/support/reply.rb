@@ -37,7 +37,7 @@ module Support
       notify_subscribers
       ticket.subscribers << author unless ticket.subscribers.include? author
     end
-    
+
     # def create_or_update
     #   if new_record?
     #     attach_answered_by_flag

@@ -26,6 +26,8 @@
 module Sessions
   class Survey < ApplicationRecord
 
+    has_paper_trail
+
     translates :name
 
     belongs_to :session

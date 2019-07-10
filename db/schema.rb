@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_21_105523) do
+ActiveRecord::Schema.define(version: 2019_07_09_134506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,15 +45,6 @@ ActiveRecord::Schema.define(version: 2019_03_21_105523) do
     t.string "title_en"
     t.text "body_en"
     t.index ["created_by_id"], name: "index_announcements_on_created_by_id"
-  end
-
-  create_table "articles", force: :cascade do |t|
-    t.integer "person_id"
-    t.string "title"
-    t.text "subject_header"
-    t.text "body"
-    t.string "type"
-    t.boolean "published", default: true
   end
 
   create_table "category_values", id: :serial, force: :cascade do |t|
@@ -506,11 +497,6 @@ ActiveRecord::Schema.define(version: 2019_03_21_105523) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "friends", force: :cascade do |t|
-    t.string "name"
-    t.integer "person_id"
-  end
-
   create_table "groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "weight"
@@ -566,17 +552,6 @@ ActiveRecord::Schema.define(version: 2019_03_21_105523) do
     t.integer "to_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "hobbies", force: :cascade do |t|
-    t.integer "article_id"
-    t.integer "person_id"
-    t.string "name"
-  end
-
-  create_table "hobbies_people", id: false, force: :cascade do |t|
-    t.bigint "person_id", null: false
-    t.bigint "hobby_id", null: false
   end
 
   create_table "jobstat_data_types", id: :serial, force: :cascade do |t|
@@ -766,10 +741,6 @@ ActiveRecord::Schema.define(version: 2019_03_21_105523) do
     t.text "description_en"
     t.string "name_en"
     t.index ["package_id"], name: "index_pack_versions_on_package_id"
-  end
-
-  create_table "people", force: :cascade do |t|
-    t.string "name"
   end
 
   create_table "profiles", id: :serial, force: :cascade do |t|
@@ -1096,6 +1067,19 @@ ActiveRecord::Schema.define(version: 2019_03_21_105523) do
     t.index ["last_login_at"], name: "index_users_on_last_login_at"
     t.index ["remember_me_token"], name: "index_users_on_remember_me_token"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token"
+  end
+
+  create_table "versions", id: :serial, force: :cascade do |t|
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.integer "whodunnit"
+    t.text "object"
+    t.integer "session_id"
+    t.datetime "created_at"
+    t.text "object_changes"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+    t.index ["whodunnit"], name: "index_versions_on_whodunnit"
   end
 
   create_table "wiki_pages", id: :serial, force: :cascade do |t|

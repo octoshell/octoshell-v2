@@ -1,5 +1,8 @@
 module Jobstat
   class Threshold
+
+    has_paper_trail
+
     attr_accessor :name, :description
 
     def initialize(name, description)
@@ -9,6 +12,9 @@ module Jobstat
   end
 
   class Rule
+
+    has_paper_trail
+
     attr_accessor :name, :description, :group, :priority, :suggestion, :text_recommendation, :module_recommendation
 
     def initialize(name, description, group, priority, suggestion, text_recommendation, module_recommendation)
@@ -23,6 +29,9 @@ module Jobstat
   end
 
   class Klass
+
+    has_paper_trail
+
     attr_accessor :name, :description, :group, :priority
 
     def initialize(name, description, group, priority)

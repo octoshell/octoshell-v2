@@ -10,6 +10,8 @@
 module Sessions
   class ReportSubmitDenialReason < ApplicationRecord
 
+    has_paper_trail
+
     translates :name
     validates_translated :name, presence: true
   end

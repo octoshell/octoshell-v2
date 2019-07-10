@@ -34,6 +34,8 @@
 module Support
   class Ticket < ApplicationRecord
 
+    has_paper_trail
+
     mount_uploader :attachment, AttachmentUploader
     mount_uploader :export_attachment, TicketAttachmentUploader, mount_on: :attachment_file_name
 

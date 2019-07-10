@@ -215,6 +215,8 @@ ActionController::Base.class_eval do
                                      url: main_app.reports_path,
                                   ))  if may? :manage, :reports_engine
 
+    menu.add_item(Face::MenuItem.new(name: t("admin_submenu.journal"),
+                                      url: "/core/admin/journal")) if may? :manage, :users
 
     menu.items
   end

@@ -20,6 +20,8 @@
 module Core
   class Access < ApplicationRecord
 
+    has_paper_trail
+
     belongs_to :project
     belongs_to :cluster
 

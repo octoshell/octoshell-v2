@@ -24,7 +24,7 @@ User.class_eval do
     string = %w[profiles.last_name profiles.first_name profiles.middle_name email].join("||' '||")
     #!!! WARNING !!! Postgresql extension!!!
     joins(:profile).where("(#{string}) ILIKE ?", "%#{q}%")
-    .order("profiles.last_name").includes(:profile).uniq(:id)
+    .order("profiles.last_name").includes(:profile).distinct(:id)
   end)
 
   scope :logins, (lambda do |q|

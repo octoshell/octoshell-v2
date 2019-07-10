@@ -16,6 +16,7 @@ gem 'left_join'
 gem 'traco'
 gem 'lmtp', github: 'apaokin/ruby-lmtp', require: false
 gem 'rubyzip', '>= 1.0.0', require: false
+gem 'paper_trail'
 
 gem 'therubyracer' # for execjs
 gem 'i18n-js'
