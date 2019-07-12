@@ -28,7 +28,7 @@
 module Core
   class Request < ApplicationRecord
 
-    has_paper_trail
+    
 
     # TODO: remove creator, delegate owner to project
     belongs_to :creator, class_name: Core.user_class.to_s, foreign_key: :creator_id

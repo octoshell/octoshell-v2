@@ -15,7 +15,7 @@
 module Pack
   class Package < ApplicationRecord
 
-    has_paper_trail
+    
 
     translates :description, :name
 

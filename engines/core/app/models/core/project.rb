@@ -25,7 +25,7 @@
 module Core
   class Project < ApplicationRecord
 
-    has_paper_trail
+    
 
     belongs_to :kind, class_name: "Core::ProjectKind", foreign_key: :kind_id
     belongs_to :organization

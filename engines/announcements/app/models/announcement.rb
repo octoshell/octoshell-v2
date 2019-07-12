@@ -22,8 +22,6 @@
 
 class Announcement < ApplicationRecord
 
-  has_paper_trail
-
   translates :title, :body
 
   has_many :announcement_recipients, dependent: :destroy

@@ -34,7 +34,7 @@
 module Sessions
   class Report < ApplicationRecord
 
-    has_paper_trail
+    
 
     POINT_RANGE = (0..5)
     belongs_to :session

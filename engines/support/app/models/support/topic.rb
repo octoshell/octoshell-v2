@@ -18,7 +18,7 @@
 module Support
   class Topic < ApplicationRecord
 
-    has_paper_trail
+    
 
     translates :name, :template
 

@@ -1,7 +1,7 @@
 module Jobstat
   class Threshold
 
-    has_paper_trail
+    
 
     attr_accessor :name, :description
 
@@ -13,7 +13,7 @@ module Jobstat
 
   class Rule
 
-    has_paper_trail
+    
 
     attr_accessor :name, :description, :group, :priority, :suggestion, :text_recommendation, :module_recommendation
 
@@ -30,7 +30,7 @@ module Jobstat
 
   class Klass
 
-    has_paper_trail
+    
 
     attr_accessor :name, :description, :group, :priority
 

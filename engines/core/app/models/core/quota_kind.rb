@@ -12,7 +12,7 @@
 module Core
   class QuotaKind < ApplicationRecord
 
-    has_paper_trail
+    
 
     translates :name, :measurement
 

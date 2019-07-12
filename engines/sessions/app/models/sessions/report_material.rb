@@ -1,7 +1,7 @@
 module Sessions
   class ReportMaterial < ActiveRecord::Base
 
-    has_paper_trail
+    
 
     belongs_to :report, inverse_of: :report_materials
     mount_uploader :materials, ReportMaterialsUploader

@@ -1,7 +1,5 @@
 class Synchronizer
 
-  has_paper_trail
-
   attr_reader :access, :connection_to_cluster, :project, :cluster
 
   def initialize(access)
@@ -49,7 +47,7 @@ class Synchronizer
     #     result = data
     #   end
     # end
-    result = 
+    result =
       connection_to_cluster ?
       connection_to_cluster.exec!(command) :
       'Failed to connect cluster'

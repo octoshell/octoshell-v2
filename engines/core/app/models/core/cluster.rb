@@ -23,7 +23,7 @@
 module Core
   class Cluster < ApplicationRecord
 
-    has_paper_trail
+    
 
     translates :name
 

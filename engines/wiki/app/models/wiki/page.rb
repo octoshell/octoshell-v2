@@ -19,7 +19,7 @@
 module Wiki
   class Page < ApplicationRecord
 
-    has_paper_trail
+    
 
     translates :name, :content
     validates_translated :content, :name, presence: true

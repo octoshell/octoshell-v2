@@ -1,7 +1,7 @@
 module Jobstat
   class CacheData
 
-  has_paper_trail
+  
 
   include Singleton
 
