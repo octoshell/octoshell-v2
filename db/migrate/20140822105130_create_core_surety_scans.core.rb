@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140822104636)
-class CreateCoreSuretyScans < ActiveRecord::Migration
+class CreateCoreSuretyScans < ActiveRecord::Migration[4.2]
   def change
     create_table :core_surety_scans do |t|
       t.integer :surety_id

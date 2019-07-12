@@ -20,6 +20,8 @@
 module Core
   class Access < ApplicationRecord
 
+    
+
     belongs_to :project
     belongs_to :cluster
 

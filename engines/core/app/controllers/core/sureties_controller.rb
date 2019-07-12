@@ -1,6 +1,6 @@
 module Core
   class SuretiesController < Core::ApplicationController
-    before_action :require_login
+    before_action :require_login, :filter_blocked_users
 
     def new
       @project = Project.find(params[:project_id])

@@ -1,5 +1,5 @@
 # This migration comes from comments (originally 20180204212307)
-class TagsAndTaggings < ActiveRecord::Migration
+class TagsAndTaggings < ActiveRecord::Migration[4.2]
   def self.up
     create_table :comments_tags do |t|
       t.string :name

@@ -16,19 +16,23 @@ gem 'left_join'
 gem 'traco'
 gem 'lmtp', github: 'apaokin/ruby-lmtp', require: false
 gem 'rubyzip', '>= 1.0.0', require: false
+gem 'paper_trail'
 
 gem 'therubyracer' # for execjs
 gem 'i18n-js'
+gem 'groupdate'
 
 group :development do
   gem "annotate"
+  gem "sqlite3"
   gem "letter_opener"
   gem "pry-rails"
   gem "rails-erd"
   gem 'railroady'
   gem "better_errors"
   gem 'rails_db'
-  gem 'i18n-tasks'
+  gem 'i18n-tasks', '~> 0.9.21'
+  gem 'minitest-reporters'
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil
@@ -55,6 +59,7 @@ gem "jobstat",        path: 'engines/jobstat'
 gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
 gem "hardware",       path: "engines/hardware"
+gem "reports",       path: "engines/reports"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"
@@ -67,12 +72,12 @@ gem "whenever"
 
 group :test do
   gem "letter_opener"
-  #gem "rspec-rails"
+  gem "rspec-rails"
   gem "activerecord-import", ">= 0.2.0"
   gem 'poltergeist'
   gem "rspec-sidekiq"
   gem 'shoulda-matchers', '~> 4.0'
-  gem "test_after_commit"
+  # gem "test_after_commit"
   gem "database_cleaner"
   gem "factory_bot_rails"
   # gem "factory_girl-seeds"

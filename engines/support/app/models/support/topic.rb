@@ -18,6 +18,8 @@
 module Support
   class Topic < ApplicationRecord
 
+    
+
     translates :name, :template
 
     belongs_to :parent_topic, class_name: "Support::Topic", foreign_key: :parent_id, inverse_of: :subtopics

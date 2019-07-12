@@ -1,3 +1,4 @@
+if $global_test.nil?
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
 
@@ -18,4 +19,5 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
   ActiveSupport::TestCase.fixture_path = File.expand_path("../fixtures", __FILE__)
   ActionDispatch::IntegrationTest.fixture_path = ActiveSupport::TestCase.fixture_path
   ActiveSupport::TestCase.fixtures :all
+end
 end

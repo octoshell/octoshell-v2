@@ -12,7 +12,11 @@ module Core
         c.to_json_with_titles
       end
     end
-    
+
+    def filter_blocked_users
+      redirect_to projects_path if current_user.closed?
+    end
+
 #    before_action :journal_user
 #
 #    def journal_user

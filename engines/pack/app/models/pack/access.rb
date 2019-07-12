@@ -111,9 +111,9 @@ module Pack
 
     def create_ticket
       subject = if new_end_lic
-        I18n.t('tickets_access.subject.new_end_lic', who_name: who_name_with_type, user: created_by.full_name)
+        I18n.t('tickets_access.subject.new_end_lic', who_name: who_name_with_type, user: created_by.full_name, version_name: version_name)
       elsif status == 'requested'
-        I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.full_name)
+        I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.full_name, version_name: version_name)
       end
       support_access_topic = Support::Topic.find_by(name_ru: I18n.t('integration.support_theme_name'))
       tickets.create!(subject: subject, reporter: created_by, message: subject, topic: support_access_topic)

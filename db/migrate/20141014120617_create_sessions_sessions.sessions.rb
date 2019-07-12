@@ -1,5 +1,5 @@
 # This migration comes from sessions (originally 20141013135707)
-class CreateSessionsSessions < ActiveRecord::Migration
+class CreateSessionsSessions < ActiveRecord::Migration[4.2]
   def change
     create_table :sessions_sessions do |t|
       t.string :state

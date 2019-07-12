@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140721100044)
-class CreateCoreAccesses < ActiveRecord::Migration
+class CreateCoreAccesses < ActiveRecord::Migration[4.2]
   def change
     create_table :core_accesses do |t|
       t.integer  "project_id", null: false

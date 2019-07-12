@@ -23,7 +23,8 @@ div.option-container
     div.col-xs-6
       = ff.radio_button :value_type, 'without_category',label: t('.without_category')
       -Pack::VersionOption.locale_columns(:value).each do |column|
-        = ff.text_area column,rows: 3
+        /= ff.text_area column,rows: 3
+        = markdown_area ff, column,rows: 3
   div.row
     div.col-xs-12
       = ff.link_to_remove t(".remove_option"), class: "fa fa-times text-danger"

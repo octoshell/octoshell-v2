@@ -25,6 +25,8 @@
 module Core
   class Project < ApplicationRecord
 
+    
+
     belongs_to :kind, class_name: "Core::ProjectKind", foreign_key: :kind_id
     belongs_to :organization
     belongs_to :organization_department
@@ -92,7 +94,7 @@ module Core
 
     def on_activate
       #!!! after_transition [:closed, :finihed, :blocked, :cancelled, :suspended] => :active do |project, transition|
-      accesses.where(state: :closed).map(&:reopen!)
+      accesses.where(state: :closed).map{|a| a.reopen!; a.save}
       members.where(:project_access_state=>:suspended).map(&:activate!)
       ::Core::MailerWorker.perform_async(:project_activated, id)
       synchronize!
@@ -161,8 +163,11 @@ module Core
       event :activate do
         transitions :from => :pending, :to => :active
         after do
-          update(first_activation_at: Time.current)
           synchronize!
+        end
+
+        before do
+          self.first_activation_at = Time.current
         end
 
       end

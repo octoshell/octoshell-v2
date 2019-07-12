@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140820144127)
-class CreateCoreSureties < ActiveRecord::Migration
+class CreateCoreSureties < ActiveRecord::Migration[4.2]
   def change
     create_table :core_sureties do |t|
       t.integer :project_id

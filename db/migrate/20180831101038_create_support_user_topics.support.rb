@@ -1,5 +1,5 @@
 # This migration comes from support (originally 20180831100416)
-class CreateSupportUserTopics < ActiveRecord::Migration
+class CreateSupportUserTopics < ActiveRecord::Migration[4.2]
   def change
     create_table :support_user_topics do |t|
       t.belongs_to :user

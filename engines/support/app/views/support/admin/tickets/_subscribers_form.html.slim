@@ -1,2 +1,3 @@
-= bootstrap_form_for [:admin, ticket], layout: :horizontal, html: { remote: true, id: "ticket_subscribers_form" } do |f|
-  = f.collection_check_boxes :subscriber_ids, ticket.available_subscribers, :id, :full_name, hide_label: true, onclick: "$('form#ticket_subscribers_form').submit()"
+div id="subscribers-collapse" class="collapse"
+	= bootstrap_form_for [:admin, ticket], layout: :horizontal, html: { remote: true, id: "ticket_subscribers_form" } do |f|
+	  = f.collection_check_boxes :subscriber_ids, ticket.available_subscribers, :id, :full_name, hide_label: true, onclick: "$('form#ticket_subscribers_form').submit()"

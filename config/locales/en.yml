@@ -1,308 +1,319 @@
+---
 en:
-  bad_jobs: "Bad jobs: "
-  bad_job: "Bad job: "
-  options:
-    fields:
-      remove_option: Remove option
-      with_category: Autocompleted
-      without_category: Not autocompleted
-      new: New option
-  model_translation:
-    ru: 'in russian'
-    en: 'in english'
-
-  main_menu:
-    working_area: "Study"
-    admin_area: "Administator's office"
-    wiki: "Wiki"
-  user_submenu:
-    projects: "Projects"
-    tickets_warning:
-      html: "Support <span class=\"badge warning\"><i class=\"fa fa-bell\"></i></span>"
-    tickets: "Support"
-    sessions: "Reregistrations"
-    sessions_warning:
-      html: "Reregistrations <span class=\"badge warning\"><i class=\"fa fa-bell\"> </i></span>"
-    profile: Profile
-    job_stat: Statistics
-    job_table: Efficiency
-    comments: Comments
-    packages: Packages
-  admin_submenu:
-    options: Options
-    emails: Emails
-    comments: "Comments"
-    cities: "Cities"
-    countries: "Countries"
-    projects: "Projects"
-    project_kinds: "Project kinds"
-    sureties: "Sureties"
-    sureties_with_count:
-      html: "Sureties <span class=\"badge info\">%{count}</span>"
-    requests: "Requests"
-    requests_with_count:
-      html: "Requests <span class=\"badge info\">%{count}</span>"
-    support: "Support"
-    support_with_count:
-      html: "Support <span class=\"badge info\">%{count}</span>"
-    clusters: "Clusters"
-    cluster_logs: "Cluster log"
-    quota_kinds: "Resource quota kind"
-    users: "Users"
-    groups: "Access groups"
-    direction_of_sciences: "Research directions"
-    research_areas: "Research areas"
-    critical_technologies: "Critical technologies"
-    organizations: "Organizations"
-    organization_kinds: "Organization kinds"
-    sessions: "Reregistrations"
-    reports: "Reports"
-    report_submit_denial_reasons: "Reasons for refusal to provide a report"
-    statistics: "Statistics"
-    announcements: "Announcements"
-    sidekiq: "Monitoring task queues"
-  without_pagination:
-    displaying_all_records: All records are displayed
-    display_all_records: Display all records on single page(may be long)
-
-
-  flash:
-    password_updated: "The password has been updated."
-    profile_updated: "The profile has been updated."
-    not_logged_in: "You haven't logged in. Log in or register."
-    not_authorized: "You are not authorized for this action."
-
+  abilities:
+    accesses:
+      manage: Full access to cluster keys
+    accounts:
+      manage: Full access to Project accesses
+    admin:
+      access: Access to Administator's office
+    all:
+      show_all: Ability to browse all records without pagination
+    announcements:
+      manage: Full access to Announcements
+    cluster_fields:
+      manage: Full access to Extra cluster fields
+    cluster_projects:
+      manage: Full access to Projects on a cluster
+    cluster_users:
+      manage: Full access to Users on a cluster
+    clusters:
+      manage: Full access to Clusters
+    console:
+      access: Console access
+    credentials:
+      manage: Full access to Public keys
+    critical_technologies:
+      manage: Full access to Critical technologies
+    direction_of_sciences:
+      manage: Full access to Research directions
+    extends:
+      manage: Full access to Extensions
+    faults:
+      resolve: Solving user problems
+    groups:
+      manage: Full access to Groups
+    hardware:
+      manage: Full access to Packages
+    history_items:
+      access: Browse user history
+    images:
+      manage: Full access to Images
+    import_items:
+      manage: Full access to Import
+    notices:
+      manage: Full access to newsletters
+    organization_kinds:
+      manage: Full access to Organizations kinds
+    organizations:
+      manage: Full access to Organizations
+    packages:
+      manage: Full access to Packages
+    pages:
+      manage: Full access to Wiki pages
+      show_all: Browsing all Wiki pages
+    position_names:
+      manage: Full access to Organization job names
+    project_prefixes:
+      manage: Full access to Project prefixes
+    projects:
+      manage: Full access to Projects
+      review: Ability to review projects
+    reports:
+      access: Access to reports subsection
+      admin: Full access to reports
+      manage: Report expert
+      review: Ability to review reports
+      supervise: Ability to accept/reject overdue reports
+    requests:
+      manage: Full access to Resource requests
+    research_areas:
+      manage: Full access to Research areas
+    sessions:
+      manage: Ability to launch re-registration
+    settings:
+      manage: Full access to Settings
+    sureties:
+      activate: Surety activation
+      close: Surety closing
+      confirm: surety pre-approval
+      decline: Surety rejection
+      manage: Full access to Sureties
+      unconfirm: Withdrawal of prior approval of sureties
+    tasks:
+      manage: Full access to Procedures
+    ticket_fields:
+      manage: Full access to Extra fields to support tickets
+    ticket_questions:
+      manage: Full access to Support ticket questions
+    ticket_tags:
+      manage: Full access to Tags
+    ticket_templates:
+      manage: Full access to Answer templates
+    tickets:
+      manage: Full access to Support tickets
+    user_surveys:
+      access: Просмотр отчетов пользователя
+    users:
+      manage: Full access to Users
   actions:
-    return_to_self_session: "Return to own session"
-    submit: "Submit"
-
+    return_to_self_session: Return to own session
+    submit: Submit
   activerecord:
-    models:
-      profile: "Profile"
-      group: "User group"
-      ability: "Ability"
-      options_category: Category of options
-      category_value: Values from category
-      option: Options
-
     attributes:
-      user:
-        groups: "Groups"
-        group_ids: "Groups"
-        full_name: "Initials"
-        projects: "Projects"
-      profile:
-        first_name: "Name"
-        middle_name: "Middle name"
-        last_name: "Surname"
-        receive_info_mails: "Use my email for info newsletters"
-        receive_special_mails: "Use my email for service newsletters"
+      category_value:
+        value: Value
+      paper_trail/version:
+        event: Event
+        whodunnit: Initiator
+        item_id: Object ID
+        item_type: Class
+        object_changes: Changes
       group:
-        name: "Name"
+        name: Name
+      option:
+        category_value_id: Value from values list for categories
+        name: Name of option
+        options_category_id: Option of category
+        value: Value
       options_category:
         name: Category
         values: Values
-      category_value:
-        value: Value
-      option:
-        name: Name of option
-        value: Value
-        category_value_id: Value from values list for categories
-        options_category_id: Option of category
-
-
-
-  users:
-    edit:
-      title: "Edit user information"
-      title: "Change password"
-      minimum_password_length: "Minimum 6 characters"
-      save: "Save"
-    index:
-      title: "Users"
-      email: "Email"
-      is_admin: "Administator"
-  profiles:
-    form:
-      info_mails_help: "Tick if you agree to receive newsletters about future seminars and other useful information."
-      special_mails_help: "Tick if you agree to receive a newsletter about the status of clusters, preventive works and other service information."
-      save: "Save"
-    show:
-      is_admin: "Administator"
-      title: "Profile"
-      change_password: "Change password"
-  abilities:
-    accesses:
-      manage: "Full access to cluster keys"
-    accounts:
-      manage: "Full access to Project accesses"
-    clusters:
-      manage: "Full access to Clusters"
-    cluster_fields:
-      manage: "Full access to Extra cluster fields"
-    cluster_projects:
-      manage: "Full access to Projects on a cluster"
-    cluster_users:
-      manage: "Full access to Users on a cluster"
-    critical_technologies:
-      manage: "Full access to Critical technologies"
-    credentials:
-      manage: "Full access to Public keys"
-    direction_of_sciences:
-      manage: "Full access to Research directions"
-    extends:
-      manage: "Full access to Extensions"
-    groups:
-      manage: "Full access to Groups"
-    images:
-      manage: "Full access to Images"
-    import_items:
-      manage: "Full access to Import"
-    history_items:
-      access: "Browse user history"
-    organizations:
-      manage: "Full access to Organizations"
-    organization_kinds:
-      manage: "Full access to Organizations kinds"
-    position_names:
-      manage: "Full access to Organization job names"
-    projects:
-      review: "Ability to review projects"
-      manage: "Full access to Projects"
-    pages:
-      manage: "Full access to Wiki pages"
-      show_all: "Browsing all Wiki pages"
-      manage: Full access to Wiki pages
-    packages:
-      manage: Full access to Packages
-    hardware:
-      manage: Full access to Packages
-    requests:
-      manage: "Full access to Resource requests"
-    settings:
-      manage: "Full access to Settings"
-    sureties:
-      manage: "Full access to Sureties"
-      confirm: "surety pre-approval"
-      unconfirm: "Withdrawal of prior approval of sureties"
-      activate: "Surety activation"
-      close: "Surety closing"
-      decline: "Surety rejection"
-    project_prefixes:
-      manage: "Full access to Project prefixes"
-    tasks:
-      manage: "Full access to Procedures"
-    tickets:
-      manage: "Full access to Support tickets"
-    ticket_fields:
-      manage: "Full access to Extra fields to support tickets"
-    ticket_questions:
-      manage: "Full access to Support ticket questions"
-    ticket_tags:
-      manage: "Full access to Tags"
-    ticket_templates:
-      manage: "Full access to Answer templates"
-    users:
-      manage: "Full access to Users"
-    all:
-      show_all: "Ability to browse all records without pagination"
-    admin:
-      access: "Access to Administator's office"
-    reports:
-      access: "Access to reports subsection"
-      manage: "Report expert"
-      review: "Ability to review reports"
-      supervise: "Ability to accept/reject overdue reports"
-      admin: "Full access to reports"
-    sessions:
-      manage: "Ability to launch re-registration"
-    user_surveys:
-      access: "Просмотр отчетов пользователя"
-    research_areas:
-      manage: "Full access to Research areas"
-    faults:
-      resolve: "Solving user problems"
-    console:
-      access: "Console access"
-    announcements:
-      manage: "Full access to Announcements"
-    notices:
-      manage: "Full access to newsletters"
-
+      profile:
+        first_name: Name
+        last_name: Surname
+        middle_name: Middle name
+        receive_info_mails: Use my email for info newsletters
+        receive_special_mails: Use my email for service newsletters
+      user:
+        full_name: Initials
+        group_ids: Groups
+        groups: Groups
+        projects: Projects
+    models:
+      ability: Ability
+      category_value: Values from category
+      group: User group
+      option: Options
+      options_category: Category of options
+      profile: Profile
   admin:
+    groups:
+      edit:
+        title: Edit group
+      form:
+        abilities: Abilities
+      index:
+        default_abilities: Reestablish default abilities
+        new_group: Add a group
+        title: User groups
+      new:
+        title: Group creation
     options_categories:
+      edit:
+        title: Category edition
       form:
         add_value: Add value
         remove_value: Remove value
-      new:
-        title: New category
       index:
         new: New category
         title: Category for option
-      edit:
-        title: Category edition
+      new:
+        title: New category
       table:
         confirm: Do u want to remove this category of options?
         no_found: No categories for  options
-
-    groups:
-      index:
-        title: "User groups"
-        new_group: "Add a group"
-        default_abilities: "Reestablish default abilities"
-      form:
-        abilities: "Abilities"
-      new:
-        title: "Group creation"
-      edit:
-        title: "Edit group"
     users:
+      edit:
+        title: User membership in group accesses
       index:
-        title: "Users"
-        managed_project_statuses: "Manages projects with statuses"
-        participated_project_statuses: "Participates in projects with statuses"
-        has_account_on_clusters: "Cluster account exists"
-        rereg_participated: "Participated in re-registrations"
-        has_rereg_report_statuses: "Has re-registration reports in state"
-        has_survey_statuses: "Has polls in the state"
-        access_state: "Status"
-        cluster_access_state_present: "Show only with access to clusters"
-
+        access_state: Status
+        cluster_access_state_present: Show only with access to clusters
+        has_account_on_clusters: Cluster account exists
+        has_rereg_report_statuses: Has re-registration reports in state
+        has_survey_statuses: Has polls in the state
+        managed_project_statuses: Manages projects with statuses
+        participated_project_statuses: Participates in projects with statuses
+        rereg_participated: Participated in re-registrations
+        title: Users
+      projects_list:
+        no_projects_found: No projects found
+      show:
+        block_user: Block access
+        days_short: day
+        delete_user: Delete user account
+        edit_groups_involvement: Edit group involvement
+        login_as_user: Login as user
+        none: none
+        present: present
+        reg_date: Registation date
+        unblock_user: Unblock access
       table:
         no_employment:
           html: "<span class='fa fa-exclamation-triangle text-danger'> no job place is filled</span>"
-      edit:
-        title: "User membership in group accesses"
-      show:
-        login_as_user: "Login as user"
-        edit_groups_involvement: "Edit group involvement"
-        delete_user: "Delete user account"
-        block_user: "Block access"
-        unblock_user: "Unblock access"
-        reg_date: "Registation date"
-        days_short: "day"
-        present: "present"
-        none: "none"
-      projects_list:
-        no_projects_found: No projects found
-
-
-
+  admin_submenu:
+    announcements: Announcements
+    cities: Cities
+    cluster_logs: Cluster log
+    clusters: Clusters
+    comments: Comments
+    countries: Countries
+    critical_technologies: Critical technologies
+    direction_of_sciences: Research directions
+    emails: Emails
+    groups: Access groups
+    journal: Journal
+    options: Options
+    organization_kinds: Organization kinds
+    organizations: Organizations
+    project_kinds: Project kinds
+    projects: Projects
+    quota_kinds: Resource quota kind
+    report_submit_denial_reasons: Reasons for refusal to provide a report
+    reports: Reports
+    reports_engine: Query constructor
+    requests: Requests
+    requests_with_count:
+      html: Requests <span class="badge info">%{count}</span>
+    research_areas: Research areas
+    sessions: Reregistrations
+    sidekiq: Monitoring task queues
+    statistics: Statistics
+    support: Support
+    support_with_count:
+      html: Support <span class="badge info">%{count}</span>
+    sureties: Sureties
+    sureties_with_count:
+      html: Sureties <span class="badge info">%{count}</span>
+    users: Users
+  bad_job: 'Bad job: '
+  bad_jobs: 'Bad jobs: '
+  flash:
+    not_authorized: You are not authorized for this action.
+    not_logged_in: You haven't logged in. Log in or register.
+    password_updated: The password has been updated.
+    profile_updated: The profile has been updated.
   helpers:
     page_entries_info:
-      one_page:
-        display_entries:
-          zero: "Shown <b>0</b>"
-          one: "Shown <b>1</b>"
-          few: "Shown <b>%{count}</b>"
-          many: "Shown <b>%{count}</b>"
-          other: "Shown <b>все %{count}</b>"
       more_pages:
         display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> pages are shown  of <b>%{total}</b>"
+      one_page:
+        display_entries:
+          few: Shown <b>%{count}</b>
+          many: Shown <b>%{count}</b>
+          one: Shown <b>1</b>
+          other: Shown <b>все %{count}</b>
+          zero: Shown <b>0</b>
+  journal:
+    journal:
+      chain_id: Chain ID
+      created_at_gt: Later than
+      created_at_lt: Earlier than
+      event_in: Event
+      group: Group
+      item_type_in: Class
+      month_ago: Month ago
+      object_changes_cont: Changes contain
+      system_only: Only system changes
+      title: Journal
+      week_ago: Week ago
+      whodunnit_in: Initiator
+    table:
+      chain_id: Chain ID
+      created_at: Date
+      id: ID
+      system: System
+  main_menu:
+    admin_area: Administator's office
+    wiki: Wiki
+    working_area: Study
+  model_translation:
+    en: in english
+    ru: in russian
+  options:
+    fields:
+      new: New option
+      remove_option: Remove option
+      with_category: Autocompleted
+      without_category: Not autocompleted
+  profiles:
+    form:
+      info_mails_help: Tick if you agree to receive newsletters about future seminars and other useful information.
+      save: Save
+      special_mails_help: Tick if you agree to receive a newsletter about the status of clusters, preventive works and other service information.
+    show:
+      change_password: Change password
+      is_admin: Administator
+      title: Profile
+  user_submenu:
+    comments: Comments
+    job_stat: Statistics
+    job_table: Efficiency
+    packages: Packages
+    profile: Profile
+    projects: Projects
+    sessions: Reregistrations
+    sessions_warning:
+      html: Reregistrations <span class="badge warning"><i class="fa fa-bell"> </i></span>
+    tickets: Support
+    tickets_warning:
+      html: Support <span class="badge warning"><i class="fa fa-bell"></i></span>
+  users:
+    edit:
+      minimum_password_length: Minimum 6 characters
+      save: Save
+      title: Change password
+    index:
+      email: Email
+      is_admin: Administator
+      title: Users
   views:
     pagination:
-      next: "Next"
-      first: "First"
-      last: "Last"
-      previous: "Previous"
+      first: First
+      last: Last
+      next: Next
+      previous: Previous
       truncate: "..."
+  without_pagination:
+    display_all_records: Display all records on single page(may be long)
+    displaying_all_records: All records are displayed
