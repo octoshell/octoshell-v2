@@ -605,8 +605,8 @@ ru:
         credentials: ssh-ключи
         msg_help_sshkey: >-
           Если Вы не знаете как добавить публичный ssh-ключ, перейдите по
-          ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\"
-          target=\"_blank\">Добавление публичного ssh-ключа</a>.
+          ссылке: <a href="http://parallel.ru/cluster/ssh-keys/ssh_keys.html"
+          target="_blank">Добавление публичного ssh-ключа</a>.
         no_credentials_found: Добавьте свой публичный ssh-ключ!
       new:
         help: скопируйте сюда содержимое файла .ssh/*.pub
@@ -793,8 +793,8 @@ ru:
         card_driver_help: Описание задачи, на решение которой направлен проект
         card_help:
           html: >-
-            <a href=\"http://parallel.ru/cluster/reregistration/project_card\",
-            target=\"_blank\">Пример оформления карточки проекта</a>
+            <a href="http://parallel.ru/cluster/reregistration/project_card",
+            target="_blank">Пример оформления карточки проекта</a>
         card_impact_help: >-
           Ожидаемый эффект от успешного решения задачи (научный / коммерческий
           / социальный)
