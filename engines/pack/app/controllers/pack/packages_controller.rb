@@ -4,9 +4,7 @@ require_dependency "pack/application_controller"
 module Pack
   class PackagesController < ApplicationController
     def index
-      @q_form = OpenStruct.new(params[:q] || { user_access: current_user.id,
-                                               id_in: nil,
-                                               clustervers_active_in: '1' })
+      @q_form = OpenStruct.new(params[:q] || { clustervers_active_in: '1' })
       search = PackSearch.new(@q_form.to_h, 'packages', current_user.id)
       @packages = search.get_results(search.table_relation.allowed_for_users).page(params[:page]).per(15)
     end
