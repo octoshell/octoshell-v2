@@ -1,6 +1,9 @@
 ---
 en:
   "!": "!"
+  common:
+    back: "Back"
+
   abilities:
     accesses:
       manage: Full access to cluster keys
@@ -216,6 +219,7 @@ en:
     sureties_with_count:
       html: Sureties <span class="badge info">%{count}</span>
     users: Users
+    wikiplus: Wikiplus
   bad_job: 'Bad job: '
   bad_jobs: 'Bad jobs: '
   flash:

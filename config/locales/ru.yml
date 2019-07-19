@@ -1,6 +1,9 @@
 ---
 ru:
   "!": "!"
+  common:
+    back: "Назад"
+    
   abilities:
     accesses:
       manage: Полный доступ к Ключам на Кластере
