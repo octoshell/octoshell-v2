@@ -12,15 +12,33 @@ ru:
   wikiplus:
     common:
       edit: Редактировать!
-    images:
-      index:
-        delete: Удалить
-        link: Ссылка
-        name: Название
-        preview: Предпросмотр
-        title: Список картинок
-      new:
-        title: Загрузить картинку
+    admin:
+      images:
+        index:
+          delete: Удалить
+          link: Ссылка
+          name: Название
+          preview: Предпросмотр
+          title: Все картинки/видео
+          new_image: Загрузить картинку
+      pages:
+        edit:
+          title: Редактирование страницы
+        index:
+          all_images: Картинки и видео
+          confirm: Вы действительно хотите удалить страницу?
+          delete: Удалить
+          edit: Редактировать
+          link: Ссылка
+          name: Название
+          new_page: Новая страница
+          newsub_page: Создать подстраницу
+          no_pages_found: Ещё не создано ни одной wiki-страницы.
+          title: Справка+ по работе с Octoshell
+        new:
+          title: Новая страница
+        subpageindex:
+          newsub_page: Создать подстраницу
     markdown_help: >-
       Для разметки используется <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
     pages:

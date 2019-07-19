@@ -12,15 +12,15 @@ en:
   wikiplus:
     common:
       edit: Edit!
-    images:
-      index:
-        delete: Delete
-        link: Link
-        name: Name
-        preview: Preview
-        title: Images list
-      new:
-        title: Upload image
+    admin:
+      images:
+        index:
+          delete: Delete
+          link: Link
+          name: Name
+          preview: Preview
+          title: All media list
+          new_image: Upload new image
     markdown_help: >-
       <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
       is used for markup

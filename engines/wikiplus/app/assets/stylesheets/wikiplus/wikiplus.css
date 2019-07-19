@@ -9,3 +9,7 @@ td, th {
 tr:nth-child(even) {
   background: #ddd;
 }
+
+ul, li {
+	list-style:  none;
+}

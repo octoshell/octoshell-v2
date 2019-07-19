@@ -19,7 +19,7 @@ javascript:
   $(".insert").click(function () {
       var insertText = $(this).attr("src");
       $('#targetText').text(insertText);
-      
+  
       insertText = $(this).attr("src");
       $('.markdown-edit').each(function(){
         newText = $(this).text()+' ![image]('+insertText+')!';

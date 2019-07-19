@@ -1,6 +1,8 @@
+= link_to t('wikiplus.common.back'), pages_path
+
 div class="page-header"
   h1 = @page.name
 
-
-
 = markdown @page.content
+
+= link_to t('wikiplus.common.back'), pages_path

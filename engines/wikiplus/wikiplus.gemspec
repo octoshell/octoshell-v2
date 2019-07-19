@@ -7,8 +7,8 @@ require "wikiplus/version"
 Gem::Specification.new do |s|
   s.name        = "wikiplus"
   s.version     = Wikiplus::VERSION
-  s.authors     = ["Ukhin Sergey"]
-  s.email       = ["ser191097@gmail.com"]
+  s.authors     = ["Ukhin Sergey", "Zhumatiy Sergey"]
+  s.email       = ["ser191097@gmail.com","serg@parallel.ru"]
   s.homepage    = "https://github.com/octoshell/octoshell-v2"
   s.summary     = "A wikiplus engine for octoshell"
   s.description = "Provides a wikiplus engine with markdown support"

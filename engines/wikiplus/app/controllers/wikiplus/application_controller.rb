@@ -1,17 +1,5 @@
 module Wikiplus
-  class ApplicationController < ActionController::Base
-    include AuthMayMay
+  class ApplicationController < ::ApplicationController
     layout "layouts/application"
-
-
-    before_filter :add_css, :journal_user
-    
-    def add_css
-      @extra_css="wikiplus/wikiplus.css"
-    end
-
-    def journal_user
-      logger.info "JOURNAL: url=#{request.url}/#{request.method}; user_id=#{current_user ? current_user.id : 'none'}"
-    end
   end
 end

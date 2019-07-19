@@ -10,10 +10,6 @@ module Wikiplus
         end
   		end
       return l
-  		# if page.subpages[0] != nil
-  		# 	return "page: #{page.subpages[0].test()} ".html_safe
-  		# end
-  		# "<div> hello <b> world</b></div>".html_safe
   	end
 
     def link_to_image(record)
@@ -23,5 +19,17 @@ module Wikiplus
       end
     end
 
+    def nested_list(elements, &block)
+      return "" if elements.blank?
+      html = '<ul>'
+      elements.each do |el|
+        html << "<li id='element_#{el.id}' class=\"hlist\">"
+        html << capture(el,&block)
+        html << nested_list(el.subpages, &block)
+        html << '</li>'
+      end
+      html << '</ul>'
+      html.html_safe
+    end
   end
 end

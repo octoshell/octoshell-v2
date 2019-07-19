@@ -1,4 +1,4 @@
-- if current_user && User.superadmins.include?(current_user)
+/- if current_user && User.superadmins.include?(current_user)
   -mas = @subpage.subpages
   -mas = mas.sort_by { |a| a.sortid}
   -mas.each do |page|
@@ -24,17 +24,17 @@
           -@deep = @deep + 1
           =render "subpageindex"
           -@deep = @deep - 1
--else
-  -mas = @subpage.subpages
-  -mas = mas.sort_by { |a| a.sortid}
-  -mas.each do |page|
-    -@subpage = page
-    -newname = "\u00a0" * 6 * @deep + page.name
-    li class= "list-group-item" = link_to newname, page
-    - if page.subpages.size>0
-      tr
-      td colspan=5
-      -@deep = @deep + 1
-      =render "subpageindex"
-      -@deep = @deep - 1
+/-else
+- mas = @subpage.subpages
+- mas = mas.sort_by { |a| a.sortid}
+- mas.each do |page|
+  - @subpage = page
+  - indent = '&nbsp;' * 3 * @deep
+  li class= "list-group-item"
+    = indent.html_safe
+    = link_to page.name, page
+  - if page.subpages.size>0
+      - @deep = @deep + 1
+      = render "subpageindex"
+      - @deep = @deep - 1
 
