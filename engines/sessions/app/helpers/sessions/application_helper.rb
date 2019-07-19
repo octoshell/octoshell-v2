@@ -1,6 +1,6 @@
 module Sessions
   module ApplicationHelper
-    def session_user_submenu_items
+    def sessions_user_submenu_items
       menu = Face::Menu.new
       menu.items.clear
       bell_html = '<span class="badge warning"><i class="fa fa-bell"> </i></span>'

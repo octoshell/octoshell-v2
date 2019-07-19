@@ -1,10 +1,9 @@
 module Sessions
   class ApplicationController < ::ApplicationController
+    helper Face::ApplicationHelper
     #ActionController::Base
     #include AuthMayMay
     layout "layouts/application"
-    helper Face::ApplicationHelper
-
     #before_action :journal_user
 
     #def journal_user

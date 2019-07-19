@@ -1,5 +1,5 @@
 module Sessions
-  class ReportsController < ApplicationController
+  class ReportsController < Sessions::ApplicationController
     layout "layouts/sessions/user"
 
     def index

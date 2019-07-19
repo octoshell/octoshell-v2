@@ -42,6 +42,8 @@ html
       - elsif logged_in?
         ul class="nav nav-tabs submenu"
           = render "face/shared/submenu", items: user_submenu_items
+          /= render "face/shared/submenu", items: user_submenu_items
+
         = yield :user_engine_submenu
 
       = render "face/shared/flashes"

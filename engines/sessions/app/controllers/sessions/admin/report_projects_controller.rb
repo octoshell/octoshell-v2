@@ -1,6 +1,7 @@
 module Sessions
   class Admin::ReportProjectsController < Admin::ApplicationController
-    before_action { authorize! :manage, :reports }
+    # before_action { authorize! :manage, :reports }
+    before_action { octo_authorize! }
 
     def update
       @report = get_report(params[:report_id])

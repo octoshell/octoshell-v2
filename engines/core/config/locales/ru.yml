@@ -574,7 +574,7 @@ ru:
           info: "Информация о кластере"
           quotas_info: "Квоты на ресурсы"
           pub_key_help_html: >-
-            Для работы приложения с кластером скопируйте ключ в 
+            Для работы приложения с кластером скопируйте ключ в
             <code>/home/%{admin_login}/.ssh/authorized_keys</code>
           show_logs: "Просмотреть логи"
         new:
@@ -726,7 +726,7 @@ ru:
             в организации «%{org_name}».
           update: Пожалуйста, обновите страницу.
           mergers_exists: >-
-            У организации существуют неслитые подразделения. Перейдите в 
+            У организации существуют неслитые подразделения. Перейдите в
             "%{link}" и слейте их
         merge_edit:
           preview: Предварительный просмотр
@@ -812,8 +812,8 @@ ru:
         card: "Карточка проекта"
         card_help:
           html: >-
-            <a href=\"http://parallel.ru/cluster/reregistration/project_card\",
-            target=\"_blank\">Пример оформления карточки проекта</a>
+            <a href="http://parallel.ru/cluster/reregistration/project_card",
+            target="_blank">Пример оформления карточки проекта</a>
         card_name_help: "Здесь следует ввести реальное название исследовательского проекта"
         card_driver_help: "Описание задачи, на решение которой направлен проект"
         card_strategy_help: "Описание идеи подхода к решению задачи"
@@ -913,8 +913,8 @@ ru:
         confirm: "Вы действительно хотите деактивировать ключ?"
         msg_help_sshkey: >-
           Если Вы не знаете как добавить публичный ssh-ключ, перейдите по
-          ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\"
-          target=\"_blank\">Добавление публичного ssh-ключа</a>.
+          ссылке: <a href="http://parallel.ru/cluster/ssh-keys/ssh_keys.html"
+          target="_blank">Добавление публичного ssh-ключа</a>.
 
       new:
         title: "Новый ssh-ключ"

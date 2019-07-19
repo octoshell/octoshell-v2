@@ -2,13 +2,17 @@ class ApplicationController < ActionController::Base
 
   before_action :set_paper_trail_whodunnit
 
+  def authorize_admins
+    authorize!(:access, :admin)
+  end
+
   def info_for_paper_trail
     { session_id: request.session.id }
   end
 
-  # def user_for_paper_trail
-  #   logged_in? ? current_user.id : 0
-  # end
+  def octo_authorize!
+    authorize!(*::Octoface::OctoConfig.action_and_subject_by_path(params[:controller]))
+  end
 
   include ControllerHelper
   include ActionView::Helpers::OutputSafetyHelper

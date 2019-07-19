@@ -1,4 +1,4 @@
-ActionController::Base.class_eval do
+ApplicationController.class_eval do
   def ability
     @ability ||= begin
                    current_user && current_user.extend(UserAbilities)
@@ -96,7 +96,8 @@ ActionController::Base.class_eval do
     menu.add_item(Face::MenuItem.new(name: t("user_submenu.comments"),
                                       url: comments.index_all_comments_path))
 
-    menu.items
+    # menu.items
+    Face::MyMenu.user_submenu(self) + menu.items.to_a
   end
 
   def admin_submenu_items
@@ -217,6 +218,8 @@ ActionController::Base.class_eval do
 
     menu.add_item(Face::MenuItem.new(name: t("admin_submenu.journal"),
                                       url: "/core/admin/journal")) if may? :manage, :users
+
+    # Face::MyMenu.admin_submenu(self) + menu.items.to_a
 
     menu.items
   end

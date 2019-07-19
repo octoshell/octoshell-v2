@@ -1,6 +1,7 @@
 module Sessions
   class Admin::ReportsController < Admin::ApplicationController
-    before_action { authorize! :manage, :reports }
+    # before_action { authorize! :manage, :reports }
+    before_action { octo_authorize! }
 
     def index
       @search = Report.includes([{ project: :research_areas },
