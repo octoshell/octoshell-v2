@@ -166,7 +166,8 @@ ru:
           send_and_show_next: Отправить и открыть следующий
           send_and_show_result: Отправить и показать результат
           tags-etc: Теги/файлы/комментарии
-          title: 'Заявка №%{id}'
+          title: Заявка №%{id}
+          message_preview: Предпросмотр
         table:
           no_tickets: Нет тикетов
       topics:
@@ -229,6 +230,7 @@ ru:
         no_replies: Нет ответов
         problem_solved: 'Проблема решена? Нажмите '
         title: Заявка №%{id}
+        message_preview: Предпросмотр
       table:
         no_tickets: Нет заявок в поддержку
   support_responsible_for: 'Ответственный за:'

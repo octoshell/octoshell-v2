@@ -4,22 +4,26 @@
 
 ## Инструкция по установке и настройке:
 
+Установить пакет ffmpegthumbnailer. Для debuan/ubuntu выполнить команду:
+
+    sudo apt install ffmpegthumbnailer
+
 В Gemfile базового приложения дописать
 
 ```ruby
-gem "wiki"
+gem "wikiplus"
 ```
 
-В консоли, в корне базового приложения
+В консоли, в корне базового приложения, а затем в engines/wikiplus
 
 ```bash
 bundle install
 ```
 
-Там же
+Затем
 
 ```bash
-bundle exec rails g wikiplus:install
+bundle exec rake wikiplus:create_abilities
 ```
 
 В базовом приложении организовать путь к плагину, используя хелпер `wikiplus.root_path`.

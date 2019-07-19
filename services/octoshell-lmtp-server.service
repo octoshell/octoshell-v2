@@ -1,0 +1,17 @@
+[Unit]
+Description=Octoshell lmtp server
+After=network.target auditd.service
+ConditionPathExists=!/etc/octoshell_not_to_be_run
+
+PartOf=octoshell.service
+BindsTo=octoshell.service
+
+[Service]
+EnvironmentFile=-/var/www/octoshell2/env
+WorkingDirectory=/var/www/octoshell2/
+ExecStartPre=-/bin/rm -f /var/www/octoshell2/current/mail.sock
+ExecStart=/var/www/octoshell2/run_current /home/octoadmin/.rbenv/libexec/rbenv exec bundle exec rails runner lib/receive_emails/lmtp_server.rb
+KillMode=process
+
+Restart=on-failure
+User=octoadmin

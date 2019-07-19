@@ -256,7 +256,7 @@ en:
       clusters: Clusters
       end_lic_gt: Version license expires after
       end_lic_lt: Version license expires not earlier than
-      my_packs: Packages and versions associated with me
+      my_packs: Only packages and versions associated with me
       only_deleted: only removed
       only_service: only service
       packages: Packages

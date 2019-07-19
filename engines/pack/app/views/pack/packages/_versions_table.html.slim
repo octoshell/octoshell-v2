@@ -34,11 +34,11 @@
         tr
           -['name','description','clusters','access_user',"available_for_user?"].each do |str|
             th =Pack::Version.human_attribute_name str
-          th   #{t("actions_pack")}
+          th   =t("actions_pack")
         - for version in records
           tr
             td  =link_to version.name,version
-            td  #{markdown version.description}
+            td  =markdown version.description
 
             td
               =render "pack/packages/clustervers",clustervers: version.clustervers

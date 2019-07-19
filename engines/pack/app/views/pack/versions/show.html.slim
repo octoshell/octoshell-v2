@@ -24,13 +24,13 @@ div class="panel  panel-heading clearfix"
 
 
 
-table
+table.table-striped.table-hover.table-sm width="100%"
   -[:name,:description].each do |key|
     tr
       td class="col-xs-3"
         =Pack::Version.human_attribute_name key
       td class="col-xs-9"
-        =@version.send key
+        =markdown @version.send(key)
 
   -@version.attributes.except("delete_on_expire","end_lic","lock_col","service",
     "deleted","state","created_at","updated_at",
@@ -39,7 +39,7 @@ table
       td class="col-xs-3"
         =Pack::Version.human_attribute_name key
       td class="col-xs-9"
-        =@version.send key
+        =markdown @version.send(key)
 
 
   tr
@@ -76,7 +76,7 @@ table
 p
   h4 =t "versions.options"
   p
-    table
+    table.table-striped.table-hover.table-sm width="100%"
       tr
           th class="col-xs-3"
             =Pack::VersionOption.human_attribute_name "name"
@@ -87,14 +87,14 @@ p
           td class="col-xs-3"
             =opt.readable_name
           td class="col-xs-9"
-            =opt.readable_value
+            =markdown opt.readable_value
 
 
 p
   h4 =t "versions.clusters"
   -@version.clustervers.each do |cl|
     p
-      table
+      table.table-striped.table-hover.table-sm width="100%"
         tr
           td class="col-xs-3"
             =Pack::Clusterver.human_attribute_name "name"
@@ -115,7 +115,7 @@ p
 
   -unless admin?
     h3 = Pack::Version.human_attribute_name(:accesses)
-    table   class="table table-hover" cols="6" cellspacing="30"
+    table class="table table-hover table-striped table-hover table-sm" cols="6" cellspacing="30" width="100%"
       tr
           td class="accesses-info" version_id=@version.id  class="col-xs-9"
           td class="col-xs-3"

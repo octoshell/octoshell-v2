@@ -16,7 +16,7 @@ div class="well"
         = link_to [:edit, :admin, @announcement] do
           i class="fa fa-pencil-square"
           |  #{t('.edit')}
-  p = markdown @announcement.body
+  p = hard_markdown @announcement.body
 
   - if @announcement.attachment.present?
     h5 #{t('.attachment')}: #{link_to @announcement.attachment.file.filename, @announcement.attachment.url}
