@@ -185,9 +185,9 @@ ApplicationController.class_eval do
     menu.add_item(Face::MenuItem.new({name: t("admin_submenu.statistics"),
                                       url: statistics.projects_path,
                                       regexp: /admin\/statistics/})) if User.superadmins.include? current_user
-    menu.add_item(Face::MenuItem.new({name: t("admin_submenu.announcements"),
-                                      url: announcements.admin_announcements_path,
-                                      regexp: /admin\/announcements/})) if User.superadmins.include?(current_user)|| current_user.mailsender?
+    # menu.add_item(Face::MenuItem.new({name: t("admin_submenu.announcements"),
+    #                                   url: announcements.admin_announcements_path,
+    #                                   regexp: /admin\/announcements/})) if User.superadmins.include?(current_user)|| current_user.mailsender?
     menu.add_item(Face::MenuItem.new({name: t("admin_submenu.sidekiq"),
                                       url: main_app.admin_sidekiq_web_path})) if User.superadmins.include? current_user
     menu.add_item(Face::MenuItem.new({name: t("admin_submenu.countries"),
@@ -219,8 +219,8 @@ ApplicationController.class_eval do
     menu.add_item(Face::MenuItem.new(name: t("admin_submenu.journal"),
                                       url: "/core/admin/journal")) if may? :manage, :users
 
-    # Face::MyMenu.admin_submenu(self) + menu.items.to_a
+    Face::MyMenu.admin_submenu(self) + menu.items.to_a
 
-    menu.items
+    # menu.items
   end
 end

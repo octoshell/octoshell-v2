@@ -1,6 +1,6 @@
 module Octoface
   class OctoConfig
-    attr_reader :abilities, :mod, :controller_abilities
+    attr_reader :abilities, :mod, :controller_abilities, :routes_block
     def initialize(mod, &block)
       @mod = mod
       @abilities = []
@@ -23,6 +23,10 @@ module Octoface
 
     def add_controller_ability(*args)
       @controller_abilities << args
+    end
+
+    def add_routes(&block)
+      @routes_block = block
     end
 
     def self.action_and_subject_by_path(path)
@@ -61,6 +65,7 @@ module Octoface
     end
 
     def self.finalize!
+      create_abilities!
       instances.each do |instance|
         mod_methods.each do |key, value|
           instance.mod.define_singleton_method(key, &value)

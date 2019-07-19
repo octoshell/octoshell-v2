@@ -8,7 +8,7 @@ User.class_eval do
 
   validates :language, inclusion: { in: I18n.available_locales.map(&:to_s) }
 
-  delegate :initials, :full_name, to: :profile
+  # delegate :initials, :full_name, to: :profile
 
   after_create :create_profile!
   after_create :setup_default_groups
@@ -39,25 +39,38 @@ User.class_eval do
     full_name
   end
 
-  def full_name_with_email
-    [full_name, email].join(" ")
-  end
-
-  def cut_email
-    to_swap = email.rpartition('@').last.rpartition('.').first
-    if to_swap.length >= 2
-      modified = to_swap[0] + '*' + to_swap[-1]
-    else
-      modified = to_swap
+  interface do
+    #email
+    def full_name
+      profile.full_name
     end
-    email.gsub(/@#{to_swap}/, "@#{modified}")
+
+    def initials
+      profile.initials
+    end
+
+    def full_name_with_email
+      [full_name, email].join(" ")
+    end
+
+    def cut_email
+      to_swap = email.rpartition('@').last.rpartition('.').first
+      if to_swap.length >= 2
+        modified = to_swap[0] + '*' + to_swap[-1]
+      else
+        modified = to_swap
+      end
+      email.gsub(/@#{to_swap}/, "@#{modified}")
+    end
+
+    def full_name_with_cut_email
+      [full_name, cut_email].join(" ")
+    end
+
+    def mailsender?
+      groups.where(name: 'mailsenders').any?
+    end
   end
-
-  def full_name_with_cut_email
-    [full_name, cut_email].join(" ")
-  end
-
-
 
   def self.superadmins
     Group.superadmins.users
@@ -73,10 +86,6 @@ User.class_eval do
 
   def self.reregistrators
     Group.reregistrators.users
-  end
-
-  def mailsender?
-    groups.where(name: 'mailsenders').any?
   end
 
   private

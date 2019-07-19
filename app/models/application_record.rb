@@ -8,4 +8,8 @@ class ApplicationRecord < ActiveRecord::Base
 
   self.abstract_class = true
 
+  def self.interface(&block)
+    instance_interface = Module.new(&block)
+    include(instance_interface)
+  end
 end

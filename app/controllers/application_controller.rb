@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def octo_authorize!
-    authorize!(*::Octoface::OctoConfig.action_and_subject_by_path(params[:controller]))
+    authorize!(*::Octoface.action_and_subject_by_path(params[:controller]))
   end
 
   include ControllerHelper

@@ -28,7 +28,11 @@ Octoshell::Application.routes.draw do
   mount Authentication::Engine, at: "/auth"
 
   mount Pack::Engine, at: "/pack"
-  mount Announcements::Engine, :at => "/announcements"
+  # mount Announcements::Engine, :at => "/announcements"
+
+  Octoface::OctoConfig.instances.each do |instance|
+    instance_eval &instance.routes_block if instance.routes_block
+  end
   mount Comments::Engine, :at => "/comments"
   mount Hardware::Engine, at: "/hardware"
   mount Reports::Engine, at: "/reports"

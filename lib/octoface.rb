@@ -6,4 +6,8 @@ module Octoface
 	def octo_config
 		@octo_config
 	end
+
+	def self.action_and_subject_by_path(path)
+		OctoConfig.action_and_subject_by_path(path)
+	end
 end

@@ -2,9 +2,11 @@ Sessions.user_class = "::User"
 module Sessions
   extend Octoface
   octo_configure do
-    # add :report_class, Report # теперь во всех модулях доступен report_class
-    add_ability(:manage, :reports, 'superadmins', 'experts') #Если абилки нет, то она создаётся
-    add_controller_ability(:manage, :reports, 'admin/reports', 'admin/report_projects') #В указанных контроллерах используется :manage :reports
+    add(:report_class) { Report }
+    add(:session_class) { Session }
+    add(:user_survey_class) { UserSurvey }
+    add_ability(:manage, :reports, 'superadmins', 'experts')
+    add_controller_ability(:manage, :reports, 'admin/reports', 'admin/report_projects')
   end
 end
 
