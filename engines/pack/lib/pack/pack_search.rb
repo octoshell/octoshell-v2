@@ -13,9 +13,9 @@ module Pack
               #если поиск ведется по пакетам и ,например,  ассоциированным  кластерверсиям вложенных версий
              @table_relation = Package
           else
-           @search_hash = search_hash
-           @table_relation = Version
-      end
+            @search_hash = search_hash
+            @table_relation = Version
+          end
     end
 
     def get_results inside_scope
@@ -24,7 +24,7 @@ module Pack
       @relation = @relation.merge(inside_scope) if inside_scope
       @relation = if user_access_applied?
         remove_joins
-        @relation.user_access @user_access_value,"INNER"
+        @relation.user_access(@user_id || @user_access_value,"INNER")
       else
         if @user_id #В этом случае нам обязательно нужно присоединить версии(если поиск ведется по пакетам) и доступы пользователя
           @relation.user_access @user_id,"LEFT"
@@ -41,7 +41,7 @@ module Pack
     end
 
     def remove_joins
-      @relation.joins_values.delete_if{ |j| must_delete? j  }
+      @relation.joins_values.delete_if{ |j| must_delete? j }
       # находим все join для объекта класса Relation и удаляем лишние,созданные ранзаком
     end
 
