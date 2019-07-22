@@ -18,18 +18,38 @@ Rails.application.config.assets.precompile += %w( apple-touch-icon-precomposed.p
 Rails.application.config.assets.precompile += %w( *.png )
 #Rails.application.config.assets.precompile += %w( wiki/wiki.css )
 #Rails.application.config.assets.precompile += %w( wiki/wiki.css )
-Rails.application.config.assets.precompile += %w( pack/pack.css )
+#Rails.application.config.assets.precompile += %w( pack/pack.css )
+Rails.application.config.assets.precompile += %w( catch_all.css )
 
-
-Rails.root.join('engines').glob('*/app/assets/stylesheets/**').each{|d|
-  Rails.application.config.assets.paths << d
+Rails.root.join('/app/assets/stylesheets').glob('*.css').each{|d|
+  Rails.application.config.assets.precompile += [d.to_s]
 }
 
 Rails.root.join('app/assets/javascripts').glob('*.js').each{|d|
+#  warn "JS+ #{d}"
   Rails.application.config.assets.precompile += [d.to_s]
 }
 
-Rails.root.join('engines/*/app/assets/stylesheets').glob('*.css').each{|d|
-  Rails.application.config.assets.precompile += [d.to_s]
+Rails.root.glob('engines/*/app/assets/javascripts/*').each{|dir|
+  dir.glob('*.js').each{|f|
+    Rails.application.config.assets.precompile += [f.to_s]
+  }
+  dir.glob('*.coffee').each{|f|
+    Rails.application.config.assets.precompile += [f.to_s]
+  }
 }
+Rails.root.glob('engines/*/app/assets/stylesheets/*').each{|dir|
+  dir.glob('*.css').each{|f|
+    Rails.application.config.assets.precompile += [f.to_s]
+  }
+  dir.glob('*.scss').each{|f|
+    Rails.application.config.assets.precompile += [f.to_s]
+  }
+}
+#Rails.root.glob('engines/*/app/assets/stylesheets/*').each{|dir|
+#  dir.glob('*/*.css').each{|d|
+#    warn "CSS+ #{d}"
+#    Rails.application.config.assets.precompile += [d.to_s]
+#  }
+#}
 
