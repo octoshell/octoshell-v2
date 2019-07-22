@@ -1,0 +1,28 @@
+/= stylesheet_link_tag params[:controller]
+div class="page-header"
+  h1 = t(".title", default: "Page Editing")
+
+= render "form"
+
+css:
+	ul.hlist li:before {
+	  content: attr(title);
+	  display: block;
+	}
+
+	ul.hlist {
+	  text-align: center;
+	  padding: 0;
+	}
+
+	ul.hlist li {
+	  border-left: 1px solid gray;
+	  border-right: 1px solid gray;
+	  display: inline-block;
+	  vertical-align: top;
+	}
+
+	ul.hlist li img {
+	  max-width: 100%;
+	  height: auto;
+	}

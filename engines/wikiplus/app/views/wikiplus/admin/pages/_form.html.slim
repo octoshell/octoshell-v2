@@ -1,0 +1,46 @@
+div class="row"
+    = bootstrap_form_for [:admin, @page] do |f|
+      -if @images != nil
+        ul.hlist
+          - @images.each do |image|
+            li title="#{image.image_identifier} / #{image.image.cont_type}"
+              img class="insert" src="#{image.image.thumb.url}" width="40" data-type="#{image.image.is_image? ? 'img' : image.image.is_video? ? 'vid' : 'oth'}" data-webm="#{image.image.is_image? ? nil : image.image.webm.url}" data-mp4="#{image.image.is_image? ? nil : image.image.mp4.url}" data-other="#{image.image.is_image? ? nil : image.image.is_video? ? nil : image.image.url}" alt="#{image.image_identifier}" title="#{image.image_identifier}"
+        div id="targetText"
+      = f.text_field :sortid 
+      - Wikiplus::Page.locale_columns(:name).each do |column|
+        = f.text_field column 
+      = f.text_field :url, help: "/pages/<strong>url</strong>".html_safe
+      /- index = 1
+      - Wikiplus::Page.locale_columns(:content).each do |column|
+          = markdown_area f, column, help: t("wiki.markdown_help").html_safe, rows: 8, class: "code img_target"
+          /- index += 1
+      = f.form_group do
+        = f.submit t("buttons.save", default: "Save")
+
+= markdown_js
+javascript:
+  $(".insert").click(function () {
+    var insertText = $(this).attr('src');
+    var mediatype = $(this).attr('data-type');
+    var webm = $(this).attr('data-webm');
+    var mp4 = $(this).attr('data-mp4');
+    var other = $(this).attr('data-other');
+
+    $('.markdown-edit').each(function(){
+      var pos = $(this).prop('selectionStart');
+      var text = $(this).val();
+      var before = text.substring(0,pos);
+      var after = text.substring(pos);
+      if(mediatype=='img'){
+        $(this).val(before+"\n![image]("+insertText+")\n"+after);
+      }
+      else if(mediatype=='vid'){
+        $(this).val(before+"\n![video...](video \"video/webm="+webm+';video/mp4='+mp4+"\")\n"+after);
+      }
+      else{
+        $(this).val(before+"\n[LINK]("+other+")\n"+after);
+      }
+      $(this).trigger('input');
+    });
+  });
+

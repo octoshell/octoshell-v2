@@ -1,0 +1,50 @@
+div class="page-header"
+  h1 = t(".title")
+
+/- if current_user && User.superadmins.include?(current_user)
+div class="panel panel-default"
+  div class="panel-heading clearfix"
+    = link_to t(".new_page"), new_admin_page_path, class: "btn btn-default"
+    /= link_to t(".new_image"), new_admin_image_path, class: "btn btn-default"
+    = link_to t(".all_images"), admin_images_path, class: "btn btn-default"
+  - if @pages.any?
+    div class="panel-body"
+      table class="table table-hover"
+        tr
+          th = t(".name")
+          th = t(".link")
+          th = t(".createsubpage")
+          th
+        - @pages.each do |page|
+          - @subpage = page
+          tr
+            td class="col-xs-4" = link_to page.name, [:admin, page]
+            td = url_for page
+            td = link_to t(".newsub_page"), newsubpage_admin_page_path(page)
+            td
+              div class="btn-group pull-right"
+                = link_to t(".edit", default: "edit"), edit_admin_page_path(page.id), class: "btn btn-default btn-sm"
+                button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                  span class="caret"
+                ul class="dropdown-menu" role="menu"
+                  - name = t(".delete", default: "delete")
+                  - confirm = t(".confirm", default: "Are You shure?")
+                  - data = { method: :delete, confirm: confirm }
+                  li class="text-left"
+                    = link_to name, admin_page_path(page.id), data: data, class: "text-danger"
+            - if page.subpages.size>0
+              - @deep = 1
+              = render "subpageindex"
+                  
+  - else
+    div class="panel-body"
+      p = t(".no_pages_found", default: "No Pages Found")
+/- else
+  - if @pages.any?
+    ul class="list-group"
+      - @pages.each do |page|
+        -@subpage = page
+        li class= "list-group-item" = link_to page.name, page
+      - if page.subpages.size>0
+          -@deep = 1
+          =render "subpageindex"
