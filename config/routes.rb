@@ -792,4 +792,5 @@ Octoshell::Application.routes.draw do
 
 
   end
+  get '*path.:ext', to: 'catch_all#index', xhr: true
 end
