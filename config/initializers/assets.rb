@@ -46,10 +46,3 @@ Rails.root.glob('engines/*/app/assets/stylesheets/*').each{|dir|
     Rails.application.config.assets.precompile += [f.to_s]
   }
 }
-#Rails.root.glob('engines/*/app/assets/stylesheets/*').each{|dir|
-#  dir.glob('*/*.css').each{|d|
-#    warn "CSS+ #{d}"
-#    Rails.application.config.assets.precompile += [d.to_s]
-#  }
-#}
-
