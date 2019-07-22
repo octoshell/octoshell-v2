@@ -63,6 +63,23 @@ module Jobstat
       #@filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''} # TODO:FILTERS
       @filters=[]
 
+      # compile full rules descriptions
+      @job_extra_data = @job.get_extra_data
+      @job_rules_description = @job.get_rules(@current_user) + @job.get_detailed
+      if @job_extra_data.present?
+        @job_rules_description.each do |rule_descr|
+          if @job_extra_data.key?(rule_descr['name'])
+            replace_dict = @job_extra_data[rule_descr['name']]
+            replace_dict.each do |key, value|
+              rule_descr['description'].gsub! key, value
+              rule_descr['supposition'].gsub! key, value
+              rule_descr['text_recommendation'].gsub! key, value
+            end
+          end
+        end
+      end
+      # end making rules description
+
       if cpu_user.nil? || cpu_user.value.nil?
         render :show_no_data
       end
