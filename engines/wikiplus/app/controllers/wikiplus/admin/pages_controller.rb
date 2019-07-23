@@ -4,6 +4,10 @@ module Wikiplus
 
     def index
       @pages = Page.where(mainpage_id: nil).order(:sortid)
+      @list = []
+      @pages.each{|p|
+        add_to_list_page p, 1
+      }
     end
 
     def show
@@ -74,6 +78,15 @@ module Wikiplus
 
     def check_abilities
       authorize! :manage, :pages
+    end
+
+    def add_to_list_page p, level
+      @list << [p.id,level]
+      if p.subpages.size>0
+        p.subpages.each{|subpage|
+          add_to_list_page subpage, level+1
+        }
+      end
     end
 
     def page_params
