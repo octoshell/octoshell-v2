@@ -1,6 +1,7 @@
 class Admin::UsersController < Admin::ApplicationController
   before_action :setup_default_filter, only: :index
-  before_action :check_authorization, except: :show
+  # before_action :check_authorization, except: :show
+  before_action :octo_authorize!, except: :show
 
   def index
     respond_to do |format|

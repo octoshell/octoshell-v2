@@ -1,7 +1,7 @@
 -if @taggings.any?
   h2
     =@tag.name
-    -if may? :manage, :comments_engine
+    -if can? :manage, :comments_engine
       = link_to "", edit_tags_lookup_path(@tag), class: "fa fa-pencil-square"
 
 = bootstrap_form_for @q, url: tags_lookup_path(@tag), method: :get, layout: :horizontal do |f|

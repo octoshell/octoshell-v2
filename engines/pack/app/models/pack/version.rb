@@ -294,7 +294,7 @@ module Pack
     end
 
     def vers_update(params)
-      @params = params.require(:version)
+      @params = params[:version]
       edit_opts
       update_clustervers @params.delete(:clustervers_attributes)
       edit_state_and_lic(@params.delete(:state_select), @params.delete(:end_lic))
@@ -331,7 +331,7 @@ module Pack
     end
 
     def version_params(params)
-      params.permit(:delete_on_expire, *Version.locale_columns(:description, :name),:name, :description, :version,
+      params.slice(:delete_on_expire, *Version.locale_columns(:description, :name),:name, :description, :version,
                     :cost, :deleted, :lock_col, :service)
     end
 

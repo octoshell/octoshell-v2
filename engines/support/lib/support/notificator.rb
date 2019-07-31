@@ -49,7 +49,7 @@ module Support
     end
 
     def topic(name = topic_name)
-      Topic.find_or_create_by!(name_ru: name, visible_on_create: false)
+      Topic.find_or_create_by!(name_ru: name, name_en: name, visible_on_create: false)
     end
 
     def create!(arg)

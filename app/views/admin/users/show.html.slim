@@ -1,5 +1,5 @@
 div class="well btn-toolbar"
-  - if may? :manage, :users
+  - if can? :manage, :users
     = link_to t(".login_as_user"), main_app.login_as_user_path(@user), class: "btn btn-success"
     = link_to t(".edit_groups_involvement"), [:edit, :admin, @user], class: "btn btn-default"
     = link_to t(".delete_user"), [:admin, @user], method: :delete, class: "btn btn-danger"

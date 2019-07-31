@@ -25,7 +25,7 @@
 module Core
   class Project < ApplicationRecord
 
-    
+
 
     belongs_to :kind, class_name: "Core::ProjectKind", foreign_key: :kind_id
     belongs_to :organization
@@ -64,7 +64,7 @@ module Core
 
     accepts_nested_attributes_for :card, :sureties
 
-    validates :card, :title, :organization, presence: true, if: :project_is_not_closing?
+    validates :card, :title, :organization, :kind, presence: true, if: :project_is_not_closing?
     validates :direction_of_science_ids, :critical_technology_ids,
       :research_area_ids, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }, if: :project_is_not_closing?
     validate do
@@ -72,6 +72,11 @@ module Core
     end
 
     scope :finder, lambda { |q| where("lower(title) like :q", q: "%#{q.mb_chars.downcase}%").order("title asc") }
+
+    def members_for_new_surety
+      members.joins(:user).where(project_access_state: :engaged,
+                                  users: { access_state: 'active'})
+    end
 
     after_create :engage_owner
 

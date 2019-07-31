@@ -6,6 +6,17 @@ class ApplicationController < ActionController::Base
     authorize!(:access, :admin)
   end
 
+  def not_authenticated
+    redirect_to main_app.root_path, alert: t("flash.not_logged_in")
+  end
+
+  def not_authorized
+    redirect_to main_app.root_path, alert: t("flash.not_authorized")
+  end
+
+  rescue_from CanCan::AccessDenied, with: :not_authorized
+
+
   def info_for_paper_trail
     { session_id: request.session.id }
   end
@@ -23,7 +34,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   before_action :journal_user, :check_notices
 
-  rescue_from MayMay::Unauthorized, with: :not_authorized
+  # rescue_from MayMay::Unauthorized, with: :not_authorized
 
   def not_authorized
     redirect_to main_app.root_path, alert: t("flash.not_authorized")

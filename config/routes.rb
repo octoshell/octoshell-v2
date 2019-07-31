@@ -41,11 +41,18 @@ Octoshell::Application.routes.draw do
   root "face/home#show"
 
   # Journal
-  get "/core/admin/journal" => "journal#journal"
+  get "admin/journal" => "journal#journal"
 
   resources :users do
     get :login_as, on: :member
     get :return_to_self, on: :member
+  end
+
+  resources :menu_items do
+    collection do
+      get :edit_all
+      put :update_all
+    end
   end
 
   resources :lang_prefs, only: {} do

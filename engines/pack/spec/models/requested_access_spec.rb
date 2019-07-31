@@ -12,8 +12,8 @@ module Pack
                               organization: @organization)
       @current_date = Date.current
       @old_date = Date.yesterday
-      unless Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
-        Support::Topic.create!(name: I18n.t('integration.support_theme_name'))
+      unless Support::Topic.find_by(name_ru: I18n.t('integration.support_theme_name'))
+        Support::Topic.create!(name_ru: I18n.t('integration.support_theme_name'))
       end
     end
 

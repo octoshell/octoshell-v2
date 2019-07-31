@@ -168,6 +168,7 @@ ru:
         admin_login: "Логин администратора"
         available_for_work: "Доступен для работы"
         state: "Статус"
+        description: "Описание"
       core/cluster_log:
         cluster_id: "Кластер"
         cluster: "Кластер"
@@ -176,6 +177,7 @@ ru:
         created_at: "Создан"
         message: "Сообщение"
       core/cluster_quota:
+        quota_kind_id: "Вид квоты"
         name: "Название"
         value: "Значение"
       core/quota_kind:
@@ -591,6 +593,8 @@ ru:
           add_partition: "+ добавить раздел"
           remove_partition: "удалить раздел"
           partitions: "Разделы"
+          quotas: "Квоты"
+
       cluster_logs:
         index:
           title: "Логи кластеров"

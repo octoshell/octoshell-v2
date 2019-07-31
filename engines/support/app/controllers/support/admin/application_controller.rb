@@ -3,7 +3,7 @@ module Support
     layout "layouts/support/admin"
 
     before_action :authorize_admins, :journal_user
-    rescue_from MayMay::Unauthorized, with: :not_authorized
+    # rescue_from MayMay::Unauthorized, with: :not_authorized
 
     def authorize_admins
       authorize!(:access, :admin) && authorize!(:manage, :tickets)

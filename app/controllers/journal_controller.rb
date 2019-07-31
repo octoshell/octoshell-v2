@@ -1,10 +1,6 @@
 class JournalController < ApplicationController
     before_action :authorize_admins!
 
-    def authorize_admins!
-      authorize! :access, :admin
-    end
-
     def journal
       @search = PaperTrail::Version.ransack(params[:q])
       @versions = @search.result(distinct: true).includes(:user).order(id: :desc)

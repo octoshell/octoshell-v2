@@ -76,6 +76,8 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+   # += ["engines/core/spec/factories"]
+  config.factory_bot.definition_file_paths += Dir[Rails.root.join('engines/*/spec/factories')]
 
   config.i18n.fallbacks = [I18n.default_locale]
 end

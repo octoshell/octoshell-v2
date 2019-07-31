@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "slim"
   #  s.add_dependency "activerecord-jdbcpostgresql-adapter"
   # s.add_dependency "bootstrap_form", ">= 4.2.0"
-  s.add_dependency "maymay"
+  # s.add_dependency "maymay"
 
   s.add_development_dependency "annotate"
 

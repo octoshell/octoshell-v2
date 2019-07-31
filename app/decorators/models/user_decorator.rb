@@ -5,6 +5,7 @@ User.class_eval do
 
   has_many :user_groups, dependent: :destroy
   has_many :groups, through: :user_groups
+  has_many :permissions, through: :groups
 
   validates :language, inclusion: { in: I18n.available_locales.map(&:to_s) }
 

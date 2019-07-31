@@ -168,6 +168,7 @@ en:
         admin_login: "Admin login"
         available_for_work: "Available for work"
         state: "Status" #
+        description: "Description"
       core/cluster_log:
         cluster_id: "Cluster"
         cluster: "Cluster"
@@ -176,6 +177,7 @@ en:
         created_at: "Created at"
         message: "Message"
       core/cluster_quota:
+        quota_kind_id: "Quota kind"
         name: "Name"
         value: "Value"
       core/quota_kind:
@@ -537,6 +539,8 @@ en:
           add_partition: "+ add partition"
           remove_partition: "remove partition"
           partitions: "Partitions"
+          quotas: "Quotas"
+
 
       cluster_logs:
         index:

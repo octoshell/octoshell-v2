@@ -1,1 +1,1 @@
-p = link_to_if may?(:manage, :organizations), (value ? value.value : ''), [:admin, value.reference]
+p = link_to_if can?(:manage, :organizations), (value ? value.value : ''), [:admin, value.reference]

@@ -10,10 +10,10 @@ module Announcements
   end
 end
 
-Face::MyMenu.first_or_new(:admin_submenu) do
-  if may?(*Octoface.action_and_subject_by_path('announcements/admin/announcements'))
-    add_item(t("admin_submenu.announcements"), announcements.admin_announcements_path, 'announcements/admin/announcements')
-  end
+Face::MyMenu.items_for(:admin_submenu) do
+  add_item_if_may(t('admin_submenu.announcements'),
+                  announcements.admin_announcements_path,
+                  'announcements/admin/announcements')
 end
 
 

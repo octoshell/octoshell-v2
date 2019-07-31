@@ -1,7 +1,7 @@
 module Wiki
   class ApplicationController < ::ApplicationController
     #ActionController::Base
-    #include AuthMayMay
+    #
     layout "layouts/application"
 
 

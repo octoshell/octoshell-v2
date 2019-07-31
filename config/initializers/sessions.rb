@@ -7,16 +7,25 @@ module Sessions
     add(:user_survey_class) { UserSurvey }
     add_ability(:manage, :reports, 'superadmins', 'experts')
     add_controller_ability(:manage, :reports, 'admin/reports', 'admin/report_projects')
+    add_ability(:manage, :sessions, 'superadmins', 'experts')
+    add_controller_ability(:manage, :sessions, 'admin/sessions', 'admin/surveys', 'admin/report_submit_denial_reasons')
+
   end
 end
 
-Face::MyMenu.first_or_new(:user_submenu) do
-   sessions_warning = current_user.warning_surveys.exists? ||
-                      current_user.warning_reports.exists?
-   sessions_title = if sessions_warning
-                     t("user_submenu.sessions_warning.html").html_safe
-                    else
-                     t("user_submenu.sessions")
-                    end
-   add_item(sessions_title, sessions.reports_path, 'sessions/reports', 'sessions/user_surveys')
+Face::MyMenu.items_for(:user_submenu) do
+  sessions_warning = current_user.warning_surveys.exists? ||
+                     current_user.warning_reports.exists?
+  sessions_title = if sessions_warning
+                    t("user_submenu.sessions_warning.html").html_safe
+                   else
+                    t("user_submenu.sessions")
+                   end
+  add_item(sessions_title, sessions.reports_path, 'sessions/reports', 'sessions/user_surveys')
+end
+
+Face::MyMenu.items_for(:admin_submenu) do
+  add_item_if_may(t("admin_submenu.reports"), sessions.admin_reports_path, 'sessions/admin/reports')
+  add_item_if_may(t("admin_submenu.sessions"), sessions.admin_sessions_path, 'sessions/admin/sessions', 'sessions/admin/surveys')
+  add_item_if_may(t("admin_submenu.report_submit_denial_reasons"), sessions.admin_report_submit_denial_reasons_path, 'sessions/admin/report_submit_denial_reasons')
 end

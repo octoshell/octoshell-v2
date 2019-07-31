@@ -7,7 +7,6 @@ describe LocalizedEmails, type: :mailer do
     @users << create(:user)
     @users << create(:user, email: 'eng_2@octoshell.uk', language: 'en')
     @collection = TestMailer.test_mail(@users.map(&:email) + ['vasya@mail.ru']).message
-    puts @collection.inspect
     expect(@collection.mails.map(&:to)).to match_array([ [@users[0], @users[2]].map(&:email), [@users[1],@users[3]].map(&:email) + ['vasya@mail.ru'] ] )
     expect { TestMailer.test_mail(@users.map(&:email) + ['vasya@mail.ru']).deliver! }.to change { ActionMailer::Base.deliveries.count }.by(2)
   end
@@ -17,12 +16,11 @@ describe LocalizedEmails, type: :mailer do
     @users << create(:user, email: 'eng@octoshell.uk', language: 'en')
     @users << create(:user)
     @users << create(:user, email: 'eng_2@octoshell.uk', language: 'en')
-    @project = create_project
+    @project = create(:project)
     @users.each do |u|
       @project.members.create!(user: u, project_access_state: :allowed)
     end
     @collection = Core::Mailer.project_activated(@project.id).message
-    puts @collection.inspect
     ru_subject = I18n.t('core.mailer.project_activated.subject', locale: :ru, title: @project.title)
     en_subject = I18n.t('core.mailer.project_activated.subject', locale: :en, title: @project.title)
 

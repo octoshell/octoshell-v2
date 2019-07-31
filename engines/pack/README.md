@@ -59,7 +59,7 @@ menu.add_item(Face::MenuItem.new({name: "Пакеты",
 
 menu.add_item(Face::MenuItem.new({name: "Пакеты",
                                       url: pack.admin_root_path,
-                                      regexp: /pack\/admin/}))  if may? :manage, :packages
+                                      regexp: /pack\/admin/}))  if can? :manage, :packages
 
 ```
 

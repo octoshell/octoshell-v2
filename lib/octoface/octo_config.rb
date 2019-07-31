@@ -36,6 +36,15 @@ module Octoface
         mod_string = instance.mod.to_s.underscore
         mod_string == mod
       end
+
+      unless found_instance
+        found_instance = instances.detect do |instance|
+          mod_string = instance.mod.to_s.underscore
+          mod_string == 'fake_main_app'
+        end
+        inside_engine_path = path
+      end
+
       found_instance.controller_abilities.detect { |ab| ab[2..-1].include?(inside_engine_path)}[0..1]
 
     end
@@ -56,7 +65,7 @@ module Octoface
       instances.each do |instance|
         instance.abilities.each do |a|
           Group.all.each do |g|
-            Ability.where(action: a[0], subject: a[1], group_id: g.id).first_or_create do |ability|
+            Permission.where(action: a[0], subject_class: a[1], group_id: g.id).first_or_create do |ability|
               ability.available = a[2..-1].include?(g.name)
             end
           end
@@ -64,13 +73,25 @@ module Octoface
       end
     end
 
-    def self.finalize!
-      create_abilities!
+    def self.forward_classes!
       instances.each do |instance|
         mod_methods.each do |key, value|
           instance.mod.define_singleton_method(key, &value)
         end
       end
+    end
+
+    def self.db_present?
+      ::ActiveRecord::Base.connection_pool.with_connection(&:active?)
+    rescue
+      false
+    end
+
+    def self.finalize!
+      if db_present?
+        # create_abilities!
+      end
+      forward_classes!
     end
 
 

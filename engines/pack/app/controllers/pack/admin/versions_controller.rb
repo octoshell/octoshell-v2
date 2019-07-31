@@ -31,7 +31,8 @@ module Pack
     def create
       @version = Version.new
       @version.package = @package
-      @version.vers_update(params)
+      params.permit!
+      @version.vers_update(params.to_h)
       if @version.save
         redirect_to admin_package_version_path(@package, @version)
       else
@@ -46,7 +47,8 @@ module Pack
 
     def update
       @version = Version.find(params[:id])
-      @version.vers_update params
+      params.permit!
+      @version.vers_update params.to_h
       @stale_message = t("stale_message") if @version.changes["lock_col"]
       if @version.save
         redirect_to admin_package_version_path(@package, @version)

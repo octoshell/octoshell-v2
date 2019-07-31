@@ -1,7 +1,7 @@
 
 div class="page-header"
   h1 = t(".title", default: "Users")
-= bootstrap_form_for @search, method: :get, url: core_admin_journal_path, layout: :vertical do |f|
+= bootstrap_form_for @search, method: :get, url: admin_journal_path, layout: :vertical do |f|
   .row
     .col-md-4
       = f.select :item_type_in, PaperTrail::Version.distinct.pluck(:item_type),  {label: t('.item_type_in'), include_blank: true}, multiple: true

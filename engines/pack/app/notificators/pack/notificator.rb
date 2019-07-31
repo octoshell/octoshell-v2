@@ -3,7 +3,7 @@ module Pack
 
     def topic
       topic = super
-      Support::Topic.find_or_create_by!(name_ru: t('.topic'), parent_topic: topic)
+      Support::Topic.find_or_create_by!(name_ru: t('.topic'), name_en: t('.topic'), parent_topic: topic)
     end
 
     def notify_about_expiring_versions(versions)

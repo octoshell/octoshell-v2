@@ -1,7 +1,5 @@
 def create_project(overrides = {})
-  create(:project, ({ direction_of_sciences: [Core::DirectionOfScience.first],
-    research_areas: [Core::ResearchArea.first],critical_technologies: [Core::CriticalTechnology.first]
-    }.merge overrides ) )
+  create(:project, overrides)
 end
 
 def build_projects_and_members n

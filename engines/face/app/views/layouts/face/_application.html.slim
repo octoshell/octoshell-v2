@@ -35,7 +35,7 @@ html
             = right_bar
 
     div class="container"
-      - if may?(:access, :admin) && request.fullpath =~ /admin/
+      - if can?(:access, :admin) && request.fullpath =~ /admin/
         ul class="nav nav-tabs submenu"
           = render "face/shared/submenu", items: admin_submenu_items
         = yield :admin_engine_submenu

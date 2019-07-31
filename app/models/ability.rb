@@ -1,87 +1,53 @@
-# == Schema Information
-#
-# Table name: abilities
-#
-#  id         :integer          not null, primary key
-#  action     :string(255)
-#  available  :boolean          default(FALSE)
-#  subject    :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#  group_id   :integer
-#
-# Indexes
-#
-#  index_abilities_on_group_id  (group_id)
-#
+# frozen_string_literal: true
 
-# Модель доступа к действию для группы пользователей
-class Ability < ApplicationRecord
-  Definition = Struct.new(:action, :subject)
+class Ability
+  include CanCan::Ability
 
-  belongs_to :group
+  def initialize(user)
 
-  validates :action, :subject, :group, presence: true
-  validates :action, uniqueness: { scope: [:subject, :group_id] }
-
-  scope :by_definition, ->(definition) { where(action: definition.action, subject: definition.subject) }
-
-  class << self
-    def definitions
-      raw_definitions.map do |subject, actions|
-        actions.map { |a| Definition.new(a.to_sym, subject.to_sym) }
-      end.flatten
-    end
-
-    def raw_definitions
-      YAML.load_file("#{Rails.root}/config/abilities.yml")
-    end
-
-    def redefine!
-      transaction do
-        delete_old
-        create_new
-      end
-    end
-
-    def delete_old
-      cases = definitions.map { |d| "#{d.action}#{d.subject}" }
-      where("concat(action, subject) not in (?)", cases).delete_all
-    end
-
-    def create_new
-      Group.all.each do |group|
-        definitions.each do |d|
-          group.abilities.by_definition(d).first_or_create!
+    can do |action, subject_class, subject|
+      if !user
+        false
+      elsif str_or_symbol?(subject_class)
+        user.permissions.where(action: aliases_for_action(action), subject_class: subject, available: true).exists?
+      else
+        user.permissions.where(action: aliases_for_action(action), available: true).any? do |permission|
+          permission.subject_class == subject_class.to_s  &&
+            (subject.nil? || permission.subject_id.nil? || permission.subject_id == subject.id)
         end
       end
     end
 
-    def default
-      definitions.map do |definition|
-        new { |a| a.definition = definition }
-      end
-    end
+    # Define abilities for the passed in user here. For example:
+    #
+    #   user ||= User.new # guest user (not logged in)
+    #   if user.admin?
+    #     can :manage, :all
+    #   else
+    #     can :read, :all
+    #   end
+    #
+    # The first argument to `can` is the action you are giving the user
+    # permission to do.
+    # If you pass :manage it will apply to every action. Other common actions
+    # here are :read, :create, :update and :destroy.
+    #
+    # The second argument is the resource the user can perform the action on.
+    # If you pass :all it will apply to every resource. Otherwise pass a Ruby
+    # class of the resource.
+    #
+    # The third argument is an optional hash of conditions to further filter the
+    # objects.
+    # For example, here the user can only update published articles.
+    #
+    #   can :update, Article, :published => true
+    #
+    # See the wiki for details:
+    # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
   end
 
-  def definition=(definition)
-    self.action = definition.action
-    self.subject = definition.subject
+  def str_or_symbol?(arg)
+    [Symbol, String].include? arg
   end
 
-  def description
-    I18n.t("abilities.#{subject}.#{action}")
-  end
-
-  def action_name
-    action.to_sym
-  end
-
-  def subject_name
-    subject.to_sym
-  end
-
-  def to_definition
-    Definition.new(action_name, subject_name)
-  end
 end

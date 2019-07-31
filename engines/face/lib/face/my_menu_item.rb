@@ -20,7 +20,14 @@ module Face
       # puts params.fetch(:controller, :action)
       # puts @controllers.inspect.red
       # puts controller.params[:controller].inspect.red
-      @controllers.include? @controller.params[:controller] # == @path[:controller]
+      string = @controller.params[:controller]
+      first_bool = @controllers.include? string # == @path[:controller]
+      second_bool = @controllers.select { |c| c.is_a?(Regexp) }
+                                .inject(false) do |sum, elem|
+        sum || string =~ elem
+      end
+      # [].map { |c| c.is_a?(Regexp) }.inject(false) { |sum, elem| sum || elem }
+      first_bool || second_bool
       # puts params.inspect
       # if regexp.present?
       #   regexp =~ current_url

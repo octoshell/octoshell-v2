@@ -1,6 +1,6 @@
 require "statistics/engine"
 require "sidekiq"
-require "maymay"
+# require "maymay"
 require "ransack"
 require "kaminari"
 

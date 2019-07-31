@@ -5,8 +5,8 @@ module Pack
     def show
       @version = Version.includes(:version_options,:accesses,clustervers: :core_cluster).order(:id).find(params[:id])
       @versions = [@version]
-      if @version.service &&  @version.user_accesses.select{|a| a.status=="allowed"} && !may?(:manage, :packages)
-        raise MayMay::Unauthorized
+      if @version.service &&  @version.user_accesses.select{|a| a.status=="allowed"} && !can?(:manage, :packages)
+        raise CanCan::AccessDenied
       end
       @options_for_select = []
       @options_for_select_labels = []

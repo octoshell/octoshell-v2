@@ -2,12 +2,41 @@ module FakeMainApp
   extend ::Octoface
   octo_configure do
     add(:user_class) { User } # теперь во всех модулях доступен report_class
-    # add_ability(:manage, :reports, 'superadmins', 'experts') #Если абилки нет, то она создаётся
-    # add_controller_ability(:manage, :reports, 'admin/reports', 'admin/report_projects') #В указанных контроллерах используется :manage :reports
+    add_ability(:manage, :users, 'superadmins') #Если абилки нет, то она создаётся
+    add_controller_ability(:manage, :users, 'admin/users') #В указанных контроллерах используется :manage :reports
+    add_ability(:manage, :groups, 'superadmins') #Если абилки нет, то она создаётся
+    add_controller_ability(:manage, :groups, 'admin/groups') #В указанных контроллерах используется :manage :reports
+
   end
 end
 
-Face::MyMenu.first_or_new(:user_submenu) do
+Face::MyMenu.items_for(:user_submenu) do
   add_item(t('user_submenu.profile'), main_app.profile_path, 'profiles',
            'core/employments', 'core/organizations')
+end
+
+Face::MyMenu.items_for(:admin_submenu) do
+  add_item_if_may(t('admin_submenu.users'),
+                  main_app.admin_users_path,
+                  'admin/users')
+
+  add_item_if_may(t('admin_submenu.groups'),
+                  main_app.admin_groups_path,
+                  'admin/groups')
+
+  if User.superadmins.include? current_user
+    add_item(t("admin_submenu.sidekiq"), main_app.admin_sidekiq_web_path)
+
+    add_item(t("admin_submenu.emails"), main_app.rails_email_preview_path, %r{admin/emails})
+
+    add_item(t("admin_submenu.options"), main_app.admin_options_categories_path, %r{admin/options})
+
+    add_item(t("admin_submenu.journal"), '/admin/journal', %r{admin/journal})
+
+  end
+
+
+                  # menu.add_item(Face::MenuItem.new({name: t("admin_submenu.sidekiq"),
+                  #                                   url: main_app.admin_sidekiq_web_path})) if User.superadmins.include? current_user
+
 end

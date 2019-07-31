@@ -40,7 +40,7 @@ RSpec.describe User, type: :model do
       # Authentication.delete_after = 6.months
       user = create(:unactivated_user, created_at: Date.today - 12.months, activation_state: :pending)
       User.delete_pending_users
-      expect(User.exists?(user)).to eq false
+      expect(User.exists?(user.id)).to eq false
     end
 
     it 'deletes only old pending users' do
@@ -49,8 +49,8 @@ RSpec.describe User, type: :model do
       user2 = create(:user, created_at: Date.today - 12.months, activation_state: :pending)
 
       User.delete_pending_users
-      expect(User.exists?(user)).to eq true
-      expect(User.exists?(user2)).to eq true
+      expect(User.exists?(user.id)).to eq true
+      expect(User.exists?(user2.id)).to eq true
     end
 
   end
