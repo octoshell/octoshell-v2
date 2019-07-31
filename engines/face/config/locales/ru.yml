@@ -9,6 +9,8 @@ ru:
     next: Продолжить
     save: Сохранить
     send: Отправить
+  buttons:
+    save: Сохранить
   date:
     abbr_day_names:
     - Вс

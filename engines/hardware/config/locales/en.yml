@@ -59,7 +59,8 @@ en:
           confirm: Do you really want to remove this state?
           no_items: No devices
         update_state:
-          stale: State was updated while you were editing this item. Repeat it please
+          stale: State was updated while you were editing this item. Repeat
+            it please
       items_states:
         index:
           created_after: Created after

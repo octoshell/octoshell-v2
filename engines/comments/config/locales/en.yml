@@ -38,8 +38,9 @@ en:
             class_name:
               not_exist: This model does not exist
             conflict:
-              exists_similar: You can not associate one object (a list of objects)
-                with different levels
+              exists_similar: >-
+                You can not associate one object (a list of objects) with
+                different levels
     models:
       comments/comment: Comments
       comments/file_attachment: Files
@@ -121,9 +122,9 @@ en:
       q:
         all: Does not matter
     rake:
-      name: 'Модуль комментариев: Правила доступа к заметкам'
+      name: 'Comments module: rules of notes access'
       regexp: "^# Правила доступа к заметкам"
-      short_name: Правила доступа к заметкам
+      short_name: rules of notes access
       url: comments_guide
     tags:
       create:
