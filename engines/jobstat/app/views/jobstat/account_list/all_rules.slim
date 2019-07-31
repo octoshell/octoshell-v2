@@ -69,6 +69,10 @@ section class="accordion"
         = rule['description']
       article class="hh"
         /p <strong>Описание:</strong> #{rule['comment']}
+        p class="hidden hidden_name"
+          strong
+            = "id: "
+            = rule['name']
         p
           strong
             = t('.possible_cause')
@@ -101,6 +105,11 @@ javascript:
       $("#btn-email-"+rule).addClass("tinted")
     })
 
+    document.onkeyup = function (e) {
+        if (e.ctrlKey && e.which == 89) {
+            $(".hidden_name").toggleClass('hidden')
+        }
+    };
   });
 
   function on_new_rule_suggest(){
