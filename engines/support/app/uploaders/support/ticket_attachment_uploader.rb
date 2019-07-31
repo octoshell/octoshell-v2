@@ -9,6 +9,7 @@ module Support
     storage :file
 
     def store_dir
+    	#logger.info "path=system/replies/attachments/:id_partition"
       "system/tickets/attachments/:id_partition"
     end
   end

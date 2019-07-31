@@ -13,7 +13,9 @@ div class="page-header"
       = f.autocomplete_field :author_id_eq,{ label: Sessions::Report.human_attribute_name(:author), source: core.with_owned_projects_finder_admin_users_path} do |val|
         - User.find(val).full_name_with_email
       - if Sessions.user_class.superadmins.include? current_user
-        = f.collection_select :expert_id_eq, Sessions.user_class.experts, :id, :full_name, priority: [current_user], label: t('.expert'), include_blank: true
+        = f.collection_select :expert_id_eq, Sessions.user_class.experts.includes(:profile), :id, :full_name, priority: [current_user], label: t('.expert'), include_blank: true
+      = f.collection_select :project_research_areas_id_in,Core::ResearchArea.all, :id, :name, { label: Core::ResearchArea.model_name.human, include_blank: true}, {multiple: true}
+
   /* = search_check_boxes(f, :illustration_points_in, t('.figures')) */
   /* = search_check_boxes(f, :statement_points_in, t('presentation')) */
   /* = search_check_boxes(f, :summary_points_in, t('.overall_assessment')) */

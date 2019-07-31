@@ -1,6 +1,6 @@
-h3
-  |{{#each tags}}
-    #{render partial: 'show'}
-   {{else}}
-    #{t('.index.empty')}
-   {{/each}}
+      section.comment-list
+		  |{{#each tags}}
+		    #{render partial: 'show'}
+		   {{else}}
+		    <h4>#{t('.index.empty')}</h4>
+		   {{/each}}

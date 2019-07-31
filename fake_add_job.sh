@@ -6,10 +6,10 @@ export CLUSTER="mytest"
 export ACC='admin_1'
 export PART='test'
 
-LAST_ID=`psql -h localhost -U octo -t new_octoshell2 -c ' select max(drms_job_id) from jobstat_jobs;'`
+LAST_ID=`psql -h localhost -U octo -t new_octoshell -c ' select max(drms_job_id) from jobstat_jobs;'`
 
 JOB_ID=$((LAST_ID+1))
-JOB_ID=15
+JOB_ID=16
 
 if [ "x$1" != x ]; then
   post_tags=0
@@ -20,51 +20,51 @@ fi
 # echo "last id=$JOB_ID"
 # exit 0
 
-INFO='{
-  "account": "$ACC", 
-  "command": "fake_command", 
-  "job_id": '"$JOB_ID"', 
-  "nodelist": "n48418", 
-  "num_cores": 14, 
-  "num_nodes": 1, 
-  "partition": "$PART", 
-  "priority": 4294729060, 
-  "state": "RUNNING", 
-  "t_end": 1544310112, 
-  "t_start": 1543223712, 
-  "t_submit": 1542223712, 
-  "task_id": 0, 
-  "timelimit": 259200, 
-  "workdir": "fake_workdir"
-}'
+INFO="{
+  \"account\": \"$ACC\", 
+  \"command\": \"fake_command2\",
+  \"job_id\": \"$JOB_ID\", 
+  \"nodelist\": \"n48418\", 
+  \"num_cores\": 14, 
+  \"num_nodes\": 1, 
+  \"partition\": \"$PART\", 
+  \"priority\": 4294729060, 
+  \"state\": \"RUNNING\", 
+  \"t_end\": 1544310112, 
+  \"t_start\": 1543223712, 
+  \"t_submit\": 1542223712, 
+  \"task_id\": 0, 
+  \"timelimit\": 259200, 
+  \"workdir\": \"fake_workdir\"
+}"
 
-TAGS='{
-  "job_id": '"$JOB_ID"', 
-  "tags": [
-    "rule_normal_serial", 
-    "rule_bad_locality", 
-    "rule_not_effective", 
-    "class_bad_locality", 
-    "class_single", 
-    "class_serial", 
-    "class_less_suspicious", 
-    "thr_low_l1_cache_miss", 
-    "thr_low_mem_store", 
-    "thr_low_mem_load", 
-    "thr_low_ib_mpi", 
-    "thr_low_gpu_load", 
-    "thr_low_cpu_iowait", 
-    "thr_low_cpu_nice", 
-    "thr_low_cpu_system", 
-    "thr_low_cpu_user", 
-    "thr_low_loadavg", 
-    "rule_mem_disbalance", 
-    "rule_one_active_process", 
-    "rule_wrong_partition_gpu", 
-    "thr_low_l2_cache_miss"
+TAGS="{
+  \"job_id\": \"$JOB_ID\", 
+  \"tags\": [
+    \"rule_normal_serial\", 
+    \"rule_bad_locality\", 
+    \"rule_not_effective\", 
+    \"class_bad_locality\", 
+    \"class_single\", 
+    \"class_serial\", 
+    \"class_less_suspicious\", 
+    \"thr_low_l1_cache_miss\", 
+    \"thr_low_mem_store\", 
+    \"thr_low_mem_load\", 
+    \"thr_low_ib_mpi\", 
+    \"thr_low_gpu_load\", 
+    \"thr_low_cpu_iowait\", 
+    \"thr_low_cpu_nice\", 
+    \"thr_low_cpu_system\", 
+    \"thr_low_cpu_user\", 
+    \"thr_low_loadavg\", 
+    \"rule_mem_disbalance\", 
+    \"rule_one_active_process\", 
+    \"rule_wrong_partition_gpu\", 
+    \"thr_low_l2_cache_miss\"
   ], 
-  "task_id": 0
-}'
+  \"task_id\": 0
+}"
 
 PERF='{
   "avg": {

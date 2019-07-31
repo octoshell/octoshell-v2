@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190125111222) do
+ActiveRecord::Schema.define(version: 20190704084222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,38 @@ ActiveRecord::Schema.define(version: 20190125111222) do
   end
 
   add_index "announcements", ["created_by_id"], name: "index_announcements_on_created_by_id", using: :btree
+
+  create_table "api_access_keys", force: :cascade do |t|
+    t.string   "key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "api_access_keys_exports", force: :cascade do |t|
+    t.integer "access_key_id"
+    t.integer "export_id"
+  end
+
+  create_table "api_exports", force: :cascade do |t|
+    t.string   "title"
+    t.text     "request"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.text     "text"
+    t.boolean  "safe",       default: true
+  end
+
+  create_table "api_exports_key_parameters", id: false, force: :cascade do |t|
+    t.integer "export_id"
+    t.integer "key_parameter_id"
+  end
+
+  create_table "api_key_parameters", force: :cascade do |t|
+    t.string   "name"
+    t.string   "default"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "category_values", force: :cascade do |t|
     t.integer  "options_category_id"
@@ -331,7 +363,6 @@ ActiveRecord::Schema.define(version: 20190125111222) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "category"
-    t.integer  "type"
   end
 
   add_index "core_notices", ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id", using: :btree
@@ -638,8 +669,8 @@ ActiveRecord::Schema.define(version: 20190125111222) do
   end
 
   create_table "jobstat_jobs", force: :cascade do |t|
-    t.string   "cluster",      limit: 32
-    t.integer  "drms_job_id",  limit: 8
+    t.string   "cluster",      limit: 32,   null: false
+    t.integer  "drms_job_id",  limit: 8,    null: false
     t.integer  "drms_task_id", limit: 8
     t.string   "login",        limit: 32
     t.string   "partition",    limit: 32
@@ -654,8 +685,10 @@ ActiveRecord::Schema.define(version: 20190125111222) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.text     "nodelist"
+    t.integer  "initiator_id"
   end
 
+  add_index "jobstat_jobs", ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true, using: :btree
   add_index "jobstat_jobs", ["end_time"], name: "index_jobstat_jobs_on_end_time", using: :btree
   add_index "jobstat_jobs", ["login"], name: "index_jobstat_jobs_on_login", using: :btree
   add_index "jobstat_jobs", ["partition"], name: "index_jobstat_jobs_on_partition", using: :btree
@@ -810,6 +843,15 @@ ActiveRecord::Schema.define(version: 20190125111222) do
   add_index "sessions_projects_in_sessions", ["project_id"], name: "index_sessions_projects_in_sessions_on_project_id", using: :btree
   add_index "sessions_projects_in_sessions", ["session_id", "project_id"], name: "i_on_project_and_sessions_ids", unique: true, using: :btree
   add_index "sessions_projects_in_sessions", ["session_id"], name: "index_sessions_projects_in_sessions_on_session_id", using: :btree
+
+  create_table "sessions_report_materials", force: :cascade do |t|
+    t.string   "materials"
+    t.string   "materials_content_type"
+    t.integer  "materials_file_size"
+    t.integer  "report_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "sessions_report_replies", force: :cascade do |t|
     t.integer  "report_id"

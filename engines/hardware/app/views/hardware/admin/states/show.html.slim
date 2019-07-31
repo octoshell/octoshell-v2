@@ -10,15 +10,31 @@ div class="well"
 div class="row"
   div class="col-xs-6"
     blockquote
-      h3 = Hardware::State.human_attribute_name(:name)
-      p = @state.name
+      p
+        b
+          = Hardware::State.human_attribute_name(:name)
+          | : &nbsp;
+        = @state.name
 
-      h3 = Hardware::State.human_attribute_name(:description)
-      p = @state.description
+      p
+        b
+          = Hardware::State.human_attribute_name(:description)
+          | : &nbsp;
+        = @state.description
 
-      h3 = Hardware::Kind.model_name.human
-      p = @state.kind.name
-      h3 = Hardware::State.human_attribute_name(:from_states)
+      p
+        b
+          = Hardware::Kind.model_name.human
+          | : &nbsp;
+        = @state.kind.name
+
+      p
+        b
+          = Hardware::State.human_attribute_name(:from_states)
+          | : &nbsp;
       = render 'states_table', states: @state.from_states.includes(:kind)
-      h3 = Hardware::State.human_attribute_name(:to_states)
+      p
+        b
+          = Hardware::State.human_attribute_name(:to_states)
+          | : &nbsp;
       = render 'states_table', states: @state.to_states.includes(:kind)

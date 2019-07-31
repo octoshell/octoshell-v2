@@ -1,5 +1,8 @@
 module Core
   class MembersController < Core::ApplicationController
+
+    before_action :filter_blocked_users
+
     before_action only: %i[edit update] do
       @project = Project.find(params[:project_id])
       @member = @project.members.find(params[:id])

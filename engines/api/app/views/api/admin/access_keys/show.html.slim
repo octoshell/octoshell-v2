@@ -1,0 +1,7 @@
+p
+  strong
+    | Key:
+  = @access_key.key
+= link_to 'Edit', edit_admin_access_key_path(@access_key)
+|  | 
+= link_to 'Back', admin_access_keys_path
