@@ -236,9 +236,10 @@ table class="table table-bordered table-striped"
                 a class="octo-close-popup2" onClick="return popup_hide('agree#{id}_#{cond_name}')"
 
         td
-          strong class="hidden_name" style="display: none;"
-            = "id: "
-            = cond['name']
+          p class="hidden_name hidden"
+            strong
+              = "id: "
+              = cond['name']
           = cond['description']
         td
           = cond['supposition']
@@ -391,7 +392,7 @@ javascript:
 
     document.onkeyup=function(e) {
       if (e.ctrlKey && e.which == 89){
-        $(".hidden_name").css('display','block')
+        $(".hidden_name").toggleClass('hidden')
       }
     };
     
