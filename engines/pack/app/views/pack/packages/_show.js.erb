@@ -155,8 +155,8 @@ function AccessViewer(ids) {
           messages.find('button').click(function(){
             $.ajax({
               url: '/pack/accesses/update_accesses',
-              data: {version_id: version_id, type: sel_value,
-                     status: "requested", delete: true,
+              data: {to_id: access.to_id, to_type: access.to_type,
+                     type: sel_value, status: "requested", delete: true,
                      lock_version: access.lock_version,
                      versions_ids: viewer.ids},
               method: "POST",
@@ -225,7 +225,7 @@ viewer.load();
 
 $(document ).on('click',".btn_access",function()
 {
-  var version_id= $(this).attr('version_id');
+  var version_id = $(this).attr('version_id');
   var el= $(this).parents('tr').next().find('div.accesses_form_container')
    if (el.attr('hidden'))
    {

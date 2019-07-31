@@ -17,14 +17,15 @@
 
 # Модель доступа к действию для группы пользователей
 class Permission < ApplicationRecord
-  Definition = Struct.new(:action, :subject)
+  Definition = Struct.new(:action, :subject_class)
 
   belongs_to :group
 
-  validates :action, :subject, :group, presence: true
-  validates :action, uniqueness: { scope: [:subject, :group_id] }
+  validates :action, :subject_class, :group, presence: true
+  validates :action, uniqueness: { scope: %i[subject_class group_id subject_id] }
 
-  scope :by_definition, ->(definition) { where(action: definition.action, subject: definition.subject) }
+  scope :by_definition, ->(definition) { where(action: definition.action,
+                                               subject_class: definition.subject_class) }
 
   class << self
     def definitions
@@ -45,14 +46,14 @@ class Permission < ApplicationRecord
     end
 
     def delete_old
-      cases = definitions.map { |d| "#{d.action}#{d.subject}" }
-      where("concat(action, subject) not in (?)", cases).delete_all
+      cases = definitions.map { |d| "#{d.action}#{d.subject_class}" }
+      where("concat(action, subject_class) not in (?)", cases).delete_all
     end
 
     def create_new
       Group.all.each do |group|
         definitions.each do |d|
-          group.abilities.by_definition(d).first_or_create!
+          group.permissions.by_definition(d).first_or_create!
         end
       end
     end
@@ -66,11 +67,11 @@ class Permission < ApplicationRecord
 
   def definition=(definition)
     self.action = definition.action
-    self.subject = definition.subject
+    self.subject_class = definition.subject_class
   end
 
   def description
-    I18n.t("abilities.#{subject}.#{action}")
+    I18n.t("abilities.#{subject_class}.#{action}")
   end
 
   def action_name

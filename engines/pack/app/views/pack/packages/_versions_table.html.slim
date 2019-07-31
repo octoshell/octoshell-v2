@@ -30,31 +30,36 @@
                 =t "accesses.#{col}"
     h3 =t("Versions")
     div class="panel-body"
-      table   class="table table-hover" cols="6" cellspacing="30"
+      table class="table table-hover" cols="7" cellspacing="30"
         tr
+          th = Pack::Version.human_attribute_name :package
           -['name','description','clusters','access_user',"available_for_user?"].each do |str|
             th =Pack::Version.human_attribute_name str
           th   #{t("actions_pack")}
-        - for version in records
-          tr
-            td  =link_to version.name,version
-            td  #{markdown version.description}
+        -packages = records.group_by { |v|  v.package }
+        - packages.each do |package, versions|
+          - versions.each do |version|
+            tr
+              -if version == versions.first
+                td rowspan=2*versions.count valign="middle" = link_to package.name, package
+              td  = link_to version.name, version
+              td  #{markdown version.description}
 
-            td
-              =render "pack/packages/clustervers",clustervers: version.clustervers
+              td
+                =render "pack/packages/clustervers",clustervers: version.clustervers
 
-            td class="accesses-info" version_id=version.id  class="col-xs-3"
-            td class='version-availability'
-            td
-              -if !version.deleted && !version.service
-                 button class="btn btn-primary btn_access" version_id= version.id  = t("want",default:"want this")
+              td class="accesses-info" version_id=version.id  class="col-xs-3"
+              td class='version-availability'
+              td
+                -if !version.deleted && !version.service
+                   button class="btn btn-primary btn_access" version_id= version.id  = t("want")
+            tr
+               td colspan='7'
+                 div class='accesses_form_container col-xs-6' hidden=""
+                   div class='top-alpaca-form'
+                   p class='server-messages'
+                   p class='accesses-messages'
+                   div class='bottom-alpaca-form'
 
-          tr
-             td colspan='6'
-               div class='accesses_form_container col-xs-6' hidden=""
-                 div class='top-alpaca-form'
-                 p class='server-messages'
-                 p class='accesses-messages'
-                 div class='bottom-alpaca-form'
    -else
      p = t("no_records_found")

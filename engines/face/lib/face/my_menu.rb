@@ -35,7 +35,7 @@ module Face
     end
 
     def method_missing(m, *args, &block)
-      puts ActionDispatch::Routing::RouteSet::MountedHelpers.instance_methods.sort.inspect.red
+      # puts ActionDispatch::Routing::RouteSet::MountedHelpers.instance_methods.sort.inspect.red
       @controller.send(m, *args, &block)
     end
 

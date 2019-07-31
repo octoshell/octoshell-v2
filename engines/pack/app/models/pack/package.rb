@@ -15,13 +15,14 @@
 module Pack
   class Package < ApplicationRecord
 
-    
+
 
     translates :description, :name
 
     self.locking_column = :lock_version
     validates_translated :description,:name, presence: true
-    has_many :versions,:dependent => :destroy, inverse_of: :package
+    has_many :versions,dependent: :destroy, inverse_of: :package
+    has_many :accesses, dependent: :destroy, as: :to
     scope :finder, ->(q) { where("lower(name_ru) like lower(:q) OR lower(name_ru) like lower(:q)", q: "%#{q.mb_chars}%") }
 
     def as_json(_options)

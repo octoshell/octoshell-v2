@@ -17,7 +17,7 @@ module Pack
         render status: 400, json: { error: t('.not_owned_project') }
         return
       end
-      version = Version.find(params[:version_id])
+      version = Version.find(params[:to_id])
       if version.service || version.deleted
         render status: 400, json: { error: t('.unable to_create') }
         return
@@ -39,19 +39,19 @@ module Pack
     end
 
     def accesses(versions_ids)
-      @accesses = Access.where(version_id: versions_ids)
+      @accesses = Access.where(to_id: versions_ids, to_type: Pack::Version.to_s)
                         .user_access(current_user.id)
                         .map do |a|
                           a.attributes.merge('end_lic' => localized_date(a.end_lic),
                                              'new_end_lic' => localized_date(a.new_end_lic))
                         end
-      @accesses_hash = @accesses.group_by { |a| a['version_id'] }
+      @accesses_hash = @accesses.group_by { |a| a['to_id'] }
       @accesses_hash
     end
 
   	def access_params
       params.permit(:id, :who_id, :who_type, :forever, :delete,
-                    :version_id, :end_lic,
+                    :to_id, :to_type, :end_lic,
                     :new_end_lic, :lock_version,
                     :new_end_lic_forever, :status, :type)
     end

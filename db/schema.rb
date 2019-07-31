@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_30_144038) do
+ActiveRecord::Schema.define(version: 2019_07_31_092450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -672,6 +672,9 @@ ActiveRecord::Schema.define(version: 2019_07_30_144038) do
     t.integer "allowed_by_id"
     t.integer "lock_version", default: 0, null: false
     t.boolean "new_end_lic_forever", default: false
+    t.string "to_type"
+    t.bigint "to_id"
+    t.index ["to_type", "to_id"], name: "index_pack_accesses_on_to_type_and_to_id"
     t.index ["version_id"], name: "index_pack_accesses_on_version_id"
     t.index ["who_type", "who_id"], name: "index_pack_accesses_on_who_type_and_who_id"
   end
@@ -711,6 +714,7 @@ ActiveRecord::Schema.define(version: 2019_07_30_144038) do
     t.boolean "deleted", default: false, null: false
     t.text "description_en"
     t.string "name_en"
+    t.boolean "accesses_to_package", default: false
   end
 
   create_table "pack_version_options", id: :serial, force: :cascade do |t|

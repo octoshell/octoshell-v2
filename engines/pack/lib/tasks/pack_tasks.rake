@@ -22,4 +22,16 @@ namespace :pack do
   task :expired => :environment do
     ::Pack::PackWorker.perform_async(:expired)
   end
+
+  task :migrate_accesses => :environment do
+    ActiveRecord::Base.transaction do
+      Pack::Access.all.includes(:version).each do |a|
+        a.to = a.version
+        a.version = nil
+        a.save!
+      end
+    end
+    # ::Pack::PackWorker.perform_async(:expired)
+  end
+
 end

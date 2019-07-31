@@ -14,9 +14,11 @@ bottomForm.alpaca({
       },
       "type":{
       },
-      "version_id":{
-      },
       "versions_ids":{
+      },
+      "to_type":{
+      },
+      "to_id":{
       },
       "end_lic":{
         "title": '<%=raw Pack::Access.human_attribute_name("end_lic")%>',
@@ -49,7 +51,14 @@ bottomForm.alpaca({
       },
       "versions_ids":{
         "type": "hidden"
+      },
+      "to_type":{
+        "type": "hidden"
+      },
+      "to_id":{
+        "type": "hidden"
       }
+
     },
     "form": {
           "attributes": {
@@ -85,7 +94,9 @@ bottomForm.alpaca({
     "status": "new",
     "version_id": version_id,
     "type": sel_value,
-    "versions_ids": viewer.ids
+    "versions_ids": viewer.ids,
+    // "to_id": access.to_id,
+    // "to_type": access.to_type
   },
   "postRender": function(control) {
     control.getControlByPath('end_lic')

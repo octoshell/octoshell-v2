@@ -1,8 +1,8 @@
   module AccessValidator
     extend ActiveSupport::Concern
     included do
-      validates :version, :version_id, :created_by, :who, :who_id, :status, presence: true
-      validates_uniqueness_of :who_id, scope: [:version_id,:who_type]
+      validates :created_by, :who, :who_id, :status, :to, presence: true
+      validates_uniqueness_of :who_id, scope: [:to_type, :to_id, :who_type]
       validate do
         if version && version.deleted && status != 'deleted'
           errors.add(:status, :version_deleted)
@@ -11,6 +11,8 @@
           errors.add(:new_end_lic, :incorrect_forever)
         end
       end
+      validates :to_type, inclusion: { in: [Pack::Package, Pack::Version].map(&:to_s) }
+      validates :to, presence: true
       validate :new_end_lic_correct
       before_validation do
         unless ["expired","allowed"].include?(status)

@@ -64,17 +64,18 @@ module Pack
     belongs_to :created_by, class_name: '::User', foreign_key: :created_by_id
     belongs_to :allowed_by, class_name: '::User', foreign_key: :allowed_by_id
     belongs_to :who, polymorphic: true
+    belongs_to :to, polymorphic: true
     has_and_belongs_to_many :tickets, join_table: 'pack_access_tickets', class_name: "Support::Ticket",
                                       foreign_key: "access_id",
                                       association_foreign_key: "ticket_id"
 
-    scope :preload_who, -> { select("pack_accesses.*,u.email as who_user,proj.title as who_project,g.name as who_group").joins(<<-eoruby
-         LEFT JOIN core_projects as proj ON (proj.id= "pack_accesses"."who_id" AND pack_accesses.who_type='Core::Project'  )
-         LEFT JOIN users as u ON (u.id= "pack_accesses"."who_id" AND pack_accesses.who_type='User'  )
-         LEFT JOIN groups as g ON (g.id= "pack_accesses"."who_id" AND pack_accesses.who_type='Group'  )
-        eoruby
-        )
-        }
+    # scope :preload_who, -> { select("pack_accesses.*,u.email as who_user,proj.title as who_project,g.name as who_group").joins(<<-eoruby
+    #      LEFT JOIN core_projects as proj ON (proj.id= "pack_accesses"."who_id" AND pack_accesses.who_type='Core::Project'  )
+    #      LEFT JOIN users as u ON (u.id= "pack_accesses"."who_id" AND pack_accesses.who_type='User'  )
+    #      LEFT JOIN groups as g ON (g.id= "pack_accesses"."who_id" AND pack_accesses.who_type='Group'  )
+    #     eoruby
+    #     )
+    #     }
 
     after_commit :send_email, if: :admin_update?
     after_commit :create_ticket, if: :user_request?
@@ -239,7 +240,8 @@ module Pack
                      else
                        { who_id: params[:type], who_type: 'Core::Project' }
                      end
-      find_params.merge! params.slice(:version_id)
+      find_params.merge! params.slice(:to_id, :to_type)
+      puts 'zzzz'.red
       Access.find_by(find_params)
     end
 
@@ -259,7 +261,9 @@ module Pack
       else
         raise ArgumentError, "Invalid params[:type]"
       end
-      access.version_id = access_params[:version_id]
+      access.to_id = access_params[:to_id]
+      access.to_type = access_params[:to_type]
+
       access.created_by_id = user_id
       access
     end
@@ -308,7 +312,7 @@ module Pack
     end
 
     def who_name
-      try(:who_name_from_union) || try(:who_project) || try(:who_group) || try(:who_user) || who_name_without_preload
+      try(:who_name_from_union)  || who_name_without_preload
     end
 
     def who_name_without_preload

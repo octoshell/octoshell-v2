@@ -3,8 +3,6 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
-ActiveRecord::Base.transaction do
-
   ActiveRecord::Base.connection.tables.each do |table|
     next if table == 'schema_migrations'
     ActiveRecord::Base.connection.execute("TRUNCATE #{table}")
@@ -70,14 +68,37 @@ ActiveRecord::Base.transaction do
     project.members.create!(user: user, organization: organization, project_access_state: 'allowed')
   end
 
+  package = FactoryBot.create(:package)
+  version = FactoryBot.create(:version, package: package)
+  FactoryBot.create(:access, who: users.first, to: version)
+  FactoryBot.create(:access, who: Group.find_by(name: 'superadmins'),
+                             to: version, created_by: User.superadmins.first)
+  FactoryBot.create(:access, who: Core::Project.first,
+                             to: version, created_by: User.superadmins.first)
 
+  version = FactoryBot.create(:version, package: package)
+  FactoryBot.create(:access, who: users.first, end_lic: nil, to: version,
+                             created_by: User.superadmins.first)
+  FactoryBot.create(:access, who: Group.find_by(name: 'superadmins'),
+                             end_lic: nil, to: version,
+                             created_by: User.superadmins.first)
+  FactoryBot.create(:access, who: Core::Project.first, end_lic: nil,
+                             to: version, created_by: User.superadmins.first)
 
+  package = FactoryBot.create(:package)
+  version = FactoryBot.create(:version, package: package)
+  FactoryBot.create(:access, who: users.first, to: version)
+  FactoryBot.create(:access, who: Group.find_by(name: 'superadmins'),
+                             to: version, created_by: User.superadmins.first)
+  FactoryBot.create(:access, who: Core::Project.first, end_lic: nil,
+                             to: version, created_by: User.superadmins.first)
 
-
-
+  Pack::Version.all.each do |v|
+    Core::Cluster.all.each do |cluster|
+      Pack::Clusterver.create!(version: v, core_cluster: cluster, active: true)
+    end
+  end
 
 
   Comments.create_wiki_page
   Comments.create_abilities
-
-end

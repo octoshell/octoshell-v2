@@ -54,8 +54,9 @@ class Group < ApplicationRecord
       defaults = YAML.load_file "#{Rails.root}/config/groups.default.yml"
       defaults.each do |group, abilities|
         abilities.each do |subject, actions|
-          send(group).permissions.where(subject: subject, action: actions).
-            update_all(available: true)
+          send(group).permissions
+                     .where(subject_class: subject, action: actions)
+                     .update_all(available: true)
         end
       end
     end
@@ -65,7 +66,7 @@ private
 
   def create_abilities
     Permission.definitions.each do |definition|
-      abilities.create! do |a|
+      permissions.create! do |a|
         a.definition = definition
         a.available = (name == SUPERADMINS.name)
       end

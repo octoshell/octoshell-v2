@@ -223,6 +223,8 @@ en:
           not_deleted: Show only active
           name: Name
           description: Description
+          accesses_to_package: Accesses to package
+
         pack/options_category:
           category: Category
           values: Values

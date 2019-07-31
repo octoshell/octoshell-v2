@@ -7,12 +7,12 @@ module Pack
     end
     before_action :access_init, only: [:edit, :show,:update,:destroy, :manage_access]
     def access_init
-      @access = Access.preload_who.find(params[:id])
+      @access = Access.find(params[:id])
     end
 
     def index
       @q = Access.ransack(params[:q])
-      @accesses = @q.result(distinct: true).order(:id).preload_who.includes(:version)
+      @accesses = @q.result(distinct: true).order(:id).includes(:version, :who)
       without_pagination(:accesses)
     end
 

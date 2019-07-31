@@ -31,7 +31,8 @@ module Pack
           @options_for_select_labels << t("user")
           @q_form = OpenStruct.new(params[:q] || { clustervers_active_in: '1' })
           search = PackSearch.new(@q_form.to_h, 'versions', current_user.id)
-          @versions = search.get_results(search.table_relation.allowed_for_users).page(params[:page]).per(15)
+          @versions = search.get_results(search.table_relation.allowed_for_users)
+                            .order(package_id: :desc).page(params[:page]).per(15)
         end
 
         format.json do

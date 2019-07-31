@@ -20,6 +20,10 @@ bottomForm.alpaca({
       },
       "lock_version":{
       },
+      "to_type":{
+      },
+      "to_id":{
+      },
       "new_end_lic":{
         "title": '<%=raw Pack::Access.human_attribute_name("new_end_lic")%>',
         "required": true,
@@ -54,8 +58,13 @@ bottomForm.alpaca({
       },
       "lock_version":{
         "type": "hidden"
+      },
+      "to_type":{
+        "type": "hidden"
+      },
+      "to_id":{
+        "type": "hidden"
       }
-
     },
     "form": {
           "attributes": {
@@ -94,6 +103,9 @@ bottomForm.alpaca({
     "type": sel_value,
     "versions_ids": viewer.ids,
     "lock_version": access.lock_version,
+    // "to_id": access.to_id,
+    // "to_type": access.to_type
+
   },
   "postRender": function(control) {
     var d = getDate(access.end_lic);

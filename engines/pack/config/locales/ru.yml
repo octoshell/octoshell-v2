@@ -225,6 +225,7 @@ ru:
           not_deleted: Показать только активные
           name: Название
           description: Описание
+          accesses_to_package: Доступы к пакету
         pack/options_category:
           category: Категория
           values: Значения
