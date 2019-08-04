@@ -64,7 +64,7 @@ div class="row"
         td
           =t('.time')
         td
-          = number_with_precision(@job.get_duration_hours, :precision => 1)
+          = number_with_precision(@job.get_duration_hours, :precision => 1) + " " +  t('.h-short')
       tr
         td
           =t('.nodes')
