@@ -314,9 +314,11 @@ javascript:
 
   function DrawSingleGraph(target, sensor_data, max)
   {
-    for(var i = 0; i < sensor_data.length; i++)
-      sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
-
+    var max_val = 0;
+    for(var i = 0; i < sensor_data.length; i++){
+      sensor_data[i][0] = new Date(sensor_data[i][0] * 1000);
+      max_val = Math.max(max_val, sensor_data[i][1]);
+    }
     var data = new google.visualization.DataTable();
     data.addColumn('date', "#{{t('.time')}}" );
     data.addColumn('number', "#{{t('.value')}}");
@@ -335,7 +337,8 @@ javascript:
       chartArea: {'width': '85%'},
       legend: {'position': 'none'},
     };
-
+    if (max_val < 1)
+        options.vAxis.maxValue = 1;
     if(max) options.vAxis.maxValue = max;
 
     var chart = new google.visualization.LineChart(document.getElementById(target));
@@ -344,11 +347,13 @@ javascript:
 
   function DrawSendRecvGraph(target, sensor_data)
   {
+    var max_val = 0;
     for(var i = 0; i < sensor_data.length; i++)
     {
       sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
       sensor_data[i][1] /= 1024 * 1024;
       sensor_data[i][2] /= 1024 * 1024;
+      max_val = Math.max(max_val, sensor_data[i][1], sensor_data[i][2]);
     }
 
     var data = new google.visualization.DataTable();
@@ -372,6 +377,8 @@ javascript:
       legend: {'position': 'bottom'},
     };
 
+    if (max_val < 1)
+        options.vAxis.maxValue = 1;
     var chart = new google.visualization.LineChart(document.getElementById(target));
     chart.draw(data, options);
   }
