@@ -166,6 +166,7 @@ en:
         nodes: Nodes count
         nodes_info: number of nodes
         not_agree_button: I disagree!
+        not_send: Not Send
         of: " from "
         partition: Partition
         partition_info: supercomputer partition used to run job
@@ -176,6 +177,7 @@ en:
           inform us!
         rules_info: more details about rules, hide/comment rules
         rules_list: Все потенциальные проблемы
+        send: Send
         send_feedback: Send comment
         shown_tasks: 'Show jobs: '
         start_info: time of job start
