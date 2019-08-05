@@ -12,6 +12,7 @@ function getJSONSyncWithData(url,data,success)
 function AccessViewer(ids) {
   this.ids = ids;
   this.versions = <%= raw(@versions.map{  |v| {available: v.available_for_user?, id: v.id} }.group_by { |v| v[:id] }.to_json)%>;
+  console.log(this.versions);
   this.load = function() {
     accesses = null;
     getJSONSyncWithData('/pack/accesses/load_for_versions',{versions_ids: ids},function(result){
@@ -219,7 +220,7 @@ function AccessViewer(ids) {
     this.renderAccessesInfo();
   }
 };
-
+// console.log(<%=raw @grouped_packages.to_json%>);
 var viewer = new AccessViewer(<%=@versions.map(&:id)%>);
 viewer.load();
 

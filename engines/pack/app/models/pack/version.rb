@@ -327,7 +327,7 @@ module Pack
     end
 
     def as_json(_options)
-    { id: id, text: (name + self.package_id) }
+    { id: id, text: (name + self.package_id.to_s) }
     end
 
     def version_params(params)
