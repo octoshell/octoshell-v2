@@ -45,7 +45,7 @@ ActiveRecord::Base.transaction do
   city = Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country, checked: true)
 
   cluster=Core::Cluster.create!(host: 'localhost', admin_login: 'octo', name: 'test', description: 'mytest')
-  Core::Partition.create!(name: 'main_part', cluster: cluster, description: 'nodes:128,cores:8,gppus:1')
+  Core::Partition.create!(name: 'main_part', cluster: cluster, resouces: 'nodes:128,cores:8,gppus:1')
   Core::Credential.create!(user: admin, name: 'example key', public_key: Core::Cluster.first.public_key)
   Core::OrganizationKind.create!(name: 'Российская коммерческая организация')
   Core::CriticalTechnology.create!(name: 'Робототехника')

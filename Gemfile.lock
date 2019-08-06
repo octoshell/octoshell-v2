@@ -187,7 +187,7 @@ PATH
       decorators (~> 1.0.2)
       kaminari
       maymay
-      mini_magick
+      mini_magick (>= 4.9.4)
       pg (~> 0.18)
       rails (~> 4.2)
       ransack
