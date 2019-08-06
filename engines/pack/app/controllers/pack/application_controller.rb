@@ -1,7 +1,7 @@
 module Pack
   class ApplicationController < ::ApplicationController
     #ActionController::Base
-#    
+#
    layout 'layouts/pack/application'
     # layout "layouts/application"
     skip_before_action :verify_authenticity_token
