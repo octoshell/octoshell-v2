@@ -162,10 +162,13 @@ div class="perf-table"
             = t('jobstat.common.la')
         th class="perf-data"
           p title="#{t('.mpi_rcv_info')}"
-            = t('.mpi_rcv')
+            = t('.mpi')
         th class="perf-data"
-          p title="mpi_send_info"
-            = t('.mpi_send')
+          p title="#{t('.mpi_rcv_info')}"
+            = t('.fs_read')
+        th class="perf-data"
+          p title="#{t('.mpi_rcv_info')}"
+            = t('.fs_write')
     - index=0
     - @jobs.each do |job|
       - index+=1
@@ -332,8 +335,12 @@ div class="perf-table"
         td class="perf-data job_metric_#{job_ranking[:ib_rcv_data_mpi]}"
           = number_with_precision(job_performance[:ib_rcv_data_mpi], :precision => 1)
 
-        td class="perf-data job_metric_#{job_ranking[:ib_xmit_data_mpi]}"
-          = number_with_precision(job_performance[:ib_xmit_data_mpi], :precision => 1)
+        td class="perf-data job_metric_#{job_ranking[:ib_rcv_data_fs]}"
+          = number_with_precision(job_performance[:ib_rcv_data_fs], :precision => 1)
+
+        td class="perf-data job_metric_#{job_ranking[:ib_xmit_data_fs]}"
+          = number_with_precision(job_performance[:ib_xmit_data_fs], :precision => 1)
+
 
 table
   tr

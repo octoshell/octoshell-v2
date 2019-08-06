@@ -45,6 +45,8 @@ en:
         dont_send_feedback: I changed my mind
         end_info: time of job finish
         end_time: Job end
+        fs_read: FS read intensity (MB/s)
+        fs_write: FS write intensity (MB/s)
         finish_tour: Finish the tour? You can repeat it later by pressing
           \"Intro tour\"
         finished_tasks: Information about finished jobs
@@ -150,6 +152,7 @@ en:
         more_task_info: |-
           More information
           Job name:
+        mpi: MPI usage (MB/s)
         mpi_rcv: Received bytes via MPI (MB/sec)
         mpi_rcv_info: in MB/sec
         mpi_send: Sent bytes via MPI (MB/sec)
