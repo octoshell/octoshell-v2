@@ -10,6 +10,6 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery-ui/widgets/sortable
+// - require jquery-ui
 //= require_tree .
 //

@@ -4,6 +4,7 @@ Wikiplus::Engine.routes.draw do
     resources :pages
     resources :images
 
+    post :change_structure, controller: :pages
     resources :pages do
       member do
         post :createsubpage

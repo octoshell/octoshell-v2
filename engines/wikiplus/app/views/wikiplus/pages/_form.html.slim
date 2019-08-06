@@ -1,13 +1,12 @@
-= stylesheet_link_tag params[:controller]
+/= stylesheet_link_tag params[:controller]
 
 div class="row"
     /div class="col-xs-8"
     = bootstrap_form_for @page do |f|
       -if @images != nil
         - @images.each do |image|
-          <img class = "insert" src = "#{image.image.url}" width="40" height="40" alt="" > 
-        <div id  = "targetText">
-        </div>
+          img class = "insert" src = "#{image.image.url}" width="40" height="40" alt=""
+        div id  = "targetText"
       = f.text_field :sortid 
       -Wikiplus::Page.locale_columns(:name).each do |column|
         = f.text_field column 
