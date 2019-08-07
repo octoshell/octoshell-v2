@@ -1,21 +1,16 @@
+---
 en:
-  face:
-    shared:
-      user_submenu:
-        more: "More "
-      admin_submenu:
-        more: "More "
-      submenu:
-        more: "More "
-    home:
-      show:
-        welcome: "Octoshell"
-        about:
-          html: |
-            <p>The access management system for the Supercomputer Complex of the Lomonosov Moscow State University.</p>
-        sign_in: "Sign in"
-        sign_up: "Sign up"
-
+  actions:
+    confirm: Are you sure?
+    delete: Delete
+    edit: Edit
+    find: Find
+    generate: Generate
+    next: Continue
+    save: Save
+    send: Send
+  buttons:
+    save: Save
   date:
     abbr_day_names:
     - Sun.
@@ -26,7 +21,7 @@ en:
     - Fri.
     - Sat.
     abbr_month_names:
-    -
+    - 
     - Jan.
     - Feb.
     - Mar.
@@ -52,7 +47,7 @@ en:
       long: "%Y %B %d"
       short: "%b %d"
     month_names:
-    -
+    - 
     - January
     - February
     - March
@@ -72,41 +67,41 @@ en:
   datetime:
     distance_in_words:
       about_x_hours:
-        few: "about %{count} hours"
-        many: "about %{count} hours"
-        one: "about %{count} hours"
-        other: "about %{count} hours"
+        few: about %{count} hours
+        many: about %{count} hours
+        one: about %{count} hours
+        other: about %{count} hours
       about_x_months:
-        few: "about %{count} months"
-        many: "about %{count} months"
-        one: "about %{count} month"
-        other: "about %{count} months"
+        few: about %{count} months
+        many: about %{count} months
+        one: about %{count} month
+        other: about %{count} months
       about_x_years:
-        few: "about %{count} years"
-        many: "about %{count} years"
-        one: "about %{count} year"
-        other: "about %{count} years"
+        few: about %{count} years
+        many: about %{count} years
+        one: about %{count} year
+        other: about %{count} years
       almost_x_years:
-        one: "almost 1 year"
-        few: "almost %{count} years"
-        many: "almost %{count} years"
-        other: "almost %{count} years"
-      half_a_minute: "less than minute"
+        few: almost %{count} years
+        many: almost %{count} years
+        one: almost 1 year
+        other: almost %{count} years
+      half_a_minute: less than minute
       less_than_x_minutes:
-        few: "less than %{count} minutes"
-        many: "less than %{count} minutes"
-        one: "less than %{count} minute"
-        other: "less than %{count} minutes"
+        few: less than %{count} minutes
+        many: less than %{count} minutes
+        one: less than %{count} minute
+        other: less than %{count} minutes
       less_than_x_seconds:
-        few: "less than %{count} seconds"
-        many: "less than %{count} seconds"
-        one: "less than %{count} second"
-        other: "less than %{count} seconds"
+        few: less than %{count} seconds
+        many: less than %{count} seconds
+        one: less than %{count} second
+        other: less than %{count} seconds
       over_x_years:
-        few: "over %{count} years"
-        many: "over %{count} years"
-        one: "over %{count} year"
-        other: "over %{count} years"
+        few: over %{count} years
+        many: over %{count} years
+        one: over %{count} year
+        other: over %{count} years
       x_days:
         few: "! '%{count} days'"
         many: "! '%{count} days'"
@@ -128,69 +123,71 @@ en:
         one: "! '%{count} second'"
         other: "! '%{count} seconds'"
     prompts:
-      day: "Day"
-      hour: "Hours"
-      minute: "Minutes"
-      month: "Month"
-      second: "Seconds"
-      year: "Year"
-
+      day: Day
+      hour: Hours
+      minute: Minutes
+      month: Month
+      second: Seconds
+      year: Year
   errors:
     format: "! '%{attribute} %{message}'"
     messages:
-      extension_whitelist_error: You have downloaded file of unsuitable format
-      invalid_transition: 'It is impossible to "%{event}". "%{model}" in "%{state}" state.'
       accepted: needs to be accepted"
-      blank: "can not be empty"
-      confirmation: "does not match with confirmation"
-      empty: "can not be empty"
-      equal_to: "can be only equal to %{count}"
-      even: "can be only even"
-      exclusion: "has reserved value"
-      greater_than: "can be only greater than %{count}"
-      greater_than_or_equal_to: "can be only greater than or equal to %{count}"
-      inclusion: "has incorrect value"
-      invalid: "has invalid value"
-      less_than: "can be only less than %{count}"
-      less_than_or_equal_to: "can be only less than or equal to %{count}"
-      not_a_number: "is not a number"
-      not_an_integer: "is not an integer"
-      odd: "can be only odd"
+      blank: can not be empty
+      confirmation: does not match with confirmation
+      empty: can not be empty
+      equal_to: can be only equal to %{count}
+      even: can be only even
+      exclusion: has reserved value
+      extension_whitelist_error: You have downloaded file of unsuitable format
+      greater_than: can be only greater than %{count}
+      greater_than_or_equal_to: can be only greater than or equal to %{count}
+      inclusion: has incorrect value
+      invalid: has invalid value
+      invalid_transition: It is impossible to "%{event}". "%{model}" in "%{state}"
+        state.
+      less_than: can be only less than %{count}
+      less_than_or_equal_to: can be only less than or equal to %{count}
+      not_a_number: is not a number
+      not_an_integer: is not an integer
+      odd: can be only odd
       record_invalid: "! 'Errors occured: %{errors}'"
-      taken: "already exists"
+      taken: already exists
       too_long:
-        few: "too long (can not be shorter than  %{count} characters)"
-        many: "too long (can not be shorter than  %{count} characters)"
-        one: "too long (can not be shorter than  %{count} character)"
-        other: "too long (can not be shorter than  %{count} characters)"
+        few: too long (can not be shorter than  %{count} characters)
+        many: too long (can not be shorter than  %{count} characters)
+        one: too long (can not be shorter than  %{count} character)
+        other: too long (can not be shorter than  %{count} characters)
       too_short:
-        few: "too short (can not be less than  %{count} characters)"
-        many: "too short (can not be less than  %{count} characters)"
-        one: "too short (can not be less than  %{count} character)"
-        other: "too short (can not be less than  %{count} characters)"
+        few: too short (can not be less than  %{count} characters)
+        many: too short (can not be less than  %{count} characters)
+        one: too short (can not be less than  %{count} character)
+        other: too short (can not be less than  %{count} characters)
       wrong_length:
-        few: "invalid length (length can be only equal to %{count} characters)"
-        many: "invalid length (length can be only equal to %{count} characters)"
-        one: "invalid length (length can be only equal to %{count} character)"
-        other: "invalid length (length can be only equal to %{count} characters)"
-
-  buttons:
-    save: "Save"
-
-  actions:
-    find: "Find"
-    save: "Save"
-    edit: "Edit"
-    delete: "Delete"
-    confirm: "Are you sure?"
-    next: "Continue"
-    generate: "Generate"
-    send: "Send"
-
-  util:
-    number: "№"
-
+        few: invalid length (length can be only equal to %{count} characters)
+        many: invalid length (length can be only equal to %{count} characters)
+        one: invalid length (length can be only equal to %{count} character)
+        other: invalid length (length can be only equal to %{count} characters)
+  face:
+    home:
+      show:
+        about:
+          html: >
+            <p>The access management system for the Supercomputer Complex
+            of the Lomonosov Moscow State University.</p>
+        sign_in: Sign in
+        sign_up: Sign up
+        welcome: Octoshell
+    shared:
+      admin_submenu:
+        more: 'More '
+      submenu:
+        more: 'More '
+      user_submenu:
+        more: 'More '
   layouts:
     face:
       application:
-        maintaining_organization: "RCC, Lomonosov Moscow State University"
+        maintaining_organization: RCC, Lomonosov Moscow State University
+  util:
+    number: "№"

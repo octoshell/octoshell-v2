@@ -1,0 +1,13 @@
+div class="page-header"
+  - im = @image.image
+  - th = @image.image.thumb
+  p = im.inspect
+  h1 = File.basename(im.url)
+
+
+div class = "image"
+  p #{link_to File.basename(im.url), im.url, target: :blank} #{number_to_human_size(im.size)}
+  p
+  	img src="#{th.url}"
+  p
+  	| url = #{th.url}

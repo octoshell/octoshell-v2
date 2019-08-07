@@ -1,0 +1,6 @@
+div class="row"
+  img src="#{@image.image.thumb.url}"
+  = bootstrap_form_for [:admin, @image] do |f|
+    = f.file_field :image
+    = f.form_group do
+      = f.submit t("buttons.save", default: "Save")

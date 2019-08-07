@@ -1,0 +1,41 @@
+/- if current_user && User.superadmins.include?(current_user)
+- mas = @subpage.subpages.sort_by { |a| a.sortid }
+- mas.each do |page|
+  - @subpage = page
+  tr
+    - indent = ('&nbsp;' * 6 * @deep).html_safe
+    td class="col-xs-4"
+      = indent
+      = link_to page.name, [:admin,page]
+    td = url_for [:admin,page]
+    td = link_to t(".newsub_page"), newsubpage_admin_page_path(page)
+    td
+      div class="btn-group pull-right"
+        = link_to t("wikiplus.common.edit", default: "edit"), edit_admin_page_path(page.id), class: "btn btn-default btn-sm"
+        button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+          span class="caret"
+        ul class="dropdown-menu" role="menu"
+          - name = t(".delete", default: "delete")
+          - confirm = t(".confirm", default: "Are You shure?")
+          - data = { method: :delete, confirm: confirm }
+          li class="text-left"
+            = link_to name, admin_page_path(page.id), data: data, class: "text-danger"
+      - if page.subpages.size>0
+        td colspan=5
+          - @deep = @deep + 1
+          = render "subpageindex"
+          - @deep = @deep - 1
+/-else
+  -mas = @subpage.subpages
+  -mas = mas.sort_by { |a| a.sortid}
+  -mas.each do |page|
+    -@subpage = page
+    -newname = "\u00a0" * 6 * @deep + page.name
+    li class= "list-group-item" = link_to newname, page
+    - if page.subpages.size>0
+      tr
+      td colspan=5
+      -@deep = @deep + 1
+      =render "subpageindex"
+      -@deep = @deep - 1
+

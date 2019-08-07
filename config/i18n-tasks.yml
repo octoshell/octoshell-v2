@@ -3,9 +3,9 @@
 # The "main" locale.
 base_locale: en
 ## All available locales are inferred from the data by default. Alternatively, specify them explicitly:
-# locales: [es, fr]
+locales: [ru,en]
 ## Reporting locale, default: en. Available: en, ru.
-# internal_locale: en
+internal_locale: ru
 
 # Read and write translations.
 data:
@@ -16,9 +16,10 @@ data:
   # Locale files or `File.find` patterns where translations are read from:
   read:
     ## Default:
-    # - config/locales/%{locale}.yml
+    - config/locales/%{locale}.yml
     ## More files:
-    # - config/locales/**/*.%{locale}.yml
+    #- config/locales/**/*.%{locale}.yml
+    - engines/*/config/locales/%{locale}.yml
 
   # Locale files to write new keys to, based on a list of key pattern => file rules. Matched from top to bottom:
   # `i18n-tasks normalize -p` will force move the keys according to these rules
@@ -26,7 +27,7 @@ data:
     ## For example, write devise and simple form keys to their respective files:
     # - ['{devise, simple_form}.*', 'config/locales/\1.%{locale}.yml']
     ## Catch-all default:
-    # - config/locales/%{locale}.yml
+    #- config/locales/%{locale}-fix.yml
 
   # External locale data (e.g. gems).
   # This data is not considered unused and is never written to.
@@ -40,7 +41,7 @@ data:
   yaml:
     write:
       # do not wrap lines at 80 characters
-      line_width: -1
+      line_width: 72
 
   ## Pretty-print JSON:
   # json:

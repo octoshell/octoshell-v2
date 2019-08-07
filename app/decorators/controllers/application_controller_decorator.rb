@@ -23,6 +23,7 @@ ApplicationController.class_eval do
     menu.add_item(working_area_item) if logged_in?
     menu.add_item(admin_area_item) if can?(:access, :admin)
     menu.add_item(wiki_item)
+    menu.add_item(wikiplus_item)
     menu.items
   end
 
@@ -31,6 +32,14 @@ ApplicationController.class_eval do
       name: t("main_menu.wiki"),
       url: wiki.root_path,
       regexp: /wiki/
+    })
+  end
+
+  def wikiplus_item
+    Face::MenuItem.new({
+      name: t("main_menu.wikiplus"),
+      url: wikiplus.root_path,
+      regexp: /wikiplus/
     })
   end
 
@@ -221,6 +230,14 @@ ApplicationController.class_eval do
     # menu.add_item(Face::MenuItem.new(name: t("admin_submenu.reports_engine"),
     #                                  url: main_app.reports_path,
     #                               ))  if  can?(:manage, :reports_engine)
+    menu.add_item(Face::MenuItem.new(name: t("admin_submenu.api"),
+                                     url: api.admin_access_keys_path)
+                 ) if can? :manage, :api_engine
+
+    menu.add_item(Face::MenuItem.new(name: t("admin_submenu.wikiplus"),
+                                     url: wikiplus.admin_pages_path,
+                                     regexp: /admin\/wikiplus/
+                 ))  if can? :manage, :wikiplus
 
 
     Face::MyMenu.admin_submenu(self) + menu.items.to_a

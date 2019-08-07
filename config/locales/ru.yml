@@ -1,5 +1,9 @@
 ---
 ru:
+  "!": "!"
+  common:
+    back: "Назад"
+
   abilities:
     accesses:
       manage: Полный доступ к Ключам на Кластере
@@ -190,9 +194,12 @@ ru:
         unblock_user: Возобновить доступ
       table:
         no_employment:
-          html: "<span class='fa fa-exclamation-triangle text-danger'> не указано место работы</span>"
+          html: >-
+            <span class='fa fa-exclamation-triangle text-danger'> не указано
+            место работы</span>
   admin_submenu:
     announcements: Рассылка
+    api: API
     cities: Города
     cluster_logs: Логи кластеров
     clusters: Кластеры
@@ -226,6 +233,7 @@ ru:
     sureties_with_count:
       html: Поручительства <span class="badge info">%{count}</span>
     users: Пользователи
+    wikiplus: Wikiplus
   bad_job: 'Проблемная задача: '
   bad_jobs: 'Проблемные задачи: '
   flash:
@@ -266,6 +274,7 @@ ru:
   main_menu:
     admin_area: Кабинет администратора
     wiki: Справка
+    wikiplus: Справка+
     working_area: Рабочий кабинет
   model_translation:
     en: на английском
@@ -278,9 +287,13 @@ ru:
       without_category: Без автозаполнения
   profiles:
     form:
-      info_mails_help: Отметьте, если вы согласны получать информационные рассылки о будущих семинарах и другой полезной информации.
+      info_mails_help: >-
+        Отметьте, если вы согласны получать информационные рассылки о будущих
+        семинарах и другой полезной информации.
       save: Сохранить
-      special_mails_help: Отметьте, если вы согласны получать рассылку о состоянии кластеров, профилактических работах и прочей служебной информации.
+      special_mails_help: >-
+        Отметьте, если вы согласны получать рассылку о состоянии кластеров,
+        профилактических работах и прочей служебной информации.
     show:
       change_password: Изменить пароль
       is_admin: Администратор
@@ -294,7 +307,9 @@ ru:
     projects: Проекты
     sessions: Перерегистрации
     sessions_warning:
-      html: Перерегистрации <span class="badge warning"><i class="fa fa-bell"> </i></span>
+      html: >-
+        Перерегистрации <span class="badge warning"><i class="fa fa-bell">
+        </i></span>
     tickets: Поддержка
     tickets_warning:
       html: Поддержка <span class="badge warning"><i class="fa fa-bell"></i></span>
@@ -315,5 +330,6 @@ ru:
       previous: Предыдущая
       truncate: "..."
   without_pagination:
-    display_all_records: Показать все записи сразу на одной странице(может быть ДОЛГО)
+    display_all_records: Показать все записи сразу на одной странице(может
+      быть ДОЛГО)
     displaying_all_records: Показаны все записи

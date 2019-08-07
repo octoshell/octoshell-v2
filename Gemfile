@@ -55,12 +55,14 @@ gem "support",        path: "engines/support"
 gem "sessions",       path: "engines/sessions"
 gem "statistics",     path: "engines/statistics"
 gem "wiki",           path: "engines/wiki"
+gem "wikiplus",       path: "engines/wikiplus"
 gem "announcements",  path: "engines/announcements"
 gem "jobstat",        path: 'engines/jobstat'
 gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
 gem "hardware",       path: "engines/hardware"
 gem "reports",       path: "engines/reports"
+gem "api",            path: "engines/api"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"

@@ -1,5 +1,9 @@
 ---
 en:
+  "!": "!"
+  common:
+    back: "Back"
+
   abilities:
     accesses:
       manage: Full access to cluster keys
@@ -190,9 +194,12 @@ en:
         unblock_user: Unblock access
       table:
         no_employment:
-          html: "<span class='fa fa-exclamation-triangle text-danger'> no job place is filled</span>"
+          html: >-
+            <span class='fa fa-exclamation-triangle text-danger'> no job place
+            is filled</span>
   admin_submenu:
     announcements: Announcements
+    api: API
     cities: Cities
     cluster_logs: Cluster log
     clusters: Clusters
@@ -226,6 +233,7 @@ en:
     sureties_with_count:
       html: Sureties <span class="badge info">%{count}</span>
     users: Users
+    wikiplus: Wikiplus
   bad_job: 'Bad job: '
   bad_jobs: 'Bad jobs: '
   flash:
@@ -236,7 +244,8 @@ en:
   helpers:
     page_entries_info:
       more_pages:
-        display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> pages are shown  of <b>%{total}</b>"
+        display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> pages are shown
+          \ of <b>%{total}</b>"
       one_page:
         display_entries:
           few: Shown <b>%{count}</b>
@@ -266,6 +275,7 @@ en:
   main_menu:
     admin_area: Administator's office
     wiki: Wiki
+    wikiplus: Help
     working_area: Study
   model_translation:
     en: in english
@@ -278,9 +288,13 @@ en:
       without_category: Not autocompleted
   profiles:
     form:
-      info_mails_help: Tick if you agree to receive newsletters about future seminars and other useful information.
+      info_mails_help: >-
+        Tick if you agree to receive newsletters about future seminars and
+        other useful information.
       save: Save
-      special_mails_help: Tick if you agree to receive a newsletter about the status of clusters, preventive works and other service information.
+      special_mails_help: >-
+        Tick if you agree to receive a newsletter about the status of clusters,
+        preventive works and other service information.
     show:
       change_password: Change password
       is_admin: Administator
@@ -294,7 +308,9 @@ en:
     projects: Projects
     sessions: Reregistrations
     sessions_warning:
-      html: Reregistrations <span class="badge warning"><i class="fa fa-bell"> </i></span>
+      html: >-
+        Reregistrations <span class="badge warning"><i class="fa fa-bell">
+        </i></span>
     tickets: Support
     tickets_warning:
       html: Support <span class="badge warning"><i class="fa fa-bell"></i></span>

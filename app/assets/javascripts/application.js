@@ -18,4 +18,4 @@
 //= require sessions/application
 //= require announcements/application
 //= require pack/application
-//= require_tree .
+//= require_tree ./site-wide

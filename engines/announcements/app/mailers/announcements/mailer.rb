@@ -12,9 +12,9 @@ module Announcements
 
     private
 
-    def markdown(text)
-      CommonMarker.render_html(text, :DEFAULT).html_safe
+    def hard_markdown(text)
+      CommonMarker.render_html(text, :DEFAULT,[:table,:autolink]).html_safe
     end
-    helper_method :markdown
+    helper_method :hard_markdown
   end
 end

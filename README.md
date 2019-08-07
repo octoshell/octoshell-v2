@@ -20,20 +20,17 @@ We assume, that all below is doing as user `octo` (or root, if it is said 'as ro
 1. create databases: `for database in new_octoshell new_octoshell_test new_octoshell_development; do sudo -u postgres createdb -O octo $database; done`
 1. as user install rbenv (e.g. `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
 1. make sure rbenv is loaded automatically, by adding to ~/.bashrc these lines:
-
 ```
   export PATH=~/.rbenv/bin:$PATH
   eval "$(rbenv init -)"
 ```
 1. reopen your terminal session or execute lines from point above in console
 1. install ruby:
-
 ```
   rbenv install 2.5.1
   rbenv global 2.5.1
 ```
-
-1. execute `gem install bundler`
+1. execute `gem install bundler --version '< 2.0'`
 1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
 1. go into cloned directory `cd octoshell-v2`
 1. execute `bundle install`
@@ -41,6 +38,8 @@ We assume, that all below is doing as user `octo` (or root, if it is said 'as ro
 1. fill database parameters and password in `config/database.yml`
 1. execute `bundle exec rake db:setup`
 1. execute `bundle exec rake assets:precompile` (Downloading pages without precompilation  and   config.assets.debug = true can take significant amount of time)
+1. execute `bundle exec rake api:create_abilities`
+1. execute `bundle exec rake pack:install`
 
 Now you can test all in **development** mode, just execute `./dev` and wait for 'Use Ctrl-C to stop'. Open 'http://localhost:5000/' to access application.
 To test delayed actions, such as email send, cluster sync, start sidekiq in development mode: `dev-sidekiq`.
@@ -141,7 +140,6 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 1. проверяем, что postgresql слушает на 127.0.0.1 порт 5432 (например `ss -lpn |grep 5432`). Если нет, проверяем настройки postgresql (в debian/ubuntu - /etc/postgresql/VERSION/main/postgresql.conf, строчка 'port')
 1. под пользователем ставим rbenv (проще всего так: `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
 1. в ~/.bashrc пользователя должны быть добавлены эти строки, чтобы работал rbenv:
-
 ```
   export PATH=~/.rbenv/bin:$PATH
   eval "$(rbenv init -)"
@@ -154,7 +152,7 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
   rbenv global 2.5.1
 ```
 
-1. выполняем `gem install bundler`
+1. выполняем `gem install bundler --version '< 2.0'`
 1. выполняем `git clone https://github.com/octoshell/octoshell-v2.git`
 1. переходим в созданный каталог `cd octoshell-v2`
 1. выполняем `bundle install`
@@ -162,6 +160,8 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 1. вписываем параметры БД и пароль в `config/database.yml`
 1. выполняем `bundle exec rake db:setup`
 1. выполняем `bundle exec rake assets:precompile`
+1. выполняем `bundle exec rake api:create_abilities`
+1. выполняем `bundle exec rake pack:install`
 
 Теперь можно запустить всё в **development** режиме, просто выполнив `./dev` и подождав строчки 'Use Ctrl-C to stop'. В браузере открываем 'http://localhost:5000/'.
 Чтобы протестировать отложенные операции, такие как рассылка email, синхронизация с кластером и т.п., запускаем sidekiq в development режиме: `dev-sidekiq`.
