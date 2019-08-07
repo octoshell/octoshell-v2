@@ -36,15 +36,15 @@
       -['name','description','clusters','access_user',"available_for_user?"].each do |str|
         th =Pack::Version.human_attribute_name str
       th   #{t("actions_pack")}
-    - @grouped_packages = records.group_by { |v|  v.package }
-    - @grouped_packages.each do |package, versions|
-      tbody package_id=package.id
+    - grouped_packages = records.group_by { |v|  v.package }
+    - grouped_packages.each do |package, versions|
+      tbody package_id=package.id accesses_to_package=package.accesses_to_package
         - versions.each do |version|
-          tr version_id=version.id
+          tr version_id=(package.accesses_to_package ? nil : version.id )
             -if version == versions.first
               td rowspan=2*versions.count = link_to package.name, package
             td  = link_to version.name, version
-            td  #{markdown version.description}
+            td  = markdown version.description
 
             td
               =render "pack/packages/clustervers",clustervers: version.clustervers
@@ -59,11 +59,11 @@
             -if package.accesses_to_package
               -if version == versions.first &&  !version.deleted && !version.service
                 td rowspan=2*versions.count
-                   button class="btn btn-primary btn_access" package_id=package.id  = t("want")
+                   button class="btn btn-primary btn_access" = t("want")
             -else
               td
                 -if !version.deleted && !version.service
-                   button class="btn btn-primary btn_access" version_id=version.id  = t("want")
+                   button class="btn btn-primary btn_access" = t("want")
           tr
               div class='accesses_form_container' hidden=""
                 div class='top-alpaca-form'
