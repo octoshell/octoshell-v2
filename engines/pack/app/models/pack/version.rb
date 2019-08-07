@@ -25,7 +25,7 @@
 #
 
 module Pack
-  class Version < ActiveRecord::Base
+  class Version < ApplicationRecord
     include AASM
     attr_accessor :user_accesses
 

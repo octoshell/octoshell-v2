@@ -13,7 +13,7 @@
 #
 
 # Связь пользователя и группы
-class UserGroup < ActiveRecord::Base
+class UserGroup < ApplicationRecord
   belongs_to :user
   belongs_to :group
 end

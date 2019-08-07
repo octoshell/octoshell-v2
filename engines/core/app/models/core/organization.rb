@@ -20,7 +20,7 @@
 #
 
 module Core
-  class Organization < ActiveRecord::Base
+  class Organization < ApplicationRecord
     remove_spaces :name
     MERGED_ASSOC = [Employment, Member, Project, SuretyMember].freeze
     include MergeOrganzations

@@ -15,7 +15,7 @@
 #
 
 module Core
-  class City < ActiveRecord::Base
+  class City < ApplicationRecord
     include Checkable
     belongs_to :country
     has_many :organizations

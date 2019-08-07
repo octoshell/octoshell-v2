@@ -34,7 +34,7 @@ module Core
       respond_to do |format|
         format.json do
           @departments = Organization.find(params[:id]).departments
-          @array = @departments.map { |d| { id: d.id, text: d.name } }
+          @array = @departments.map { |d| { id: d.id, text: d.name } }.sort{|a,b| a[:text]<=>b[:text]}
           render json: @array
         end
       end

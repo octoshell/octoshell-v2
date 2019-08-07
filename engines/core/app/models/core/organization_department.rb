@@ -13,7 +13,7 @@
 #
 
 module Core
-  class OrganizationDepartment < ActiveRecord::Base
+  class OrganizationDepartment < ApplicationRecord
     include MergeDepartments
     include Checkable
     belongs_to :organization, inverse_of: :departments
@@ -21,7 +21,7 @@ module Core
     has_many :projects
 
     has_many :employments, inverse_of: :organization_department
-    has_many :users, class_name: Core.user_class, through: :employments
+    has_many :users, class_name: Core.user_class.to_s, through: :employments
     has_many :members, inverse_of: :organization_department
     has_many :surety_members, inverse_of: :organization_department
     after_create :notify_admins

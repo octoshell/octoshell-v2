@@ -1,6 +1,6 @@
 module Core
   class Admin::ClusterLogsController < Admin::ApplicationController
-    before_filter :setup_default_filter
+    before_action :setup_default_filter
 
     def index
       respond_to do |format|

@@ -15,7 +15,7 @@
 #
 # Название позиции в организации
 module Core
-  class EmploymentPositionName < ActiveRecord::Base
+  class EmploymentPositionName < ApplicationRecord
     validates "name_#{I18n.default_locale}", presence: true, uniqueness: true
 
     translates :name

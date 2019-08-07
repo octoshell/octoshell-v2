@@ -1,6 +1,6 @@
 module Announcements
   class Admin::AnnouncementsController < Admin::ApplicationController
-    before_filter { authorize! :manage, :announcements }
+    before_action { authorize! :manage, :announcements }
     # before_action only: %i[create update] do
     #   if announcement_params[:attachment]
     #     announcement_params[:attachment].original_filename =

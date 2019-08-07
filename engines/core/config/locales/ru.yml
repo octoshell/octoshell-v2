@@ -930,8 +930,8 @@ ru:
         add_employment: Добавить место работы
       form:
         add_organization: "Добавить организацию"
-        no_department: "Не нашли своё подразделение?"
-        new_organization_department: "Добавить подразделение"
+        no_department: "Подразделение не обязательно (кроме МГУ). Не нашли своё подразделение?"
+        new_organization_department: "Добавить подразделение (если это необходимо)"
       new:
         title: "Новое место работы"
       show:

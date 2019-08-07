@@ -15,8 +15,9 @@ function applyValueSelect(categoryValue){
 }
 
 var categoryValue = $('#q_category_values_id_in');
-$(document).on('change','#q_options_categories_id_in', function() {
-	applyValueSelect(categoryValue);
-});
 categoryValue.select2();
 applyValueSelect(categoryValue);
+
+$(document).on('change','#q_options_categories_id_in', function() {
+	applyValueSelect($('#q_category_values_id_in'));
+});

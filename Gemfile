@@ -1,11 +1,13 @@
 source "https://rubygems.org"
 gem "rake"
-gem "rails", "~> 4.2"
+gem "rails", "~> 5.0"
+gem 'bootsnap'
+gem 'listen'
 platforms :jruby do
   gem "activerecord-jdbcpostgresql-adapter", "~> 1.3.21"
 end
 gem "pg", "~> 0.18", platform: :ruby
-gem "responders", "~> 2.0"
+gem "responders"
 gem "uglifier", ">= 1.3.0"
 gem "sassc-rails"
 gem "bootstrap_form"
@@ -23,14 +25,13 @@ group :development do
   gem "annotate"
   gem "sqlite3"
   gem "letter_opener"
-  gem "quiet_assets"
   gem "pry-rails"
   gem "rails-erd"
   gem 'railroady'
   gem "better_errors"
   gem 'rails_db'
-  gem 'i18n-tasks', '~> 0.9.21'
   gem 'minitest-reporters'
+  gem 'i18n-tasks'
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil
@@ -69,11 +70,11 @@ gem "whenever"
 
 group :test do
   gem "letter_opener"
-  gem "rspec-rails"
+  #gem "rspec-rails"
   gem "activerecord-import", ">= 0.2.0"
   gem 'poltergeist'
   gem "rspec-sidekiq"
-  gem 'shoulda-matchers', '~> 3.1'
+  gem 'shoulda-matchers', '~> 4.0'
   gem "test_after_commit"
   gem "database_cleaner"
   gem "factory_bot_rails"

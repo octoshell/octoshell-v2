@@ -14,7 +14,7 @@
 #
 
 module Hardware
-  class State < ActiveRecord::Base
+  class State < ApplicationRecord
     belongs_to :kind, inverse_of: :states
     has_and_belongs_to_many :from_states, class_name: 'State',
                                           join_table: :hardware_states_links,

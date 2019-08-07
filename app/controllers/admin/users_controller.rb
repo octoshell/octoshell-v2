@@ -1,11 +1,11 @@
 class Admin::UsersController < Admin::ApplicationController
-  before_filter :setup_default_filter, only: :index
-  before_filter :check_authorization, except: :show
+  before_action :setup_default_filter, only: :index
+  before_action :check_authorization, except: :show
 
   def index
     respond_to do |format|
       format.html do
-        @search = User.includes({employments:[:organization,:organization_department]}, :profile).search(params[:q])
+        @search = User.includes({employments:[:organization,:organization_department]}, :profile).ransack(params[:q])
         @users = @search.result(distinct: true).order(id: :desc)
         # unless display_all_applied?
         #   @users = @users.page(params[:page])

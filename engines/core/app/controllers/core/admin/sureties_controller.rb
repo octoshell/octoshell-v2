@@ -1,6 +1,6 @@
 module Core
   class Admin::SuretiesController < Admin::ApplicationController
-    before_filter :setup_default_filter, only: :index
+    before_action :setup_default_filter, only: :index
 
     def index
       @search = Surety.search(params[:q])

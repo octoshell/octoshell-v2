@@ -13,7 +13,7 @@
 #
 
 module Core
-  class ClusterQuota < ActiveRecord::Base
+  class ClusterQuota < ApplicationRecord
     # Since rails doesn't recognises, that qouta in plural will be qoutas,
     # we have to manually define table name here.
     self.table_name = "core_cluster_quotas"

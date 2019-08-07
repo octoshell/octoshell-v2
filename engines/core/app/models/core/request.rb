@@ -26,10 +26,10 @@
 #
 
 module Core
-  class Request < ActiveRecord::Base
+  class Request < ApplicationRecord
 
     # TODO: remove creator, delegate owner to project
-    belongs_to :creator, class_name: Core.user_class, foreign_key: :creator_id
+    belongs_to :creator, class_name: Core.user_class.to_s, foreign_key: :creator_id
     belongs_to :changed_by, class_name: Core.user_class
     delegate :owner, to: :project
 

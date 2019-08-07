@@ -11,7 +11,7 @@
 #
 
 module Core
-  class DepartmentMerger < ActiveRecord::Base
+  class DepartmentMerger < ApplicationRecord
     belongs_to :source_department,
                class_name: 'Core::OrganizationDepartment',
                foreign_key: :source_department_id

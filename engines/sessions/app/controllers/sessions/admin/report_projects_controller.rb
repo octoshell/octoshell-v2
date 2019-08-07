@@ -1,6 +1,6 @@
 module Sessions
   class Admin::ReportProjectsController < Admin::ApplicationController
-    before_filter { authorize! :manage, :reports }
+    before_action { authorize! :manage, :reports }
 
     def update
       @report = get_report(params[:report_id])

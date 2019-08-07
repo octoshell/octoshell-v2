@@ -5,7 +5,7 @@ module Wiki
     layout "layouts/application"
 
 
-    before_filter :add_css #, :journal_user
+    before_action :add_css #, :journal_user
 
     def add_css
       @extra_css="wiki/wiki.css"

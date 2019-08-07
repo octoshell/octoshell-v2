@@ -1,5 +1,5 @@
 class Authentication::SessionsController < Authentication::ApplicationController
-  before_filter :handle_authorized, if: :logged_in?, except: :destroy
+  before_action :handle_authorized, if: :logged_in?, except: :destroy
 
   def new
     @user = User.new

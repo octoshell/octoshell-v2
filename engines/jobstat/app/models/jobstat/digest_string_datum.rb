@@ -16,6 +16,6 @@
 #
 
 module Jobstat
-  class DigestStringDatum < ActiveRecord::Base
+  class DigestStringDatum < ApplicationRecord
   end
 end

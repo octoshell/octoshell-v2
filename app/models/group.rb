@@ -11,7 +11,7 @@
 #
 
 # Модель группы пользователей
-class Group < ActiveRecord::Base
+class Group < ApplicationRecord
   GroupStrata = Struct.new(:name, :weight)
   SUPERADMINS     = GroupStrata.new( "superadmins",     0 )
   FAULTS_MANAGERS = GroupStrata.new( "faults_managers", 1 )

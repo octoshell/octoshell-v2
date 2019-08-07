@@ -7,7 +7,7 @@
 #
 
 module Comments
-  class Tag < ActiveRecord::Base
+  class Tag < ApplicationRecord
     validates :name, presence: true
     has_many :taggings, inverse_of: :tag
     def self.allowed_names(user_id)

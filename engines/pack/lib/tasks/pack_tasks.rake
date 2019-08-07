@@ -3,6 +3,12 @@
 #   # Task goes here
 # end
 namespace :pack do
+  task :ability => :environment do
+    puts "Creating abilities for groups"
+    Group.all.each do |g|
+      Ability.create({action: "manage",subject: "packages",group_id: g.id,available: (g.name=="superadmins")  } )
+    end
+  end
   task :install => :environment do
       puts "Copying over Pack migrations..."
         Dir.chdir(Rails.root) do
