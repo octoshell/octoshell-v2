@@ -29,6 +29,7 @@ en:
         from: From
         logins: Logins
         only_long: Only jobs longer than 15 minutes
+        only_with_data: Only jobs with data
         partitions: Supercomputer partitions
         show: Show
         statuses: Job finish states

@@ -30,6 +30,7 @@ ru:
         from: От
         logins: Логины
         only_long: Только задания длиннее 15 минут
+        only_with_data: Только задания с данными
         partitions: Разделы суперкомпьютера
         show: Показать
         statuses: Статус задачи
