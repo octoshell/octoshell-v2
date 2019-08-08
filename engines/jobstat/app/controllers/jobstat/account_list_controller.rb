@@ -373,6 +373,7 @@ module Jobstat
        :involved_logins => [],
        :owned_logins => [],
        :only_long => 1,
+       :only_with_data => 0,
        :offset => 0
       }
     end
@@ -387,6 +388,9 @@ module Jobstat
 
       if params[:only_long].to_i == 1
         jobs = jobs.where "end_time - start_time > '942 second'::interval" # 15:42 = 15*60+42
+      end
+      if params[:only_with_data].to_i == 1
+        jobs = jobs.joins("inner join jobstat_float_data on jobstat_float_data.job_id=jobstat_jobs.id").where "jobstat_float_data.name='cpu_user'"
       end
 
       jobs.where(login: query_logins, cluster: params[:cluster])
