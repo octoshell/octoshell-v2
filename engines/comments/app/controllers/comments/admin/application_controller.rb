@@ -1,5 +1,5 @@
-module Comments
-  class Admin::ApplicationController < Comments::ApplicationController
+module Comments::Admin
+  class ApplicationController < Comments::ApplicationController
     layout 'layouts/comments/admin'
     before_action :check_abilities, :journal_user
 

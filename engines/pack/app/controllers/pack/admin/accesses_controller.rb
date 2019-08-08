@@ -1,17 +1,17 @@
-require_dependency "pack/application_controller"
+# require_dependency "pack/application_controller"
 # require "#{Pack::Engine.root}/app/services/pack/admin_access_updater"
-module Pack
-  class Admin::AccessesController < Admin::ApplicationController
+module Pack::Admin
+  class AccessesController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound do |ex|
       render "not_found"
     end
     before_action :access_init, only: [:edit, :show,:update,:destroy, :manage_access]
     def access_init
-      @access = Access.find(params[:id])
+      @access = Pack::Access.find(params[:id])
     end
 
     def index
-      @q = Access.ransack(params[:q])
+      @q = Pack::Access.ransack(params[:q])
       @accesses = @q.result(distinct: true).order(:id).includes(:version, :who)
       without_pagination(:accesses)
     end
@@ -31,12 +31,12 @@ module Pack
     end
 
     def new
-      @access = Access.new
+      @access = Pack::Access.new
       @access.who_type="User"
     end
 
     def create
-      @access = Access.new access_params.except(:forever)
+      @access = Pack::Access.new access_params.except(:forever)
       if not_access_params[:forever] == 'true'
         @access.end_lic = nil
         @access.new_end_lic = nil

@@ -1,5 +1,5 @@
-module Announcements
-  class Admin::AnnouncementsController < Admin::ApplicationController
+module Announcements::Admin
+  class AnnouncementsController < ApplicationController
     # before_action { authorize! :manage, :announcements }
     before_action { octo_authorize! }
 

@@ -1,7 +1,7 @@
 require_dependency "api/admin/application_controller"
 
-module Api
-  class Admin::ExportsController < Admin::ApplicationController
+module Api::Admin
+  class ExportsController < ApplicationController
     before_action :set_export, only: [:show, :edit, :update, :destroy]
     before_action :authorize_admins
     def authorize_admins

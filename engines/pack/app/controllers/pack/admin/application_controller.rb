@@ -1,5 +1,5 @@
-module Pack
-  class Admin::ApplicationController < Pack::ApplicationController
+module Pack::Admin
+  class ApplicationController < Pack::ApplicationController
     layout "layouts/pack/admin"
 
     before_action :check_abilities, :journal_user

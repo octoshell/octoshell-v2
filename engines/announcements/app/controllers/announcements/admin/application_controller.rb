@@ -1,5 +1,5 @@
-module Announcements
-  class Admin::ApplicationController < Announcements::ApplicationController
+module Announcements::Admin
+  class ApplicationController < Announcements::ApplicationController
     before_action :authorize_admins, :journal_user
 
     def journal_user

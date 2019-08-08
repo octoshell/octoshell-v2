@@ -320,7 +320,7 @@ module Jobstat
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
 
-      @params = defaults.merge(params.symbolize_keys)
+      @params = defaults.merge(params.to_h.symbolize_keys)
 
       query_logins = @projects.map{|_,login| login}.flatten.uniq
       req_logins=(@params[:all_logins] || []).reject{|x| x==''}
