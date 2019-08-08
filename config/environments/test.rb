@@ -38,6 +38,18 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.action_mailer.default_url_options = { :host => "test.yourhost.com" }
+  config.action_mailer.default_options = { from: "Octoshell Notifier <info@users.parallel.ru>" }
+
+  # config.action_mailer.smtp_settings = {
+  #      address: 'smtp.gmail.com',
+  #      port: '587',
+  #      domain: 'gmail.com',
+  #      authentication: :plain,
+  #      enable_starttls_auto: true,
+  #      # user_name: Rails.application.secrets.mailer_username,
+  #      # password: Rails.application.secrets.mailer_password
+  # }
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr

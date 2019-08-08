@@ -1,8 +1,7 @@
 module Hardware
   class Admin::ItemsController < Admin::ApplicationController
 
-    skip_before_actions :verify_authenticity_token, :not_authorized,
-                        :not_authenticated, :require_login, :check_abilities,
+    skip_before_actions :verify_authenticity_token, :check_abilities,
                         only: :json_update
     # skip_before_action :verify_authenticity_token, only: :json_update
     # skip_before_action :not_authorized, only: :json_update

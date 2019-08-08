@@ -1,5 +1,5 @@
 # This migration comes from sessions (originally 20141013134532)
-class CreateSessionsUserSurveys < ActiveRecord::Migration
+class CreateSessionsUserSurveys < ActiveRecord::Migration[4.2]
   def change
     create_table :sessions_user_surveys do |t|
       t.integer :user_id

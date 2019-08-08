@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140722122657)
-class CreateCoreDirectionOfSciences < ActiveRecord::Migration
+class CreateCoreDirectionOfSciences < ActiveRecord::Migration[4.2]
   def change
     create_table :core_direction_of_sciences do |t|
       t.string :name

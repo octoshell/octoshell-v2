@@ -1,5 +1,5 @@
 # This migration comes from announcements (originally 20150306132309)
-class CreateAnnouncements < ActiveRecord::Migration
+class CreateAnnouncements < ActiveRecord::Migration[4.2]
   def change
     create_table :announcements do |t|
       t.string :title

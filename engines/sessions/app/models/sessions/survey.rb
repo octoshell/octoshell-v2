@@ -26,6 +26,8 @@
 module Sessions
   class Survey < ApplicationRecord
 
+    
+
     translates :name
 
     belongs_to :session

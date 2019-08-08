@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20141113070721)
-class AddQuotaFieldsToCoreRequests < ActiveRecord::Migration
+class AddQuotaFieldsToCoreRequests < ActiveRecord::Migration[4.2]
   def change
     add_column :core_requests, :cpu_hours, :integer
     add_column :core_requests, :gpu_hours, :integer

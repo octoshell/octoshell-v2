@@ -32,15 +32,21 @@ module Support
     validates :attachment, file_size: { maximum: 100.megabytes.to_i }
     #validates_presence_of  :attachment
 
-    def create_or_update
-      if new_record?
-        attach_answered_by_flag
-        notify_subscribers
-        ticket.subscribers << author unless ticket.subscribers.include? author
-      end
-
-      super
+    before_create do
+      attach_answered_by_flag
+      notify_subscribers
+      ticket.subscribers << author unless ticket.subscribers.include? author
     end
+
+    # def create_or_update
+    #   if new_record?
+    #     attach_answered_by_flag
+    #     notify_subscribers
+    #     ticket.subscribers << author unless ticket.subscribers.include? author
+    #   end
+    #
+    #   super
+    # end
 
     def to_s
       self.class.model_name.human

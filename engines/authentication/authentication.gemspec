@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency "sorcery"
   s.add_dependency "sidekiq"
   s.add_dependency "slim"
-  # s.add_dependency "bootstrap_form"
+  # s.add_dependency "bootstrap_form", ">= 4.2.0"
 
   s.test_files = Dir["spec/**/*"]
 

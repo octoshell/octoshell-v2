@@ -12,6 +12,8 @@
 module Core
   class QuotaKind < ApplicationRecord
 
+    
+
     translates :name, :measurement
 
     validates_translated :name, :measurement, presence: true

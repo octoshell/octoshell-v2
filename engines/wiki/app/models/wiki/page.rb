@@ -19,6 +19,8 @@
 module Wiki
   class Page < ApplicationRecord
 
+    
+
     translates :name, :content
     validates_translated :content, :name, presence: true
     validates :url, presence: true, uniqueness: true

@@ -1,0 +1,27 @@
+table#versions
+  tr
+    th = t('.id')
+    th = t('.chain_id')
+    th = PaperTrail::Version.human_attribute_name(:item_type)
+    th = PaperTrail::Version.human_attribute_name(:item_id)
+    th = PaperTrail::Version.human_attribute_name(:event)
+    th = PaperTrail::Version.human_attribute_name(:whodunnit)
+    th = PaperTrail::Version.human_attribute_name(:object_changes)
+    th = t('.created_at')
+  - versions.each do |record|
+    tr style="font-weight:#{get_if_bold(record.id)};color:#{get_chain_color(record.id)}"
+      td = record.id
+      - chain_id = chains.detect{ |_k,v| v.include? record.id }.first
+      td = link_to(chain_id, '#', onclick: "click_chain(#{chain_id});")
+      td = record.item_type
+      td = record.item_id
+      td = record.event
+      td = record.whodunnit ? link_to(record.user.full_name_with_email, [:admin, record.user]) : t('.system')
+      td = simple_format(record.object_changes)
+      td = record.created_at
+javascript:
+  function click_chain(chain_id){
+    $(`input[name='chain_id']`).val(chain_id).trigger('change');
+    $(`input[type='submit']`).first().trigger('click');
+    return false;
+  }

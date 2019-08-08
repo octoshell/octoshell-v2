@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: git://github.com/railsconfig/config.git
-  revision: f2b8d2a4b75bca0aca63602232a5ca72b4d156a3
+  revision: 2a714d2696282363fb1f565c0f898b53a2b1c832
   specs:
     config (2.0.0)
       deep_merge (~> 1.2, >= 1.2.1)
@@ -30,7 +30,7 @@ PATH
       maymay
       pg (~> 0.18)
       rails (~> 5.0)
-      ransack
+      ransack (= 2.1.1)
       sidekiq
       slim
 
@@ -68,7 +68,7 @@ PATH
       net-ssh
       pg (~> 0.18)
       rails (~> 5.0)
-      ransack
+      ransack (= 2.1.1)
       roo
       sidekiq
       sidekiq-failures
@@ -81,11 +81,13 @@ PATH
   specs:
     face (0.0.1)
       bootstrap-datepicker-rails
-      bootstrap_form
+      bootstrap3-datetimepicker-rails (~> 4.17.47)
+      bootstrap_form (< 4)
       coffee-rails
       commonmarker
       jquery-fileupload-rails
       jquery-rails
+      momentjs-rails (>= 2.9.0)
       nested_form
       pg (~> 0.18)
       rails (~> 5.0)
@@ -109,7 +111,7 @@ PATH
       maymay
       mime-types
       rails (~> 5.0)
-      ransack
+      ransack (= 2.1.1)
       slim
 
 PATH
@@ -122,7 +124,7 @@ PATH
       maymay
       pg (~> 0.18)
       rails (~> 5.0)
-      ransack
+      ransack (= 2.1.1)
       sidekiq
       slim
 
@@ -140,9 +142,15 @@ PATH
       mime-types
       nested_form
       rails (~> 5.0)
-      ransack
+      ransack (= 2.1.1)
       sidekiq
       slim
+
+PATH
+  remote: engines/reports
+  specs:
+    reports (0.0.1)
+      rails (~> 5.0)
 
 PATH
   remote: engines/sessions
@@ -156,7 +164,7 @@ PATH
       mini_magick
       pg (~> 0.18)
       rails (~> 5.0)
-      ransack
+      ransack (= 2.1.1)
       sidekiq
       slim
 
@@ -168,7 +176,7 @@ PATH
       maymay
       pg (~> 0.18)
       rails (~> 5.0)
-      ransack
+      ransack (= 2.1.1)
       sidekiq
       slim
 
@@ -184,7 +192,7 @@ PATH
       mini_magick
       pg (~> 0.18)
       rails (~> 5.0)
-      ransack
+      ransack (= 2.1.1)
       sidekiq
       slim
 
@@ -264,9 +272,9 @@ GEM
       msgpack (~> 1.0)
     bootstrap-datepicker-rails (1.8.0.1)
       railties (>= 3.0)
-    bootstrap_form (4.2.0)
-      actionpack (>= 5.0)
-      activemodel (>= 5.0)
+    bootstrap3-datetimepicker-rails (4.17.47)
+      momentjs-rails (>= 2.8.1)
+    bootstrap_form (2.7.0)
     builder (3.2.3)
     capybara (3.28.0)
       addressable
@@ -306,6 +314,7 @@ GEM
     decorators (1.0.5)
       railties (>= 3.0.19)
     deep_merge (1.2.1)
+    diff-lcs (1.3)
     docile (1.1.5)
     dry-configurable (0.8.3)
       concurrent-ruby (~> 1.0)
@@ -436,6 +445,8 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
+    momentjs-rails (2.20.1)
+      railties (>= 3.1)
     msgpack (1.3.1)
     multi_json (1.13.1)
     multi_xml (0.6.0)
@@ -456,6 +467,9 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     open4 (1.3.4)
+    paper_trail (10.3.1)
+      activerecord (>= 4.2)
+      request_store (~> 1.1)
     parser (2.6.3.0)
       ast (~> 2.4.0)
     pg (0.21.0)
@@ -548,6 +562,20 @@ GEM
       rubyzip (>= 1.2.1, < 2.0.0)
     rspec-core (3.8.2)
       rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.4)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-rails (3.8.2)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+      rspec-support (~> 3.8.0)
     rspec-sidekiq (3.0.3)
       rspec-core (~> 3.0, >= 3.0.0)
       sidekiq (>= 2.4.0)
@@ -617,8 +645,6 @@ GEM
     temple (0.8.1)
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
-    test_after_commit (1.1.0)
-      activerecord (>= 3.2)
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
       ref
@@ -679,7 +705,7 @@ DEPENDENCIES
   groupdate
   hardware!
   i18n-js
-  i18n-tasks
+  i18n-tasks (~> 0.9.21)
   jobstat!
   jquery-rails
   jquery-tablesorter
@@ -691,6 +717,7 @@ DEPENDENCIES
   mina
   minitest-reporters
   pack!
+  paper_trail
   pg (~> 0.18)
   phantomjs!
   poltergeist
@@ -702,8 +729,10 @@ DEPENDENCIES
   rails_db
   rails_email_preview (~> 2.0.6)
   rake
+  reports!
   responders
   rollbar
+  rspec-rails
   rspec-sidekiq
   rubyzip (>= 1.0.0)
   sassc-rails
@@ -713,7 +742,6 @@ DEPENDENCIES
   sqlite3
   statistics!
   support!
-  test_after_commit
   therubyracer
   traco
   uglifier (>= 1.3.0)

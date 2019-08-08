@@ -15,6 +15,8 @@
 module Pack
   class Package < ApplicationRecord
 
+    
+
     translates :description, :name
 
     self.locking_column = :lock_version

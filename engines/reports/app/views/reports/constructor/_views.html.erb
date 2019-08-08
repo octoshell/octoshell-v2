@@ -1,0 +1,81 @@
+<script type="text/x-handlebars-template" id="attributes_template">
+    <div>
+      {{#with items.[0]}}
+
+          {{#item}}{{/item}}
+
+      {{/with}}
+
+      <div class='row'>
+        <div class='col-xs-8'>
+          {{#with items.[1]}}
+
+              {{#item}}{{/item}}
+
+          {{/with}}
+        </div>
+
+        <div class='col-xs-4'>
+          {{#with items.[2]}}
+
+              {{#item}}{{/item}}
+
+          {{/with}}
+        </div>
+
+      </div>
+
+
+
+      {{#with items.[3]}}
+
+          {{#item}}{{/item}}
+
+      {{/with}}
+
+
+
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="checkbox_template">
+
+  <div class="row">
+
+    {{#if options.multiple}}
+
+        {{#each selectOptions}}
+
+        <div style="float:left;">
+
+                <label>
+
+                    <input type="checkbox" data-checkbox-index="{{@index}}" data-checkbox-value="{{value}}" {{#if selected}}checked{{/if}} {{#if ../options.readonly}}readonly="readonly"{{/if}} {{#if name}}name="{{name}}"{{/if}} {{#each ../options.data}}data-{{@key}}="{{value}}"{{/each}}/>
+                    {{{text}}}
+
+                </label>
+            </div>
+
+        {{/each}}
+
+    {{else}}
+
+        <div style="float:left;">
+
+            <label>
+
+                <input type="checkbox" {{#if data.length}}checked{{/if}} {{#if options.readonly}}readonly="readonly"{{/if}} {{#if name}}name="{{name}}"{{/if}} {{#each options.data}}data-{{@key}}="{{value}}"{{/each}}/>
+
+                {{#if options.rightLabel}}
+                    {{{options.rightLabel}}}
+                {{/if}}
+
+            </label>
+
+        </div>
+
+    {{/if}}
+  </div>
+
+
+</script>

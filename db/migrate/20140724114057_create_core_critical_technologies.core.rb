@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140722104917)
-class CreateCoreCriticalTechnologies < ActiveRecord::Migration
+class CreateCoreCriticalTechnologies < ActiveRecord::Migration[4.2]
   def change
     create_table :core_critical_technologies do |t|
       t.string :name

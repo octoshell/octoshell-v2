@@ -1,5 +1,5 @@
 # This migration comes from comments (originally 20171215093013)
-class CreateCommentsContexts < ActiveRecord::Migration
+class CreateCommentsContexts < ActiveRecord::Migration[4.2]
   def change
     create_table :comments_contexts do |t|
       t.string :name

@@ -1,5 +1,5 @@
 # This migration comes from sessions (originally 20141013140604)
-class CreateSessionsSurveyValues < ActiveRecord::Migration
+class CreateSessionsSurveyValues < ActiveRecord::Migration[4.2]
   def change
     create_table :sessions_survey_values do |t|
       t.text :value

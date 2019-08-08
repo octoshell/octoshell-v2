@@ -1,7 +1,3 @@
-# desc "Explaining what the task does"
-# task :pack do
-#   # Task goes here
-# end
 namespace :pack do
   task :ability => :environment do
     puts "Creating abilities for groups"

@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140726140447)
-class CreateCoreEmployments < ActiveRecord::Migration
+class CreateCoreEmployments < ActiveRecord::Migration[4.2]
   def change
     create_table :core_employments do |t|
       t.integer :user_id

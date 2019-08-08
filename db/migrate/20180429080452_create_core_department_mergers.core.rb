@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20180429075123)
-class CreateCoreDepartmentMergers < ActiveRecord::Migration
+class CreateCoreDepartmentMergers < ActiveRecord::Migration[4.2]
   def change
     create_table :core_department_mergers do |t|
       t.integer :source_department_id
