@@ -22,10 +22,6 @@ module Face
     end
 
     def items(controller)
-      # puts controller.core.class.green
-      # puts mounted_helpers.inspect.green
-      # puts controller.methods.sort.inspect.red
-
       @controller = controller
       @items.clear
       @blocks.each do |block|

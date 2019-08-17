@@ -13,7 +13,7 @@ html
       td class="col-xs-9" = t("#{@package.deleted}")
   br
   br
-  =render 'versions_table',records: @versions
+  =render 'versions_table_in_package'
   =paginate(@versions)
   = handlebars_tag(id: 'accesses-template') do
     = render 'access'

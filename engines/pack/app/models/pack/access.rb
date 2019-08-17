@@ -69,14 +69,6 @@ module Pack
                                       foreign_key: "access_id",
                                       association_foreign_key: "ticket_id"
 
-    # scope :preload_who, -> { select("pack_accesses.*,u.email as who_user,proj.title as who_project,g.name as who_group").joins(<<-eoruby
-    #      LEFT JOIN core_projects as proj ON (proj.id= "pack_accesses"."who_id" AND pack_accesses.who_type='Core::Project'  )
-    #      LEFT JOIN users as u ON (u.id= "pack_accesses"."who_id" AND pack_accesses.who_type='User'  )
-    #      LEFT JOIN groups as g ON (g.id= "pack_accesses"."who_id" AND pack_accesses.who_type='Group'  )
-    #     eoruby
-    #     )
-    #     }
-
     after_commit :send_email, if: :admin_update?
     after_commit :create_ticket, if: :user_request?
 
@@ -99,7 +91,7 @@ module Pack
     end
 
     def send_email
-      if status != 'requested'
+      if status != 'requested' && ! to.is_a?(Group)
         if previous_changes["status"]
           ::Pack::PackWorker.perform_async(:access_changed, id)
         elsif %w[expired allowed].include?(status) && previous_changes["end_lic"]
@@ -112,16 +104,12 @@ module Pack
 
     def create_ticket
       subject = if new_end_lic
-        I18n.t('tickets_access.subject.new_lic_req', who_name: who_name_with_type, user: created_by.full_name, version_name: version_name)
+        I18n.t('tickets_access.subject.new_end_lic', who_name: who_name_with_type, user: created_by.full_name, version_name: to.name)
       elsif status == 'requested'
-        I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.full_name, version_name: version_name)
+        I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.full_name, version_name: to.name)
       end
-      support_access_topic = Support::Topic.find_by(name_ru: I18n.t('integration.support_theme_name'))
+      support_access_topic = Pack.support_access_topic
       tickets.create!(subject: subject, reporter: created_by, message: subject, topic: support_access_topic)
-    end
-
-    def version_name
-      version.name
     end
 
     def self.user_access(user_id)
@@ -241,7 +229,6 @@ module Pack
                        { who_id: params[:type], who_type: 'Core::Project' }
                      end
       find_params.merge! params.slice(:to_id, :to_type)
-      puts 'zzzz'.red
       Access.find_by(find_params)
     end
 

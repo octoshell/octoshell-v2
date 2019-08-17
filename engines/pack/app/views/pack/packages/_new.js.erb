@@ -1,4 +1,3 @@
-
 var labels= <%=raw [Pack::Access.human_attribute_name("forever"),Pack::Access.human_attribute_name("not_forever")].to_json%>;
 bottomForm.alpaca({
   "schema":{
@@ -9,6 +8,8 @@ bottomForm.alpaca({
         "type": "radio",
         "enum": ['true','false'],
         "required": true
+      },
+      "accessibles":{
       },
       "status":{
       },
@@ -57,7 +58,11 @@ bottomForm.alpaca({
       },
       "to_id":{
         "type": "hidden"
-      }
+      },
+      "accessibles":{
+        "type": "hidden"
+      },
+
 
     },
     "form": {
@@ -73,16 +78,14 @@ bottomForm.alpaca({
                      this.refreshValidationState(true);
                      var promise = this.ajaxSubmit();
                      promise.done(function(arg){
-                       viewer.accesses = arg.accesses;
-                       viewer.renderFormForVersion(version_id,sel_value);
-                       $(`.btn_access[version_id='${version_id}']`).parents('tr')
-                       .next().find('p.server-messages').html('<font color="green"><%=t(".success")%></font>');
+                       self.processAccesses(arg.accesses);
+                       self.renderBottomForm(accessible,sel_value);
+                       self.serverMessages.html('<font color="green"><%=t(".success")%></font>');
                      });
                      promise.fail(function(arg) {
-                       viewer.accesses = arg.responseJSON.accesses;
-                       viewer.renderFormForVersion(version_id,sel_value);
-                       $(`.btn_access[version_id='${version_id}']`).parents('tr')
-                       .next().find('p.server-messages').html(`<font color="red">${arg.responseJSON.error}</font>`);
+                       self.processAccesses(arg.responseJSON.accesses);
+                       self.renderBottomForm(accessible,sel_value);
+                       self.serverMessages.html(`<font color="red">${arg.responseJSON.error}</font>`);
                      });
                    }
                 }
@@ -92,11 +95,10 @@ bottomForm.alpaca({
   "data":{
     "forever": false,
     "status": "new",
-    "version_id": version_id,
     "type": sel_value,
-    "versions_ids": viewer.ids,
-    // "to_id": access.to_id,
-    // "to_type": access.to_type
+    "accessibles": JSON.stringify(self.groupAccessibles()),
+    "to_id": accessible.data.id,
+    "to_type": accessible.data.type
   },
   "postRender": function(control) {
     control.getControlByPath('end_lic')

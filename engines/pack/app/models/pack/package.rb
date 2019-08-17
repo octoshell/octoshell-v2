@@ -29,6 +29,11 @@ module Pack
     { id: id, text: name }
     end
 
+    def to_s
+      "#{self.class.model_name.human} \"#{name}\""
+    end
+
+
     def self.ransackable_scopes(_auth_object = nil)
       %i[end_lic_greater]
     end
@@ -47,6 +52,14 @@ module Pack
       end
     end
 
+    before_save do
+      if accesses_to_package
+        accesses.where(to: versions).destroy_all
+      else
+        accesses.where(to: self).destroy_all
+      end
+    end
+
     def self.allowed_for_users
       all.merge(Version.allowed_for_users)
     end
@@ -57,22 +70,11 @@ module Pack
     end
 
 
-    def self.user_access user_id,join_type
+    def self.user_access(user_id,join_type)
       if user_id == true
         user_id = 1
-    end
-
-
-
-
-      result = Version.join_accesses  self.joins(:versions),user_id,join_type
-
-
-
-
-
-
-
+      end
+      Version.join_accesses joins(:versions), user_id, join_type
     end
 
   end

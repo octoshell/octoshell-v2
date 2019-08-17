@@ -17,106 +17,207 @@ ru:
     allowed: разрешен
     deleted: удален
     denied: отказано
-    deny_longer: отказать в продлении
-    expired: истек
-    make_longer: продлить доступ
-    requested: запрошен
-  accesses:
-    black: Ваш доступ удален
-    blue: Ваш доступ запрошен
-    brown: Ваш доступ истек
-    delete_success: Заявка успешно удалена
-    green: Вам разрешен доступ
-    messages:
-      deleted: Ваш доступ к данной версии удален
-      denied: Вам отказано в доступе к данной версии
-    red: Отказано в доступе
-    status:
+    no_records_found: Не найдено записей
+    new_package: Новый пакет
+    tickets: Заявки в тех поддержку
+    return_to_pack: Вернуться к пакету
+    for_ever: Навсегда
+    not_for_ever: Не на всегда
+    Package_name: Имя пакета
+    status: Статус
+    from: От кого
+    user: Пользователь
+    from_user: от пользователя
+    from_project:  от проекта
+    name: Название
+    available: доступна
+    not available: не доступна
+    description: Описание
+    cost: Стоимоcть
+    folder: Путь
+    edit: Редактировать
+    delete: Удалить
+    add_v: Добавить версию
+    confirm: Вы действительно хотите удалить эту запись?
+    ver_confirm: Вы действительно хотите удалить версию?
+    Versions: Версии
+    active: Активна на кластере?
+    deleted:  Показать только удаленные
+    deleted:  Показать только удаленные
+    remain_deleted:  Оставить удаленным?
+    deleted?:  Удаленные/активные
+    not_deleted: Показать только существующие
+    show_active: Показать только активные
+    actions_pack: Действия
+    pack_list: Список пакетов
+    active_y: активна
+    clusters: Кластеры
+    Clusters: Кластеры
+    active_n: неактивна
+    exist: Существует на кластере?
+    edit_access: Права на пакеты
+    Choose package: Выберите пакет
+    Choose user: Выберите пользователя
+    user(me): для пользователя(меня)
+    project:  Проект
+    group: Группа пользователей
+    for_whom?: Для кого?
+    want: послать заявку
+    no_packages_found: Не найдено ни одного доступа
+    package: Пакет
+    disable: убрать
+    buttons:
+      save: Сохранить
+    integration:
+      support_theme_name: Заявка на доступ к пакетам
+    engine_submenu:
+        packages_list: Пакеты
+        versions_list: Версии пакетов
+        accesses_list: Доступы
+        options_list: Опции
+    options_list: Опции
+    who_types:
+      User: Пользователь
+      Group: Группа
+      'Core::Project': Проект
+    mailer_version_messages:
+      expired: Лицензия истекла
+      forever: Лицензия не имеет дату окончания
+      available: Лицензия актуальна до "%{date}"
+    mailer_messages:
+      show_vers: Перейти к версии
+      denied: Вам отказано в доступе
+      allowed: Вам разрешен доступ
+      expired: У Вас истек доступ
+      end_lic_changed: Изменилась дата окончания Вашего доступа
+      denied_longer: Вам отказали в продлении доступа
+      deleted: Ваш доступ удален
+      subject: "%{to}: Изменено состояние вашего доступа"
+      body: "%{status_info} к  %{link}. Для подробностей напишите нам или просмотрите ответы администраторов на Ваши заявки"
+    access_actions:
+      denied: отказать
+      requested: запросить
+      allowed: разрешить
+      expired: в просроченные
+      make_longer: продлить
+      deny_longer: отказать в продлении
+      edit_by_hand: редактировать вручную(заполнить поля снизу)
+    notice:
+      pack_deleted: Пакет, в которую входит данная версия, удален. Вы не можете определять,удалена ли версия или нет.
+
+    actions:
+      edit_access: Редактировать доступ
+    tickets_access:
+      subject:
+        requested: "Заявка от %{user} на %{version_name} для проекта %{who_name}"
+        new_end_lic: "Заявка на продление %{version_name} от %{user} для проекта %{who_name}"
+
+    exception_messages:
+      not_found: Запись не найдена. Скорее всего, она была удалена.
+      refresh_page: Пожалуйста, обновите страницу.
+    packages or versions: Пакеты или версии
+
+    project: Проект
+    group: Группа
+    version: Версия
+    all: Все
+    colors:
+      red: красный
+      blue: синий
+      green: зеленый
+      yellow: желтый
+      brown: коричневый
+      black: черный
+    clvers:
+      title: Активность на кластерах
+      note: "Примечание: если кластера нет в списке,то версия на нем не установлена!"
+      red: Версия установлена на кластере,но на данный момент неактивна
+      green: Версия активна и готова к работе
+    accesses:
+      sucess: Действие выполнено успешно
+      title: Доступы
+      red: Отказано в доступе
+      blue: Ваш доступ запрошен
+      green: Вам разрешен доступ
+      brown: Ваш доступ истек
+      black: Ваш доступ удален
+      success: "Действие с данным доступом успешно выполнено.Статус доступа: \"%{status}\". Если у Вас будут какие-то вопросы,пишите нам."
+      messages:
+        deleted: Ваш доступ к данной версии удален
+        denied: Вам отказано в доступе к данной версии
+      delete_success: Заявка успешно удалена
+      status:
+        denied: отказан
+        requested: запрошен
+        allowed: разрешен
+        expired: истек
+        deleted: удален
+    stale_error: "В базе данных находится другое значение. Пожалуйста, проверьте это поле на предмет несогласованности данных"
+    stale_error_nested: "Эта запись была удалена другим пользователем"
+    stale_message: Во время редактирования другой пользователь изменил данные в базе данных.
+    versions:
+      not_available: нет доступа
+      exp_mes: Лицензия данной версии истекла. Вы не можете пользоваться истекшей версией.
+      my_accesses: Мои доступы
+      my_accesses_edit: Редактировать мои доступы
+      active: версия активна на кластере
+      not_active: версия неактивна на кластере
+      not_exist: версия не существует на кластере
+      cl_autocomplete: ввести с помощью автодополнения
+      cl_byhand: ввести с помощью ручного ввода
+      state: дата окончания
+      forever: без даты окончания
+      not_forever: с датой окончания
+      available: активна
+      expired: истекла
+      clusters: "Установлена на кластерах:"
+      options: "Опции:"
+      cl_status:
+        active: активна
+        not_active: неактивна
+    pack_search:
+      packages:
+        end_lic_lt: Лицезия версии кончается не раньше
+        end_lic_gt: Лицезия версии кончается после
+        only_deleted: только удаленные
+        only_service: только служебные
+        clusters: Кластеры
+        who_type: Тип моего доступа
+        who_type_admin: Тип доступа
+        user_access: "Пакеты и версии, связанные с пользователем"
+        active_cl: Показать только активные на хотя бы одном кластере
+        versions: Версии
+        packages: Пакеты
+        versions_name: Названия версий
+        packages_name: Названия пакетов
+        my_packs: Версии и пакеты, к которым у меня есть доступ/заявка на доступ
+        show_deleted: Показать удаленные
+        show_service: Показать служебные
+    access_states:
+      make_longer: продлить доступ
+      deny_longer: отказать в продлении
       allowed: разрешен
       deleted: удален
       denied: отказан
       expired: истек
-      requested: запрошен
-    success: >-
-      Действие с данным доступом успешно выполнено.Статус доступа: "%{status}".
-      Если у Вас будут какие-то вопросы,пишите нам.
-    sucess: Действие выполнено успешно
-    title: Доступы
-  actions:
-    edit_access: Редактировать доступ
-  actions_pack: Действия
-  active: Активна на кластере?
-  active_n: неактивна
-  active_y: активна
-  activerecord:
-    attributes:
-      pack/access:
-        ac_forever: С датой окончания
-        allowed_by: Доступ одобрен
-        con_to_user: Доступы,связанные с пользователем
-        created_by: Доступ создан
-        end_lic: Дата окончания
-        end_lic_if_exists: Дата окончания (если она конечна)
-        end_lic_readable: Дата окончания
-        forever: Без даты окончания
-        new_end_lic: Дата окончания заявки на продление(если есть)
-        new_end_lic_forever: Заявка на бесконечный доступ
-        new_end_lic_not_null: Показать только заявки на продление
-        new_end_lic_readable: Дата окончания заявки на продление(если есть)
-        not_forever: C датой окончания
-        status: Статус
-        status_readable: Статус
-        version: Версия
-        version_name: Имя версии
-        versions: Версии
-        who_name_with_type: Чей доступ
-        who_type: Тип доступа
-      pack/category_value:
-        value: Значение
-      pack/clusterver:
-        name: Кластер
-        path: Путь
-        status: Статус
-      pack/options_category:
-        category: Категория
-        values: Значения
-      pack/package:
-        deleted: удален
-        deleted?: Удаленные/активные
-        description: Описание
-        name: Название
-        not_deleted: Показать только активные
-      pack/version:
-        access_user: Мои доступы
-        accesses: Доступы
-        active: Актуальна
-        available_for_user?: Доступна
-        clusters: Кластеры
-        cost: Стоимоcть
-        delete: Удалить
-        delete_on_expire: Помечать доступы удаленными,когда лицения истечет
-        deleted: Удаленная
-        description: Описание
-        edit: Редактировать
-        end_lic: Дата окончания лицензии
-        folder: Путь
-        name: Название
-        package: Пакет
-        service: Служебная
-        state: Состояние лицензии
-        version_name: Имя версии
-        version_options: Опции
-      pack/version_option:
-        category_value_id: Значение из списка значений для категорий
-        name: Название опции
-        options_category_id: Категория опций
-        value: Значение
-    errors:
-      messages:
-        deleted_record: 'Эта запись %{value} была удалена,пока Вы редактировали
-          форму '
-        uniq_access: Пользователь/проект уже имеет доступ/заявку на данную
-          версию
+      forever: без даты окончания
+      available: доступен
+
+
+
+    pack:
+      notificators:
+        notify_about_expiring_versions:
+          topic: 'Версии ПО с истекающей лицензией'
+          subject: 'Версии ПО с истекающей лицензией'
+          title: 'Версии ПО с истекающей лицензией'
+      mailer:
+        email_vers_state_changed:
+          subject: "Изменилась информация о лицензии  версии  «%{version_name}»"
+          body: "У версии %{link} изменилась информации о лицензии.%{message}."
+      access:
+        updated_during_edit_static: Нельзя выполнить действие. С заявкой на доступ или доступом во время заполнения формы что-то произошло. Введите данные заново
+    activerecord:
       models:
         pack/access:
           attributes:
@@ -146,178 +247,63 @@ ru:
                 Пакет, в который входит данная версия, удален. В этом случае
                 версия должна быть удалена тоже
         pack/version_option:
-          taken: >-
-            Опция для этой версии с таким именем уже существует ( названия
-            опций должны быть уникальными)
-    models:
-      pack/access: Доступ
-      pack/category_value: Значения категорий
-      pack/options_category: Категория опций
-      pack/package: Пакет
-      pack/version: Версия
-  add_v: Добавить версию
-  all: Все
-  available: доступна
-  clusters: Кластеры
-  clvers:
-    green: Версия активна и готова к работе
-    note: 'Примечание: если кластера нет в списке,то версия на нем не установлена!'
-    red: Версия установлена на кластере,но на данный момент неактивна
-    title: Активность на кластерах
-  colors:
-    black: черный
-    blue: синий
-    brown: коричневый
-    green: зеленый
-    red: красный
-    yellow: желтый
-  confirm: Вы действительно хотите удалить эту запись?
-  cost: Стоимоcть
-  delete: Удалить
-  deleted: Показать только удаленные
-  deleted?: Удаленные/активные
-  denied: отказано
-  description: Описание
-  destroy: удалить
-  disable: убрать
-  edit: Редактировать
-  edit_access: Права на пакеты
-  engine_submenu:
-    accesses_list: Доступы
-    options_list: Опции
-    packages_list: Пакеты
-    versions_list: Версии пакетов
-  exception_messages:
-    not_found: Запись не найдена. Скорее всего, она была удалена.
-    refresh_page: Пожалуйста, обновите страницу.
-  exist: Существует на кластере?
-  'false': нет
-  folder: Путь
-  for_ever: Навсегда
-  for_whom?: Для кого?
-  from: От кого
-  from_project: от проекта
-  from_user: от пользователя
-  group: Группа
-  integration:
-    support_theme_name: Заявка на доступ к версиям пакетов
-  legend: Легенда
-  mailer_messages:
-    allowed: Вам разрешен доступ
-    body: >-
-      %{status_info} к версии  %{link}. Для подробностей напишите нам или
-      просмотрите ответы администраторов на Ваши заявки
-    deleted: Ваш доступ удален
-    denied: Вам отказано в доступе
-    denied_longer: Вам отказали в продлении доступа
-    end_lic_changed: Изменилась дата окончания Вашего доступа
-    expired: У Вас истек доступ
-    show_vers: Перейти к версии
-    subject: Изменено состояние вашего доступа к версии  %{version_name}
-  mailer_version_messages:
-    available: Лицензия актуальна до "%{date}"
-    expired: Лицензия истекла
-    forever: Лицензия не имеет дату окончания
-  name: Название
-  new_package: Новый пакет
-  no_packages_found: Не найдено ни одного доступа
-  no_records_found: Не найдено записей
-  not available: не доступна
-  not_deleted: Показать только существующие
-  not_for_ever: Не на всегда
-  notice:
-    pack_deleted: >-
-      Пакет, в которую входит данная версия, удален. Вы не можете определять,удалена
-      ли версия или нет.
-  options_list: Опции
-  pack:
-    access:
-      created_during_edit: >-
-        Невозможно отправить заявку. Скорее всего, во время заполнения формы
-        администратор выдал Вам доступ к версии.
-      updated_during_edit_static: >-
-        Нельзя выполнить действие. С заявкой на доступ или доступом во время
-        заполнения формы что-то произошло. Введите данные заново
-    mailer:
-      email_vers_state_changed:
-        body: У версии %{link} изменилась информации о лицензии.%{message}.
-        subject: Изменилась информация о лицензии  версии  «%{version_name}»
-    notificators:
-      notify_about_expiring_versions:
-        subject: Версии ПО с истекающей лицензией
-        title: Версии ПО с истекающей лицензией
-        topic: Версии ПО с истекающей лицензией
-  pack_list: Список пакетов
-  pack_search:
-    packages:
-      active_cl: Показать только активные на кластере
-      clusters: Кластеры
-      end_lic_gt: Лицезия версии кончается после
-      end_lic_lt: Лицезия версии кончается не раньше
-      my_packs: Только те версии и пакеты, к которым у меня есть доступ/заявка на доступ
-      only_deleted: только удаленные
-      only_service: только служебные
-      packages: Пакеты
-      packages_name: Названия пакетов
-      show_deleted: Показать удаленные
-      show_service: Показать служебные
-      user_access: Пакеты и версии, связанные с пользователем
-      versions: Версии
-      versions_name: Названия версий
-      who_type: Тип моего доступа
-      who_type_admin: Тип доступа
-  package: Пакет
-  packages or versions: Пакеты или версии
-  project: Проект
-  remain_deleted: Оставить удаленным?
-  return_to_pack: Вернуться к пакету
-  send: Отправить
-  show_active: Показать только активные
-  stale_error: >-
-    В базе данных находится другое значение. Пожалуйста, проверьте это поле
-    на предмет несогласованности данных
-  stale_error_nested: Эта запись была удалена другим пользователем
-  stale_message: >-
-    Во время редактирования другой пользователь изменил данные в базе данных.
-  status: Статус
-  tickets: Заявки в тех поддержку
-  tickets_access:
-    subject:
-      new_lic_req: Заявка на продление %{version_name} от %{user} для проекта
-        %{who_name}
-      requested: Заявка от %{user} на %{version_name} для проекта %{who_name}
-  'true': да
-  user: Пользователь
-  user(me): для пользователя(меня)
-  ver_confirm: Вы действительно хотите удалить версию?
-  version: Версия
-  version_states:
-    available: доступен
-    expired: истек
-    forever: без даты окончания
-  versions:
-    active: версия активна на кластере
-    available: активна
-    cl_autocomplete: ввести с помощью автодополнения
-    cl_byhand: ввести с помощью ручного ввода
-    cl_status:
-      active: активна
-      not_active: неактивна
-    clusters: 'Установлена на кластерах:'
-    exp_mes: >-
-      Лицензия данной версии истекла. Вы не можете пользоваться истекшей версией.
-    expired: истекла
-    forever: без даты окончания
-    my_accesses: Мои доступы
-    my_accesses_edit: Редактировать мои доступы
-    not_active: версия неактивна на кластере
-    not_available: нет доступа
-    not_exist: версия не существует на кластере
-    not_forever: с датой окончания
-    options: 'Опции:'
-    state: дата окончания
-  want: послать заявку
-  who_types:
-    Core::Project: Проект
-    Group: Группа
-    User: Пользователь
+            name: Название опции
+            value: Значение
+            category_value_id: Значение из списка значений для категорий
+            options_category_id: Категория опций
+        pack/clusterver:
+            status: Статус
+            name: Кластер
+            path: Путь
+        pack/access:
+            who_type: Тип доступа
+            version_name: Имя версии
+            new_end_lic_forever: Заявка на бесконечный доступ
+            new_end_lic_not_null: Показать только заявки на продление
+            versions: Версии
+            version: Версия
+            forever: Без даты окончания
+            not_forever: C датой окончания
+            ac_forever: С датой окончания
+            status: Статус
+            con_to_user: Доступы,связанные с пользователем
+            status_readable: Статус
+            end_lic: Дата окончания
+            new_end_lic: Дата окончания заявки на продление(если есть)
+            new_end_lic_readable: Дата окончания заявки на продление(если есть)
+            end_lic_if_exists: Дата окончания (если она конечна)
+            end_lic_readable: Дата окончания
+            created_by: Доступ создан
+            allowed_by: Доступ одобрен
+            who_name_with_type: Чей доступ
+            to: Для
+
+      errors:
+          messages:
+              uniq_access: Пользователь/проект уже имеет доступ/заявку на данную версию
+              deleted_record: "Эта запись %{value} была удалена,пока Вы редактировали форму "
+
+          models:
+              pack/version_option:
+                taken: Опция для этой версии с таким именем уже существует ( названия опций должны быть уникальными)
+              pack/access:
+                attributes:
+                  status:
+                    version_deleted: Версия удалена. Статус доступа может быть только "удален".
+                  new_end_lic:
+                    incorrect_forever: Нельзя создавать заявки на бесконечный доступ с датой
+                    status_only: "Дата заявки на продление доступна только для доступов со статусом 'разрешен' или 'истек'"
+                  new_end_lic_forever:
+                    status_only: "Дата заявки на продление доступна только для доступов со статусом 'разрешен' или 'истек'"
+                  end_lic:
+                    blank_not_forever: Укажите дату для конечного доступа
+                  to_id:
+                    accesses_to_package: Для данного объекта запрещено создавать доступы. Смотрите атрибут  "Доступы к пакету"
+              pack/clusterver:
+                attributes:
+                  action:
+                    not_active: Удаленная версия не может быть активна на кластере
+              pack/version:
+                attributes:
+                  deleted:
+                    pack_deleted: Пакет, в который входит данная версия, удален. В этом случае версия должна быть удалена тоже

@@ -30,7 +30,7 @@ Pack::Engine.routes.draw do
       post 'update'
       post 'update_accesses'
       post 'destroy'
-      get 'load_for_versions'
+      get 'load_for'
     end
   end
   resources :category_values, only: [] do

@@ -1,98 +1,83 @@
-function getJSONSyncWithData(url,data,success)
-{
-  $.ajax({
-    dataType: "json",
-    data: data,
-    url: url,
-    success: success,
-    async: false
-  });
-}
+var accessManager = {
+  accessibles: [],
+  initialize: function(){
+    var self = accessManager;
+    self.accessesTemplate = Handlebars.compile( $('#accesses-template').html());
+    self.availabilityTemplate = Handlebars.compile($('#availability-template').html());
+    self.load();
+    self.container = $('div.accesses-form-container');
+    self.topForm = $('div.top-alpaca-form');
+    self.serverMessages = $('p.server-messages');
+    self.accessesMessages = $('p.accesses-messages');
+    self.bottomForm = $('div.bottom-alpaca-form');
+    self.accessHeader = $('#access-header');
 
-function AccessViewer(ids) {
-  this.ids = ids;
-  this.versions = <%= raw(@versions.map{  |v| {available: v.available_for_user?, id: v.id} }.group_by { |v| v[:id] }.to_json)%>;
-  console.log(this.versions);
-  this.load = function() {
-    accesses = null;
-    getJSONSyncWithData('/pack/accesses/load_for_versions',{versions_ids: ids},function(result){
-      accesses = result;
+  },
+  groupAccessibles: function(){
+    var self = accessManager;
+    var result = {package_ids: [],version_ids: []};
+    self.accessibles.forEach(function(element) {
+      var package_id = element.data.package_id;
+      var version_id = element.data.version_id;
+      if(package_id){
+        result.package_ids.push(package_id);
+      }
+      if(version_id){
+        result.version_ids.push(version_id);
+      }
     });
-    this.accesses = accesses;
-    this.renderAccessesInfo();
-  };
-
-  this.renderAccessesInfo = function(){
-    var keys = <%=raw @versions.map(&:id)%>;
-    var source   = $('#accesses-template').html();
-    var template = Handlebars.compile(source);
-    var sourceAvailability   = $('#availability-template').html();
-    var templateAvailability = Handlebars.compile(sourceAvailability);
-
-    for(var i=0; i < keys.length; i++)
-    {
-      var available = false;
-      var td = $(`td.accesses-info[version_id='${keys[i]}']`);
-      <% if @version %>
-        var availabilityTd = $('td.version-availability');
-      <% else %>
-      var availabilityTd = td.parents('tr').find('.version-availability');
-      <% end %>
-      td.empty();
-      availabilityTd.empty();
-      if(this.accesses[keys[i]])
-      for(var j=0; j < this.accesses[keys[i]].length; j++)
-      {
-        var readable_name,end_lic,result;
-        access = this.accesses[keys[i]][j];
-        if(access.status == 'allowed' && this.versions[keys[i]][0].available){
-          available = true;
-        }
-        if(access.who_type == 'User'){
-          readable_name= '<%= t(".user")%>';
-        }
-        else if (access.who_type == 'Core::Project'){
-          readable_name=`<%= Core::Project.model_name.human %> "${access.who_name_from_union}"`
-        }
-        else {
-          readable_name=`<%= ::Group.model_name.human %> "${access.who_name_from_union}"`
-        }
-        if(access.end_lic){
-          end_lic = access.end_lic;
-        }
-        else{
-          end_lic = '<%= Pack::Access.human_attribute_name(:forever)%>'
-        }
-        result = template({color: this.accessColor(access),who: readable_name, end_lic: end_lic});
-        td.append(result);
-      }
-      if(available == true)
-      {
-        result = templateAvailability({available: true});
-      }
-      else {
-        result = templateAvailability({});
-      }
-      availabilityTd.html(result);
+    return result;
+  },
+  findByAccess: function(access){
+    var self = accessManager;
+    var key = null;
+    if(access.to_type == 'Pack::Package'){
+      key = 'package_id';
+    }else{
+      key = 'version_id';
     }
-  }
-  this.accessColor = function(access){
-    switch(access.status){
-      case 'allowed':
-        return 'green';
-      case 'requested':
-        return 'blue';
-      case 'denied':
-        return 'red';
-      case 'expired':
-        return 'brown';
-      case 'deleted':
-        return 'black';
+    return self.accessibles.find(function(element,index,array){
+      return element.data[key] == access.to_id;
+    });
+  },
+  processAccesses: function(result){
+    var self = accessManager;
+    self.accessibles.forEach(function(element){
+      element.data.accesses = [];
+    });
+    result.forEach(function(element){
+       var accessible = self.findByAccess(element);
+       accessible.data.accesses.push(element);
+    });
+    self.renderAccessesInfo();
+      // self.renderTopForm(accessible);
+      // accessible.button.click(function(){
+      // });
+
+  },
+  load: function(){
+    var self = accessManager;
+    $.ajax({
+      dataType: "json",
+      data: self.groupAccessibles(),
+      url: '/pack/accesses/load_for',
+      success: function(result){
+        self.processAccesses(result);
+        // self.renderTopForm(self.accessibles[1]);
       }
-  }
-  this.renderFormForVersion = function(version_id,form_data = 'user') {
-    $( `.btn_access[version_id='${version_id}']`).parents('tr').next().find('p').empty();
-    var topForm= $( `.btn_access[version_id='${version_id}']`).parents('tr').next().find('div.top-alpaca-form');
+    });
+  },
+  renderTopForm: function(accessible,form_data = 'user') {
+    var self = accessManager;
+    var header;
+    if(accessible.data.package_id){
+      header = "<%=t('.actions_with_packages')%>" + ` "${accessible.main_element.find('td.package-name').text()}"`;
+    }else{
+      header = "<%=t('.actions_with_versions')%>" + ` "${accessible.main_element.find('td.version-name').text()}"`;
+    }
+    self.container.find('p').empty();
+    self.accessHeader.html(header);
+    var topForm = self.topForm;
     topForm.alpaca('destroy');
     topForm.alpaca({
       "schema": {
@@ -105,22 +90,21 @@ function AccessViewer(ids) {
         "optionLabels": <%=raw @options_for_select_labels.to_json%>,
         "validate": false,
         "onFieldChange": function(e) {
-            var serverMessages= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('p.server-messages');
-            serverMessages.empty();
-            viewer.renderBottomForm(version_id, this.getValue());
+            // var serverMessages= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('p.server-messages');
+            self.serverMessages.empty();
+            self.renderBottomForm(accessible, this.getValue());
         }
       },
       "data": form_data,
       "postRender": function(control) {
         apply_select();
-        viewer.renderBottomForm(version_id, control.getValue());
-        control.getControlEl().next().attr('style','width: 400px;');
-
+        self.renderBottomForm(accessible,  control.getValue());
       }
     });
-  }
-  this.renderBottomForm = function(version_id, sel_value) {
-    var accesses = viewer.accesses[version_id] || [];
+  },
+  renderBottomForm: function(accessible, sel_value) {
+    var self = accessManager;
+    var accesses = accessible.data.accesses || [];
     var access = null;
     if(sel_value == 'user')
     {
@@ -143,47 +127,62 @@ function AccessViewer(ids) {
         }
       }
     }
-    var bottomForm= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('div.bottom-alpaca-form');
+    // var bottomForm= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('div.bottom-alpaca-form');
+    var bottomForm= self.bottomForm;
+
     bottomForm.alpaca('destroy');
-    var messages= $(`.btn_access[version_id='${version_id}']`).parents('tr').next().find('p.accesses-messages');
-    messages.empty();
+    self.accessesMessages.empty();
+
 
     if (access){
       switch(access.status){
         case "requested":
-          messages.html('<font color="blue"> <%= t(".can_delete_requested") %> </font>');
-          messages.append('<button class="btn btn-default"><%= t("actions.delete")%></button>');
-          messages.find('button').click(function(){
+          self.accessesMessages.html('<font color="blue"> <%= t(".can_delete_requested") %> </font>');
+          self.accessesMessages.append('<button class="btn btn-default"><%= t("actions.delete")%></button>');
+          self.accessesMessages.find('button').click(function(){
             $.ajax({
               url: '/pack/accesses/update_accesses',
               data: {to_id: access.to_id, to_type: access.to_type,
                      type: sel_value, status: "requested", delete: true,
                      lock_version: access.lock_version,
-                     versions_ids: viewer.ids},
+                     accessibles: JSON.stringify(self.groupAccessibles()),
+
+                     // versions_ids: viewer.ids,
+                     },
               method: "POST",
               async: false,
               success: function(data){
-                viewer.accesses = data.accesses;
-                viewer.renderFormForVersion(version_id, sel_value);
-                $(`.btn_access[version_id='${version_id}']`).parents('tr')
-                .next().find('p.server-messages').html('<font color="green"><%=t(".success_delete")%></font>');
+                // viewer.accesses = data.accesses;
+                // viewer.renderFormForVersion(version_id, sel_value);
+                self.processAccesses(data.accesses);
+                self.renderTopForm(accessible, sel_value);
+
+                // renderTopForm
+                self.serverMessages.html('<font color="green"><%=t(".success_delete")%></font>');
+                // $(`.btn_access[version_id='${version_id}']`).parents('tr')
+                // .next().find('p.server-messages').html('<font color="green"><%=t(".success_delete")%></font>');
               },
               error: function(data){
-                viewer.accesses = data.responseJSON.accesses;
-                viewer.renderFormForVersion(version_id,sel_value);
-                $(`.btn_access[version_id='${version_id}']`).parents('tr')
-                .next().find('p.server-messages').html(`<font color="red">${data.responseJSON.error}</font>`);
+                // viewer.accesses = data.responseJSON.accesses;
+                self.processAccesses(data.responseJSON.accesses);
+                self.renderTopForm(accessible, sel_value);
+                // viewer.renderFormForVersion(version_id,sel_value);
+                self.serverMessages.html(`<font color="red">${data.responseJSON.error}</font>`);
+                // $(`.btn_access[version_id='${version_id}']`).parents('tr')
+                // .next().find('p.server-messages').html(`<font color="red">${data.responseJSON.error}</font>`);
               }
             });
           });
           break;
         case "denied":
-          $(`.btn_access[version_id='${version_id}']`).parents('tr')
-          .next().find('p.accesses-messages').html('<font color="red"> <%= t("mailer_messages.denied") %> </font>');
+          self.serverMessages.html('<font color="red"> <%= t("mailer_messages.denied") %> </font>');
+          // $(`.btn_access[version_id='${version_id}']`).parents('tr')
+          // .next().find('p.accesses-messages').html('<font color="red"> <%= t("mailer_messages.denied") %> </font>');
           break;
         case "allowed":
-          var message = $(`.btn_access[version_id='${version_id}']`).parents('tr')
-          .next().find('p.accesses-messages');
+          var message = self.accessesMessages;
+          // var message = $(`.btn_access[version_id='${version_id}']`).parents('tr')
+          // .next().find('p.accesses-messages');
           if(!access.end_lic){
             message.html('<font color="green"> <%= t(".end_lic_null") %> </font>');
           }
@@ -200,8 +199,9 @@ function AccessViewer(ids) {
           }
           break;
         case "expired":
-          var message = $(`.btn_access[version_id='${version_id}']`).parents('tr')
-          .next().find('p.accesses-messages');
+          var message = self.accessesMessages;
+          // var message = $(`.btn_access[version_id='${version_id}']`).parents('tr')
+          // .next().find('p.accesses-messages');
           message.html(`<font color="brown"> <%= t(".end_lic_expired") %> </font>`);
           if(access.new_end_lic_forever)
           {
@@ -217,38 +217,121 @@ function AccessViewer(ids) {
     else{
       <%= render partial: 'pack/packages/new', formats: :js%>
     }
-    this.renderAccessesInfo();
+    // self.processAccesses();
+    // self.accessibles.forEach(function(accessible){
+    //   self.renderAccessesInfo(accessible);
+      // self.renderTopForm(accessible);
+      // accessible.button.click(function(){
+      // });
+    // });
+    // this.renderAccessesInfo();
+  },
+  accessColor: function(access){
+    switch(access.status){
+      case 'allowed':
+        return 'green';
+      case 'requested':
+        return 'blue';
+      case 'denied':
+        return 'red';
+      case 'expired':
+        return 'brown';
+      case 'deleted':
+        return 'black';
+      }
+  },
+  renderAccessesInfo:  function(){
+    var self = accessManager;
+    self.accessibles.forEach(function(element){
+      var accessesTd = element.main_element.find('td.accesses');
+      var availabilityTd = element.availabilityHolder.find('td.availability');
+      accessesTd.empty();
+      availabilityTd.empty();
+      var access_available = false;
+      element.data.accesses.forEach(function(access){
+        var readable_name,end_lic,result;
+        if(access.status == 'allowed'){
+          access_available = true;
+        }
+        if(access.who_type == 'User'){
+          readable_name= '<%= t(".user")%>';
+        }
+        else if (access.who_type == 'Core::Project'){
+          readable_name=`<%= Core::Project.model_name.human %> "${access.who_name_from_union}"`
+        }
+        else {
+          readable_name=`<%= ::Group.model_name.human %> "${access.who_name_from_union}"`
+        }
+        if(access.end_lic){
+          end_lic = access.end_lic;
+        }
+        else{
+          end_lic = '<%= Pack::Access.human_attribute_name(:forever)%>'
+        }
+        result = self.accessesTemplate({color: self.accessColor(access),who: readable_name, end_lic: end_lic});
+        accessesTd.append(result);
+      });
+      availabilityTd.each(function(){
+        var td = $(this);
+        if(access_available && td.attr('available') != undefined){
+          availabilityTd.html(self.availabilityTemplate({available: true}));
+        }else{
+          availabilityTd.html(self.availabilityTemplate({}));
+        }
+      });
+    });
   }
 };
-// console.log(<%=raw @grouped_packages.to_json%>);
-var viewer = new AccessViewer(<%=@versions.map(&:id)%>);
-viewer.load();
 
-$(document ).on('click',".btn_access",function()
-{
-  var version_id = $(this).attr('version_id');
-  var el= $(this).parents('tr').next().find('div.accesses_form_container')
-   if (el.attr('hidden'))
-   {
-     var elem = this;
-     $('.btn_access').each(function(index){
-       if(this != elem)
-       {
-         var el= $(this).parents('tr').next().find('div.accesses_form_container');
-         el.attr('hidden','');
-         $(this).html('<%=t("want")%>');
-       }
-     });
+function Accessible(elem) {
+  var elem = $(elem);
+  var result = {};
+  var self = accessManager;
 
-      $(this).html("<%=t('disable')%>");
-      viewer.renderFormForVersion(version_id);
-      // $(".select_ajax_access[vers_id='" + version_id + "']").each(make_form);
-      el.removeProp('hidden');
-   }
-   else
-   {
-      el.attr('hidden','');
-      $(this).html('<%=t("want")%>');
-   }
+  var package_id = elem.attr('package_id');
+  result.main_element = elem;
+  result.availabilityHolder = elem;
+  if(package_id){
+    if(elem.find('td').length == 3){
+      result.availabilityHolder = $('#versions-holder');
+    }
 
+    result.data = {package_id: package_id, accesses: [], type: 'Pack::Package',
+                  id: package_id};
+  }
+
+  var version_id = elem.attr('version_id');
+  if(version_id){
+    result.data = {version_id: version_id, accesses: [], type: 'Pack::Version',
+                  id: version_id};
+
+  }
+  if(!package_id && !version_id){
+    return;
+  }
+  //on('click', 'button.access', function(){
+  //   var button = $(this);
+  //   console.log('aaaa');
+  //   // self.renderTopForm(result);
+  //   // if(button.attr('hidden')){
+  //   //
+  //   // }else{
+  //   //
+  //   // }
+  // });
+  accessManager.accessibles.push(result);
+  result.button = result.main_element.find('button.access');
+  result.button.click(function(){
+    self.renderTopForm(result);
+    $(document.body).animate({
+        scrollTop: self.container.offset().top
+    }, 2000);
+  });
+
+
+};
+
+$('tr,tbody').each(function(index,elem){
+  Accessible(elem);
 });
+accessManager.initialize();

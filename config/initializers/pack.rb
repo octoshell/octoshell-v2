@@ -1,5 +1,8 @@
 Pack.expire_after = 6.months
 module Pack
+  def self.support_access_topic
+    Support::Topic.find_or_create_by!(name_ru: I18n.t('integration.support_theme_name'))
+  end
   extend Octoface
   octo_configure do
     add_ability(:manage, :packages, 'superadmins')

@@ -27,8 +27,6 @@
 module Pack
   class Version < ApplicationRecord
     include AASM
-    attr_accessor :user_accesses
-
     translates :description, :name
     validates_translated :name, :description,presence: true
     validates_translated :name, uniqueness: { scope: :package_id }
@@ -171,54 +169,49 @@ module Pack
       allowed_for_users.user_access(user_id, "LEFT")
     end
 
-    def self.left_join_user_accesses user_id
-      joins(
-        <<-eoruby
-        LEFT JOIN "core_members" ON ( "core_members"."user_id" = #{user_id}   )
-        LEFT JOIN "user_groups" ON ( "user_groups"."user_id" = #{user_id}   )
-         LEFT JOIN pack_accesses ON (pack_accesses.version_id = pack_versions.id
-        AND (pack_accesses.who_type='User' AND pack_accesses.who_id=#{user_id} OR
-         pack_accesses.who_type='Core::Project' AND pack_accesses.who_id=core_members.project_id OR
-         pack_accesses.who_type='Group' AND pack_accesses.who_id="user_groups"."group_id"  ))
-        eoruby
-        )
-
-    end
-
-    def self.user_access user_id,join_type
-      if user_id==true
-        user_id=1
+    def self.user_access(user_id, join_type)
+      if user_id == true
+        user_id = 1
       end
-      self.join_accesses self,user_id,join_type
+      join_accesses self, user_id, join_type
     end
 
     def name_with_package
       "#{name}   #{I18n.t('Package_name')}: #{package.name}"
     end
 
-    def self.join_accesses(relation,user_id,join_type)
-      project_accesses =  relation.joins(
+    def self.join_accesses(relation, user_id, join_type)
+      join_string = "(pack_accesses.to_id = pack_versions.id AND pack_accesses.to_type = 'Pack::Version' OR
+                      pack_accesses.to_id = pack_packages.id AND pack_accesses.to_type = 'Pack::Package')"
+      # puts relation.all.klass.inspect.red
+      if relation.all.klass == Pack::Version
+        relation = relation.joins("LEFT OUTER JOIN pack_packages ON pack_packages.id = pack_versions.package_id")
+      end
+      # puts relation.to_sql.inspect.red
+      project_accesses = relation.joins(
           <<-eoruby
           LEFT JOIN "core_members" ON ( "core_members"."user_id" = #{user_id}   )
-          #{join_type} JOIN  pack_accesses ON (pack_accesses.version_id = pack_versions.id
+          #{join_type} JOIN  pack_accesses ON (#{join_string}
           AND "pack_accesses"."who_type" = 'Core::Project'
           AND core_members.project_id = pack_accesses.who_id)
           eoruby
-         )
+        )
       group_accesses = relation.joins(
           <<-eoruby
          LEFT JOIN "user_groups" ON ("user_groups"."user_id" = #{user_id}  )
-           #{join_type} JOIN  pack_accesses ON (pack_accesses.version_id = pack_versions.id AND "pack_accesses"."who_type" = 'Group'
+           #{join_type} JOIN  pack_accesses ON (#{join_string} AND "pack_accesses"."who_type" = 'Group'
           AND user_groups.group_id = pack_accesses.who_id)
           eoruby
           )
       user_accesses  = relation.joins(
           <<-eoruby
-          #{join_type} JOIN  pack_accesses ON (pack_accesses.version_id = pack_versions.id AND "pack_accesses"."who_type" = 'User'
+          #{join_type} JOIN  pack_accesses ON (#{join_string} AND "pack_accesses"."who_type" = 'User'
           AND #{user_id} = pack_accesses.who_id)
           eoruby
             )
-      (project_accesses.union group_accesses).union user_accesses
+            # puts project_accesses.union(group_accesses).union(user_accesses).to_sql.inspect.red
+
+      project_accesses.union(group_accesses).union(user_accesses)
     end
 
 
@@ -328,6 +321,10 @@ module Pack
 
     def as_json(_options)
     { id: id, text: (name + self.package_id.to_s) }
+    end
+
+    def to_s
+      "#{self.class.model_name.human} \"#{name}\""
     end
 
     def version_params(params)

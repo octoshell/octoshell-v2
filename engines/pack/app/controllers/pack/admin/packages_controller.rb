@@ -11,7 +11,7 @@ module Pack
           without_pagination(:packages)
         } # index.html.erb
         format.json do
-          @packages = Package.finder(params[:q]).allowed_for_users_with_joins(current_user.id)
+          @packages = Package.finder(params[:q])
           render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count }
         end
       end

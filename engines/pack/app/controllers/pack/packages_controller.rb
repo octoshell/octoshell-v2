@@ -29,7 +29,7 @@ module Pack
                           .user_access(current_user.id,"LEFT").order(:id)
                           .page(params[:page]).per(6)
                           .includes({ clustervers: :core_cluster }, :package)
-                          .uniq
+                          .distinct
     end
 
   end

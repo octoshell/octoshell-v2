@@ -4,7 +4,7 @@
       validates :created_by, :who, :who_id, :status, :to, presence: true
       validates_uniqueness_of :who_id, scope: [:to_type, :to_id, :who_type]
       validate do
-        if version && version.deleted && status != 'deleted'
+        if to.is_a?(Pack::Version) && to.deleted && status != 'deleted'
           errors.add(:status, :version_deleted)
         end
         if new_end_lic_forever && new_end_lic
@@ -13,6 +13,15 @@
       end
       validates :to_type, inclusion: { in: [Pack::Package, Pack::Version].map(&:to_s) }
       validates :to, presence: true
+      validate do
+        next unless to
+
+        if to.is_a?(Pack::Version) && to.package.accesses_to_package
+          errors.add(:to_id, :accesses_to_package)
+        elsif to.is_a?(Pack::Package) && !to.accesses_to_package
+          errors.add(:to_id, :accesses_to_package)
+        end
+      end
       validate :new_end_lic_correct
       before_validation do
         unless ["expired","allowed"].include?(status)

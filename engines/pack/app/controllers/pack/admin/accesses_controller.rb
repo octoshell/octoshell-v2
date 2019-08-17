@@ -11,8 +11,8 @@ module Pack::Admin
     end
 
     def index
-      @q = Pack::Access.ransack(params[:q])
-      @accesses = @q.result(distinct: true).order(:id).includes(:version, :who)
+      @q = Access.ransack(params[:q] || { to_type_eq: 'empty' })
+      @accesses = @q.result(distinct: true).order(:id).includes(:to, :who)
       without_pagination(:accesses)
     end
 
@@ -31,8 +31,10 @@ module Pack::Admin
     end
 
     def new
-      @access = Pack::Access.new
-      @access.who_type="User"
+      @access = Access.new
+      @access.who_type = 'User'
+      @access.to_type = Pack::Package.to_s
+
     end
 
     def create
@@ -100,7 +102,7 @@ module Pack::Admin
     end
 
     def params_without_hash
-      params.permit(:forever, :lock_version, :version_id,
+      params.permit(:forever, :lock_version,
                     :status, :approve, :delete_request,
                     :end_lic)
     end
@@ -110,8 +112,10 @@ module Pack::Admin
     end
 
   	def access_params
-      params.require(:access).permit(:who_id,:lock_version, :version_id,
-        :new_end_lic, :new_end_lic_forever, :end_lic,:status,:user_id,:project_id,:who_type)
+      params.require(:access).permit(:who_id, :lock_version,
+                                     :new_end_lic, :new_end_lic_forever,
+                                     :end_lic, :status, :user_id, :project_id,
+                                     :who_type, :to_type, :to_id)
     end
 
   end

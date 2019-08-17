@@ -85,19 +85,18 @@
   FactoryBot.create(:access, who: Core::Project.first, end_lic: nil,
                              to: version, created_by: User.superadmins.first)
 
-  package = FactoryBot.create(:package)
-  version = FactoryBot.create(:version, package: package)
-  FactoryBot.create(:access, who: users.first, to: version)
-  FactoryBot.create(:access, who: Group.find_by(name: 'superadmins'),
-                             to: version, created_by: User.superadmins.first)
-  FactoryBot.create(:access, who: Core::Project.first, end_lic: nil,
-                             to: version, created_by: User.superadmins.first)
+  30.times do
+    package = FactoryBot.create(:package)
+    FactoryBot.create(:version, package: package)
+    FactoryBot.create(:version, package: package)
+  end
 
   Pack::Version.all.each do |v|
     Core::Cluster.all.each do |cluster|
       Pack::Clusterver.create!(version: v, core_cluster: cluster, active: true)
     end
   end
+
 
 
   Comments.create_wiki_page
