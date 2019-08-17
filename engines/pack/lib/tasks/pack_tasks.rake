@@ -7,7 +7,7 @@ namespace :pack do
 
        puts "Creating abilities for groups"
       Group.all.each do |g|
-        Ability.create({action: "manage",subject: "packages",group_id: g.id,available: (g.name=="superadmins")  } )
+        Permission.first_or_create!({action: "manage",subject_class: "packages",group_id: g.id,available: (g.name=="superadmins")  } )
       end
 
       puts "Creating topic for access tickets"

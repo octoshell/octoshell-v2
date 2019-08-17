@@ -1,4 +1,4 @@
-- if records.any?
+- if @package.versions.any?
   div class="row" style="border:1px solid #cecece;"
     h3 =t('legend')
     div class="col-xs-6"
@@ -30,46 +30,58 @@
               =t "accesses.#{col}"
   h3 =t("Versions")
   /table class="table table-hover" cols="7" cellspacing="30"
-  table.pack-table border='1'
+  -if @package.accesses_to_package
+    -arr = ['name','description','clusters', "available_for_user?"]
+    table.pack-table border='1'
+      th =Pack::Version.human_attribute_name :access_user
+      th
+
+      tr package_id=@package.id
+        td.package-name hidden='' = @package.name
+        td.accesses
+        td.col-xs-3
+          button class="btn btn-primary access" = t("want")
+
+    div.accesses-form-container
+      h3#access-header
+      div.top-alpaca-form
+      p.server-messages
+      p.accesses-messages
+      div.bottom-alpaca-form
+
+  -else
+    -arr = ['name','description','clusters','access_user',"available_for_user?"]
+
+  table.pack-table#versions-holder border='1'
     tr
-      th = Pack::Version.human_attribute_name :package
-      -['name','description','clusters','access_user',"available_for_user?"].each do |str|
+      -arr.each do |str|
         th =Pack::Version.human_attribute_name str
-      th   #{t("actions_pack")}
-    - grouped_packages = records.group_by { |v|  v.package }
-    - grouped_packages.each do |package, versions|
-      tbody package_id=(package.accesses_to_package ? package.id : nil )
-        - versions.each do |version|
-          tr version_id=(package.accesses_to_package ? nil : version.id )
-            -if version == versions.first
-              td.package-name rowspan=versions.count = link_to package.name, package
+      -unless @package.accesses_to_package
+        th   #{t("actions_pack")}
+    - @package.versions.each do |version|
+          tr version_id=(@package.accesses_to_package ? nil : version.id )
             td.version-name  = link_to version.name, version
             td  = markdown version.description
 
             td
               =render "pack/packages/clustervers",clustervers: version.clustervers
-            - if package.accesses_to_package
-              - if version == versions.first
-                td.accesses rowspan=versions.count
-            - else
+            - unless @package.accesses_to_package
               td.accesses
-            td.availability  available=version.available_for_user?
-            -if package.accesses_to_package
-              -if version == versions.first &&  !version.deleted && !version.service
-                td rowspan=versions.count
-                   button class="btn btn-primary access" = t("want")
-            -else
+            td.availability available=version.available_for_user?
+            -unless @package.accesses_to_package
               td
                 -if !version.deleted && !version.service
                    button class="btn btn-primary access" = t("want")
-  div.accesses-form-container
-    h3#access-header
-    div.top-alpaca-form
-    p.server-messages
-    p.accesses-messages
-    div.bottom-alpaca-form
+  -unless @package.accesses_to_package
+    div.accesses-form-container
+      h3#access-header
+      div.top-alpaca-form
+      p.server-messages
+      p.accesses-messages
+      div.bottom-alpaca-form
 -else
- p = t("no_records_found")
+  p = t("no_records_found")
+
 css:
   table.pack-table{
     width: 100%;

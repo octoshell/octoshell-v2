@@ -24,7 +24,7 @@ div class="panel  panel-heading clearfix"
 
 
 
-table
+table#main-pack
   -[:name,:description].each do |key|
     tr
       td class="col-xs-3"
@@ -71,7 +71,7 @@ table
     tr
       td class="col-xs-3"
           =Pack::Version.human_attribute_name "available_for_user?"
-      td class="version-availability col-xs-9"
+      td.availability.col-xs-9 available = @version.available_for_user?
 
 p
   h4 =t "versions.options"
@@ -115,22 +115,43 @@ p
 
   -unless admin?
     h3 = Pack::Version.human_attribute_name(:accesses)
-    table   class="table table-hover" cols="6" cellspacing="30"
-      tr
-          td class="accesses-info" version_id=@version.id  class="col-xs-9"
-          td class="col-xs-3"
-            -if !@version.deleted && !@version.service
-               button class="btn btn-primary btn_access" version_id= @version.id  = t("want",default:"want this")
-      tr
-         td colspan='6'
-           div class='accesses_form_container col-xs-6' hidden=""
-             div class='top-alpaca-form'
-             p class='server-messages'
-             p class='accesses-messages'
-             div class='bottom-alpaca-form'
+    table.pack-table border='1'
+      tbody package_id=(@version.package.accesses_to_package ? @version.package_id : nil )
+        td.package-name hidden=''
+          = @version.package.name
+        tr version_id=(@version.package.accesses_to_package ? nil : @version.id )
+            td.version-name hidden=''
+              = @version.name
+            td class="accesses" version_id=@version.id  class="col-xs-9"
+            td class="col-xs-3"
+              -if !@version.deleted && !@version.service
+                 button class="btn btn-primary access" = t("want")
+
+    div.accesses-form-container
+       h3#access-header
+       div.top-alpaca-form
+       p.server-messages
+       p.accesses-messages
+       div.bottom-alpaca-form
     = handlebars_tag(id: 'accesses-template') do
       = render 'pack/packages/access'
     = handlebars_tag(id: 'availability-template') do
       = render 'pack/packages/availability'
     =javascript_tag do
       =render(:partial => 'pack/packages/show',formats: [:js])
+-unless admin?
+  javascript:
+        accessManager.accessibles[0].availabilityHolder = $('table#main-pack');
+css:
+        table.pack-table{
+          width: 100%;
+        }
+
+        table.pack-table{
+          width: 100%;
+        }
+        .pack-table > thead > tr > th, .pack-table > tbody > tr > th, .pack-table > tfoot > tr > th,
+        .pack-table > thead > tr > td, .pack-table > tbody > tr > td, .pack-table > tfoot > tr > td {
+          padding: 8px;
+          align: center;
+        }

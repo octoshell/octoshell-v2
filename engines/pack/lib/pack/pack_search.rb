@@ -24,10 +24,10 @@ module Pack
       @relation = @relation.merge(inside_scope) if inside_scope
       @relation = if user_access_applied?
         # remove_joins
-        @relation.user_access(@user_id || @user_access_value,"INNER")
+        @relation.user_access(@user_id || @user_access_value, "INNER")
       else
         if @user_id #В этом случае нам обязательно нужно присоединить версии(если поиск ведется по пакетам) и доступы пользователя
-          @relation.user_access @user_id,"LEFT"
+          @relation.user_access @user_id, "LEFT"
         else
           @relation
         end

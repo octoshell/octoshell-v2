@@ -1,18 +1,18 @@
 GIT
-  remote: git://github.com/apaokin/ruby-lmtp.git
+  remote: https://github.com/apaokin/ruby-lmtp.git
   revision: a41cbdc2372c85baa50a7749ef78d74c40e3ccd0
   specs:
     lmtp (0.0.1)
 
 GIT
-  remote: git://github.com/colszowka/phantomjs-gem.git
+  remote: https://github.com/colszowka/phantomjs-gem.git
   revision: 38a722deeb7989e2de093fd628139266386492c1
   specs:
     phantomjs (2.1.1.0)
 
 GIT
-  remote: git://github.com/railsconfig/config.git
-  revision: f2b8d2a4b75bca0aca63602232a5ca72b4d156a3
+  remote: https://github.com/railsconfig/config.git
+  revision: 2a714d2696282363fb1f565c0f898b53a2b1c832
   specs:
     config (2.0.0)
       deep_merge (~> 1.2, >= 1.2.1)
@@ -743,4 +743,4 @@ DEPENDENCIES
   wiki!
 
 BUNDLED WITH
-   1.17.1
+   2.0.2

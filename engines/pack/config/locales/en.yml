@@ -79,8 +79,8 @@ en:
       end_lic_changed: Your access expiration date has been changed
       denied_longer: You have been denied in access prolongation
       deleted: Your access has been removed
-      subject: Изменено состояние вашего доступа к версии  %{version_name}
-      body: "%{status_info} for the %{link} version. For details, write to us or check the responses of the administrators for your requests"
+      subject: "%{to}: Изменено состояние вашего доступа к версии"
+      body: "%{status_info} for the %{link}. Write us or check the responses of the administrators for details"
     access_actions:
       denied: Deny
       requested: Request
@@ -172,7 +172,7 @@ en:
         who_type: My access type
         who_type_admin: Access type
         user_access: "Packages and versions associated with the user"
-        active_cl: Show only active on cluster
+        active_cl: Show only active on clusters
         versions: Versions
         packages: Packages
         versions_name: Versions names
@@ -205,8 +205,7 @@ en:
         email_vers_state_changed:
           subject: "Information about the \"%{version_name}\" version license has changed"
           body: "The license information for the %{link} version has changed.%{message}."
-      access:
-        created_during_edit: Unable to send an request. At the time of filling out the form  administrator most likely  granted u access to the version.
+      update_access:
         updated_during_edit_static: You can not perform an action. Something happened At the time of filling out the form. Re-enter the data
     activerecord:
       models:
@@ -282,6 +281,7 @@ en:
             created_by: Created by
             allowed_by: Allowed by
             who_name_with_type: Whose
+            to: For
       errors:
           messages:
               uniq_access: The user / project already has access / request for this version
@@ -292,6 +292,8 @@ en:
                 taken: The option for this version with this name already exists (option names must be unique)
               pack/access:
                 attributes:
+                  to_id:
+                    accesses_to_package: Access creation is not allowed for this object. See "accesses to package" attribute
                   status:
                     version_deleted: Version is removed. The access status can only be "removed".
                   new_end_lic:

@@ -5,22 +5,23 @@ en:
         header: Package engine wiki
     accesses:
       update_accesses:
+        created_during_edit: Unable to send an request. At the time of filling out the form  administrator most likely  granted u access to the version.
         unable to_create: Unable to create access for this version
         not_owned_project: The project does not belong to you. You can not work with this project access
         updated_during_edit: You can not perform an action. Something happened At the time of filling out the form. Re-enter the data
 
     packages:
         new:
-          new_access: New request for access to version
-          success: The request has been sent  successfully
+          new_access: New request for access
+          success: The request has been sent successfully
         allowed_expired:
-          title: Request for  renewal of version access
-          success: The request has been sent  successfully
+          title: Request for renewal
+          success: The request has been sent successfully
         show:
-          can_delete_requested: An application for access to the version has been sent. It has not been considered yet. You can remove the request
+          can_delete_requested: An application for access has been sent. It has not been considered yet. You can remove the request
           success_delete: Request has been removed
-          new_end_lic_forever: You have already requested for prolongation to endless access to the version. Do you want to change the request?
-          end_lic_expired: Your access to version expired.
+          new_end_lic_forever: You have already requested for prolongation to endless access. Do you want to change the request?
+          end_lic_expired: Your access expired.
           new_end_lic: "You have already requested for the prolongation of access to ${access.new_end_lic}. Do you want to change the request?"
           end_lic_null: 'Your access is endless'
           user: User
@@ -74,6 +75,7 @@ en:
         table:
           no_accesses_found: No accesses found
         q:
+          to_type_eq_empty: All
           show_requests_only: Show only renewals requests
         new:
           title: New access

@@ -15,7 +15,7 @@ module Pack
       else
         t("mailer_messages.#{arg}")
       end
-      mail to: @receiver.email, subject: t("mailer_messages.subject",version_name: @access.version.name)
+      mail to: @receiver.email, subject: t("mailer_messages.subject", to: @access.to.to_s)
     end
 
      def get_receiver
