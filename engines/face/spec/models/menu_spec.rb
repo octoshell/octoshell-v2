@@ -1,4 +1,4 @@
-require "spec_helper"
+require "main_spec_helper"
 
 describe Face::Menu do
   before do

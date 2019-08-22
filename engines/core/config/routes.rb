@@ -135,3 +135,4 @@ Core::Engine.routes.draw do
   end
   root "projects#index"
 end
+# Face::MyMenu.validate_keys!

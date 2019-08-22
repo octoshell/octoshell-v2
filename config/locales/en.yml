@@ -314,6 +314,7 @@ en:
     tickets: Support
     tickets_warning:
       html: Support <span class="badge warning"><i class="fa fa-bell"></i></span>
+    menu_items: Edit menu layouts
   users:
     edit:
       minimum_password_length: Minimum 6 characters

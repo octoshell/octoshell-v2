@@ -11,27 +11,27 @@ module FakeMainApp
 end
 
 Face::MyMenu.items_for(:user_submenu) do
-  add_item(t('user_submenu.profile'), main_app.profile_path, 'profiles',
+  add_item('profile', t('user_submenu.profile'), main_app.profile_path, 'profiles',
            'core/employments', 'core/organizations')
 end
 
 Face::MyMenu.items_for(:admin_submenu) do
-  add_item_if_may(t('admin_submenu.users'),
+  add_item_if_may('users', t('admin_submenu.users'),
                   main_app.admin_users_path,
                   'admin/users')
 
-  add_item_if_may(t('admin_submenu.groups'),
+  add_item_if_may('groups', t('admin_submenu.groups'),
                   main_app.admin_groups_path,
                   'admin/groups')
 
   if User.superadmins.include? current_user
-    add_item(t("admin_submenu.sidekiq"), main_app.admin_sidekiq_web_path)
+    add_item('sidekiq', t("admin_submenu.sidekiq"), main_app.admin_sidekiq_web_path)
 
-    add_item(t("admin_submenu.emails"), main_app.rails_email_preview_path, %r{admin/emails})
+    add_item('emails', t("admin_submenu.emails"), main_app.rails_email_preview_path, %r{admin/emails})
 
-    add_item(t("admin_submenu.options"), main_app.admin_options_categories_path, %r{admin/options})
+    add_item('options', t("admin_submenu.options"), main_app.admin_options_categories_path, %r{admin/options})
 
-    add_item(t("admin_submenu.journal"), '/admin/journal', %r{admin/journal})
+    add_item('journal', t("admin_submenu.journal"), '/admin/journal', %r{admin/journal})
 
   end
 

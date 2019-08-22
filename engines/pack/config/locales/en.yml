@@ -13,165 +13,161 @@ en:
     expired: To expired
     make_longer: Prolong
     requested: Request
-  access_states:
-    allowed: allowed
-    deleted: deleted
-    denied: denied
-    no_records_found: No records found
-    new_package: New package
-    tickets: Requests for support
-    return_to_pack: Return to package
-    for_ever: Forever
-    not_for_ever: Not forever
-    Package_name: Package name
-    status: Status
-    from: From
-    user: User
-    from_user: From user
-    from_project:  From project
-    name: Name
-    available: Available
-    not available: Not available
-    description: Description
-    cost: Cost
-    folder: Folder
-    edit: Edit
-    delete: Delete
-    add_v: Add version
-    confirm: Are you sure you want to delete this entry?
-    ver_confirm: Are you sure you want to delete this version?
-    Versions: Versions
-    active: Is it active on the cluster?
-    deleted:  Show only removed
-    remain_deleted:  Do you want to leave it removed?
-    deleted?:  removed/active
-    not_deleted: Show existing
-    show_active: Show active only
-    actions_pack: Actions
-    pack_list: Packages list
-    active_y: active
-    clusters: Clusters
-    Clusters: Clusters
-    active_n: inactive
-    exist: Does it exists on a cluster?
-    edit_access: Package permissions
-    Choose package: Choose package
-    Choose user: Choose user
-    user(me): For user(myself)
-    project:  Project
-    group: Users group
-    for_whom?: For whom?
-    want: send request
-    no_packages_found: No packages have been found
-    package: Package
-    disable: Hide
-    buttons:
-      save: Save
-    integration:
-      support_theme_name: Заявка на доступ к версиям пакетов
-    engine_submenu:
-        packages_list: Packages
-        versions_list: Packages versions
-        accesses_list: Accesses
-        options_list: Options
-    options_list: Options
-    who_types:
-      User: User
-      Group: Group
-      'Core::Project': Project
-    mailer_version_messages:
-      expired: The License has expired
-      forever: The license does not have an end date
-      available: The license is valid until "%{date}"
-    mailer_messages:
-      show_vers: Show version
-      denied: You have been denied access
-      allowed: You have been allowed access
-      expired: Your access has expired
-      end_lic_changed: Your access expiration date has been changed
-      denied_longer: You have been denied in access prolongation
-      deleted: Your access has been removed
-      subject: "%{to}: Изменено состояние вашего доступа к версии"
-      body: "%{status_info} for the %{link}. Write us or check the responses of the administrators for details"
-    access_actions:
-      denied: Deny
-      requested: Request
-      allowed: Allow
-      expired: To expired
-      make_longer: Prolong
-      deny_longer: Deny in prolongation
-      edit_by_hand: Edit by hand
-    notice:
-      pack_deleted: The package that includes this version is removed. Version will be removed by defuault
+  no_records_found: No records found
+  new_package: New package
+  tickets: Requests for support
+  return_to_pack: Return to package
+  for_ever: Forever
+  not_for_ever: Not forever
+  Package_name: Package name
+  status: Status
+  from: From
+  user: User
+  from_user: From user
+  from_project:  From project
+  name: Name
+  available: Available
+  not available: Not available
+  description: Description
+  cost: Cost
+  folder: Folder
+  edit: Edit
+  delete: Delete
+  add_v: Add version
+  confirm: Are you sure you want to delete this entry?
+  ver_confirm: Are you sure you want to delete this version?
+  Versions: Versions
+  active: Is it active on the cluster?
+  deleted:  Show only removed
+  remain_deleted:  Do you want to leave it removed?
+  deleted?:  removed/active
+  not_deleted: Show existing
+  show_active: Show active only
+  actions_pack: Actions
+  pack_list: Packages list
+  active_y: active
+  clusters: Clusters
+  Clusters: Clusters
+  active_n: inactive
+  exist: Does it exists on a cluster?
+  edit_access: Package permissions
+  Choose package: Choose package
+  Choose user: Choose user
+  user(me): For user(myself)
+  project:  Project
+  group: Users group
+  for_whom?: For whom?
+  want: send request
+  no_packages_found: No packages have been found
+  package: Package
+  disable: Hide
+  buttons:
+    save: Save
+  integration:
+    support_theme_name: Заявка на доступ к версиям пакетов
+  engine_submenu:
+      packages_list: Packages
+      versions_list: Packages versions
+      accesses_list: Accesses
+      options_list: Options
+  options_list: Options
+  who_types:
+    User: User
+    Group: Group
+    'Core::Project': Project
+  mailer_version_messages:
+    expired: The License has expired
+    forever: The license does not have an end date
+    available: The license is valid until "%{date}"
+  mailer_messages:
+    show_vers: Show version
+    denied: You have been denied access
+    allowed: You have been allowed access
+    expired: Your access has expired
+    end_lic_changed: Your access expiration date has been changed
+    denied_longer: You have been denied in access prolongation
+    deleted: Your access has been removed
+    subject: "%{to}: Изменено состояние вашего доступа к версии"
+    body: "%{status_info} for the %{link}. Write us or check the responses of the administrators for details"
+  access_actions:
+    denied: Deny
+    requested: Request
+    allowed: Allow
+    expired: To expired
+    make_longer: Prolong
+    deny_longer: Deny in prolongation
+    edit_by_hand: Edit by hand
+  notice:
+    pack_deleted: The package that includes this version is removed. Version will be removed by defuault
 
-    actions:
-      edit_access: Edit access
-    tickets_access:
-      subject:
-        requested: "Request for %{who_name} created by %{user}"
-        new_end_lic: "Request for prolongation for %{who_name} created by %{user}"
+  actions:
+    edit_access: Edit access
+  tickets_access:
+    subject:
+      requested: "Request for %{who_name} created by %{user}"
+      new_end_lic: "Request for prolongation for %{who_name} created by %{user}"
 
-    exception_messages:
-      not_found: Record has not been found. It has been deleted probably.
-      refresh_page: Please, refresh thr page.
-    packages or versions: Packages or versions
+  exception_messages:
+    not_found: Record has not been found. It has been deleted probably.
+    refresh_page: Please, refresh thr page.
+  packages or versions: Packages or versions
 
-    project: Project
-    group: Group
-    version: Version
-    all: All
-    colors:
-      red: red
-      blue: blue
-      green: green
-      yellow: yellow
-      brown: brown
-      black: black
-    clvers:
-      title: Clusters activity
-      note: "Note: if the cluster is not listed, the version is not installed on it!"
-      red: Version is installed on cluster,but it is inactive at the moment
-      green: Version is active and ready for usage
-    accesses:
-      sucess: Action succeeded
-      title: Accesses
-      red: Denied
-      blue: Your access in requested
-      green: You are authorized to access
-      brown: Your access is expired
-      black: Your access has been deleted
-      success: "Action succeeded.Access state: \"%{status}\". If you have questions, you can write us."
-      messages:
-        deleted: Your access for this version has been removed
-        denied: You are denied access to this version
-      delete_success: Request has been deleted successfully
-      status:
-        denied: Denied
-        requested: Requested
-        allowed: Allowed
-        expired: Expired
-        deleted: Removed
-        deleted?: Removed/active
-        description: Description
-        name: Name
-        not_deleted: Show only active
-      pack/version:
-        access_user: My accesses
-        accesses: Accesses
-        active: Actual
-        available_for_user?: Available for user
-        clusters: Clusters
-        who_type: My access type
-        who_type_admin: Access type
-        user_access: "Packages and versions associated with the user"
-        active_cl: Show only active on clusters
-        versions: Versions
-        packages: Packages
-        versions_name: Versions names
-        packages_name: Packages names
-        my_packs: Packages and versions associated with me
-        show_deleted: Show removed
-        show_service: Show service
+  project: Project
+  group: Group
+  version: Version
+  all: All
+  colors:
+    red: red
+    blue: blue
+    green: green
+    yellow: yellow
+    brown: brown
+    black: black
+  clvers:
+    title: Clusters activity
+    note: "Note: if the cluster is not listed, the version is not installed on it!"
+    red: Version is installed on cluster,but it is inactive at the moment
+    green: Version is active and ready for usage
+  accesses:
+    sucess: Action succeeded
+    title: Accesses
+    red: Denied
+    blue: Your access in requested
+    green: You are authorized to access
+    brown: Your access is expired
+    black: Your access has been deleted
+    success: "Action succeeded.Access state: \"%{status}\". If you have questions, you can write us."
+    messages:
+      deleted: Your access for this version has been removed
+      denied: You are denied access to this version
+    delete_success: Request has been deleted successfully
+    status:
+      denied: Denied
+      requested: Requested
+      allowed: Allowed
+      expired: Expired
+      deleted: Removed
+      deleted?: Removed/active
+      description: Description
+      name: Name
+      not_deleted: Show only active
+    pack/version:
+      access_user: My accesses
+      accesses: Accesses
+      active: Actual
+      available_for_user?: Available for user
+      clusters: Clusters
+      who_type: My access type
+      who_type_admin: Access type
+      user_access: "Packages and versions associated with the user"
+      active_cl: Show only active on clusters
+      versions: Versions
+      packages: Packages
+      versions_name: Versions names
+      packages_name: Packages names
+      my_packs: Packages and versions associated with me
+      show_deleted: Show removed
+      show_service: Show service
     access_states:
       make_longer: Prolonger access
       deny_longer: Deny prolongation

@@ -40,7 +40,7 @@ Rails.application.configure do
   config.action_mailer.default_options = { from: "info@localhost" }
   config.action_mailer.default_url_options = { host: "localhost:9000" }
   config.serve_static_files = true
-  # config.assets.compile = true
+  config.assets.compile = false
 
   # Compress JavaScripts and CSS.
   # config.assets.js_compressor = Uglifier.new(harmony: true)
@@ -65,7 +65,7 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  config.assets.debug = true
+  config.assets.debug = false
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true

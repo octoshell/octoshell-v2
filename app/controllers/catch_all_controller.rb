@@ -4,9 +4,9 @@ class CatchAllController < ApplicationController
     logger.warn "Faked #{params.inspect}"
     case params[:ext]
     when 'js'
-      render text: "\n", content_type: 'text/javascript'
+      render plain: "\n", content_type: 'text/javascript'
     when 'css'
-      render text: "\n", content_type: 'text/css'
+      render plain: "\n", content_type: 'text/css'
     else
       render test: 'Ooops! Page not found!', status: :not_found
     end

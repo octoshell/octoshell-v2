@@ -36,10 +36,6 @@ class ApplicationController < ActionController::Base
 
   # rescue_from MayMay::Unauthorized, with: :not_authorized
 
-  def not_authorized
-    redirect_to main_app.root_path, alert: t("flash.not_authorized")
-  end
-
   def journal_user
     logger.info "JOURNAL: url=#{request.url}/#{request.method}; user_id=#{current_user ? current_user.id : 'none'}"
   end

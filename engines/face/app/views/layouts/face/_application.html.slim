@@ -18,7 +18,7 @@ html
     = javascript_include_tag params[:controller]
 
     - cnt = params[:controller].split('/')[0]
-    - if params[:controller].index('/')
+    - if params[:controller].index('/') && params[:controller].split('/').first != 'face'
       = stylesheet_link_tag "#{cnt}/application"
       = javascript_include_tag "#{cnt}/application"
 
@@ -49,8 +49,6 @@ html
       - elsif logged_in?
         ul class="nav nav-tabs submenu"
           = render "face/shared/submenu", items: user_submenu_items
-          /= render "face/shared/submenu", items: user_submenu_items
-
         = yield :user_engine_submenu
 
       = render "face/shared/flashes"

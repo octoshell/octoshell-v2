@@ -1,6 +1,6 @@
 - items.each do |item|
   li class="#{"active" if item.active?(request.fullpath)} dragdrop"
-    = link_to item.name, item.url
+    = link_to item.name, item.url, {key: item.key}
 
 li class="dropdown" style="display:none"
   = link_to "#", "data-toggle" => "dropdown" do

@@ -1,0 +1,37 @@
+h3 = t('.header')
+p#results
+  font color='green'
+
+p
+-if @menu == 'user_submenu'
+  = t('.you_edit_user_menu', link: link_to(t('.admin_menu'), edit_all_menu_items_path(menu: 'admin_submenu'))).html_safe
+-else
+  = t('.you_edit_admin_menu', link: link_to(t('.user_menu'), edit_all_menu_items_path(menu: 'user_submenu'))).html_safe
+p
+  -if User.superadmins.include? current_user
+    = t('.superadmin_instruction')
+
+
+- if Face::UsersMenu.custom?(current_user, @menu)
+  /= t('.your_pref', link1: link_to(t('.switch_to_default'), edit_all_menu_items_path(menu: 'admin_submenu'))).html_safe
+  p
+    = t('.your_pref')
+  = link_to(t('.switch_to_default'), edit_all_menu_items_path(subject: 'switch', menu: @menu), class: 'btn btn-default').html_safe
+  = link_to(t('.copy_from_default'), edit_all_menu_items_path(subject: 'copy_from_default', menu: @menu), class: 'btn btn-default').html_safe
+
+- else
+  p
+    - if Face::MenuItemPref.where(menu: @menu, user: current_user, admin: false).exists?
+      = t('.default_pref_custom_exists', link: link_to(t('.to_custom'),
+        edit_all_menu_items_path(menu: @menu, subject: 'switch'), class: 'btn btn-default')).html_safe
+
+    - else
+      = t('.default_pref_custom_empty', link: link_to(t('.create_custom'),
+        edit_all_menu_items_path(menu: @menu,subject: 'switch'), class: 'btn btn-default')).html_safe
+
+= bootstrap_form_tag do |f|
+  = f.form_group do
+    = f.submit
+
+= javascript_tag do
+  = render(:partial => 'edit_all', :formats => [:js])

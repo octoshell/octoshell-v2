@@ -106,7 +106,8 @@ ApplicationController.class_eval do
     #                                   url: comments.index_all_comments_path))
 
     # menu.items
-    Face::MyMenu.user_submenu(self) + menu.items.to_a
+    # Face::MyMenu.user_submenu(self) + menu.items.to_a
+    Face::MyMenu.user_submenu(self)
   end
 
   def admin_submenu_items

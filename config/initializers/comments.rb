@@ -9,13 +9,13 @@ module Comments
 end
 
 Face::MyMenu.items_for(:user_submenu) do
-  add_item(t("user_submenu.comments"), comments.index_all_comments_path, /^comments/)
+  add_item('comments', t("user_submenu.comments"), comments.index_all_comments_path, /^comments/)
 end
 
 
 Face::MyMenu.items_for(:admin_submenu) do
   if User.superadmins.include? current_user
-    add_item(t('admin_submenu.comments'),
+    add_item('comments', t('admin_submenu.comments'),
              comments.edit_admin_group_classes_path,
              %r{comments/admin})
   end

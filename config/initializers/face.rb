@@ -1,12 +1,9 @@
 module Face
   extend Octoface
   octo_configure do
-
   end
 
-
-  # menu.add_item(Face::MenuItem.new({name: t("admin_submenu.projects"),
-  #                                   url: core.admin_projects_path,
-  #                                   regexp: /core\/admin\/projects/})) if  :manage, :projects
-
+  Face::MyMenu.items_for(:user_submenu) do
+    add_item('menu_items', t('user_submenu.menu_items'), face.edit_all_menu_items_path, 'face/menu_items')
+  end
 end

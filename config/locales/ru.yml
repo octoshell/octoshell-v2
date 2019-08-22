@@ -313,6 +313,8 @@ ru:
     tickets: Поддержка
     tickets_warning:
       html: Поддержка <span class="badge warning"><i class="fa fa-bell"></i></span>
+    menu_items: Редактировать распложение элементов меню
+
   users:
     edit:
       minimum_password_length: Минимум 6 символов

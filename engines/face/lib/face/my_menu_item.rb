@@ -2,9 +2,10 @@ module Face
   class MyMenuItem
 
 
-    attr_reader :name, :url
+    attr_reader :name, :url, :key
 
-    def initialize(name, url, controller, *args)
+    def initialize(key, name, url, controller, *args)
+      @key = key
       @name = name
       @url = url
       @controller = controller

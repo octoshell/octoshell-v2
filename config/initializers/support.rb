@@ -15,7 +15,7 @@ Face::MyMenu.items_for(:user_submenu) do
                    else
                     t("user_submenu.tickets")
                    end
-  add_item(tickets_title, support.tickets_path, /^support/)
+  add_item('tickets', tickets_title, support.tickets_path, /^support/)
 
 end
 
@@ -28,6 +28,6 @@ Face::MyMenu.items_for(:admin_submenu) do
                   end
 
   if can?(:manage, :tickets)
-    add_item(support_title, support.admin_root_path, %r{support/admin/})
+    add_item('tickets', support_title, support.admin_root_path, %r{support/admin/})
   end
 end

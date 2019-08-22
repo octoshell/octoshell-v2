@@ -44,14 +44,13 @@ module Octoface
         end
         inside_engine_path = path
       end
-
       found_instance.controller_abilities.detect { |ab| ab[2..-1].include?(inside_engine_path)}[0..1]
 
     end
 
-    def self.mods
-      @mods ||= []
-    end
+    # def self.mods
+    #   @mods ||= []
+    # end
 
     def self.mod_methods
       @mod_methods ||= {}
@@ -92,6 +91,7 @@ module Octoface
         # create_abilities!
       end
       forward_classes!
+      # Face::MyMenu.validate_keys!
     end
 
 
