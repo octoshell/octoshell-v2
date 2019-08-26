@@ -19,10 +19,10 @@ ru:
         join_type: Тип объединения
         left_join: Left join
         link: Ассоциация
+        loading: Идет загрузка...
         'on': 'On'
         per: Количество записей на одной странице
         selected: Эта ассоциация уже выбрана!
         title: Конструктор запросов
         to_sql: Показать SQL
         where: Where
-        loading: Идет загрузка...

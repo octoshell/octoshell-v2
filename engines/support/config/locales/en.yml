@@ -1,238 +1,231 @@
+---
 en:
-  support_responsible_for: "Responsible for:"
+  actions:
+    show_as_text: Show as text
+    show_empty_fields: Show empty fields
+    ticket_accepted: Ticket is accepted
   activerecord:
-    models:
-      support/ticket: Support requests
-      support/topic: Request topic
-      support/tag: Tag
-      support/field: Extra field
-      support/reply: Reply
-      support/reply_template: Reply template
-      support/user_topic: Responsible admins
-    errors:
-      models:
-        support/ticket:
-          equal_to_template: Change your problem description  (it is equal to template now)
-    attributes:
+    aasm:
       support/ticket:
+        state:
+          events:
+            close: Close
+            reopen: Reopen
+            resolve: Problem is solved!
+          states:
+            answered_by_reporter: Answered by reporter
+            answered_by_support: Answered by support
+            closed: Closed
+            pending: Pending
+            resolved: Resolved
+    attributes:
+      support/field:
+        contains_source_code: The field will contain the source code (logs)
+        hint: 'Tip to the user: what to enter as the field value'
         name: Name
-        topic: Topic
-        topic_id: Topic
+        required: required
+        url: Content as a link
+      support/reply:
+        attachment: Attachment
+        author: Author
+        author_id: Author
+        message: Message
+      support/reply_template:
+        message: Message
+        subject: Subject
+      support/tag:
+        name: Name
+      support/ticket:
+        attachment: Attachment
+        cluster: Cluster
+        cluster_id: Cluster
+        created_at: Created at
+        message: Problem description
+        name: Name
+        project: Project
+        project_id: Project
+        replies: Replies
         reporter: Author
         reporter_id: Author
         reporter_logins: Author logins
         responsible: Responsible
         responsible_id: Responsible
-        project: Project
-        project_id: Project
-        cluster: Cluster
-        cluster_id: Cluster
+        state: Status
+        subject: Problem
+        subscriber_ids: Subscribers
+        subscribers: Subscribers
         surety: Surety
         surety_id: Surety
-        tags: Tags
         tag_ids: Tags
-        subscribers: Subscribers
-        subscriber_ids: Subscribers
-        replies: Replies
-        state: Status
-        created_at: Created at
+        tags: Tags
+        topic: Topic
+        topic_id: Topic
         updated_at: Last activity at
         url: url
-        subject: Problem
-        message: Problem description
-        attachment: Attachment
       support/topic:
-        visible_on_create: Visible for user when he creates request
-        template: Template
+        field_ids: Extra fields
+        fields: Extra fields
         name: Name
         parent: Parent topic
         parent_id: Parent topic
-        tags: Default tags
         tag_ids: Default tags
-        fields: Extra fields
-        field_ids: Extra fields
-      support/tag:
-        name: Name
-      support/field:
-        name: Name
-        required: required
-        url: Content as a link
-        contains_source_code: The field will contain the source code (logs)
-        hint: "Tip to the user: what to enter as the field value"
-      support/reply:
-        author: Author
-        author_id: Author
-        message: Message
-        attachment: Attachment
-      support/reply_template:
-        subject: Subject
-        message: Message
+        tags: Default tags
+        template: Template
+        visible_on_create: Visible for user when he creates request
       support/user_topic:
         required: Attach automically
-
-    aasm:
-      support/ticket:
-        state:
-          states:
-            pending: Pending
-            answered_by_reporter: Answered by reporter
-            answered_by_support: Answered by support
-            resolved: Resolved
-            closed: Closed
-          events:
-            resolve: Problem is solved!
-            close: Close
-            reopen: Reopen
-
+    errors:
+      models:
+        support/ticket:
+          equal_to_template: Change your problem description  (it is equal
+            to template now)
+    models:
+      support/field: Extra field
+      support/reply: Reply
+      support/reply_template: Reply template
+      support/tag: Tag
+      support/ticket: Support requests
+      support/topic: Request topic
+      support/user_topic: Responsible admins
   engine_submenu:
-    tickets_list: Requests list
+    fields: Requests extra field
     reply_templates: Reply templates
     tags: Tags
+    tickets_list: Requests list
     topics: Support topics
-    fields: Requests extra field
-
-  actions:
-    show_empty_fields: Show empty fields
-    show_as_text: Show as text
-    ticket_accepted: Ticket is accepted
-
+  errors:
+    messages:
+      size_too_big: 'File size is too big (maximum size: %{file_size})'
+      size_too_small: File size is too small (must be %{file_size} at least)
+      wrong_size: File size is incorrect (must be %{file_size})
   support:
-    mailer:
-      header:
-        hello_known_name: Hello, %{name}!
-        hello_unknown: Hello!
-      new_ticket:
-        subject: New request for technical support
-        user_created_request: User %{full_name} has created the request for techincal support.
-        ticket: Question
-        topic: Topic
-        show_ticket_details: Show request
-      new_ticket_reply:
-        subject: New reply in request No%{number}
-        show_request_details: Show request
-        remain: Do not remove this line! You can add your reply to this request by writing it after the following dash line.
-      answered_tickets_notification:
-        subject: Reminder about suspended requests in technical support
-      reply_error:
-        subject: Your reply for request  №%{number} is incorrect
-        show_request_details: Show request
-        errors: "Errors:"
-      footer:
-        octo_regards: "Yours faithfully, Octoshell."
-        maintained_by: "Parallel information technologies laboratory, RCC MSU."
     admin:
-      tickets:
-        index:
-          title: List of requests for support
-          new_ticket_on_user: Create request for user
-          project: Project
-          reporter: Author
-          created_after: Сreated after
-          created_before: Created before
-          updated_after: Updated after
-          updated_before: Updated before
-          find_by_content: Найти по содержимому
-
-        table:
-          no_tickets: No requests found
-        edit:
-          title: Edit request
-        new:
-          title: Create request for user
-        show:
-          title: Request No%{id}
-          accept: Accept
-          no_replies: No replies
-          send: Send
-          tags-etc: Tags/files/comments
-          send_and_show_result: Send and show result
-          send_and_show_next: Send and show next ticket
-          new_reply: New reply
-          create_reply_template: Create reply template from current reply
-          attach: Attach file
-
-      tags:
-        index:
-          title: Tags
-          new_tag: Create tag
-        new:
-          title: Create tag
-        edit:
-          title: Edit tag
-        show:
-          merge_with: Merge with
-          help: Selected tag will be merged with current tag.
-          tickets_with_tag: New tagged request for support
-        remote_form:
-          add_tag: Add tag
-        table:
-          no_tags: No tags
-
-      reply_templates:
-        index:
-          title: Reply templates
-          new_reply_template: New reply template
-        new:
-          title: Create reply template
-        edit:
-          title: Edit reply template
-        show:
-          title: Reply template
-        table:
-          no_templates: No reply templates
       fields:
-        index:
-          title: Extra fields for requests
-          new_field: Create extra field
-        new:
-          title: Create extra field
         edit:
           title: Edit extra field
+        index:
+          new_field: Create extra field
+          title: Extra fields for requests
+        new:
+          title: Create extra field
         show:
           title: Extra field
         table:
           no_records: No extra fields
-
-      topics:
+      reply_templates:
+        edit:
+          title: Edit reply template
         index:
-          title: Requests topics
-          new_topic: Create topic
+          new_reply_template: New reply template
+          title: Reply templates
         new:
-          title: Create support topic
+          title: Create reply template
+        show:
+          title: Reply template
+        table:
+          no_templates: No reply templates
+      tags:
+        edit:
+          title: Edit tag
+        index:
+          new_tag: Create tag
+          title: Tags
+        new:
+          title: Create tag
+        remote_form:
+          add_tag: Add tag
+        show:
+          help: Selected tag will be merged with current tag.
+          merge_with: Merge with
+          tickets_with_tag: New tagged request for support
+        table:
+          no_tags: No tags
+      tickets:
+        edit:
+          title: Edit request
+        index:
+          created_after: Сreated after
+          created_before: Created before
+          find_by_content: Найти по содержимому
+          new_ticket_on_user: Create request for user
+          project: Project
+          reporter: Author
+          title: List of requests for support
+          updated_after: Updated after
+          updated_before: Updated before
+        new:
+          title: Create request for user
+        show:
+          accept: Accept
+          attach: Attach file
+          create_reply_template: Create reply template from current reply
+          new_reply: New reply
+          no_replies: No replies
+          send: Send
+          send_and_show_next: Send and show next ticket
+          send_and_show_result: Send and show result
+          tags-etc: Tags/files/comments
+          title: Request No%{id}
+        table:
+          no_tickets: No requests found
+      topics:
         edit:
           title: Edit support topic
-        show:
-          title: Support topic
-          new_subtopic: New support subtopic
         form:
           attach: Attach
-
+        index:
+          new_topic: Create topic
+          title: Requests topics
+        new:
+          title: Create support topic
+        show:
+          new_subtopic: New support subtopic
+          title: Support topic
+    mailer:
+      answered_tickets_notification:
+        subject: Reminder about suspended requests in technical support
+      footer:
+        maintained_by: Parallel information technologies laboratory, RCC MSU.
+        octo_regards: Yours faithfully, Octoshell.
+      header:
+        hello_known_name: Hello, %{name}!
+        hello_unknown: Hello!
+      new_ticket:
+        show_ticket_details: Show request
+        subject: New request for technical support
+        ticket: Question
+        topic: Topic
+        user_created_request: User %{full_name} has created the request for
+          techincal support.
+      new_ticket_reply:
+        remain: >-
+          Do not remove this line! You can add your reply to this request
+          by writing it after the following dash line.
+        show_request_details: Show request
+        subject: New reply in request No%{number}
+      reply_error:
+        errors: 'Errors:'
+        show_request_details: Show request
+        subject: Your reply for request  №%{number} is incorrect
     tickets:
-      index:
-        title: Support
-        new_ticket: New support request
-        created_after: Created after
-        created_before: Created before
-        updated_after: Updated after
-        updated_before: Updated before
-      table:
-        no_tickets: No requests found
-
-      show:
-        title: Request No%{id}
-        problem_solved: "Have your problem been solved? Press "
-        new_reply: New reply
-        no_replies: No replies
-        if_not: "If not, press "
-        attach: "Attach file: "
-
-      new:
-        title: New request
       edit:
         title: Edit request
-
-  errors:
-    messages:
-      wrong_size: "File size is incorrect (must be %{file_size})"
-      size_too_small: "File size is too small (must be %{file_size} at least)"
-      size_too_big: "File size is too big (maximum size: %{file_size})"
+      index:
+        created_after: Created after
+        created_before: Created before
+        new_ticket: New support request
+        title: Support
+        updated_after: Updated after
+        updated_before: Updated before
+      new:
+        title: New request
+      show:
+        attach: 'Attach file: '
+        if_not: 'If not, press '
+        new_reply: New reply
+        no_replies: No replies
+        problem_solved: 'Have your problem been solved? Press '
+        title: Request No%{id}
+      table:
+        no_tickets: No requests found
+  support_responsible_for: 'Responsible for:'
