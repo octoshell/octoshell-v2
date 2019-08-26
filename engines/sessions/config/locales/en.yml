@@ -314,7 +314,7 @@ en:
           Brief description of the project / study (plain text, volume - about
           5000 characters) in an accessible form.
         report_form41: >-
-          The text of the report should indicate: MSU  supercomputer systems 
+          The text of the report should indicate: MSU  supercomputer systems
           involved in the course of work on the project, to what extent.
         report_form50: >-
           2-3 bright, illustrative pictures / charts / graphics / photos are
@@ -367,7 +367,7 @@ en:
         subject: You have not sent a report №%{id} in time
       project_failed_session:
         msg_report_failed: >-
-          Your report %{id} for the  %{pid}:«%{title}» project has not passed 
+          Your report %{id} for the  %{pid}:«%{title}» project has not passed
           the "%{session}" re-registration and have been closed.
         subject: Your report %{id} have not passed re-registration
       report_assessed:

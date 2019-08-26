@@ -66,6 +66,7 @@ en:
         not_forever: With expiration date
         status: Status
         status_readable: Status
+        to: For
         version: Version
         version_name: Version name
         versions: Versions
@@ -81,6 +82,7 @@ en:
         category: Category
         values: Values
       pack/package:
+        accesses_to_package: Accesses to package
         deleted: Removed
         deleted?: Removed/active
         description: Description
@@ -135,6 +137,10 @@ en:
             status:
               version_deleted: Version is removed. The access status can only
                 be "removed".
+            to_id:
+              accesses_to_package: >-
+                Access creation is not allowed for this object. See "accesses
+                to package" attribute
         pack/clusterver:
           attributes:
             action:
@@ -201,20 +207,20 @@ en:
   from_user: From user
   group: Group
   integration:
-    support_theme_name: Request for package version access
+    support_theme_name: Заявка на доступ к версиям пакетов
   legend: legend
   mailer_messages:
     allowed: You have been allowed access
     body: >-
-      %{status_info} for the %{link} version. For details, write to us or
-      check the responses of the administrators for your requests
+      %{status_info} for the %{link}. Write us or check the responses of the
+      administrators for details
     deleted: Your access has been removed
     denied: You have been denied access
     denied_longer: You have been denied in access prolongation
     end_lic_changed: Your access expiration date has been changed
     expired: Your access has expired
     show_vers: Show version
-    subject: Your access to package version %{version_name} was changed
+    subject: "%{to}: Your access state has changed"
   mailer_version_messages:
     available: The license is valid until "%{date}"
     expired: The License has expired
@@ -247,16 +253,19 @@ en:
     notificators:
       notify_about_expiring_versions:
         subject: Packages versions with expiring license
-        title: Packages versions with expiring license
-        topic: Packages versions with expiring license
+        topic: Версии ПО с истекающей лицензией
+    update_access:
+      updated_during_edit_static: >-
+        You can not perform an action. Something happened At the time of filling
+        out the form. Re-enter the data
   pack_list: Packages list
   pack_search:
     packages:
-      active_cl: Show only active on cluster
+      active_cl: Show only active on clusters
       clusters: Clusters
       end_lic_gt: Version license expires after
       end_lic_lt: Version license expires not earlier than
-      my_packs: Only packages and versions associated with me
+      my_packs: Packages and versions associated with me
       only_deleted: only removed
       only_service: only service
       packages: Packages
@@ -283,11 +292,8 @@ en:
   tickets: Requests for support
   tickets_access:
     subject:
-      new_lic_req: >-
-        Request for prolongation for %{version_name} created by %{user} for
-        project %{who_name}
-      requested: >-
-        Request for %{version_name} for created by %{user} for project %{who_name}
+      new_end_lic: Request for prolongation for %{who_name} created by %{user}
+      requested: Request for %{who_name} created by %{user}
   'true': 'Yes'
   user: User
   user(me): For user(myself)

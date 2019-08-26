@@ -1,230 +1,6 @@
 ---
 ru:
   activerecord:
-    errors:
-      models:
-        core/country:
-          attributes:
-            title_ru:
-              name_required: Необходимо ввести название или название на английском
-        core/city:
-          attributes:
-            title_ru:
-              name_required: Необходимо ввести название или название на английском
-        core/project:
-          attributes:
-            organization_department:
-              dif: Подразделение должно входить в организацию
-        core/organization:
-          attributes:
-            city_id:
-              dif: Город не является частью страны, указанной в организации
-
-
-    models:
-      core/credential: "SSH-ключ"
-      core/project: "Проект"
-      core/project_card: "Карточка проекта"
-      core/project_kind: "Тип проекта"
-      core/organization: "Организация"
-      core/organization_department: "Подразделение организации"
-      core/organization_kind: "Тип организации"
-      core/employment: "Место работы"
-      core/direction_of_science: "Направление исследования"
-      core/critical_technology: "Критическая технология"
-      core/research_area: "Область науки"
-      core/member: "Участник проекта"
-      core/request: "Запрос на доступ к кластеру"
-      core/access: "Доступ к кластеру"
-      core/cluster: "Кластер"
-      core/cluster_log: "Логи кластера"
-      core/quota_kind: "Вид квоты на ресурсы"
-      core/cluster_quota: "Квота на ресурс кластера"
-      core/surety: "Поручительство"
-      core/project_invitation: "Приглашение в проект"
-      core/country: Страна
-      core/city: Город
-    attributes:
-      core/department_merger:
-        source_organization: Исходная организация
-        source_department: Исходное подразделение
-        to_organization: Организация назначения
-        to_department: Подразделение назначения
-
-      core/country:
-        title_ru: Название
-        title_en: Название на английском
-        checked: Проверена
-      core/city:
-        country_id: Страна
-        link_to_show: Просмотреть
-        title_ru: Название
-        title_en: Название на английском
-        checked: Проверена
-        country: Страна
-        country_title_ru: Название страны
-        country_title_en: Название страны на английском
-
-      user:
-        access_state: "Доступ"
-        credentials: "ssh *.pub ключи для доступа на кластеры"
-        has_surety: "Есть поручительство"
-      core/credential:
-        name: "Наименование"
-        public_key: "Публичный ssh-ключ"
-        state: "Статус"
-      core/project:
-        card: "Карточка проекта"
-        member: "Участник"
-        members: "Участники данного проекта"
-        allowed_members: "Участники данного проекта c доступом на кластеры"
-        sureties: "Поручительства"
-        title: "Наименование"
-        state: "Статус"
-        kind_id: "Тип"
-        kind: "Тип"
-        estimated_finish_date: "Примерная дата окончания работ над проектом"
-        direction_of_sciences: "Направления исследований"
-        direction_of_science_ids: "Направления исследований"
-        research_areas: "Область науки"
-        research_area_ids: "Область науки"
-        critical_technologies: "Критические технологии"
-        critical_technology_ids: "Критические технологии"
-        organization: "Организация"
-        organization_id: "Организация"
-        organization_department_id: "Подразделение организации"
-        organization_department: "Подразделение организации"
-        owner: "Руководитель"
-        created_at: "Создан"
-        finished_at: "Окончен"
-        first_activation_at: "Активирован"
-      core/member:
-        project_access_state: "Статус доступа к проекту"
-        project: "Проект"
-        project_id: "Проект"
-        organization: "Организация"
-        organization_id: "Организация"
-        organization_department: "Подразделение организации"
-        organization_department_id: "Подразделение организации"
-        login: "Логин"
-      core/project_kind:
-        name: "Наименование"
-      core/project_card:
-        name: "Полное название"
-        en_name: "Project title"
-        driver: "Задача"
-        en_driver: "Driver"
-        strategy: "Стратегия"
-        en_strategy: "Strategy"
-        objective: "Цель"
-        en_objective: "Objective"
-        impact: "Эффект"
-        en_impact: "Impact"
-        usage: "Использование"
-        en_usage: "Usage"
-      core/direction_of_science:
-        name: "Наименование"
-      core/critical_technology:
-        name: "Наименование"
-      core/research_area:
-        group: "Группа"
-        name: "Наименование"
-      core/request:
-        changed_by: "Одобрил/отклонил"
-        reason: "Причина одобрения/отклонения"
-        state: "Статус"
-        project: "Проект"
-        project_id: "Проект"
-        creator: "Заявитель"
-        creator_id: "Заявитель"
-        cluster: "Кластер"
-        cluster_id: "Кластер"
-        created_at: "Подана"
-        requested_resources: "Запрошенные ресурсы"
-      core/access:
-        state: "Статус"
-        project: "Проект"
-        project_id: "Проект"
-        cluster: "Кластер"
-        cluster_id: "Кластер"
-        created_at: "Выдан"
-        updated_at: "Последняя синхронизация"
-      core/cluster:
-        name: "Наименование"
-        host: "Хост"
-        admin_login: "Логин администратора"
-        available_for_work: "Доступен для работы"
-        state: "Статус"
-        description: "Описание"
-      core/cluster_log:
-        cluster_id: "Кластер"
-        cluster: "Кластер"
-        project_id: "Проект"
-        project: "Проект"
-        created_at: "Создан"
-        message: "Сообщение"
-      core/cluster_quota:
-        quota_kind_id: "Вид квоты"
-        name: "Название"
-        value: "Значение"
-      core/quota_kind:
-        name: "Наименование"
-        measurement: "Единица измерения"
-      core/organization:
-        name: "Название"
-        abbreviation: "Аббревиатура"
-        kind: "Тип"
-        kind_id: "Тип"
-        country: "Страна"
-        country_id: "Страна"
-        city: "Город"
-        city_id: "Город"
-        city_title: "Город"
-        department: "Подразделение"
-        departments: "Подразделения"
-        users_count: "Активных пользователей"
-        users_with_access_count: 'Пользователи с доступом на кластеры'
-        projects_count: "Активных проектов"
-        checked: Проверена
-      core/organization_department:
-        name: "Наименование"
-        users_count: "Активных пользователей"
-        projects_count: "Активных проектов"
-        checked: "Проверена"
-      core/organization_kind:
-        name: "Название"
-        departments_required: "Требуется наличие подразделений"
-      core/employment:
-        organization_id: "Организация"
-        organization: "Организация"
-        organization_department_id: "Подразделение организации"
-        organization_department: "Подразделение организации"
-        primary: "Основное место работы"
-      core/surety:
-        project: "Проект"
-        organization: "Организация-поручитель"
-        author: "Автор"
-        document: "Сгенерированный RTF-документ"
-        boss_full_name: "ФИО руководителя организации-поручителя"
-        boss_position: "Должность руководителя"
-        members: "Участники данного проекта"
-        users: "Участники"
-        scans: "Сканы подписанного поручительства"
-        state: "Статус"
-        created_at: "Создано"
-        human_name: "Поручительство №%{id}"
-        reason: "Причина одобрения/ отклонения"
-        changed_by: "Одобрил/отклонил"
-
-      core/surety_member:
-        full_name: "ФИО"
-        organization: "Организация"
-      core/project_invitation:
-        language: Язык
-        user_email: "Email"
-        user_fio: "Инициалы"
-        updated_at: "Приглашение выслано"
-
     aasm:
       core/access:
         state:
@@ -316,6 +92,7 @@ ru:
       core/cluster:
         admin_login: Логин администратора
         available_for_work: Доступен для работы
+        description: Описание
         host: Хост
         name: Наименование
         state: Статус
@@ -328,6 +105,7 @@ ru:
         project_id: Проект
       core/cluster_quota:
         name: Название
+        quota_kind_id: Вид квоты
         value: Значение
       core/country:
         checked: Проверена
@@ -540,23 +318,6 @@ ru:
           created_before: Создан до
           title: Логи кластеров
       clusters:
-        index:
-          title: "Кластеры"
-          quotas_info: "Квоты на ресурсы"
-          new_cluster: "Создать кластер"
-          no_clusters_found: "Кластеры не найдены"
-          delete: "Удалить"
-          edit: "Редактировать"
-          confirm: "Вы уверены?"
-        show:
-          info: "Информация о кластере"
-          quotas_info: "Квоты на ресурсы"
-          pub_key_help_html: >-
-            Для работы приложения с кластером скопируйте ключ в
-            <code>/home/%{admin_login}/.ssh/authorized_keys</code>
-          show_logs: "Просмотреть логи"
-        new:
-          title: "Новый кластер"
         edit:
           title: Редактирование кластера
         form:
@@ -709,20 +470,21 @@ ru:
             Вы пытаетесь слить  подразделение «%{dep_name}», уже не находящееся
             в организации «%{org_name}».
           update: Пожалуйста, обновите страницу.
-          mergers_exists: >-
-            У организации существуют неслитые подразделения. Перейдите в
-            "%{link}" и слейте их
-        merge_edit:
-          preview: Предварительный просмотр
-          new_record: Новая запись
-          action_type: Вид действия
-          merge: Слить
-          organization: Организация «{{organization_name}}» с  id {{organization_id}}
-          from: из
-          department: Подразделение «{{department_name}}» с  id {{department_id}}
-          merge_with: будет слито с
-          success_message: Редактирование прошло успешно
-          department_title: Имя нового подразделения
+        new:
+          title: Создание новой организации
+        show:
+          check: Подтвердить непроверенную организацию
+          merge_edit: Редактировать со слиянием
+      prepare_merge:
+        edit:
+          automerged: Следующие членства в проектах будут слиты автоматически
+          automerged_surety_members_without_core_members: Следующие поручительства
+            в проектах будут слиты автоматически
+          merge?: Слить?
+          not_automerged: Следующие членства в проектах не будут слиты автоматически
+          not_automerged_projects: Слияние проектов
+          not_automerged_surety_members_without_core_members: Следующие поручительства
+            в проектах не будут слиты автоматически
           title: Слияние
           with_surety: С поручительством?
         index:
@@ -863,8 +625,9 @@ ru:
     employments:
       form:
         add_organization: Добавить организацию
-        new_organization_department: Добавить подразделение
-        no_department: Не нашли своё подразделение?
+        new_organization_department: Добавить подразделение (если это необходимо)
+        no_department: Подразделение не обязательно (кроме МГУ). Не нашли
+          своё подразделение?
       list:
         add_employment: Добавить место работы
         edit_organization: Редактировать организацию
@@ -1137,33 +900,6 @@ ru:
         help: >-
           Заполните поля формы количеством ресурсов, которые будут необходимы
           вам в процессе работы проекта. Сейчас указаны размеры квот по-умолчанию.
-    credentials:
-      list:
-        credentials: "ssh-ключи"
-        no_credentials_found: "Добавьте свой публичный ssh-ключ!"
-        add_credential: "Добавить публичный ключ"
-        confirm: "Вы действительно хотите деактивировать ключ?"
-        msg_help_sshkey: >-
-          Если Вы не знаете как добавить публичный ssh-ключ, перейдите по
-          ссылке: <a href="http://parallel.ru/cluster/ssh-keys/ssh_keys.html"
-          target="_blank">Добавление публичного ssh-ключа</a>.
-
-      new:
-        title: "Новый ssh-ключ"
-        help: "скопируйте сюда содержимое файла .ssh/*.pub"
-    employments:
-      list:
-        edit_organization: "Редактировать организацию"
-        employments: "Места работы"
-        no_employments_created: "Добавьте место работы!"
-        add_employment: "Добавить место работы"
-        employments: Места работы
-        no_employments_created: Добавьте место работы!
-        add_employment: Добавить место работы
-      form:
-        add_organization: "Добавить организацию"
-        no_department: "Подразделение не обязательно (кроме МГУ). Не нашли своё подразделение?"
-        new_organization_department: "Добавить подразделение (если это необходимо)"
       new:
         title: Создание запроса на ресурсы
     sureties:
