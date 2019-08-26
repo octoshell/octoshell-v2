@@ -120,6 +120,7 @@ ru:
         name: Название опции
         options_category_id: Категория опций
         value: Значение
+        admin: Только для администраторов
       options_category:
         name: Категория
         values: Значения
@@ -283,8 +284,16 @@ ru:
     fields:
       new: Новая опция
       remove_option: Удалить опцию
-      with_category: Автозаполнение
-      without_category: Без автозаполнения
+      name_with_category: Название автозаполнением
+      name_without_category: Название без автозаполнения
+      value_with_category: Значение автозаполнением
+      value_without_category: Значение без автозаполнения
+      show: Показать форму
+      hide: Скрыть
+    form:
+      new: Новая опция
+      show: Показать форму
+      hide: Скрыть
   profiles:
     form:
       info_mails_help: >-

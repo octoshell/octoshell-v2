@@ -67,7 +67,7 @@ menu.add_item(Face::MenuItem.new({name: "Пакеты",
 
 
 ```bash
- -q pack_worker 
+ -q pack_worker
 ```
 
 
@@ -77,7 +77,7 @@ menu.add_item(Face::MenuItem.new({name: "Пакеты",
 
 every 1.day do
 	rake "pack:expired"
-   
+
 end
 ```
 

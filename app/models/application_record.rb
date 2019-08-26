@@ -12,4 +12,10 @@ class ApplicationRecord < ActiveRecord::Base
     instance_interface = Module.new(&block)
     include(instance_interface)
   end
+
+  def self.extend_with_options(options = {})
+    has_many :options, as: :owner
+    accepts_nested_attributes_for :options, allow_destroy: true
+  end
+
 end

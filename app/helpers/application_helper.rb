@@ -13,4 +13,8 @@ module ApplicationHelper
              end
     engine.url_for(args)
   end
+
+  def form_for_options(f)
+    render partial: 'options/fields', locals: { f: f }
+  end
 end

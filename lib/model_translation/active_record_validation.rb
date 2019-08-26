@@ -14,6 +14,12 @@ module ModelTranslation
         end
       end
     end
+
+    def translates(*attributes)
+      options = attributes.extract_options!
+      options[:fallback] ||= :any
+      super(*attributes, options)
+    end
   end
   ::ActiveRecord::Base.extend ActiveRecordValidation
 end

@@ -120,6 +120,7 @@ en:
         name: Name of option
         options_category_id: Option of category
         value: Value
+        admin: for administrators only
       options_category:
         name: Category
         values: Values
@@ -284,8 +285,16 @@ en:
     fields:
       new: New option
       remove_option: Remove option
-      with_category: Autocompleted
-      without_category: Not autocompleted
+      name_with_category: Autocomplete name
+      name_without_category: Usual name
+      value_with_category: Autocomplete value
+      value_without_category: Usual value
+      show: Show from
+      hide: Hide
+    form:
+      new: New option
+      show: Show from
+      hide: Hide
   profiles:
     form:
       info_mails_help: >-

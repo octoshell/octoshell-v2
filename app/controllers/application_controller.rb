@@ -25,6 +25,13 @@ class ApplicationController < ActionController::Base
     authorize!(*::Octoface.action_and_subject_by_path(params[:controller]))
   end
 
+  def options_attributes
+    [:id, :name, :category,
+     :name_type, :options_category_id, :value_type,
+     :category_value_id, :name_ru, :name_en,
+     :value_ru, :value_en, :_destroy, :admin]
+  end
+
   include ControllerHelper
   include ActionView::Helpers::OutputSafetyHelper
   helper Face::ApplicationHelper

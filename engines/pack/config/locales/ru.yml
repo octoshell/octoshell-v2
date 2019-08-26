@@ -189,15 +189,15 @@ ru:
       my_packs: Версии и пакеты, к которым у меня есть доступ/заявка на доступ
       show_deleted: Показать удаленные
       show_service: Показать служебные
-    access_states:
-      make_longer: продлить доступ
-      deny_longer: отказать в продлении
-      allowed: разрешен
-      deleted: удален
-      denied: отказан
-      expired: истек
-      forever: без даты окончания
-      available: доступен
+  access_states:
+    make_longer: продлить доступ
+    deny_longer: отказать в продлении
+    allowed: разрешен
+    deleted: удален
+    denied: отказан
+    expired: истек
+    forever: без даты окончания
+    available: доступен
 
 
 
