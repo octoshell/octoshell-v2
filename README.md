@@ -84,6 +84,34 @@ Example:
 
 You may need to notify administrators using support tickets (requests). Special class was designed to do it. Its functionality is very similar to ActionMailer::Base class (`engines/support/lib/support/notificator.rb`). Example: `engines/core/app/notificators/core/notificator.rb  engines/core/lib/core/checkable.rb`. Be careful with the `topic_name` method. It must be used only inside "action" method like `Notificator.check`. Pay special attention that the `new` method is not used here explicitly and method_missing is used to set correct options.    
 
+### Key-value storage for ApplicationRecord
+
+Use "options" to extend desription  of any model.
+##### Usage
+1. In model (see app/models/application_record.rb for details):
+        class YourModel < ApplicationRecord
+          extend_with_options
+        end
+1. In your form use #form_for_options  and    bootstrap_nested_form_for (nested_form_for) methods:
+        = bootstrap_nested_form_for :@instance do |f|
+         # your  fields
+        = form_for_options(f)
+1. show_options helper:
+        = show_options(@instance) do
+         - can? :manage, :packages #user will see only options
+         with admin boolean attribute set to false if he can't manage packages
+         = show_options(@instance) # user will see all options for this instance
+1. in your controller params:
+            def your_model_params
+              params.require(:your_model)
+                    .permit(:your_attrs, options_attributes: options_attributes)
+            end
+
+##### Possibilities
+  You can autocomplete name and value fields. Edit all name and values available for autocomplete here: /admin/options_categories
+
+
+
 
 ## Deploy
 

@@ -1,4 +1,8 @@
 # desc "Explaining what the task does"
-# task :face do
-#   # Task goes here
-# end
+namespace :face do
+  task init_menu: :environment do
+    ActiveRecord::Base.transaction do
+      Face::MyMenu.init_menu
+    end
+  end
+end

@@ -63,7 +63,7 @@ module Face
             $('.markdown-edit').each(function(){
               $(this).on('input', function(e){
                 clearTimeout($(this).last_update);
-                var src = $(this); 
+                var src = $(this);
                 $(this).last_update = setTimeout(function() {
                   var marked_text = marked(src.val(),{renderer: marked_render, gfm: true, smartLists: true});
                   $('.marked-preview[data-myid="'+src.attr('id')+'"]').html(marked_text);
@@ -120,7 +120,7 @@ module Face
       # options.merge!({help: t(".markdown_help").html_safe})
       # puts options.inspect
       horizontal = options.delete(:horizontal)
-      label = options.delete(:preview_label)
+      label = options.delete(:preview_label) || ''
       #options[:"data-bar"] = '.bar1'
       #options[:"data-preview"] = '.preview1'
       options[:"class"] = 'markdown-edit'

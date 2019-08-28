@@ -15,6 +15,13 @@ module ApplicationHelper
   end
 
   def form_for_options(f)
-    render partial: 'options/fields', locals: { f: f }
+    render 'options/fields', f: f
+  end
+
+  def show_options(record)
+    res = true
+    res = yield if block_given?
+    options = record.options.select { |o| !o.admin || res }
+    render partial: 'options/index', locals: { options: options }
   end
 end

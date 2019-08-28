@@ -7,6 +7,11 @@ module Face
     # MountedHelpers = ActionDispatch::Routing::RouteSet::MountedHelpers
     @instances ||= {}
     attr_reader :blocks, :name
+
+    def self.instances
+      @instances
+    end
+
     def initialize(name)
       @name = name
       @blocks = []
@@ -78,6 +83,50 @@ module Face
         @instances[name].blocks << block
       end
     end
+
+    def self.init_menu
+        admin_menu = ["Пользователи", "Проекты", "Пакеты", "Поддержка <span class=\"badge info\">20</span>",
+         "Поручительства", "Заявки", "Отчёты", "Перерегистрации", "Организации", "Кластеры",
+         "Логи кластеров", "Виды квот на ресурсы", "Типы проектов", "Типы организаций",
+         "Группы доступа", "Причины отказа предоставления отчёта", "Направления исследований",
+         "Критические технологии", "Области науки", "Статистика", "Рассылка",
+         "Мониторинг очередей выполнения задач", "Страны", "Города", "Комментарии",
+         "Аппаратура", "Emails", "Опции", "Журнал", "Конструктор запросов", "API", "Справка+"]
+         user_menu = ["Профиль", "Поддержка", "Проекты", "Перерегистрации",
+                      "Пакеты", "Статистика", "Эффективность", "Комментарии",
+                      "Редактировать распложение элементов меню"]
+
+         fake_controller = Class.new(::ApplicationController) do
+           def current_user
+             User.superadmins.first
+           end
+
+           def can?(*_args)
+             true
+           end
+         end
+         Face::MenuItemPref.destroy_all
+         Face::MyMenu.instances.each_value do |value|
+           view_items = value.items(fake_controller.new)
+           new_items = []
+           if value.name == :admin_submenu
+             new_items = admin_menu.map do |t|
+               view_items.detect { |item| item.name[0..7] == t[0..7] }
+             end
+           else
+             new_items = user_menu.map do |t|
+               view_items.detect { |item| item.name[0..4] == t[0..4] }
+             end
+           end
+           raise 'new_items.count != view_items.count' if new_items.count != view_items.count
+           conditions = { menu: value.name.to_s, admin: true }
+           rel = Face::MenuItemPref.where(conditions)
+           new_items.map(&:key).each do |key|
+             Face::MenuItemPref.create!(conditions.merge(key: key, position: rel.last_position + 1))
+           end
+         end
+    end
+
 
     def self.validate_keys!
       # Octoshell::Application.routes.eager_load!

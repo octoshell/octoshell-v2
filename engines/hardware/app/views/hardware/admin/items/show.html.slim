@@ -42,4 +42,4 @@ h3 = Hardware::Item.human_attribute_name(:last_state)
 
 
 = render partial: 'hardware/admin/items/items_states_table',locals: {items_states: @item.items_states.includes(:state).after(session[:hardware_max_date])}
-= render partial: 'options/index',locals: {rec: @item }
+= show_options(@item)

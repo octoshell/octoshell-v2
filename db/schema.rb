@@ -69,6 +69,15 @@ ActiveRecord::Schema.define(version: 2019_08_26_061528) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "articles", force: :cascade do |t|
+    t.integer "person_id"
+    t.string "title"
+    t.text "subject_header"
+    t.text "body"
+    t.string "type"
+    t.boolean "published", default: true
+  end
+
   create_table "category_values", id: :serial, force: :cascade do |t|
     t.integer "options_category_id"
     t.string "value_ru"
@@ -541,6 +550,11 @@ ActiveRecord::Schema.define(version: 2019_08_26_061528) do
     t.index ["user_id"], name: "index_face_users_menus_on_user_id"
   end
 
+  create_table "friends", force: :cascade do |t|
+    t.string "name"
+    t.integer "person_id"
+  end
+
   create_table "groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "weight"
@@ -596,6 +610,17 @@ ActiveRecord::Schema.define(version: 2019_08_26_061528) do
     t.integer "to_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "hobbies", force: :cascade do |t|
+    t.integer "article_id"
+    t.integer "person_id"
+    t.string "name"
+  end
+
+  create_table "hobbies_people", id: false, force: :cascade do |t|
+    t.bigint "person_id", null: false
+    t.bigint "hobby_id", null: false
   end
 
   create_table "jobstat_data_types", id: :serial, force: :cascade do |t|
@@ -790,6 +815,10 @@ ActiveRecord::Schema.define(version: 2019_08_26_061528) do
     t.text "description_en"
     t.string "name_en"
     t.index ["package_id"], name: "index_pack_versions_on_package_id"
+  end
+
+  create_table "people", force: :cascade do |t|
+    t.string "name"
   end
 
   create_table "permissions", id: :serial, force: :cascade do |t|

@@ -33,7 +33,7 @@ javascript:
       if(self.is(':checked')){
         if(self.val() == 'Pack::Package'){
           apply_select_to(toID,'#{admin_packages_path}');
-        }else if self.val() == 'Pack::Version'){
+        }else if(self.val() == 'Pack::Version'){
           apply_select_to(toID,'#{admin_versions_path}');
         }
       }
@@ -44,7 +44,7 @@ javascript:
       if(self.is(':checked')){
         if(self.val() == 'Pack::Package'){
           apply_select_to(toID,'#{admin_packages_path}');
-        }else if self.val() == 'Pack::Version'){
+        }else if(self.val() == 'Pack::Version'){
           apply_select_to(toID,'#{admin_versions_path}');
         }
       }

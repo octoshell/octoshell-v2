@@ -3,7 +3,7 @@
   - if f.object.persisted?
     = f.form_group do
       legend = t(".abilities")
-      = f.fields_for :abilities do |f|
-        = f.check_box :available, label: f.object.description
+      = f.fields_for :permissions do |ff|
+        = ff.check_box :available, label: ff.object.description
   = f.form_group do
     = f.submit t("actions.save")

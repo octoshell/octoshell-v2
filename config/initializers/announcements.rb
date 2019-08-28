@@ -1,7 +1,6 @@
 module Announcements
   extend Octoface
   octo_configure do
-    # add :report_class, Report # теперь во всех модулях доступен report_class
     add_ability(:manage, :announcements, 'superadmins', 'mailsenders')
     add_controller_ability(:manage, :announcements, 'admin/announcements')
     add_routes do

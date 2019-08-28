@@ -5,7 +5,7 @@ module Api::Admin
     before_action :set_access_key, only: [:show, :edit, :update, :destroy]
     before_action :authorize_admins
     def authorize_admins
-      authorize!(:access, :api_engine)
+      authorize!(:manage, :api_engine)
     end
 
     # GET /access_keys

@@ -14,7 +14,7 @@ end
 
 
 Face::MyMenu.items_for(:admin_submenu) do
-  if User.superadmins.include? current_user
+  if can?(:manage, :comments)
     add_item('comments', t('admin_submenu.comments'),
              comments.edit_admin_group_classes_path,
              %r{comments/admin})

@@ -96,8 +96,6 @@
       Pack::Clusterver.create!(version: v, core_cluster: cluster, active: true)
     end
   end
-
-
-
+  Face::MyMenu.init_menu
   Comments.create_wiki_page
   Comments.create_abilities

@@ -32,9 +32,7 @@ module Pack
     validates :category_value, presence: true, if: proc { |opt| opt.value_with_category?}
     validates_uniqueness_of :name_ru, scope: :version_id, if: proc { |option| option.name_ru.present? }
     validates_uniqueness_of :name_en, scope: :version_id, if: proc { |option| option.name_en.present? }
-    attr_accessor :stale_edit
     attr_writer :name_type, :value_type
-    validate :stale_check
 
 
     before_validation do
@@ -58,13 +56,6 @@ module Pack
         errors.add(:value_type, :invalid)
       end
     end
-
-    def stale_check
-      return unless stale_edit
-      mark_for_destruction
-      errors.add(:deleted_record, I18n.t("stale_error_nested"))
-    end
-
 
     def content_types
       %w[with_category without_category]

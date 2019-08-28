@@ -11,7 +11,7 @@ module Pack::Admin
     end
 
     def index
-      @q = Access.ransack(params[:q] || { to_type_eq: 'empty' })
+      @q = Pack::Access.ransack(params[:q] || { to_type_eq: 'empty' })
       @accesses = @q.result(distinct: true).order(:id).includes(:to, :who)
       without_pagination(:accesses)
     end
@@ -31,7 +31,7 @@ module Pack::Admin
     end
 
     def new
-      @access = Access.new
+      @access = Pack::Access.new
       @access.who_type = 'User'
       @access.to_type = Pack::Package.to_s
 

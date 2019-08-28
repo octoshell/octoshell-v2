@@ -1,4 +1,5 @@
 if !defined?(Rails) || Rails.env.development?
+  puts 'CUSTOM i18n-tasks'
   require 'active_support/all'
   module RelativeKeysExtension
     extend ActiveSupport::Concern

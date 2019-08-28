@@ -1,6 +1,6 @@
 module Announcements
   class ApplicationController < ::ApplicationController
-    include AuthMayMay
+    before_action :require_login
     layout "layouts/application"
 #    before_action :journal_user
 

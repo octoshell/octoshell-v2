@@ -17,18 +17,25 @@ namespace :pack do
       output = "\n\n" + ("*" * 53)
       output += "\nDone! Pack engine has been successfully installed."
       puts output
-	end
+  end
 
   task :expired => :environment do
     ::Pack::PackWorker.perform_async(:expired)
   end
 
-  task :migrate_accesses => :environment do
+  task :migrate_pack => :environment do
     ActiveRecord::Base.transaction do
       Pack::Access.all.includes(:version).each do |a|
+        next unless a.version
+
         a.to = a.version
         a.version = nil
         a.save!
+      end
+      Pack::VersionOption.all.each do |a|
+        Option.create!(a.attributes.slice(:options_category_id, :name_ru,
+                                          :name_en, :value_en, :value_ru,
+                                          :category_value_id))
       end
     end
     # ::Pack::PackWorker.perform_async(:expired)

@@ -234,7 +234,7 @@ ru:
     sureties_with_count:
       html: Поручительства <span class="badge info">%{count}</span>
     users: Пользователи
-    wikiplus: Wikiplus
+    wikiplus: Справка+
   bad_job: 'Проблемная задача: '
   bad_jobs: 'Проблемные задачи: '
   flash:

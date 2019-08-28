@@ -72,23 +72,8 @@ table#main-pack
       td class="col-xs-3"
           =Pack::Version.human_attribute_name "available_for_user?"
       td.availability.col-xs-9 available = @version.available_for_user?
-
-p
-  h4 =t "versions.options"
-  p
-    table.table-striped.table-hover.table-sm width="100%"
-      tr
-          th class="col-xs-3"
-            =Pack::VersionOption.human_attribute_name "name"
-          th class="col-xs-9"
-            =Pack::VersionOption.human_attribute_name "value"
-      -@version.version_options.each do |opt|
-        tr
-          td class="col-xs-3"
-            =opt.readable_name
-          td class="col-xs-9"
-            =markdown opt.readable_value
-
+= show_options(@version) do
+  - can? :manage, :packages
 
 p
   h4 =t "versions.clusters"

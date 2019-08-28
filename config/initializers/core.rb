@@ -30,9 +30,11 @@ end
 
 
 Face::MyMenu.items_for(:admin_submenu) do
-  add_item('projects', t('admin_submenu.projects'),
-           core.admin_projects_path,
-           'core/admin/projects')
+  if can? :manage, :projects
+    add_item('projects', t('admin_submenu.projects'),
+             core.admin_projects_path,
+             'core/admin/projects')
+  end
 
   sureties_count = Core::Surety.where(state: :confirmed).count
   sureties_title = if sureties_count.zero?
