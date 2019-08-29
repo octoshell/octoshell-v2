@@ -32,7 +32,7 @@ group :development do
   gem 'railroady'
   gem "better_errors"
   gem 'rails_db'
-  gem 'i18n-tasks', '~> 0.9.21'
+  gem 'i18n-tasks', github: 'apaokin/i18n-tasks'
   gem 'minitest-reporters'
 end
 

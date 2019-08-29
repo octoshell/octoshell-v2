@@ -66,8 +66,7 @@ Currently  Octoshell supports 2 locales: ru (Russian) and en (English). Other lo
 
 Users table has the  'language' column. User's working language is stored here. `lib/localized_emails` contains code for emails localization. Email locale depends on user language. If you want to send an email to unregistered user, 'en' locale will be chosen. You can preview your emails with [Rails Email Preview gem](https://github.com/glebm/rails_email_preview).
 
-[I18n-tasks gem](https://github.com/glebm/i18n-tasks) is used to manage locales in the project. But native gem is not designed to work with Rails engines. `lib/relative_keys_extension.rb` extends gem to find missing keys.
-
+[I18n-tasks gem](https://github.com/glebm/i18n-tasks) is used to manage locales in the project. But native gem is not designed to work with Rails engines. [See this fork](https://github.com/apaokin/i18n-tasks).
 ### Front-end
 
 javascript libraries: jquery, handlebars, select2 and alpaca.js(for building forms).

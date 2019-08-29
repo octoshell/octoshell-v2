@@ -1,4 +1,19 @@
 GIT
+  remote: https://github.com/apaokin/i18n-tasks.git
+  revision: 558b900d0b8cf5187a2cc61a8585a3453744bc35
+  specs:
+    i18n-tasks (0.9.29)
+      activesupport (>= 4.0.2)
+      ast (>= 2.1.0)
+      erubi
+      highline (>= 2.0.0)
+      i18n
+      parser (>= 2.2.3.0)
+      rails-i18n
+      rainbow (>= 2.2.2, < 4.0)
+      terminal-table (>= 1.5.1)
+
+GIT
   remote: https://github.com/apaokin/ruby-lmtp.git
   revision: a41cbdc2372c85baa50a7749ef78d74c40e3ccd0
   specs:
@@ -383,16 +398,6 @@ GEM
       concurrent-ruby (~> 1.0)
     i18n-js (3.3.0)
       i18n (>= 0.6.6)
-    i18n-tasks (0.9.29)
-      activesupport (>= 4.0.2)
-      ast (>= 2.1.0)
-      erubi
-      highline (>= 2.0.0)
-      i18n
-      parser (>= 2.2.3.0)
-      rails-i18n
-      rainbow (>= 2.2.2, < 4.0)
-      terminal-table (>= 1.5.1)
     jquery-fileupload-rails (1.0.0)
       actionpack (>= 3.1)
       railties (>= 3.1)
@@ -714,7 +719,7 @@ DEPENDENCIES
   groupdate
   hardware!
   i18n-js
-  i18n-tasks (~> 0.9.21)
+  i18n-tasks!
   jobstat!
   jquery-rails
   jquery-tablesorter
