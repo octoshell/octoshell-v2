@@ -25,7 +25,7 @@ module Core
 end
 
 Face::MyMenu.items_for(:user_submenu) do
-  add_item('projects', t('user_submenu.projects'), core.projects_path, /^core/)
+  add_item('projects', t('user_submenu.projects'), core.projects_path, 'core/projects')
 end
 
 

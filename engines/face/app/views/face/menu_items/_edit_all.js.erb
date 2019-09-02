@@ -42,7 +42,6 @@ $("input[type='submit']").click(function(){
   // });
   $('p#results font').empty();
 
-  console.log(keys);
   $.ajax({
     url: '<%= update_all_menu_items_path %>',
     method: 'PUT',

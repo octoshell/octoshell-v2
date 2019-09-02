@@ -67,12 +67,13 @@
   users[1..-1].each do |user|
     project.members.create!(user: user, organization: organization, project_access_state: 'allowed')
   end
-
+  Support::Notificator.new.create_bot 'strong_password'
   package = FactoryBot.create(:package)
   version = FactoryBot.create(:version, package: package)
   FactoryBot.create(:access, who: users.first, to: version)
-  FactoryBot.create(:access, who: Group.find_by(name: 'superadmins'),
-                             to: version, created_by: User.superadmins.first)
+  FactoryBot.create(:access, who: Group.find_by(name: 'authorized'),
+                             to: version, created_by: User.superadmins.first,
+                             status: 'allowed')
   FactoryBot.create(:access, who: Core::Project.first,
                              to: version, created_by: User.superadmins.first)
 

@@ -1,9 +1,23 @@
 module Support
   class Notificator < AbstractController::Base
 
-    def topic_name
-      'Уведомления'.freeze
+    # def topic_name
+    #   'Уведомления'.freeze
+    # end
+
+    def parent_topic
+      Topic.find_or_create_by!(name_ru: 'Уведомления', name_en: 'Notifications', visible_on_create: false)
     end
+
+
+    def self.name_ru
+      'Уведомления'
+    end
+
+    def self.name_en
+      'Notifications'
+    end
+
 
     def self.email
       'support_bot@octoshell.ru'.freeze
@@ -15,7 +29,7 @@ module Support
         defaults = [:"#{path}#{key}"]
         defaults << options[:default] if options[:default]
         options[:default] = defaults.flatten
-        key = "#{path}.#{action_name}#{key}".gsub(/notificator/, 'notificators')
+        key = "#{path}.#{action_name}#{key}"
       end
       I18n.translate(key, options)
     end
@@ -48,8 +62,8 @@ module Support
       @bot ||= Support.user_class.find_by_email!(self.class.email)
     end
 
-    def topic(name = topic_name)
-      Topic.find_or_create_by!(name_ru: name, name_en: name, visible_on_create: false)
+    def topic(name_ru = self.class.name_ru, name_en = self.class.name_en)
+      Topic.find_or_create_by!(name_ru: name_ru, name_en: name_en, visible_on_create: false)
     end
 
     def create!(arg)
@@ -66,7 +80,7 @@ module Support
 
     def render(file, assigns = {})
       path = "#{engine.const_get("Engine").root}/app/views"
-      ActionView::Base.new(path, assigns).render file: "#{engine.to_s.downcase}/notificators/#{file}"
+      ActionView::Base.new(path, assigns).render file: "#{engine.to_s.downcase}/notificator/#{file}"
     end
 
     def self.method_missing(method_name, *args)

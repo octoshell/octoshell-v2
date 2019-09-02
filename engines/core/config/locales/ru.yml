@@ -780,7 +780,7 @@ ru:
         title: Прилашение в проект «%{project_title}»
       form:
         nothing: без подразделения
-    notificators:
+    notificator:
       check:
         show: Перейти на страницу записи
         subject: 'Создана новая запись. %{model_name} : %{to_s}'

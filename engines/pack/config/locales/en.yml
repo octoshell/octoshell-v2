@@ -255,6 +255,8 @@ en:
           title: Request for  renewal of version access
           success: The request has been sent  successfully
         show:
+          actions_with_packages: Actions with package
+          actions_with_versions: Actions with version
           can_delete_requested: An application for access to the version has been sent. It has not been considered yet. You can remove the request
           success_delete: Request has been removed
           new_end_lic_forever: You have already requested for prolongation to endless access to the version. Do you want to change the request?
@@ -312,6 +314,7 @@ en:
         table:
           no_accesses_found: No accesses found
         q:
+          to_type_eq_empty: All
           show_requests_only: Show only renewals requests
         new:
           title: New access
@@ -350,10 +353,11 @@ en:
         body: The license information for the %{link} version has changed.%{message}.
         subject: Information about the "%{version_name}" version license has
           changed
-    notificators:
+    notificator:
       notify_about_expiring_versions:
         subject: Packages versions with expiring license
-        topic: Версии ПО с истекающей лицензией
+        title: 'Software versions with expiring license'
+
     update_access:
       updated_during_edit_static: >-
         You can not perform an action. Something happened At the time of filling

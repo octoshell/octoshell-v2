@@ -8,7 +8,7 @@ class CatchAllController < ApplicationController
     when 'css'
       render plain: "\n", content_type: 'text/css'
     else
-      render test: 'Ooops! Page not found!', status: :not_found
+      render plain: 'Ooops! Page not found!', status: :not_found
     end
   end
 end

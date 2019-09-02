@@ -17,8 +17,9 @@ data:
     ## Default:
     - config/locales/%{locale}.yml
     ## More files:
-    # - engines/**/config/locales/*.yml
-    - engines/pack/config/locales/*.yml
+    - engines/*/config/locales/*.yml
+    # - engines/pack/config/locales/*.yml
+    # - engines/face/config/locales/*.yml
 
   # Locale files to write new keys to, based on a list of key pattern => file rules. Matched from top to bottom:
   # `i18n-tasks normalize -p` will force move the keys according to these rules

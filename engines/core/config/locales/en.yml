@@ -785,7 +785,7 @@ en:
         title: Invitation to the  "%{project_title}" project
       form:
         nothing: Without department
-    notificators:
+    notificator:
       check:
         show: Show record page
         subject: 'New record is created. %{model_name} : %{to_s}'

@@ -23,7 +23,6 @@
             = f.check_box :service
           =f.form_group :delete_on_expire
             = f.check_box :delete_on_expire
-          = f.hidden_field :lock_col
           =t "versions.state"
           = f.radio_button :state,  "forever" ,label: t("versions.forever"),
                             id: "disable_id", checked: f.object.state == 'forever'

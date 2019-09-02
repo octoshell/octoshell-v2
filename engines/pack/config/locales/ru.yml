@@ -214,6 +214,8 @@ ru:
             title: Заявка на продление доступа к версии
             success: Заявка успешно отправлена
           show:
+            actions_with_packages: Действия с пакетом
+            actions_with_versions: Действия с версией
             can_delete_requested: Отправлена заявка на доступ к версии. Она пока не рассмотрена. Вы можете удалить заявку
             success_delete: Заявка удалена
             new_end_lic_forever: Вы уже подали заявку на продление до бесконечного доступа к версии.Хотите изменить заявку?
@@ -268,6 +270,7 @@ ru:
           end_lic_with_req:
             delete_request: Удалить данные о заявке на продление доступа
           q:
+            to_type_eq_empty: Все
             show_requests_only: Показать только заявки на продление
           new:
             title: Новый доступ
@@ -297,7 +300,7 @@ ru:
             with_category: Автозаполнение
             without_category: Без автозаполнения
 
-      notificators:
+      notificator:
         notify_about_expiring_versions:
           topic: 'Версии ПО с истекающей лицензией'
           subject: 'Версии ПО с истекающей лицензией'
