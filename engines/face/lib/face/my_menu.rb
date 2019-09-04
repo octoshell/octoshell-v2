@@ -85,7 +85,7 @@ module Face
     end
 
     def self.init_menu
-        admin_menu = ["Пользователи", "Проекты", "Пакеты", "Поддержка <span class=\"badge info\">20</span>",
+        admin_menu = ["Пользователи", "Проекты", "Пакеты", "Поддержка",
          "Поручительства", "Заявки", "Отчёты", "Перерегистрации", "Организации", "Кластеры",
          "Логи кластеров", "Виды квот на ресурсы", "Типы проектов", "Типы организаций",
          "Группы доступа", "Причины отказа предоставления отчёта", "Направления исследований",
@@ -110,31 +110,33 @@ module Face
            view_items = value.items(fake_controller.new)
            new_items = []
            if value.name == :admin_submenu
-             new_items = admin_menu.map do |t|
-               view_items.detect { |item| item.name[0..7] == t[0..7] }
-             end
+             new_items = find_items(admin_menu, view_items)
            else
-             new_items = user_menu.map do |t|
-               view_items.detect { |item| item.name[0..4] == t[0..4] }
-             end
+             new_items = find_items(user_menu, view_items)
            end
            raise 'new_items.count != view_items.count' if new_items.count != view_items.count
            conditions = { menu: value.name.to_s, admin: true }
            rel = Face::MenuItemPref.where(conditions)
+
            new_items.map(&:key).each do |key|
              Face::MenuItemPref.create!(conditions.merge(key: key, position: rel.last_position + 1))
            end
          end
     end
 
+    def self.find_items(menu, view_items)
+      menu.map do |t|
+        elem = view_items.detect do |item|
+          item.name[0..(t.length - 1)] == t
+        end
+        raise "submenu error: #{t.inspect}" unless elem
+        elem
+      end
+    end
+
 
     def self.validate_keys!
-      # Octoshell::Application.routes.eager_load!
-      # puts ActionDispatch::Routing::RouteSet::MountedHelpers.respond_to?(:session).inspect.red
-      # puts ActionDispatch::Routing::RouteSet::MountedHelpers.methods.sort.inspect.red
       fake_controller = Class.new(::ApplicationController) do
-        # include app.routes.mounted_helpers
-        # include ActionDispatch::Routing::RouteSet::MountedHelpers
         def current_user
           User.superadmins.new
         end
@@ -142,35 +144,15 @@ module Face
         def can?(*_args)
           true
         end
-        # def method_missing(m, *args, &block)
-        #   # fake_controller.send(m, *args, &block)
-        #   # nil
-        # end
       end
-      # fake_controller.include ActionDispatch::Routing::RouteSet::MountedHelpers
-
-      # fake_controller = Class.new(ActionController::Base)
-      # fake_controller.include ActionDispatch::Routing::RouteSet::MountedHelpers
-
-      # puts fake_controller.new.methods(true).sort.inspect.red
-      # puts fake_controller.new.announcements.methods(true).sort.inspect.red
-
       @instances.each_value do |value|
         keys = value.items(fake_controller.new).map(&:key)
         key = keys.detect { |k| keys.count(k) > 1 }
         raise "#{key} is specified twice" if key
         conditions = { menu: value.name.to_s, admin: true }
         keys.each do |k|
-          # puts conditions.merge(key: k).inspect.red
-          # MenuItemPref.create!(conditions.merge(key: k, position: MenuItemPref.last_position + 1))
-
           rel = MenuItemPref.where(conditions.merge(key: k))
-          # puts MenuItemPref.where(conditions).last_position.inspect.red
           rel.first_or_create!(position: MenuItemPref.where(conditions).last_position + 1)
-
-          # MenuItemPref.create_with(position: MenuItemPref.last_position + 1)
-          #             .find_or_create_by!(conditions.merge(key: k))
-
         end
       end
     end

@@ -14,8 +14,3 @@ Face::MyMenu.items_for(:admin_submenu) do
                   announcements.admin_announcements_path,
                   'announcements/admin/announcements')
 end
-
-
-# # Octoshell::Application.routes.draw do
-# #   mount Announcements::Engine, :at => "/announcements"
-# end

@@ -1,7 +1,7 @@
 module Announcements::Admin
   class AnnouncementsController < ApplicationController
     # before_action { authorize! :manage, :announcements }
-    before_action { octo_authorize! }
+    before_action :octo_authorize!
 
     # before_action only: %i[create update] do
     #   if announcement_params[:attachment]
