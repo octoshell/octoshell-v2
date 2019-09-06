@@ -5,8 +5,13 @@ module Support
     #   'Уведомления'.freeze
     # end
 
-    def parent_topic
+
+    def self.parent_topic
       Topic.find_or_create_by!(name_ru: 'Уведомления', name_en: 'Notifications', visible_on_create: false)
+    end
+
+    def parent_topic
+      self.class.parent_topic
     end
 
 

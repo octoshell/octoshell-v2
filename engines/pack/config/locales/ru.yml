@@ -57,7 +57,7 @@ ru:
     buttons:
       save: Сохранить
     integration:
-      support_theme_name: Заявка на доступ к версиям пакетов
+      support_theme_name: Заявка на доступ к пакету
     engine_submenu:
         packages_list: Пакеты
         versions_list: Версии пакетов

@@ -207,7 +207,7 @@ en:
   from_user: From user
   group: Group
   integration:
-    support_theme_name: Заявка на доступ к версиям пакетов
+    support_theme_name: Заявка на доступ к пакету
   legend: legend
   mailer_messages:
     allowed: You have been allowed access

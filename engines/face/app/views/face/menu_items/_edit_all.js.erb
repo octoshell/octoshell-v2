@@ -17,7 +17,7 @@
   };
 
 
-  $( ".dragdrop" ).draggable({ revert: true, helper: "clone" });
+  $( ".dragdrop" ).draggable({ revert: true });
 
   $( ".dragdrop" ).droppable({
       accept: ".dragdrop",
@@ -25,9 +25,9 @@
       hoverClass: "ui-state-active",
       drop: function( event, ui ) {
 
-          var draggable = ui.draggable, droppable = $(this),
-              dragPos = draggable.position(), dropPos = droppable.position();
-          draggable.swap(droppable);
+          var draggable = ui.draggable, droppable = $(this);
+          draggable.insertAfter(droppable);
+          // draggable.swap(droppable);
       }
   });
 <% end %>

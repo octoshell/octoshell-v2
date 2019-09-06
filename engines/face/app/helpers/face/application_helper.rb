@@ -109,6 +109,7 @@ module Face
     def display_wiki_link(name)
       page = Wiki.engines_links[name].first
       return '' unless page
+      
       link_to page.name, wiki.page_path(page)
     end
 
