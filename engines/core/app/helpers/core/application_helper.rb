@@ -16,19 +16,28 @@ module Core
     end
 
     def organizations_admin_submenu_items
-      menu = Face::Menu.new
-      menu.items.clear
-      menu.add_item(Face::MenuItem.new({name: t("engine_submenu.organizations_list"),
-                                        url: [:admin, :organizations],
-                                        regexp: /organizations/}))
-      menu.add_item(Face::MenuItem.new({name: t("engine_submenu.merge_edit"),
-                                        url: [:merge_edit, :admin, :organizations],
-                                        regexp: /merge_edit/}))
-      menu.add_item(Face::MenuItem.new({name: t("engine_submenu.prepare_merge"),
-                                        url: [:admin, :prepare_merge,:index],
-                                        regexp: /merge_edit/}))
 
-      menu.items
+      menu = Face::MyMenu.new
+      menu.add_item_without_key(t("engine_submenu.organizations_list"),
+                                admin_organizations_path, 'core/admin/organizations')
+
+      # menu.add_item_without_key(t("engine_submenu.merge_edit"),
+      #                           merge_edit_admin_organizations_path)
+
+      menu.add_item_without_key(t("engine_submenu.prepare_merge"),
+                                admin_prepare_merge_index_path, 'core/admin/prepare_merge')
+
+      # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.organizations_list"),
+      #                                   url: [:admin, :organizations],
+      #                                   regexp: /organizations/}))
+      # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.merge_edit"),
+      #                                   url: [:merge_edit, :admin, :organizations],
+      #                                   regexp: /merge_edit/}))
+      # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.prepare_merge"),
+      #                                   url: [:admin, :prepare_merge,:index],
+      #                                   regexp: /merge_edit/}))
+
+      menu.items(self)
     end
     def mark_project_state(project)
       label_class = case project.state

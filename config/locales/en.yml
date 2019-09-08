@@ -143,6 +143,25 @@ en:
       options_category: Category of options
       profile: Profile
   admin:
+    journal:
+      journal:
+        chain_id: Chain ID
+        created_at_gt: Later than
+        created_at_lt: Earlier than
+        event_in: Event
+        group: Group
+        item_type_in: Class
+        month_ago: Month ago
+        object_changes_cont: Changes contain
+        system_only: Only system changes
+        title: Journal
+        week_ago: Week ago
+        whodunnit_in: Initiator
+      table:
+        chain_id: Chain ID
+        created_at: Date
+        id: ID
+        system: System
     groups:
       edit:
         title: Edit group
@@ -254,25 +273,6 @@ en:
           one: Shown <b>1</b>
           other: Shown <b>все %{count}</b>
           zero: Shown <b>0</b>
-  journal:
-    journal:
-      chain_id: Chain ID
-      created_at_gt: Later than
-      created_at_lt: Earlier than
-      event_in: Event
-      group: Group
-      item_type_in: Class
-      month_ago: Month ago
-      object_changes_cont: Changes contain
-      system_only: Only system changes
-      title: Journal
-      week_ago: Week ago
-      whodunnit_in: Initiator
-    table:
-      chain_id: Chain ID
-      created_at: Date
-      id: ID
-      system: System
   main_menu:
     admin_area: Administator's office
     wiki: Wiki

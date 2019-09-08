@@ -1,5 +1,7 @@
 = render "core/mailer/header"
 - link = link_to @access.to, @access.to
+/ "%{status_info} к версии  %{link}. Для подробностей напишите нам или просмотрите ответы администраторов на Ваши заявки"
+
 p =t('mailer_messages.body',link: link,status_info: @status_info).html_safe
 
 = render "core/mailer/footer"

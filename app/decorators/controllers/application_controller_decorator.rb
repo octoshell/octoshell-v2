@@ -4,13 +4,20 @@ ApplicationController.class_eval do
   helper_method :admin_submenu_items
 
   def menu_items
-    menu = Face::Menu.new
-    menu.items.clear
-    menu.add_item(working_area_item) if logged_in?
-    menu.add_item(admin_area_item) if can?(:access, :admin)
-    menu.add_item(wiki_item)
-    menu.add_item(wikiplus_item)
-    menu.items
+    menu = Face::MyMenu.new
+    # menu.items.clear
+    menu.add_item_without_key(t("main_menu.working_area"), core.root_path, /^((?!admin|wiki).)*$/s) if logged_in?
+    if can?(:access, :admin)
+      menu.add_item_without_key(t("main_menu.admin_area"), core.admin_projects_path, /admin/)
+    end
+    # menu.add_item_without_key(wiki_item)
+    menu.add_item_without_key(t("main_menu.wikiplus"), wikiplus.root_path, /wikiplus/)
+
+    # menu.add_item(working_area_item) if logged_in?
+    # menu.add_item(admin_area_item) if can?(:access, :admin)
+    # menu.add_item(wiki_item)
+    # menu.add_item(wikiplus_item)
+    menu.items(self)
   end
 
   def wiki_item

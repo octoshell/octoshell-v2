@@ -759,8 +759,6 @@ Octoshell::Application.routes.draw do
   root "face/home#show"
 
   # Journal
-  get "admin/journal" => "journal#journal"
-
   resources :users do
     get :login_as, on: :member
     get :return_to_self, on: :member
@@ -788,6 +786,8 @@ Octoshell::Application.routes.draw do
 
   namespace :admin do
     mount Sidekiq::Web => "/sidekiq", :constraints => AdminConstraint.new
+    get 'journal' => 'journal#journal'
+    # get "journal" => "journal#journal"
 
     resources :users do
       member do

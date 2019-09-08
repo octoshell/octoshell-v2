@@ -27,5 +27,6 @@ end
 Face::MyMenu.items_for(:admin_submenu) do
   add_item_if_may('reports', t("admin_submenu.reports"), sessions.admin_reports_path, 'sessions/admin/reports')
   add_item_if_may('sessions', t("admin_submenu.sessions"), sessions.admin_sessions_path, 'sessions/admin/sessions', 'sessions/admin/surveys')
-  add_item_if_may('report_submit_denial_reasons', t("admin_submenu.report_submit_denial_reasons"), sessions.admin_report_submit_denial_reasons_path, 'sessions/admin/report_submit_denial_reasons')
+  add_item_if_may('report_submit_denial_reasons', t("admin_submenu.report_submit_denial_reasons"),
+                   sessions.admin_report_submit_denial_reasons_path, 'sessions/admin/report_submit_denial_reasons')
 end

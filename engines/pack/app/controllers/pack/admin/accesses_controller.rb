@@ -1,7 +1,7 @@
 # require_dependency "pack/application_controller"
 # require "#{Pack::Engine.root}/app/services/pack/admin_access_updater"
 module Pack::Admin
-  class AccessesController < ApplicationController
+  class AccessesController < Pack::Admin::ApplicationController
     rescue_from ActiveRecord::RecordNotFound do |ex|
       render "not_found"
     end
@@ -11,7 +11,7 @@ module Pack::Admin
     end
 
     def index
-      @q = Pack::Access.ransack(params[:q] || { to_type_eq: 'empty' })
+      @q = Pack::Access.ransack(params[:q] || { to_type_eq: '' })
       @accesses = @q.result(distinct: true).order(:id).includes(:to, :who)
       without_pagination(:accesses)
     end

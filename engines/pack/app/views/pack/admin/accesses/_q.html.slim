@@ -14,7 +14,7 @@
        =  f.label Pack::Access.human_attribute_name(:to)
        = f.radio_button :to_type_eq, Pack::Package.to_s, label: Pack::Package.model_name.human.to_s
        = f.radio_button :to_type_eq, Pack::Version.to_s, label: Pack::Version.model_name.human.to_s
-       = f.radio_button :to_type_eq, 'empty', label: t('.to_type_eq_empty')
+       = f.radio_button :to_type_eq, '', label: t('.to_type_eq_empty')
        = f.autocomplete_field :to_id_in,{ hide_label: true}, class: 'select2-custom' ,include_blank: true do |val|
         - (f.object.to_type_eq == Pack::Package.to_s ? Pack::Package : Pack::Version ).find(val).to_s
     div class='col-md-4'

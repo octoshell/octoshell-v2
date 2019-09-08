@@ -15,6 +15,8 @@ module Core
     add_controller_ability(:manage, :organizations, 'admin/organizations', 'admin/organization_kinds')
     add_ability(:manage, :clusters, 'superadmins')
     add_controller_ability(:manage, :clusters, 'admin/clusters', 'admin/cluster_logs', 'admin/quota_kinds')
+    add_ability(:manage, :geography, 'superadmins')
+    add_controller_ability(:manage, :geography, 'admin/cities', 'admin/countries')
   end
 
 

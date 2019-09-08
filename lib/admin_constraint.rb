@@ -3,6 +3,6 @@ class AdminConstraint
     return false unless request.session[:user_id]
 
     user = User.find request.session[:user_id]
-    user && Ability.new(user).can?(:access, :admin)
+    user && User.superadmins.include?(user)
   end
 end

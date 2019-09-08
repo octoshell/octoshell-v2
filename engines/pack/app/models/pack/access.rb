@@ -91,13 +91,17 @@ module Pack
     end
 
     def send_email
-      if status != 'requested' && ! to.is_a?(Group)
+      if status != 'requested' && !to.is_a?(Group)
         if previous_changes["status"]
-          ::Pack::PackWorker.perform_async(:access_changed, id)
+          # previous_status = previous_changes["status"].first
+          current_status = previous_changes["status"].second
+          ::Pack::PackWorker.perform_async("access_changed_#{current_status}", id)
         elsif %w[expired allowed].include?(status) && previous_changes["end_lic"]
-          ::Pack::PackWorker.perform_async(:access_changed, [id, "end_lic_changed"])
+          ::Pack::PackWorker.perform_async("access_changed_end_lic", id)
+          # ::Pack::PackWorker.perform_async(:access_changed, [id, "end_lic_changed"])
         elsif @status_from_params == 'deny_longer'
-          ::Pack::PackWorker.perform_async(:access_changed, [id, "denied_longer"])
+          ::Pack::PackWorker.perform_async("access_changed_denied_longer", id)
+          # ::Pack::PackWorker.perform_async(:access_changed, [id, "denied_longer"])
         end
       end
     end

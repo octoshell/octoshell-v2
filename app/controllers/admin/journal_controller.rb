@@ -1,5 +1,10 @@
-class JournalController < ApplicationController
+class Admin::JournalController < Admin::ApplicationController
     before_action :authorize_admins!
+    before_action do
+      if User.superadmins.exclude? current_user
+        raise CanCan::AccessDenied
+      end
+    end
 
     def journal
       @search = PaperTrail::Version.ransack(params[:q])

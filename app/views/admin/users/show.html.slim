@@ -1,9 +1,8 @@
-div class="well btn-toolbar"
-  - if can? :manage, :users
-    = link_to t(".login_as_user"), main_app.login_as_user_path(@user), class: "btn btn-success"
-    = link_to t(".edit_groups_involvement"), [:edit, :admin, @user], class: "btn btn-default"
-    = link_to t(".delete_user"), [:admin, @user], method: :delete, class: "btn btn-danger"
-    /div class="well btn-toolbar"
+- if can? :manage, :users
+  div class="well btn-toolbar"
+      = link_to t(".login_as_user"), main_app.login_as_user_path(@user), class: "btn btn-success"
+      = link_to t(".edit_groups_involvement"), [:edit, :admin, @user], class: "btn btn-default"
+      = link_to t(".delete_user"), [:admin, @user], method: :delete, class: "btn btn-danger"
 
 div class="row"
     /div class="page-header"
@@ -11,16 +10,17 @@ div class="row"
       = @user.full_name
       | (
       = @user.email
-      | )  
+      | )
 
       - state = { closed: "danger", active: "success" }[@user.access_state_name.to_sym]
       span class="label label-#{state}" = @user.human_access_state_name
-      span
-        |  
-      = link_to t(".block_user"), [:block_access, :admin, @user], method: :post, class: "btn btn-danger" unless @user.closed?
-      = link_to t(".unblock_user"), [:unblock_access, :admin, @user], method: :post, class: "btn btn-success" unless @user.active?
+      - if can? :manage, :users
+        span
+          |
+        = link_to t(".block_user"), [:block_access, :admin, @user], method: :post, class: "btn btn-danger" unless @user.closed?
+        = link_to t(".unblock_user"), [:unblock_access, :admin, @user], method: :post, class: "btn btn-success" unless @user.active?
 
-    h4 
+    h4
       = User.human_attribute_name(:credentials)
       | :
       - if @user.credentials.where(state: :active).any?
@@ -34,7 +34,7 @@ ul class="list-unstyled"
   - @user.groups.each do |group|
     li = group.name
 
-= render "core/employments/list", employments: @user.employments.where(state: :active).order(primary: :desc, created_at: :desc)
+= render "core/admin/employments/list", employments: @user.employments.where(state: :active).order(primary: :desc, created_at: :desc)
 
 h4 = User.human_attribute_name(:projects)
 = render "projects_list", projects: @user.projects.order(created_at: :desc)

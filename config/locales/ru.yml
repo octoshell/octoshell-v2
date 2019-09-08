@@ -143,6 +143,25 @@ ru:
       options_category: Категория опций
       profile: Профиль
   admin:
+    journal:
+      journal:
+        chain_id: ID цепочки
+        created_at_gt: Позднее
+        created_at_lt: Раньше
+        event_in: Событие
+        group: Группа
+        item_type_in: Класс
+        month_ago: Месяц назад
+        object_changes_cont: В изменении содержится
+        system_only: Только изменения системы
+        title: Журнал
+        week_ago: Неделю назад
+        whodunnit_in: Инициатор
+      table:
+        chain_id: ID цепочки
+        created_at: Дата
+        id: ID
+        system: Система
     groups:
       edit:
         title: Редактирование группы
@@ -253,25 +272,6 @@ ru:
           one: Показано <b>1</b>
           other: Показаны <b>все %{count}</b>
           zero: Показано <b>0</b>
-  journal:
-    journal:
-      chain_id: ID цепочки
-      created_at_gt: Позднее
-      created_at_lt: Раньше
-      event_in: Событие
-      group: Группа
-      item_type_in: Класс
-      month_ago: Месяц назад
-      object_changes_cont: В изменении содержится
-      system_only: Только изменения системы
-      title: Журнал
-      week_ago: Неделю назад
-      whodunnit_in: Инициатор
-    table:
-      chain_id: ID цепочки
-      created_at: Дата
-      id: ID
-      system: Система
   main_menu:
     admin_area: Кабинет администратора
     wiki: Справка

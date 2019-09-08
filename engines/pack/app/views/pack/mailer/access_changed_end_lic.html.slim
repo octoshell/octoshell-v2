@@ -1,0 +1,5 @@
+= render "pack/mailer/header", user: receiver
+-link = link_to to(@access.to), @access.to
+p =t('.body',link: link, end_lic: @access.end_lic_readable).html_safe
+
+= render "core/mailer/footer"

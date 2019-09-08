@@ -6,27 +6,33 @@ module Face
     #
     # MountedHelpers = ActionDispatch::Routing::RouteSet::MountedHelpers
     @instances ||= {}
-    attr_reader :blocks, :name
+    attr_reader :blocks, :name, :controller
 
     def self.instances
       @instances
     end
 
-    def initialize(name)
+    def initialize(name = nil)
       @name = name
       @blocks = []
       @items = []
     end
 
     def add_item(key, name, url, *args)
-      @items << MyMenuItem.new(key, name, url, @controller, *args)
+      @items << MyMenuItem.new(key, name, url, self, *args)
     end
+
+    def add_item_without_key(name, url, *args)
+      @items << MyMenuItem.new(nil, name, url, self, *args)
+    end
+
 
     def add_item_if_may(key, name, url, *args)
       abilities = Octoface.action_and_subject_by_path(*args.first)
       return unless can?(*abilities)
 
-      @items << MyMenuItem.new(key, name, url, @controller, *args)
+      add_item(key, name, url, *args)
+      # @items << MyMenuItem.new(key, name, url, @controller, *args)
     end
 
     def items_from_db(controller)
@@ -43,8 +49,6 @@ module Face
         if result
           results << result
           items.delete result
-        else
-          pref.destroy!
         end
       end
       results += items
@@ -53,7 +57,7 @@ module Face
 
     def items(controller)
       @controller = controller
-      @items.clear
+      @items.clear if @blocks.any?
       @blocks.each do |block|
         instance_eval &block
       end
@@ -62,7 +66,6 @@ module Face
     end
 
     def method_missing(m, *args, &block)
-      # puts ActionDispatch::Routing::RouteSet::MountedHelpers.instance_methods.sort.inspect.red
       @controller.send(m, *args, &block)
     end
 

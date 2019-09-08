@@ -70,10 +70,9 @@ module Pack
                        status: 'allowed', end_lic: to_date)
         visit pack.versions_path
         page.find("tbody[package_id='#{@package.id}'] button").click
-        fill_in 'alpaca12', with: to_req_date
+        fill_in 'alpaca13', with: to_req_date
         click_button 'Сохранить'
-        $stdin.gets
-        # expect(page).to have_content('У Вашего доступа нет даты окончания ')
+        expect(page).to have_content('Заявка успешно отправлена')
       end
 
     end

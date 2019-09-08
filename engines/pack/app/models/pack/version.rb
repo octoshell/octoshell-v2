@@ -119,8 +119,12 @@ module Pack
     def send_emails
       if previous_changes["state"]
         accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status IN ('allowed','expired')").each do |ac|
-          ::Pack::PackWorker.perform_async(:email_vers_state_changed, ac.id)
+          ::Pack::PackWorker.perform_async(:version_state_changed, [ac.id, id])
         end
+        package.accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status IN ('allowed','expired')").each do |ac|
+          ::Pack::PackWorker.perform_async(:version_state_changed, [ac.id, id])
+        end
+
       end
     end
 

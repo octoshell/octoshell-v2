@@ -1,7 +1,7 @@
 module Core
   class Admin::SuretiesController < Admin::ApplicationController
     before_action :setup_default_filter, only: :index
-    # before_action :octo_authorize!
+    before_action :octo_authorize!
     def index
       @search = Surety.search(params[:q])
       @sureties = @search.result(distinct: true).includes({ author: :profile,
