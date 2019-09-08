@@ -1,9 +1,6 @@
 ---
 ru:
   "!": "!"
-  common:
-    back: "Назад"
-
   abilities:
     accesses:
       manage: Полный доступ к Ключам на Кластере
@@ -107,23 +104,23 @@ ru:
     attributes:
       category_value:
         value: Значение
-      paper_trail/version:
-        event: Событие
-        whodunnit: Инициатор
-        item_id: ID объекта
-        item_type: Класс
-        object_changes: Изменения
       group:
         name: Наименование
       option:
+        admin: Только для администраторов
         category_value_id: Значение из списка значений для категорий
         name: Название опции
         options_category_id: Категория опций
         value: Значение
-        admin: Только для администраторов
       options_category:
         name: Категория
         values: Значения
+      paper_trail/version:
+        event: Событие
+        item_id: ID объекта
+        item_type: Класс
+        object_changes: Изменения
+        whodunnit: Инициатор
       profile:
         first_name: Имя
         last_name: Фамилия
@@ -143,6 +140,17 @@ ru:
       options_category: Категория опций
       profile: Профиль
   admin:
+    groups:
+      edit:
+        title: Редактирование группы
+      form:
+        abilities: Права
+      index:
+        default_abilities: Восстановить права по-умолчанию
+        new_group: Добавить группу
+        title: Группы пользователей
+      new:
+        title: Создание группы
     journal:
       journal:
         chain_id: ID цепочки
@@ -162,17 +170,6 @@ ru:
         created_at: Дата
         id: ID
         system: Система
-    groups:
-      edit:
-        title: Редактирование группы
-      form:
-        abilities: Права
-      index:
-        default_abilities: Восстановить права по-умолчанию
-        new_group: Добавить группу
-        title: Группы пользователей
-      new:
-        title: Создание группы
     options_categories:
       edit:
         title: Редактирование категории
@@ -215,8 +212,8 @@ ru:
       table:
         no_employment:
           html: >-
-            <span class='fa fa-exclamation-triangle text-danger'> не указано
-            место работы</span>
+            <span class='fa fa-exclamation-triangle text-danger'> не указано место
+            работы</span>
   admin_submenu:
     announcements: Рассылка
     api: API
@@ -256,6 +253,8 @@ ru:
     wikiplus: Справка+
   bad_job: 'Проблемная задача: '
   bad_jobs: 'Проблемные задачи: '
+  common:
+    back: Назад
   flash:
     not_authorized: У вас недостаточно прав для доступа.
     not_logged_in: Вы не вошли в систему. Войдите или зарегистрируйтесь.
@@ -282,27 +281,27 @@ ru:
     ru: на русском
   options:
     fields:
-      new: Новая опция
-      remove_option: Удалить опцию
+      hide: Скрыть
       name_with_category: Название автозаполнением
       name_without_category: Название без автозаполнения
+      new: Новая опция
+      remove_option: Удалить опцию
+      show: Показать форму
       value_with_category: Значение автозаполнением
       value_without_category: Значение без автозаполнения
-      show: Показать форму
-      hide: Скрыть
     form:
+      hide: Скрыть
       new: Новая опция
       show: Показать форму
-      hide: Скрыть
   profiles:
     form:
       info_mails_help: >-
-        Отметьте, если вы согласны получать информационные рассылки о будущих
-        семинарах и другой полезной информации.
+        Отметьте, если вы согласны получать информационные рассылки о будущих семинарах
+        и другой полезной информации.
       save: Сохранить
       special_mails_help: >-
-        Отметьте, если вы согласны получать рассылку о состоянии кластеров,
-        профилактических работах и прочей служебной информации.
+        Отметьте, если вы согласны получать рассылку о состоянии кластеров, профилактических
+        работах и прочей служебной информации.
     show:
       change_password: Изменить пароль
       is_admin: Администратор
@@ -311,19 +310,16 @@ ru:
     comments: Комментарии
     job_stat: Статистика
     job_table: Эффективность
+    menu_items: Редактировать распложение элементов меню
     packages: Пакеты
     profile: Профиль
     projects: Проекты
     sessions: Перерегистрации
     sessions_warning:
-      html: >-
-        Перерегистрации <span class="badge warning"><i class="fa fa-bell">
-        </i></span>
+      html: Перерегистрации <span class="badge warning"><i class="fa fa-bell"> </i></span>
     tickets: Поддержка
     tickets_warning:
       html: Поддержка <span class="badge warning"><i class="fa fa-bell"></i></span>
-    menu_items: Редактировать распложение элементов меню
-
   users:
     edit:
       minimum_password_length: Минимум 6 символов
@@ -340,7 +336,8 @@ ru:
       next: Следующая
       previous: Предыдущая
       truncate: "..."
+  who_types:
+    ":": ":"
   without_pagination:
-    display_all_records: Показать все записи сразу на одной странице(может
-      быть ДОЛГО)
+    display_all_records: Показать все записи сразу на одной странице(может быть ДОЛГО)
     displaying_all_records: Показаны все записи

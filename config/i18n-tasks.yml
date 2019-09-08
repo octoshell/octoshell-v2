@@ -17,8 +17,8 @@ data:
     ## Default:
     - config/locales/%{locale}.yml
     ## More files:
-    - engines/*/config/locales/*.yml
-    # - engines/pack/config/locales/*.yml
+    - engines/*/config/locales/%{locale}.yml
+    # - engines/сore/config/locales/*.yml
     # - engines/face/config/locales/*.yml
 
   # Locale files to write new keys to, based on a list of key pattern => file rules. Matched from top to bottom:
@@ -60,8 +60,8 @@ search:
   ## Paths or `File.find` patterns to search in:
   paths:
    - app/
-   #- engines/*
-   - engines/pack
+   - engines/*
+   #- engines/pack
    # - engines/core
    # - engines/support
    # - engines/sessions

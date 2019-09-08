@@ -79,8 +79,8 @@ Face::MyMenu.items_for(:admin_submenu) do
 
       add_item_if_may('research_areas', t("admin_submenu.research_areas"), core.admin_research_areas_path, 'core/admin/research_areas')
 
-      if User.superadmins.include? current_user
-        add_item('countries', t("admin_submenu.countries"), core.admin_countries_path, 'core/admin/countries')
-        add_item('cities', t("admin_submenu.cities"), core.admin_cities_path, 'core/admin/cities')
-      end
+      # if User.superadmins.include? current_user
+        add_item_if_may('countries', t("admin_submenu.countries"), core.admin_countries_path, 'core/admin/countries')
+        add_item_if_may('cities', t("admin_submenu.cities"), core.admin_cities_path, 'core/admin/cities')
+      # end
 end

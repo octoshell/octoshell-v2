@@ -1,9 +1,6 @@
 ---
 en:
   "!": "!"
-  common:
-    back: "Back"
-
   abilities:
     accesses:
       manage: Full access to cluster keys
@@ -107,23 +104,23 @@ en:
     attributes:
       category_value:
         value: Value
-      paper_trail/version:
-        event: Event
-        whodunnit: Initiator
-        item_id: Object ID
-        item_type: Class
-        object_changes: Changes
       group:
         name: Name
       option:
+        admin: for administrators only
         category_value_id: Value from values list for categories
         name: Name of option
         options_category_id: Option of category
         value: Value
-        admin: for administrators only
       options_category:
         name: Category
         values: Values
+      paper_trail/version:
+        event: Event
+        item_id: Object ID
+        item_type: Class
+        object_changes: Changes
+        whodunnit: Initiator
       profile:
         first_name: Name
         last_name: Surname
@@ -143,6 +140,17 @@ en:
       options_category: Category of options
       profile: Profile
   admin:
+    groups:
+      edit:
+        title: Edit group
+      form:
+        abilities: Abilities
+      index:
+        default_abilities: Reestablish default abilities
+        new_group: Add a group
+        title: User groups
+      new:
+        title: Group creation
     journal:
       journal:
         chain_id: Chain ID
@@ -162,17 +170,6 @@ en:
         created_at: Date
         id: ID
         system: System
-    groups:
-      edit:
-        title: Edit group
-      form:
-        abilities: Abilities
-      index:
-        default_abilities: Reestablish default abilities
-        new_group: Add a group
-        title: User groups
-      new:
-        title: Group creation
     options_categories:
       edit:
         title: Category edition
@@ -215,8 +212,8 @@ en:
       table:
         no_employment:
           html: >-
-            <span class='fa fa-exclamation-triangle text-danger'> no job place
-            is filled</span>
+            <span class='fa fa-exclamation-triangle text-danger'> no job place is
+            filled</span>
   admin_submenu:
     announcements: Announcements
     api: API
@@ -256,6 +253,8 @@ en:
     wikiplus: Wikiplus
   bad_job: 'Bad job: '
   bad_jobs: 'Bad jobs: '
+  common:
+    back: Back
   flash:
     not_authorized: You are not authorized for this action.
     not_logged_in: You haven't logged in. Log in or register.
@@ -264,8 +263,8 @@ en:
   helpers:
     page_entries_info:
       more_pages:
-        display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> pages are shown
-          \ of <b>%{total}</b>"
+        display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> pages are shown  of
+          <b>%{total}</b>"
       one_page:
         display_entries:
           few: Shown <b>%{count}</b>
@@ -283,27 +282,27 @@ en:
     ru: in russian
   options:
     fields:
-      new: New option
-      remove_option: Remove option
+      hide: Hide
       name_with_category: Autocomplete name
       name_without_category: Usual name
+      new: New option
+      remove_option: Remove option
+      show: Show from
       value_with_category: Autocomplete value
       value_without_category: Usual value
-      show: Show from
-      hide: Hide
     form:
+      hide: Hide
       new: New option
       show: Show from
-      hide: Hide
   profiles:
     form:
       info_mails_help: >-
-        Tick if you agree to receive newsletters about future seminars and
-        other useful information.
+        Tick if you agree to receive newsletters about future seminars and other useful
+        information.
       save: Save
       special_mails_help: >-
-        Tick if you agree to receive a newsletter about the status of clusters,
-        preventive works and other service information.
+        Tick if you agree to receive a newsletter about the status of clusters, preventive
+        works and other service information.
     show:
       change_password: Change password
       is_admin: Administator
@@ -312,18 +311,16 @@ en:
     comments: Comments
     job_stat: Statistics
     job_table: Efficiency
+    menu_items: Edit menu layouts
     packages: Packages
     profile: Profile
     projects: Projects
     sessions: Reregistrations
     sessions_warning:
-      html: >-
-        Reregistrations <span class="badge warning"><i class="fa fa-bell">
-        </i></span>
+      html: Reregistrations <span class="badge warning"><i class="fa fa-bell"> </i></span>
     tickets: Support
     tickets_warning:
       html: Support <span class="badge warning"><i class="fa fa-bell"></i></span>
-    menu_items: Edit menu layouts
   users:
     edit:
       minimum_password_length: Minimum 6 characters
@@ -340,6 +337,8 @@ en:
       next: Next
       previous: Previous
       truncate: "..."
+  who_types:
+    ":": ":"
   without_pagination:
     display_all_records: Display all records on single page(may be long)
     displaying_all_records: All records are displayed
