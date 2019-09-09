@@ -1,7 +1,7 @@
 module Core
   class CredentialsController < Core::ApplicationController
 
-    before_action :filter_blocked_users
+    #before_action :filter_blocked_users
 
     before_action only: :deactivate do
       @credential = Credential.find(params[:credential_id])
