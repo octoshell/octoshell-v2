@@ -1,4 +1,4 @@
-= bootstrap_form_for [:admin, @announcement], layout: :horizontal, multipart: true do |f|
+= bootstrap_form_for [:admin, @announcement], layout: :horizontal, html: {multipart: true} do |f|
   -Announcement.locale_columns(:title).each do |column|
     = f.text_field column
   = f.email_field :reply_to, placeholder: 'service@users.parallel.ru', input_html: { class: "input-xxlarge" }

@@ -149,7 +149,7 @@ div.row.bg-info.collapse id="collapse-tags"
 
 - unless @ticket.resolved? || @ticket.closed?
   legend = t(".new_reply")
-  = bootstrap_form_for [:admin, @ticket.replies.build], layout: :horizontal, multipart: true do |f|
+  = bootstrap_form_for [:admin, @ticket.replies.build], layout: :horizontal, html:{multipart: true} do |f|
     = f.form_group do
       = select_tag :reply_template, options_from_collection_for_select(Support::ReplyTemplate.all, :message, :subject), prompt: Support::ReplyTemplate.model_name.human, style: "width: 100%"
     = f.hidden_field :ticket_id
