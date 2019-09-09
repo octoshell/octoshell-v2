@@ -160,8 +160,6 @@ ru:
   add_v: Добавить версию
   all: Все
   available: доступна
-  buttons:
-    save: Сохранить
   clusters: Кластеры
   clvers:
     green: Версия активна и готова к работе
@@ -177,14 +175,12 @@ ru:
     yellow: желтый
   confirm: Вы действительно хотите удалить эту запись?
   cost: Стоимоcть
-  delete: Удалить
   deleted: Показать только удаленные
   deleted?: Удаленные/активные
   denied: отказано
   description: Описание
   destroy: удалить
   disable: убрать
-  edit: Редактировать
   edit_access: Права на пакеты
   engine_submenu:
     accesses_list: Доступы
@@ -222,10 +218,8 @@ ru:
     available: Лицензия актуальна до "%{date}"
     expired: Лицензия истекла
     forever: Лицензия не имеет дату окончания
-  name: Название
   new_package: Новый пакет
   no_packages_found: Не найдено ни одного доступа
-  no_records_found: Не найдено записей
   not available: не доступна
   not_deleted: Показать только существующие
   not_for_ever: Не на всегда

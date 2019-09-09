@@ -253,8 +253,12 @@ en:
     wikiplus: Wikiplus
   bad_job: 'Bad job: '
   bad_jobs: 'Bad jobs: '
+  buttons:
+    save: Save
   common:
     back: Back
+  delete: Delete
+  edit: Edit
   flash:
     not_authorized: You are not authorized for this action.
     not_logged_in: You haven't logged in. Log in or register.
@@ -280,6 +284,8 @@ en:
   model_translation:
     en: in english
     ru: in russian
+  name: Name
+  no_records_found: No records have been found
   options:
     fields:
       hide: Hide

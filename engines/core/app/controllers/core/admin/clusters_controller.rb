@@ -1,5 +1,6 @@
 module Core
   class Admin::ClustersController < Admin::ApplicationController
+    before_action :octo_authorize!
     def index
       #@clusters = Cluster.order(:id)
       q=params[:q]

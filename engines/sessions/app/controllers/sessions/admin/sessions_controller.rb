@@ -2,6 +2,8 @@
 
 module Sessions
   class Admin::SessionsController < Admin::ApplicationController
+    before_action :octo_authorize!
+
     def index
       @sessions = Session.all.order("ended_at DESC NULLS FIRST")
     end

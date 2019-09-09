@@ -162,8 +162,6 @@ en:
   add_v: Add version
   all: All
   available: Available
-  buttons:
-    save: Save
   clusters: Clusters
   clvers:
     green: Version is active and ready for usage
@@ -179,14 +177,12 @@ en:
     yellow: yellow
   confirm: Are you sure you want to delete this entry?
   cost: Cost
-  delete: Delete
   deleted: Show only removed
   deleted?: removed/active
   denied: denied
   description: Description
   destroy: Destroy
   disable: Hide
-  edit: Edit
   edit_access: Package permissions
   engine_submenu:
     accesses_list: Accesses
@@ -224,10 +220,8 @@ en:
     available: The license is valid until "%{date}"
     expired: The License has expired
     forever: The license does not have an end date
-  name: Name
   new_package: New package
   no_packages_found: No packages have been found
-  no_records_found: No records found
   not available: Not available
   not_deleted: Show existing
   not_for_ever: Not forever

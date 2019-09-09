@@ -101,7 +101,7 @@ module Core
       File.open("#{Rails.root}/config/sureties/surety.rtf", "w+") do |f|
         f.write File.read("#{Core::Engine.root}/config/sureties/surety.rtf.default")
       end
-      redirect_to template_admin_sureties_path, notice: t("flash.template_recreated")
+      redirect_to template_admin_sureties_path, notice: t("flash.template_recreated_from_default")
     end
 
     def download_rtf_template

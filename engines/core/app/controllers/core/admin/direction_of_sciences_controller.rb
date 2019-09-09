@@ -1,5 +1,6 @@
 module Core
   class Admin::DirectionOfSciencesController < Admin::ApplicationController
+    before_action :octo_authorize!
     def index
       @direction_of_sciences = DirectionOfScience.order(DirectionOfScience.current_locale_column(:name))
     end

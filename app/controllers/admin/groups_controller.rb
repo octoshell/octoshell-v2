@@ -1,4 +1,5 @@
 class Admin::GroupsController < Admin::ApplicationController
+  before_action :octo_authorize!
   def index
     @groups = Group.all
   end

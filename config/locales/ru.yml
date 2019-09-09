@@ -253,8 +253,12 @@ ru:
     wikiplus: Справка+
   bad_job: 'Проблемная задача: '
   bad_jobs: 'Проблемные задачи: '
+  buttons:
+    save: Сохранить
   common:
     back: Назад
+  delete: Удалить
+  edit: Редактировать
   flash:
     not_authorized: У вас недостаточно прав для доступа.
     not_logged_in: Вы не вошли в систему. Войдите или зарегистрируйтесь.
@@ -279,6 +283,8 @@ ru:
   model_translation:
     en: на английском
     ru: на русском
+  name: Имя
+  no_records_found: Не найдено записей
   options:
     fields:
       hide: Скрыть
