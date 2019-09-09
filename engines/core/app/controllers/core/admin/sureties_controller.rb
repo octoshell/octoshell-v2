@@ -1,7 +1,7 @@
 module Core
   class Admin::SuretiesController < Admin::ApplicationController
     before_action :setup_default_filter, only: :index
-
+    before_action :octo_authorize!
     def index
       @search = Surety.search(params[:q])
       @sureties = @search.result(distinct: true).includes({ author: :profile,
@@ -101,7 +101,7 @@ module Core
       File.open("#{Rails.root}/config/sureties/surety.rtf", "w+") do |f|
         f.write File.read("#{Core::Engine.root}/config/sureties/surety.rtf.default")
       end
-      redirect_to template_admin_sureties_path, notice: t("flash.template_recreated")
+      redirect_to template_admin_sureties_path, notice: t("flash.template_recreated_from_default")
     end
 
     def download_rtf_template

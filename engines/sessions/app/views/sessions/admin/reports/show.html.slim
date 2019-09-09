@@ -46,7 +46,7 @@ legend = link_to t('.open_project_card'), core.admin_project_path(@report.projec
           = f.collection_select :expert_id, Sessions.user_class.experts.eager_load(:profile), :id, :full_name, label: t('.assign_expert')
           = f.primary t("actions.save")
       - else
-        h3 #{t('.expert')}: #{link_to_if may?(:manage, :users), @report.expert.full_name, main_app.admin_user_path(@report.expert)}
+        h3 #{t('.expert')}: #{link_to_if can?(:manage, :users), @report.expert.full_name, main_app.admin_user_path(@report.expert)}
 
   div class="panel"
     h3 #{t('.report_evaluation')}
@@ -59,7 +59,7 @@ legend = link_to t('.open_project_card'), core.admin_project_path(@report.projec
           div class="btn-toolbar"
             = f.submit t('.evaluate')
             = link_to t('.recommit'), [:admin, @report, :reject], class: "btn btn-danger", data: { confirm: t('.are_you_sure')}, method: :patch
-    - elsif may?(:manage, :reports) && @report.may_pick? && @report.expert.nil?
+    - elsif can?(:manage, :reports) && @report.may_pick? && @report.expert.nil?
       = link_to t('.take_for_evaluation'), [:admin, @report, :pick], method: :patch, class: "btn btn-info btn-lg"
     - else
       table class="table table-striped"
@@ -72,7 +72,7 @@ legend = link_to t('.open_project_card'), core.admin_project_path(@report.projec
         tr
           th class="col-xs-3" = Sessions::Report.human_attribute_name(:summary_points)
           td = report_points(@report,:summary_points)
-        - if (may?(:manage, :reports) || @report.expert == current_user) && @report.assessed?
+        - if (can?(:manage, :reports) || @report.expert == current_user) && @report.assessed?
           tr
             td colspan="2" = link_to t("actions.edit"), [:admin, @report, :edit], method: :put, class: "muted"
 

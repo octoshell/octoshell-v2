@@ -1,0 +1,26 @@
+= bootstrap_form_for [:admin, @access_key] do |f|
+
+  = f.text_field :key, label: t('.access_key_key')
+
+  = f.collection_select :export_ids, Api::Export.all, :id, :title, {label: t('.access_key_exports_list')}, {multiple: true}
+
+  = f.submit :class => "btn btn-default"
+
+
+
+/= form_for [:admin, @access_key] do |f|
+  - if @access_key.errors.any?
+    #error_explanation
+      h2
+        = pluralize(@access_key.errors.count, "error")
+        |  prohibited this access_key from being saved:
+      ul
+        - @access_key.errors.full_messages.each do |message|
+          li
+            = message
+  .field
+    = f.label :key
+    br
+    = f.text_field :key
+  .actions
+    = f.submit

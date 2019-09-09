@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "jquery-ui-rails"
   s.add_dependency "aasm"
-  s.add_dependency "maymay"
+  # s.add_dependency "maymay"
   s.add_dependency "ransack", "2.1.1"
   s.add_dependency "kaminari"
   s.add_dependency "carrierwave"

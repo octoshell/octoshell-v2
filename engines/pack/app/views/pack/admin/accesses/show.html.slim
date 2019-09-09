@@ -29,9 +29,9 @@ div class="col-xs-12"
 
 div class="col-xs-12"
   div class="col-xs-3"
-    h5 = Pack::Access.human_attribute_name :version_name
+    h5 = Pack::Access.human_attribute_name :to
   div class="col-xs-9"
-    h5 = link_to @access.version_name,admin_package_version_path(@access.version.package,@access.version)
+    h5 = link_to @access.to.to_s, [:admin, @access.to]
 table
   tr
      td

@@ -1,4 +1,4 @@
-require "spec_helper"
+require "main_spec_helper"
 
 describe Face::MenuItem do
   let(:attributes) do

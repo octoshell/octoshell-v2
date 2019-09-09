@@ -9,7 +9,6 @@
     = f.fields_for :last_items_state, @item.last_items_state do |ff|
       -Hardware::ItemsState.locale_columns(:reason, :description).each do |column|
         = ff.text_field column
-    = render partial: 'options/fields',locals: {f: f}
-
+  = form_for_options(f)
   = f.form_group do
     = f.submit t("actions.save")

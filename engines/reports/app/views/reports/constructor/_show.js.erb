@@ -672,7 +672,6 @@ $("#main-form").alpaca({
                         url: "<%=to_sql_constructor_index_path%>",
                         data: this.getValue(),
                       }).done(function(arg) {
-                        console.log(arg);
                         $('#sql').text(arg);
                       }).fail(function( jqXHR, textStatus ) {
                         $('#db-error').text(jqXHR.responseText);

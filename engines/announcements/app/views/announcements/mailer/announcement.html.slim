@@ -4,7 +4,7 @@ p style="padding-bottom: 16px;"
   - else
     = t('.hello_unknown')
 
-= markdown @announcement.body
+= hard_markdown @announcement.body
 
 div style="border-top: 1px solid #dedede;margin-bottom: 10px;font-size: 80%; color: #444"
   - if @announcement.is_special?

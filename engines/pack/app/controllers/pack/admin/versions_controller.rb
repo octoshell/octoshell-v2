@@ -1,4 +1,4 @@
-require_dependency "pack/application_controller"
+# require_dependency "pack/application_controller"
 
 module Pack
   class Admin::VersionsController < Admin::ApplicationController
@@ -29,9 +29,8 @@ module Pack
     end
 
     def create
-      @version = Version.new
+      @version = Version.new(version_params)
       @version.package = @package
-      @version.vers_update(params)
       if @version.save
         redirect_to admin_package_version_path(@package, @version)
       else
@@ -41,19 +40,18 @@ module Pack
 
     def edit
       @version = Version.includes(clustervers: :core_cluster).find(params[:id])
+      puts @version.clustervers.inspect.red
       @version.build_clustervers
+      puts @version.clustervers.inspect.green
+
     end
 
     def update
       @version = Version.find(params[:id])
-      @version.vers_update params
-      @stale_message = t("stale_message") if @version.changes["lock_col"]
-      if @version.save
+      if @version.update(version_params)
         redirect_to admin_package_version_path(@package, @version)
       else
-        @version.version_options.each do |o|
-          puts  o.errors.to_h.inspect
-        end
+        puts @version.errors.inspect.red
         render :edit
       end
 
@@ -79,6 +77,14 @@ module Pack
 
     def q_param
       params[:q] || { clustervers_active_in: '1' }
+    end
+
+    def version_params
+      params.require(:version)
+            .permit(:delete_on_expire, :cost, :state,:deleted, :end_lic,
+                    :service, *Version.locale_columns(:description, :name),
+                    clustervers_attributes: %i[core_cluster_id action path id],
+                    options_attributes: options_attributes)
     end
   end
 end

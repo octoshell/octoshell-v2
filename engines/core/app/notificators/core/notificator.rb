@@ -1,9 +1,19 @@
 module Core
   class Notificator < ::Support::Notificator
 
+    def self.name_ru
+      'Проверить новую запись'
+    end
+
+    def self.name_en
+      'Check new record'
+    end
+
+
     def topic
-      topic = super
-      Support::Topic.find_or_create_by!(name_ru: t('.topic'), parent_topic: topic)
+      Support::Topic.find_or_create_by!(name_ru: self.class.name_ru,
+                                        name_en: self.class.name_en,
+                                        parent_topic: parent_topic)
     end
 
     def check(object, current_user)

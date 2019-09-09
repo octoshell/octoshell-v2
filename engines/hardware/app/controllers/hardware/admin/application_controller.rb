@@ -1,5 +1,5 @@
-module Hardware
-  class Admin::ApplicationController < Hardware::ApplicationController
+module Hardware::Admin
+  class ApplicationController < Hardware::ApplicationController
     layout "layouts/hardware/admin"
     before_action :check_abilities
     def check_abilities

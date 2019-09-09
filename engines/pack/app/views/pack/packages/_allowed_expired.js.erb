@@ -10,15 +10,19 @@ bottomForm.alpaca({
         "enum": ['true','false'],
         "required": true
       },
+      "accessibles":{
+      },
       "status":{
       },
       "type":{
       },
-      "version_id":{
-      },
       "versions_ids":{
       },
       "lock_version":{
+      },
+      "to_type":{
+      },
+      "to_id":{
       },
       "new_end_lic":{
         "title": '<%=raw Pack::Access.human_attribute_name("new_end_lic")%>',
@@ -40,6 +44,9 @@ bottomForm.alpaca({
           "new_end_lic_forever": "false"
         }
       },
+      "accessibles":{
+        "type": "hidden"
+      },
       "status":{
         "type": "hidden"
       },
@@ -54,8 +61,13 @@ bottomForm.alpaca({
       },
       "lock_version":{
         "type": "hidden"
+      },
+      "to_type":{
+        "type": "hidden"
+      },
+      "to_id":{
+        "type": "hidden"
       }
-
     },
     "form": {
           "attributes": {
@@ -70,16 +82,15 @@ bottomForm.alpaca({
                      this.refreshValidationState(true);
                      var promise = this.ajaxSubmit();
                      promise.done(function(arg){
-                       viewer.accesses = arg.accesses;
-                       viewer.renderFormForVersion(version_id,sel_value);
-                       $(`.btn_access[version_id='${version_id}']`).parents('tr')
-                       .next().find('p.server-messages').html('<font color="green"><%=t(".success")%></font>');
+                       self.processAccesses(arg.accesses);
+                       self.renderBottomForm(accessible,sel_value);
+                       self.serverMessages.html('<font color="green"><%=t(".success")%></font>');
                      });
                      promise.fail(function(arg) {
-                       viewer.accesses = arg.responseJSON.accesses;
-                       viewer.renderFormForVersion(version_id,sel_value);
-                       $(`.btn_access[version_id='${version_id}']`).parents('tr')
-                       .next().find('p.server-messages').html(`<font color="red">${arg.responseJSON.error}</font>`);
+                       self.processAccesses(arg.responseJSON.accesses);
+                       self.renderBottomForm(accessible,sel_value);
+                       self.serverMessages.html('<font color="green"><%=t(".success")%></font>');
+                       self.serverMessages.html(`<font color="red">${arg.responseJSON.error}</font>`);
                      });
                    }
                 }
@@ -90,10 +101,12 @@ bottomForm.alpaca({
     "new_end_lic_forever": access.new_end_lic_forever || false,
     "new_end_lic": access.new_end_lic,
     "status": access.status,
-    "version_id": version_id,
     "type": sel_value,
-    "versions_ids": viewer.ids,
+    "accessibles": JSON.stringify(self.groupAccessibles()),
     "lock_version": access.lock_version,
+    "to_id": access.to_id,
+    "to_type": access.to_type
+
   },
   "postRender": function(control) {
     var d = getDate(access.end_lic);

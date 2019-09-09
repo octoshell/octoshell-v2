@@ -1,0 +1,55 @@
+---
+en:
+  activerecord:
+    attributes:
+      wikiplus/page:
+        content: Text
+        name: Name
+        sortid: Sort priority
+        url: url
+    models:
+      wikiplus/page: Wiki+ page
+  wikiplus:
+    common:
+      edit: Edit!
+    admin:
+      images:
+        index:
+          delete: Delete
+          link: Link
+          name: Name
+          preview: Preview
+          title: All media list
+          new_image: Upload new image
+    markdown_help: >-
+      <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
+      is used for markup
+    pages:
+      _test:
+        confirm: Are you shure to delete page?
+        delete: Delete
+        edit: Edit
+        link: Link
+        name: Name
+        new_page: New page
+        no_pages_found: No any wiki page yes
+        title: Octoshell help
+      edit:
+        title: Page edit
+      index:
+        all_images: All images
+        confirm: Are you shure to delete page?
+        createsubpage: ''
+        delete: Delete
+        edit: Edit
+        link: Link
+        name: Name
+        new_image: Upload image
+        new_page: New page
+        newsub_page: New sub-page
+        no_pages_found: No any wiki page yet
+        title: Octoshell help
+      new:
+        title: New page
+      subpageindex:
+        newsub_page: Create sub-page

@@ -1,0 +1,5 @@
+p style="padding-bottom: 16px;"
+  - if user.present?
+    | #{t('.hello_known_name', name: user.full_name)}
+  - else
+    | #{t('.hello_unknown')}

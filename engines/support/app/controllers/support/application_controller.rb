@@ -1,6 +1,6 @@
 module Support
   class ApplicationController < ::ApplicationController #ActionController::Base
-    #include AuthMayMay
+    #
     layout "layouts/application"
 
 #    before_action :journal_user

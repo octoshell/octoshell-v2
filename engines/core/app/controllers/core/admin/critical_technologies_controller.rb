@@ -1,5 +1,6 @@
 module Core
   class Admin::CriticalTechnologiesController < Admin::ApplicationController
+    before_action :octo_authorize!
     private
     # def critical_technology_params #FIXIT does not work... WHY?????
     #   params.require(:critical_technology).permit(:name)

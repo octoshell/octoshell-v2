@@ -2,13 +2,35 @@ class ApplicationController < ActionController::Base
 
   before_action :set_paper_trail_whodunnit
 
+  def authorize_admins
+    authorize!(:access, :admin)
+  end
+
+  def not_authenticated
+    redirect_to main_app.root_path, alert: t("flash.not_logged_in")
+  end
+
+  def not_authorized
+    redirect_to main_app.root_path, alert: t("flash.not_authorized")
+  end
+
+  rescue_from CanCan::AccessDenied, with: :not_authorized
+
+
   def info_for_paper_trail
     { session_id: request.session.id }
   end
 
-  # def user_for_paper_trail
-  #   logged_in? ? current_user.id : 0
-  # end
+  def octo_authorize!
+    authorize!(*::Octoface.action_and_subject_by_path(params[:controller]))
+  end
+
+  def options_attributes
+    [:id, :name, :category,
+     :name_type, :options_category_id, :value_type,
+     :category_value_id, :name_ru, :name_en,
+     :value_ru, :value_en, :_destroy, :admin]
+  end
 
   include ControllerHelper
   include ActionView::Helpers::OutputSafetyHelper
@@ -19,11 +41,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   before_action :journal_user, :check_notices
 
-  rescue_from MayMay::Unauthorized, with: :not_authorized
-
-  def not_authorized
-    redirect_to main_app.root_path, alert: t("flash.not_authorized")
-  end
+  # rescue_from MayMay::Unauthorized, with: :not_authorized
 
   def journal_user
     logger.info "JOURNAL: url=#{request.url}/#{request.method}; user_id=#{current_user ? current_user.id : 'none'}"

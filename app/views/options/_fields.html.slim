@@ -1,36 +1,57 @@
-/-@categories = []
 h3 = ::Option.model_name.human
-= f.link_to_add t(".new"), :options,data: {target: '#fields-container'}
-div#fields-container
-  = f.fields_for :options do |ff|
-    div.option-container
+= f.link_to_add t("options.fields.new"), :options,data: {target: 'div#options-container'}
+div#options-container
+    = f.fields_for :options do |ff|
       div.row
+        div.col-xs-3
+          = button_tag t('options.fields.show'), show: true
+        div.col-xs-3
+          = ff.object.readable_name
         div.col-xs-6
-          = ff.radio_button :name_type, 'with_category',label: t('options.fields.with_category')
-          = ff.form_group :options_category do
+          = ff.object.readable_value
+      div.row.dialog-container
+          div.dialog
+            div.col-xs-6
+              div.name-chooser
+                = ff.radio_button :name_type, 'with_category',label: t('options.fields.name_with_category')
+                = ff.radio_button :name_type, 'without_category',label: t('options.fields.name_without_category')
+              div.name-text
+                = ff.text_field :name_ru
+                = ff.text_field :name_en
+              div.name-select
+                = ff.autocomplete_field :options_category_id,
+                                        { source: main_app.categories_options_path,
+                                          include_blank: true}, class: 'attach-category' do |val|
+                   -::OptionsCategory.find(val).name
+              =ff.check_box :admin
 
-            = ff.autocomplete_field :options_category_id,{ source: main_app.categories_options_path, include_blank: true}, class: 'attach-category'  do |val|
-              -::OptionsCategory.find(val).name
+            div.col-xs-6
+              div.value-chooser
+                = ff.radio_button :value_type, 'with_category',label: t('options.fields.value_with_category')
+                = ff.radio_button :value_type, 'without_category',label: t('options.fields.value_without_category')
+              div.value-text
+                -::Option.locale_columns(:value).each do |column|
+                  = ff.text_area column,rows:3
+              div.value-select
+                -if ff.object.category_value_id
+                  = ff.collection_select :category_value_id, ::CategoryValue.where(options_category_id: ff.object.options_category_id),:id,:value, {include_blank: true},class: 'attach-value'
+                -else
+                  = ff.collection_select :category_value_id, [],:id,:value,{include_blank: true},class: 'attach-value'
+            div.col-xs-12
+              = button_tag t('options.fields.hide')
+              = ff.link_to_remove t("options.fields.remove_option"), class: "fa fa-times text-danger",style: 'margin: 30px;'
 
-            /= ff.collection_select :options_category_id, @categories, :id, :category,{}, class: 'attach-category'
-        div.col-xs-6
-          = ff.radio_button :value_type, 'with_category',label: t('options.fields.with_category')
-          = ff.form_group :category_value do
-            -if ff.object.category_value_id
-              = ff.collection_select :category_value_id, ::CategoryValue.where(options_category_id: ff.object.options_category_id),:id,:value, {include_blank: true},class: 'attach-value'
-            -else
-              = ff.collection_select :category_value_id, ::CategoryValue.all,:id,:value,{include_blank: true},class: 'attach-value'
-      div.row
-        div.col-xs-6
-          = ff.radio_button :name_type, 'without_category', label: t('options.fields.without_category')
-          -::Option.locale_columns(:name).each do |column|
-            = ff.text_field column
-        div.col-xs-6
-          = ff.radio_button :value_type, 'without_category',label: t('options.fields.without_category')
-          -::Option.locale_columns(:value).each do |column|
-            = ff.text_area column,rows: 3
-      div.row
-        div.col-xs-12
-          = ff.link_to_remove t("options.fields.remove_option"), class: "fa fa-times text-danger"
-  = javascript_tag do
-    = render(:partial => 'options/form', :formats => [:js])
+
+
+
+css:
+  .dialog{
+    //border:5px solid #666;
+    background:#FFFFFF;
+    display:none;
+  }
+  #options-container div.dialog-container{
+    padding-bottom:30px;
+  }
+= javascript_tag do
+  = render(:partial => 'options/form', :formats => [:js])

@@ -30,7 +30,7 @@ module Octoshell
     config.cache_store = :memory_store, { size: 128.megabytes, expires_in: 600 }
     config.active_record.belongs_to_required_by_default = false
     #config.active_record.raise_in_transactional_callbacks = true
-
+    config.action_controller.include_all_helpers = true
     # RAILS5
     #config.action_controller.per_form_csrf_tokens = true
     #config.action_controller.forgery_protection_origin_check = true

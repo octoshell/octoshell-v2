@@ -1,5 +1,6 @@
 ---
 en:
+  "!": "!"
   abilities:
     accesses:
       manage: Full access to cluster keys
@@ -103,15 +104,10 @@ en:
     attributes:
       category_value:
         value: Value
-      paper_trail/version:
-        event: Event
-        whodunnit: Initiator
-        item_id: Object ID
-        item_type: Class
-        object_changes: Changes
       group:
         name: Name
       option:
+        admin: for administrators only
         category_value_id: Value from values list for categories
         name: Name of option
         options_category_id: Option of category
@@ -119,6 +115,12 @@ en:
       options_category:
         name: Category
         values: Values
+      paper_trail/version:
+        event: Event
+        item_id: Object ID
+        item_type: Class
+        object_changes: Changes
+        whodunnit: Initiator
       profile:
         first_name: Name
         last_name: Surname
@@ -149,6 +151,25 @@ en:
         title: User groups
       new:
         title: Group creation
+    journal:
+      journal:
+        chain_id: Chain ID
+        created_at_gt: Later than
+        created_at_lt: Earlier than
+        event_in: Event
+        group: Group
+        item_type_in: Class
+        month_ago: Month ago
+        object_changes_cont: Changes contain
+        system_only: Only system changes
+        title: Journal
+        week_ago: Week ago
+        whodunnit_in: Initiator
+      table:
+        chain_id: Chain ID
+        created_at: Date
+        id: ID
+        system: System
     options_categories:
       edit:
         title: Category edition
@@ -190,9 +211,12 @@ en:
         unblock_user: Unblock access
       table:
         no_employment:
-          html: "<span class='fa fa-exclamation-triangle text-danger'> no job place is filled</span>"
+          html: >-
+            <span class='fa fa-exclamation-triangle text-danger'> no job place is
+            filled</span>
   admin_submenu:
     announcements: Announcements
+    api: API
     cities: Cities
     cluster_logs: Cluster log
     clusters: Clusters
@@ -226,8 +250,15 @@ en:
     sureties_with_count:
       html: Sureties <span class="badge info">%{count}</span>
     users: Users
+    wikiplus: Wikiplus
   bad_job: 'Bad job: '
   bad_jobs: 'Bad jobs: '
+  buttons:
+    save: Save
+  common:
+    back: Back
+  delete: Delete
+  edit: Edit
   flash:
     not_authorized: You are not authorized for this action.
     not_logged_in: You haven't logged in. Log in or register.
@@ -236,7 +267,8 @@ en:
   helpers:
     page_entries_info:
       more_pages:
-        display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> pages are shown  of <b>%{total}</b>"
+        display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> pages are shown  of
+          <b>%{total}</b>"
       one_page:
         display_entries:
           few: Shown <b>%{count}</b>
@@ -244,43 +276,39 @@ en:
           one: Shown <b>1</b>
           other: Shown <b>все %{count}</b>
           zero: Shown <b>0</b>
-  journal:
-    journal:
-      chain_id: Chain ID
-      created_at_gt: Later than
-      created_at_lt: Earlier than
-      event_in: Event
-      group: Group
-      item_type_in: Class
-      month_ago: Month ago
-      object_changes_cont: Changes contain
-      system_only: Only system changes
-      title: Journal
-      week_ago: Week ago
-      whodunnit_in: Initiator
-    table:
-      chain_id: Chain ID
-      created_at: Date
-      id: ID
-      system: System
   main_menu:
     admin_area: Administator's office
     wiki: Wiki
+    wikiplus: Help
     working_area: Study
   model_translation:
     en: in english
     ru: in russian
+  name: Name
+  no_records_found: No records have been found
   options:
     fields:
+      hide: Hide
+      name_with_category: Autocomplete name
+      name_without_category: Usual name
       new: New option
       remove_option: Remove option
-      with_category: Autocompleted
-      without_category: Not autocompleted
+      show: Show from
+      value_with_category: Autocomplete value
+      value_without_category: Usual value
+    form:
+      hide: Hide
+      new: New option
+      show: Show from
   profiles:
     form:
-      info_mails_help: Tick if you agree to receive newsletters about future seminars and other useful information.
+      info_mails_help: >-
+        Tick if you agree to receive newsletters about future seminars and other useful
+        information.
       save: Save
-      special_mails_help: Tick if you agree to receive a newsletter about the status of clusters, preventive works and other service information.
+      special_mails_help: >-
+        Tick if you agree to receive a newsletter about the status of clusters, preventive
+        works and other service information.
     show:
       change_password: Change password
       is_admin: Administator
@@ -289,6 +317,7 @@ en:
     comments: Comments
     job_stat: Statistics
     job_table: Efficiency
+    menu_items: Edit menu layouts
     packages: Packages
     profile: Profile
     projects: Projects
@@ -314,6 +343,8 @@ en:
       next: Next
       previous: Previous
       truncate: "..."
+  who_types:
+    ":": ":"
   without_pagination:
     display_all_records: Display all records on single page(may be long)
     displaying_all_records: All records are displayed

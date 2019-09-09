@@ -4,11 +4,11 @@ module Pack
     it "deletes package,package's versions,versions' accesses" do
       package = create(:package)
       version = create(:version, package: package)
-      access_with_status(version: version)
+      access_with_status(to: version)
       package.update!(deleted: true)
-      expect(Package.first.deleted).to eq( true )
-      expect(Version.first.deleted).to eq( true )
-      expect(Access.first.status).to eq( "deleted" )
+      expect(Package.first.deleted).to eq(true)
+      expect(Version.first.deleted).to eq(true)
+      expect(Access.first.status).to eq('deleted')
     end
   end
 end

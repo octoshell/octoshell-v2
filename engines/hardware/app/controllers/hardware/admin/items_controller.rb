@@ -118,10 +118,7 @@ module Hardware
     def item_params
 
       params.require(:item).permit(*Item.locale_columns(:name, :description),
-                                    :kind_id, options_attributes: [:id, :name, :category,
-                                      :name_type, :options_category_id, :value_type,
-                                      :category_value_id, :name_ru, :name_en,
-                                      :value_ru, :value_en, :_destroy])
+                                    :kind_id, options_attributes: options_attributes)
     end
   end
 end

@@ -124,7 +124,8 @@ module ReceiveEmails
       ticket = create(:ticket)
       support = create_support
       ticket.replies.create!(message: 'hello', author: support)
-      new_body = ActionMailer::Base.deliveries.last.body.to_s.gsub('-' * Support.dash_number,  '-' * Support.dash_number + 'I answer hello')
+      new_body = ActionMailer::Base.deliveries.last.body.to_s
+                                   .gsub('-' * Support.dash_number,  '-' * Support.dash_number + 'I answer hello')
       mail = Mail::Message.new do
         to 'support@octoshell.ru'
         subject 'Ticket title'

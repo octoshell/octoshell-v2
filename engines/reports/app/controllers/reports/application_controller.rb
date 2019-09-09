@@ -1,7 +1,7 @@
 module Reports
   class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
-    include AuthMayMay
+    before_action :require_login
     layout 'layouts/reports/admin'
     before_action :journal_user, :check_abilities
 

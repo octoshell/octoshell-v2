@@ -21,6 +21,7 @@ gem 'paper_trail'
 gem 'therubyracer' # for execjs
 gem 'i18n-js'
 gem 'groupdate'
+gem 'cancancan'
 
 group :development do
   gem "annotate"
@@ -31,7 +32,7 @@ group :development do
   gem 'railroady'
   gem "better_errors"
   gem 'rails_db'
-  gem 'i18n-tasks', '~> 0.9.21'
+  gem 'i18n-tasks', github: 'apaokin/i18n-tasks'
   gem 'minitest-reporters'
 end
 
@@ -54,12 +55,14 @@ gem "support",        path: "engines/support"
 gem "sessions",       path: "engines/sessions"
 gem "statistics",     path: "engines/statistics"
 gem "wiki",           path: "engines/wiki"
+gem "wikiplus",       path: "engines/wikiplus"
 gem "announcements",  path: "engines/announcements"
 gem "jobstat",        path: 'engines/jobstat'
 gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
 gem "hardware",       path: "engines/hardware"
 gem "reports",       path: "engines/reports"
+gem "api",            path: "engines/api"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"
@@ -70,19 +73,21 @@ gem "decorators", "~> 1.0.0"
 gem 'active_record_union'
 gem "whenever"
 
+group :test, :development do
+  gem "factory_bot_rails"
+end
+
 group :test do
   gem "letter_opener"
   gem "rspec-rails"
   gem "activerecord-import", ">= 0.2.0"
-  gem 'poltergeist'
+  gem 'selenium-webdriver'
   gem "rspec-sidekiq"
   gem 'shoulda-matchers', '~> 4.0'
   # gem "test_after_commit"
   gem "database_cleaner"
-  gem "factory_bot_rails"
-  # gem "factory_girl-seeds"
+  # gem "factory_bot_rails"
   gem "capybara"
-  gem "poltergeist"
   gem "phantomjs", github: "colszowka/phantomjs-gem"
   gem "codeclimate-test-reporter", require: false
 end

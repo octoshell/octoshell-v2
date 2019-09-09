@@ -1,0 +1,9 @@
+- items.each do |item|
+  li class="#{"active" if item.active?}"
+    = link_to item.name, item.path
+
+li class="dropdown" style="display:none"
+  = link_to "#", "data-toggle" => "dropdown" do
+    = t(".more")
+    span class="caret"
+  ul class="dropdown-menu"

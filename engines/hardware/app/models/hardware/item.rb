@@ -20,8 +20,10 @@ module Hardware
 
     has_many :items_states, inverse_of: :item
     has_many :states, through: :items_states, source: :state, inverse_of: :items
-    has_many :options, as: :owner
-    accepts_nested_attributes_for :options, allow_destroy: true
+
+    extend_with_options
+    # has_many :options, as: :owner
+    # accepts_nested_attributes_for :options, allow_destroy: true
 
 
     validates :name_ru, uniqueness: { scope: :kind_id }, if: proc { |k| k.name_ru.present? }

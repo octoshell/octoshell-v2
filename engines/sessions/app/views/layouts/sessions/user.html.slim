@@ -1,7 +1,7 @@
 - content_for :user_engine_submenu do
   br
   ul class="nav nav-pills"
-    - session_user_submenu_items.each do |item|
+    - sessions_user_submenu_items.each do |item|
       li class="#{"active" if item.active?(request.fullpath)}"
         = link_to item.name, item.url
 

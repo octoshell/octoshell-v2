@@ -13,6 +13,6 @@
 #
 
 class AnnouncementRecipient < ApplicationRecord
-  belongs_to :user, class_name: "User"
+  belongs_to :user, class_name: Announcements.user_class.to_s
   belongs_to :announcement
 end

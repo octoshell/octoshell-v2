@@ -1,245 +1,293 @@
+---
 en:
   jobstat:
-    common:
-      hide_show: "Hide rule/Show it again"
-      why_hide: "Please, tell us why do you want to hide this rule?"
-      hide: "Hide rule!"
-      not_hide: "Changed my mind"
-      why_dont_agree: "Please, tell us why you don't agree with this?"
-      send: "Send!"
-      not_send: "Change my mind"
-      agree_button: "I agree with estimation"
-      agree_rule: "Yes, I agree with this rule estimation"
-      la: "Load average"
-      ipc: "IPC"
-
     account_list:
+      all_rules:
+        all_rules_list: List of all rules for jobs efficiency valuation
+        close_descriptions: Close all descriptions
+        comment: Send my comment!
+        enter_suggestions: >-
+          Please, write your suggestions about new job valuation rule here.
+          Try to describe your suggestions as much detailed as possible.
+        not_comment: Changed my mind
+        not_send: Changed my mind
+        open_descriptions: Open all descriptions
+        possible_cause: 'Suggested cause:'
+        recommendation: 'Recommendations:'
+        return_to_list: Return to jobs list
+        rule_suggesttion: Send suggestion about the rule
+        rules_list: All available rules list
+        rules_list_descr: >-
+          On this page you can find detailed descriptions of all rules, used
+          at this moment to detect possible efficiency problems. For each
+          rule you can suggest us your notices. Also you can hide rule, then
+          it wouldn't be shown for your jobs.
+        send: Send!
+        suggest_new_rule: I want to suggest a new rule
+        your_comments: 'Write your comments as detailed as possible:'
       form:
-        from: 'From'
-        to: 'To'
-        logins: "Logins"
-        cluster: "Cluster"
-        statuses: "Job finish states"
-        partitions: "Supercomputer partitions"
-        show: "Show"
-        only_long: "Only jobs longer than 15 minutes"
-
+        cluster: Cluster
+        from: From
+        logins: Logins
+        only_long: Only jobs longer than 15 minutes
+        partitions: Supercomputer partitions
+        show: Show
+        statuses: Job finish states
+        to: To
       index:
-        finished_tasks: "Information about finished jobs"
-        thank_you: Thank you!
-        intro_start: >-
-          Here you can view information about your jobs and estimate their
-          execution efficiency. Use filters below to view only specified jobs.
-        info_1: >
-          In "Found problems" column potential jobs execution problems are
-          shown. Click 
+        anomaly_task_info: Very low all resources activity.
+        any_questions: 'Any questions or notices? Write us '
+        cpu_info: in percents of full load
+        cpu_load: CPU load
+        disagree_info: >
+          Select jobs in left column. In the area below would be shown rules,
+          common to selected jobs. Select all rules, you don't agree and send
+          us your comment.
+        dont_send_feedback: I changed my mind
+        end_info: time of job finish
+        end_time: Job end
+        finish_tour: Finish the tour? You can repeat it later by pressing
+          \"Intro tour\"
+        finished_tasks: Information about finished jobs
+        gpu_info: in percents of full load
+        gpu_load: GPU load
+        here: here.
+        hidden_count: Hidden rules count
+        hidden_count_perf: 'Efficiency problems hidden: '
+        hide_login: Hile login/partition
+        hide_performance: Hide performance info
+        hide_rule_button: Hide rule
+        i_dont_agree: I don't agree some estimations...
+        info_1: "In \"Found problems\" column potential jobs execution problems
+          are shown. Click \n"
         info_2: >-
-          icon to show short problem description, hide it or
-          send us comment about its siutability. Icon shows problem type
-          (MPI inefficient use, low memory use locality, etc.). Icon color shows
-          importance level (red - major efficiency lowerage or incorrect program
-          behavior, black - noticable efficiency lowerage, green - no problems
-          were found).
+          icon to show short problem description, hide it or send us comment
+          about its siutability. Icon shows problem type (MPI inefficient
+          use, low memory use locality, etc.). Icon color shows importance
+          level (red - major efficiency lowerage or incorrect program behavior,
+          black - noticable efficiency lowerage, green - no problems were
+          found).
         info_3: >-
           Detailed description of found efficiency problems and other information
-          about job performance can be found on special page. To go to that page
-          click ID of selected job.
-        info_4: >-
-          You can find all potential efficiency problems list, tune visibility
-          of selected problems, suggest us new rule to detect new problem 
-        this_page: "here"
-        any_questions: "Any questions or notices? Write us "
-        here: "here."
-        i_dont_agree: "I don't agree some estimations..."
-        disagree_info: >
-          Select jobs in left column.
-          In the area below would be shown rules, common to selected jobs.
-          Select all rules, you don't agree and send us your comment.
-        no_rules: "- No selected jobs yet, so no rules in list..."
-        send_feedback: "Send comment"
-        dont_send_feedback: "I changed my mind"
-        hide_login: "Hile login/partition"
-        hide_performance: "Hide performance info"
-        no_such_tasks: "No such jobs..."
-        shown_tasks: "Show jobs: "
-        of: " from "
-        problems_found: "Found problems"
-        task_id: "job ID"
-        login_info: "login, used to run job"
-        login: "Login"
-        partition_info: "supercomputer partition used to run job"
-        partition: "Partition"
-        start_info: "time of job start"
-        start_time: "Job start"
-        end_info: "time of job finish"
-        end_time: "Job end"
-        status_info: "job finish status"
-        status: "Status"
-        nodes_info: "number of nodes"
-        nodes:  "Nodes count"
-        time_info: "job run time in hours"
-        time: "Run time (hours)"
-        task_size_info: >-
-          production of used cores number and run time<br>
-          all cores of node are supposed to be used, even if job didn't use
-          them for computations
-        task_size: "Job size (core-hours)"
-        cpu_info: "in percents of full load"
-        cpu_load: "CPU load"
-        gpu_info: "in percents of full load"
-        gpu_load: "GPU load"
-        la_info: "average count of active processes"
-        ipc_info: "average CPU instructions, executed per tick"
-        mpi_rcv_info: "in MB/sec"
-        mpi_rcv: "Received bytes via MPI (MB/sec)"
-        mpi_send_info: "in MB/sec"
-        mpi_send: "Sent bytes via MPI (MB/sec)"
-        rules_info: "more details about rules, hide/comment rules"
-        hide_rule_button: "Hide rule"
-        not_agree_button: "I disagree!"
-        rule_descr: "Go to rule description"
-        rule_error: "Oops, we have trouble with this rule description, please, inform us!"
-        why_hide: "This rule will be hidden in all jobs, including future jobs. Please, tell us why you want to hide it?"
-        why_disagree: "Why don't you agree with this rule estimation?"
-        no_notices: "All OK, no notices!"
-        no_task_info: "No job info :("
-        anomaly_task_info: "Very low all resources activity."
-        hidden_count: "Hidden rules count"
-        no_info: "No data..."
-        more_task_info: "More information\nJob name:"
-        intro_tour: "Intro tour"
+          about job performance can be found on special page. To go to that
+          page click ID of selected job.
+        info_4: "You can find all potential efficiency problems list, tune
+          visibility of selected problems, suggest us new rule to detect new
+          problem "
+        intro-finish: >-
+          На этом всё, если позже захотите повторить, просто нажмите кнопку
+          "Ознакомительный тур"
         intro-step1: >-
-          Hello! Here we show (usually) all executed jobs and 
-          <span style="color: green">potential</span> efficiency problems.
-          Now we\'ll show you an example with fake jobs, please watch how to use
-          this system!
+          Hello! Here we show (usually) all executed jobs and  <span style="color:
+          green">potential</span> efficiency problems. Now we\'ll show you
+          an example with fake jobs, please watch how to use this system!
         intro-step2: >-
-          First, select time diapasone and logins (by default all logins will be
-          used), then click "Show" <span style="color: green">(now click
+          First, select time diapasone and logins (by default all logins will
+          be used), then click "Show" <span style="color: green">(now click
           "Next" and wait to page update).</span>
         intro-step3: >-
-          <span style="color: red">Please, wait to page update, do not click Next...</span>
+          <span style="color: red">Please, wait to page update, do not click
+          Next...</span>
         intro-step4: >-
-          Here is short job information. You can sort this table, clicking columns headers.
-        intro-step5a: >-
-          If you click here, you\'ll see detailed list of all found problems with
-          buttons.
-          <br><button class="btn-danger"><i class="far fa-bell-slash">
-          </i></button> - this would hide this problem type in all jobs. You can
-          restore its visibility later on page with all rules.
-          <br><button class="btn-warning"><i class="far 
-        intro-step5b: >-
-          "></i></button> - click this is you think, this problem in not
-          relevant to this job<br>
-          <button class="btn-warning"><i class="far 
+          Here is short job information. You can sort this table, clicking
+          columns headers.
+        intro-step5: >-
+          Это список найденных <span style="color: green">потенциальных</span>
+          проблем. Значок соответствует группе, к которой принадлежит проблема
+          (неэффективная работа с MPI, некорректный режим работы программ
+          и т.д.). Цвет обозначает ее критичность (<span style="color: red">красный</span>
+          – радикальное снижение эффективности или программа работает некорректно,
+          <strong>чёрный</strong> – заметное снижение эффективности, <span
+          style="color: green">зелёный</span> – проблем не найдено). <span
+          style="color: green">Наведите</span> мышку на значок, чтобы  увидеть
+          краткое описание проблемы. При нажатии на значок вы попадёте на
+          страницу с более полным описанием данной проблемы и рекомендациями
+          по ее устранению. <span style="color: green">Справа</span> от значков
+          указано число найденных проблем (+2), которые были скрыты вручную
+          (см. далее).
+        intro-step5a: "If you click here, you\\'ll see detailed list of all
+          found problems with buttons. <br><button class=\"btn-danger\"><i
+          class=\"far fa-bell-slash\"> </i></button> - this would hide this
+          problem type in all jobs. You can restore its visibility later on
+          page with all rules. <br><button class=\"btn-warning\"><i class=\"far "
+        intro-step5b: "\"></i></button> - click this is you think, this problem
+          in not relevant to this job<br> <button class=\"btn-warning\"><i
+          class=\"far "
         intro-step5c: >-
-          "></i></button> - and this, if you think that problem is relevant, we
-          need this information too.
+          "></i></button> - and this, if you think that problem is relevant,
+          we need this information too.
         intro-step6: >-
           This is the list of all found <strong>potential</strong> problems.
           Move the mouse over an icon and you\'ll see a short problem description,
           click the icon and you\'ll see a page with details and recomendations.
-          <br><br>That\'s all, if you would like to repeat, press "Intro tour" button
-        hidden_count_perf: "Efficiency problems hidden: "
+          <br><br>That\'s all, if you would like to repeat, press "Intro tour"
+          button
+        intro-step6a: "Нажмите на значок <i class=\"fas fa-bars\"></i>, чтобы
+          увидеть список всех найденных проблем по задаче. <br><button class=\"btn-danger\"><i
+          class=\"far fa-bell-slash\"> </i></button> - эта кнопка скрывает
+          отображение таких проблем во всех запусках. Это действие можно отменить
+          на странице с описанием всех потенциальных проблем. <br><button
+          class=\"btn-warning\"><i class=\"far "
+        intro-step6b: "\"></i></button> - если вам кажется, что эта проблема
+          совсем не относится к запуску, нажимайте эту кнопку. Только большая
+          просьба добавить понятное описание – что именно не устроило. <br><button
+          class=\"btn-warning\"><i class=\"far "
+        intro-step6c: >-
+          "></i></button> - нажимайте эту кнопку, если описанная проблема
+          действительно присутствует в данном запуске. Такая информация для
+          нас также очень важна.
+        intro-step7: >-
+          При наведении на ID задачи появится список узлов и имя задачи. Чтобы
+          посмотреть всю доступную информацию по данной задаче, нажмите на
+          этот ID (будет доступно на реальных задачах).
+        intro_start: >-
+          Here you can view information about your jobs and estimate their
+          execution efficiency. Use filters below to view only specified jobs.
+        intro_tour: Intro tour
+        ipc_info: average CPU instructions, executed per tick
+        la_info: average count of active processes
+        login: Login
+        login_info: login, used to run job
+        more_task_info: |-
+          More information
+          Job name:
+        mpi_rcv: Received bytes via MPI (MB/sec)
+        mpi_rcv_info: in MB/sec
+        mpi_send: Sent bytes via MPI (MB/sec)
+        mpi_send_info: in MB/sec
+        no_common_rules: Нет общих проблем!
+        no_feedback_yet: Вы ещё не указали, присутствует ли эта проблема здесь
+        no_info: No data...
+        no_marks: Всё в порядке, замечаний нет!
+        no_notices: All OK, no notices!
         no_perf_problems: no hidden efficiency problems.
-        finish_tour: >-
-          Finish the tour? You can repeat it later by pressing \"Intro tour\"
-
-
-      all_rules:
-        rules_list: "All available rules list"
-        rules_list_descr: >-
-          On this page you can find detailed descriptions of all rules, used
-          at this moment to detect possible efficiency problems. For each rule
-          you can suggest us your notices. Also you can hide rule, then it
-          wouldn't be shown for your jobs.
-        return_to_list: "Return to jobs list"
-        open_descriptions: "Open all descriptions"
-        close_descriptions: "Close all descriptions"
-        suggest_new_rule: "I want to suggest a new rule"
-        enter_suggestions: >-
-          Please, write your suggestions about new job valuation rule here.
-          Try to describe your suggestions as much detailed as possible.
-        send: "Send!"
-        not_send: "Changed my mind"
-        all_rules_list: "List of all rules for jobs efficiency valuation"
-        rule_suggesttion: "Send suggestion about the rule"
-        your_comments: "Write your comments as detailed as possible:"
-        comment: "Send my comment!"
-        not_comment: "Changed my mind"
-        possible_cause: "Suggested cause:"
-        recommendation: "Recommendations:"
-
+        no_rules: "- No selected jobs yet, so no rules in list..."
+        no_such_tasks: No such jobs...
+        no_task_info: No job info :(
+        nodes: Nodes count
+        nodes_info: number of nodes
+        not_agree_button: I disagree!
+        of: " from "
+        partition: Partition
+        partition_info: supercomputer partition used to run job
+        problems_found: Found problems
+        questions: Замечания/Пожелания/Вопросы
+        rule_descr: Go to rule description
+        rule_error: Oops, we have trouble with this rule description, please,
+          inform us!
+        rules_info: more details about rules, hide/comment rules
+        rules_list: Все потенциальные проблемы
+        send_feedback: Send comment
+        shown_tasks: 'Show jobs: '
+        start_info: time of job start
+        start_time: Job start
+        status: Status
+        status_info: job finish status
+        support: Справка
+        task_id: job ID
+        task_size: Job size (core-hours)
+        task_size_info: >-
+          production of used cores number and run time<br> all cores of node
+          are supposed to be used, even if job didn't use them for computations
+        thank_you: Thank you!
+        this_page: here
+        time: Run time (hours)
+        time_info: job run time in hours
+        why_disagree: Why don't you agree with this rule estimation?
+        why_hide: >-
+          This rule will be hidden in all jobs, including future jobs. Please,
+          tell us why you want to hide it?
     account_summary:
-      show:
-        jobs_statisctics: "Statistics on all submitted jobs"
-        total: "Total"
-        supercomputer: "Supercomputer"
-        count: "Count"
-        cpu: "CPU core*hours"
-        gpu: "GPU*hours"
-        partition: "Partition"
-        status: "Status"
       form:
-        from: "From"
-        to: "To"
-        logins: "Logins"
-        show: "Show"
-
+        from: From
+        logins: Logins
+        show: Show
+        to: To
+      show:
+        count: Count
+        cpu: CPU core*hours
+        gpu: GPU*hours
+        jobs_statisctics: Statistics on all submitted jobs
+        partition: Partition
+        status: Status
+        supercomputer: Supercomputer
+        total: Total
+    common:
+      agree_button: I agree with estimation
+      agree_rule: Yes, I agree with this rule estimation
+      faled_send_try_later: >-
+        Ой, не получилось сохранить Ваш отзыв, попробуйте чуть позже ещё раз
+        его отправить.
+      hide: Hide rule!
+      hide_show: Hide rule/Show it again
+      ipc: IPC
+      la: Load average
+      no_selected_jobs: "- Пока не выбраны задачи, поэтому список пуст..."
+      not_hide: Changed my mind
+      not_send: Change my mind
+      return_on_rules_page: >-
+        Вернуть отображение проблемы можно на странице со списком потенциальных
+        проблем.
+      send: Send!
+      thanks_for_feedback: Спасибо за отзыв!
+      why_dont_agree: Please, tell us why you don't agree with this?
+      why_hide: Please, tell us why do you want to hide this rule?
     job:
       show:
-        return: "Return to jobs list"
-        job_info: "Information on job # %{id}"
-        common: "Common information"
-        supercomputer: "Supercomputer"
-        job_id: "Job ID"
-        login: "Login"
-        status: "Job status"
-        partition: "Partition"
-        cores: "Cores number"
-        nodes: "Nodes number"
-        queued: "Submit time"
-        start: "Start time"
-        end: "End time"
-        time: "Computate time (hours)"
-        nodes: "nodes list"
-        perf: "Performance"
-        metric: "Metric"
-        value: "Value"
-        estimation: "Short valuation"
-        cpu_avg: "Average CPU load (%)"
-        avg: "Average %{link}"
-        gpu_avg: "Average GPU load (%)"
-        mpi: "MPI data communication intensity (MB/s)"
-        fs_read: "FS read intensity (MB/s)"
-        fs_write: "FS write intensity (MB/s)"
-        base: "Base features"
-        no_strange: "No suspicious features found"
-        command_line: "Command line: %{line}"
-        potential: "Found efficiency problems"
+        avg: Average %{link}
+        base: Base features
+        command_line: 'Command line: %{line}'
+        common: Common information
+        common_info: Общая информация
+        cores: Cores number
+        cpu_avg: Average CPU load (%)
+        cpu_percent: CPU load (0% .. 100%)
+        data_on_job: Информация о задаче %{job}
         descr1: >-
-          Here you can found list of efficiency problems, which were detected for
-          this job. For each problem its description (which basis was detected),
-          suggestion (what could cause this problem by our opinion) and
-          recommendations (what we are suggest to do for you) are listed.
-          In many cases recomendation includes type of analysis, suggested to be
-          performed; we will improve this function in the future.
-        descr2: >-
-          Abilities to estimate correctness and changing of detected efficiency
-          problems are planned in the future. Now this ability is implemented
-          only on all jobs list page. 
-        type: "Type"
-        description: "Description"
-        suggestion: "Suggestion"
-        recomendation: "Recommendation"
-        no_problems: "No problems found"
-        dynamics: "Program execution dynamics"
-        details: "Detailed description"
-        cpu_percent: "CPU load (0% .. 100%)"
-        mpi: "MPI usage (MB/s)"
-        gpu_percent: "GPU load (0% .. 100%)"
-        fs: "FS usage (MB/s)"
-        time: "Time"
-        value: "Value"
-        sent: "MB sent"
-        received: "MB received"
+          Here you can found list of efficiency problems, which were detected
+          for this job. For each problem its description (which basis was
+          detected), suggestion (what could cause this problem by our opinion)
+          and recommendations (what we are suggest to do for you) are listed.
+          In many cases recomendation includes type of analysis, suggested
+          to be performed; we will improve this function in the future.
+        descr2: "Abilities to estimate correctness and changing of detected
+          efficiency problems are planned in the future. Now this ability
+          is implemented only on all jobs list page. "
+        description: Description
+        details: Detailed description
+        dynamics: Program execution dynamics
+        end: End time
+        estimation: Short valuation
+        fs: FS usage (MB/s)
+        fs_read: FS read intensity (MB/s)
+        fs_write: FS write intensity (MB/s)
+        gpu_avg: Average GPU load (%)
+        gpu_percent: GPU load (0% .. 100%)
+        job_id: Job ID
+        job_info: 'Information on job # %{id}'
+        login: Login
+        metric: Metric
+        mpi: MPI usage (MB/s)
+        no-data: Нет полных данных по этой задаче
+        no_data: >-
+          По техническим причинам данные мониторинга для этой задачи отсутствуют
+          - анализ невозможен
+        no_feedback_yet: Вы ещё не оценили корректность данного описания проблемы
+        no_problems: No problems found
+        no_strange: No suspicious features found
+        nodes: nodes list
+        partition: Partition
+        perf: Performance
+        potential: Found efficiency problems
+        queued: Submit time
+        received: MB received
+        recomendation: Recommendation
+        return: Return to jobs list
+        sent: MB sent
+        start: Start time
+        status: Job status
+        suggestion: Suggestion
+        supercomputer: Supercomputer
+        time: Time
+        type: Type
+        value: Value

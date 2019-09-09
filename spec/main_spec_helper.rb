@@ -10,7 +10,6 @@ require 'shoulda-matchers'
 require "database_cleaner"
 require "factory_bot_rails"
 require "capybara/rspec"
-require "capybara/poltergeist"
 require "sidekiq/testing"
 require "contexts/user_abilities"
 require "common_helper"
@@ -32,7 +31,7 @@ RSpec.configure do |config|
   # config.mock_with :rr
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.include FactoryBot::Syntax::Methods
-  #config.include Requests::Helpers, type: :feature
+  config.include Requests::Helpers, type: :feature
   config.use_transactional_fixtures = true
   config.order = "random"
   config.infer_base_class_for_anonymous_controllers = false

@@ -1,39 +1,30 @@
 module Comments
   module ApplicationHelper
     def comments_admin_submenu_items
-      menu = Face::Menu.new
-      menu.items.clear
-      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.group_classes_links"),
-                                       url: [:edit,:admin, :group_classes],
-                                       regexp: /group_classes/))
-      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.contexts"),
-                                      url: [:admin, :contexts],
-                                      regexp: /contexts/))
-      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.context_groups_links"),
-                                      url: [:edit,:admin, :context_groups],
-                                      regexp: /context_groups/))
-      # menu.add_item(Face::MenuItem.new(name: t("engine_submenu.user_guide"),
-      #                                 url: [:edit,:admin, :context_groups],
-      #                                 regexp: /context_groups/))
+      menu = Face::MyMenu.new
+      menu.add_item_without_key(t("engine_submenu.group_classes_links"),
+                                edit_admin_group_classes_path, 'comments/admin/group_classes')
 
-      menu.items
+      menu.add_item_without_key(t("engine_submenu.contexts"),
+                                admin_contexts_path, 'comments/admin/contexts')
+
+      menu.add_item_without_key(t("engine_submenu.context_groups_links"),
+                                edit_admin_context_groups_path, 'comments/admin/context_groups')
+
+      menu.items(self)
     end
 
     def comments_submenu_items
-      menu = Face::Menu.new
-      menu.items.clear
-      menu.add_item(Face::MenuItem.new(name: Comment.model_name.human.to_s,
-                                       url: index_all_comments_path,
-                                       ))
-      menu.add_item(Face::MenuItem.new(name: FileAttachment.model_name.human.to_s,
-                                       url: index_all_files_path,
-                                       ))
-      menu.add_item(Face::MenuItem.new(name: Tag.model_name.human,
-                                      url: tags_lookup_index_path,
-                                      regexp: /tags_lookup/
-                                      ))
+      menu = Face::MyMenu.new
+      menu.add_item_without_key(Comment.model_name.human,
+                                index_all_comments_path, 'comments/comments')
 
-      menu.items
+      menu.add_item_without_key(FileAttachment.model_name.human,
+                                index_all_files_path, 'comments/files')
+
+      menu.add_item_without_key(Tag.model_name.human,
+                                tags_lookup_index_path, 'comments/tags_lookup')
+      menu.items(self)
     end
 
     def handlebars_tag(html_options = {}, &block)

@@ -4,7 +4,7 @@ div class="page-header"
 = bootstrap_form_for @search, url: admin_projects_path, method: :get, layout: :vertical do |f|
   div class="col-md-12"
     div class="col-md-3"
-      = f.autocomplete_field :id_eq,{ label: Core::Project.human_attribute_name(:title), source: projects_path},'redirect-url': '/core/admin/projects/{{id}}' 
+      = f.autocomplete_field :id_eq,{ label: Core::Project.human_attribute_name(:title), source: projects_path},'redirect-url': '/core/admin/projects/{{id}}'
       = f.autocomplete_field :owner_id_eq,{ label: Core::Project.human_attribute_name("owner"), source: owners_finder_admin_users_path} do |val|
         -User.find(val).full_name_with_email
       = f.autocomplete_field :members_id_eq,{ label: Core::Member.human_attribute_name(:login), source: core.admin_members_path}, 'redirect-url': '/core/admin/projects/{{project_id}}'

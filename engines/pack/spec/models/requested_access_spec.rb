@@ -12,14 +12,14 @@ module Pack
                               organization: @organization)
       @current_date = Date.current
       @old_date = Date.yesterday
-      unless Support::Topic.find_by(name: I18n.t('integration.support_theme_name'))
-        Support::Topic.create!(name: I18n.t('integration.support_theme_name'))
+      unless Support::Topic.find_by(name_ru: I18n.t('integration.support_theme_name'))
+        Support::Topic.create!(name_ru: I18n.t('integration.support_theme_name'))
       end
     end
 
     it 'creates new requested access spec with date' do
       hash = { forever: 'false', status: 'new', type: @project.id.to_s,
-               version_id: @version.id, end_lic: Date.current.to_s}
+               to_id: @version.id, to_type: @version.class.to_s, end_lic: Date.current.to_s}
 
       expect { Access.user_update(hash, @user.id) }.to change { Access.count }.from(0).to(1)
               .and change { Support::Ticket.count }.by(1)
@@ -41,7 +41,7 @@ module Pack
 
     it 'changes status to denied' do
       hash = { forever: 'false', status: 'new', type: @project.id.to_s,
-               version_id: @version.id, end_lic: Date.current.to_s}
+               to_id: @version.id, to_type: @version.class.to_s, end_lic: Date.current.to_s }
 
       expect { Access.user_update(hash, @user.id) }.to change { Access.count }.from(0).to(1)
               .and change { Support::Ticket.count }.by(1)
@@ -58,7 +58,7 @@ module Pack
 
     it 'creates new requested access spec without date' do
       hash = { forever: 'true', status: 'new', type: @project.id.to_s,
-               version_id: @version.id, end_lic: Date.current.to_s}
+               to_id: @version.id, to_type: @version.class.to_s, end_lic: Date.current.to_s}
 
       expect { Access.user_update(hash, @user.id) }.to change { Access.count }.from(0).to(1)
                .and change { Support::Ticket.count }.by(1)
@@ -81,7 +81,7 @@ module Pack
 
     it 'creates new requested access spec with expired date' do
       hash = { forever: 'false', status: 'new', type: @project.id.to_s,
-               version_id: @version.id, end_lic: @old_date.to_s}
+               to_id: @version.id, to_type: @version.class.to_s, end_lic: @old_date.to_s}
 
       expect { Access.user_update(hash, @user.id) }.to change { Access.count }.from(0).to(1)
               .and change { Support::Ticket.count }.by(1)

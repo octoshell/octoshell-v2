@@ -4,9 +4,14 @@
           tr
             th #{t("name", default: "Package name")}
             th =Pack::Package.human_attribute_name :description
+            th =Pack::Package.human_attribute_name :accesses_to_package
+
           -@packages.each do |package|
-            tr
-              td class="col-xs-3" = link_to package.name, package_path(package)
-              td class="col-xs-9" = package.description
+            tbody package_id=(package.accesses_to_package ? package.id : nil )
+              tr
+                td class="col-xs-3" = link_to package.name, package_path(package)
+                td class="col-xs-6" = package.description
+                td class="col-xs-3" = t(package.accesses_to_package.to_s)
+
 - else
   p = t("no_records_found")

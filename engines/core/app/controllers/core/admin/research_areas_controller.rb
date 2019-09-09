@@ -1,5 +1,6 @@
 module Core
   class Admin::ResearchAreasController < Admin::ApplicationController
+    before_action :octo_authorize!
     def index
       @research_areas = ResearchArea.all
     end

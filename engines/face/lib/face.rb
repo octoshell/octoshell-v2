@@ -1,5 +1,7 @@
 require "face/engine"
 require "face/custom_autocomplete_field"
+require "face/my_menu"
+require "face/my_menu_item"
 require "jquery-rails"
 require "coffee-rails"
 require "select2-rails"

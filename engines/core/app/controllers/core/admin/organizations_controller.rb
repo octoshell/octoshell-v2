@@ -1,6 +1,8 @@
 module Core
   class Admin::OrganizationsController < Admin::ApplicationController
     layout "layouts/core/admin"
+    before_action :octo_authorize!, except: :show
+
     def index
       respond_to do |format|
         format.html do

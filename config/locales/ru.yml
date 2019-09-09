@@ -1,5 +1,6 @@
 ---
 ru:
+  "!": "!"
   abilities:
     accesses:
       manage: Полный доступ к Ключам на Кластере
@@ -103,15 +104,10 @@ ru:
     attributes:
       category_value:
         value: Значение
-      paper_trail/version:
-        event: Событие
-        whodunnit: Инициатор
-        item_id: ID объекта
-        item_type: Класс
-        object_changes: Изменения
       group:
         name: Наименование
       option:
+        admin: Только для администраторов
         category_value_id: Значение из списка значений для категорий
         name: Название опции
         options_category_id: Категория опций
@@ -119,6 +115,12 @@ ru:
       options_category:
         name: Категория
         values: Значения
+      paper_trail/version:
+        event: Событие
+        item_id: ID объекта
+        item_type: Класс
+        object_changes: Изменения
+        whodunnit: Инициатор
       profile:
         first_name: Имя
         last_name: Фамилия
@@ -149,6 +151,25 @@ ru:
         title: Группы пользователей
       new:
         title: Создание группы
+    journal:
+      journal:
+        chain_id: ID цепочки
+        created_at_gt: Позднее
+        created_at_lt: Раньше
+        event_in: Событие
+        group: Группа
+        item_type_in: Класс
+        month_ago: Месяц назад
+        object_changes_cont: В изменении содержится
+        system_only: Только изменения системы
+        title: Журнал
+        week_ago: Неделю назад
+        whodunnit_in: Инициатор
+      table:
+        chain_id: ID цепочки
+        created_at: Дата
+        id: ID
+        system: Система
     options_categories:
       edit:
         title: Редактирование категории
@@ -190,9 +211,12 @@ ru:
         unblock_user: Возобновить доступ
       table:
         no_employment:
-          html: "<span class='fa fa-exclamation-triangle text-danger'> не указано место работы</span>"
+          html: >-
+            <span class='fa fa-exclamation-triangle text-danger'> не указано место
+            работы</span>
   admin_submenu:
     announcements: Рассылка
+    api: API
     cities: Города
     cluster_logs: Логи кластеров
     clusters: Кластеры
@@ -226,8 +250,15 @@ ru:
     sureties_with_count:
       html: Поручительства <span class="badge info">%{count}</span>
     users: Пользователи
+    wikiplus: Справка+
   bad_job: 'Проблемная задача: '
   bad_jobs: 'Проблемные задачи: '
+  buttons:
+    save: Сохранить
+  common:
+    back: Назад
+  delete: Удалить
+  edit: Редактировать
   flash:
     not_authorized: У вас недостаточно прав для доступа.
     not_logged_in: Вы не вошли в систему. Войдите или зарегистрируйтесь.
@@ -244,43 +275,39 @@ ru:
           one: Показано <b>1</b>
           other: Показаны <b>все %{count}</b>
           zero: Показано <b>0</b>
-  journal:
-    journal:
-      chain_id: ID цепочки
-      created_at_gt: Позднее
-      created_at_lt: Раньше
-      event_in: Событие
-      group: Группа
-      item_type_in: Класс
-      month_ago: Месяц назад
-      object_changes_cont: В изменении содержится
-      system_only: Только изменения системы
-      title: Журнал
-      week_ago: Неделю назад
-      whodunnit_in: Инициатор
-    table:
-      chain_id: ID цепочки
-      created_at: Дата
-      id: ID
-      system: Система
   main_menu:
     admin_area: Кабинет администратора
     wiki: Справка
+    wikiplus: Справка+
     working_area: Рабочий кабинет
   model_translation:
     en: на английском
     ru: на русском
+  name: Имя
+  no_records_found: Не найдено записей
   options:
     fields:
+      hide: Скрыть
+      name_with_category: Название автозаполнением
+      name_without_category: Название без автозаполнения
       new: Новая опция
       remove_option: Удалить опцию
-      with_category: Автозаполнение
-      without_category: Без автозаполнения
+      show: Показать форму
+      value_with_category: Значение автозаполнением
+      value_without_category: Значение без автозаполнения
+    form:
+      hide: Скрыть
+      new: Новая опция
+      show: Показать форму
   profiles:
     form:
-      info_mails_help: Отметьте, если вы согласны получать информационные рассылки о будущих семинарах и другой полезной информации.
+      info_mails_help: >-
+        Отметьте, если вы согласны получать информационные рассылки о будущих семинарах
+        и другой полезной информации.
       save: Сохранить
-      special_mails_help: Отметьте, если вы согласны получать рассылку о состоянии кластеров, профилактических работах и прочей служебной информации.
+      special_mails_help: >-
+        Отметьте, если вы согласны получать рассылку о состоянии кластеров, профилактических
+        работах и прочей служебной информации.
     show:
       change_password: Изменить пароль
       is_admin: Администратор
@@ -289,6 +316,7 @@ ru:
     comments: Комментарии
     job_stat: Статистика
     job_table: Эффективность
+    menu_items: Редактировать распложение элементов меню
     packages: Пакеты
     profile: Профиль
     projects: Проекты
@@ -314,6 +342,8 @@ ru:
       next: Следующая
       previous: Предыдущая
       truncate: "..."
+  who_types:
+    ":": ":"
   without_pagination:
     display_all_records: Показать все записи сразу на одной странице(может быть ДОЛГО)
     displaying_all_records: Показаны все записи

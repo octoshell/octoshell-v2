@@ -5,25 +5,26 @@ module Core
     def new
       @project = Project.find(params[:project_id])
       not_authorized unless @project.owner.id == current_user.id
-      @unsured_members = @project.members.where(:project_access_state =>:engaged)
+      @unsured_members = @project.members_for_new_surety
       @surety = @project.sureties.build do |surety|
         surety.author = current_user
       end
     end
 
     def create
+      # raise 'error'
       @project = Project.find(params[:surety][:project_id])
       not_authorized unless @project.owner.id == current_user.id
       @surety = @project.sureties.build(surety_params) do |surety|
         surety.author = current_user
-        @project.members.where(:project_access_state =>:engaged).each do |project_member|
+        @project.members_for_new_surety.each do |project_member|
           surety.surety_members.build(user: project_member.user,
                                       organization: project_member.organization,
                                       organization_department: project_member.organization_department)
         end
       end
-      if @surety.save!
-        @project.members.where(:project_access_state =>:engaged).map(&:append_to_surety!)
+      if @surety.save
+        @project.members_for_new_surety.map(&:append_to_surety!)
         redirect_to @project
       else
         redirect_to @project, alert: @surety.errors.full_messages.to_sentence
@@ -48,7 +49,6 @@ module Core
       @surety = find_surety(params[:id])
 
       if @surety.update(surety_params)
-        @surety.save
         redirect_to @surety
       else
         redirect_to @surety, alert: @surety.errors.full_messages.to_sentence
@@ -57,8 +57,7 @@ module Core
 
     def confirm
       @surety = find_surety(params[:id])
-      if @surety.confirm
-        @surety.save
+      if @surety.confirm!
         redirect_to @surety.project
       else
         redirect_to @surety, alert: @surety.errors.full_messages.to_sentence
@@ -67,8 +66,7 @@ module Core
 
     def close
       @surety = find_surety(params[:id])
-      if @surety.close
-        @surety.save
+      if @surety.close!
         redirect_to @surety.project
       else
         redirect_to @surety, alert: @surety.errors.full_messages.to_sentence

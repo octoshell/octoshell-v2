@@ -1,7 +1,7 @@
 div class="page-header"
   h1
     = @cluster.name
-    - if may?(:manage, :clusters)
+    - if can?(:manage, :clusters)
       |  
       = link_to "", [:edit, :admin, @cluster], class: "fa fa-pencil-square"
 

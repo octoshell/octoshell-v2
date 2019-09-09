@@ -1,5 +1,6 @@
 module Core
   class Admin::QuotaKindsController < Admin::ApplicationController
+    before_action :octo_authorize!
     def index
       @search = QuotaKind.search(params[:q])
       @quota_kinds = @search.result(distinct: true).page(params[:page])

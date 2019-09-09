@@ -78,11 +78,11 @@ class Option < ApplicationRecord
   end
 
   def readable_value
-    value || category_value.value
+    value || (category_value ? category_value.value : nil)
   end
 
   def readable_name
-    name || options_category.name
+    name || (options_category ? options_category.name : nil)
   end
 
 end

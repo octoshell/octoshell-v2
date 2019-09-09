@@ -19,7 +19,8 @@ div.option-container
     div.col-xs-6
       = ff.radio_button :name_type, 'without_category', label: t('.without_category')
       -Pack::VersionOption.locale_columns(:name).each do |column|
-        = ff.text_field column
+        /= ff.text_field column
+        = markdown_area ff, column,rows: 3
     div.col-xs-6
       = ff.radio_button :value_type, 'without_category',label: t('.without_category')
       -Pack::VersionOption.locale_columns(:value).each do |column|

@@ -6,8 +6,8 @@
 
     def admin_update(admin, hash)
       @admin = admin
-      hash = hash.to_h
-      hash.symbolize_keys!
+      hash = hash.to_h.symbolize_keys
+      # hash.symbolize_keys!
       raise "incorrect action" if actions.exclude?(hash[:status])
       raise "LOCK VERSION UPDATED" if lock_version_updated?(hash[:lock_version])
       @status_from_params = hash[:status]

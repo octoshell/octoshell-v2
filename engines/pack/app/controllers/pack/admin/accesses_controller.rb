@@ -1,18 +1,18 @@
-require_dependency "pack/application_controller"
+# require_dependency "pack/application_controller"
 # require "#{Pack::Engine.root}/app/services/pack/admin_access_updater"
-module Pack
-  class Admin::AccessesController < Admin::ApplicationController
+module Pack::Admin
+  class AccessesController < Pack::Admin::ApplicationController
     rescue_from ActiveRecord::RecordNotFound do |ex|
       render "not_found"
     end
     before_action :access_init, only: [:edit, :show,:update,:destroy, :manage_access]
     def access_init
-      @access = Access.preload_who.find(params[:id])
+      @access = Pack::Access.find(params[:id])
     end
 
     def index
-      @q = Access.ransack(params[:q])
-      @accesses = @q.result(distinct: true).order(:id).preload_who.includes(:version)
+      @q = Pack::Access.ransack(params[:q] || { to_type_eq: '' })
+      @accesses = @q.result(distinct: true).order(:id).includes(:to, :who)
       without_pagination(:accesses)
     end
 
@@ -31,12 +31,14 @@ module Pack
     end
 
     def new
-      @access = Access.new
-      @access.who_type="User"
+      @access = Pack::Access.new
+      @access.who_type = 'User'
+      @access.to_type = Pack::Package.to_s
+
     end
 
     def create
-      @access = Access.new access_params.except(:forever)
+      @access = Pack::Access.new access_params.except(:forever)
       if not_access_params[:forever] == 'true'
         @access.end_lic = nil
         @access.new_end_lic = nil
@@ -100,7 +102,7 @@ module Pack
     end
 
     def params_without_hash
-      params.permit(:forever, :lock_version, :version_id,
+      params.permit(:forever, :lock_version,
                     :status, :approve, :delete_request,
                     :end_lic)
     end
@@ -110,8 +112,10 @@ module Pack
     end
 
   	def access_params
-      params.require(:access).permit(:who_id,:lock_version, :version_id,
-        :new_end_lic, :new_end_lic_forever, :end_lic,:status,:user_id,:project_id,:who_type)
+      params.require(:access).permit(:who_id, :lock_version,
+                                     :new_end_lic, :new_end_lic_forever,
+                                     :end_lic, :status, :user_id, :project_id,
+                                     :who_type, :to_type, :to_id)
     end
 
   end

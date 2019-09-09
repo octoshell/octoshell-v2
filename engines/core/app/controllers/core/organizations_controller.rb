@@ -69,7 +69,7 @@ module Core
     private
 
     def can_edit
-      raise MayMay::Unauthorized unless @organization.can_edit?(current_user)
+      raise CanCan::AccessDenied unless @organization.can_edit?(current_user)
       # redirect_to(main_app.profile_path)
     end
 

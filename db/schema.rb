@@ -10,20 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_09_134506) do
+ActiveRecord::Schema.define(version: 2019_09_06_082944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "abilities", id: :serial, force: :cascade do |t|
-    t.string "action"
-    t.string "subject"
-    t.integer "group_id"
-    t.boolean "available", default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["group_id"], name: "index_abilities_on_group_id"
-  end
 
   create_table "announcement_recipients", id: :serial, force: :cascade do |t|
     t.integer "user_id"
@@ -45,6 +35,47 @@ ActiveRecord::Schema.define(version: 2019_07_09_134506) do
     t.string "title_en"
     t.text "body_en"
     t.index ["created_by_id"], name: "index_announcements_on_created_by_id"
+  end
+
+  create_table "api_access_keys", id: :serial, force: :cascade do |t|
+    t.string "key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "api_access_keys_exports", id: :serial, force: :cascade do |t|
+    t.integer "access_key_id"
+    t.integer "export_id"
+  end
+
+  create_table "api_exports", id: :serial, force: :cascade do |t|
+    t.string "title"
+    t.text "request"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "text"
+    t.boolean "safe", default: true
+  end
+
+  create_table "api_exports_key_parameters", id: false, force: :cascade do |t|
+    t.integer "export_id"
+    t.integer "key_parameter_id"
+  end
+
+  create_table "api_key_parameters", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "default"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "articles", force: :cascade do |t|
+    t.integer "person_id"
+    t.string "title"
+    t.text "subject_header"
+    t.text "body"
+    t.string "type"
+    t.boolean "published", default: true
   end
 
   create_table "category_values", id: :serial, force: :cascade do |t|
@@ -497,6 +528,33 @@ ActiveRecord::Schema.define(version: 2019_07_09_134506) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "face_menu_item_prefs", force: :cascade do |t|
+    t.integer "position"
+    t.string "menu"
+    t.string "key"
+    t.bigint "user_id"
+    t.boolean "admin", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_face_menu_item_prefs_on_key"
+    t.index ["position"], name: "index_face_menu_item_prefs_on_position"
+    t.index ["user_id"], name: "index_face_menu_item_prefs_on_user_id"
+  end
+
+  create_table "face_users_menus", force: :cascade do |t|
+    t.string "menu"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "menu"], name: "index_face_users_menus_on_user_id_and_menu", unique: true
+    t.index ["user_id"], name: "index_face_users_menus_on_user_id"
+  end
+
+  create_table "friends", force: :cascade do |t|
+    t.string "name"
+    t.integer "person_id"
+  end
+
   create_table "groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "weight"
@@ -552,6 +610,17 @@ ActiveRecord::Schema.define(version: 2019_07_09_134506) do
     t.integer "to_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "hobbies", force: :cascade do |t|
+    t.integer "article_id"
+    t.integer "person_id"
+    t.string "name"
+  end
+
+  create_table "hobbies_people", id: false, force: :cascade do |t|
+    t.bigint "person_id", null: false
+    t.bigint "hobby_id", null: false
   end
 
   create_table "jobstat_data_types", id: :serial, force: :cascade do |t|
@@ -641,6 +710,7 @@ ActiveRecord::Schema.define(version: 2019_07_09_134506) do
     t.integer "options_category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "admin", default: false
   end
 
   create_table "options_categories", id: :serial, force: :cascade do |t|
@@ -670,6 +740,9 @@ ActiveRecord::Schema.define(version: 2019_07_09_134506) do
     t.integer "allowed_by_id"
     t.integer "lock_version", default: 0, null: false
     t.boolean "new_end_lic_forever", default: false
+    t.string "to_type"
+    t.bigint "to_id"
+    t.index ["to_type", "to_id"], name: "index_pack_accesses_on_to_type_and_to_id"
     t.index ["version_id"], name: "index_pack_accesses_on_version_id"
     t.index ["who_type", "who_id"], name: "index_pack_accesses_on_who_type_and_who_id"
   end
@@ -709,6 +782,7 @@ ActiveRecord::Schema.define(version: 2019_07_09_134506) do
     t.boolean "deleted", default: false, null: false
     t.text "description_en"
     t.string "name_en"
+    t.boolean "accesses_to_package", default: false
   end
 
   create_table "pack_version_options", id: :serial, force: :cascade do |t|
@@ -741,6 +815,21 @@ ActiveRecord::Schema.define(version: 2019_07_09_134506) do
     t.text "description_en"
     t.string "name_en"
     t.index ["package_id"], name: "index_pack_versions_on_package_id"
+  end
+
+  create_table "people", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "permissions", id: :serial, force: :cascade do |t|
+    t.string "action"
+    t.string "subject_class"
+    t.integer "group_id"
+    t.boolean "available", default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer "subject_id"
+    t.index ["group_id"], name: "index_permissions_on_group_id"
   end
 
   create_table "profiles", id: :serial, force: :cascade do |t|
@@ -1091,6 +1180,28 @@ ActiveRecord::Schema.define(version: 2019_07_09_134506) do
     t.string "name_en"
     t.text "content_en"
     t.index ["url"], name: "index_wiki_pages_on_url", unique: true
+  end
+
+  create_table "wikiplus_images", id: :serial, force: :cascade do |t|
+    t.string "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "wikiplus_pages", id: :serial, force: :cascade do |t|
+    t.string "name_ru"
+    t.text "content_ru"
+    t.string "url"
+    t.boolean "show_all", default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "name_en"
+    t.text "content_en"
+    t.decimal "sortid", precision: 5
+    t.integer "mainpage_id"
+    t.string "image"
+    t.index ["mainpage_id"], name: "index_wikiplus_pages_on_mainpage_id"
+    t.index ["url"], name: "index_wikiplus_pages_on_url", unique: true
   end
 
 end

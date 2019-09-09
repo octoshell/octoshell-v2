@@ -4,12 +4,12 @@ require "groupdate"
 module Jobstat
   class AccountSummaryController < ApplicationController
     include JobHelper
-    include FlowStatistics, 
-            FlowChronologyState, 
-            FlowChronologyLogin, 
-            FlowChronologyProject, 
-            FlowTopProject, 
-            FlowTopLogins, 
+    include FlowStatistics,
+            FlowChronologyState,
+            FlowChronologyLogin,
+            FlowChronologyProject,
+            FlowTopProject,
+            FlowTopLogins,
             FlowTopUsers
 
     def show
@@ -41,8 +41,8 @@ module Jobstat
       #get_select_options_by_projects @projects
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
-
-      @params = defaults.merge(params.symbolize_keys)
+      params.permit!
+      @params = defaults.merge(params.to_h.symbolize_keys)
       #@projects=get_all_projects # {project: [login1,...], prj2: [login2,...]}
       @logins=get_all_logins.flatten.uniq
 
@@ -156,7 +156,7 @@ module Jobstat
           -calculate_resources_used(j)
         }.reduce(:+) || 0
       }.map{|k,v|k}[0..._top_stack]
-      
+
       # топы проектов
       @_top_project_runs = {}
       @_top_project_resources = {}
@@ -320,7 +320,7 @@ module Jobstat
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
 
-      @params = defaults.merge(params.symbolize_keys)
+      @params = defaults.merge(params.to_h.symbolize_keys)
 
       query_logins = @projects.map{|_,login| login}.flatten.uniq
       req_logins=(@params[:all_logins] || []).reject{|x| x==''}
