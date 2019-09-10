@@ -8,7 +8,7 @@ en:
         sortid: Sort priority
         url: url
     models:
-      wikiplus/page: Wiki+ page
+      wikiplus/page: Wiki page
   wikiplus:
     common:
       edit: Edit!

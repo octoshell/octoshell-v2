@@ -30,7 +30,7 @@ module Comments
       line =~ regexp && flag = true
       flag && wiki_body << line
     end
-    page = Wiki::Page.find_or_initialize_by(url: url)
+    page = Wikiplus::Page.find_or_initialize_by(url: url)
     !page.new_record? && puts('Comments wiki page exists')
     page.content = wiki_body
     page.name = name

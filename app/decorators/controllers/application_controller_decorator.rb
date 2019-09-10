@@ -22,17 +22,18 @@ ActionController::Base.class_eval do
     menu.items.clear
     menu.add_item(working_area_item) if logged_in?
     menu.add_item(admin_area_item) if may?(:access, :admin)
-    menu.add_item(wiki_item)
+    #menu.add_item(wiki_item)
     menu.add_item(wikiplus_item)
     menu.items
   end
 
   def wiki_item
-    Face::MenuItem.new({
-      name: t("main_menu.wiki"),
-      url: wiki.root_path,
-      regexp: /wiki/
-    })
+    wikiplus_item
+    # Face::MenuItem.new({
+    #   name: t("main_menu.wiki"),
+    #   url: wiki.root_path,
+    #   regexp: /wiki/
+    # })
   end
 
   def wikiplus_item

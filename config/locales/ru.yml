@@ -219,7 +219,7 @@ ru:
     sureties_with_count:
       html: Поручительства <span class="badge info">%{count}</span>
     users: Пользователи
-    wikiplus: Wikiplus
+    wikiplus: Справка
   bad_job: 'Проблемная задача: '
   bad_jobs: 'Проблемные задачи: '
   flash:
@@ -241,7 +241,7 @@ ru:
   main_menu:
     admin_area: Кабинет администратора
     wiki: Справка
-    wikiplus: Справка+
+    wikiplus: Справка
     working_area: Рабочий кабинет
   model_translation:
     en: на английском
