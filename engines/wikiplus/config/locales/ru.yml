@@ -10,6 +10,9 @@ ru:
     models:
       wikiplus/page: Страница wiki
   wikiplus:
+    markdown_help: >-
+      Для разметки используется <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
+
     common:
       edit: Редактировать!
     admin:

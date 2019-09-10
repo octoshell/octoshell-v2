@@ -14,7 +14,7 @@ div class="row"
       = f.text_field :url, help: "/pages/<strong>url</strong>".html_safe
       /- index = 1
       - Wikiplus::Page.locale_columns(:content).each do |column|
-          = markdown_area f, column, help: t("wiki.markdown_help").html_safe, rows: 8, class: "code img_target"
+          = markdown_area f, column, help: t("wikiplus.markdown_help").html_safe, rows: 8, class: "code img_target"
           /- index += 1
       = f.form_group do
         = f.submit t("buttons.save", default: "Save")

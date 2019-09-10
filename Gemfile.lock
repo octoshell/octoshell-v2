@@ -231,6 +231,14 @@ PATH
       slim
 
 PATH
+  remote: engines/wiki
+  specs:
+    wiki (0.0.1)
+      pg (~> 0.18)
+      rails (~> 5.0)
+      slim
+
+PATH
   remote: engines/wikiplus
   specs:
     wikiplus (0.0.1)
@@ -781,6 +789,7 @@ DEPENDENCIES
   traco
   uglifier (>= 1.3.0)
   whenever
+  wiki!
   wikiplus!
 
 BUNDLED WITH

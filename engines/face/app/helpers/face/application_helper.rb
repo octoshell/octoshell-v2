@@ -109,8 +109,8 @@ module Face
     def display_wiki_link(name)
       page = Wikiplus.engines_links[name].first
       return '' unless page
-      
-      link_to page.name, wiki.page_path(page)
+
+      link_to page.name, wikiplus.page_path(page)
     end
 
     # def markdown_edit(&block)
