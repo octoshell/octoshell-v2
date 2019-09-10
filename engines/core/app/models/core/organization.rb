@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: core_organizations
+#
+#  id           :integer          not null, primary key
+#  abbreviation :string(255)
+#  checked      :boolean          default(FALSE)
+#  name         :string(255)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  city_id      :integer
+#  country_id   :integer
+#  kind_id      :integer
+#
+# Indexes
+#
+#  index_core_organizations_on_city_id     (city_id)
+#  index_core_organizations_on_country_id  (country_id)
+#  index_core_organizations_on_kind_id     (kind_id)
+#
+
 module Core
   class Organization < ActiveRecord::Base
     remove_spaces :name

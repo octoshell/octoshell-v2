@@ -27,4 +27,5 @@ Gem::Specification.new do |s|
   s.add_dependency "maymay"
   s.add_dependency "ransack"
   s.add_dependency "kaminari"
+  s.add_development_dependency "annotate"
 end

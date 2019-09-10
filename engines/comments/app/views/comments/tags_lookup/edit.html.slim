@@ -1,0 +1,6 @@
+div class="row"
+  div class="col-xs-8"
+    = bootstrap_form_for @tag, url: tags_lookup_path(@tag),method: :put do |f|
+      = f.text_field :name
+      = f.form_group do
+        = f.submit t("buttons.save", default: "Save")

@@ -4,9 +4,14 @@ module Jobstat
   class AccountListController < ApplicationController
     include JobHelper
 
+    #FEEDBACK_HOST = Rails.application.config.octo_feedback_host
+
     def index
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
+      #
+      # !!! FIXME   adding 'true' argument returns ALL available projects (for admins/experts)
+      #             use it for admin version
       @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
       @params = get_defaults.merge(params.symbolize_keys)
       @total_count = 0
@@ -14,8 +19,8 @@ module Jobstat
       @js_cond=''
       @current_user=current_user
 
-      @extra_css='jobstat/application'
-      @extra_js='jobstat/application'
+      @extra_css=['jobstat/application'] #, 'jobstat/introjs.min']
+      @extra_js=['jobstat/application'] #, 'jobstat/intro.min']
       @jobs_feedback={}
 
       query_logins = @projects.map{|_,login| login}.flatten.uniq
@@ -25,11 +30,10 @@ module Jobstat
         query_logins = (req_logins & query_logins)
       end
       @params[:all_logins]=query_logins
-      @all_logins=get_select_options_by_projects @projects, query_logins
-      @all_logins[0]=['ALL']+@all_logins[0]
-      #@all_logins[1][:selected]<<['ALL'] if req_logins.length==0
+      #@all_logins=get_select_options_by_projects @projects, query_logins
+      @all_logins=get_grp_select_options_by_projects @projects, query_logins
 
-      @rules_plus=Job.load_rules
+      @rules_plus=Job.rules
       @jobs=[]
       @jobs_plus={}
 
@@ -41,23 +45,102 @@ module Jobstat
       @agree_flags=Job.agree_flags
 
       begin
-        @jobs = get_jobs(@params, query_logins)
-        @total_count = @jobs.count
-        @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
-        @shown = @jobs.length
-
         # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
-        @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''}
+        @filters=Job::get_filters(current_user).map { |x|
+          x['filters']
+        }.flatten.uniq.reject{|x| x==''}
         # -> [cond1,cond2,...]
 
-        @jobs.each{|j|
-          rules=j.get_rules(@current_user)
-          @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0}
-          rules.each{|r|
-            @jobs_plus[j.drms_job_id]['rules'][r.name] = r.description
-            @jobs_plus[j.drms_job_id]['filtered']+=1 if @filters.include? r.name
+        @fake_data = params[:fake_data].to_i
+        @start_intro = 0
+        note=Core::Notice.where(sourceable: current_user, category: 2, message: 'intro:jobstat').take
+        if note.nil?
+          Core::Notice.create(sourceable: current_user, category: 2, message: 'intro:jobstat').save
+          @start_intro = 1
+          @fake_data = 10
+        end
+
+        params[:fake_data]=@fake_data
+        if @fake_data!=0
+          cluster=Core::Cluster.last
+          now=DateTime.now
+          j=OpenStruct.new(
+            id: 1,
+            cluster: cluster.name_en,
+            drms_job_id: '1',
+            drms_task_id: 0,
+            login: 'my_login',
+            partition: Core::Partition.where(cluster: cluster).last.name,
+            submit_time: now-1,
+            start_time: now-2/8r,
+            end_time: now,
+            timelimit: 1000000,
+            command: "world_optimizer",
+            state: "COMPLETED",
+            num_cores: 256,
+            num_nodes: 1,
+            nodelist: "node-0001",
+            get_duration_hours: 6,
+            rules:{'rule_anomaly' => 'It seems to be hang...'},
+            filtered: 0,
+            get_performance: { cpu_user: 10, gpu_load: 20,
+              loadavg: 15, ipc: 0.1, ib_rcv_data_mpi: 123000, ib_xmit_data_mpi: 123000,
+            },
+            get_ranking: {cpu_user: 'low', gpu_load: 'low', loadavg: 'average',
+              ipc: 'average', ib_rcv_data_mpi: 'low', ib_xmit_data_mpi: 'low',
+            }
+          )
+          @jobs=[j]
+          @jobs << OpenStruct.new(
+            id: 2,
+            cluster: cluster.name_en,
+            drms_job_id: '2',
+            drms_task_id: 0,
+            login: 'my_login',
+            partition: Core::Partition.where(cluster: cluster).last.name,
+            submit_time: now-7/8r,
+            start_time: now-2/8r,
+            end_time: now-1/8r,
+            timelimit: 1000000,
+            command: "optimized_world_optimizer",
+            state: "COMPLETED",
+            num_cores: 12800,
+            num_nodes: 2000,
+            nodelist: "node-[0002-2001]",
+            get_duration_hours: 3,
+            rules:{'rule_disbalance_cpu_la' => 'Заметный дисбаланс внутри узлов либо активность сильно отличается на разных узлах.',
+                   'rule_cpu_gpu' => "Задача слабо использует CPU при высокой загрузке GPU."},
+            filtered: 0,
+            get_performance: { cpu_user: 1, gpu_load: 53,
+              loadavg: 1.23, ipc: 0.01112, ib_rcv_data_mpi: 12112, ib_xmit_data_mpi: 12676,
+            },
+            get_ranking: {cpu_user: 'low', gpu_load: 'average', loadavg: 'low',
+              ipc: 'low', ib_rcv_data_mpi: 'low', ib_xmit_data_mpi: 'low',
+            }
+          )
+
+          #Job.where(drms_job_id: 869867)
+          @total_count=2
+          @jobs_plus['1']=j
+          @jobs_feedback['1']={ }
+          @jobs_plus['2']=@jobs[1]
+          @jobs_feedback['2']={ }
+        else
+          @jobs = get_jobs(@params, query_logins)
+          #logger.info "JOBS: #{@jobs}"
+          @total_count = @jobs.count
+          @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
+
+          @jobs.each{|j|
+            rules=j.get_rules(@current_user)
+            @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0}
+            rules.each{|r|
+              @jobs_plus[j.drms_job_id]['rules'][r['name']] = r['description']
+              @jobs_plus[j.drms_job_id]['filtered']+=1 if @filters.include? r['name']
+            }
           }
-        }
+        end
+        @shown = @jobs.length
         @jobs=@jobs.to_a
       rescue => e
         logger.info "account_list_controller:index: #{e.message}; #{e.backtrace.join("\n")}"
@@ -83,7 +166,7 @@ module Jobstat
         id=job['drms_job_id']
         @jobs_plus[id]||={}
         ['cluster', 'drms_job_id', 'drms_task_id', 'login', 'partition', 'submit_time', 'start_time', 'end_time',
-         'timelimit', 'command', 'state', 'num_cores', 'created_at', 'updated_at', 'num_nodes'].each{|i|
+         'timelimit', 'command', 'state', 'num_cores', 'num_nodes'].each{|i|
           @jobs_plus[id][i]=job[i]
         }
         @jobs_plus[id]['feedback']=if(@jobs_feedback.fetch(id,false))
@@ -96,7 +179,7 @@ module Jobstat
 
       # FIXME!!!!!! (see all_rules)
       @emails = JobMailFilter.filters_for_user current_user.id
-#      @emails = ["rule_avg_disbalance"]
+
     end
 
     def feedback
@@ -123,7 +206,7 @@ module Jobstat
     def feedback_multi_jobs parm
       #"0"=>{"user"=>"1234", "cluster"=>"lomonosov-2", "job_id"=>"615023",
       #      "task_id"=>"0", "class"=>"0", "feedback"=>"ooops"},
-      uri=URI("http://graphit.parallel.ru:8123/api/feedback-job")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-job")
       #user=UID_octoshell(int), class=int(0=ok,1=not_ok), cluster=string, job_id=int, task_id=int, condition=string, feedback=string.
       if !parm.kind_of?(Enumerable)
         logger.info("Ooooops! feedback_all_jobs got bad argument: #{parm}") 
@@ -143,7 +226,7 @@ module Jobstat
     def all_rules
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
-      @rules_plus=Job.load_rules
+      @rules_plus=Job.rules
       @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq
       @current_user=current_user
 
@@ -152,7 +235,7 @@ module Jobstat
 
     def feedback_proposal parm
       #http://graphit.parallel.ru:8123/api/feedback-proposal?user=1&cluster=lomonosov-2&job_id=585183&task_id=0&feedback=something-something
-      uri=URI("http://graphit.parallel.ru:8123/api/feedback-proposal")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-proposal")
 
       req={
         user: parm[:user].to_i,
@@ -198,7 +281,7 @@ module Jobstat
       if cond.to_s == ''
         return 500, 'bad condition (empty)'
       end
-      uri=URI("http://graphit.parallel.ru:8123/api/filters")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/filters")
 
       filters=Job::get_filters(current_user)
         .map { |x| x['filters'] }
@@ -233,7 +316,7 @@ module Jobstat
       #FIXME! move address to config
       #  user=UID_octoshell(int), cluster=string(список через запятую), account=string(список через запятую), condition=string, feedback=string.
 
-      uri=URI("http://graphit.parallel.ru:8123/api/feedback-job")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-job")
       req={
         user: parm[:user].to_i,
         cluster: parm[:cluster] || 'all',
@@ -261,7 +344,7 @@ module Jobstat
     def feedback_rule_only parm
       #TODO make caching for not confirmed sends
 
-      uri=URI("http://graphit.parallel.ru:8123/api/feedback-condition")
+      uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-condition")
       req={
         user: parm[:user].to_i,
         :class => parm[:class] || 0,
@@ -294,9 +377,9 @@ module Jobstat
     end
 
     def get_jobs(params, query_logins)
-      jobs = Job.where "start_time > ? AND end_time < ?",
+      jobs = Job.where "start_time > ? AND start_time < ?",
         DateTime.parse(params[:start_time]),
-        DateTime.parse(params[:end_time])
+        DateTime.parse(params[:end_time])+1
 
       jobs = jobs.where(state: @params[:states]) unless params[:states].include?("ALL")
       jobs = jobs.where(partition: @params[:partitions]) unless params[:partitions].include?("ALL")

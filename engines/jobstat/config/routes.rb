@@ -2,10 +2,12 @@ Jobstat::Engine.routes.draw do
   get 'account/list/index' => "account_list#index"
   get 'account/list/all_rules' => "account_list#all_rules"
   post 'account/list/feedback' => "account_list#feedback"
+  post 'job/feedback' => "account_list#feedback"
   # post 'account/list/feedback_job' => "account_list#feedback_job"
   # post 'account/list/feedback_jobs' => "account_list#feedback_jobs"
   # post 'account/list/feedback_rule' => "account_list#feedback_rule"
   get 'account/summary/show' => "account_summary#show"
+  get 'account/summary/download' => "account_summary#download"
 
   resources :job
 

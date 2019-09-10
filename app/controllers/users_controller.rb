@@ -13,7 +13,9 @@ class UsersController < ApplicationController
                          total: @users.count }
         else
           render json: { records: @users.page(params[:page]).per(params[:per])
-                                        .map{ |u| { id: u.id, text: u.full_name_with_cut_email } }, total: @users.count }
+                                        .map{ |u| { id: u.id,
+                                                    text: u.full_name_with_cut_email }},
+                         total: @users.count }
         end
       end
     end

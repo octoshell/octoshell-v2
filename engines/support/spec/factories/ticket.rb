@@ -3,6 +3,6 @@ FactoryBot.define do
     subject { 'subject' }
     message { 'message' }
     topic
-   	association :reporter, factory: :user
+    association :reporter, factory: :user
   end
 end

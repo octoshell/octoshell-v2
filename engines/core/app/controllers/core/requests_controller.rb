@@ -1,5 +1,8 @@
 module Core
   class RequestsController < Core::ApplicationController
+
+    before_action :filter_blocked_users
+
     def new
       @project = obtain_project
       @cluster_id = params[:cluster_id]

@@ -1,4 +1,6 @@
 ru:
+  bad_jobs: "Проблемные задачи: "
+  bad_job: "Проблемная задача: "
   options:
     fields:
       remove_option: Удалить опцию

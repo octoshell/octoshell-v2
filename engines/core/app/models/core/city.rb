@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: core_cities
+#
+#  id         :integer          not null, primary key
+#  checked    :boolean          default(FALSE)
+#  title_en   :string(255)
+#  title_ru   :string(255)
+#  country_id :integer
+#
+# Indexes
+#
+#  index_core_cities_on_country_id  (country_id)
+#  index_core_cities_on_title_ru    (title_ru)
+#
+
 module Core
   class City < ActiveRecord::Base
     include Checkable

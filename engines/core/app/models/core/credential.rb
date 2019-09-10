@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: core_credentials
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)      not null
+#  public_key :text             not null
+#  state      :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#  user_id    :integer          not null
+#
+# Indexes
+#
+#  index_core_credentials_on_user_id  (user_id)
+#
+
 module Core
   class Credential < ActiveRecord::Base
 

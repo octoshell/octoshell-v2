@@ -53,7 +53,7 @@ module Hardware
     def destroy
       @kind = Kind.find(params[:id])
       unless @kind.destroy
-        flash[:error] = @kind.errors.full_messages
+        flash_message(:error,  @kind.errors.full_messages)
         redirect_to [:admin, @kind]
         return
       end

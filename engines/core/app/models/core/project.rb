@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: core_projects
+#
+#  id                         :integer          not null, primary key
+#  estimated_finish_date      :datetime
+#  finished_at                :datetime
+#  first_activation_at        :datetime
+#  state                      :string(255)
+#  title                      :string(255)      not null
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  kind_id                    :integer
+#  organization_department_id :integer
+#  organization_id            :integer
+#
+# Indexes
+#
+#  index_core_projects_on_kind_id                     (kind_id)
+#  index_core_projects_on_organization_department_id  (organization_department_id)
+#  index_core_projects_on_organization_id             (organization_id)
+#  index_core_projects_on_state                       (state)
+#
+
 module Core
   class Project < ActiveRecord::Base
 
@@ -68,7 +92,7 @@ module Core
 
     def on_activate
       #!!! after_transition [:closed, :finihed, :blocked, :cancelled, :suspended] => :active do |project, transition|
-      accesses.where(state: :closed).map(&:reopen!)
+      accesses.where(state: :closed).map{|a| a.reopen!; a.save}
       members.where(:project_access_state=>:suspended).map(&:activate!)
       ::Core::MailerWorker.perform_async(:project_activated, id)
       synchronize!
@@ -137,8 +161,11 @@ module Core
       event :activate do
         transitions :from => :pending, :to => :active
         after do
-          update(first_activation_at: Time.current)
           synchronize!
+        end
+
+        before do
+          self.first_activation_at = Time.current
         end
 
       end

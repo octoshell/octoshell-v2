@@ -1,4 +1,19 @@
 # encoding: utf-8
+# == Schema Information
+#
+# Table name: sessions_survey_values
+#
+#  id              :integer          not null, primary key
+#  value           :text
+#  survey_field_id :integer
+#  user_id         :integer
+#  user_survey_id  :integer
+#
+# Indexes
+#
+#  index_sessions_survey_values_on_user_survey_id  (user_survey_id)
+#  isurvey_field_and_user                          (survey_field_id,user_survey_id)
+#
 
 # Значение поля для опроса
 # В процессе заполнения опроса Survey пользователь создаёт UserSurvey, заполняя
@@ -43,7 +58,7 @@ module Sessions
     end
 
     def allowed_values
-      field.collection_values
+      field.localized_collection_values
     end
 
     def has_presence_validator?

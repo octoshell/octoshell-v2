@@ -1,13 +1,36 @@
+# == Schema Information
+#
+# Table name: support_replies
+#
+#  id                      :integer          not null, primary key
+#  attachment              :string(255)
+#  attachment_content_type :string(255)
+#  attachment_file_name    :string(255)
+#  attachment_file_size    :integer
+#  attachment_updated_at   :datetime
+#  message                 :text
+#  created_at              :datetime
+#  updated_at              :datetime
+#  author_id               :integer
+#  ticket_id               :integer
+#
+# Indexes
+#
+#  index_support_replies_on_author_id  (author_id)
+#  index_support_replies_on_ticket_id  (ticket_id)
+#
+
 module Support
   class Reply < ActiveRecord::Base
     mount_uploader :attachment, AttachmentUploader
-    mount_uploader :export_attachment, ReplyAttachmentUploader, mount_on: :attachment_file_name
+    #mount_uploader :export_attachment, ReplyAttachmentUploader, mount_on: :attachment_file_name
 
     belongs_to :author, class_name: Support.user_class, foreign_key: :author_id
     belongs_to :ticket
 
     validates :author, :ticket, :message, presence: true
     validates :attachment, file_size: { maximum: 100.megabytes.to_i }
+    #validates_presence_of  :attachment
 
     def create_or_update
       if new_record?

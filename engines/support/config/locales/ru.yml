@@ -143,12 +143,13 @@ ru:
           title: Заявка №%{id}
           accept: Принять в работу
           no_replies: Нет сообщений
-          new_reply: Новое сообщение
-          create_reply_template: Создать шаблон из текущего сообщения
-
+          tags-etc: Теги/файлы/комментарии
           send: Отправить
           send_and_show_result: Отправить и показать результат
           send_and_show_next: Отправить и открыть следующий
+          new_reply: Новое сообщение
+          create_reply_template: Создать шаблон из текущего сообщения
+          attach: Приложить файл
 
       tags:
         index:
@@ -217,10 +218,12 @@ ru:
         no_tickets: Нет заявок в поддержку
       show:
         title: Заявка №%{id}
+        no_replies: Нет ответов
+        earlier: "Ранее:"
         problem_solved: "Проблема решена? Нажмите "
         new_reply: Новое сообщение
-        no_replies: Нет ответов
         if_not: "Если нет, нажмите "
+        attach: "Приложить файл: "
       new:
         title: Новая заявка
       edit:

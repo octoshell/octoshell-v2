@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: comments_contexts
+#
+#  id         :integer          not null, primary key
+#  name_ru    :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  name_en    :string
+#
+
 module Comments
   class Context < ActiveRecord::Base
     has_many :context_groups, dependent: :destroy

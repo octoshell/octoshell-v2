@@ -2,6 +2,7 @@
 Octoshell::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  config.octo_feedback_host = 'http://graphit.parallel.ru:8123'
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
@@ -34,7 +35,10 @@ Octoshell::Application.configure do
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
   config.middleware.insert(0, Rack::Sendfile, config.action_dispatch.x_sendfile_header)
 
+  config.logger = Logger.new(config.paths['log'].first, 'weekly', 5.megabytes)
+  config.logger.level = Logger::DEBUG
   config.log_tags = [:remote_ip, lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
+  config.colorize_logging = false
 
   # Raise an error on page load if there are pending migrations
   config.active_record.migration_error = :page_load
@@ -42,7 +46,7 @@ Octoshell::Application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  config.assets.debug = false
+  config.assets.debug = true
 
   config.active_record.raise_in_transactional_callbacks = true
 

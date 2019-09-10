@@ -1,33 +1,33 @@
 - group_plus = @rules_plus['groups']
 - def_icon = {'icon'=>'fas fa-exclamation-triangle', 'color'=>'color-regular'}
 
-h3 Список всех доступных правил
-p На данной странице приведено подробное описание всех правил, которые на данный момент используются для обнаружения потенциальных проблем с эффективностью. Для каждого правила можно предложить свои замечания; также можно скрыть правило, чтобы соответствующая проблема с эффективностью не отображалась для Ваших задач.
+h3 = t('.rules_list')
+p = t('.rules_list_descr')
 div
-  a href="index" Вернуться к списку запусков
+  a href="index" = t('.return_to_list')
 
-button onClick="$('.rule-checkbox').prop('checked', true);"
-  | Раскрыть все описания
-button onClick="$('.rule-checkbox').prop('checked', false);"
-  | Скрыть все описания
-button onClick="$('#suggest_new_rule').addClass('target');$('#suggest_new_rule_text').focus()"
-  | Хочу предложить новое правило
+button class="btn btn-default" onClick="$('.rule-checkbox').prop('checked', true);"
+  = t('.open_descriptions')
+button class="btn btn-default" onClick="$('.rule-checkbox').prop('checked', false);"
+  = t('.close_descriptions')
+button class="btn btn-default" onClick="$('#suggest_new_rule').addClass('target');$('#suggest_new_rule_text').focus()"
+  = t('.suggest_new_rule')
   // "why hide?" dialog
 div class="octo-popup content" id="suggest_new_rule"
   form action="#" onSubmit="return on_new_rule_suggest();"
     div class="centered x-white"
-      | Впишите свои предложения по новому правилу оценки запуска. Постарайтесь сформулировать их как можно более подробно и развёрнуто.
+      = t('.enter_suggestions')
     input type="text" id="suggest_new_rule_text" class="fullwidth"
     div class="centered x-white"
       button class="btn-info" type="submit"
-        | Отправить!
+        = t('.send')
       button onClick="$('#suggest_new_rule').removeClass('target');"
-        | Передумал
+        = t('.not_send')
 a class="octo-close-popup" onClick="$('#suggest_new_rule').removeClass('target'); return false"
 
 section class="accordion"
-  h4 Список всех правил оценки запусков приложений
-  - @rules_plus['rules'].sort{|a,b| a[1]['index'] <=> b[1]['index']}.each do |r|
+  h4 =t('.all_rules_list')
+  - @rules_plus['rules'].select{|r,v| v['public']==1}.sort{|a,b| a[1]['index'] <=> b[1]['index']}.each do |r|
     - rule=r[1]
     - icon = group_plus.fetch(rule['group'],def_icon)
     div id="go-#{r[0]}"
@@ -35,47 +35,33 @@ section class="accordion"
       label for="rule-#{r[0]}"
         | &nbsp;
         - tint = @filters.any?{|x|x==r[0]} ? "tinted" : ""
-        button id="btn-hide-#{r[0]}" class="btn-danger #{tint}" onClick="all_pre_hide_rule('#{r[0]}');$('#text_hide_rule_#{r[0]}').focus();" title="Скрыть правило/снова показывать"
+        button id="btn-hide-#{r[0]}" class="btn-danger #{tint}" onClick="all_pre_hide_rule('#{r[0]}');$('#text_hide_rule_#{r[0]}').focus();" title="#{t('jobstat.common.hide_show')}"
           i class="fa-fw far fa-bell-slash"
         div class="octo-popup content" id="hide_rule_#{r[0]}"
           form onSubmit="all_hide_rule('#{r[0]}',false); return false;"
             div class="centered x-white"
-              | Поясните, почему Вы хотите скрыть правило в выдачах результатов расчётов?
+              = t('jobstat.common.why_hide')
             input type="text" id="text_hide_rule_#{r[0]}" class="fullwidth" style="display: block"
             div class="centered x-white"
               button class="btn-info" type="submit"
-                | Скрыть правило!
+                = t('jobstat.common.hide')
               button onClick="$('#hide_rule_#{r[0]}').removeClass('target'); return false;"
-                | Передумал
+                = t('jobstat.common.not_hide')
         a class="octo-close-popup" onClick="$('#hide_rule_#{r[0]}').removeClass('target'); return false"
         | &nbsp;
 
-        /!!button id="btn-email-#{r[0]}" class="btn-warning" onClick="all_pre_email_rule('#{r[0]}')" title="Оповещать по email/не оповещать"
-          i class="fa-fw fas fa-envelope"
-        /!!div class="octo-popup content" id="email_rule_#{r[0]}"
-          form onSubmit="all_email_rule('#{r[0]}',false); return false;"
-            div class="centered white"
-              | Вы уверены, что не хотите получать уведомления по email о срабатывании этого правила?
-            div class="centered white"
-              button class="btn-info" type="submit"
-                | Отключить уведомления!
-              button onClick="$('#email_rule_#{r[0]}').removeClass('target');"
-                | Передумал
-        /!!a onClick="$('#email_rule_#{r[0]}').removeClass('target');"
-        /!!| &nbsp;
-
-        button class="btn-info" onClick="all_pre_feedback_rule('#{r[0]}');$('#text_feedback_rule_#{r[0]}').focus()" title="Высказать мнение по правилу"
+        button class="btn-info" onClick="all_pre_feedback_rule('#{r[0]}');$('#text_feedback_rule_#{r[0]}').focus()" title="#{t('.rule_suggesttion')}"
           i class="fa-fw fas fa-volume-up"
         div class="octo-popup content" id="feedback_rule_#{r[0]}"
           form action="#" onSubmit="all_feedback_rule('#{r[0]}'); return false;"
             div class="centered x-white"
-              | Максимально подробнее опишите Ваши комментарии:
+              = t('.your_comments')
             input type="text" id="text_feedback_rule_#{r[0]}" class="fullwidth" style="display: block"
             div class="centered x-white"
               button class="btn-info" type="submit"
-                | Отправить комментарий!
+                = t('.comment')
               button onClick="$('#feedback_rule_#{r[0]}').removeClass('target'); return false;"
-                | Передумал
+                = t('.not_comment')
         a class="octo-close-popup" onClick="$('#feedback_rule_#{r[0]}').removeClass('target'); return false"
         | &nbsp; &nbsp;
         i class="fa-fw #{icon['icon']} #{icon['color']}"
@@ -83,14 +69,22 @@ section class="accordion"
         = rule['description']
       article class="hh"
         /p <strong>Описание:</strong> #{rule['comment']}
-        p <strong>Предполагаемая причина:</strong> #{rule['suggestion']}
-        p <strong>Рекомендации:</strong> #{rule['text_recommendation']}
+        p
+          strong
+            = t('.possible_cause')
+          = rule['suggestion']
+        p
+          strong
+            = t('.recommendation')
+          = rule['text_recommendation']
 
 javascript:
 
   var filters=#{{@filters.to_json}}
   var emails=#{{@emails.to_json}}
   var current_user=#{{@current_user.id}};
+  var feedback_url='#{{url_for ["account_list","feedback"]}}';
+
   
   $(function(){
     var hash = window.location.hash.substr(4);

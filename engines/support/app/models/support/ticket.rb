@@ -1,3 +1,36 @@
+# == Schema Information
+#
+# Table name: support_tickets
+#
+#  id                      :integer          not null, primary key
+#  attachment              :string(255)
+#  attachment_content_type :string(255)
+#  attachment_file_name    :string(255)
+#  attachment_file_size    :integer
+#  attachment_updated_at   :datetime
+#  message                 :text
+#  state                   :string(255)
+#  subject                 :string(255)
+#  url                     :string(255)
+#  created_at              :datetime
+#  updated_at              :datetime
+#  cluster_id              :integer
+#  project_id              :integer
+#  reporter_id             :integer
+#  responsible_id          :integer
+#  surety_id               :integer
+#  topic_id                :integer
+#
+# Indexes
+#
+#  index_support_tickets_on_cluster_id      (cluster_id)
+#  index_support_tickets_on_project_id      (project_id)
+#  index_support_tickets_on_reporter_id     (reporter_id)
+#  index_support_tickets_on_responsible_id  (responsible_id)
+#  index_support_tickets_on_state           (state)
+#  index_support_tickets_on_topic_id        (topic_id)
+#
+
 module Support
   class Ticket < ActiveRecord::Base
 
@@ -160,7 +193,7 @@ module Support
 
     def reporter_logins
       accounts = if project
-                   project.members
+                   project.members.where(user_id: reporter.id)
                  else
                    reporter.accounts
                  end

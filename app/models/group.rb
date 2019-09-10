@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: groups
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  weight     :integer
+#  system     :boolean
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 # Модель группы пользователей
 class Group < ActiveRecord::Base
   GroupStrata = Struct.new(:name, :weight)

@@ -22,7 +22,7 @@ module Pack
 
     def manage_access
       if @access.lock_version_updated?(params[:lock_version])
-        # flash[:error] = t('pack.access.updated_during_edit_static')
+        # flash_message :error, t('pack.access.updated_during_edit_static')
         redirect_to :show, error: t('pack.access.updated_during_edit_static')
       else
         @access.admin_update current_user, params_without_hash

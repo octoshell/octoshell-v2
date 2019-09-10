@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: sessions_survey_fields
+#
+#  id                :integer          not null, primary key
+#  collection        :text
+#  entity            :string(255)
+#  hint_en           :string
+#  hint_ru           :string(255)
+#  kind              :string(255)
+#  max_values        :integer          default(1)
+#  name_en           :string
+#  name_ru           :text
+#  reference_type    :string(255)
+#  regexp            :string(255)
+#  required          :boolean          default(FALSE)
+#  strict_collection :boolean          default(FALSE)
+#  weight            :integer          default(0)
+#  survey_id         :integer
+#
+# Indexes
+#
+#  index_sessions_survey_fields_on_survey_id  (survey_id)
+#
+
 # Поле опроса
 module Sessions
   class SurveyField < ActiveRecord::Base
@@ -28,9 +53,9 @@ module Sessions
     validates :kind, presence: true
     validates_translated :name, presence: true
 
-    def name
-      self[self.class.current_locale_column(:name)].to_s.html_safe
-    end
+    # def name
+    #   self[self.class.current_locale_column(:name)].to_s.html_safe
+    # end
 
     def collection_values
       collection.each_line.find_all(&:present?).map(&:strip)

@@ -1,4 +1,22 @@
 # encoding: utf-8
+# == Schema Information
+#
+# Table name: core_employments
+#
+#  id                         :integer          not null, primary key
+#  primary                    :boolean
+#  state                      :string(255)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  organization_department_id :integer
+#  organization_id            :integer
+#  user_id                    :integer
+#
+# Indexes
+#
+#  index_core_employments_on_organization_department_id  (organization_department_id)
+#
+
 module Core
   class Employment < ActiveRecord::Base
 

@@ -10,6 +10,8 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require i18n.js
+//= require i18n/translations
 //= require jquery-tablesorter
 //= require_tree .
 //= require_self

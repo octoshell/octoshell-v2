@@ -31,8 +31,9 @@ module Jobstat
     end
 
     def show
-      @job = Job.find(params["id"])
-      @feedbacks=Job::get_feedback_job(params[:user].to_i, @job.id)
+      @job = Job.find(params[:id])
+      @jobs_plus={@job.drms_job_id => [:id, :cluster, :drms_job_id, :drms_task_id, :login, :partition, :submit_time, :start_time, :end_time, :timelimit, :command, :state, :num_cores, :num_nodes].map{|i| [i.to_s, @job[i]]}.to_h}
+      @feedbacks=Job::get_feedback_job(params[:user].to_i, @job.id) || {}
 
       @job_perf = @job.get_performance
       @ranking = @job.get_ranking
@@ -44,7 +45,7 @@ module Jobstat
       @cpu_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "cpu_user").order(:time).all)
       @gpu_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "gpu_load").order(:time).all)
       @loadavg_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "loadavg").order(:time).all)
-      @ipc_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "ipc").order(:time).all)
+#      @ipc_digest_data = graph_data_single(DigestFloatDatum.where(job_id: @job.id, name: "ipc").order(:time).all)
 
       rcv_mpi = DigestFloatDatum.where(job_id: @job.id, name: "ib_rcv_data_mpi").order(:time).all
       xmit_mpi = DigestFloatDatum.where(job_id: @job.id, name: "ib_xmit_data_mpi").order(:time).all
@@ -58,8 +59,9 @@ module Jobstat
       cpu_user = FloatDatum.where(job_id: @job.id, name: "cpu_user").take
 
       @agree_flags=Job.agree_flags
-      @rules_plus=Job.load_rules
-      @filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''}
+      @rules_plus=Job.rules
+      #@filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''} # TODO:FILTERS
+      @filters=[]
 
       if cpu_user.nil? || cpu_user.value.nil?
         render :show_no_data

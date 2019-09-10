@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: sessions_projects_in_sessions
+#
+#  id         :integer          not null, primary key
+#  project_id :integer
+#  session_id :integer
+#
+# Indexes
+#
+#  i_on_project_and_sessions_ids                      (session_id,project_id) UNIQUE
+#  index_sessions_projects_in_sessions_on_project_id  (project_id)
+#  index_sessions_projects_in_sessions_on_session_id  (session_id)
+#
+
 module Sessions
   class ProjectsInSession < ActiveRecord::Base
     belongs_to :project, class_name: "Core::Project"

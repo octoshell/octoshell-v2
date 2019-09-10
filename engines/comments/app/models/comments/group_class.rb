@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: comments_group_classes
+#
+#  id         :integer          not null, primary key
+#  allow      :boolean          not null
+#  class_name :string
+#  type_ab    :integer          not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  group_id   :integer
+#  obj_id     :integer
+#
+# Indexes
+#
+#  index_comments_group_classes_on_group_id  (group_id)
+#
+
 module Comments
   class GroupClass < ActiveRecord::Base
     enum type_ab: %i[read_ab update_ab create_ab create_with_context_ab]

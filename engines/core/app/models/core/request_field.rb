@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: core_request_fields
+#
+#  id            :integer          not null, primary key
+#  value         :integer
+#  quota_kind_id :integer
+#  request_id    :integer          not null
+#
+# Indexes
+#
+#  index_core_request_fields_on_request_id  (request_id)
+#
+
 module Core
   class RequestField < ActiveRecord::Base
     belongs_to :request

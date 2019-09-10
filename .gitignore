@@ -12,11 +12,12 @@
 /db/*.sqlite3-journal
 
 # Ignore all logfiles and tempfiles.
-/log/*.log
-/engines/authentication/spec/dummy/log/*.log
-/engines/face/spec/dummy/log/*.log
-/log/*.log
-/tmp
+log/*.log
+log/*.log.*
+engines/authentication/spec/dummy/log/*.log
+engines/face/spec/dummy/log/*.log
+log/*.log
+tmp
 
 deploy_env
 .DS_Store
@@ -34,3 +35,11 @@ vendor/
 deploy/
 tests/
 
+.ruby-version
+
+*~
+*.bak
+*.old
+
+config/database.yml
+engines/jobstat/cache.yaml

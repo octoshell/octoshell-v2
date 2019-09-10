@@ -9,35 +9,43 @@ ActiveRecord::Base.transaction do
   #   next if table == 'schema_migrations'
   #   ActiveRecord::Base.connection.execute("TRUNCATE #{table}")
   # end
+  puts 'Running seeds'
   Group.default!
   users = []
   3.times do |i|
     user = User.first_or_create(email: "user#{i.next}@octoshell.ru",
                         password: "123456", password_confirmation: '123456',
                         access_state: 'active')
+    p=user.profile
+    p.first_name = "User_#{i}"
+    p.middle_name = "Jr."
+    p.last_name = "Tester"
     user.activate!
     user.save
+    user.access_state='active'
     users << user
   end
   admin = User.create!(email: "admin@octoshell.ru",
                        password: "123456", password_confirmation: '123456')
+  p=admin.profile
+  p.first_name = "Admin"
+  p.middle_name = "Jr."
+  p.last_name = "Tester"
   admin.activate!
   admin.groups << Group.superadmins
   admin.access_state='active'
   admin.save
 
 
-
-
   #
   #
   # create projects prerequisites
 
-  country = Core::Country.create!(title_en: 'Russia', title_ru: 'Россия')
+  country = Core::Country.create!(title_en: 'Russia', title_ru: 'Россия', checked: true)
+  city = Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country, checked: true)
 
-  city = Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country)
-
-  Core::Cluster.create!(host: 'localhost', admin_login: 'octo', name: 'test')
+  cluster=Core::Cluster.create!(host: 'localhost', admin_login: 'octo', name: 'test', description: 'mytest')
+  Core::Partition.create!(name: 'main_part', cluster: cluster, description: 'nodes:128,cores:8,gppus:1')
   Core::Credential.create!(user: admin, name: 'example key', public_key: Core::Cluster.first.public_key)
   Core::OrganizationKind.create!(name: 'Российская коммерческая организация')
   Core::CriticalTechnology.create!(name: 'Робототехника')
@@ -45,13 +53,12 @@ ActiveRecord::Base.transaction do
   Core::ResearchArea.create!(name: 'Математика')
   Core::ProjectKind.create!(name: 'Исследовательский')
   Core::Organization.create!(name: 'Test MSU', city: city, country: country,
-                             kind: Core::OrganizationKind.first )
+                             kind: Core::OrganizationKind.first, checked: true )
   Core::Employment.create!(user: admin, organization: Core::Organization.first)
-  # rake = Rake.application
-  # rake.init
-  # rake.load_rakefile
-  # rake['comments:create_wiki_page'].invoke
-  # rake['comments:recreate_attachable_abilities'].invoke
-
+  3.times do |i|
+    Core::Employment.create!(user: users[i], organization: Core::Organization.first)
+  end
+  Comments.create_wiki_page
+  Comments.create_abilities
 
 end

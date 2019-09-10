@@ -17,23 +17,6 @@ $(document).ready(function() {
           return x;*/
       },
     },
-    // textSorter: {
-    //   '.triplesort': function(a, b, direction, column, table) {
-    //     // this is the original sort method from tablesorter 2.0.3
-    //     var item = $(table).attr('data-triple-sort')
-    //     if (typeof(item) === 'undefined') {
-    //       console.log("Warning! No data-triple-sort specified...")
-    //       item = '0'
-    //     } else {
-    //       item = parseInt(item)
-    //     }
-    //     // format data for normalization
-    //     var x = parseFloat(a.split('/')[item])
-    //     var y = parseFloat(b.split('/')[item])
-    //       //console.log("sorting-by: "+item+"a="+a+" b="+b+" x="+x+" y="+y)
-    //     return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    //   },
-    // },
   });
 
   $(".sorting").click(function() {
@@ -52,29 +35,6 @@ $(document).ready(function() {
     $t.attr('data-direction', (parseInt(dir, 10) + 1) % 2);
     return false;
   });
-
-  // function silent_submit(response) {
-  //   console.log(response)
-  // }
-
-  // function submit_and_reload(response) {
-  //   console.log(response)
-  //   location.reload()
-  // }
-
-  // $("#feedback_job_rule").submit(function() {
-  //   $.post($(this).attr('action'), $(this).serialize(), silent_submit)
-  //   return false
-  // })
-  // $("#feedback_jobs").submit(function() {
-  //   $.post($(this).attr('action'), $(this).serialize(), silent_submit)
-  //   return false
-  // })
-  // $("#feedback_rule").submit(function() {
-  //   $.post($(this).attr('action'), $(this).serialize(), submit_and_reload)
-  //   return false
-  // })
-
 });
 
 
@@ -112,13 +72,16 @@ function disagree(jobid, rule, mass, text) {
   }
   $.ajax({
     type: "POST",
-    url: "feedback",
+    url: feedback_url,
     data: {'feedback': feedback, 'type': 'feedback_rule'},
   }).always(function( msg ) {
     restore_disagree()
+    if(typeof(jobs[jobid]['feedback'])==='undefined'){
+      jobs[jobid]['feedback']={}
+    }
     jobs[jobid]['feedback'][rule]={'class': 1}
     update_jobs_agree('')
-    show_thanks("Спасибо за отзыв!")
+    show_thanks(I18n.t('jobstat.common.thanks_for_feedback'))
   });
 }
 
@@ -138,15 +101,19 @@ function agree(jobid, rule, mass, text) {
     condition: rule,
     feedback: text ? text : $("#question_" + jobid + '_' + rule).val(),
   }
+  var jid=jobid
   $.ajax({
     type: "POST",
-    url: "feedback",
+    url: feedback_url,
     data: {'feedback': feedback, 'type': 'feedback_rule'},
   }).always(function( msg ) {
     restore_disagree()
-    jobs[jobid]['feedback'][rule]={'class': 0}
+    if(typeof(jobs[jobid]['feedback'])==='undefined'){
+      jobs[jobid]['feedback']={}
+    }
+    jobs[jid]['feedback'][rule]={'class': 0}
     update_jobs_agree('')
-    show_thanks("Спасибо за отзыв!")
+    show_thanks(I18n.t('jobstat.common.thanks_for_feedback'))
   });
 }
 
@@ -187,12 +154,12 @@ function hide_rule(jobid, rule) {
   }
   $.ajax({
     type: "POST",
-    url: "feedback",
+    url: feedback_url,//"feedback",
     data: {'feedback': feedback, 'type': 'hide_rule'},
   }).always(function( msg ) {
     restore_disagree()
     //update_jobs_agree(feedback)
-    show_thanks("Вернуть отображение правила можно на странице со всеми правилами.")
+    show_thanks(I18n.t('jobstat.common.return_on_rules_page'))
   });
   hide_rule_on_page(rule)
 }
@@ -230,7 +197,7 @@ function job_check_clicked(jobid){
     rules_text+="<input type='checkbox' class='disagree_checkbox' data-rule='"+r+"''>"+rules[r]+"</input><br/>"
   }
   if(rules_text==''){
-    rules_text='Нет общих правил!!!'
+    rules_text=I18n.t('jobstat.account_list.index.no_common_rules')
     $('#disagree_button').attr('disabled', true);
   }
   else{
@@ -248,87 +215,60 @@ function multi_job_feedback_start() {
 
 // feedback on "O! I disagree with my tasks valuation!"
 function multi_job_feedback() {
-  // Just start feedback, do preparations
-  // if (feedback_started == false) {
-  //   var row, c, jobid;
-  //   //feedback_started = true;
-  //   // Just prepare feedback - show checkboxes
-  //   $(".job_check").prop('checked',false)
-  //   $(".job_check").show()
-
-  //   // $('#disagree_reason_box').css({
-  //   //   display: 'inline',
-  //   // }).animate();
-
-  //   // $('#disagree_reason').focus()
-  //   // $('#disagree_reason').val('')
+  // all selected, send data!
+  var job_list = [];
+  var rule_list = [];
+  var delimiter = ''
+  $('.job_check').each(function(_, el) {
+    var e = $(el)
+    if (e.prop('checked')) {
+      job_list.push(e.attr('data-job-id'))
+    }
+  })
   
-  //   //$('#disagree_button').text('Отметьте нужные задания и отправьте отзыв').attr('disabled', true);
-  // } else {
-    // all selected, send data!
-    var job_list = [];
-    var rule_list = [];
-    var delimiter = ''
-    $('.job_check').each(function(_, el) {
-      var e = $(el)
-      if (e.prop('checked')) {
-        job_list.push(e.attr('data-job-id'))
-      }
-    })
-    
-    $('.disagree_checkbox').each(function (_,el) {
-      var e = $(el)
-      if (e.prop('checked')) {
-        rule_list.push(e.attr('data-rule'))
-      }
-    })
+  $('.disagree_checkbox').each(function (_,el) {
+    var e = $(el)
+    if (e.prop('checked')) {
+      rule_list.push(e.attr('data-rule'))
+    }
+  })
 
-    var feedback=[]
-    job_list.forEach(function(id){
-      rule_list.forEach(function(rule){
-        feedback.push({
-          'user': current_user,
-          'cluster': jobs[id]['cluster'],
-          'job_id': id,
-          'condition': rule,
-          'task_id': 0,
-          'class': 1,
-          'mass': 1,
-          'feedback': $("#disagree_reason").val(),
-        })
-        if(!jobs[id]['feedback']){
-          jobs[id]['feedback']={}
-        }
-        jobs[id]['feedback'][rule]={'class': 1}
+  var feedback=[]
+  job_list.forEach(function(id){
+    rule_list.forEach(function(rule){
+      feedback.push({
+        'user': current_user,
+        'cluster': jobs[id]['cluster'],
+        'job_id': id,
+        'condition': rule,
+        'task_id': 0,
+        'class': 1,
+        'mass': 1,
+        'feedback': $("#disagree_reason").val(),
       })
+      if(!jobs[id]['feedback']){
+        jobs[id]['feedback']={}
+      }
+      jobs[id]['feedback'][rule]={'class': 1}
     })
-   
+  })
+ 
 
-    // $('#disagree_button').text('Отправляем...');
-    // $('#disagree_button').prop('disabled', true);
-    //feedback_started = false;
-    $.ajax({
-      type: "POST",
-      url: "feedback",
-      data: {'feedback': feedback, 'type': 'multi_jobs'},
-    }).always(function( msg ) {
-      restore_disagree()
-      update_jobs_agree(feedback)
-      show_thanks("Спасибо за отзыв!")
-    });
-  //}
+  $.ajax({
+    type: "POST",
+    url: feedback_url,
+    data: {'feedback': feedback, 'type': 'multi_jobs'},
+  }).always(function( msg ) {
+    restore_disagree()
+    update_jobs_agree(feedback)
+    show_thanks(I18n.t('jobstat.common.thanks_for_feedback'))
+  });
 }
 
 function restore_disagree() {
-    // $('#disagree_reason_box').css({
-    //   display: 'none'
-    // }).animate();
-
     // Now delete checkboxes
     $(".job_check").hide()
-    // $('#disagree_button').text('Жмите тут!');
-    // $('#disagree_button').prop('disabled', false);
-    $('#disagree_rules').text('- Пока не выбраны задачи, поэтому в списке нет правил...')
+    $('#disagree_rules').text(I18n.t('jobstat.common.no_selected_jobs'))
 }
 
 function agree_all() {
@@ -360,17 +300,15 @@ function agree_all() {
     }
   }
 
-  //$('#agree_all').prop('disabled', true);
-
   $.ajax({
     type: "POST",
-    url: "feedback",
+    url: feedback_url,
     data: {'feedback': new_feedback, 'type': 'multi_jobs'},
   }).done(function( msg ) {
-    show_thanks("Спасибо за отзыв!")
+    show_thanks(I18n.t('jobstat.common.thanks_for_feedback'))
     update_jobs_agree(new_feedback)
   }).fail(function( msg ) {
-    show_thanks("Ой, не получилось сохранить Ваш отзыв, попробуйте чуть позже ещё раз его отправить.")
+    show_thanks(I18n.t('jobstat.common.faled_send_try_later'))
     update_jobs_agree(new_feedback)
   });
 }
@@ -388,36 +326,13 @@ function update_jobs_agree(feedback){
       }
     }
   }
-
-
-/*
-  feedback.forEach(function(item){
-    item['job_id'].forEach(function(job) {
-      if(!('feedback' in jobs[job])){
-        jobs[job['feedback']]={}
-      }
-      item['condition'].forEach(function(rule){
-        var id='#af-'+job+'-'+rule
-        $(id).attr('class','agreed-flag') // reset other classes
-        if(item['class']==0) {
-          $(id).addClass(agree_flags[0])
-          jobs[id]['feedback'][rule]={'class':0}
-        }
-        else {
-          $(id).addClass(agree_flags[1])
-          jobs[id]['feedback'][rule]={'class':1}
-        }
-      })
-    })
-  })
-  */
  }
 
 function show_thanks(text){
   var time_to_show=5000;
 
   if(!text) {
-    text="Спасибо за отзыв!"
+    text=I18n.t('jobstat.common.thanks_for_feedback')
   }
 
   $('#thanks_box > .thanks-text').text(text);

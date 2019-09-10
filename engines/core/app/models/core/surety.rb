@@ -1,4 +1,27 @@
 # encoding: utf-8
+# == Schema Information
+#
+# Table name: core_sureties
+#
+#  id             :integer          not null, primary key
+#  boss_full_name :string(255)
+#  boss_position  :string(255)
+#  comment        :string(255)
+#  document       :string(255)
+#  reason         :text
+#  state          :string(255)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  author_id      :integer
+#  changed_by_id  :integer
+#  project_id     :integer
+#
+# Indexes
+#
+#  index_core_sureties_on_author_id      (author_id)
+#  index_core_sureties_on_changed_by_id  (changed_by_id)
+#  index_core_sureties_on_project_id     (project_id)
+#
 
 module Core
   class Surety < ActiveRecord::Base

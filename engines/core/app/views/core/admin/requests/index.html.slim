@@ -15,7 +15,7 @@ div class="page-header"
   = f.form_group do
     = display_all_tag
     = f.submit t("actions.find"), class: "btn btn-primary"
-
+  
 = safe_paginate @requests
 - if @requests.any?
   h4= page_entries_info @requests

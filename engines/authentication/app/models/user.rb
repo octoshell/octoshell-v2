@@ -1,3 +1,38 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                              :integer          not null, primary key
+#  access_state                    :string(255)
+#  activation_state                :string(255)
+#  activation_token                :string(255)
+#  activation_token_expires_at     :datetime
+#  crypted_password                :string(255)
+#  deleted_at                      :datetime
+#  email                           :string(255)      not null
+#  language                        :string
+#  last_activity_at                :datetime
+#  last_login_at                   :datetime
+#  last_login_from_ip_address      :string(255)
+#  last_logout_at                  :datetime
+#  remember_me_token               :string(255)
+#  remember_me_token_expires_at    :datetime
+#  reset_password_email_sent_at    :datetime
+#  reset_password_token            :string(255)
+#  reset_password_token_expires_at :datetime
+#  salt                            :string(255)
+#  created_at                      :datetime
+#  updated_at                      :datetime
+#
+# Indexes
+#
+#  index_users_on_activation_token      (activation_token)
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_last_login_at         (last_login_at)
+#  index_users_on_remember_me_token     (remember_me_token)
+#  index_users_on_reset_password_token  (reset_password_token)
+#
+
 class User < ActiveRecord::Base
   authenticates_with_sorcery!
   validates :password, confirmation: true, length: { minimum: 6 }, on: :create

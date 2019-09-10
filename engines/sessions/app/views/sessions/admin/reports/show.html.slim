@@ -23,16 +23,17 @@ legend = link_to t('.open_project_card'), core.admin_project_path(@report.projec
 - else
   div class="panel"
     h3 #{t('.report_file')}
-    - if @report.materials.present?
+    - if @report.report_materials.any?
       table class="table table-bordered"
         tr
-          th #{t('.report_file_updated')}
-          th #{t('.report_file_size')}
-          th
-        tr
-          td class="col-xs-5" = l @report.updated_at, format: :long
-          td class="col-xs-1" = number_to_human_size(@report.materials.size)
-          td class="col-xs-2" = link_to t('.download_report_file'), @report.materials.url, class: "btn btn-primary"
+        th #{t('.report_file_added')}
+        th #{t('.report_file_size')}
+        th
+        -@report.report_materials.each do |r_m|
+          tr
+            td class="col-xs-5" = l(r_m.updated_at, format: :long)
+            td class="col-xs-1" = number_to_human_size(r_m.materials.size)
+            td class="col-xs-2" = link_to t('.download_report_file'), r_m.materials.url, class: "btn btn-primary"
     - else
       h4 class="text-danger" #{t('.no_report_file')}
 
@@ -51,9 +52,9 @@ legend = link_to t('.open_project_card'), core.admin_project_path(@report.projec
     h3 #{t('.report_evaluation')}
     - if @report.assessing? && (current_user == @report.expert)
       = bootstrap_form_for @report, url: [:admin, @report, :assess], layout: :horizontal do |f|
-        = f.collection_radio_buttons :illustration_points, Sessions::Report::POINT_RANGE, :inspect, :inspect, inline: true
-        = f.collection_radio_buttons :statement_points, Sessions::Report::POINT_RANGE, :inspect, :inspect, inline: true
-        = f.collection_radio_buttons :summary_points, Sessions::Report::POINT_RANGE, :inspect, :inspect, inline: true
+        = f.collection_radio_buttons :illustration_points, form_report_points, :first, :second, inline: true
+        = f.collection_radio_buttons :statement_points, form_report_points, :first, :second, inline: true
+        = f.collection_radio_buttons :summary_points, form_report_points, :first, :second, inline: true
         = f.form_group do
           div class="btn-toolbar"
             = f.submit t('.evaluate')

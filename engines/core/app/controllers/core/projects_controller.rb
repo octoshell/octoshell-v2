@@ -1,5 +1,6 @@
 module Core
   class ProjectsController < Core::ApplicationController
+    before_action :filter_blocked_users, except: :index
     def index
       respond_to do |format|
         format.html do
@@ -87,12 +88,12 @@ module Core
         @project = current_user.owned_projects.find(params[:id])
         @project.invite_member(params.fetch(:member)[:id])
         @project.save
-      rescue ActiveRecord::RecordNotUnique 
-        flash[:alert] = t('flash.duplicated_invite')
+      rescue ActiveRecord::RecordNotUnique
+        flash_message :alert, t('flash.duplicated_invite')
       end
 
       unless @project.errors.empty?
-        flash[:alert] = @project.errors.full_messages.to_sentence
+        flash_message :alert, @project.errors.full_messages.to_sentence
       end
 
       redirect_to @project
@@ -145,7 +146,7 @@ module Core
 
     def resend_invitations
       @project = current_user.owned_projects.find(params[:id])
-      @project.invitations.all.map(&:send_email_to_user)
+      @project.invitations.all.each(&:send_email_to_user_with_save)
       redirect_to @project
     end
 

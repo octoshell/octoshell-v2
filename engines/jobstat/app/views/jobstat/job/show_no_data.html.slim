@@ -1,5 +1,79 @@
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+h1 = t('jobstat.job.show.no-data')
 
+a href='/jobstat/account/list/index'
+  = t('jobstat.job.show.return')
+
+h1 = t('jobstat.job.show.data_on_job', job: @job.drms_job_id)
+
+div class="row"
+  div class="col-md-4"
+    h3 = t('jobstat.job.show.common_info')
+    table class="table table-bordered table-striped"
+      tr
+        td
+          = t('jobstat.job.show.supercomputer')
+        td
+          = @job[:cluster]
+      tr
+        td
+          =t('jobstat.job.show.job_id')
+        td
+          = @job[:drms_job_id]
+      tr
+        td
+          = t('jobstat.job.show.login')
+        td
+          = @job[:login]
+      tr
+        td
+          =t('jobstat.job.show.status')
+        td
+          = @job[:state]
+      tr
+        td
+          = t('jobstat.job.show.partition')
+        td
+          = @job[:partition]
+      tr
+        td
+          =t('jobstat.job.show.cores')
+        td
+          = @job[:num_cores]
+      tr
+        td
+          =t('jobstat.job.show.nodes')
+        td
+          = @job[:num_nodes]
+      tr
+        td
+          =t('jobstat.job.show.queued')
+        td
+          = @job[:submit_time].strftime("%F %T (%Z)")
+      tr
+        td
+          =t('jobstat.job.show.start')
+        td
+          = @job[:start_time].strftime("%F %T (%Z)")
+      tr
+        td
+          =t('jobstat.job.show.end')
+        td
+          = @job[:end_time].strftime("%F %T (%Z)")
+      tr
+        td
+          =t('jobstat.job.show.time')
+        td
+          = number_with_precision(@job.get_duration_hours, :precision => 1)
+      tr
+        td
+          =t('jobstat.job.show.nodes')
+        td
+          = @job[:nodelist].gsub(',',', ')
+
+p
+  =t('jobstat.job.show.command_line', line: raw(@job.command))
+
+script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"
 css:
   .job_metric_low {
     background-color: #ff8080
@@ -13,68 +87,3 @@ css:
     background-color: #80ff80
   }
 
-h1 = "По техническим причинам данные мониторинга для этой задачи остутсвуют - анализ не возможен"
-
-h1 = "Информация о задаче #{@job[:drms_job_id]}"
-
-= @job[:command]
-
-div class="row"
-  div class="col-md-4"
-    h3 = "Общая информация"
-    table class="table table-bordered table-striped"
-      tr
-        td
-          | Cluster
-        td
-          = @job[:cluster]
-      tr
-        td
-          | Job id
-        td
-          = @job[:drms_job_id]
-      tr
-        td
-          | Login
-        td
-          = @job[:login]
-      tr
-        td
-          | State
-        td
-          = @job[:state]
-      tr
-        td
-          | Partition
-        td
-          = @job[:partition]
-      tr
-        td
-          | Num cores
-        td
-          = @job[:num_cores]
-      tr
-        td
-          | Num nodes
-        td
-          = @job[:num_nodes]
-      tr
-        td
-          | Submit time
-        td
-          = @job[:submit_time].strftime("%D %T")
-      tr
-        td
-          | Start time
-        td
-          = @job[:start_time].strftime("%D %T")
-      tr
-        td
-          | End time
-        td
-          = @job[:end_time].strftime("%D %T")
-      tr
-        td
-          | Duration (hours)
-        td
-          = number_with_precision(@job.get_duration_hours, :precision => 1)

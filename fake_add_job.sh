@@ -2,23 +2,32 @@
 cd "$(dirname "$0")"
 
 export HOST="http://localhost:5000"
-export CLUSTER="lomonosov-2"
+export CLUSTER="mytest"
+export ACC='admin_1'
+export PART='test'
 
 LAST_ID=`psql -h localhost -U octo -t new_octoshell2 -c ' select max(drms_job_id) from jobstat_jobs;'`
 
 JOB_ID=$((LAST_ID+1))
+JOB_ID=15
+
+if [ "x$1" != x ]; then
+  post_tags=0
+else
+  post_tags=1
+fi
 
 # echo "last id=$JOB_ID"
 # exit 0
 
 INFO='{
-  "account": "user1_1", 
+  "account": "$ACC", 
   "command": "fake_command", 
   "job_id": '"$JOB_ID"', 
   "nodelist": "n48418", 
   "num_cores": 14, 
   "num_nodes": 1, 
-  "partition": "low_io", 
+  "partition": "$PART", 
   "priority": 4294729060, 
   "state": "RUNNING", 
   "t_end": 1544310112, 
@@ -248,21 +257,23 @@ MON_DATA='[
 echo post info
 curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/info?cluster=$CLUSTER&job_id=$JOB_ID" --data "$INFO"
 
-echo post tags
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/tags?cluster=$CLUSTER&job_id=$JOB_ID" --data "$TAGS"
+if [ $post_tags = 1 ]; then
+  echo post tags
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/tags?cluster=$CLUSTER&job_id=$JOB_ID" --data "$TAGS"
 
-echo post perf
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/performance?cluster=$CLUSTER&job_id=$JOB_ID" --data "$PERF" &
+  echo post perf
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/performance?cluster=$CLUSTER&job_id=$JOB_ID" --data "$PERF" &
 
-echo post monitoring data
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=cpu_user" --data "{\"data\": $MON_DATA}" &
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=loadavg" --data "{\"data\": $MON_DATA}" &
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=gpu_load" --data "{\"data\": $MON_DATA}" &
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=ipc" --data "{\"data\": $MON_DATA}" &
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=ib_rcv_data_mpi" --data "{\"data\": $MON_DATA}" &
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=ib_xmit_data_mpi" --data "{\"data\": $MON_DATA}" &
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=ib_rcv_data_fs" --data "{\"data\": $MON_DATA}" &
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=ib_xmit_data_fs" --data "{\"data\": $MON_DATA}" &
+  echo post monitoring data
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=cpu_user" --data "{\"data\": $MON_DATA}" &
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=loadavg" --data "{\"data\": $MON_DATA}" &
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=gpu_load" --data "{\"data\": $MON_DATA}" &
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=ipc" --data "{\"data\": $MON_DATA}" &
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=ib_rcv_data_mpi" --data "{\"data\": $MON_DATA}" &
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=ib_xmit_data_mpi" --data "{\"data\": $MON_DATA}" &
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=ib_rcv_data_fs" --data "{\"data\": $MON_DATA}" &
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=ib_xmit_data_fs" --data "{\"data\": $MON_DATA}" &
+fi
 
 wait
 

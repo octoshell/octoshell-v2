@@ -1,4 +1,34 @@
 # encoding: utf-8
+# == Schema Information
+#
+# Table name: sessions_reports
+#
+#  id                        :integer          not null, primary key
+#  illustration_points       :integer
+#  materials                 :string(255)
+#  materials_content_type    :string(255)
+#  materials_file_name       :string(255)
+#  materials_file_size       :integer
+#  materials_updated_at      :datetime
+#  state                     :string(255)
+#  statement_points          :integer
+#  submit_denial_description :text
+#  summary_points            :integer
+#  created_at                :datetime
+#  updated_at                :datetime
+#  author_id                 :integer
+#  expert_id                 :integer
+#  project_id                :integer
+#  session_id                :integer
+#  submit_denial_reason_id   :integer
+#
+# Indexes
+#
+#  index_sessions_reports_on_author_id   (author_id)
+#  index_sessions_reports_on_expert_id   (expert_id)
+#  index_sessions_reports_on_project_id  (project_id)
+#  index_sessions_reports_on_session_id  (session_id)
+#
 
 # Отчет о проделанной работе по проекту.
 module Sessions
@@ -6,21 +36,22 @@ module Sessions
 
     POINT_RANGE = (0..5)
     belongs_to :session
-
     belongs_to :project, class_name: "Core::Project", foreign_key: :project_id
     belongs_to :author, class_name: "::User", foreign_key: :author_id
-
     belongs_to :submit_denial_reason, class_name: "Sessions::ReportSubmitDenialReason", foreign_key: :submit_denial_reason_id
-
     belongs_to :expert, class_name: "::User"
     has_many :replies, class_name: "Sessions::ReportReply"
+    has_many :report_materials, inverse_of: :report
 
     mount_uploader :materials, ReportMaterialsUploader
     mount_uploader :export_materials, ReportExportMaterialsUploader, mount_on: :materials_file_name
 
-    validates :materials, presence: true, if: :submitted?
-    validates :materials, file_size: { maximum: 20.megabytes.to_i }, if: :submitted?
+    # accepts_nested_attributes_for :report_materials
+
+    # validates :old_materials, presence: true, if: :submitted?
+    # validates :old_materials, file_size: { maximum: 20.megabytes.to_i }, if: :submitted?
     validates :submit_denial_description, presence: true, if: -> { submit_denial_reason.present? }
+    validates_associated :report_materials
 
     # after_create :notify_about_new_report
 
@@ -49,7 +80,7 @@ module Sessions
       end
 
       event :pick do
-        transitions :from => [:pending, :accepted, :submitted, :exceeded, :rejected], :to => :assessing
+        transitions :from => [:pending, :accepted, :submitted, :exceeded, :rejected], :to => :assessing, :after => :notify_about_pick
       end
 
       event :assess do
@@ -65,13 +96,22 @@ module Sessions
       end
 
       event :resubmit do
-        transitions :from => :rejected, :to => :assessing
+        transitions :from => :rejected, :to => :assessing, after: :notify_about_resubmit
       end
 
       event :postdate do
         transitions :from => [:pending, :accepted, :rejected], :to => :exceeded, :after => :block_project
       end
     end
+
+    def report_material=(hash)
+      report_materials.new hash
+    end
+
+    # def materials
+    #   nil
+    #   # ReportMaterial.where(report_id: id).last.&materials
+    # end
 
     def to_s
       %{Отчет по проекту "#{project.title}"}

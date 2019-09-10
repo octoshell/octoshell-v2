@@ -2,5 +2,5 @@
   div class="alert alert-danger"
     = error
 select class="form-control" name="fields[#{field.id}]"
-  - field.collection_values.each do |value|
+  - field.localized_collection_values.each do |value|
     option selected="#{value}" = value

@@ -1,0 +1,7 @@
+1. execute:
+procsd create --dir=/var/www/octoshell2 --user=octo --path=/home/octo/.rbenv/shims:/home/octo/.rbenv/bin:/home/octo/.rbenv/libexec:/usr/bin:/bin:/usr/sbin:/sbin
+
+2. copy files from /etc/systemd/system/octoshell2*
+
+3. edit files, adding 'cd current; ' to all Exec instructions.
+

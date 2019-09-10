@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: core_quota_kinds
+#
+#  id             :integer          not null, primary key
+#  name_ru        :string(255)
+#  measurement_ru :string(255)
+#  name_en        :string
+#  measurement_en :string
+#
+
 module Core
   class QuotaKind < ActiveRecord::Base
 

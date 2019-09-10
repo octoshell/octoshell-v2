@@ -10,11 +10,9 @@ class Authentication::ActivationsController < Authentication::ApplicationControl
       @user.send_activation_needed_email!
       redirect_to new_session_path, notice: t("authentication.flash.activation_instructions_are_sent")
     else
-      flash[:alert] = if @user
-                        t("authentication.flash.user_is_already_activated")
-                      else
-                        t("authentication.flash.user_is_not_registered")
-                      end
+      flash_message :alert, (@user ?
+                             t("authentication.flash.user_is_already_activated") :
+                             t("authentication.flash.user_is_not_registered"))
       render :new
     end
   end

@@ -1,4 +1,29 @@
 # encoding: utf-8
+# == Schema Information
+#
+# Table name: core_project_cards
+#
+#  id           :integer          not null, primary key
+#  driver       :text
+#  en_driver    :text
+#  en_impact    :text
+#  en_name      :text
+#  en_objective :text
+#  en_strategy  :text
+#  en_usage     :text
+#  impact       :text
+#  name         :text
+#  objective    :text
+#  strategy     :text
+#  usage        :text
+#  created_at   :datetime
+#  updated_at   :datetime
+#  project_id   :integer
+#
+# Indexes
+#
+#  index_core_project_cards_on_project_id  (project_id)
+#
 
 # Карточка проекта
 module Core

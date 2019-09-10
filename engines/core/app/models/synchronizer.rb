@@ -11,7 +11,7 @@ class Synchronizer
         @cluster.admin_login,
         keys: [mock_ssh_key_path(@cluster.private_key)])
     rescue => e
-      logger.info "Synchronizer error: #{e.message} (access=#{access})."
+      access.log "Synchronizer error: #{e.message} (access=#{access})."
       nil
     end
   end

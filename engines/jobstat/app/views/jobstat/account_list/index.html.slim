@@ -4,117 +4,77 @@
 - group_plus = @rules_plus['groups']
 - def_icon = {'icon'=>'far fa-exclamation-triangle', 'color'=>'color-regular'}
 
-javascript:
-  var jobs=#{{@jobs_plus.to_json}}
-  var jobs_feedback=#{{@jobs_feedback.to_json}}
-  var current_user=#{@current_user.id}
-  var agree_flags=#{{@agree_flags.to_json}}
-  var rules_plus=#{{@rules_plus.to_json}}
-  var filters=#{{@filters.to_json}}
-  var emails=#{{@emails.to_json}}
+h3 id="intro-step1"
+  = t('.finished_tasks')
 
-  var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
-  // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
-  $(function(){
-    var len=filters.length;
-    if (len>0) {
-      $('#hidden_count').text('Скрыто проблем с производительностью: '+len)
-    }
-    else {
-      $('#hidden_count').text('Нет скрытых проблем с производительностью.')
-    }
-    // mark hidden rules
-    filters.forEach(function(rule){
-      $("#btn-hide-"+rule).addClass("tinted")
-    })
-    // mark disabled email notifications
-    emails.forEach(function(rule){
-      $("#btn-email-"+rule).addClass("tinted")
-    })
-  });
-
-h3 Информация о завершенных задачах
-
-p На данной странице вы можете посмотреть информацию о ваших задачах, а также оценить эффективность их выполнения. Для отображения только интересующих задач укажите ниже требуемые фильтры.
+p = t('.intro_start')
 
 = render "form"
 
 div class='thanks' id='thanks_box'
   div &nbsp;
   div class="thanks-text"
-    | Спасибо!
+    = t('.thank_you')
   div &nbsp;
 
 - if @notice
   p style = 'color:#FF0000;' = @notice
 
-  /button onClick="$('#agree_all_confirmation').addClass('target')" id='agree_all'
-    | Я согласен с оценками моих запусков
-  /div class="octo-popup" id="agree_all_confirmation"
-    /div class="content"
-    form onSubmit="$('#agree_all_confirmation').removeClass('target');agree_all(); return false"
-      div class="centered"
-        | Все замечания без оценок по Вашим запускам будут отмечены как 
-        strong "согласен с оценкой"
-      div class="centered"
-        button class="btn-info" type="submit"
-          | Да, я согласен со всеми оценками!
-        button onClick="$('#agree_all_confirmation').removeClass('target'); return false"
-          | Передумал
-  /a class="octo-close-popup" onClick="$('#agree_all_confirmation').removeClass('target'); return false"
-
-  /| Не согласны с оценкой запусков?
-  /div id='disagree_reason_box' style="display: none; width: 100%" class="feedback_div"
-    br
-    | Выберите задачи в списке ниже (левый столбец), и правила, которые сработали неверно (в списке ниже):
-    div style="width: 100%" id="disagree_rules" class="feedback_list"
-      | - Пока не выбраны задачи, поэтому в списке нет правил...
-    br
-    | Поясните, почему Вы не согласны с этими правилами?
-    input type='text' id='disagree_reason' style="right: 0px; width: 99%"
-    br
-  /button id="disagree_button" onClick="multi_job_feedback()" alt="Не согласен!"
-    | Жмите тут!
 div
-  br
-  p 
-    | В столбце "Найденные проблемы" указаны потенциальные проблемы с эффективностью, обнаруженные для данной задачи. Чтобы посмотреть их краткое описание, скрыть их видимость или прокомментировать их применимость к задаче, необходимо нажать на значок 
+  p id="intro-step3"
+    |
+  /p
+    = t('.info_1')
+    | &nbsp;
     i class="fas fa-bars"
-    | . Значок соответствует типу найденной потенциальной проблемы (неэффективность работы с MPI, низкая локальность обращений в память и т.д.). Цвет обозначает ее критичность (красный – радикальное снижение эффективности или программа работает некорректно, черный – заметное снижение эффективности, зеленый – проблем не найдено).
-  p Подробное описание найденных потенциальных проблем с эффективностью, а также другая информация о производительности на выбранной задаче, приведены на отдельной странице. Чтобы попасть на эту страницу, необходимо нажать на ID соответствующей задачи.
-  p 
-    | Посмотреть список всех потенциальных проблем с эффективностью, настроить их отображение или содержание, а также предложить свое новое правило для обнаружения проблем с эффективностью можно на 
-    a href='all_rules' этой странице
+    | &nbsp;
+    = t('.info_2')
+  /p = t('.info_3')
+  /p 
+    = t('.info_4')
+    a href='all_rules' = t('.this_page')
     |.
-  p 
-    | Есть общие пожелания или замечания? Отправьте 
-    a href='mailto://feedback-octoshell@parallel.ru' e-mail
-    | . А лучше - напишите 
-    a href="/support/tickets/new" здесь.
+  /p 
+    = t('.any_questions')
+    /a href='mailto://feedback-octoshell@parallel.ru' e-mail
+    /= t('.ticket_better')
+    a href="/support/tickets/new" = t('.here')
 div
-  button onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
-    | Я не согласен с некоторыми оценками...
+  button class="btn btn-default" onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
+      = t('.i_dont_agree')
+  |  
+  | &nbsp;&nbsp;&nbsp;
+  button class="btn btn-default" onClick="window.open('all_rules','_self')"
+      = t('.rules_list')
+  |  
+  | &nbsp;&nbsp;&nbsp;
+  button class="btn btn-default" onClick="window.open('/support/tickets/new')"
+      = t('.questions')
+  |  
+  | &nbsp;&nbsp;&nbsp;
+  button class="btn btn-default" onClick="window.open('/wiki/pages/27-efficiency')"
+      = t('.support')
+  |  
+  | &nbsp;&nbsp;&nbsp;
   div id="mass_notok" class='roll-down col-12 gray-round-background'
-    p Выберите нужные запуски галочками в левом столбце.
-      В области ниже будут показаны правила, общие для выбранных запусков.
-      Выберите все правила, с которыми Вы не согласны и отправьте нам отзыв.
+    p = t('.disagree_info')
 
     div id="disagree_rules" class="feedback_list col-12"
-      | - Пока не выбраны задачи, поэтому в списке нет правил...
+      = t('.no_rules')
 
     button onclick="$('#mass_notok_confirm').addClass('target')"
-      | Отправить отзыв
+      = t('.send_feedback')
     button onclick="$('#mass_notok').removeClass('target'); restore_disagree();"
-      | Передумал оставлять отзыв
+      = t('.dont_send_feedback')
 
     div id="mass_notok_confirm" class="octo-popup"
-      | Поясните, почему Вы не согласны с этими правилами?
+      = t('jobstat.common.why_dont_agree')
       input type='text' id='disagree_reason' style="right: 0px; width: 99%"
       div class="centered"
         button class="btn-info" onClick="multi_job_feedback(); $('#mass_notok').removeClass('target'); $('#mass_agree').removeClass('target'); $('#mass_notok_confirm').removeClass('target')"
-          | Отправить!
+          = t('jobstat.common.send')
         button class="btn-info" onClick="$('#mass_notok_confirm').removeClass('target');"
-          | Передумал
+          = t('jobstat.common.not_send')
     a class="octo-close-popup" onClick="$('#mass_notok_confirm').removeClass('target'); return false"
 
 
@@ -126,17 +86,23 @@ div class="perf-table"
     a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="1" duration
     | &nbsp;
     a class="btn btn-info sorting" data-column="8" data-direction="0" data-item="2" core*hours
-  input type="checkbox" class="hide-login-data" id="hide-login-checkbox" checked=1
-  label for="hide-login-checkbox" Скрыть логин/раздел
   br
+  input type="checkbox" class="hide-login-data" id="hide-login-checkbox" checked=1
+  label for="hide-login-checkbox" = t('.hide_login')
+  |  
+  | &nbsp;
+  | &nbsp;
   input type="checkbox" class="hide-perf-data" id="hide-perf-checkbox"
-  label for="hide-perf-checkbox" Скрыть данные производительности
+  label for="hide-perf-checkbox" = t('.hide_performance')
 
   h3
     - if @total_count==0
-      | Нет задач с такими параметрами...
+      = t('.no_such_tasks')
     - else
-      | Показаны задачи: #{@params[:offset]}..#{@params[:offset].to_i + @shown} из #{@total_count}
+      = t('.shown_tasks')
+      | #{@params[:offset]}..#{@params[:offset].to_i + @shown}
+      = t('.of')
+      | #{@total_count}
   p id="hidden_count"
   table
     tr
@@ -147,72 +113,77 @@ div class="perf-table"
       td
         - if @jobs.length == 100
           a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
+
   table id="jobs" class="table table-bordered tablesorter-default"
     thead
-      tr
+      tr id="table-header"
         th data-sorter="false"
           p
             |
         th data-sorter="false"
           p title="список потенциальных(sic!) проблем, возникших при работе приложения"
-            | Найденные проблемы
+            = t('.problems_found')
         th
           p title="номер задачи в менеджере ресурсов (slurm)"
-            | ID задачи
+            = t('.task_id')
         th class="login-data"
-          p title="логин, под которым было запущено приложение"
-            | Логин
+          p title="#{t('.login_info')}"
+            =t('.login')
         th class="login-data"
-          p title="раздел суперкомпьютера, на котором было выполнено приложение"
-            | Раздел
+          p title="#{t('.partition_info')}"
+            =t('.partition')
         th
-          p title="время начала счёта"
-            | Начало счета
+          p title="#{t('.start_info')}"
+            =t('.start_time')
         th
-          p title="время окончания счёта"
-            | Конец счета
+          p title="#{t('.end_info')}"
+            = t('.end_time')
         th class="icon-x2-width"
-          p title="статус завершения расчёта"
-            | Статус
+          p title="#{t('.status_info')}"
+            = t('.status')
         th
-          p title="в штуках"
-            | Число узлов
+          p title="#{t('.nodes_info')}"
+            = t('.nodes')
         th
-          p title="время в часах"
-            | Время счета (часы)
+          p title="#{t('.time_info')}"
+            = t('.time')
         th
-          p title="произведение числа занятых ядер процессора на время расчёта<br>все ядра одного узла считаются занятыми даже если на них не было реального счёта"
-            | Размер задачи (ЦПУ-часы)
+          p title="#{t('.task_size_info')}"
+            = t('.task_size')
         th class="perf-data"
-          p title="в процентах от полной загрузки"
-            | Загрузка ЦПУ
+          p title="#{t('.cpu_info')}"
+            = t('.cpu_load')
         th class="perf-data"
-          p title="в процентах от полной загрузки"
-            | Загрузка ГПУ
+          p title="#{t('.gpu_info')}"
+            =t('.gpu_load')
         th class="perf-data"
-          p title="среднее число активных процессов"
-            | Load average
+          p title="#{t('.la_info')}"
+            = t('jobstat.common.la')
         th class="perf-data"
-          p title="среднее число инструкций, выполненных за такт"
-            | IPC
+          p title="#{t('.mpi_rcv_info')}"
+            = t('.mpi_rcv')
         th class="perf-data"
-          p title="в мегабайтах/сек"
-            | Получено байт по MPI (МБ/с)
-        th class="perf-data"
-          p title="в мегабайтах/сек"
-            | Передано байт по MPI (МБ/с)
-    - index=1
+          p title="mpi_send_info"
+            = t('.mpi_send')
+    - index=0
     - @jobs.each do |job|
       - index+=1
       - job_performance = job.get_performance
       - job_ranking = job.get_ranking
-      - #job_cond = job.get_rules @current_user #@jobs_plus[job.drms_job_id]['rules']
-      - job_cond = @jobs_plus[job.drms_job_id]['rules'].keys
-      - perf_data_present=!job_performance[:cpu_user].nil?
-      tr id="job_row_#{job.drms_job_id}" data-jobid="#{job.drms_job_id}" data-info-state="#{perf_data_present ? 0 : -1}"
-        td
+      - if @fake_data==0
+        - #job_cond = job.get_rules @current_user #@jobs_plus[job.drms_job_id]['rules']
+        - job_cond = @jobs_plus[job.drms_job_id]['rules'].keys
+        - perf_data_present=!job_performance[:cpu_user].nil?
+        - row_id = job.drms_job_id
+      - else
+        - #job_cond = job.get_rules @current_user #@jobs_plus[job.drms_job_id]['rules']
+        - job_cond = @jobs_plus[job.drms_job_id]['rules'].keys #['rule_anomaly']
+        - perf_data_present = true
+        - row_id = "fake_#{job.drms_job_id}"
+      tr id="job_row_#{row_id}" data-jobid="#{job.drms_job_id}" data-info-state="#{perf_data_present ? 0 : -1}"
+        td id=("fake_menu" if @fake_data!=0 && index==1)
           input type="checkbox" class="job_check" style="display: none;" data-job-id="#{job.drms_job_id}" onChange="job_check_clicked(#{job.drms_job_id})"
-          a class="red-on-hover" onClick="$('#job_info_#{index}').addClass('target')" title="Подробнее о правилах, скрыть/прокомментировать правила"
+          a class="red-on-hover" onClick="$('#job_info_#{index}').addClass('target')" title="#{t('.rules_info')}" data-disable-interaction="1"
             i class="fas fa-bars"
           // feedback dropdown window
           div id="job_info_#{index}" class="octo-popup"
@@ -223,22 +194,22 @@ div class="perf-table"
                   div class="cond-div #{@filters.include?(cond) ? 'hidden' : 'visible'}" data-rule-div="#{cond}"
                     // current feedback icon
                     - feedback=@jobs_plus[job.drms_job_id]['feedback']
-                    i id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[feedback.fetch(cond,99)]}"
+                    - flag_index = feedback.fetch('klass',99)
+                    i id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
                     /'fa-ok agreed-flag'
                     | &nbsp;
                     
                     // "hide rule" button
-                    button class="btn-danger" onClick="popup_show('hide#{job.drms_job_id}_#{cond}','question_hide#{job.drms_job_id}_#{cond}');" title="Скрыть правило"
+                    button class="btn-danger" onClick="popup_show('hide#{job.drms_job_id}_#{cond}','question_hide#{job.drms_job_id}_#{cond}');" title="#{t('.hide_rule_button')}" id=("fake_hide" if @fake_data!=0) data-disable-interaction="1"
                       i class="far fa-bell-slash"
                     | &nbsp; 
 
                     // "I disagree with rule" button
-                    button class="btn-warning disagree-button" onClick="popup_show('disagree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="Не согласен!"
+                    button class="btn-warning disagree-button" onClick="popup_show('disagree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="#{t('.not_agree_button')}" id=("fake_not_ok" if @fake_data!=0) data-disable-interaction="1"
                       i class="#{@agree_flags[1]}"
-                      /"far fa-angry"
                     | &nbsp; 
                     
-                    button class="btn-warning" onClick="popup_show('agree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="Согласен с оценкой."
+                    button class="btn-warning" onClick="popup_show('agree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="#{t('jobstat.common.agree_button')}" id=("fake_hide" if @fake_ok!=0) data-disable-interaction="1"
                       i class="#{@agree_flags[0]}"
                     | &nbsp; 
                     
@@ -246,35 +217,23 @@ div class="perf-table"
                     - rule = @rules_plus['rules'].fetch(cond, nil)
                     - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
                     a href="all_rules#go-#{cond}"
-                      i class="em15 fa-fw align-left inline #{icon['icon']} #{icon['color']}" title="Перейти к описанию правила"
+                      i class="em15 fa-fw align-left inline #{icon['icon']} #{icon['color']}" title="#{t('.rule_descr')}"
                     | &nbsp; 
 
-                    = @rules_plus['rules'].fetch(cond,{}).fetch('description','Ой, у нас тут ошибка с описанием правила, сообщите нам об этом, пожалуйста.')
-
-                    // agree/disagree one rule dialog
-                    /div class="octo-popup2 container" id="vote-#{job.drms_job_id}-#{cond}"
-                      a class="btn" onClick="agree('#{job.drms_job_id}','#{cond}');$('#vote-#{job.drms_job_id}-#{cond}').removeClass('target')"
-                        i class="far fa-thumbs-up agreed-flag"
-                        | Согласен с правилом!
-                      br
-                      a class="btn" onClick="disagree('#{job.drms_job_id}','#{cond}');$('#vote-#{job.drms_job_id}-#{cond}').removeClass('target')"
-                        i class="far fa-thumbs-down agreed-flag"
-                        | Не согласен с правилом!
-                      br
-                    /a class="octo-close-popup2" onClick="$('#vote-#{job.drms_job_id}-#{cond}').removeClass('target')"
+                    = @rules_plus['rules'].fetch(cond,{}).fetch('description',t('.rule_error'))
 
                     // "why hide?" dialog
                     div class="octo-popup2 container" id="popup_hide#{job.drms_job_id}_#{cond}"
                         /div class="content container"
                         form onSubmit="popup_hide('hide#{job.drms_job_id}_#{cond}');hide_rule(#{job.drms_job_id},'#{cond}'); return false;"
                           div class="centered"
-                            | Это правило будет скрыто во всех заданиях, в том числе будущих. Поясните, почему Вы хотите скрыть его?
+                            = t('.why_hide')
                           input type="text" id="question_hide#{job.drms_job_id}_#{cond}" class="fullwidth"
                           div class="centered col-12"
                             button class="btn-info" type="submit"
-                              | Отправить!
+                              = t('.send')
                             button class="btn-info" onClick="return popup_hide('hide#{job.drms_job_id}_#{cond}');"
-                              | Передумал
+                              = t('.not_send')
                     a class="octo-close-popup2" onClick="return popup_hide('hide#{job.drms_job_id}_#{cond}');"
 
 
@@ -282,13 +241,13 @@ div class="perf-table"
                     div class="octo-popup2 container" id="popup_disagree#{job.drms_job_id}_#{cond}"
                       form onSubmit="popup_hide('disagree#{job.drms_job_id}_#{cond}');disagree('#{job.drms_job_id}','#{cond}',0); return false;"
                         div class="centered"
-                          | Поясните, почему Вы не согласны с оценкой правила?
+                          = t('.why_disagree')
                         input type="text" id="question_#{job.drms_job_id}_#{cond}" class="fullwidth"
                         div class="centered"
                           button class="btn-info" type="submit"
-                            | Отправить!
+                            = t('.send')
                           button class="btn-info" onClick="return popup_hide('disagree#{job.drms_job_id}_#{cond}')"
-                            | Передумал
+                            = t('.not_send')
                     a class="octo-close-popup2" onClick="return popup_hide('disagree#{job.drms_job_id}_#{cond}')"
 
                     // 'Agree' dialog
@@ -296,21 +255,25 @@ div class="perf-table"
                       form onSubmit="popup_hide('agree#{job.drms_job_id}_#{cond}'); agree('#{job.drms_job_id}','#{cond}',0,''); return false;"
                         div class="centered"
                           button class="btn-info" type="submit"
-                            | Да, я согласен с этим правилом для этой задачи.
+                            = t('jobstat.common.agree_rule')
                           button class="btn-info" onClick="return popup_hide('agree#{job.drms_job_id}_#{cond}')"
-                            | Передумал
+                            = t('jobstat.common.not_send')
                     a class="octo-close-popup2" onClick="return popup_hide('agree#{job.drms_job_id}_#{cond}')"
               - else
                 i class="em2 fas fa-fw fa-check color-green"
-                | Всё в порядке, замечаний нет!
+                = t('.no_notices')
             - else
               p 
-                | Нет данных о задаче :(
+                = t('.no_task_info')
           a class="octo-close-popup" onClick="$('#job_info_#{index}').removeClass('target')"
-        td
+        td id=("fake_cond" if @fake_data!=0 && index==1) data-disable-interaction="1"
+          /- if @fake_data==1
+            a href="#" class="em12 visible"
+              i class="align-left fa fa-times-circle color-red inline cond-div" title="#{t('.anomaly_task_info')}" data-rule-div="rule_anomaly"
+            |  
           - if perf_data_present
             - if job_cond.size > 0
-              - hidden_count=0
+              - hidden_count = (@fake_data==0 ? 0 : 2)
               - job_cond.each do |cond|
                 - rule = @rules_plus['rules'].fetch(cond, nil)
                 - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
@@ -319,28 +282,27 @@ div class="perf-table"
                   i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{@rules_plus['rules'].fetch(cond,{}).fetch('description','...')}" data-rule-div="#{cond}"
                 |  
               - if hidden_count>0
-                - hidden=@jobs_plus[job.drms_job_id]['filtered']
-                span class="gray-text hidden_rules_count" data-id="#{job.drms_job_id}" title="Число скрытых правил" +#{hidden}
+                - hidden = @jobs_plus[job.drms_job_id]['filtered']
+                span class="gray-text hidden_rules_count" data-id="#{job.drms_job_id}" title="#{t('.hidden_count')}" +#{@fake_data==0 ? hidden : 2}
             - else
               /= image_tag "ok.png", size: "20", border: 2
-              i class="fas fa-fw fa-check em12 color-green" title="Всё в порядке, замечаний нет!"
+              i class="fas fa-fw fa-check em12 color-green" title="#{t('.no_marks')}"
           - else
             p 
-              | Нет данных...
-        td
-          - d="Подробнее про этот запуск\nИмя задачи: #{job.get_command}"
+              = t('.no_info')
+        td id=("fake_id" if (index==1 && @fake_data!=0))
+          - d="#{t('.more_task_info')} #{job.get_command}\nУзлы: #{job.nodelist}"
           p title="#{d}"
-            = link_to(job.drms_job_id, job)
+            i class="fa fa-hand-point-right gray-text"
+            | &nbsp;
+            = @fake_data==0 ? link_to(job.drms_job_id, job) : job.drms_job_id
         td class="login-data" = job.login
         td class="login-data" = job.partition
         td = job.start_time.strftime('%F %T')
         td = job.end_time.strftime('%F %T')
         td class="task_state_#{job.state} centered"
-          /i class="em15 #{@finish_states.fetch(job.state, 'fas fa-meh-blank')}" title="#{job.state}"
           = job.state.downcase
         td
-          / class="sorter-metrics1"
-          /| #{job.num_nodes}/#{number_with_precision(job.get_duration_hours, :precision => 1)}/#{number_with_precision(job.get_cpuh, :precision => 1)}
           = job.num_nodes
         td
           = number_with_precision(job.get_duration_hours, :precision => 1)
@@ -356,8 +318,6 @@ div class="perf-table"
           i class="icon-signal-#{stars.to_i} em2 centered" data-stars="#{stars}"
           br
           = number_with_precision(job.get_cpuh, :precision => 1)
-          /== '<i class="fas fa-star"></i>' * stars.to_i
-          /== '<i class="fas fa-star-half-alt"></i>' * (stars-stars.to_i > 0.5 ? 1 : 0)
 
         td class="perf-data job_metric_#{job_ranking[:cpu_user]}"
           = number_with_precision(job_performance[:cpu_user], :precision => 1)
@@ -367,9 +327,6 @@ div class="perf-table"
 
         td class="perf-data job_metric_#{job_ranking[:loadavg]}"
           = number_with_precision(job_performance[:loadavg], :precision => 1)
-
-        td class="perf-data job_metric_#{job_ranking[:ipc]}"
-          = number_with_precision(job_performance[:ipc] && job_performance[:ipc], :precision => 2)
 
         td class="perf-data job_metric_#{job_ranking[:ib_rcv_data_mpi]}"
           = number_with_precision(job_performance[:ib_rcv_data_mpi], :precision => 1)
@@ -386,3 +343,137 @@ table
     td
       - if @jobs.length == 100
         a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
+
+button onclick="startIntro()" id="intro-finish"
+  = t('.intro_tour')
+
+javascript:
+  var jobs=#{{@jobs_plus.to_json}};
+  var jobs_feedback=#{{@jobs_feedback.to_json}};
+  var current_user=#{@current_user.id};
+  var agree_flags=#{{@agree_flags.to_json}};
+  var rules_plus=#{{@rules_plus.to_json}};
+  var filters=#{{@filters.to_json}};
+  var emails=#{{@emails.to_json}};
+  var intro_finished=false;
+  var feedback_url='#{{url_for ["account_list","feedback"]}}';
+
+  var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
+  var intro_js_object;
+  var start_intro = #{{@start_intro}};
+  var fake_data = #{{@fake_data}};
+
+  var intro_steps=[
+        {
+          element: '#intro-step1',
+          intro: '#{{t(".intro-step1")}}',
+        },
+        {
+          element: '#intro-step2',
+          intro: '#{{t(".intro-step2")}}',
+          position: 'bottom',
+        },
+        {
+          element: '#intro-step3',
+          intro: '#{{t(".intro-step3")}}',
+        },
+        {
+          element: '#table-header', //'#job_row_fake_1',
+          intro: '#{{t(".intro-step4")}}',
+        },
+        {
+          element: '#fake_cond',
+          intro: '#{{t(".intro-step5")}}',
+        },
+        {
+          element: '#fake_menu',
+          intro: '#{{t(".intro-step6a")}}#{{@agree_flags[1]}}#{{t(".intro-step6b")}}#{{@agree_flags[0]}}#{{t(".intro-step6c")}}',
+        },
+        {
+          element: '#fake_id',
+          intro: '#{{t(".intro-step7")}}',
+        },
+        {
+          element: '#intro-finish',
+          intro: '#{{t(".intro-finish")}}',
+        },
+      ]
+
+
+
+  // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
+  $(function(){
+    var len=filters.length;
+    if (len>0) {
+      $('#hidden_count').text("#{{t('.hidden_count_perf')}}"+len)
+    }
+    else {
+      $('#hidden_count').text('#{{t(".no_perf_problems")}}')
+    }
+    // mark hidden rules
+    filters.forEach(function(rule){
+      $("#btn-hide-"+rule).addClass("tinted")
+    })
+    // mark disabled email notifications
+    emails.forEach(function(rule){
+      $("#btn-email-"+rule).addClass("tinted")
+    })
+
+    if(start_intro>0){
+      startIntro(1);
+    }
+    else if (fake_data>=1){
+      startIntro(4);
+    }
+    $("#_fake_data").val(#{@params[:fake_data].to_i > 0 ? 1 : 0});
+  });
+
+  function intro_change(new_element){
+    var id=$(new_element).attr('id');
+    var fake=$('#_fake_data').val()
+
+    if(id=='intro-step3'){
+      if(parseInt(fake)==0){
+        $('#_fake_data').val("1");
+        $('#intro-step2 > form').submit();
+        return true;
+      }
+    }
+    else if(id=='fake_cond'){
+      $('#job_info_1').removeClass('target')
+      intro_finished = true
+    }
+    else {
+      $('#_fake_data').val("0");
+    }
+  }
+
+  function startIntro(startStep){
+    var intro = introJs();
+    intro_js_object=intro;
+    var step3text;
+    var steps=[]
+
+    if(startStep==undefined){
+      startStep=1
+    }
+
+    intro.onbeforechange(intro_change)
+    .setOptions({
+      steps: intro_steps
+    })
+    .onbeforeexit(function () {
+      if(intro_finished){
+        window.open("#{{url_for(action: 'index', controller: 'account_list',only_path: false)}}","_self")
+        return true;
+      }
+      var answer=confirm("#{{t('.finish_tour')}}");
+      if(answer){
+        $('#_fake_data').val(0)
+        $('#start_time').val('')
+        $('#end_time').val('')
+        window.open("#{{url_for(action: 'index', controller: 'account_list',only_path: false, protocol: 'https')}}","_self")
+      }
+      return answer;
+    }).start().goToStepNumber(startStep);
+  }

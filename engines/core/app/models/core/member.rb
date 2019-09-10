@@ -1,3 +1,29 @@
+# == Schema Information
+#
+# Table name: core_members
+#
+#  id                         :integer          not null, primary key
+#  login                      :string(255)
+#  owner                      :boolean          default(FALSE)
+#  project_access_state       :string(255)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  organization_department_id :integer
+#  organization_id            :integer
+#  project_id                 :integer          not null
+#  user_id                    :integer          not null
+#
+# Indexes
+#
+#  index_core_members_on_organization_id                   (organization_id)
+#  index_core_members_on_owner_and_user_id_and_project_id  (owner,user_id,project_id)
+#  index_core_members_on_project_access_state              (project_access_state)
+#  index_core_members_on_project_id                        (project_id)
+#  index_core_members_on_user_id                           (user_id)
+#  index_core_members_on_user_id_and_owner                 (user_id,owner)
+#  index_core_members_on_user_id_and_project_id            (user_id,project_id) UNIQUE
+#
+
 module Core
   class Member < ActiveRecord::Base
 

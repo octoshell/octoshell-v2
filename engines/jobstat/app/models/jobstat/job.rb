@@ -1,3 +1,35 @@
+# == Schema Information
+#
+# Table name: jobstat_jobs
+#
+#  id           :integer          not null, primary key
+#  cluster      :string(32)
+#  command      :string(1024)
+#  end_time     :datetime
+#  login        :string(32)
+#  nodelist     :text
+#  num_cores    :integer
+#  num_nodes    :integer
+#  partition    :string(32)
+#  start_time   :datetime
+#  state        :string(32)
+#  submit_time  :datetime
+#  timelimit    :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  drms_job_id  :integer
+#  drms_task_id :integer
+#
+# Indexes
+#
+#  index_jobstat_jobs_on_end_time     (end_time)
+#  index_jobstat_jobs_on_login        (login)
+#  index_jobstat_jobs_on_partition    (partition)
+#  index_jobstat_jobs_on_start_time   (start_time)
+#  index_jobstat_jobs_on_state        (state)
+#  index_jobstat_jobs_on_submit_time  (submit_time)
+#
+
 require 'yaml/store'
 # require "uri"
 # require "net/http"
@@ -70,27 +102,22 @@ module Jobstat
     def get_ranking
       performance = get_performance
       
+      low_str = 'low'
+      average_str = 'average'
+      high_str = 'high'
+
       {
-        cpu_user: get_one_rank(performance[:cpu_user], 'low', 20, 'average', 80, 'good'),
-        # get_cpu_user_ranking(performance[:cpu_user]),
-        instructions: get_one_rank(performance[:instructions], 'low', 100000000, 'average', 400000000, 'good'),
-        # get_instructions_ranking(performance[:instructions]),
-        gpu_load: get_one_rank(performance[:gpu_load], 'low', 20, 'average', 80, 'good'),
-        # get_gpu_load_ranking(performance[:gpu_load]),
+        cpu_user: get_one_rank(performance[:cpu_user], low_str, 20, average_str, 80, high_str),
+        instructions: get_one_rank(performance[:instructions], low_str, 100000000, average_str, 400000000, high_str),
+        gpu_load: get_one_rank(performance[:gpu_load], low_str, 20, average_str, 80, high_str),
         loadavg: (cluster=='lomonosov-1' ?
-          get_one_rank(performance[:loadavg], 'low', 2, 'average', 7, 'good', 15, 'low') :
-          get_one_rank(performance[:loadavg], 'low', 2, 'average', 7, 'good', 29, 'low')),
-        # get_loadavg_ranking(performance[:loadavg], cluster),
-        ipc: get_one_rank(performance[:ipc], 'low', 0.5, 'average', 1.0, 'good'),
-        # get_ipc_ranking(performance[:ipc]),
-        ib_xmit_data_fs: get_one_rank(performance[:ib_xmit_data_fs], 'low', 10, 'average', 100, 'good'),
-        # get_ib_xmit_data_fs_ranking(performance[:ib_xmit_data_fs]),
-        ib_rcv_data_fs: get_one_rank(performance[:ib_rcv_data_fs], 'low', 10, 'average', 100, 'good'),
-        # get_ib_rcv_data_fs_ranking(performance[:ib_rcv_data_fs]),
-        ib_xmit_data_mpi: get_one_rank(performance[:ib_xmit_data_mpi], 'low', 10, 'average', 100, 'good'),
-        #get_ib_xmit_data_mpi_ranking(performance[:ib_xmit_data_mpi]),
-        ib_rcv_data_mpi: get_one_rank(performance[:ib_rcv_data_mpi], 'low', 10, 'average', 100, 'good'),
-        # get_ib_rcv_data_mpi_ranking(performance[:ib_rcv_data_mpi]),
+          get_one_rank(performance[:loadavg], low_str, 2, average_str, 7, high_str, 15, low_str) :
+          get_one_rank(performance[:loadavg], low_str, 2, average_str, 7, high_str, 29, low_str)),
+        ipc: get_one_rank(performance[:ipc], low_str, 0.5, average_str, 1.0, high_str),
+        ib_xmit_data_fs: get_one_rank(performance[:ib_xmit_data_fs], low_str, 10, average_str, 100, high_str),
+        ib_rcv_data_fs: get_one_rank(performance[:ib_rcv_data_fs], low_str, 10, average_str, 100, high_str),
+        ib_xmit_data_mpi: get_one_rank(performance[:ib_xmit_data_mpi], low_str, 10, average_str, 100, high_str),
+        ib_rcv_data_mpi: get_one_rank(performance[:ib_rcv_data_mpi], low_str, 10, average_str, 100, high_str),
       }
     end
 
@@ -111,15 +138,15 @@ module Jobstat
       max_priority = {}
 
       entries.each do |condition|
-        current_priority = max_priority.fetch(condition.group, 0)
+        current_priority = max_priority.fetch(condition['group'], 0)
 
-        if condition.priority > current_priority
-          max_priority[condition.group] = condition.priority
+        if condition['priority'] > current_priority
+          max_priority[condition['group']] = condition['priority']
         end
       end
 
       entries.each do |condition|
-        if condition.priority >= max_priority[condition.group]
+        if condition['priority'] >= max_priority[condition['group']]
           result.push(condition)
         end
       end
@@ -127,19 +154,30 @@ module Jobstat
       result
     end
 
-    def get_thresholds
-      slice(Conditions.instance.thresholds, get_tags)
-    end
+    # def get_thresholds
+    #   slice(Conditions.instance.thresholds, get_tags)
+    # end
 
     def get_classes
-      priority_filtration(slice(Conditions.instance.classes, get_tags))
+      priority_filtration(slice(Job.rules['classes'], get_tags))
+    end
+
+    def get_not_public_rules()
+      result = []
+      Job.rules['rules'].each do |rule, data|
+        if data['public'] == 0
+          result.push(data['name'])
+        end
+      end
+      result
     end
 
     def get_rules user
-      filters=Job::get_filters(user)|| []
+      filters=Job::get_filters(user)|| [] # TODO:FILTERS
       tags=get_tags
-      tags=tags - filters
-      priority_filtration(slice(Conditions.instance.rules, tags))
+      tags=tags - filters # remove rules wich are filtered out
+      tags=tags - get_not_public_rules() # remove rules wich are not public
+      priority_filtration(slice(Job.rules['rules'], tags)) # sort by groups priority
     end
 
     # def get_cached data
@@ -173,7 +211,7 @@ module Jobstat
     end
 
     def self.get_filters user
-
+      return [] # TODO:FILTERS
       # user=get_user login
       # user_id=nil
       # if user
@@ -247,15 +285,18 @@ module Jobstat
       }
     end
 
-    def self.load_rules
-      rules={}
-      begin
-        File.open("engines/jobstat/config/rules-plus.json", "r") { |file|
-          rules=JSON.load(file)
-        }
-      rescue
+    def self.rules force_reload=false
+      if @rules.nil? || force_reload
+        @rules={}
+        begin
+          File.open("engines/jobstat/config/rules-plus.json", "r") { |file|
+            @rules=JSON.load(file)
+            @rules['rules'].keys.each{|k| @rules['rules'][k]['name']=k}
+          }
+        rescue
+        end
       end
-      rules
+      @rules
     end
 
     private

@@ -1,3 +1,29 @@
+# == Schema Information
+#
+# Table name: pack_versions
+#
+#  id               :integer          not null, primary key
+#  cost             :integer
+#  delete_on_expire :boolean          default(FALSE), not null
+#  deleted          :boolean          default(FALSE), not null
+#  description_en   :text
+#  description_ru   :text
+#  end_lic          :date
+#  lock_col         :integer          default(0), not null
+#  name_en          :string
+#  name_ru          :string
+#  service          :boolean          default(FALSE), not null
+#  state            :string
+#  created_at       :datetime
+#  updated_at       :datetime
+#  package_id       :integer
+#  ticket_id        :integer
+#
+# Indexes
+#
+#  index_pack_versions_on_package_id  (package_id)
+#
+
 module Pack
   class Version < ActiveRecord::Base
     include AASM

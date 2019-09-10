@@ -101,6 +101,10 @@
 			"postRender": function(control) {
 				form = control;
 				apply_select();
+				val = form.children[0].childrenByPropertyId['context_id']
+				.getControlEl().val();
+				form.children[0].childrenByPropertyId['context_id'].setValue(val);
+
 			}
 	});
 }

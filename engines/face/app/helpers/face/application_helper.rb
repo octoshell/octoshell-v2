@@ -2,7 +2,7 @@ module Face
   module ApplicationHelper
     def display_wiki_link(name)
       page = Wiki.engines_links[name].first
-      return 'This page does not exist' unless page
+      return '' unless page
       link_to page.name, wiki.page_path(page)
     end
 
@@ -46,8 +46,8 @@ module Face
     def common_datepicker_options
     {
       include_blank: true, label_col: "col-sm-4", control_col: "col-sm-8",
-      :'data-date-start-date' => "#{DateTime.now.year}.01.01",
-      :'data-date-end-date' => '0d', class: "datepicker"
+      #:'data-date-start-date' => "#{DateTime.now.year}.01.01",
+      :'data-date-end-date' => '1d', class: "datepicker"
     }
     end
 
@@ -120,7 +120,12 @@ module Face
     end
 
     def markdown(text)
-      CommonMarker.render_html(text, :DEFAULT).html_safe
+      CommonMarker.render_html(text, :DEFAULT,[:table,:autolink,:strikethrough]).html_safe
     end
+
+    def wiki_markdown(text)
+      CommonMarker.render_html(text, [:DEFAULT, :UNSAFE],[:table,:autolink,:strikethrough]).html_safe
+    end
+
   end
 end

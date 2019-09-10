@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: core_surety_scans
+#
+#  id        :integer          not null, primary key
+#  image     :string(255)
+#  surety_id :integer
+#
+# Indexes
+#
+#  index_core_surety_scans_on_surety_id  (surety_id)
+#
+
 module Core
   class SuretyScan < ActiveRecord::Base
     belongs_to :surety

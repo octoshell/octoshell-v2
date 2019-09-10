@@ -1,8 +1,9 @@
-= bootstrap_form_for ticket, url: [:edit_responsible,:admin, ticket], method: :put, layout: :horizontal, html: { id: "ticket_responsible_form" } do |f|
-  -responsible_user_topics(ticket).each do |elem|
-    = f.radio_button :responsible_id, elem.first, label: elem.second, onclick: "$('form#ticket_responsible_form').submit()"
-    - if elem[2].any?
-      h5 = t('support_responsible_for')
-      -elem[2].each do |topic|
-        p
-          = topic
+div id="resposible-collapse"  class="collapse"
+	= bootstrap_form_for ticket, url: [:edit_responsible,:admin, ticket], method: :put, layout: :horizontal, html: { id: "ticket_responsible_form" } do |f|
+	  -responsible_user_topics(ticket).each do |elem|
+	    = f.radio_button :responsible_id, elem.first, label: elem.second, onclick: "$('form#ticket_responsible_form').submit()"
+	    - if elem[2].any?
+	      h5 = t('support_responsible_for')
+	      -elem[2].each do |topic|
+	        p
+	          = topic

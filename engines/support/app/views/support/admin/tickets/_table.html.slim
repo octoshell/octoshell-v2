@@ -13,18 +13,20 @@
       th = Support::Ticket.human_attribute_name(:responsible)
       th
         - if @search
+          = sort_link @search, :updated_at, Support::Ticket.human_attribute_name(:updated_at), default_order: :desc
+          |  / 
           = sort_link @search, :created_at, Support::Ticket.human_attribute_name(:created_at), default_order: :desc
         - else
+          = Support::Ticket.human_attribute_name(:udpated_at)
+          |  / 
           = Support::Ticket.human_attribute_name(:created_at)
-        |  / 
-        = Support::Ticket.human_attribute_name(:updated_at)
     - tickets.each do |ticket|
       tr
         td class="col-xs-1" = link_to ticket.id, [:admin, ticket]
         td class="col-xs-5"
           ul class="list-unstyled"
             li
-              strong = link_to ticket, [:admin, ticket]
+              strong = link_to ticket, polymorphic_path([:admin, ticket], anchor: 'reply')
             li
               - state = { "pending" => "danger", "answered_by_support" => "warning", "answered_by_reporter" => "danger", "resolved" => "success", "closed" => "default" }[ticket.state_name]
               span class="label label-#{state}" = ticket.human_state_name

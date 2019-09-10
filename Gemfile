@@ -7,6 +7,7 @@ end
 gem "pg", "~> 0.18", platform: :ruby
 gem "responders", "~> 2.0"
 gem "uglifier", ">= 1.3.0"
+gem "sassc-rails"
 gem "bootstrap_form"
 gem 'rails_email_preview', '~> 2.0.6'
 gem 'left_join'
@@ -15,8 +16,12 @@ gem 'lmtp', github: 'apaokin/ruby-lmtp', require: false
 gem 'rubyzip', '>= 1.0.0', require: false
 
 gem 'therubyracer' # for execjs
+gem 'i18n-js'
+gem 'groupdate'
 
 group :development do
+  gem "annotate"
+  gem "sqlite3"
   gem "letter_opener"
   gem "quiet_assets"
   gem "pry-rails"
@@ -25,6 +30,7 @@ group :development do
   gem "better_errors"
   gem 'rails_db'
   gem 'i18n-tasks', '~> 0.9.21'
+  gem 'minitest-reporters'
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil

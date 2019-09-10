@@ -67,7 +67,7 @@ module Core
       end
       @res = @merger.complete_merge!(projects_ids, surety_members_ids, core_members)
       if @res.instance_of? String
-        flash[:alert] = @res
+        @res.each {|res| flash_message :alert, res}
         edit
         render :edit
       else
