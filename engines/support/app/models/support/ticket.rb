@@ -32,13 +32,15 @@
 #
 
 module Support
-  class Ticket < ActiveRecord::Base
+  class Ticket < ApplicationRecord
+
+    
 
     mount_uploader :attachment, AttachmentUploader
     mount_uploader :export_attachment, TicketAttachmentUploader, mount_on: :attachment_file_name
 
-    belongs_to :reporter, class_name: Support.user_class, foreign_key: :reporter_id
-    belongs_to :responsible, class_name: Support.user_class, foreign_key: :responsible_id
+    belongs_to :reporter, class_name: Support.user_class.to_s, foreign_key: :reporter_id
+    belongs_to :responsible, class_name: Support.user_class.to_s, foreign_key: :responsible_id
     belongs_to :project, class_name: "Core::Project"
     belongs_to :surety, class_name: "Core::Surety"
     belongs_to :cluster, class_name: "Core::Cluster"

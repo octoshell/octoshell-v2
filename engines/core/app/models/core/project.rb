@@ -23,7 +23,9 @@
 #
 
 module Core
-  class Project < ActiveRecord::Base
+  class Project < ApplicationRecord
+
+    
 
     belongs_to :kind, class_name: "Core::ProjectKind", foreign_key: :kind_id
     belongs_to :organization
@@ -37,11 +39,11 @@ module Core
     has_and_belongs_to_many :research_areas, join_table: "core_research_areas_per_projects"
 
     has_many :members, dependent: :destroy, inverse_of: :project
-    has_many :users, through: :members, class_name: Core.user_class, inverse_of: :projects
+    has_many :users, through: :members, class_name: Core.user_class.to_s, inverse_of: :projects
 
-    has_one :member_owner, -> { where(owner: true) }, class_name: Member
+    has_one :member_owner, -> { where(owner: true) }, class_name: Member.to_s
     has_one :owner, through: :member_owner,
-                    class_name: Core.user_class,
+                    class_name: Core.user_class.to_s,
                     source: :user,
                     inverse_of: :owned_projects
 

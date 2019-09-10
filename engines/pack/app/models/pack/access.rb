@@ -23,7 +23,7 @@
 #
 
 module Pack
-  class Access < ActiveRecord::Base
+  class Access < ApplicationRecord
     include AASM
     include AccessValidator
     include AdminAccessUpdate

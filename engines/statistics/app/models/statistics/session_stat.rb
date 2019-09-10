@@ -10,7 +10,7 @@
 #
 
 module Statistics
-  class SessionStat < ActiveRecord::Base
+  class SessionStat < ApplicationRecord
     KINDS = [ ]
 
     include StatCollector

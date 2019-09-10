@@ -7,7 +7,8 @@ module Support
     end
     initializer "support.action_controller" do |app|
       ActiveSupport.on_load :action_controller do
-        helper Support::ApplicationHelper
+        #helper Support::ApplicationHelper
+        ::ActionController::Base.send(:include, Support::ApplicationHelper)
       end
     end
 

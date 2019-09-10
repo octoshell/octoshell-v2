@@ -11,7 +11,7 @@
 #
 
 module Core
-  class EmploymentPositionField < ActiveRecord::Base
+  class EmploymentPositionField < ApplicationRecord
     belongs_to :employment_position_name, inverse_of: :employment_position_fields
     validates :employment_position_name_id, uniqueness: { scope: :name_ru }
     translates :name

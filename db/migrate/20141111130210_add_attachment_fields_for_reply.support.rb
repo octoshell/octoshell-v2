@@ -1,5 +1,5 @@
 # This migration comes from support (originally 20141111125950)
-class AddAttachmentFieldsForReply < ActiveRecord::Migration
+class AddAttachmentFieldsForReply < ActiveRecord::Migration[4.2]
   def change
     add_column :support_replies, :attachment_file_name, :string
     add_column :support_replies, :attachment_content_type, :string

@@ -121,9 +121,17 @@ en:
         new:
           title: Create reply template
         show:
-          title: Reply template
-        table:
-          no_templates: No reply templates
+          title: Request No%{id}
+          accept: Accept
+          no_replies: No replies
+          send: Send
+          tags-etc: Tags/files/comments
+          send_and_show_result: Send and show result
+          send_and_show_next: Send and show next ticket
+          new_reply: New reply
+          create_reply_template: Create reply template from current reply
+          attach: Attach file
+
       tags:
         edit:
           title: Edit tag
@@ -226,8 +234,4 @@ en:
         if_not: 'If not, press '
         new_reply: New reply
         no_replies: No replies
-        problem_solved: 'Have your problem been solved? Press '
-        title: Request No%{id}
-      table:
-        no_tickets: No requests found
-  support_responsible_for: 'Responsible for:'
+

@@ -2,9 +2,8 @@ module Pack
   class Admin::ApplicationController < Pack::ApplicationController
     layout "layouts/pack/admin"
 
-    before_filter :check_abilities, :journal_user
+    before_action :check_abilities, :journal_user
     def check_abilities
-
       authorize! :manage, :packages
     end
 

@@ -13,7 +13,7 @@ ActiveRecord::Base.transaction do
   Group.default!
   users = []
   3.times do |i|
-    user = User.first_or_create(email: "user#{i.next}@octoshell.ru",
+    user = User.create!(email: "user_#{i.next}@octoshell.ru",
                         password: "123456", password_confirmation: '123456',
                         access_state: 'active')
     p=user.profile
@@ -21,8 +21,7 @@ ActiveRecord::Base.transaction do
     p.middle_name = "Jr."
     p.last_name = "Tester"
     user.activate!
-    user.save
-    user.access_state='active'
+    user.save!
     users << user
   end
   admin = User.create!(email: "admin@octoshell.ru",
@@ -45,7 +44,7 @@ ActiveRecord::Base.transaction do
   city = Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country, checked: true)
 
   cluster=Core::Cluster.create!(host: 'localhost', admin_login: 'octo', name: 'test', description: 'mytest')
-  Core::Partition.create!(name: 'main_part', cluster: cluster, resouces: 'nodes:128,cores:8,gppus:1')
+  Core::Partition.create!(name: 'main_part', cluster: cluster, resources: 'nodes:128,cores:8,gppus:1')
   Core::Credential.create!(user: admin, name: 'example key', public_key: Core::Cluster.first.public_key)
   Core::OrganizationKind.create!(name: 'Российская коммерческая организация')
   Core::CriticalTechnology.create!(name: 'Робототехника')

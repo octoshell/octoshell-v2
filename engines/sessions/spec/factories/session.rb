@@ -4,5 +4,6 @@ FactoryBot.define do
     sequence(:description_en) { |n| "word_#{n}" }
     sequence(:motivation_ru) { |n| "word_#{n}" }
     sequence(:motivation_en) { |n| "word_#{n}" }
+    receiving_to { Date.tomorrow.to_s }
   end
 end

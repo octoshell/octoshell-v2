@@ -8,7 +8,7 @@ class LangPrefsController < ApplicationController
       current_user.save!
     end
     session[:locale] = language_param
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def language_param

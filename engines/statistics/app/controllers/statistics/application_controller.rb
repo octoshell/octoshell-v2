@@ -3,7 +3,7 @@ module Statistics
     #ActionController::Base
     layout "layouts/statistics/admin"
 
-    #before_filter :authorize_admins, :journal_user
+    #before_action :authorize_admins, :journal_user
 
     #def authorize_admins
     #  authorize!(:access, :admin)

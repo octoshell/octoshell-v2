@@ -1,5 +1,5 @@
 # This migration comes from jobstat (originally 20171226061144)
-class CreateJobstatJobs < ActiveRecord::Migration
+class CreateJobstatJobs < ActiveRecord::Migration[4.2]
   def change
     return if File.exists? '/tmp/skip-octoshell-bad-migrations'
     create_table :jobstat_jobs do |t|

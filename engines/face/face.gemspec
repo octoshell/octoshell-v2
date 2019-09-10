@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", "~> 4.2"
+  s.add_dependency "rails", "~> 5.0"
   s.add_dependency "activerecord-jdbcpostgresql-adapter" if /java/.match(RUBY_PLATFORM)
   s.add_dependency "pg", "~> 0.18" unless /java/.match(RUBY_PLATFORM)
-  s.add_dependency "bootstrap_form"
+  s.add_dependency "bootstrap_form", "< 4"
   s.add_dependency "nested_form"
   s.add_dependency "slim"
   s.add_dependency "russian"
@@ -32,6 +32,8 @@ Gem::Specification.new do |s|
   s.add_dependency "select2-rails"
   s.add_dependency "underscore-rails"
   s.add_dependency "bootstrap-datepicker-rails"
+  s.add_dependency 'momentjs-rails', '>= 2.9.0'
+  s.add_dependency 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
   s.add_dependency "commonmarker"
   s.add_dependency "rails-jquery-autocomplete"
   s.add_dependency "jquery-fileupload-rails"

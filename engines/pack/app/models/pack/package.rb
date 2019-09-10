@@ -13,7 +13,9 @@
 #
 
 module Pack
-  class Package < ActiveRecord::Base
+  class Package < ApplicationRecord
+
+    
 
     translates :description, :name
 

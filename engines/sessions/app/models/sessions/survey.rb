@@ -24,7 +24,9 @@
 # пользователями ответами на вопросы из Survey.
 
 module Sessions
-  class Survey < ActiveRecord::Base
+  class Survey < ApplicationRecord
+
+    
 
     translates :name
 

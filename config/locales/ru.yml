@@ -64,13 +64,17 @@ ru:
       manage: Полный доступ к Проектам
       review: Возможность просматривать проекты
     reports:
+      access: Доступ в раздел отчетов
       admin: Полный доступ к отчетам
+      manage: Эксперт (по отчетам)
       review: Возможность просматривать отчеты
       supervise: Возможность принимать/отклонять отчеты сданные после срока
     requests:
       manage: Полный доступ к Заявкам на ресурсы
     research_areas:
       manage: Полный доступ к Областям исследований
+    sessions:
+      manage: Возможность запускать перерегистрацию
     settings:
       manage: Полный доступ к Настройкам
     sureties:
@@ -92,6 +96,8 @@ ru:
       manage: Полный доступ к Шаблонам ответов
     tickets:
       manage: Полный доступ к Заявкам в Поддержку
+    user_surveys:
+      access: Просмотр отчетов пользователя
     users:
       manage: Полный доступ к Пользователям
   actions:
@@ -101,6 +107,12 @@ ru:
     attributes:
       category_value:
         value: Значение
+      paper_trail/version:
+        event: Событие
+        whodunnit: Инициатор
+        item_id: ID объекта
+        item_type: Класс
+        object_changes: Изменения
       group:
         name: Наименование
       option:
@@ -238,10 +250,28 @@ ru:
           one: Показано <b>1</b>
           other: Показаны <b>все %{count}</b>
           zero: Показано <b>0</b>
+  journal:
+    journal:
+      chain_id: ID цепочки
+      created_at_gt: Позднее
+      created_at_lt: Раньше
+      event_in: Событие
+      group: Группа
+      item_type_in: Класс
+      month_ago: Месяц назад
+      object_changes_cont: В изменении содержится
+      system_only: Только изменения системы
+      title: Журнал
+      week_ago: Неделю назад
+      whodunnit_in: Инициатор
+    table:
+      chain_id: ID цепочки
+      created_at: Дата
+      id: ID
+      system: Система
   main_menu:
     admin_area: Кабинет администратора
     wiki: Справка
-    wikiplus: Справка
     working_area: Рабочий кабинет
   model_translation:
     en: на английском
@@ -254,13 +284,9 @@ ru:
       without_category: Без автозаполнения
   profiles:
     form:
-      info_mails_help: >-
-        Отметьте, если вы согласны получать информационные рассылки о будущих
-        семинарах и другой полезной информации.
+      info_mails_help: Отметьте, если вы согласны получать информационные рассылки о будущих семинарах и другой полезной информации.
       save: Сохранить
-      special_mails_help: >-
-        Отметьте, если вы согласны получать рассылку о состоянии кластеров,
-        профилактических работах и прочей служебной информации.
+      special_mails_help: Отметьте, если вы согласны получать рассылку о состоянии кластеров, профилактических работах и прочей служебной информации.
     show:
       change_password: Изменить пароль
       is_admin: Администратор
@@ -274,9 +300,7 @@ ru:
     projects: Проекты
     sessions: Перерегистрации
     sessions_warning:
-      html: >-
-        Перерегистрации <span class="badge warning"><i class="fa fa-bell">
-        </i></span>
+      html: Перерегистрации <span class="badge warning"><i class="fa fa-bell"> </i></span>
     tickets: Поддержка
     tickets_warning:
       html: Поддержка <span class="badge warning"><i class="fa fa-bell"></i></span>

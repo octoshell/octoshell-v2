@@ -1,0 +1,2 @@
+DIR="$(cd "$(dirname "$0")" && pwd)"
+cp $DIR/database.yml.example $DIR/database.yml

@@ -1,5 +1,5 @@
 # This migration comes from sessions (originally 20141013135123)
-class CreateSessionsReports < ActiveRecord::Migration
+class CreateSessionsReports < ActiveRecord::Migration[4.2]
   def change
     create_table :sessions_reports do |t|
       t.integer :session_id

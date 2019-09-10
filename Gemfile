@@ -1,11 +1,13 @@
 source "https://rubygems.org"
 gem "rake"
-gem "rails", "~> 4.2"
+gem "rails", "~> 5.0"
+gem 'bootsnap'
+gem 'listen'
 platforms :jruby do
   gem "activerecord-jdbcpostgresql-adapter", "~> 1.3.21"
 end
 gem "pg", "~> 0.18", platform: :ruby
-gem "responders", "~> 2.0"
+gem "responders"
 gem "uglifier", ">= 1.3.0"
 gem "sassc-rails"
 gem "bootstrap_form"
@@ -14,6 +16,7 @@ gem 'left_join'
 gem 'traco'
 gem 'lmtp', github: 'apaokin/ruby-lmtp', require: false
 gem 'rubyzip', '>= 1.0.0', require: false
+gem 'paper_trail'
 
 gem 'therubyracer' # for execjs
 gem 'i18n-js'
@@ -28,7 +31,6 @@ group :development do
   gem "annotate"
   gem "sqlite3"
   gem "letter_opener"
-  gem "quiet_assets"
   gem "pry-rails"
   gem "rails-erd"
   gem 'railroady'
@@ -64,6 +66,7 @@ gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
 gem "hardware",       path: "engines/hardware"
 gem "api",            path: "engines/api"
+gem "reports",        path: "engines/reports"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"
@@ -80,8 +83,8 @@ group :test do
   gem "activerecord-import", ">= 0.2.0"
   gem 'poltergeist'
   gem "rspec-sidekiq"
-  gem 'shoulda-matchers', '~> 3.1'
-  gem "test_after_commit"
+  gem 'shoulda-matchers', '~> 4.0'
+  # gem "test_after_commit"
   gem "database_cleaner"
   gem "factory_bot_rails"
   # gem "factory_girl-seeds"

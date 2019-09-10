@@ -749,8 +749,13 @@ Octoshell::Application.routes.draw do
   mount Announcements::Engine, :at => "/announcements"
   mount Comments::Engine, :at => "/comments"
   mount Hardware::Engine, at: "/hardware"
+  mount Reports::Engine, at: "/reports"
+
 
   root "face/home#show"
+
+  # Journal
+  get "/core/admin/journal" => "journal#journal"
 
   resources :users do
     get :login_as, on: :member

@@ -1,5 +1,5 @@
 module Face
-  class HomeController < ApplicationController
+  class HomeController < Face::ApplicationController
     def show
       if current_user
         if User.superadmins.include? current_user

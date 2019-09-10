@@ -1,7 +1,7 @@
 module Core
   class Admin::ApplicationController < Core::ApplicationController
-    before_filter :authorize_admins, :journal_user
-    skip_before_action :filter_blocked_users
+    before_action :authorize_admins, :journal_user
+    # skip_before_action :filter_blocked_users
 
     def authorize_admins
       authorize! :access, :admin

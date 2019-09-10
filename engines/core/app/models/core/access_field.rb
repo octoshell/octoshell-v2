@@ -14,7 +14,7 @@
 #
 
 module Core
-  class AccessField < ActiveRecord::Base
+  class AccessField < ApplicationRecord
     belongs_to :access
     belongs_to :quota_kind
 

@@ -14,7 +14,7 @@
 #
 
 module Hardware
-  class ItemsState < ActiveRecord::Base
+  class ItemsState < ApplicationRecord
     translates :reason, :description, fallback: :any
     belongs_to :state, inverse_of: :items_states
     belongs_to :item, inverse_of: :items_states

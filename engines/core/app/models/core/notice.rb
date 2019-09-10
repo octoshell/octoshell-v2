@@ -21,7 +21,7 @@
 #
 
 module Core
-  class Notice < ActiveRecord::Base
+  class Notice < ApplicationRecord
     belongs_to :sourceable, polymorphic: true
     belongs_to :linkable, polymorphic: true
 

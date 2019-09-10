@@ -1,5 +1,5 @@
 # This migration comes from comments (originally 20170801160707)
-class CreateCommentsComments < ActiveRecord::Migration
+class CreateCommentsComments < ActiveRecord::Migration[4.2]
   def change
     # drop_table :comments_comments
     # drop_table :comments_contexts

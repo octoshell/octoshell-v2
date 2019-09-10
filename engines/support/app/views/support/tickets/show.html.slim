@@ -104,7 +104,7 @@ div class="panel panel-default" id="reply"
         = link_to Support::Ticket.human_state_event_name(:resolve), ticket_resolve_path(@ticket), method: :put, class: "btn btn-success"
       | &nbsp; 
       = t(".if_not")
-      = f.submit t("actions.send"), class: 'btn btn-primary'
+      = f.submit t("actions.send")
       /= f.file_field :attachment, wrapper: {:class => 'help-block'}
       | &nbsp; 
       label for='reply_attachment' = t('.attach')

@@ -1,5 +1,5 @@
 # This migration comes from statistics (originally 20141209133240)
-class CreateProjectStats < ActiveRecord::Migration
+class CreateProjectStats < ActiveRecord::Migration[4.2]
   def change
     create_table :statistics_project_stats do |t|
       t.string :kind

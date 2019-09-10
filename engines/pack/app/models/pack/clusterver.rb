@@ -17,7 +17,7 @@
 #
 
 module Pack
-  class Clusterver < ActiveRecord::Base
+  class Clusterver < ApplicationRecord
     delegate :name,to: :core_cluster
     attr_accessor :stale_edit
     validate :stale_check

@@ -1,5 +1,5 @@
 class Authentication::ActivationsController < Authentication::ApplicationController
-  before_filter :logout
+  before_action :logout
 
   def new
   end

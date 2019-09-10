@@ -888,6 +888,33 @@ ru:
         help: >-
           Заполните поля формы количеством ресурсов, которые будут необходимы
           вам в процессе работы проекта. Сейчас указаны размеры квот по-умолчанию.
+    credentials:
+      list:
+        credentials: "ssh-ключи"
+        no_credentials_found: "Добавьте свой публичный ssh-ключ!"
+        add_credential: "Добавить публичный ключ"
+        confirm: "Вы действительно хотите деактивировать ключ?"
+        msg_help_sshkey: >-
+          Если Вы не знаете как добавить публичный ssh-ключ, перейдите по
+          ссылке: <a href=\"http://parallel.ru/cluster/ssh-keys/ssh_keys.html\"
+          target=\"_blank\">Добавление публичного ssh-ключа</a>.
+
+      new:
+        title: "Новый ssh-ключ"
+        help: "скопируйте сюда содержимое файла .ssh/*.pub"
+    employments:
+      list:
+        edit_organization: "Редактировать организацию"
+        employments: "Места работы"
+        no_employments_created: "Добавьте место работы!"
+        add_employment: "Добавить место работы"
+        employments: Места работы
+        no_employments_created: Добавьте место работы!
+        add_employment: Добавить место работы
+      form:
+        add_organization: "Добавить организацию"
+        no_department: "Подразделение не обязательно (кроме МГУ). Не нашли своё подразделение?"
+        new_organization_department: "Добавить подразделение (если это необходимо)"
       new:
         title: Создание запроса на ресурсы
     sureties:

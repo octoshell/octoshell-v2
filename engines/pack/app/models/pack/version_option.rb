@@ -19,7 +19,7 @@
 #
 
 module Pack
-  class VersionOption < ActiveRecord::Base
+  class VersionOption < ApplicationRecord
     belongs_to :version, inverse_of: :version_options
     belongs_to :category_value, inverse_of: :version_options
     belongs_to :options_category, inverse_of: :strict_version_options

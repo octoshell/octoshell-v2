@@ -8,7 +8,7 @@
 #
 
 module Core
-  class ProjectKind < ActiveRecord::Base
+  class ProjectKind < ApplicationRecord
     translates :name
     validates_translated :name, presence: true
   end

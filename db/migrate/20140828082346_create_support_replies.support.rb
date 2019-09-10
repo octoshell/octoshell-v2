@@ -1,5 +1,5 @@
 # This migration comes from support (originally 20140827145710)
-class CreateSupportReplies < ActiveRecord::Migration
+class CreateSupportReplies < ActiveRecord::Migration[4.2]
   def change
     create_table :support_replies do |t|
       t.integer :author_id

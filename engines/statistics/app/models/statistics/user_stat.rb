@@ -10,7 +10,7 @@
 #
 
 module Statistics
-  class UserStat < ActiveRecord::Base
+  class UserStat < ApplicationRecord
     KINDS = [ :by_organization_kind,
               :by_organization_city,
               :by_msu_subdivisions ]

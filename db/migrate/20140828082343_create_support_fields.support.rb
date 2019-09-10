@@ -1,5 +1,5 @@
 # This migration comes from support (originally 20140827144322)
-class CreateSupportFields < ActiveRecord::Migration
+class CreateSupportFields < ActiveRecord::Migration[4.2]
   def change
     create_table :support_fields do |t|
       t.string :name

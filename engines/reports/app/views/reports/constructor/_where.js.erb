@@ -1,0 +1,63 @@
+function init_where(){
+  where_container = {
+    items: [],
+    // alpaca: $("#main-form").alpaca('get').getControlByPath('where'),
+    assign: function(enums,labels,prefix){
+      this.items = [];
+      for(var i in enums){
+        this.items[i] = {
+          enum: prefix.concat('.').concat(enums[i]),
+          label:prefix.concat('.').concat(labels[i]),
+          type: labels[i].split('|').slice(-1)[0]
+        };
+      }
+    },
+    append: function(enums, labels, prefix_array = []){
+     var prefix = prefix_array.splice(1, prefix_array.length -1 ).join('.');
+     if(prefix != ''){
+       prefix = prefix.concat('.');
+     }
+     for(var i in enums){
+       this.items.push({
+         enum: prefix.concat(enums[i]),
+         label: prefix.concat(labels[i]),
+         type: labels[i].split('|').slice(-1)[0]
+       });
+     }
+    },
+    get_items: function(){
+      return this.items;
+    },
+    replace: function(old_begin, new_begin){
+      var attributes_element = $("#main-form").alpaca('get').getControlByPath('attributes');
+      // attributes_element.children = attributes_element.children
+      //   .filter(word => !word.getValue().label.startsWith(begin));
+      for(var i in attributes_element.children){
+        var elem = attributes_element.children[i];
+        var regex = RegExp(`^(${old_begin}\.)`,"g");
+        var old_label = elem.getValue().label;
+        var old_value = elem.getValue().value;
+        elem.childrenByPropertyId.label.setValue(old_label.replace(regex,new_begin.concat('.')));
+        elem.childrenByPropertyId.value.setValue(old_value.replace(regex,new_begin.concat('.')));
+      }
+      attributes_element.refresh();
+
+    },
+    remove: function(begin){
+      if(!begin) return;
+
+      var attributes_element = $("#main-form").alpaca('get').getControlByPath('attributes');
+      attributes_element.children = attributes_element.children
+        .filter(word => !word.getValue().label.startsWith(begin.concat('.')));
+      attributes_element.refresh();
+      this.items = this.items
+        .filter(word => !word.enum.startsWith(begin.concat('.')));
+
+    },
+    removeField: function(element){
+      if(element){
+        element.parent.removeItem(element.propertyId);
+      }
+    }
+  }
+}

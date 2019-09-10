@@ -10,7 +10,9 @@
 #
 
 module Core
-  class QuotaKind < ActiveRecord::Base
+  class QuotaKind < ApplicationRecord
+
+    
 
     translates :name, :measurement
 

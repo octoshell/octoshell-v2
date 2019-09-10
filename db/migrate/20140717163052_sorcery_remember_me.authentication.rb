@@ -1,5 +1,5 @@
 # This migration comes from authentication (originally 20140312063730)
-class SorceryRememberMe < ActiveRecord::Migration
+class SorceryRememberMe < ActiveRecord::Migration[4.2]
   def change
     add_column :authentication_users, :remember_me_token, :string, :default => nil
     add_column :authentication_users, :remember_me_token_expires_at, :datetime, :default => nil

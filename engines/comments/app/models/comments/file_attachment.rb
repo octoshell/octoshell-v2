@@ -20,7 +20,7 @@
 #
 
 module Comments
-  class FileAttachment < ActiveRecord::Base
+  class FileAttachment < ApplicationRecord
     mount_uploader :file, FileUploader
     include Attachable
     DEFAUlT_PER = 10

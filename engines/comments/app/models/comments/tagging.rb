@@ -20,7 +20,7 @@
 #
 
 module Comments
-  class Tagging < ActiveRecord::Base
+  class Tagging < ApplicationRecord
     DEFAUlT_PER = 20
     include Attachable
     validates :tag, presence: true
