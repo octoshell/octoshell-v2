@@ -38,6 +38,9 @@ Gem::Specification.new do |s|
   s.add_dependency "rails-jquery-autocomplete"
   s.add_dependency "jquery-fileupload-rails"
 
+  s.add_dependency "nokogiri", ">= 1.10.4"
+  s.add_dependency "mini_magick", ">= 4.9.4"
+
 
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "capybara"

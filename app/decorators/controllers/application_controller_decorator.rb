@@ -21,11 +21,12 @@ ApplicationController.class_eval do
   end
 
   def wiki_item
-    Face::MenuItem.new({
-      name: t("main_menu.wiki"),
-      url: wiki.root_path,
-      regexp: /wiki/
-    })
+    wikiplus_item
+    # Face::MenuItem.new({
+    #   name: t("main_menu.wiki"),
+    #   url: wiki.root_path,
+    #   regexp: /wiki/
+    # })
   end
 
   def wikiplus_item

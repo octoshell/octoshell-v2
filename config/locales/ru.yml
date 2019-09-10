@@ -250,7 +250,7 @@ ru:
     sureties_with_count:
       html: Поручительства <span class="badge info">%{count}</span>
     users: Пользователи
-    wikiplus: Справка+
+    wikiplus: Справка
   bad_job: 'Проблемная задача: '
   bad_jobs: 'Проблемные задачи: '
   buttons:
@@ -345,5 +345,6 @@ ru:
   who_types:
     ":": ":"
   without_pagination:
-    display_all_records: Показать все записи сразу на одной странице(может быть ДОЛГО)
+    display_all_records: Показать все записи сразу на одной странице(может
+      быть ДОЛГО)
     displaying_all_records: Показаны все записи

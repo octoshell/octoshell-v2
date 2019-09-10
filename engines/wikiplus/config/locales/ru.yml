@@ -8,7 +8,7 @@ ru:
         sortid: Приоритет страницы
         url: url
     models:
-      wikiplus/page: Страница wikiplus
+      wikiplus/page: Страница wiki
   wikiplus:
     common:
       edit: Редактировать!
@@ -34,7 +34,7 @@ ru:
           new_page: Новая страница
           newsub_page: Создать подстраницу
           no_pages_found: Ещё не создано ни одной wiki-страницы.
-          title: Справка+ по работе с Octoshell
+          title: Справка по работе с Octoshell
         new:
           title: Новая страница
         subpageindex:
@@ -50,7 +50,7 @@ ru:
         name: Название
         new_page: Новая страница
         no_pages_found: Ещё не создано ни одной wiki-страницы.
-        title: Справка+ по работе с Octoshell
+        title: Справка по работе с Octoshell
       edit:
         title: Редактирование страницы
       index:
@@ -65,7 +65,7 @@ ru:
         new_page: Новая страница
         newsub_page: Создать подстраницу
         no_pages_found: Ещё не создано ни одной wiki-страницы.
-        title: Справка+ по работе с Octoshell
+        title: Справка по работе с Octoshell
       new:
         title: Новая страница
       subpageindex:

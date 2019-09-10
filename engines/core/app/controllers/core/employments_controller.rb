@@ -54,7 +54,7 @@ module Core
       if params[:employment].present?
         params.require(:employment).permit(:organization_id,
                                            :organization_department_id,
-                                           :organization_department_name,
+                                           #:organization_department_name,
                                            :primary,
                                            positions_attributes: [:id, :name, :value,:field_id,
                                                                   :employment_position_name_id])

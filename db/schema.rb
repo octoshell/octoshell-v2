@@ -666,8 +666,8 @@ ActiveRecord::Schema.define(version: 2019_09_06_082944) do
   end
 
   create_table "jobstat_jobs", id: :serial, force: :cascade do |t|
-    t.string "cluster", limit: 32
-    t.bigint "drms_job_id"
+    t.string "cluster", limit: 32,   null: false
+    t.bigint "drms_job_id",          null: false
     t.bigint "drms_task_id"
     t.string "login", limit: 32
     t.string "partition", limit: 32
@@ -688,7 +688,10 @@ ActiveRecord::Schema.define(version: 2019_09_06_082944) do
     t.index ["start_time"], name: "index_jobstat_jobs_on_start_time"
     t.index ["state"], name: "index_jobstat_jobs_on_state"
     t.index ["submit_time"], name: "index_jobstat_jobs_on_submit_time"
+
   end
+
+  add_index "jobstat_jobs", ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true, using: :btree
 
   create_table "jobstat_string_data", id: :serial, force: :cascade do |t|
     t.string "name"
