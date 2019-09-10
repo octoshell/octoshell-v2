@@ -30,5 +30,9 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-tablesorter"
   #s.add_dependency "rails-i18n", "~> 4.0"
   s.add_dependency "i18n-js"
+
+  s.add_dependency "nokogiri", ">= 1.10.4"
+  s.add_dependency "mini_magick", ">= 4.9.4"
+
   s.add_development_dependency "annotate"
 end

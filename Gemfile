@@ -19,6 +19,11 @@ gem 'therubyracer' # for execjs
 gem 'i18n-js'
 gem 'groupdate'
 
+# security reasons
+gem "nokogiri", ">= 1.10.4"
+gem "mini_magick", ">= 4.9.4"
+
+
 group :development do
   gem "annotate"
   gem "sqlite3"
@@ -51,7 +56,7 @@ gem "core",           path: "engines/core"
 gem "support",        path: "engines/support"
 gem "sessions",       path: "engines/sessions"
 gem "statistics",     path: "engines/statistics"
-gem "wiki",           path: "engines/wiki"
+#gem "wiki",           path: "engines/wiki"
 gem "wikiplus",       path: "engines/wikiplus"
 gem "announcements",  path: "engines/announcements"
 gem "jobstat",        path: 'engines/jobstat'

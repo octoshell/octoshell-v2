@@ -26,6 +26,9 @@ Gem::Specification.new do |s|
   s.add_dependency "slim"
   # s.add_dependency "bootstrap_form"
 
+  s.add_dependency "nokogiri", ">= 1.10.4"
+  s.add_dependency "mini_magick", ">= 4.9.4"
+
   s.test_files = Dir["spec/**/*"]
 
   s.add_development_dependency "rspec-rails"
