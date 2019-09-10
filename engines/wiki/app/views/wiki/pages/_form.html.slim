@@ -5,6 +5,6 @@ div class="row"
         = f.text_field column
       = f.text_field :url, help: "/pages/<strong>url</strong>".html_safe
       -Wiki::Page.locale_columns(:content).each do |column|
-          = markdown_area f, column, help: t("wiki.markdown_help").html_safe, rows: 10, class: "code"
+          = markdown_area f, column, help: t("wikiplus.markdown_help").html_safe, rows: 10, class: "code"
       = f.form_group do
         = f.submit t("buttons.save", default: "Save")

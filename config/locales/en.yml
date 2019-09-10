@@ -307,8 +307,8 @@ en:
         information.
       save: Save
       special_mails_help: >-
-        Tick if you agree to receive a newsletter about the status of clusters,
-        preventive works and other service information.
+        Tick if you agree to receive a newsletter about the status of clusters, preventive
+        works and other service information.
     show:
       change_password: Change password
       is_admin: Administator
@@ -323,9 +323,7 @@ en:
     projects: Projects
     sessions: Reregistrations
     sessions_warning:
-      html: >-
-        Reregistrations <span class="badge warning"><i class="fa fa-bell">
-        </i></span>
+      html: Reregistrations <span class="badge warning"><i class="fa fa-bell"> </i></span>
     tickets: Support
     tickets_warning:
       html: Support <span class="badge warning"><i class="fa fa-bell"></i></span>

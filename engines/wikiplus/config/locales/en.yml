@@ -10,26 +10,51 @@ en:
     models:
       wikiplus/page: Wiki page
   wikiplus:
-    markdown_help: >-
-      <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
-      is used for markdown
-    common:
-      edit: Edit!
     admin:
       images:
         index:
+          confirm: Do you really want to delete this image?
           delete: Delete
           link: Link
           name: Name
+          new_image: Upload new image
+          no_images_found: No images found
           preview: Preview
           title: All media list
-          new_image: Upload new image
+        new:
+          title: New image
+      pages:
+        edit:
+          title: Page edition
+        index:
+          all_images: Images and videos
+          confirm: Do you really want to delete this page?
+          delete: Delete
+          edit: Edit
+          link: Link
+          name: Name
+          new_page: New page
+          newsub_page: New subpage
+          no_pages_found: No pages have been created yet.
+          submit_structure: Submit structure
+          title: Octoshell wiki
+        new:
+          title: New page
+        newsubpage:
+          title: New subpage
+        subpageindex:
+          confirm: Do you really want to delete this subpage?
+          delete: Delete
+          newsub_page: New subpage
+    common:
+      back: Back
+      edit: Edit!
     markdown_help: >-
-      <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
-      is used for markup
+      <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> is
+      used for markup
     pages:
       _test:
-        confirm: Are you shure to delete page?
+        confirm:  Do you really want to delete this page?
         delete: Delete
         edit: Edit
         link: Link
@@ -41,7 +66,7 @@ en:
         title: Page edit
       index:
         all_images: All images
-        confirm: Are you shure to delete page?
+        confirm:  Do you really want to delete this page?
         createsubpage: ''
         delete: Delete
         edit: Edit
@@ -49,10 +74,14 @@ en:
         name: Name
         new_image: Upload image
         new_page: New page
-        newsub_page: New sub-page
+        newsub_page: New subpage
         no_pages_found: No any wiki page yet
         title: Octoshell help
       new:
         title: New page
+      newsubpage:
+        title: New subpage
       subpageindex:
-        newsub_page: Create sub-page
+        confirm:  Do you really want to delete this subpage?
+        delete: Delete
+        newsub_page: Create subpage

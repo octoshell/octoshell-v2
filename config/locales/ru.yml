@@ -345,6 +345,5 @@ ru:
   who_types:
     ":": ":"
   without_pagination:
-    display_all_records: Показать все записи сразу на одной странице(может
-      быть ДОЛГО)
+    display_all_records: Показать все записи сразу на одной странице(может быть ДОЛГО)
     displaying_all_records: Показаны все записи
