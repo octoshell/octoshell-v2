@@ -1,6 +1,6 @@
 # coding: utf-8
 module Support
-  class TicketsController < ApplicationController
+  class TicketsController < Support::ApplicationController
     before_action :require_login
     before_action :setup_default_filter, only: :index
 

@@ -1,5 +1,5 @@
 module Support
-  class RepliesController < ApplicationController
+  class RepliesController < Support::ApplicationController
     before_action :require_login
 
     def create
