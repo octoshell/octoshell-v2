@@ -507,7 +507,7 @@ ru:
           created_after: Создан после
           created_before: Создан до
           critical_technologies_id_in: В одной из критических технологий
-          direction_of_sciences_id_in: В одной из направлений исследований
+          direction_of_sciences_id_in: В одном из направлений исследований
           group_of_research_areas_id_in: В одной из групп областей науки
           research_areas_id_in: В одной из областей науки
           title: Проекты

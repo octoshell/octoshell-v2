@@ -158,7 +158,7 @@ ru:
       reports:
         index:
           critical_technologies_id_in: Проект в одной из критических технологий
-          direction_of_sciences_id_in: Проект в одной из направлений исследований
+          direction_of_sciences_id_in: Проект в одном из направлений исследований
           group_of_research_areas_id_in: Проект в одной из групп областей науки
           research_areas_id_in: Проект в одной из областей науки
           expert: Эксперт
