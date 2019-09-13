@@ -1,11 +1,11 @@
 require_dependency "api/admin/application_controller"
 
 module Api::Admin
-  class KeyParametersController < ApplicationController
+  class KeyParametersController < Api::Admin::ApplicationController
     before_action :set_key_parameters, only: [:show, :edit, :update, :destroy]
     before_action :authorize_admins
     def authorize_admins
-      authorize!(:access, :api_engine)
+      authorize!(:manage, :api_engine)
     end
 
     # GET /key_parameters
