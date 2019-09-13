@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_06_082944) do
+ActiveRecord::Schema.define(version: 2019_09_12_170149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,15 +67,6 @@ ActiveRecord::Schema.define(version: 2019_09_06_082944) do
     t.string "default"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "articles", force: :cascade do |t|
-    t.integer "person_id"
-    t.string "title"
-    t.text "subject_header"
-    t.text "body"
-    t.string "type"
-    t.boolean "published", default: true
   end
 
   create_table "category_values", id: :serial, force: :cascade do |t|
@@ -311,6 +302,13 @@ ActiveRecord::Schema.define(version: 2019_09_06_082944) do
     t.index ["organization_department_id"], name: "index_core_employments_on_organization_department_id"
   end
 
+  create_table "core_group_of_research_areas", force: :cascade do |t|
+    t.string "name_en"
+    t.string "name_ru"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "core_members", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "project_id", null: false
@@ -467,10 +465,12 @@ ActiveRecord::Schema.define(version: 2019_09_06_082944) do
 
   create_table "core_research_areas", id: :serial, force: :cascade do |t|
     t.string "name_ru"
-    t.string "group"
+    t.string "old_group"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "name_en"
+    t.bigint "group_id"
+    t.index ["group_id"], name: "index_core_research_areas_on_group_id"
   end
 
   create_table "core_research_areas_per_projects", id: :serial, force: :cascade do |t|
@@ -550,11 +550,6 @@ ActiveRecord::Schema.define(version: 2019_09_06_082944) do
     t.index ["user_id"], name: "index_face_users_menus_on_user_id"
   end
 
-  create_table "friends", force: :cascade do |t|
-    t.string "name"
-    t.integer "person_id"
-  end
-
   create_table "groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "weight"
@@ -612,17 +607,6 @@ ActiveRecord::Schema.define(version: 2019_09_06_082944) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "hobbies", force: :cascade do |t|
-    t.integer "article_id"
-    t.integer "person_id"
-    t.string "name"
-  end
-
-  create_table "hobbies_people", id: false, force: :cascade do |t|
-    t.bigint "person_id", null: false
-    t.bigint "hobby_id", null: false
-  end
-
   create_table "jobstat_data_types", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "type", limit: 1
@@ -666,8 +650,8 @@ ActiveRecord::Schema.define(version: 2019_09_06_082944) do
   end
 
   create_table "jobstat_jobs", id: :serial, force: :cascade do |t|
-    t.string "cluster", limit: 32,   null: false
-    t.bigint "drms_job_id",          null: false
+    t.string "cluster", limit: 32
+    t.bigint "drms_job_id"
     t.bigint "drms_task_id"
     t.string "login", limit: 32
     t.string "partition", limit: 32
@@ -688,10 +672,7 @@ ActiveRecord::Schema.define(version: 2019_09_06_082944) do
     t.index ["start_time"], name: "index_jobstat_jobs_on_start_time"
     t.index ["state"], name: "index_jobstat_jobs_on_state"
     t.index ["submit_time"], name: "index_jobstat_jobs_on_submit_time"
-
   end
-
-  add_index "jobstat_jobs", ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true, using: :btree
 
   create_table "jobstat_string_data", id: :serial, force: :cascade do |t|
     t.string "name"
@@ -818,10 +799,6 @@ ActiveRecord::Schema.define(version: 2019_09_06_082944) do
     t.text "description_en"
     t.string "name_en"
     t.index ["package_id"], name: "index_pack_versions_on_package_id"
-  end
-
-  create_table "people", force: :cascade do |t|
-    t.string "name"
   end
 
   create_table "permissions", id: :serial, force: :cascade do |t|

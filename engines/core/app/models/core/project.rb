@@ -37,6 +37,9 @@ module Core
     has_and_belongs_to_many :critical_technologies, join_table: "core_critical_technologies_per_projects"
     has_and_belongs_to_many :direction_of_sciences, join_table: "core_direction_of_sciences_per_projects"
     has_and_belongs_to_many :research_areas, join_table: "core_research_areas_per_projects"
+    has_many :group_of_research_areas, through: :research_areas,
+                                       class_name: Core::GroupOfResearchArea.to_s,
+                                       source: :group
 
     has_many :members, dependent: :destroy, inverse_of: :project
     has_many :users, through: :members, class_name: Core.user_class.to_s, inverse_of: :projects
@@ -61,6 +64,7 @@ module Core
     has_many :sureties, inverse_of: :project
 
     has_many :invitations, class_name: "Core::ProjectInvitation"
+
 
     accepts_nested_attributes_for :card, :sureties
 

@@ -63,6 +63,7 @@ Core::Engine.routes.draw do
     resources :direction_of_sciences
     resources :critical_technologies
     resources :research_areas
+    resources :group_of_research_areas, except: :index
 
     resources :requests, only: [:index, :show, :edit, :update] do
       get :approve, on: :member

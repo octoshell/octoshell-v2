@@ -8,7 +8,7 @@ div#options-container
         div.col-xs-3
           = ff.object.readable_name
         div.col-xs-6
-          = ff.object.readable_value
+          = markdown ff.object.readable_value
       div.row.dialog-container
           div.dialog
             div.col-xs-6
@@ -31,7 +31,9 @@ div#options-container
                 = ff.radio_button :value_type, 'without_category',label: t('options.fields.value_without_category')
               div.value-text
                 -::Option.locale_columns(:value).each do |column|
-                  = ff.text_area column,rows:3
+                  = markdown_area ff, column,rows:3
+                  /= ff.text_area column,rows:3
+
               div.value-select
                 -if ff.object.category_value_id
                   = ff.collection_select :category_value_id, ::CategoryValue.where(options_category_id: ff.object.options_category_id),:id,:value, {include_blank: true},class: 'attach-value'

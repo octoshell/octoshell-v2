@@ -12,6 +12,7 @@
 //
 //= require i18n.js
 //= require i18n/translations
+//= require marked.min
 //= require face/application
 //= require core/application
 //= require support/application

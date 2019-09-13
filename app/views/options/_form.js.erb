@@ -26,6 +26,12 @@ $(document).on('nested:fieldAdded', function(event){
   initialize(field.find('div.dialog'));
   apply_select();
   $('div#options-container div.col-xs-3').last().text('<%= t(".new") %>');
+  $('.marked-preview').each(function(e){
+    var src = $('#'+$(this).attr('data-myid'));
+    $(this).height(src.height());
+  });
+  add_markdown_toolbar();
+
 });
 apply_select();
 $('.attach-category').each(function(indx, element){
@@ -96,4 +102,8 @@ function initialize(dialog){
 
 $('div#options-container div.dialog').each(function(){
   initialize($(this));
+});
+$('.marked-preview').each(function(e){
+  var src = $('#'+$(this).attr('data-myid'));
+  $(this).height(src.height());
 });

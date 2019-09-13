@@ -49,7 +49,7 @@
   Core::OrganizationKind.create!(name: 'Российская коммерческая организация')
   Core::CriticalTechnology.create!(name: 'Робототехника')
   Core::DirectionOfScience.create!(name: 'Информационно-телекоммуникационные системы')
-  Core::ResearchArea.create!(name: 'Математика')
+  Core::ResearchArea.create!(name: 'Математика', group: Core::GroupOfResearchArea.create!(name: 'Группа математика'))
   Core::ProjectKind.create!(name: 'Исследовательский')
   organization = Core::Organization.create!(name: 'Test MSU', city: city, country: country,
                                             kind: Core::OrganizationKind.first, checked: true )

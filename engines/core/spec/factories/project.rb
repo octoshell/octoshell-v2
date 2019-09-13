@@ -39,14 +39,24 @@ FactoryBot.define do
  factory :direction_of_science, :class => "Core::DirectionOfScience" do
    sequence(:name_ru) { |n| "Направление_#{n}" }
    sequence(:name_en) { |n| "Direction_#{n}" }
-   #association :project, action: :build
  end
 end
+
+FactoryBot.define do
+  factory :group_of_research_area, class: "Core::GroupOfResearchArea" do
+    sequence(:name_ru) { |n| "Группа_#{n}" }
+    sequence(:name_en) { |n| "Group#{n}" }
+    #association :project, action: :build
+  end
+end
+
+
+
 FactoryBot.define do
   factory :research_area, :class => "Core::ResearchArea" do
     sequence(:name_ru) { |n| "Область_#{n}" }
     sequence(:name_en) { |n| "Area_#{n}" }
-    #association :project, action: :build
+    group { build(:group_of_research_area) }
   end
 end
 

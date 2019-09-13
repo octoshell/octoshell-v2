@@ -1,4 +1,4 @@
-$(function(){
+function add_markdown_toolbar(){
   function jqmdedit_do(e,a,f,args){
     e.stopPropagation();
     e.preventDefault();
@@ -6,6 +6,12 @@ $(function(){
   }
   $("textarea.markdown-edit").each(function(i) {
     var cl='js-edit-'+i;
+    var classes = $(this).attr("class").split(' ');
+    for(var j in classes){
+      if(classes[j].startsWith('js-edit-')){
+          return;
+      }
+    }
     $(this).addClass(cl);
     $(this).wrap('<div></div>');
     $(this).before("<div id=\"mde-but-"+i+"\" class=\"markdown-edit-buttons\"><a href='#' id=\"js-md-c"+
@@ -30,4 +36,7 @@ $(function(){
     $('#js-md-H'+i).click(function(e){jqmdedit_do(e,$('.'+cl),'mdHeader',{number: 4});});
     $('#js-md-q'+i).click(function(e){jqmdedit_do(e,$('.'+cl),'mdQuote');});
   });
+}
+$(function(){
+  add_markdown_toolbar();
 });

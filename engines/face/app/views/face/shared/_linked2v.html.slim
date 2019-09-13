@@ -9,4 +9,7 @@ div class="container marked-container"
       = label_tag("#{@editid}_preview", l, :class => 'control-label required')
       div.marked-preview data-myid="#{@editid}" id="#{@editid}_preview"
 
-= markdown_js.html_safe
+javascript:
+  apply_markdown();
+
+/= markdown_js.html_safe

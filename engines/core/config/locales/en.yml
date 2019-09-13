@@ -224,7 +224,10 @@ en:
         requested_resources: Requested resources
         state: Status
       core/research_area:
+        group_id: Group
         group: Group
+        name: Name
+      core/group_of_research_area:
         name: Name
       core/surety:
         author: Author
@@ -387,6 +390,11 @@ en:
         list:
           employments: Employments
           no_employments_created: Employments have not been created yet
+      group_of_research_areas:
+        edit:
+          title: Edit group of research areas
+        new:
+          title: New group of research areas
       organization_kinds:
         edit:
           title: Edit organization kind
@@ -494,6 +502,10 @@ en:
           activated_before: Activated before
           created_after: Created after
           created_before: Created before
+          critical_technologies_id_in: has one of critical technologies
+          direction_of_sciences_id_in: has one of science directions
+          group_of_research_areas_id_in: has one of research area groups
+          research_areas_id_in: has one of research areas
           title: Projects
           updated_after: Updated after
           updated_before: Updated before
@@ -561,7 +573,10 @@ en:
         edit:
           title: Edit research area
         index:
-          new_research_area: Add a research area
+          delete_group: Delete group
+          edit_group: Edit group
+          new_group_of_research_area: Add a group of research areas
+          new_research_area: Add aresearch area
           no_research_areas_found: No research areas have been found
           title: Research area
         new:

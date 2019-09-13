@@ -43,6 +43,8 @@ module Face
       </script>
     )
     def markdown_js
+
+      return
       text = if @marked_included.nil?
         @marked_included = true
         %Q(

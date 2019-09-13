@@ -18,4 +18,10 @@ class ApplicationRecord < ActiveRecord::Base
     accepts_nested_attributes_for :options, allow_destroy: true
   end
 
+  def self.order_by_name
+    locale_name = [current_locale_column(:name)]
+    other_names = locale_columns(:name) - locale_name
+    name_array = locale_name + other_names
+    order(*name_array)
+  end
 end

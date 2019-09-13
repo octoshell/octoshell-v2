@@ -225,7 +225,10 @@ ru:
         state: Статус
       core/research_area:
         group: Группа
+        group_id: Группа
         name: Наименование
+      core/group_of_research_area:
+        name: Название
       core/surety:
         author: Автор
         boss_full_name: ФИО руководителя организации-поручителя
@@ -388,6 +391,11 @@ ru:
         list:
           employments: Места работы
           no_employments_created: Нет мест работы
+      group_of_research_areas:
+        edit:
+          title: Редактировать группу областей науки
+        new:
+          title: Добавить группу областей науки
       organization_kinds:
         edit:
           title: Редактирование типа организаций
@@ -498,6 +506,10 @@ ru:
           activated_before: Активирован до
           created_after: Создан после
           created_before: Создан до
+          critical_technologies_id_in: В одной из критических технологий
+          direction_of_sciences_id_in: В одной из направлений исследований
+          group_of_research_areas_id_in: В одной из групп областей науки
+          research_areas_id_in: В одной из областей науки
           title: Проекты
           updated_after: Обновлен после
           updated_before: Обновлен до
@@ -565,6 +577,9 @@ ru:
         edit:
           title: Редактирование области науки
         index:
+          delete_group: Удалить группу
+          edit_group: Редактировать группу
+          new_group_of_research_area: Добавить группу областей науки
           new_research_area: Добавить область науки
           no_research_areas_found: Нет областей наук
           title: Области науки

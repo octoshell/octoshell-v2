@@ -2,7 +2,7 @@ module Core
   class Admin::ResearchAreasController < Admin::ApplicationController
     before_action :octo_authorize!
     def index
-      @research_areas = ResearchArea.all
+      @groups = GroupOfResearchArea.order_by_name_with_areas
     end
 
     def new
@@ -40,7 +40,7 @@ module Core
 
     private
     def research_area_params
-      params.require(:research_area).permit(*ResearchArea.locale_columns(:name), :group)
+      params.require(:research_area).permit(*ResearchArea.locale_columns(:name), :group_id)
     end
   end
 end

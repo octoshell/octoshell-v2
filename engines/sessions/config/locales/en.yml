@@ -158,6 +158,10 @@ en:
           title: Report submit denial reason creation
       reports:
         index:
+          critical_technologies_id_in: project has one of critical technologies
+          direction_of_sciences_id_in: project has one of science directions
+          group_of_research_areas_id_in: project has one of research area groups
+          research_areas_id_in: project has one of research areas
           expert: Expert
           figures: Illustrations
           overall_assessment: Overall mark
