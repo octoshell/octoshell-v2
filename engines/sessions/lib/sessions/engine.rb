@@ -3,7 +3,8 @@ module Sessions
     isolate_namespace Sessions
 
     config.to_prepare do
-      Decorators.register! Engine.root, Rails.root
+      # puts 'PREPARE'.red
+      # Decorators.register! Engine.root, Rails.root
     end
 
     # initializer 'local_helper.action_controller' do

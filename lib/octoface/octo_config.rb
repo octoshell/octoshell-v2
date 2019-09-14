@@ -87,9 +87,9 @@ module Octoface
     end
 
     def self.finalize!
-      if db_present?
-        create_abilities!
-      end
+      # if db_present?
+      #   create_abilities!
+      # end
       forward_classes!
       # Face::MyMenu.validate_keys!
     end

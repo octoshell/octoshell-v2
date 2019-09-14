@@ -3,7 +3,7 @@ module Core
     isolate_namespace Core
 
     config.to_prepare do
-      Decorators.register! Engine.root, Rails.root
+      # Decorators.register! Engine.root, Rails.root
     end
 
     initializer "core.action_controller" do |app|

@@ -16,4 +16,9 @@ namespace :admin do
                                      available: (g.name == "superadmins"))
     end
   end
+
+  task create_abilities: :environment do
+    Octoface::OctoConfig.create_abilities!
+  end
+
 end

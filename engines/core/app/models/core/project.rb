@@ -25,8 +25,6 @@
 module Core
   class Project < ApplicationRecord
 
-
-
     belongs_to :kind, class_name: "Core::ProjectKind", foreign_key: :kind_id
     belongs_to :organization
     belongs_to :organization_department
@@ -38,7 +36,7 @@ module Core
     has_and_belongs_to_many :direction_of_sciences, join_table: "core_direction_of_sciences_per_projects"
     has_and_belongs_to_many :research_areas, join_table: "core_research_areas_per_projects"
     has_many :group_of_research_areas, through: :research_areas,
-                                       class_name: Core::GroupOfResearchArea.to_s,
+                                       class_name: GroupOfResearchArea.to_s,
                                        source: :group
 
     has_many :members, dependent: :destroy, inverse_of: :project
