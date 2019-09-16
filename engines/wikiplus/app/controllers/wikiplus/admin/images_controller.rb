@@ -1,7 +1,7 @@
 module Wikiplus
   class Admin::ImagesController < Admin::ApplicationController
 
-    before_filter :check_abilities, except: [:index, :show]
+    before_action :check_abilities, except: [:index, :show]
 
     def index
       @images = Image.all

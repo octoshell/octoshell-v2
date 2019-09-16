@@ -3,7 +3,7 @@ require_dependency "api/admin/application_controller"
 module Api
   class Admin::AccessKeysController < Admin::ApplicationController
     before_action :set_access_key, only: [:show, :edit, :update, :destroy]
-    before_filter :authorize_admins
+    before_action :authorize_admins
     def authorize_admins
       authorize!(:access, :api_engine)
     end

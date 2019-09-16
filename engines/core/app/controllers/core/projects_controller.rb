@@ -124,6 +124,12 @@ module Core
       begin
         CSV.foreach(file.path) do |row|
           email = row.first.downcase
+          unless email.match(URI::MailTo::EMAIL_REGEXP).present?
+            email.gsub!(/[^@0-9a-z.!#$%&'*+\/=?^_`{|}~-]/,'')
+            unless email.match(URI::MailTo::EMAIL_REGEXP).present?
+              raise 'flash.incorrect_email'
+            end
+          end
           initials = row.second
           language = row.third || current_user.language
           user = User.find_by_email(email)

@@ -1,6 +1,6 @@
 module Wikiplus
   class Admin::PagesController < Admin::ApplicationController
-    before_filter :check_abilities, except: [:index, :show]
+    before_action :check_abilities, except: [:index, :show]
 
     def index
       @pages = Page.where(mainpage_id: nil).order(:sortid)

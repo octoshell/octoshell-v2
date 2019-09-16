@@ -936,8 +936,11 @@ en:
     wrong_key: incorrect key
   flash:
     bad_csv_file: >-
-      Oops,  it is impossible to  parse the file... Please check file format
+      Oops, it is impossible to  parse the file... Please check file format
       and encoding(encoding must be UTF-8)
+    incorrect_email: >-
+      One of specified emails is incorrect. Please, check you didnt include
+      any extra spaces or invisible unicode symbols into csv file
     cluster_created: The cluster has been created
     cluster_updated: The cluster has been updated
     duplicated_invite: This user is already invited.
