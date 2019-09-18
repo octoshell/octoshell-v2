@@ -57,6 +57,12 @@ To run in **production** mode:
 
 Best way is to test in development mode and then do deploy on production (or stage) server. See **Deploy** section for more details.
 
+## Notes
+
+### Wikiplus module
+
+For correct work of images and video uploading you'll need to install imagemagick and ffmpegthumbnailer packages.
+
 ## Hacks
 
 ### Localization
@@ -220,6 +226,12 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 1. Войдите на сервер деплоя и запустите сервисы `systemctl start octoshell`
 
 Последующие деплои можно выполнять командой `git fetch; ./do_deploy` и последующим перезапуском сервиса на сервере `systemctl restart octoshell`.
+
+## Замечания
+
+### Wikiplus
+
+Для корректной работы с картинками и видео необходимо установить пакеты  imagemagick и ffmpegthumbnailer.
 
 # Форкни и улучши!
 
