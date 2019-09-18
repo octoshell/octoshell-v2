@@ -324,8 +324,8 @@ en:
         subject: You have been granted access to %{to}
       access_changed_deleted:
         body: >-
-          Your access for %{link} has been deleted automically probably because
-          of our licence has expired. Write us for details.
+          Your access for %{link} has been deleted automically probably because of
+          our licence has expired. Write us for details.
         subject: Your access for  %{to} has been deleted
       access_changed_denied:
         body: Your access for %{link} has been rejected.
@@ -338,8 +338,8 @@ en:
         subject: Your access expiration date for %{to} has been changed.
       access_changed_expired:
         body: >-
-          Your access for %{link} has expired. You can go to %{link}
-          and create a request for prolongation.
+          Your access for %{link} has expired. You can go to %{link} and create a
+          request for prolongation.
         subject: Your access for %{to} has expired.
       body: >-
         %{status_info} к версии  %{link}. Для подробностей напишите нам или просмотрите

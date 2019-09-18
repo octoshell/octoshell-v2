@@ -5,7 +5,6 @@ div class="row"
         - @images.each do |image|
           <img class = "insert" src = "#{image.image.url}" width="40" height="40" alt="" > 
         <div id  = "targetText">
-        </div>
       = f.text_field :sortid 
       -Wikiplus::Page.locale_columns(:name).each do |column|
         = f.text_field column 

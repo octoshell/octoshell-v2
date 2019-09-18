@@ -130,6 +130,8 @@ en:
         organization_department_id: Organization department
         organization_id: Organization
         primary: Main job
+      core/group_of_research_area:
+        name: Name
       core/member:
         login: Login
         organization: Organization
@@ -224,10 +226,8 @@ en:
         requested_resources: Requested resources
         state: Status
       core/research_area:
-        group_id: Group
         group: Group
-        name: Name
-      core/group_of_research_area:
+        group_id: Group
         name: Name
       core/surety:
         author: Author

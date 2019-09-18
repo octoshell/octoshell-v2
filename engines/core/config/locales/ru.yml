@@ -130,6 +130,8 @@ ru:
         organization_department_id: Подразделение организации
         organization_id: Организация
         primary: Основное место работы
+      core/group_of_research_area:
+        name: Название
       core/member:
         login: Логин
         organization: Организация
@@ -227,8 +229,6 @@ ru:
         group: Группа
         group_id: Группа
         name: Наименование
-      core/group_of_research_area:
-        name: Название
       core/surety:
         author: Автор
         boss_full_name: ФИО руководителя организации-поручителя

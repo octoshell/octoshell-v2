@@ -38,9 +38,8 @@ en:
             class_name:
               not_exist: This model does not exist
             conflict:
-              exists_similar: >-
-                You can not associate one object (a list of objects) with
-                different levels
+              exists_similar: You can not associate one object (a list of objects)
+                with different levels
     models:
       comments/comment: Comments
       comments/file_attachment: Files

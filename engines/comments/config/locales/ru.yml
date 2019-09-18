@@ -38,8 +38,8 @@ ru:
             class_name:
               not_exist: Такой модели не существует
             conflict:
-              exists_similar: Нельзя  связать один объект(список объектов)
-                с разными уровнями
+              exists_similar: Нельзя  связать один объект(список объектов) с разными
+                уровнями
     models:
       comments/comment: Комментарии
       comments/file_attachment: Файлы

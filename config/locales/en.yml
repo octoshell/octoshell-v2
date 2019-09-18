@@ -61,17 +61,13 @@ en:
       manage: Full access to Projects
       review: Ability to review projects
     reports:
-      access: Access to reports subsection
       admin: Full access to reports
-      manage: Report expert
       review: Ability to review reports
       supervise: Ability to accept/reject overdue reports
     requests:
       manage: Full access to Resource requests
     research_areas:
       manage: Full access to Research areas
-    sessions:
-      manage: Ability to launch re-registration
     settings:
       manage: Full access to Settings
     sureties:
@@ -93,8 +89,6 @@ en:
       manage: Full access to Answer templates
     tickets:
       manage: Full access to Support tickets
-    user_surveys:
-      access: Просмотр отчетов пользователя
     users:
       manage: Full access to Users
   actions:

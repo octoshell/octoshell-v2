@@ -13,9 +13,8 @@ en:
         user:
           attributes:
             base:
-              user_is_not_activated: >-
-                User has not been activated yet. Follow the link in the activation
-                email.
+              user_is_not_activated: User has not been activated yet. Follow the link
+                in the activation email.
               user_is_not_registered: User has not been registered.
               wrong_password: Ivalid password.
             email:
@@ -28,11 +27,10 @@ en:
         send: Send
         title: Activation instructions
     flash:
-      activation_instructions_are_sent: Activation instructions have been
-        sent.
+      activation_instructions_are_sent: Activation instructions have been sent.
       conditions_must_be_accepted: The conditions must be accepted to register.
-      password_reset_instructions_are_sent: Password recovery instructions
-        have been sent
+      password_reset_instructions_are_sent: Password recovery instructions have been
+        sent
       user_is_activated: The user has been activated.
       user_is_already_activated: The user has been activated.
       user_is_not_activated: The user has not been activated yet
@@ -68,8 +66,8 @@ en:
     sessions:
       new:
         forgot_password: Forgot password?
-        have_not_received_confirmation_instructions: Have you not received
-          account activation instructions?
+        have_not_received_confirmation_instructions: Have you not received account
+          activation instructions?
         or: or
         sign_in: Sign in
         title: Authentication
@@ -77,14 +75,12 @@ en:
     signup: Sign up
     users:
       confirmation:
-        message: >-
-          An instruction has been sent to your email(%{email}) to activate
+        message: An instruction has been sent to your email(%{email}) to activate
           your account.
         title: Confirm your email
       new:
-        cond_accepted: >-
-          I permit for Lomonosov Moscow State University to process my personal
-          data
+        cond_accepted: I permit for Lomonosov Moscow State University to process my
+          personal data
         minimum_password_length: 6 characters min
         sign_up: Sign up
         title: Registration

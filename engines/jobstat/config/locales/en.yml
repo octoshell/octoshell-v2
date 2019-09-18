@@ -7,8 +7,8 @@ en:
         close_descriptions: Close all descriptions
         comment: Send my comment!
         enter_suggestions: >-
-          Please, write your suggestions about new job valuation rule here.
-          Try to describe your suggestions as much detailed as possible.
+          Please, write your suggestions about new job valuation rule here. Try to
+          describe your suggestions as much detailed as possible.
         not_comment: Changed my mind
         not_send: Changed my mind
         open_descriptions: Open all descriptions
@@ -18,10 +18,10 @@ en:
         rule_suggesttion: Send suggestion about the rule
         rules_list: All available rules list
         rules_list_descr: >-
-          On this page you can find detailed descriptions of all rules, used
-          at this moment to detect possible efficiency problems. For each
-          rule you can suggest us your notices. Also you can hide rule, then
-          it wouldn't be shown for your jobs.
+          On this page you can find detailed descriptions of all rules, used at this
+          moment to detect possible efficiency problems. For each rule you can suggest
+          us your notices. Also you can hide rule, then it wouldn't be shown for your
+          jobs.
         send: Send!
         suggest_new_rule: I want to suggest a new rule
         your_comments: 'Write your comments as detailed as possible:'
@@ -40,14 +40,13 @@ en:
         cpu_info: in percents of full load
         cpu_load: CPU load
         disagree_info: >
-          Select jobs in left column. In the area below would be shown rules,
-          common to selected jobs. Select all rules, you don't agree and send
-          us your comment.
+          Select jobs in left column. In the area below would be shown rules, common
+          to selected jobs. Select all rules, you don't agree and send us your comment.
         dont_send_feedback: I changed my mind
         end_info: time of job finish
         end_time: Job end
-        finish_tour: Finish the tour? You can repeat it later by pressing
-          \"Intro tour\"
+        finish_tour: Finish the tour? You can repeat it later by pressing \"Intro
+          tour\"
         finished_tasks: Information about finished jobs
         gpu_info: in percents of full load
         gpu_load: GPU load
@@ -58,91 +57,83 @@ en:
         hide_performance: Hide performance info
         hide_rule_button: Hide rule
         i_dont_agree: I don't agree some estimations...
-        info_1: "In \"Found problems\" column potential jobs execution problems
-          are shown. Click \n"
+        info_1: "In \"Found problems\" column potential jobs execution problems are
+          shown. Click \n"
         info_2: >-
-          icon to show short problem description, hide it or send us comment
-          about its siutability. Icon shows problem type (MPI inefficient
-          use, low memory use locality, etc.). Icon color shows importance
-          level (red - major efficiency lowerage or incorrect program behavior,
-          black - noticable efficiency lowerage, green - no problems were
-          found).
+          icon to show short problem description, hide it or send us comment about
+          its siutability. Icon shows problem type (MPI inefficient use, low memory
+          use locality, etc.). Icon color shows importance level (red - major efficiency
+          lowerage or incorrect program behavior, black - noticable efficiency lowerage,
+          green - no problems were found).
         info_3: >-
           Detailed description of found efficiency problems and other information
-          about job performance can be found on special page. To go to that
-          page click ID of selected job.
-        info_4: "You can find all potential efficiency problems list, tune
-          visibility of selected problems, suggest us new rule to detect new
-          problem "
+          about job performance can be found on special page. To go to that page click
+          ID of selected job.
+        info_4: "You can find all potential efficiency problems list, tune visibility
+          of selected problems, suggest us new rule to detect new problem "
         intro-finish: >-
-          На этом всё, если позже захотите повторить, просто нажмите кнопку
-          "Ознакомительный тур"
+          На этом всё, если позже захотите повторить, просто нажмите кнопку "Ознакомительный
+          тур"
         intro-step1: >-
           Hello! Here we show (usually) all executed jobs and  <span style="color:
-          green">potential</span> efficiency problems. Now we\'ll show you
-          an example with fake jobs, please watch how to use this system!
+          green">potential</span> efficiency problems. Now we\'ll show you an example
+          with fake jobs, please watch how to use this system!
         intro-step2: >-
-          First, select time diapasone and logins (by default all logins will
-          be used), then click "Show" <span style="color: green">(now click
-          "Next" and wait to page update).</span>
+          First, select time diapasone and logins (by default all logins will be used),
+          then click "Show" <span style="color: green">(now click "Next" and wait
+          to page update).</span>
         intro-step3: >-
-          <span style="color: red">Please, wait to page update, do not click
-          Next...</span>
+          <span style="color: red">Please, wait to page update, do not click Next...</span>
         intro-step4: >-
-          Here is short job information. You can sort this table, clicking
-          columns headers.
+          Here is short job information. You can sort this table, clicking columns
+          headers.
         intro-step5: >-
-          Это список найденных <span style="color: green">потенциальных</span>
-          проблем. Значок соответствует группе, к которой принадлежит проблема
-          (неэффективная работа с MPI, некорректный режим работы программ
-          и т.д.). Цвет обозначает ее критичность (<span style="color: red">красный</span>
-          – радикальное снижение эффективности или программа работает некорректно,
-          <strong>чёрный</strong> – заметное снижение эффективности, <span
-          style="color: green">зелёный</span> – проблем не найдено). <span
-          style="color: green">Наведите</span> мышку на значок, чтобы  увидеть
-          краткое описание проблемы. При нажатии на значок вы попадёте на
-          страницу с более полным описанием данной проблемы и рекомендациями
-          по ее устранению. <span style="color: green">Справа</span> от значков
-          указано число найденных проблем (+2), которые были скрыты вручную
-          (см. далее).
-        intro-step5a: "If you click here, you\\'ll see detailed list of all
-          found problems with buttons. <br><button class=\"btn-danger\"><i
-          class=\"far fa-bell-slash\"> </i></button> - this would hide this
-          problem type in all jobs. You can restore its visibility later on
-          page with all rules. <br><button class=\"btn-warning\"><i class=\"far "
-        intro-step5b: "\"></i></button> - click this is you think, this problem
-          in not relevant to this job<br> <button class=\"btn-warning\"><i
+          Это список найденных <span style="color: green">потенциальных</span> проблем.
+          Значок соответствует группе, к которой принадлежит проблема (неэффективная
+          работа с MPI, некорректный режим работы программ и т.д.). Цвет обозначает
+          ее критичность (<span style="color: red">красный</span> – радикальное снижение
+          эффективности или программа работает некорректно, <strong>чёрный</strong>
+          – заметное снижение эффективности, <span style="color: green">зелёный</span>
+          – проблем не найдено). <span style="color: green">Наведите</span> мышку
+          на значок, чтобы  увидеть краткое описание проблемы. При нажатии на значок
+          вы попадёте на страницу с более полным описанием данной проблемы и рекомендациями
+          по ее устранению. <span style="color: green">Справа</span> от значков указано
+          число найденных проблем (+2), которые были скрыты вручную (см. далее).
+        intro-step5a: "If you click here, you\\'ll see detailed list of all found
+          problems with buttons. <br><button class=\"btn-danger\"><i class=\"far fa-bell-slash\">
+          </i></button> - this would hide this problem type in all jobs. You can restore
+          its visibility later on page with all rules. <br><button class=\"btn-warning\"><i
           class=\"far "
+        intro-step5b: "\"></i></button> - click this is you think, this problem in
+          not relevant to this job<br> <button class=\"btn-warning\"><i class=\"far "
         intro-step5c: >-
-          "></i></button> - and this, if you think that problem is relevant,
-          we need this information too.
+          "></i></button> - and this, if you think that problem is relevant, we need
+          this information too.
         intro-step6: >-
-          This is the list of all found <strong>potential</strong> problems.
-          Move the mouse over an icon and you\'ll see a short problem description,
-          click the icon and you\'ll see a page with details and recomendations.
-          <br><br>That\'s all, if you would like to repeat, press "Intro tour"
-          button
-        intro-step6a: "Нажмите на значок <i class=\"fas fa-bars\"></i>, чтобы
-          увидеть список всех найденных проблем по задаче. <br><button class=\"btn-danger\"><i
-          class=\"far fa-bell-slash\"> </i></button> - эта кнопка скрывает
-          отображение таких проблем во всех запусках. Это действие можно отменить
-          на странице с описанием всех потенциальных проблем. <br><button
-          class=\"btn-warning\"><i class=\"far "
-        intro-step6b: "\"></i></button> - если вам кажется, что эта проблема
-          совсем не относится к запуску, нажимайте эту кнопку. Только большая
-          просьба добавить понятное описание – что именно не устроило. <br><button
-          class=\"btn-warning\"><i class=\"far "
+          This is the list of all found <strong>potential</strong> problems. Move
+          the mouse over an icon and you\'ll see a short problem description, click
+          the icon and you\'ll see a page with details and recomendations. <br><br>That\'s
+          all, if you would like to repeat, press "Intro tour" button
+        intro-step6a: "Нажмите на значок <i class=\"fas fa-bars\"></i>, чтобы увидеть
+          список всех найденных проблем по задаче. <br><button class=\"btn-danger\"><i
+          class=\"far fa-bell-slash\"> </i></button> - эта кнопка скрывает отображение
+          таких проблем во всех запусках. Это действие можно отменить на странице
+          с описанием всех потенциальных проблем. <br><button class=\"btn-warning\"><i
+          class=\"far "
+        intro-step6b: "\"></i></button> - если вам кажется, что эта проблема совсем
+          не относится к запуску, нажимайте эту кнопку. Только большая просьба добавить
+          понятное описание – что именно не устроило. <br><button class=\"btn-warning\"><i
+          class=\"far "
         intro-step6c: >-
-          "></i></button> - нажимайте эту кнопку, если описанная проблема
-          действительно присутствует в данном запуске. Такая информация для
-          нас также очень важна.
+          "></i></button> - нажимайте эту кнопку, если описанная проблема действительно
+          присутствует в данном запуске. Такая информация для нас также очень важна.
         intro-step7: >-
-          При наведении на ID задачи появится список узлов и имя задачи. Чтобы
-          посмотреть всю доступную информацию по данной задаче, нажмите на
-          этот ID (будет доступно на реальных задачах).
+          При наведении на ID задачи появится список узлов и имя задачи. Чтобы посмотреть
+          всю доступную информацию по данной задаче, нажмите на этот ID (будет доступно
+          на реальных задачах).
         intro_start: >-
-          Here you can view information about your jobs and estimate their
-          execution efficiency. Use filters below to view only specified jobs.
+          Here you can view information about your jobs and estimate their execution
+          efficiency. Use filters below to view only specified jobs.
         intro_tour: Intro tour
         ipc_info: average CPU instructions, executed per tick
         la_info: average count of active processes
@@ -173,8 +164,8 @@ en:
         problems_found: Found problems
         questions: Замечания/Пожелания/Вопросы
         rule_descr: Go to rule description
-        rule_error: Oops, we have trouble with this rule description, please,
-          inform us!
+        rule_error: Oops, we have trouble with this rule description, please, inform
+          us!
         rules_info: more details about rules, hide/comment rules
         rules_list: Все потенциальные проблемы
         send_feedback: Send comment
@@ -187,16 +178,16 @@ en:
         task_id: job ID
         task_size: Job size (core-hours)
         task_size_info: >-
-          production of used cores number and run time<br> all cores of node
-          are supposed to be used, even if job didn't use them for computations
+          production of used cores number and run time<br> all cores of node are supposed
+          to be used, even if job didn't use them for computations
         thank_you: Thank you!
         this_page: here
         time: Run time (hours)
         time_info: job run time in hours
         why_disagree: Why don't you agree with this rule estimation?
         why_hide: >-
-          This rule will be hidden in all jobs, including future jobs. Please,
-          tell us why you want to hide it?
+          This rule will be hidden in all jobs, including future jobs. Please, tell
+          us why you want to hide it?
     account_summary:
       form:
         from: From
@@ -216,8 +207,7 @@ en:
       agree_button: I agree with estimation
       agree_rule: Yes, I agree with this rule estimation
       faled_send_try_later: >-
-        Ой, не получилось сохранить Ваш отзыв, попробуйте чуть позже ещё раз
-        его отправить.
+        Ой, не получилось сохранить Ваш отзыв, попробуйте чуть позже ещё раз его отправить.
       hide: Hide rule!
       hide_show: Hide rule/Show it again
       ipc: IPC
@@ -225,9 +215,8 @@ en:
       no_selected_jobs: "- Пока не выбраны задачи, поэтому список пуст..."
       not_hide: Changed my mind
       not_send: Change my mind
-      return_on_rules_page: >-
-        Вернуть отображение проблемы можно на странице со списком потенциальных
-        проблем.
+      return_on_rules_page: Вернуть отображение проблемы можно на странице со списком
+        потенциальных проблем.
       send: Send!
       thanks_for_feedback: Спасибо за отзыв!
       why_dont_agree: Please, tell us why you don't agree with this?
@@ -244,15 +233,15 @@ en:
         cpu_percent: CPU load (0% .. 100%)
         data_on_job: Информация о задаче %{job}
         descr1: >-
-          Here you can found list of efficiency problems, which were detected
-          for this job. For each problem its description (which basis was
-          detected), suggestion (what could cause this problem by our opinion)
-          and recommendations (what we are suggest to do for you) are listed.
-          In many cases recomendation includes type of analysis, suggested
-          to be performed; we will improve this function in the future.
-        descr2: "Abilities to estimate correctness and changing of detected
-          efficiency problems are planned in the future. Now this ability
-          is implemented only on all jobs list page. "
+          Here you can found list of efficiency problems, which were detected for
+          this job. For each problem its description (which basis was detected), suggestion
+          (what could cause this problem by our opinion) and recommendations (what
+          we are suggest to do for you) are listed. In many cases recomendation includes
+          type of analysis, suggested to be performed; we will improve this function
+          in the future.
+        descr2: "Abilities to estimate correctness and changing of detected efficiency
+          problems are planned in the future. Now this ability is implemented only
+          on all jobs list page. "
         description: Description
         details: Detailed description
         dynamics: Program execution dynamics
@@ -270,8 +259,8 @@ en:
         mpi: MPI usage (MB/s)
         no-data: Нет полных данных по этой задаче
         no_data: >-
-          По техническим причинам данные мониторинга для этой задачи отсутствуют
-          - анализ невозможен
+          По техническим причинам данные мониторинга для этой задачи отсутствуют -
+          анализ невозможен
         no_feedback_yet: Вы ещё не оценили корректность данного описания проблемы
         no_problems: No problems found
         no_strange: No suspicious features found
