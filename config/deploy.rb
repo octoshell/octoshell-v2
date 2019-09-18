@@ -52,16 +52,6 @@ task setup: :remote_environment do
   comment %[Be sure to edit 'shared/config/database.yml'.]
 
 end
-#task setup: :environment do
-#  queue! %[mkdir -p "#{deploy_to}/shared/log"]
-#  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/log"]
-#
-#  queue! %[mkdir -p "#{deploy_to}/shared/config"]
-#  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/config"]
-#
-#  queue! %[touch "#{deploy_to}/shared/config/database.yml"]
-#  queue  %[echo "-----> Be sure to edit 'shared/config/database.yml'."]
-#end
 
 task :setup_database => :remote_environment do
   database_yml = <<-DATABASE.dedent
@@ -128,7 +118,7 @@ task :deploy => :remote_environment do
     invoke :"deploy:link_shared_paths"
     invoke :"bundle:install"
     invoke :"rails:assets_precompile"
-    #invoke :"copy_migrations"
+    invoke :"copy_migrations"
     invoke :"rails:db_migrate"
     invoke :"deploy:cleanup"
   end

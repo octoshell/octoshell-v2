@@ -1,8 +1,8 @@
 h1
 = render partial: 'form', locals: {do_submit: false}
-= link_to 'Edit', edit_admin_export_path(@export)
+= link_to t('.edit'), edit_admin_export_path(@export)
 |  | 
-= link_to 'Back', admin_exports_path
+= link_to t('.back'), admin_exports_path
 
 
 
