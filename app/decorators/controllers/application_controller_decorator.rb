@@ -8,7 +8,7 @@ ApplicationController.class_eval do
     # menu.items.clear
     menu.add_item_without_key(t("main_menu.working_area"), core.root_path, /^((?!admin|wiki).)*$/s) if logged_in?
     if can?(:access, :admin)
-      menu.add_item_without_key(t("main_menu.admin_area"), core.admin_projects_path, /admin/)
+      menu.add_item_without_key(t("main_menu.admin_area"), admin_redirect_path, /admin/)
     end
     # menu.add_item_without_key(wiki_item)
     menu.add_item_without_key(t("main_menu.wikiplus"), wikiplus.root_path, /wikiplus/)
@@ -48,7 +48,7 @@ ApplicationController.class_eval do
   def admin_area_item
     Face::MenuItem.new({
       name: t("main_menu.admin_area"),
-      url: core.admin_projects_path,
+      url: admin_redirect_path,
       regexp: /admin/
     })
   end
