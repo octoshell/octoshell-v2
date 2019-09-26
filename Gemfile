@@ -74,7 +74,7 @@ gem "jquery-ui-rails"
 gem "jquery-tablesorter"
 
 gem "config", github: 'railsconfig/config'
-gem "decorators", "~> 1.0.0"
+gem "decorators", '~> 2.0.3'
 gem 'active_record_union'
 gem "whenever"
 

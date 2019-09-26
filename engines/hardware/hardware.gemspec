@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "slim"
-  s.add_dependency "decorators"
+  # s.add_dependency "decorators"
 
   # s.add_dependency "bootstrap_form", ">= 4.2.0"
 

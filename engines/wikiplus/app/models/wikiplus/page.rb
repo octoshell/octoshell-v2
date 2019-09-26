@@ -1,5 +1,5 @@
 module Wikiplus
-  class Page < ActiveRecord::Base
+  class Page < ApplicationRecord
     def test
       return id
     end
