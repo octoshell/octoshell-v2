@@ -1,8 +1,13 @@
 - type = SecureRandom.hex(4)
+- g = stat.graph_data
+- labels = g.map{|x| x[0]}
+- values = g.map{|x| x[1]}
+- pie = { labels: labels, datasets: [{data: values}]}
+- bars = { labels: labels, datasets: [{label: stat.title, data: values}]}
 h4
   == stat.title
   - if subdivision.present?
-    |  
+    | 
     span class="muted" = subdivision
 div class="row"
   div class="col-xs-8"
@@ -13,9 +18,11 @@ div class="row"
         a href="#graph-#{type}-column" data-toggle="tab" #{t('.columns')}
     div class="tab-content"
       div class="tab-pane active" id="graph-#{type}-pie"
-        div class="graph graph-pie" data-source="#{data.to_json}" data-title="#{stat.title}"
+        canvas id="pie-#{type}" class="graph graph-pie" data-source="#{pie.to_json}" data-title="#{stat.title}"
+        /= pie_chart args
       div class="tab-pane" id="graph-#{type}-column"
-        div class="graph graph-bar" data-source="#{data.to_json}" data-title="#{stat.title}"
+        canvas id="bar-#{type}" class="graph graph-bar" data-source="#{bars.to_json}" data-title="#{stat.title}"
+        /= bar_chart args
   div class="col-xs-4"
     div class="graph-table-download text-center"
       = link_to [:admin, stat, :download] do
