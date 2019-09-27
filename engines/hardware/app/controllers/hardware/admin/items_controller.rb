@@ -106,7 +106,8 @@ module Hardware
       I18n.locale = params[:language] if params[:language].present?
 
       params.permit!
-      Hardware::ItemsUpdaterService.from_a params[:data]
+      data = JSON.parse(params[:data] || request.body.read)
+      Hardware::ItemsUpdaterService.from_a data
       head :ok
     end
 
