@@ -1,5 +1,4 @@
 # unless ( File.basename($0) == 'rake')
-if Octoface::OctoConfig.db_present?
   Core::Cluster.class_eval do
   	has_many :clustervers, class_name: "Pack::Clusterver" ,inverse_of: :core_cluster,foreign_key: :core_cluster_id,dependent: :destroy
   end
@@ -8,4 +7,3 @@ if Octoface::OctoConfig.db_present?
         foreign_key: "ticket_id",
         association_foreign_key: "access_id"
   end
-end

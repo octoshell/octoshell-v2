@@ -34,7 +34,7 @@
 module Support
   class Ticket < ApplicationRecord
 
-    
+
 
     mount_uploader :attachment, AttachmentUploader
     mount_uploader :export_attachment, TicketAttachmentUploader, mount_on: :attachment_file_name
@@ -210,10 +210,28 @@ module Support
 
     def possible_responsibles
       all_user_topics = topic.parents_with_self.map(&:user_topics).flatten
-      User.support.map do |u|
-        user_topics = all_user_topics.select { |user_topic| user_topic.user_id == u.id }
-        [u, user_topics]
+      # UserTopic.all.includes(:user).group_by(&:user).map do |key, value|
+      #   [key, value]
+      # end
+
+      # User.support.or(User.where())
+      # puts all_user_topics.inspect.red
+      # all_user_topics.group_by(&:user).map do |key, value|
+      #   [key, value]
+      # end
+      # puts all_user_topics.group_by(&:user).map do |key, value|
+      #   puts "#{key.full_name} | #{value}".red
+      # end
+      hash = all_user_topics.group_by(&:user)
+      (User.support.to_a - all_user_topics.map(&:user)).each do |user|
+        hash[user] = []
       end
+      hash
+
+      #  User.support.map do |u|
+      #   user_topics = all_user_topics.select { |user_topic| user_topic.user_id == u.id }
+      #   [u, user_topics]
+      # end
     end
 
     def template

@@ -1,6 +1,6 @@
 module Jobstat
   extend Octoface
-  octo_configure do
+  octo_configure :jobstat do
   end
 
 end

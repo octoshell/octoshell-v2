@@ -1,6 +1,6 @@
 module Core
   extend Octoface
-  octo_configure do
+  octo_configure :core do
     add(:project_class) { Project }
     add(:cluster_class) { Cluster }
     add_ability(:manage, :projects, 'superadmins')
@@ -18,7 +18,14 @@ module Core
     add_controller_ability(:manage, :clusters, 'admin/clusters', 'admin/cluster_logs', 'admin/quota_kinds')
     add_ability(:manage, :geography, 'superadmins')
     add_controller_ability(:manage, :geography, 'admin/cities', 'admin/countries')
+
+    set :support do
+      ticket_field(key: 'cluster', t: -> {}, human: :to_s, link: false,
+                   query: proc { Cluster.where(available_for_work: true) })
+    end
+
   end
+
 
 
   # menu.add_item(Face::MenuItem.new({name: t("admin_submenu.projects"),

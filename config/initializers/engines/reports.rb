@@ -1,7 +1,7 @@
 Sessions.user_class = "::User"
 module Reports
   extend Octoface
-  octo_configure do
+  octo_configure :reports do
     # add(:report_class) { Report }
     # add(:session_class) { Session }
     # add(:user_survey_class) { UserSurvey }

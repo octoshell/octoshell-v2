@@ -24,4 +24,9 @@ class ApplicationRecord < ActiveRecord::Base
     name_array = locale_name + other_names
     order(*name_array)
   end
+
+  # def self.allowed_for(user)
+  #   where(id)
+  #   where(id: [1,2]).all & where(id: [2,3]).all
+  # end
 end

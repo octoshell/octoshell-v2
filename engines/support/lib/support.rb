@@ -1,6 +1,7 @@
 require "support/engine"
 require "support/notificator"
 require "support/markdown_handler"
+require "support/interface"
 require "file_size_validator"
 
 require "decorators"

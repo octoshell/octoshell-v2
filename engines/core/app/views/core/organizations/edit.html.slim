@@ -17,3 +17,8 @@ div class="page-header"
   = f.form_group do
     = f.submit
       = t("actions.submit")
+
+javascript:
+  $(document).on('nested:fieldAdded', function(event){
+    apply_select();
+  });

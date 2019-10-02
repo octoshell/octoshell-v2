@@ -2,18 +2,20 @@ module Support
   module ApplicationHelper
 
     def responsible_user_topics(ticket)
-      ticket.possible_responsibles.map do |r|
-        user_topics_array = r.second
+      ticket.possible_responsibles.map do |user, user_topics_array|
+        # user_topics_array = r.second
         user_topics_res = []
-        formed_string = [r.first.full_name]
-        if r.second.any?
+        formed_string = [user.full_name]
+        if user_topics_array.any?
           user_topics_array.each do |user_topic|
-            string = user_topic.topic.name
+            string = user_topic.topic.name.clone
             string << "(#{UserTopic.human_attribute_name(:required)})" if user_topic.required
             user_topics_res << string
           end
         end
-        [r.first.id, formed_string.join(' '), user_topics_res]
+        # puts [user.id, formed_string.join(' '), user_topics_res].inspect.green
+
+        [user.id, formed_string.join(' '), user_topics_res]
       end
     end
 

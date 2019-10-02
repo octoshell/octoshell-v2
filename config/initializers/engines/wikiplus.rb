@@ -1,6 +1,6 @@
 module Wikiplus
   extend Octoface
-  octo_configure do
+  octo_configure :wiki do
     add_ability(:manage, :wikiplus, 'superadmins')
   end
 

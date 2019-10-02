@@ -6,7 +6,7 @@ module Pack
                                       parent_topic: Support::Notificator.parent_topic)
   end
   extend Octoface
-  octo_configure do
+  octo_configure :pack do
     add_ability(:manage, :packages, 'superadmins')
   end
 end

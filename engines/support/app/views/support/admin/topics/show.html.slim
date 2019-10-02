@@ -41,3 +41,12 @@ h3 = Support::UserTopic.model_name.human
       tr
         td = link_to user_topic.user.full_name, main_app.admin_user_path(user_topic.user)
         td = user_topic.required
+
+h3 = Support::Topic.human_attribute_name(:permissions)
+- if @topic.permissions.any?
+  table class="table table-bordered"
+    - @topic.permissions.each do |per|
+      tr
+        td = per.group.name
+/- puts Support::Topic.accessible_by(current_ability, :answer).to_a.inspect.red
+/- puts @topic.all_subtopics_with_self.inspect.red

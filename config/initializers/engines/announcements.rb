@@ -1,6 +1,6 @@
 module Announcements
   extend Octoface
-  octo_configure do
+  octo_configure :announcements do
     add_ability(:manage, :announcements, 'superadmins', 'mailsenders')
     add_controller_ability(:manage, :announcements, 'admin/announcements')
     add_routes do

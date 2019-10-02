@@ -26,6 +26,7 @@ class Permission < ApplicationRecord
 
   scope :by_definition, ->(definition) { where(action: definition.action,
                                                subject_class: definition.subject_class) }
+  belongs_to :subject, foreign_key: :subject_id, foreign_type: :subject_class 
 
   class << self
     def definitions

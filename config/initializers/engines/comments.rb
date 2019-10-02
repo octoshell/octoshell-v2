@@ -3,7 +3,7 @@
 # end
 module Comments
   extend Octoface
-  octo_configure do
+  octo_configure :comments do
   end
 
 end

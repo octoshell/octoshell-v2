@@ -1,6 +1,6 @@
 module Statistics
   extend Octoface
-  octo_configure do
+  octo_configure :statistics do
 
   end
 end

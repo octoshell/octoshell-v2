@@ -1,6 +1,6 @@
 module Face
   extend Octoface
-  octo_configure do
+  octo_configure :face do
   end
 
   Face::MyMenu.items_for(:user_submenu) do

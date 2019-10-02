@@ -20,13 +20,15 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.0"
 
-  s.add_dependency "activerecord-jdbcpostgresql-adapter" if /java/.match(RUBY_PLATFORM)
-  s.add_dependency "pg", "~> 0.18" unless /java/.match(RUBY_PLATFORM)
-  # s.add_dependency "decorators", "~> 1.0.2"
+  # s.add_dependency "activerecord-jdbcpostgresql-adapter" if /java/.match(RUBY_PLATFORM)
+  # s.add_dependency "pg", "~> 0.18" unless /java/.match(RUBY_PLATFORM)
+  s.add_dependency "decorators"
 #  s.add_dependency "state_machines-activerecord"
   s.add_dependency "aasm"
   s.add_dependency "slim"
   s.add_dependency "sidekiq"
+  s.add_dependency "mime-types"
+
   # s.add_dependency "maymay"
   s.add_dependency "ransack", "2.1.1"
   s.add_dependency "kaminari"

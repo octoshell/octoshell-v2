@@ -4,19 +4,37 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    # puts 'AAAAAAAAAA'.red
+    return unless user
 
-    can do |action, subject_class, subject|
-      if !user
-        false
-      elsif str_or_symbol?(subject_class)
-        user.permissions.where(action: aliases_for_action(action), subject_class: subject, available: true).exists?
+    user.permissions.each do |permission|
+      if permission.subject_id
+        can permission.action.to_sym, eval(permission.subject_class), id: permission.subject_id
       else
-        user.permissions.where(action: aliases_for_action(action), available: true).any? do |permission|
-          permission.subject_class == subject_class.to_s  &&
-            (subject.nil? || permission.subject_id.nil? || permission.subject_id == subject.id)
-        end
+        can permission.action.to_sym, permission.subject_class.to_sym
       end
     end
+
+    user.user_topics.each do |user_topic|
+      user_topic.all_subtopics_with_self.each do |u_t|
+        can :access, Support::Topic, id: u_t.id
+      end
+    end
+    # user.permissions.each do |permission|
+    #   can permission.action,
+    # end
+    # can do |action, subject_class, subject|
+    #   if !user
+    #     false
+    #   elsif str_or_symbol?(subject_class)
+    #     user.permissions.where(action: aliases_for_action(action), subject_class: subject, available: true).exists?
+    #   else
+    #     user.permissions.where(action: aliases_for_action(action), available: true).any? do |permission|
+    #       permission.subject_class == subject_class.to_s &&
+    #         (subject.nil? || permission.subject_id.nil? || permission.subject_id == subject.id)
+    #     end
+    #   end
+    # end
 
     # Define abilities for the passed in user here. For example:
     #

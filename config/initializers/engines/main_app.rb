@@ -1,6 +1,6 @@
 module FakeMainApp
   extend ::Octoface
-  octo_configure do
+  octo_configure :main_app do
     add(:user_class) { User } # теперь во всех модулях доступен report_class
     add_ability(:manage, :users, 'superadmins') #Если абилки нет, то она создаётся
     add_controller_ability(:manage, :users, 'admin/users') #В указанных контроллерах используется :manage :reports
