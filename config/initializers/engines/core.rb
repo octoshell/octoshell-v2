@@ -20,7 +20,7 @@ module Core
     add_controller_ability(:manage, :geography, 'admin/cities', 'admin/countries')
 
     set :support do
-      ticket_field(key: 'cluster', t: -> {}, human: :to_s, link: false,
+      ticket_field(key: :cluster, human: :to_s, link: false,
                    query: proc { Cluster.where(available_for_work: true) })
     end
 

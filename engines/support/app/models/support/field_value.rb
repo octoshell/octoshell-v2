@@ -16,7 +16,8 @@
 
 module Support
   class FieldValue < ApplicationRecord
-    belongs_to :field
+    belongs_to :field, inverse_of: :field_values
+    # belongs_to :field_option, inverse_of: :field_values, foreign_key: :value
     belongs_to :ticket, inverse_of: :field_values
 
     validates :field, :ticket, presence: true

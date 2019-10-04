@@ -17,7 +17,22 @@ div class="page-header"
     = f.fields_for :field_values do |fv_f|
       - value = fv_f.object
       = fv_f.hidden_field :field_id
-      = fv_f.text_field :value, label: value.field.name, required: value.field.required, help: value.field.hint
+      -if value.field.field_options.any?
+        - options = value.field.field_options
+        - if options.count > 3
+          = fv_f.collection_select :value, options, :id, :name,
+                label: value.field.name,
+                include_blank: true,
+                help: value.field.hint
+        -else
+          = fv_f.collection_radio_buttons :value, options, :id, :name,
+                label: value.field.name,
+                include_blank: true,
+                help: value.field.hint
+
+      -else
+        = fv_f.text_field :value, label: value.field.name, required: value.field.required,
+              help: value.field.hint
 
   = f.form_group do
     - if f.object.show_form?

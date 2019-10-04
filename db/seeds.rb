@@ -100,3 +100,9 @@
   Face::MyMenu.init_menu
   Comments.create_wiki_page
   Comments.create_abilities
+  limited_sup = FactoryBot.create(:user, profile: Profile.new( first_name: 'limited',
+                                                    last_name: 'sup' ),
+                                        email: 'limited_sup@octoshell.ru')
+  ticket = FactoryBot.create(:ticket)
+  FactoryBot.create(:ticket)
+  limited_sup.user_topics.create!(topic: ticket.topic)

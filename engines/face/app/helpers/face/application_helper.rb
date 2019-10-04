@@ -259,5 +259,11 @@ module Face
     def hard_markdown(text)
       CommonMarker.render_html(text, [:DEFAULT,:GITHUB_PRE_LANG, :UNSAFE, :TABLE_PREFER_STYLE_ATTRIBUTES],[:table,:autolink]).html_safe
     end
+
+    def form_group_check_box(f, attribute)
+      f.form_group attribute, label: { text: f.object.class.human_attribute_name(attribute) } do
+        f.check_box attribute, label: ''
+      end
+    end
   end
 end

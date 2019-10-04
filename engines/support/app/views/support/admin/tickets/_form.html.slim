@@ -7,7 +7,7 @@
   = markdown_area f,:message, rows: 14
 
   = f.file_field :attachment
-  = f.collection_select :topic_id, Support::Topic.common_theme, :id, :name_with_parents
+  = f.collection_select :topic_id, Support::Topic.accessible_by(current_ability, :access).leaf_topics, :id, :name_with_parents
   = autocomplete f, name: :project_id, label: Support::Ticket.human_attribute_name(:project), source: core.projects_path, include_blank: true
   = f.collection_select :cluster_id, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
   = f.collection_select :surety_id, Core::Surety.all, :id, :name, label: Support::Ticket.human_attribute_name(:surety), include_blank: true

@@ -1,9 +1,18 @@
-= bootstrap_form_for [:admin, @field], layout: :horizontal do |f|
+= bootstrap_nested_form_for [:admin, @field], layout: :horizontal do |f|
   -Support::Field.locale_columns(:name,:hint).each do |column|
     = f.text_field column
-  = f.check_box :required
-  = f.check_box :url
-  = f.check_box :contains_source_code
+  = form_group_check_box(f, :required)
+  = form_group_check_box(f, :url)
+  = form_group_check_box(f, :contains_source_code)
+  = f.select :model_collection, Support::ModelField.keys, include_blank: true
+  h3 = Support::Field.human_attribute_name(:field_options)
+  div#field_options-container
+    = f.fields_for :field_options do |ff|
+      = ff.hidden_field :id
+      -Support::FieldOption.locale_columns(:name).each do |column|
+        = ff.text_field column
+      = ff.link_to_remove t(".remove_option"), class: "fa fa-times text-danger"
+  = f.link_to_add t(".add_option"), :field_options, {target: 'div#field_options-container'}
 
   = f.form_group do
     = f.submit t("actions.save")

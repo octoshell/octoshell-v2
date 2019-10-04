@@ -21,21 +21,23 @@ module Support
 
     def support_admin_submenu_items
       menu = Face::MyMenu.new
-      menu.add_item_without_key(t("engine_submenu.tickets_list"),
-                                admin_tickets_path, 'support/admin/tickets')
+      if can?(:access, Support::Topic)
+        menu.add_item_without_key(t("engine_submenu.tickets_list"),
+                                  admin_tickets_path, 'support/admin/tickets')
+      end
+      if can?(:manage, :tickets)
+        menu.add_item_without_key(t("engine_submenu.reply_templates"),
+                                  admin_reply_templates_path, 'support/admin/reply_templates')
 
-      menu.add_item_without_key(t("engine_submenu.reply_templates"),
-                                admin_reply_templates_path, 'support/admin/reply_templates')
+        menu.add_item_without_key(t("engine_submenu.tags"),
+                                  admin_tags_path, 'support/admin/tags')
 
-      menu.add_item_without_key(t("engine_submenu.tags"),
-                                admin_tags_path, 'support/admin/tags')
+        menu.add_item_without_key(t("engine_submenu.topics"),
+                                  admin_topics_path, 'support/admin/topics')
 
-      menu.add_item_without_key(t("engine_submenu.topics"),
-                                admin_topics_path, 'support/admin/topics')
-
-      menu.add_item_without_key(t("engine_submenu.fields"),
-                                admin_fields_path, 'support/admin/fields')
-
+        menu.add_item_without_key(t("engine_submenu.fields"),
+                                  admin_fields_path, 'support/admin/fields')
+      end
 
 
       # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.tickets_list"),

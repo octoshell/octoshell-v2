@@ -1,18 +1,19 @@
 # == Schema Information
 #
-# Table name: abilities
+# Table name: permissions
 #
-#  id         :integer          not null, primary key
-#  action     :string(255)
-#  available  :boolean          default(FALSE)
-#  subject    :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#  group_id   :integer
+#  id            :integer          not null, primary key
+#  action        :string
+#  subject_class :string
+#  group_id      :integer
+#  available     :boolean          default("false")
+#  created_at    :datetime
+#  updated_at    :datetime
+#  subject_id    :integer
 #
 # Indexes
 #
-#  index_abilities_on_group_id  (group_id)
+#  index_permissions_on_group_id  (group_id)
 #
 
 # Модель доступа к действию для группы пользователей

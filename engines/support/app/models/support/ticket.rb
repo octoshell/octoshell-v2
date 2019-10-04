@@ -156,11 +156,10 @@ module Support
 
     def topics(for_user = false)
       if topic
-        topic.subtopics
-        for_user ? topic.visible_subtopics : topic.subtopics
+        (for_user ? topic.visible_subtopics : topic.subtopics)
       else
         for_user ? Topic.visible_root : Topic.root
-      end
+      end.order_by_name
     end
 
     def show_questions?
@@ -238,6 +237,15 @@ module Support
       topic.parents_with_self.detect do |topic|
         topic.template.present?
       end&.template
+    end
+
+    def build_field_values
+      topic.parents_with_self.map { |t| t.fields.to_a }.flatten
+           .uniq(&:id).each do |topic_field|
+        field_values.build do |value|
+          value.field = topic_field
+        end
+      end
     end
 
     private

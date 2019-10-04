@@ -19,11 +19,7 @@ module Support
     def continue
       @ticket = current_user.tickets.build(ticket_params)
       if @ticket.show_form?
-        @ticket.topic.fields.each do |topic_field|
-          @ticket.field_values.build do |value|
-            value.field = topic_field
-          end
-        end
+        @ticket.build_field_values
       end
       @ticket.message = @ticket.template if @ticket.template.present?
       render :new

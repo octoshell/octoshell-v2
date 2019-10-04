@@ -63,5 +63,39 @@ module Support
       expect(@ticket.subscribers.count).to eq 1
     end
 
+    describe 'extra field' do
+      before(:each) do
+        @topic = create(:topic)
+        @field = create(:field, topics: [@topic])
+        @first_field_option = @field.field_options.create!(name_ru: 'First option',
+                                                          name_en: 'First option')
+        @second_field_option = @field.field_options.create!(name_ru: 'Second option',
+                                                            name_en: 'Second option')
+        @child_topic = build(:topic)
+        @child_topic.parent_topic = @topic
+        @child_topic.save!
+        user = create(:user)
+        @ticket = build(:ticket, topic: @child_topic, reporter: user)
+        @ticket.build_field_values
+        @ticket.field_values.first.value = @first_field_option.id
+        @ticket.save!
+
+        @ticket2 = build(:ticket, topic: @child_topic, reporter: user)
+        @ticket2.build_field_values
+        @ticket2.field_values.first.value = @second_field_option.id
+        @ticket2.save!
+
+      end
+
+      it 'creates ticket with select fields' do
+        expect(@ticket.field_values.first.value).to eq @first_field_option.id.to_s
+      end
+
+      it 'deletes extra fields' do
+        expect{@second_field_option.destroy}.to change{@ticket2.field_values.count}.from(1).to(0)
+      end
+
+
+    end
   end
 end

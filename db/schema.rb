@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_170149) do
+ActiveRecord::Schema.define(version: 2019_10_04_100031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -531,14 +531,13 @@ ActiveRecord::Schema.define(version: 2019_09_12_170149) do
   create_table "face_menu_item_prefs", force: :cascade do |t|
     t.integer "position"
     t.string "menu"
-    t.string "key"
-    t.bigint "user_id"
+    t.text "url"
+    t.bigint "user_id_id"
     t.boolean "admin", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["key"], name: "index_face_menu_item_prefs_on_key"
     t.index ["position"], name: "index_face_menu_item_prefs_on_position"
-    t.index ["user_id"], name: "index_face_menu_item_prefs_on_user_id"
+    t.index ["user_id_id"], name: "index_face_menu_item_prefs_on_user_id_id"
   end
 
   create_table "face_users_menus", force: :cascade do |t|
@@ -983,6 +982,15 @@ ActiveRecord::Schema.define(version: 2019_09_12_170149) do
     t.datetime "updated_at"
   end
 
+  create_table "support_field_options", force: :cascade do |t|
+    t.bigint "field_id"
+    t.text "name_ru"
+    t.text "name_en"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_support_field_options_on_field_id"
+  end
+
   create_table "support_field_values", id: :serial, force: :cascade do |t|
     t.integer "field_id"
     t.integer "ticket_id"
@@ -1002,6 +1010,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_170149) do
     t.datetime "updated_at"
     t.string "name_en"
     t.string "hint_en"
+    t.string "model_collection"
   end
 
   create_table "support_replies", id: :serial, force: :cascade do |t|

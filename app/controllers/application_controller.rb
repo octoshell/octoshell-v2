@@ -30,7 +30,8 @@ class ApplicationController < ActionController::Base
       main_app.admin_users_path
     elsif User.experts.include? current_user
       sessions.admin_reports_path
-    elsif User.support.include? current_user
+    elsif User.support.include?(current_user) ||
+          current_user.available_topics.any?
       support.admin_tickets_path
     else
       core.projects_path
