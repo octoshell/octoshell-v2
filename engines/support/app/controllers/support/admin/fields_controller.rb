@@ -1,5 +1,6 @@
 module Support
   class Admin::FieldsController < Admin::ApplicationController
+
     def index
       @search = Field.search(params[:q])
       @fields = @search.result(distinct: true).page(params[:page])

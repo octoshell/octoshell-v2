@@ -3,6 +3,19 @@ namespace :support do
     Support::Notificator.new.create_bot(args[:pass])
   end
 
+  task october_migration: :environment do
+    ActiveRecord::Base.transaction do
+      Support::FieldValue.all.each do |field_value|
+        field = Support::Field.find(field_value.field_id)
+        next unless field
+
+        topics_field = field.topics_fields.find_by!(topic: field_value.ticket.topic)
+        field_value.topics_field = topics_field
+        field_value.save!
+      end
+    end
+  end
+
   task fix_topics: :environment do
 
     def merge(source, to)

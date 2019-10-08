@@ -3,7 +3,7 @@
 # Table name: groups
 #
 #  id         :integer          not null, primary key
-#  name       :string
+#  name       :string(255)
 #  weight     :integer
 #  system     :boolean
 #  created_at :datetime

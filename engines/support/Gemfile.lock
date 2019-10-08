@@ -84,7 +84,7 @@ GEM
     ffi (1.11.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    i18n (1.6.0)
+    i18n (1.7.0)
       concurrent-ruby (~> 1.0)
     image_processing (1.9.3)
       mini_magick (>= 4.9.5, < 5)
@@ -212,4 +212,4 @@ DEPENDENCIES
   support!
 
 BUNDLED WITH
-   1.17.1
+   2.0.2

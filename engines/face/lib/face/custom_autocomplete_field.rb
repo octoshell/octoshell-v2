@@ -6,7 +6,7 @@ module CustomAutocompleteField
     html_options[:data] = data
     sel_opts = [[]]
     begin
-      value = object.send method
+      value = options.key?(:initial_value) ? options[:initial_value] : object.send(method)
     rescue NoMethodError
       value = nil
     end

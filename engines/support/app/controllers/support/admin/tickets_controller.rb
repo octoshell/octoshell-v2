@@ -19,10 +19,10 @@ module Support
     def index
       @search = Ticket.search(params[:q])
       @tickets = @search.result(distinct: true)
-                        .includes({reporter: :profile}, {responsible: :profile})
-                        .order("id DESC, updated_at DESC")
+                        .preload({reporter: :profile}, {responsible: :profile},
+                                  :field_values)
+                        .order("support_tickets.id DESC, support_tickets.updated_at DESC")
                         .where(topic: [Topic.accessible_by(current_ability, :access)])
-
       without_pagination(:tickets)
       # записываем отрисованные тикеты в куки, для перехода к следующему тикету после ответа
       cookies[:tickets_list] = @tickets.map(&:id).join(',')
@@ -123,7 +123,7 @@ module Support
                                      tag_ids: [],
                                      subscriber_ids: [],
                                      field_values_attributes: [ :id,
-                                                                :field_id,
+                                                                :topics_field_id,
                                                                 :ticket_id,
                                                                 :value ] )
     end

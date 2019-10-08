@@ -76,9 +76,40 @@ module Support
       left_join(:replies).where("support_replies.message LIKE :q OR support_tickets.message LIKE :q",q: "%#{processed}%")
     end
 
-    def self.ransackable_scopes(_auth_object = nil)
-      %i[find_by_content]
+    after_save do
+      field_values.where(value: ['', nil]).destroy_all
     end
+
+    def self.field_values_with_options(*args)
+      rel = all
+      rel = rel.joins(:field_values)
+      strings = args.map do |a|
+        first = "support_field_values.field_id = #{a.first}"
+        if a.second.present?
+          second = "support_field_values.value = '#{a.second}'"
+          "#{first} AND #{second}"
+        else
+          first
+        end
+      end
+      rel.where(strings.join(' OR ')).joins(:field_values).group(:id)
+         .having('count(support_field_values.id) = ?', strings.count)
+    end
+
+    def self.contains_all_fields(*_ids)
+      all
+    end
+
+
+
+    def self.ransackable_scopes(_auth_object = nil)
+      %i[find_by_content field_values_with_options contains_all_fields]
+    end
+
+    def self.ransackable_scopes_skip_sanitize_args
+      ransackable_scopes
+    end
+
     include AASM
     include ::AASM_Additions
     aasm(:state, :column => :state) do
@@ -142,6 +173,13 @@ module Support
     # def self.human_state_names
     #   aasm(:state).states
     # end
+
+    def select_field_values
+      field_values.select do |f_v|
+        f_v.value.present? && (f_v.field.model_collection.present? ||
+          f_v.field.field_options.any?)
+      end
+    end
 
     def accept(user)
       replies.create! do |reply|
@@ -209,28 +247,11 @@ module Support
 
     def possible_responsibles
       all_user_topics = topic.parents_with_self.map(&:user_topics).flatten
-      # UserTopic.all.includes(:user).group_by(&:user).map do |key, value|
-      #   [key, value]
-      # end
-
-      # User.support.or(User.where())
-      # puts all_user_topics.inspect.red
-      # all_user_topics.group_by(&:user).map do |key, value|
-      #   [key, value]
-      # end
-      # puts all_user_topics.group_by(&:user).map do |key, value|
-      #   puts "#{key.full_name} | #{value}".red
-      # end
       hash = all_user_topics.group_by(&:user)
       (User.support.to_a - all_user_topics.map(&:user)).each do |user|
         hash[user] = []
       end
       hash
-
-      #  User.support.map do |u|
-      #   user_topics = all_user_topics.select { |user_topic| user_topic.user_id == u.id }
-      #   [u, user_topics]
-      # end
     end
 
     def template
@@ -240,10 +261,10 @@ module Support
     end
 
     def build_field_values
-      topic.parents_with_self.map { |t| t.fields.to_a }.flatten
-           .uniq(&:id).each do |topic_field|
+      topic.parents_with_self.map { |t| t.topics_fields.to_a }.flatten
+           .uniq(&:id).each do |topics_field|
         field_values.build do |value|
-          value.field = topic_field
+          value.topics_field = topics_field
         end
       end
     end

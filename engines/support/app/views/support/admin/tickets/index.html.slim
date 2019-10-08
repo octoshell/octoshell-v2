@@ -7,8 +7,10 @@ div class="page-header"
     div class="col-md-3"
       = f.select :state_in, Support::Ticket.human_state_names_with_original, { label: Support::Ticket.human_attribute_name(:state), include_blank: true  }, { multiple: true  }
       = f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
-      = f.autocomplete_field :reporter_id_eq,{label: Core.user_class.model_name.human ,source:  main_app.users_path},include_blank: true
-      /do |id|
+      /= f.grouped_collection_select :cluster_id_eq, Support::Field.where(search: true).includes(:field_options),
+                                    :field_options, :name, :id, :name
+      /= f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
+      = f.autocomplete_field :reporter_id_eq,{label: Core.user_class.model_name.human ,source:  main_app.users_path},include_blank: true do |id|
         -User.find(id).full_name_with_email
     div class="col-md-3"
       = f.autocomplete_field :project_id_eq,{label: t('.project') ,source:  core.projects_path},include_blank: true do |id|
@@ -28,6 +30,10 @@ div class="page-header"
       = f.collection_select :tags_id_in, Support::Tag.all, :id, :name, { label: Support::Ticket.human_attribute_name(:tags), include_blank: true  }, { multiple: true  }
       = f.text_field :updated_at_gt, options.merge(label: t('.updated_after'))
       = f.text_field :updated_at_lt, options.merge(label: t('.updated_before'))
+  = render partial: 'support/tickets/fields_form', locals: {f: f}
+
+
+
   = f.form_group do
     = f.primary t("actions.find")
     | &nbsp;
@@ -37,3 +43,5 @@ div class="page-header"
 = safe_paginate @tickets
 = render "table", tickets: @tickets
 = safe_paginate @tickets
+
+= render partial: 'support/tickets/fields_viewer'

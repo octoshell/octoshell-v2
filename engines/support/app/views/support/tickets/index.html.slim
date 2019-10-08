@@ -19,10 +19,11 @@ div class="well"
     div class="col-md-3"
       = f.text_field :updated_at_gt, options.merge(label: t('.updated_after'))
       = f.text_field :updated_at_lt, options.merge(label: t('.updated_before'))
-
+  = render partial: 'support/tickets/fields_form', locals: {f: f}
   = f.form_group do
     = f.primary t("actions.find")
 
 = safe_paginate @tickets
 = render "table", tickets: @tickets
 = safe_paginate @tickets
+= render partial: 'support/tickets/fields_viewer'

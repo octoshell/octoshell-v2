@@ -6,14 +6,22 @@
   = f.collection_select :parent_id, @topic.available_parents, :id, :name, include_blank: true
   = f.check_box :visible_on_create
   = f.collection_check_boxes :tag_ids, Support::Tag.all, :id, :name
-  = f.collection_check_boxes :field_ids, Support::Field.all, :id, :name
+  - (Support::Field.all - f.object.fields).each{ |field| f.object.topics_fields.new(field: field, required: field.required).mark_for_destruction  }
+  = f.fields_for :topics_fields do |ff|
+    div.row
+      div.col-md-6
+        = ff.hidden_field :id
+        = ff.hidden_field :field_id
+        = ff.check_box :_destroy, {checked: !ff.object.marked_for_destruction? || false,label: ff.object.field.name}, 0, 1
+      div.col-md-6
+        = ff.check_box :required
+
   - (Group.all - f.object.permissions.map(&:group)).each{ |g| f.object.permissions.new(group: g).mark_for_destruction  }
   h4 = Support::Topic.human_attribute_name(:permissions)
   = f.fields_for :permissions do |ff|
       = ff.hidden_field :id
       = ff.hidden_field :group_id
       = ff.check_box :_destroy, {checked: !ff.object.marked_for_destruction?,label: ff.object.group.name}, 0, 1
-
   h4 = Support::UserTopic.model_name.human
   div#user_topics-container
     = f.fields_for :user_topics, layout: :horizontal do |ff|

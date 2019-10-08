@@ -29,7 +29,7 @@ module Support
     has_and_belongs_to_many :tags, join_table: :support_topics_tags
     has_and_belongs_to_many :responsible_users,class_name: '::User',
                             join_table: :support_user_topics
-
+    has_many :topics_fields, inverse_of: :topic, dependent: :destroy
     has_many :user_topics, dependent: :destroy
     has_many :permissions, lambda { where(available: true, action: 'answer',
                                           subject_class: 'Support::Topic') },
@@ -38,7 +38,7 @@ module Support
                                    dependent: :destroy,
                                    class_name: '::Permission'
 
-    accepts_nested_attributes_for :user_topics, :permissions, allow_destroy: true
+    accepts_nested_attributes_for :user_topics, :permissions, :topics_fields, allow_destroy: true
     validates_translated :name, presence: true
     validates :parent_id, exclusion: { in: proc { |tq| [tq.id] } }, allow_nil: true
     validate do

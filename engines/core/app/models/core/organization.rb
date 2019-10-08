@@ -67,7 +67,7 @@ module Core
 
     def can_edit?(current_user)
       main_user = employments.order(:created_at).first.try(:user)
-      main_user == current_user && !checked
+      main_user == current_user
     end
 
     def check_location

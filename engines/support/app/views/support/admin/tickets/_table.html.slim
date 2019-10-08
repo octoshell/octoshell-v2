@@ -14,11 +14,11 @@
       th
         - if @search
           = sort_link @search, :updated_at, Support::Ticket.human_attribute_name(:updated_at), default_order: :desc
-          |  / 
+          |  /
           = sort_link @search, :created_at, Support::Ticket.human_attribute_name(:created_at), default_order: :desc
         - else
           = Support::Ticket.human_attribute_name(:udpated_at)
-          |  / 
+          |  /
           = Support::Ticket.human_attribute_name(:created_at)
     - tickets.each do |ticket|
       tr
@@ -32,12 +32,15 @@
               span class="label label-#{state}" = ticket.human_state_name
             li class="text-muted"
               | #{Support::Ticket.human_attribute_name(:topic)}: #{ticket.topic.name_with_parents}
-            - if ticket.project.present?
-              li
-                | #{Support::Ticket.human_attribute_name(:project)}: #{link_to ticket.project, core.admin_project_path(ticket.project)}
-            - if ticket.cluster.present?
-              li
-                | #{Support::Ticket.human_attribute_name(:cluster)}: #{link_to ticket.cluster, core.admin_cluster_path(ticket.cluster)}
+            -ticket.select_field_values.each do |f_v|
+              li class="text-muted"
+                | #{f_v.field.name}:  #{show_field_value(f_v, :admin)}
+            /- if ticket.project.present?
+            /  li
+            /    | #{Support::Ticket.human_attribute_name(:project)}: #{link_to ticket.project, core.admin_project_path(ticket.project)}
+            /- if ticket.cluster.present?
+            /  li
+            /    | #{Support::Ticket.human_attribute_name(:cluster)}: #{link_to ticket.cluster, core.admin_cluster_path(ticket.cluster)}
         td class="col-xs-2" = link_to ticket.reporter, main_app.admin_user_path(ticket.reporter)
         td class="col-xs-2"
           - if ticket.responsible
@@ -46,7 +49,7 @@
             span class="label label-danger" N/A
         td class="col-xs-2"
           = l ticket.created_at
-          |  / 
+          |  /
           br
           span class="text-muted" = l ticket.updated_at
 - else

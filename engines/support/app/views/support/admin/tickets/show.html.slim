@@ -96,7 +96,7 @@ div class="page-header"
             td
               = field_value.field.present? ? field_value.field.name : "N/A"
             td
-              = field_value.value
+              =  field_value.field.present? ? show_field_value(field_value, :admins) : ''
 
     /- if @ticket.has_blank_fields?
       div class="col-xs-12 link"

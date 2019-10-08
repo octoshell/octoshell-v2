@@ -91,7 +91,7 @@ module Support
                                      :project_id, :cluster_id,
                                      :attachment,
                                      field_values_attributes: [ :id,
-                                                                :field_id,
+                                                                :topics_field_id,
                                                                 :ticket_id,
                                                                 :value ] )
     end

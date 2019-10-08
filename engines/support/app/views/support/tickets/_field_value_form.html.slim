@@ -1,0 +1,31 @@
+= f.fields_for :field_values do |fv_f|
+  - value = fv_f.object
+  = fv_f.hidden_field :topics_field_id
+  -if value.field.field_options.any?
+    - options = value.field.field_options
+    - if options.count > 3
+      = fv_f.collection_select :value, options, :id, :name,
+            label: value.field.name,
+            include_blank: true,
+            help: value.field.hint
+    -else
+      = fv_f.collection_radio_buttons :value, options, :id, :name,
+            label: value.field.name,
+            include_blank: true,
+            help: value.field.hint
+
+  -elsif value.field.model_collection.present? && (model_field = Support::ModelField.all[value.field.model_collection.to_sym])
+      - if model_field.type_source(admin)
+        - source_path = instance_exec(current_user, &model_field.type_source(admin))
+        = fv_f.autocomplete_field :value,{label: value.field.name,
+                                          source:  source_path},include_blank: true do |id|
+         - model_field.model.find(id).send(model_field.human)
+
+      - else
+        = fv_f.collection_select :value, model_field.type_query(admin).call(current_user),
+                                 :id, model_field.human, include_blank: true,
+                                 label: value.field.name,
+                                 help: value.field.hint
+  -else
+    = fv_f.text_field :value, label: value.field.name, required: value.required_value?,
+          help: value.field.hint

@@ -13,8 +13,6 @@ module Support
             user_topics_res << string
           end
         end
-        # puts [user.id, formed_string.join(' '), user_topics_res].inspect.green
-
         [user.id, formed_string.join(' '), user_topics_res]
       end
     end
@@ -61,6 +59,33 @@ module Support
     def link_to_attachment(record)
       if record.attachment?
         "#{link_to File.basename(record.attachment.url), record.attachment.url, target: :blank} #{number_to_human_size(record.attachment.size)}".html_safe
+      end
+    end
+
+    def show_field_value(field_value, admin = false)
+
+      return if field_value.value.blank?
+
+      field = field_value.field
+      if field.model_collection.present?
+        model_field = ModelField.all[field.model_collection.to_sym]
+        instance = model_field.model.find(field_value.value)
+        return unless instance
+
+        human = instance.public_send(model_field.human)
+        link_type = admin ? :admin_link : :user_link
+        if model_field.send(link_type) ## && model_field.link[:if].call(controller)
+          path = controller.instance_exec(field_value.value, &model_field.send(link_type))
+          return human unless path
+
+          link_to(human, path)
+        else
+          instance.send(model_field.human)
+        end
+      elsif field.field_options.any?
+        field.field_options.find(field_value.value).name
+      else
+        value
       end
     end
   end
