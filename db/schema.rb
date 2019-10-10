@@ -329,10 +329,10 @@ ActiveRecord::Schema.define(version: 2019_10_09_171901) do
   end
 
   create_table "core_notices", id: :serial, force: :cascade do |t|
-    t.string "sourceable_type"
     t.integer "sourceable_id"
-    t.string "linkable_type"
+    t.string "sourceable_type"
     t.integer "linkable_id"
+    t.string "linkable_type"
     t.text "message"
     t.integer "count"
     t.datetime "created_at", null: false
@@ -1173,6 +1173,10 @@ ActiveRecord::Schema.define(version: 2019_10_09_171901) do
     t.string "name_en"
     t.text "content_en"
     t.index ["url"], name: "index_wiki_pages_on_url", unique: true
+  end
+
+  create_table "wiki_tasks", id: false, force: :cascade do |t|
+    t.integer "db_col"
   end
 
   create_table "wikiplus_images", id: :serial, force: :cascade do |t|

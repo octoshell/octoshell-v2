@@ -85,7 +85,7 @@ module Support
       elsif field.field_options.any?
         field.field_options.find(field_value.value).name
       else
-        value
+        field_value.value
       end
     end
   end

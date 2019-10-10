@@ -5,11 +5,17 @@ namespace :support do
 
   task october_migration: :environment do
     ActiveRecord::Base.transaction do
+      Support::FieldValue.where(value: ['', nil]).destroy_all
       Support::FieldValue.all.each do |field_value|
+        puts field_value.id.inspect.green
+        next unless field_value.field_id
+
         field = Support::Field.find(field_value.field_id)
         next unless field
 
-        topics_field = field.topics_fields.find_by!(topic: field_value.ticket.topic)
+        topics_field = field.topics_fields.find_by(topic: field_value.ticket.topic)
+        next unless topics_field
+
         field_value.topics_field = topics_field
         field_value.save!
       end

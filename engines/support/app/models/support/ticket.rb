@@ -82,9 +82,9 @@ module Support
 
     def self.field_values_with_options(*args)
       rel = all
-      rel = rel.joins(:field_values)
+      rel = rel.joins(field_values: :topics_field)
       strings = args.map do |a|
-        first = "support_field_values.field_id = #{a.first}"
+        first = "support_topics_fields.field_id = #{a.first}"
         if a.second.present?
           second = "support_field_values.value = '#{a.second}'"
           "#{first} AND #{second}"
