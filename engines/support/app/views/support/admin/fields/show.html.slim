@@ -9,6 +9,10 @@ table class="table table-bordered"
     th = Support::Field.human_attribute_name(:name)
     td = @field.name
   tr
+    th = Support::Field.human_attribute_name(:kind)
+    td = @field.kind
+
+  tr
     th = Support::Field.human_attribute_name(:hint)
     td = @field.hint
   tr

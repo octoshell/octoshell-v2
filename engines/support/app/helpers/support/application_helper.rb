@@ -82,8 +82,8 @@ module Support
         else
           instance.send(model_field.human)
         end
-      elsif field.field_options.any?
-        field.field_options.find(field_value.value).name
+      elsif field.field_options.to_a.any?
+        field_value.field_option_name
       else
         field_value.value
       end

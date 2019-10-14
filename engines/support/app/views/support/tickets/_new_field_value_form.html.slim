@@ -1,0 +1,35 @@
+= f.fields_for :field_values, @field_values_form do |ff|
+  - ff.object.topics_fields.each do |topics_field|
+    - field = topics_field.field
+    - topics_field_id = topics_field.id.to_s
+    -if topics_field.field.radio?
+      - options = topics_field.field.field_options
+      - if options.count > 3
+        = ff.collection_select topics_field_id, options, :id, :name,
+                                 label: topics_field.field.name,
+                                 include_blank: true,
+                                 help: topics_field.field.hint
+      -else
+        = ff.collection_radio_buttons topics_field_id, options, :id, :name,
+                                        label: topics_field.field.name,
+                                        include_blank: true,
+                                        help: topics_field.field.hint
+    -elsif topics_field.field.model_collection? && (model_field = Support::ModelField.all[topics_field.field.model_collection.to_sym])
+       - if model_field.type_source(admin)
+         - source_path = instance_exec(current_user, &model_field.type_source(admin))
+         = ff.autocomplete_field topics_field_id,{label: topics_field.field.name,
+                                           source:  source_path},include_blank: true do |id|
+          - model_field.model.find(id).send(model_field.human)
+
+       - else
+         = ff.collection_select topics_field_id, model_field.type_query(admin).call(current_user),
+                                  :id, model_field.human, include_blank: true,
+                                  label: topics_field.field.name,
+                                  help: topics_field.field.hint
+    - elsif field.check_box?
+       - puts @field_values_form.send(topics_field_id).inspect.green
+       = ff.collection_check_boxes topics_field_id, field.field_options, :id, :name,
+                                   label: field.name, help: field.hint
+    - elsif field.text?
+       = ff.text_field topics_field_id, label: field.name, required: topics_field.required,
+             help: field.hint

@@ -47,7 +47,7 @@ module Support
     def field_params
       params.require(:field).permit(*Field.locale_columns(:name, :hint),
                                     :url, :required, :contains_source_code,
-                                    :model_collection,
+                                    :model_collection, :kind,
                                     field_options_attributes: %i[id name_ru name_en _destroy])
     end
   end

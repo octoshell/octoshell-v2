@@ -16,6 +16,7 @@
 
 module Support
   class Field < ApplicationRecord
+    enum kind: %i[text radio check_box model_collection]
     has_and_belongs_to_many :topics, join_table: :support_topics_fields
     has_many :field_options, inverse_of: :field, dependent: :destroy
     has_many :topics_fields, inverse_of: :field, dependent: :destroy
@@ -27,27 +28,38 @@ module Support
 
     validate do
       any_options = field_options.to_a.select { |o| !o.marked_for_destruction?  }.any?
-      %i[url contains_source_code model_collection].each do |a|
-        any_options && send(a).present? &&
-          errors.add(a, :field_options_present)
-      end
-      %i[url contains_source_code].each do |a|
-        model_collection.present? && send(a).present? &&
-          errors.add(a, :collection_present)
-      end
+
+      !model_collection? && model_collection.present? && errors.add(:kind, :collection_present)
+      !usual_choice? && any_options && errors.add(:kind, :field_options_present)
+      !text? && model_collection? &&
+        [url, contains_source_code].select(&:present?).any? &&
+        errors.add(:kind, :field_options_present)
+
+      # %i[url contains_source_code model_collection].each do |a|
+      #   any_options && send(a).present? &&
+      #     errors.add(a, :field_options_present)
+      # end
+      # %i[url contains_source_code].each do |a|
+      #   model_collection.present? && send(a).present? &&
+      #     errors.add(a, :collection_present)
+      # end
     end
 
     scope :searchable_fields,( lambda do |ids|
       Support::Field.where(id: ids).distinct.includes(:field_options)
     end)
 
-    def field_type
-      return 'model_collection' if model_collection.present?
-
-      return 'field_options' if field_options.any?
-
-      'text'
+    def usual_choice?
+      radio? || check_box?
     end
+
+    # def field_type
+    #   return 'model_collection' if model_collection.present?
+    #
+    #   return 'field_options' if field_options.any?
+    #
+    #   'text'
+    # end
 
 
     def to_s

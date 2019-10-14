@@ -19,7 +19,7 @@ module Support
     def continue
       @ticket = current_user.tickets.build(ticket_params)
       if @ticket.show_form?
-        @ticket.build_field_values
+        @field_values_form = Support::FieldValuesForm.new(@ticket)
       end
       @ticket.message = @ticket.template if @ticket.template.present?
       render :new
@@ -28,7 +28,10 @@ module Support
     def create
       @ticket = current_user.tickets.build(ticket_params)
       @ticket.tags << @ticket.topic.tags
-      if @ticket.save
+      @field_values_form = Support::FieldValuesForm.new(@ticket, params[:ticket][:field_values])
+      valid = @field_values_form.valid?
+      if @ticket.valid? && valid
+        @ticket.save
         redirect_to @ticket
       else
         render :new
@@ -89,11 +92,11 @@ module Support
     def ticket_params
       params.require(:ticket).permit(:message, :subject, :topic_id, :url,
                                      :project_id, :cluster_id,
-                                     :attachment,
-                                     field_values_attributes: [ :id,
-                                                                :topics_field_id,
-                                                                :ticket_id,
-                                                                :value ] )
+                                     :attachment)
+                                     # field_values_attributes: [ :id,
+                                     #                            :topics_field_id,
+                                     #                            :ticket_id,
+                                     #                            :value ]
     end
 
     def find_ticket(id)

@@ -9,13 +9,13 @@
       - fields.each do |field|
         .col-md-3.field-container field-id=field.id
           -cur =  (f.object.field_values_with_options || {})[field.id.to_s]
-          - if field.field_type == 'field_options'
+          - if field.usual_choice?
             /= ff.select field.id, options_for_select(field.field_options.map {|o| [o.name, o.id]}, cur),
             = ff.collection_select field.id, field.field_options, :id, :name,
-              { label: field.name, include_blank: true, selected: cur}
-          -elsif field.field_type == 'text'
+              { label: field.name, include_blank: true, selected: cur}, multiple: field.check_box?
+          -elsif field.text?
             = ff.text_field field.id,{ value: cur, label: field.name, include_blank: true }
-          -elsif field.field_type == 'model_collection'
+          -elsif field.model_collection?
             -model_field =  Support::ModelField.all[field.model_collection.to_sym]
             -query = admin? ? :admin_query : :user_query
             -if model_field.type_source(admin?)

@@ -1,6 +1,6 @@
 div style='display:none;'
     div#select-field
-      = @ff.select 'replace_id', [], { label: 'replace_name', include_blank: true }, class: 'select2-custom'
+      = @ff.select 'replace_id', [], { label: 'replace_name'}, class: 'select2-custom'
     div#text-field
       = @ff.text_field 'replace_id', { label: 'replace_name' }
 javascript:
@@ -38,16 +38,23 @@ javascript:
           if(result.field_type == 'text'){
             field_container.append($('div#text-field').html());
           }else{
-          field_container.append($('div#select-field').html());
+            field_container.append($('div#select-field').html());
           }
 
           var html = field_container.html().replace(/replace_id/g, v).replace(/replace_name/g, result.name);
           field_container.html(html);
-          var options =  { allowClear: true, placeholder: select2_localization[window.locale] };
+          var options =  { allowClear: true,
+                           placeholder: select2_localization[window.locale],
+                           multiple: result.field_type == 'check_box'};
           if(result.source)
             apply_select_to(field_container.find('select'), result.source);
           else{
-            options.data = result.field_options;
+            if(result.field_type == 'check_box')
+              options.data =  result.field_options;
+            else{
+              options.data =  [{id: '', text: ''}].concat(result.field_options);
+
+            }
             field_container.find('select').select2(options);
           }
 

@@ -16,7 +16,7 @@ class OptionsCategory < ApplicationRecord
                                     foreign_key: :options_category_id,
                                     dependent: :destroy
   translates :name
-  validates_translated :category, presence: true, uniqueness: true
+  validates_translated :name, presence: true, uniqueness: true
   accepts_nested_attributes_for :category_values, allow_destroy: true
   scope :finder, ->(q) { where("lower(name_ru) like lower(:q) OR lower(name_en) like lower(:q)", q: "%#{q.mb_chars}%").limit(10) }
 

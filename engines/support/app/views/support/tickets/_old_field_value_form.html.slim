@@ -1,14 +1,20 @@
-= f.fields_for :field_values do |fv_f|
+= f.fields_for :field_values, f.object.field_values do |fv_f|
   - value = fv_f.object
   = fv_f.hidden_field :topics_field_id
-  -if value.field.field_options.any?
+  -if value.field.radio?
     - options = value.field.field_options
     - if options.count > 3
       = fv_f.collection_select :value, options, :id, :name,
-            label: value.field.name,
-            include_blank: true,
-            help: value.field.hint
+                               label: value.field.name,
+                               include_blank: true,
+                               help: value.field.hint
     -else
+      = fv_f.collection_radio_buttons :value, options, :id, :name,
+                                      label: value.field.name,
+                                      include_blank: true,
+                                      help: value.field.hint
+  -elsif value.field.check_box?
+      - options = value.field.field_options
       = fv_f.collection_radio_buttons :value, options, :id, :name,
             label: value.field.name,
             include_blank: true,

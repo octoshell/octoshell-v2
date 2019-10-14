@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_09_171901) do
+ActiveRecord::Schema.define(version: 2019_10_13_145402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -329,10 +329,10 @@ ActiveRecord::Schema.define(version: 2019_10_09_171901) do
   end
 
   create_table "core_notices", id: :serial, force: :cascade do |t|
-    t.integer "sourceable_id"
     t.string "sourceable_type"
-    t.integer "linkable_id"
+    t.integer "sourceable_id"
     t.string "linkable_type"
+    t.integer "linkable_id"
     t.text "message"
     t.integer "count"
     t.datetime "created_at", null: false
@@ -1014,6 +1014,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_171901) do
     t.string "name_en"
     t.string "hint_en"
     t.string "model_collection"
+    t.integer "kind", default: 0
   end
 
   create_table "support_replies", id: :serial, force: :cascade do |t|
@@ -1173,10 +1174,6 @@ ActiveRecord::Schema.define(version: 2019_10_09_171901) do
     t.string "name_en"
     t.text "content_en"
     t.index ["url"], name: "index_wiki_pages_on_url", unique: true
-  end
-
-  create_table "wiki_tasks", id: false, force: :cascade do |t|
-    t.integer "db_col"
   end
 
   create_table "wikiplus_images", id: :serial, force: :cascade do |t|

@@ -11,7 +11,7 @@ module Support
       @field = Field.find(params[:id])
 
 
-      if @field.model_collection.present?
+      if @field.model_collection?
         admin = params[:admin] == 'true'
         hash = { name: @field.name }
         model_field =  ModelField.all[@field.model_collection.to_sym]
@@ -26,7 +26,7 @@ module Support
         render json: hash
       else
         render json: { name: @field.name,
-                       field_type: @field.field_type,
+                       field_type: @field.kind,
                        field_options: @field.field_options }
       end
     end

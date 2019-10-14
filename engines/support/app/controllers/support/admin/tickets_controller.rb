@@ -19,8 +19,9 @@ module Support
     def index
       @search = Ticket.search(params[:q])
       @tickets = @search.result(distinct: true)
-                        .preload({reporter: :profile}, {responsible: :profile},
-                                  :field_values)
+                        .preload({ reporter: :profile}, { responsible: :profile },
+                                  { field_values: {topics_field: {field: :field_options } }},
+                                 :topic)
                         .order("support_tickets.id DESC, support_tickets.updated_at DESC")
                         .where(topic: [Topic.accessible_by(current_ability, :access)])
       without_pagination(:tickets)

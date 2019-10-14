@@ -48,7 +48,7 @@ module Support
     belongs_to :topic
 
     has_many :replies, inverse_of: :ticket, dependent: :destroy
-    has_many :field_values, inverse_of: :ticket, dependent: :destroy # NOTE: fields are from topic
+    has_many :field_values, inverse_of: :ticket, dependent: :destroy, autosave: true # NOTE: fields are from topic
 
     has_and_belongs_to_many :tags,
                             join_table: :support_tickets_tags, dependent: :destroy
@@ -65,7 +65,7 @@ module Support
       template.present? && template == message && errors.add(:message, :equal_to_template)
     end
 
-    accepts_nested_attributes_for :field_values
+    # accepts_nested_attributes_for :field_values
 
     after_commit :add_reporter_to_subscribers, on: :create
     before_create :add_responsible
@@ -80,20 +80,31 @@ module Support
       field_values.where(value: ['', nil]).destroy_all
     end
 
+    def field_values_attributes(params)
+
+    end
+
+
     def self.field_values_with_options(*args)
       rel = all
       rel = rel.joins(field_values: :topics_field)
+      counter = 0
       strings = args.map do |a|
         first = "support_topics_fields.field_id = #{a.first}"
-        if a.second.present?
-          second = "support_field_values.value = '#{a.second}'"
-          "#{first} AND #{second}"
+        arr = Array(a.second).select(&:present?)
+        if arr.any?
+          second = Array(a.second).select(&:present?).map do |elem|
+            counter += 1
+            "support_field_values.value = '#{elem}'"
+          end.join(' OR ')
+          "#{first} AND (#{second})"
         else
+          counter += 1
           first
         end
       end
       rel.where(strings.join(' OR ')).joins(:field_values).group(:id)
-         .having('count(support_field_values.id) = ?', strings.count)
+         .having('count(support_field_values.id) = ?', counter)
     end
 
     def self.contains_all_fields(*_ids)
@@ -261,12 +272,16 @@ module Support
     end
 
     def build_field_values
-      topic.parents_with_self.map { |t| t.topics_fields.to_a }.flatten
-           .uniq(&:id).each do |topics_field|
+      topics_fields_to_fill.each do |topics_field|
         field_values.build do |value|
           value.topics_field = topics_field
         end
       end
+    end
+
+    def topics_fields_to_fill
+      topic.parents_with_self.map { |t| t.topics_fields.to_a }.flatten
+           .uniq(&:field_id)
     end
 
     private

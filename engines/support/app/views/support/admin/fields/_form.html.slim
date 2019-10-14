@@ -1,6 +1,7 @@
 = bootstrap_nested_form_for [:admin, @field], layout: :horizontal do |f|
   -Support::Field.locale_columns(:name,:hint).each do |column|
     = f.text_field column
+  = f.select :kind, Support::Field.kinds.keys
   = form_group_check_box(f, :required)
   = form_group_check_box(f, :url)
   = form_group_check_box(f, :contains_source_code)

@@ -40,9 +40,9 @@ module Pack
 
     def edit
       @version = Version.includes(clustervers: :core_cluster).find(params[:id])
-      puts @version.clustervers.inspect.red
+      # puts @version.clustervers.inspect.red
       @version.build_clustervers
-      puts @version.clustervers.inspect.green
+      # puts @version.clustervers.inspect.green
 
     end
 
