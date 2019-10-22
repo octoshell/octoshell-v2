@@ -84,7 +84,7 @@ class Synchronizer
   ### - project members sync
   def sync_project_members
     unless connection_to_cluster
-      cluster.log("No connection to cluster")
+      cluster.log("No connection to cluster",project)
       return false
     end
     if project.active?
