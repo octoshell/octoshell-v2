@@ -1,4 +1,7 @@
 Core::Engine.routes.draw do
+  resources :bot_links do
+    get :generate
+  end
   namespace :admin do
     resources :members, only: :index
     resources :projects do
