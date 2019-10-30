@@ -480,10 +480,11 @@ div
       return Math.ceil(100 * sum) / 100;
     }
 
+    var COLORS = {"COMPLETED": "#aff05b", "CANCELLED": "cyan", "FAILED": "red", "TIMEOUT": "purple"}
+
     function draw(svg, data, labels, x, y, type) {
         const root = partition(data);
         color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
-        console.log(data);
 
         external_color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children[0].children.length + 1));
         var bord = 2;
@@ -502,11 +503,14 @@ div
         .data(root.descendants().slice(1))
         .enter().append("path")
           .attr("fill", function(d) {
+            if (d.data.name in COLORS) {
+              return COLORS[d.data.name];
+            }
             if (d.depth >= bord) {
               while (d.depth > bord) d = d.parent; 
               return external_color(d.data.name);
             }
-            while (d.depth > 1) d = d.parent; 
+            while (d.depth > 1) d = d.parent;
             return color(d.data.name);
           })
           .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
