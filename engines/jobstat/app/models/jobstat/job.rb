@@ -273,7 +273,7 @@ module Jobstat
       user_id=user.id
 
       data=get_data("jobstat:filters:#{user_id}",
-        URI("http://graphit.parallel.ru:8123/api/filters?user=#{user_id}"))
+        URI("#{Rails.application.config.octo_feedback_host}/api/filters?user=#{user_id}"))
       #logger.info "get_filters: data=#{data.inspect}"
       data || []
     end
@@ -283,7 +283,7 @@ module Jobstat
       jobs=joblist.kind_of?(Array) ? joblist.join(',') : joblist
 
       get_data("jobstat:feedback_job:#{user_id}:#{jobs}",
-        URI("http://graphit.parallel.ru:8123/api/feedback-job?user=#{user_id}&cluster=lomonosov-2&job_id=#{jobs}")
+        URI("#{Rails.application.config.octo_feedback_host}/api/feedback-job?user=#{user_id}&cluster=lomonosov-2&job_id=#{jobs}")
         )
     end
 

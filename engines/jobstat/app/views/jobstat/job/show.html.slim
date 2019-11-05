@@ -277,7 +277,7 @@ p
 
 h3 = t('.dynamics')
 
-p = link_to(t('.details'), "https://graphit.parallel.ru:5001/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36))
+p = link_to(t('.details'), "#{Rails.application.config.octo_jd_host}/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36))
 
 div class="row"
   div class="col-md-4" style="height: 250px"
