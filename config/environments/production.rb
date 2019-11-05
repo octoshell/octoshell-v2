@@ -1,7 +1,9 @@
 Octoshell::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.octo_feedback_host = 'http://graphit.parallel.ru:8123'
+  config.octo_feedback_host = 'http://188.44.52.38:28082'
+  config.octo_jd_host = 'http://188.44.52.38:28081'
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

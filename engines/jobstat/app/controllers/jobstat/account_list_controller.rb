@@ -4,8 +4,6 @@ module Jobstat
   class AccountListController < ApplicationController
     include JobHelper
 
-    #FEEDBACK_HOST = Rails.application.config.octo_feedback_host
-
     def index
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
