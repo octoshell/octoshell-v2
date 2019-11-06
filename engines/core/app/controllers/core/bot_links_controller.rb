@@ -36,7 +36,7 @@ require_dependency "core/application_controller"
 
       # save new bot
       @bot_link.save
-      redirect_to @bot_link, notice: 'Bot link was successfully created.'
+      redirect_to @bot_link, show_notice: true
     end
 
     # POST /bot_links
@@ -44,7 +44,7 @@ require_dependency "core/application_controller"
       @bot_link = BotLink.new(bot_link_params)
 
       if @bot_link.save
-        redirect_to @bot_link, notice: 'Bot link was successfully created.'
+        redirect_to @bot_link, show_notice: true
       else
         render :new
       end
@@ -53,7 +53,7 @@ require_dependency "core/application_controller"
     # PATCH/PUT /bot_links/1
     def update
       if @bot_link.update(bot_link_params)
-        redirect_to @bot_link, notice: 'Bot link was successfully updated.'
+        redirect_to @bot_link, show_notice: true
       else
         render :edit
       end
@@ -62,7 +62,7 @@ require_dependency "core/application_controller"
     # DELETE /bot_links/1
     def destroy
       @bot_link.destroy
-      redirect_to bot_links_url, notice: 'Bot link was successfully destroyed.'
+      redirect_to bot_links_url, show_notice: true
     end
 
     private
