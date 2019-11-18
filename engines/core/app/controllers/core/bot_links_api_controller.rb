@@ -7,8 +7,8 @@ module Core
 
       if params[:method] == 'auth'
         result = BotLinksApiHelper.auth(params)
-      elsif params[:method] == 'bots'
-        result = BotLinksApiHelper.load_bot_links
+      elsif params[:method] == 'user_projects'
+        result = BotLinksApiHelper.user_projects(params)
       end
 
       render json: result
