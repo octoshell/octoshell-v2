@@ -48,6 +48,48 @@ module Core
       return res
     end
 
+    def self.topics(params)
+      auth_info = self.auth(params)
+      if auth_info["status"] == 0
+        topics = Array.new
+
+        Support::Topic.all.each do |topic|
+          data = Hash.new
+          data["name_ru"] = topic.name_ru
+          data["name_en"] = topic.name_en
+          topics << data
+        end
+
+        res = Hash.new
+        res["status"] = "ok"
+        res["topics"] = topics
+        return res
+      else
+        return Hash["status", "fail"]
+      end
+    end
+
+    def self.clusters(params)
+      auth_info = self.auth(params)
+      if auth_info["status"] == 0
+        clusters = Array.new
+
+        Core::Cluster.all.each do |cluster|
+          data = Hash.new
+          data["name_ru"] = cluster.name_ru
+          data["name_en"] = cluster.name_en
+          clusters << data
+        end
+
+        res = Hash.new
+        res["status"] = "ok"
+        res["clusters"] = clusters
+        return res
+      else
+        return Hash["status", "fail"]
+      end
+    end
+
     def self.user_projects(params)
       auth_info = self.auth(params)
       if auth_info["status"] == 0
@@ -69,6 +111,93 @@ module Core
         res["status"] = "ok"
         res["projects"] = projects
         return res
+      else
+        return Hash["status", "fail"]
+      end
+    end
+
+    def self.user_tickets(params)
+      auth_info = self.auth(params)
+      if auth_info["status"] == 0
+        tickets = Array.new
+
+        user = auth_info["user"]
+        Support::Ticket.where(reporter_id: user.id).each do |ticket|
+          tickets << self.fill_ticket_data(ticket, "reporter")
+        end
+        Support::Ticket.where(responsible_id: user.id).each do |ticket|
+          tickets << self.fill_ticket_data(ticket, "responsible")
+        end
+
+        res = Hash.new
+        res["status"] = "ok"
+        res["tickets"] = tickets
+        return res
+      else
+        return Hash["status", "fail"]
+      end
+    end
+
+    def self.fill_ticket_data(ticket, who)
+      data = Hash.new
+
+      topic = Support::Topic.where(id: ticket.topic_id).take
+      data["topic_name_ru"] = topic.name_ru
+      data["topic_name_en"] = topic.name_en
+
+      project = Core::Project.where(id: ticket.project_id).take
+      data["project_title"] = project.title
+
+      cluster = Core::Cluster.where(id: ticket.cluster_id).take
+      data["cluster_name_ru"] = cluster.name_ru
+      data["cluster_name_en"] = cluster.name_en
+
+      data["who"] = who
+      data["subject"] = ticket.subject
+      data["message"] = ticket.message
+      data["state"] = ticket.state
+
+      return data
+    end
+
+    def self.create_ticket(params)
+      auth_info = self.auth(params)
+      if auth_info["status"] == 0
+        # find project
+        if Core::Project.exists?(title: params["project"])
+          project = Core::Project.where(title: params["project"]).take
+        else
+          return Hash["status", "no such project"]
+        end
+
+        # find topic
+        if Support::Topic.exists?(name_ru: params["topic"])
+          topic = Support::Topic.where(name_ru: params["topic"]).take
+        elsif Support::Topic.exists?(name_en: params["topic"])
+          topic = Support::Topic.where(name_en: params["topic"]).take
+        else
+          return Hash["status", "no such topic"]
+        end
+
+        # find cluster
+        if Core::Cluster.exists?(name_ru: params["cluster"])
+          cluster = Core::Cluster.where(name_ru: params["cluster"]).take
+        elsif Core::Cluster.exists?(name_en: params["cluster"])
+          cluster = Core::Cluster.where(name_en: params["cluster"]).take
+        else
+          return Hash["status", "no such cluster"]
+        end
+
+        subject = params["subject"]
+        message = params["message"]
+        user = auth_info["user"]
+
+        # create ticket
+        Support::Ticket.create(topic: topic, project: project,
+          cluster: cluster, reporter: user, subject: subject, message: message,
+          state: :pending)
+
+        return Hash["status", "ok"]
       else
         return Hash["status", "fail"]
       end
