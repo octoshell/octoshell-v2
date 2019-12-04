@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+
+<p>
+  <strong>Токен:</strong>
+  <%= @bot_link.token %>
+</p>
+
+<p>
+  <strong>Состояние токена:</strong>
+  <%= 'активирован' if @bot_link.active %>
+  <%= 'устарел' unless @bot_link.active %>
+</p>
