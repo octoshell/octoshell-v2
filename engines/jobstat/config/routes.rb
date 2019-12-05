@@ -16,6 +16,8 @@ Jobstat::Engine.routes.draw do
   get 'job/:cluster/:drms_job_id' => "job#show_direct"
   get 'api/check_exist' => "api#check_exist"
 
+  post 'api/check_exist' => "api#check_exist"
+
   post 'job/info' => "api#post_info"
   post 'job/performance' => "api#post_performance"
   post 'job/digest' => "api#post_digest"
