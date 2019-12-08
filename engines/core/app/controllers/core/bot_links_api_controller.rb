@@ -17,6 +17,8 @@ module Core
         result = BotLinksApiHelper.user_tickets(params)
       elsif params[:method] == 'create_ticket'
         result = BotLinksApiHelper.create_ticket(params)
+      elsif params[:method] == 'notify'
+        BotLinksApiHelper.notify(params)
       end
 
       render json: result

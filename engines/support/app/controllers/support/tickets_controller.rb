@@ -48,6 +48,7 @@ module Support
       if @ticket.close
         @ticket.save
         redirect_to @ticket
+        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'close')
       else
         redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
       end
@@ -58,6 +59,7 @@ module Support
       if @ticket.resolve
         @ticket.save
         redirect_to @ticket
+        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'resolve')
       else
         @ticket.save
         redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
@@ -69,6 +71,7 @@ module Support
       if @ticket.reopen
         @ticket.save
         redirect_to @ticket
+        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'reopen')
       else
         redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
       end
@@ -83,6 +86,7 @@ module Support
       @ticket = find_ticket(params[:id])
       if @ticket.update(ticket_params)
         redirect_to @ticket
+        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'update')
       else
         render :edit
       end
