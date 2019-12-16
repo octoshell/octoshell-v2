@@ -4,6 +4,29 @@ module Core
       BotLink.all
     end
 
+    def self.notify(subpath, params)
+      require 'net/http'
+      require 'json'
+
+      host = 'localhost' # HOST OF OCTOSHELL BOT APP
+      port = '8080' # PORT OF OCTOSHELL BOT APP
+
+      path = "/notify" + subpath
+      body = params.to_json
+
+      request = Net::HTTP::Post.new(path, initheader = {'Content-Type' =>'application/json'})
+      request.body = body
+      response = Net::HTTP.new(host, port).start {|http| http.request(request) }
+    end
+
+    def self.notify_about_ticket(ticket, event)
+      params = Hash.new
+      params["subject"] = ticket.subject
+      params["email"] = User.find(ticket.reporter_id).email
+      params["event"] = event
+      self.notify('/ticket', params)
+    end
+
     def self.auth(params)
       email = params[:email]
       token = params[:token]
