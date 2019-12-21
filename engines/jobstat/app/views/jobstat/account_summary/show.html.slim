@@ -1,357 +1,13 @@
+== '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/css/theme.blue.min.css"></script>'
+
 div
-  h1 = t('.jobs_statisctics')
+  h1 = "Statistics on all submitted jobs"
 
   = render "form"
 
-br
-h2 = "Навигация"
-h4 = "Хронология"
-ul
-  li
-    h5
-      <a href="#stat_01" id="back">Статусы</a>
-  li
-    h5
-      <a href="#stat_02" id="back">Логины</a>
-  - if User.superadmins.include?(current_user)
-    li
-      h5
-        <a href="#stat_03" id="back">Проекты</a>
-
-h4 = "Топы"
-ul
-  - if User.superadmins.include?(current_user)
-    li
-      h5
-        <a href="#stat_04" id="back">Проекты</a>
-    li
-      h5
-        <a href="#stat_05" id="back">Пользователи</a>
-  li
-    h5
-      <a href="#stat_06" id="back">Логины</a>
-br
-
-
-div id="stat_01"
   br
-  h2 = "Хронология статусов"
+  h1 = "Всего"
 
-  br
-  div id="stacked-bar-1-chart" style={:width=>"550px"}
-  div id="stacked-bar-1-legend"
-
-  br
-
-  br
-  div id="stacked-bar-2-chart"
-  div id="stacked-bar-2-legend"
-
-  br
-
-div id="stat_02"
-  br
-  h2 = "Хронология логинов"
-
-  br
-  div id="stacked-bar-3-chart"
-  div id="stacked-bar-3-legend"
-
-  br
-
-  br
-  div id="stacked-bar-4-chart"
-  div id="stacked-bar-4-legend"
-
-  br
-
-div id="stat_03"
-  - if User.superadmins.include?(current_user)
-    br
-    h2 = "Хронология проектов"
-
-    br
-    div id="stacked-bar-5-chart"
-    div id="stacked-bar-5-legend"
-
-    br
-
-    br
-    div id="stacked-bar-6-chart"
-    div id="stacked-bar-6-legend"
-
-    br
-
-div id="stat_04"
-  - if User.superadmins.include?(current_user)
-    br
-    h2 = "Топ проектов"
-
-    br
-    div id="stacked-bar-7-chart"
-    div id="stacked-bar-7-legend"
-
-    br
-
-    br
-    div id="stacked-bar-8-chart"
-    div id="stacked-bar-8-legend"
-
-    br
-
-    br
-    div id="stacked-bar-9-chart"
-    div id="stacked-bar-9-legend"
-
-    br
-
-    br
-    div id="stacked-bar-10-chart"
-    div id="stacked-bar-10-legend"
-
-    br
-
-div id="stat_06"
-  br
-  h2 = "Топ логинов"
-
-  br
-  div id="stacked-bar-11-chart"
-  div id="stacked-bar-11-legend"
-
-  br
-
-  br
-  div id="stacked-bar-12-chart"
-  div id="stacked-bar-12-legend"
-
-  br
-
-div id="stat_05"
-  - if User.superadmins.include?(current_user)
-    br
-    h2 = "Топ пользователей"
-
-    br
-    div id="stacked-bar-13-chart"
-    div id="stacked-bar-13-legend"
-
-    br
-
-    br
-    div id="stacked-bar-14-chart"
-    div id="stacked-bar-14-legend"
-
-    br
-
-    br
-    div id="stacked-bar-15-chart"
-    div id="stacked-bar-15-legend"
-
-    br
-
-    br
-    div id="stacked-bar-16-chart"
-    div id="stacked-bar-16-legend"
-
-javascript:
-  var formatting = #{{@formatting.to_json}};
-  format = formatting;
-
-  function drawCartesianChart(data, chart_id, legend_id, title, yLabel) {
-      var chart = new Cartesian(chart_id);
-      chart.data.isStacked = true;
-      chart.bars.visible = true;
-      chart.lines.visible = false;
-      chart.bars.hasOpacity = true;
-      chart.plot.title = title;
-      chart.plot.yLabel = yLabel;
-      chart.plot.xLabel = "";
-      chart.draw(data);
-      var legend = new Legend(legend_id);
-      legend.hasOpacity = true;
-      legend.draw(data);
-  }
-
-  function drawCartesianOrdinalChart(data, chart_id, legend_id, title, yLabel) {
-      var chart = new Cartesian(chart_id);
-      chart.xAxisType = 'ordinal';
-      chart.data.isStacked = true;
-      chart.bars.visible = true;
-      chart.lines.visible = false;
-      chart.bars.hasOpacity = true;
-      chart.plot.title = title;
-      chart.plot.yLabel = yLabel;
-      chart.plot.xLabel = "";
-      chart.draw(data);
-      var legend = new Legend(legend_id);
-      legend.hasOpacity = true;
-      legend.draw(data);
-  }
-
-  var data1 = #{{@state_runs.to_json}};
-  console.log("Data1: ", data1);
-  drawCartesianChart(
-      data1, 
-      "#stacked-bar-1-chart", 
-      "#stacked-bar-1-legend", 
-      "Хронология статусов", 
-      "Количество запусков"
-  );
-
-  var data2 = #{{@state_resources.to_json}};
-  console.log("Data2: ", data2);
-  drawCartesianChart(
-      data2, 
-      "#stacked-bar-2-chart", 
-      "#stacked-bar-2-legend", 
-      "Хронология статусов", 
-      "Объем ресурсов"
-  );
-
-  var data3 = #{{@login_runs.to_json}};
-  console.log("Data3: ", data3);
-  drawCartesianChart(
-      data3, 
-      "#stacked-bar-3-chart", 
-      "#stacked-bar-3-legend", 
-      "Хронология логинов", 
-      "Количество запусков"
-  );
-
-  var data4 = #{{@login_resources.to_json}};
-  console.log("Data4: ", data4);
-  drawCartesianChart(
-      data4, 
-      "#stacked-bar-4-chart", 
-      "#stacked-bar-4-legend", 
-      "Хронология логинов", 
-      "Объем ресурсов"
-  );
-
-  var data5 = #{{@project_runs.to_json}};
-  console.log("Data5: ", data5);
-  drawCartesianChart(
-      data5, 
-      "#stacked-bar-5-chart", 
-      "#stacked-bar-5-legend", 
-      "Хронология проектов", 
-      "Количество запусков"
-  );
-
-  var data6 = #{{@project_resources.to_json}};
-  console.log("Data6: ", data6);
-  drawCartesianChart(
-      data6, 
-      "#stacked-bar-6-chart", 
-      "#stacked-bar-6-legend", 
-      "Хронология проектов", 
-      "Объем ресурсов"
-  );
-  
-  var data7 = #{{@top_project_state_runs.to_json}};
-  console.log("Data7: ", data7);
-  drawCartesianOrdinalChart(
-      data7, 
-      "#stacked-bar-7-chart", 
-      "#stacked-bar-7-legend", 
-      "Топ проектов по статусам", 
-      "Количество запусков"
-  );
-
-  var data8 = #{{@top_project_state_resources.to_json}};
-  console.log("Data8: ", data8);
-  drawCartesianOrdinalChart(
-      data8, 
-      "#stacked-bar-8-chart", 
-      "#stacked-bar-8-legend", 
-      "Топ проектов по статусам", 
-      "Объем ресурсов"
-  );
-
-  var data9 = #{{@top_project_login_runs.to_json}};
-  console.log("Data9: ", data9);
-  drawCartesianOrdinalChart(
-      data9, 
-      "#stacked-bar-9-chart", 
-      "#stacked-bar-9-legend", 
-      "Топ проектов по логинам", 
-      "Количество запусков"
-  );
-
-  var data10 = #{{@top_project_login_resources.to_json}};
-  console.log("Data10: ", data10);
-  drawCartesianOrdinalChart(
-      data10, 
-      "#stacked-bar-10-chart", 
-      "#stacked-bar-10-legend", 
-      "Топ проектов по логинам", 
-      "Объем ресурсов"
-  );
-
-  var data11 = #{{@top_login_state_runs.to_json}};
-  console.log("Data11: ", data11);
-  drawCartesianOrdinalChart(
-      data11, 
-      "#stacked-bar-11-chart", 
-      "#stacked-bar-11-legend", 
-      "Топ логинов по статусам", 
-      "Количество запусков"
-  );
-
-  var data12 = #{{@top_login_state_resources.to_json}};
-  console.log("Data12: ", data12);
-  drawCartesianOrdinalChart(
-      data12, 
-      "#stacked-bar-12-chart", 
-      "#stacked-bar-12-legend", 
-      "Топ логинов по статусам", 
-      "Объем ресурсов"
-  );
-
-  var data13 = #{{@top_user_state_runs.to_json}};
-  console.log("Data13: ", data13);
-  drawCartesianOrdinalChart(
-      data13, 
-      "#stacked-bar-13-chart", 
-      "#stacked-bar-13-legend", 
-      "Топ пользователей по статусам", 
-      "Количество запусков"
-  );
-
-  var data14 = #{{@top_user_state_resources.to_json}};
-  console.log("Data14: ", data14);
-  drawCartesianOrdinalChart(
-      data14, 
-      "#stacked-bar-14-chart", 
-      "#stacked-bar-14-legend", 
-      "Топ пользователей по статусам", 
-      "Объем ресурсов"
-  );
-
-  var data15 = #{{@top_user_login_runs.to_json}};
-  console.log("Data15: ", data15);
-  drawCartesianOrdinalChart(
-      data15, 
-      "#stacked-bar-15-chart", 
-      "#stacked-bar-15-legend", 
-      "Топ пользователей по логинам", 
-      "Количество запусков"
-  );
-
-  var data16 = #{{@top_user_login_resources.to_json}};
-  console.log("Data16: ", data16);
-  drawCartesianOrdinalChart(
-      data16, 
-      "#stacked-bar-16-chart", 
-      "#stacked-bar-16-legend", 
-      "Топ пользователей по логинам", 
-      "Объем ресурсов"
-  );
-
-div
-  br
-  h1 = t('.total')
   javascript:
     var temp1 = JSON.parse("#{@data.to_json}".replace(/&quot;/g, '"'));
     console.log(temp1);
@@ -485,6 +141,7 @@ div
     function draw(svg, data, labels, x, y, type) {
         const root = partition(data);
         color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
+        console.log(data);
 
         external_color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, data.children[0].children.length + 1));
         var bord = 2;
@@ -510,7 +167,7 @@ div
               while (d.depth > bord) d = d.parent; 
               return external_color(d.data.name);
             }
-            while (d.depth > 1) d = d.parent;
+            while (d.depth > 1) d = d.parent; 
             return color(d.data.name);
           })
           .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
@@ -666,33 +323,33 @@ div
   table class="tablesorter-blue"
     thead
       tr
-        td style="width: 50%" = t('.supercomputer')
-        td = t('.count')
-        td = t('.cpu')
-        td = t('.gpu')
+        td style="width: 50%" = "Суперкомпьютер"
+        td = "Количество"
+        td = "ЦПУ ядро * час"
+        td = "ГПУ * час"
     tbody
-      - @total_cluster_data.each do |cluster, value|
+      - @total_cluster_data.each do |key, value|
         tr
-          td = cluster.name
+          td = "#{@clusters[key].name}"
           td = value[0]
           td = value[1]
           td = value[2]
       tr
-        td = t('.total')
+        td = "Всего"
         td = @total_data[0]
         td = @total_data[1]
         td = @total_data[2]
 
   - @data.keys.each do |cluster|
-    h1 = cluster.name
+    h1 = "#{@clusters[cluster].name}"
     table class="tablesorter-blue"
       thead
         tr
-          td style="width: 25%" = t('.partition')
-          td style="width: 25%" = t('.status')
-          td = t('.count')
-          td = t('.cpu')
-          td = t('.gpu')
+          td style="width: 25%" = "Раздел"
+          td style="width: 25%" = "Статус"
+          td = "Количество"
+          td = "ЦПУ ядро * час"
+          td = "ГПУ * час"
       tbody
         - @data[cluster].keys.each do |partition|
           - @data[cluster][partition].keys.each_with_index do |state, index|
