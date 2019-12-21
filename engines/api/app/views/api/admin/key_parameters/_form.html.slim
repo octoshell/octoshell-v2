@@ -1,0 +1,15 @@
+- if @key_parameters.errors.any?
+  div id="error_explanation"
+    ul
+    - @key_parameters.errors.full_messages.each do |message|
+      l = message
+= bootstrap_form_for [:admin, @key_parameters] do |f|
+
+  = f.text_field :name, label: t('.key_parameters_name')
+
+  = f.text_field :default, label: t('.key_parameters_default')
+
+  = f.collection_select :export_ids, Api::Export.all, :id, :title, {label: t('.key_parameters_export_list')}, {multiple: true}
+
+  = f.submit :class => "btn btn-default"
+

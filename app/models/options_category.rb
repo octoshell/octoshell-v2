@@ -9,10 +9,10 @@
 #  updated_at :datetime         not null
 #
 
-class OptionsCategory < ActiveRecord::Base
+class OptionsCategory < ApplicationRecord
   has_many :category_values, inverse_of: :options_category, dependent: :destroy
   has_many :strict_options, inverse_of: :options_category,
-                                    class_name: ::Option,
+                                    class_name: '::Option',
                                     foreign_key: :options_category_id,
                                     dependent: :destroy
   translates :name

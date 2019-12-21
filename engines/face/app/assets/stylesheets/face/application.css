@@ -7,6 +7,8 @@
  *= require select2-bootstrap
  *= require bootstrap-datepicker3
  *= require rails_bootstrap_forms
+ *= require bootstrap
+ *= require bootstrap-datetimepicker
  *= require_tree .
  */
 
@@ -29,4 +31,12 @@
   float: right;
   font-size: 0.5em;
   color: #808080;
+}
+
+.marked-preview {
+	border: solid 2px lightgreen;
+	height: 100%;
+  max-height: 10em;
+  overflow-y: scroll;
+	border-radius: 4px;
 }

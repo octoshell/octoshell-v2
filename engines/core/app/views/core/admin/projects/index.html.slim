@@ -4,14 +4,14 @@ div class="page-header"
 = bootstrap_form_for @search, url: admin_projects_path, method: :get, layout: :vertical do |f|
   div class="col-md-12"
     div class="col-md-3"
-      = f.autocomplete_field :id_eq,{ label: Core::Project.human_attribute_name(:title), source: projects_path},'redirect-url': '/core/admin/projects/{{id}}' 
+      = f.autocomplete_field :id_eq,{ label: Core::Project.human_attribute_name(:title), source: projects_path},'redirect-url': '/core/admin/projects/{{id}}'
       = f.autocomplete_field :owner_id_eq,{ label: Core::Project.human_attribute_name("owner"), source: owners_finder_admin_users_path} do |val|
         -User.find(val).full_name_with_email
       = f.autocomplete_field :members_id_eq,{ label: Core::Member.human_attribute_name(:login), source: core.admin_members_path}, 'redirect-url': '/core/admin/projects/{{project_id}}'
     div class="col-md-3"
+
       = f.autocomplete_field :organization_id_eq,{ label: Core::Project.human_attribute_name(:organization), source: core.organizations_path} do |val|
         -Core::Organization.find(val).name_with_id
-
       /= f.collection_select :members_id_eq, Core::Member.all.order(:login), :id, :login, label: Core::Member.human_attribute_name(:login), include_blank: true
       = f.select :state_in, Core::Project.human_state_names_with_original, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
       = f.collection_select :kind_id_eq, Core::ProjectKind.all, :id, :name, label: Core::Project.human_attribute_name(:kind), include_blank: true
@@ -24,6 +24,24 @@ div class="page-header"
       = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
       = f.text_field :first_activation_at_gt, options.merge(label: t('.activated_after'))
       = f.text_field :updated_at_gt, options.merge(label: t('.updated_after'))
+  div.col-md-12
+    .col-md-3
+      = f.collection_select :critical_technologies_id_in, Core::CriticalTechnology.order_by_name, :id, :name,
+        {label: t('.critical_technologies_id_in'),  include_blank: true}, multiple: true
+
+    .col-md-3
+      = f.collection_select :direction_of_sciences_id_in, Core::DirectionOfScience.order_by_name, :id, :name,
+        {label: t('.direction_of_sciences_id_in'),  include_blank: true}, multiple: true
+
+    .col-md-3
+      = f.collection_select :group_of_research_areas_id_in, Core::GroupOfResearchArea.order_by_name, :id, :name,
+        {label: t('.group_of_research_areas_id_in'),  include_blank: true}, multiple: true
+
+    .col-md-3
+      = f.grouped_collection_select :research_areas_id_in, Core::GroupOfResearchArea.order_by_name_with_areas,
+                                    :research_areas, :name, :id, :name,
+                                    {label: t('.research_areas_id_in'),  include_blank: true}, multiple: true
+
   = display_all_tag
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
@@ -31,3 +49,6 @@ div class="page-header"
 = safe_paginate @projects
 = render "table", projects: @projects
 = safe_paginate @projects
+
+javascript:
+   change_child_grouped_select('#q_group_of_research_areas_id_in', '#q_research_areas_id_in');

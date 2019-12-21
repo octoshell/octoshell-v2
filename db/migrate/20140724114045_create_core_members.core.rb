@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140721094045)
-class CreateCoreMembers < ActiveRecord::Migration
+class CreateCoreMembers < ActiveRecord::Migration[4.2]
   def change
     create_table :core_members do |t|
       t.integer "user_id",                              null: false

@@ -30,7 +30,7 @@ module Comments
       line =~ regexp && flag = true
       flag && wiki_body << line
     end
-    page = Wiki::Page.find_or_initialize_by(url: url)
+    page = Wikiplus::Page.find_or_initialize_by(url: url)
     !page.new_record? && puts('Comments wiki page exists')
     page.content = wiki_body
     page.name = name
@@ -41,9 +41,9 @@ module Comments
   def self.create_abilities
     puts 'Creating abilities'
     ActiveRecord::Base.transaction do
-      # [Comments::ContextGroup, Comments::GroupClass, Comments::Context, Comments::FileAttachment, Comments::Tagging, Comments::Tag, Comments::Comment].each do |model|
-      #   model.destroy_all
-      # end
+      [Comments::ContextGroup, Comments::GroupClass, Comments::Context, Comments::FileAttachment, Comments::Tagging, Comments::Tag, Comments::Comment].each do |model|
+        model.destroy_all
+      end
 
       first_group = ['superadmins', 'paper managers', 'support', 'reregistrators'].map { |name| Group.find_by_name name  }.compact
       second_group = ['experts'].map { |name| Group.find_by_name name }.compact
@@ -82,6 +82,7 @@ module Comments
           Comments::GroupClass.create!(class_name: Support::Ticket, group: group, allow: true,type_ab: type)
         end
       end
+      puts 'DONE'
     end
   end
 end

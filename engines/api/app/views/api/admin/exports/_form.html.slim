@@ -1,0 +1,22 @@
+- if @export.errors.any?
+  div id="error_explanation">
+    ul
+    - @export.errors.full_messages.each do |message|
+      l = message
+= bootstrap_form_for [:admin, @export] do |f|
+
+  /= f.label :title, t('.export_title')
+  = f.text_field :title, label: t('.export_title')
+
+  = f.text_field :request, label: t('.export_request')
+
+  = f.text_area :text, label: t('.export_text')
+
+  = f.collection_select :access_key_ids, Api::AccessKey.all, :id, :key, {label: t('.export_access_keys_list')}, {multiple: true}
+
+  = f.collection_select :key_parameter_ids, Api::KeyParameter.all, :id, :name, {label: t('.export_key_parameters_list')}, {multiple: true}
+
+  = f.check_box :safe, label: t('.safe')
+
+  = f.submit :class => "btn btn-default"
+

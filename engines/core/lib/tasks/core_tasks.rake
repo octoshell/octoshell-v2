@@ -124,6 +124,20 @@ namespace :core do
     end
   end
 
+  task fix_areas: :environment do
+    ActiveRecord::Base.transaction do
+      Core::ResearchArea.all.each do |a|
+        g = Core::GroupOfResearchArea.find_or_create_by(name_ru: a.old_group)
+        a.group = g
+        a.save!
+      end
+      Core::GroupOfResearchArea.where(name_ru: 'Биология и медецинская наука').each do |a|
+        a.name_ru = 'Биология и медицинская наука'
+        a.save!
+      end
+    end
+  end
+
   task :fix_everything => :environment do
     list = %w[check_employments check_projects fix_cities check_cities fix_organizations check_organizations]
     list.each do |elem|

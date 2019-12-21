@@ -16,7 +16,9 @@
 # endcoding: utf-8
 
 module Support
-  class Topic < ActiveRecord::Base
+  class Topic < ApplicationRecord
+
+    
 
     translates :name, :template
 

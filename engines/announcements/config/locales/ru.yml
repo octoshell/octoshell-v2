@@ -1,63 +1,68 @@
+---
 ru:
   activerecord:
-    models:
-      announcement: "Рассылка"
-      announcement_recipient: "Получатель рассылки"
-    attributes:
-      announcement:
-        title: "Наименование"
-        body: "Текст письма"
-        attachment: "Вложение"
-        is_special: "Служебная рассылка (о состоянии кластеров, профилактических работах и прочая служебная информация)"
-        created_by: "Создана пользователем"
-
     aasm:
       announcement:
         state:
           states:
-            pending: "создана"
-            delivered: "разослана"
-
+            delivered: разослана
+            pending: создана
+    attributes:
+      announcement:
+        attachment: Вложение
+        body: Текст письма
+        created_by: Создана пользователем
+        is_special: >-
+          Служебная рассылка (о состоянии кластеров, профилактических работах и прочая
+          служебная информация)
+        title: Наименование
+    models:
+      announcement: Рассылка
+      announcement_recipient: Получатель рассылки
   announcements:
-
     admin:
       announcements:
-        index:
-          title: "Список рассылок"
-          special: "служебная"
-          informative: "информационная"
-          new: "Новая рассылка"
-        form:
-          markdown_help: "В качестве разметки используется Markdown. Описание синтаксиса <a href=\"http://vstarkov.ru/markdown-basics/\", target=\"_blank\">здесь</a>."
-        new:
-          title: "Добавление рассылки"
         edit:
-          title: "Редактирование рассылки"
+          title: Редактирование рассылки
+        form:
+          markdown_help: >-
+            В качестве разметки используется Markdown. Описание синтаксиса <a href="http://vstarkov.ru/markdown-basics/",
+            target="_blank">здесь</a>.
+        index:
+          informative: информационная
+          new: Новая рассылка
+          special: служебная
+          title: Список рассылок
+        new:
+          title: Добавление рассылки
         show:
-          special: "служебная"
-          informative: "информационная"
-          edit: "Редактировать"
-          attachment: "Вложение"
-          test: "Протестировать"
-          change_rec_list: "Изменить список адресатов"
-          send_to_n_users: "Отправить письмо %{num} пользователям"
-          recipients: "Получатели"
+          attachment: Вложение
+          change_rec_list: Изменить список адресатов
+          edit: Редактировать
+          informative: информационная
+          recipients: Получатели
+          send_to_n_users: Отправить письмо %{num} пользователям
+          special: служебная
+          test: Протестировать
         show_users:
-          title: "Выбор получателей рассылки"
-          user: "Пользователь"
-          managed_project_statuses: "Руководит проектами со статусами"
-          participated_project_statuses: "Участвует в проектах со статусами"
-          has_account_on_clusters: "Есть аккаунт на кластере"
-          rereg_participated: "Участвовал в перерегистрации"
-          has_rereg_report_statuses: "Имеет отчеты в состоянии"
-          has_survey_statuses: "Имеет опросы в состоянии"
-          users_found: "Найдено пользователей"
+          has_account_on_clusters: Есть аккаунт на кластере
+          has_rereg_report_statuses: Имеет отчеты в состоянии
+          has_survey_statuses: Имеет опросы в состоянии
+          managed_project_statuses: Руководит проектами со статусами
           no_users_found: Не найдено пользователей
-
-
+          participated_project_statuses: Участвует в проектах со статусами
+          rereg_participated: Участвовал в перерегистрации
+          title: Выбор получателей рассылки
+          user: Пользователь
+          users_found: Найдено пользователей
     mailer:
       announcement:
-        hello_known_name: "Добрый день, %{name}!"
-        hello_unknown: "Здравствуйте!"
-        msg_spec_announce_help: "Если Вы не хотите получать служебные рассылки, Вам надо в Вашем профиле убрать галку напротив «Использовать мой email для служебных рассылок» (https://users.parallel.ru/profile)."
-        msg_info_announce_help: "Если Вы не хотите получать информационные рассылки, Вам надо в Вашем профиле убрать галку напротив «Использовать мой email для информационных рассылок» (https://users.parallel.ru/profile)."
+        hello_known_name: Добрый день, %{name}!
+        hello_unknown: Здравствуйте!
+        msg_info_announce_help: >-
+          Если Вы не хотите получать информационные рассылки, Вам надо в Вашем профиле
+          убрать галку напротив «Использовать мой email для информационных рассылок»
+          (https://users.parallel.ru/profile).
+        msg_spec_announce_help: >-
+          Если Вы не хотите получать служебные рассылки, Вам надо в Вашем профиле
+          убрать галку напротив «Использовать мой email для служебных рассылок» (https://users.parallel.ru/profile).

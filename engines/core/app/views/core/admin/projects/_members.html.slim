@@ -12,7 +12,7 @@ div class="row" id="members"
           td
             ul class="list-unstyled"
               li
-                / TODO: may? :review, :users
+                / TODO: can? :review, :users
                 = link_to member.full_name, main_app.admin_user_path(member.user)
                 - if member.user_id == @project.owner.id
                   |  

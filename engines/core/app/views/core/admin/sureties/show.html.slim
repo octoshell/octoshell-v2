@@ -1,7 +1,7 @@
 div class="page-header"
   h1 = @surety
 
-- if may? :manage, :sureties
+- if can? :manage, :sureties
   div class="well btn-toolbar"
     - if @surety.confirmed?
       div class='row'

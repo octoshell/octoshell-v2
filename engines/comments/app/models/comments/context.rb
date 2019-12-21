@@ -10,7 +10,7 @@
 #
 
 module Comments
-  class Context < ActiveRecord::Base
+  class Context < ApplicationRecord
     has_many :context_groups, dependent: :destroy
     translates :name
     validates_translated :name, presence: true

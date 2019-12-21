@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140722083959)
-class CreateCoreCards < ActiveRecord::Migration
+class CreateCoreCards < ActiveRecord::Migration[4.2]
   def change
     create_table :core_project_cards do |t|
       t.integer :project_id

@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20180727081617)
-class AddChangedByToCoreRequests < ActiveRecord::Migration
+class AddChangedByToCoreRequests < ActiveRecord::Migration[4.2]
   def change
     add_column :core_requests, :changed_by_id, :integer
     add_index :core_requests, :changed_by_id

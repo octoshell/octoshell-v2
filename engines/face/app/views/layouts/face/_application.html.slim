@@ -5,16 +5,23 @@ html
     = favicon_link_tag 'favicon.ico'
     = favicon_link_tag 'apple-touch-icon-precomposed.png', type: 'image/png'
     = favicon_link_tag 'apple-touch-icon-precomposed.png', rel: 'apple-touch-icon', type: 'image/png'
-    //link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"
     link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous"
     /[ if lt IE 9 ]
       script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"
     script type="text/javascript" src="https://www.google.com/jsapi"
     = stylesheet_link_tag "application", media: "all"
+    = stylesheet_link_tag params[:controller]
     - if @extra_css
       - [@extra_css].flatten.each do |css|
         = stylesheet_link_tag "#{css}", media: "all"
     = javascript_include_tag "application"
+    = javascript_include_tag params[:controller]
+
+    - cnt = params[:controller].split('/')[0]
+    - if params[:controller].index('/') && params[:controller].split('/').first != 'face'
+      = stylesheet_link_tag "#{cnt}/application"
+      = javascript_include_tag "#{cnt}/application"
+
     - if @extra_js
       - [@extra_js].flatten.each do |js|
         = javascript_include_tag "#{js}"
@@ -35,7 +42,7 @@ html
             = right_bar
 
     div class="container"
-      - if may?(:access, :admin) && request.fullpath =~ /admin/
+      - if can?(:access, :admin) && request.fullpath =~ /admin/
         ul class="nav nav-tabs submenu"
           = render "face/shared/submenu", items: admin_submenu_items
         = yield :admin_engine_submenu

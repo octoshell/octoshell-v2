@@ -1,6 +1,8 @@
 module Core
   class Admin::OrganizationsController < Admin::ApplicationController
     layout "layouts/core/admin"
+    before_action :octo_authorize!, except: :show
+
     def index
       respond_to do |format|
         format.html do
@@ -34,7 +36,7 @@ module Core
       respond_to do |format|
         format.json do
           @departments = Organization.find(params[:id]).departments
-          @array = @departments.map { |d| { id: d.id, text: d.name } }
+          @array = @departments.map { |d| { id: d.id, text: d.name } }.sort{|a,b| a[:text]<=>b[:text]}
           render json: @array
         end
       end

@@ -10,7 +10,8 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//
 
 //= require_directory .
-//= require jquery
-//= require jquery_ujs
+// - req jquery
+// - req jquery_ujs

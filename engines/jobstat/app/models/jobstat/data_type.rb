@@ -14,6 +14,6 @@
 #
 
 module Jobstat
-  class DataType < ActiveRecord::Base
+  class DataType < ApplicationRecord
   end
 end

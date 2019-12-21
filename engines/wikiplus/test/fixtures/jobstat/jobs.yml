@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  job_id: 
+  login: MyString
+  partition: MyString
+  account: MyString
+  submit_time: 2017-12-26 09:11:45
+  start_time: 2017-12-26 09:11:45
+  end_time: 2017-12-26 09:11:45
+  timelimit: 
+  job_name: MyString
+  state: MyString
+  priority: 
+  req_cpus: 
+  alloc_cpus: 
+  nodelist: MyString
+
+two:
+  job_id: 
+  login: MyString
+  partition: MyString
+  account: MyString
+  submit_time: 2017-12-26 09:11:45
+  start_time: 2017-12-26 09:11:45
+  end_time: 2017-12-26 09:11:45
+  timelimit: 
+  job_name: MyString
+  state: MyString
+  priority: 
+  req_cpus: 
+  alloc_cpus: 
+  nodelist: MyString

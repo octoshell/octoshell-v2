@@ -1,4 +1,4 @@
-require_dependency "pack/application_controller"
+# require_dependency "pack/application_controller"
 
 module Pack
   class Admin::OptionsCategoriesController < Admin::ApplicationController

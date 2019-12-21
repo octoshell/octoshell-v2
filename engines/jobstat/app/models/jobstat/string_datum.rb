@@ -15,6 +15,6 @@
 #
 
 module Jobstat
-  class StringDatum < ActiveRecord::Base
+  class StringDatum < ApplicationRecord
   end
 end

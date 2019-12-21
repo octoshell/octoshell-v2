@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20180814063843)
-class CreateCoreEmploymentPositionFields < ActiveRecord::Migration
+class CreateCoreEmploymentPositionFields < ActiveRecord::Migration[4.2]
   def change
     create_table :core_employment_position_fields do |t|
       t.integer :employment_position_name_id

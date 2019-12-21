@@ -1,0 +1,28 @@
+---
+ru:
+  reports:
+    constructor:
+      show:
+        add_join: Добавить join по sql
+        alias: Псевдоним
+        array: Показать результаты на странице
+        associations: Ассоциации
+        attributes: Атрибуты
+        choose_attributes: Выберите атрибуты для Select
+        class_name: Название Класса
+        condition: Выражение
+        csv: Показать в CSV
+        delete: Удалить
+        having: Having
+        inner_join: Inner join
+        join_table: Класс
+        join_type: Тип объединения
+        left_join: Left join
+        link: Ассоциация
+        loading: Идет загрузка...
+        'on': 'On'
+        per: Количество записей на одной странице
+        selected: Эта ассоциация уже выбрана!
+        title: Конструктор запросов
+        to_sql: Показать SQL
+        where: Where

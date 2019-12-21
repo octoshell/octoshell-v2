@@ -11,11 +11,12 @@
 #
 
 module Core
-  class ResearchArea < ActiveRecord::Base
+  class ResearchArea < ApplicationRecord
     has_and_belongs_to_many :projects, join_table: "core_research_areas_per_projects"
-
+    belongs_to :group, class_name: GroupOfResearchArea.to_s, inverse_of: :research_areas
     translates :name
     validates_translated :name, presence: true
+    validates :group, presence: true
     def to_s
       name
     end

@@ -15,7 +15,7 @@
 #
 
 module Support
-  class FieldValue < ActiveRecord::Base
+  class FieldValue < ApplicationRecord
     belongs_to :field
     belongs_to :ticket, inverse_of: :field_values
 

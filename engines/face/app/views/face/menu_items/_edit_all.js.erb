@@ -1,0 +1,59 @@
+// # <% if @menu == 'user_submenu' %>
+// #   $('ul.nav.nav-tabs.submenu').html('<%= render "face/shared/submenu", items: user_submenu_items%>');
+// # <% else %>
+// #   $('ul.nav.nav-tabs.submenu').html('<%= render "face/shared/submenu", items: admin_submenu_items%>');
+// # <% end %>
+
+<% if Face::UsersMenu.custom?(current_user, @menu)|| User.superadmins.include?(current_user) %>
+  jQuery.fn.swap = function(b){
+      // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
+      b = jQuery(b)[0];
+      var a = this[0];
+      var t = a.parentNode.insertBefore(document.createTextNode(''), a);
+      b.parentNode.insertBefore(a, b);
+      t.parentNode.insertBefore(b, t);
+      t.parentNode.removeChild(t);
+      return this;
+  };
+
+
+  $( ".dragdrop" ).draggable({ revert: true });
+
+  $( ".dragdrop" ).droppable({
+      accept: ".dragdrop",
+      activeClass: "ui-state-hover",
+      hoverClass: "ui-state-active",
+      drop: function( event, ui ) {
+
+          var draggable = ui.draggable, droppable = $(this);
+          draggable.insertAfter(droppable);
+          // draggable.swap(droppable);
+      }
+  });
+<% end %>
+$("input[type='submit']").click(function(){
+  var keys = [];
+  $('ul.submenu a[key]').each(function(){
+    keys.push($(this).attr('key'));
+  });
+
+  // $("input[name='admin']").each(function(){
+  //   admin = $(this).prop('checked');
+  // });
+  $('p#results font').empty();
+
+  $.ajax({
+    url: '<%= update_all_menu_items_path %>',
+    method: 'PUT',
+    data:{
+      menu: '<%= @menu %>',
+      // admin: admin,
+      keys: keys
+    },
+    success: function(data){
+      $('p#results font').text(data);
+    }
+  });
+  return false;
+
+});

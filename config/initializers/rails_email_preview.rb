@@ -36,7 +36,9 @@ Rails.application.config.to_prepare do
     private
 
     def check_rep_permissions
-      authorize! :access, :admin
+      if User.superadmins.exclude? current_user
+        raise CanCan::AccessDenied
+      end
     end
   end
 

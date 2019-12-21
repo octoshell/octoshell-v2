@@ -1,4 +1,4 @@
-class CreateCategoryValues < ActiveRecord::Migration
+class CreateCategoryValues < ActiveRecord::Migration[4.2]
   def change
     create_table :category_values do |t|
       t.integer :options_category_id, index: true

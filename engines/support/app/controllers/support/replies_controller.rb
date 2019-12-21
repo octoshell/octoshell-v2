@@ -1,6 +1,6 @@
 module Support
-  class RepliesController < ApplicationController
-    before_filter :require_login
+  class RepliesController < Support::ApplicationController
+    before_action :require_login
 
     def create
       p=reply_params

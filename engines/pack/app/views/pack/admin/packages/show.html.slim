@@ -12,6 +12,10 @@ html
 		tr
 			td class="col-xs-3" =Pack::Package.human_attribute_name :deleted
 			td class="col-xs-9" =t("#{@package.deleted}")
+		tr
+			td class="col-xs-3" =Pack::Package.human_attribute_name :accesses_to_package
+			td class="col-xs-9" =t("#{@package.accesses_to_package}")
+
 	br
 	br
 	div class="panel  panel-heading clearfix"

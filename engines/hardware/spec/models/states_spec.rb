@@ -4,7 +4,7 @@ module Hardware
 
     it "reads graph" do
       @state1 = create(:hardware_state)
-      @state2 = create(:hardware_state)
+      @state2 = create(:hardware_state,kind: @state1.kind)
       @state3 = create(:hardware_state)
       StatesLink.create!(from: @state1, to: @state2)
 

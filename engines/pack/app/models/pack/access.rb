@@ -23,7 +23,7 @@
 #
 
 module Pack
-  class Access < ActiveRecord::Base
+  class Access < ApplicationRecord
     include AASM
     include AccessValidator
     include AdminAccessUpdate
@@ -64,17 +64,10 @@ module Pack
     belongs_to :created_by, class_name: '::User', foreign_key: :created_by_id
     belongs_to :allowed_by, class_name: '::User', foreign_key: :allowed_by_id
     belongs_to :who, polymorphic: true
+    belongs_to :to, polymorphic: true
     has_and_belongs_to_many :tickets, join_table: 'pack_access_tickets', class_name: "Support::Ticket",
                                       foreign_key: "access_id",
                                       association_foreign_key: "ticket_id"
-
-    scope :preload_who, -> { select("pack_accesses.*,u.email as who_user,proj.title as who_project,g.name as who_group").joins(<<-eoruby
-         LEFT JOIN core_projects as proj ON (proj.id= "pack_accesses"."who_id" AND pack_accesses.who_type='Core::Project'  )
-         LEFT JOIN users as u ON (u.id= "pack_accesses"."who_id" AND pack_accesses.who_type='User'  )
-         LEFT JOIN groups as g ON (g.id= "pack_accesses"."who_id" AND pack_accesses.who_type='Group'  )
-        eoruby
-        )
-        }
 
     after_commit :send_email, if: :admin_update?
     after_commit :create_ticket, if: :user_request?
@@ -98,29 +91,29 @@ module Pack
     end
 
     def send_email
-      if status != 'requested'
+      if status != 'requested' && !to.is_a?(Group)
         if previous_changes["status"]
-          ::Pack::PackWorker.perform_async(:access_changed, id)
+          # previous_status = previous_changes["status"].first
+          current_status = previous_changes["status"].second
+          ::Pack::PackWorker.perform_async("access_changed_#{current_status}", id)
         elsif %w[expired allowed].include?(status) && previous_changes["end_lic"]
-          ::Pack::PackWorker.perform_async(:access_changed, [id, "end_lic_changed"])
+          ::Pack::PackWorker.perform_async("access_changed_end_lic", id)
+          # ::Pack::PackWorker.perform_async(:access_changed, [id, "end_lic_changed"])
         elsif @status_from_params == 'deny_longer'
-          ::Pack::PackWorker.perform_async(:access_changed, [id, "denied_longer"])
+          ::Pack::PackWorker.perform_async("access_changed_denied_longer", id)
+          # ::Pack::PackWorker.perform_async(:access_changed, [id, "denied_longer"])
         end
       end
     end
 
     def create_ticket
       subject = if new_end_lic
-        I18n.t('tickets_access.subject.new_end_lic', who_name: who_name_with_type, user: created_by.full_name, version_name: version_name)
+        I18n.t('tickets_access.subject.new_end_lic', who_name: who_name_with_type, user: created_by.full_name, version_name: to.name)
       elsif status == 'requested'
-        I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.full_name, version_name: version_name)
+        I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.full_name, version_name: to.name)
       end
-      support_access_topic = Support::Topic.find_by(name_ru: I18n.t('integration.support_theme_name'))
+      support_access_topic = Pack.support_access_topic
       tickets.create!(subject: subject, reporter: created_by, message: subject, topic: support_access_topic)
-    end
-
-    def version_name
-      version.name
     end
 
     def self.user_access(user_id)
@@ -239,7 +232,7 @@ module Pack
                      else
                        { who_id: params[:type], who_type: 'Core::Project' }
                      end
-      find_params.merge! params.slice(:version_id)
+      find_params.merge! params.slice(:to_id, :to_type)
       Access.find_by(find_params)
     end
 
@@ -259,7 +252,9 @@ module Pack
       else
         raise ArgumentError, "Invalid params[:type]"
       end
-      access.version_id = access_params[:version_id]
+      access.to_id = access_params[:to_id]
+      access.to_type = access_params[:to_type]
+
       access.created_by_id = user_id
       access
     end
@@ -308,7 +303,7 @@ module Pack
     end
 
     def who_name
-      try(:who_name_from_union) || try(:who_project) || try(:who_group) || try(:who_user) || who_name_without_preload
+      try(:who_name_from_union)  || who_name_without_preload
     end
 
     def who_name_without_preload

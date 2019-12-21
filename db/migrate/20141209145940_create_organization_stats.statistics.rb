@@ -1,5 +1,5 @@
 # This migration comes from statistics (originally 20141209133252)
-class CreateOrganizationStats < ActiveRecord::Migration
+class CreateOrganizationStats < ActiveRecord::Migration[4.2]
   def change
     create_table :statistics_organization_stats do |t|
       t.string :kind

@@ -16,26 +16,29 @@ Gem::Specification.new do |s|
   s.platform = 'java' if RUBY_ENGINE == 'jruby'
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
-  s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rails", "~> 4.2"
+  s.add_dependency "rails", "~> 5.0"
 
   # s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "slim"
   s.add_dependency "decorators"
 
-  # s.add_dependency "bootstrap_form"
+  # s.add_dependency "bootstrap_form", ">= 4.2.0"
 
   s.add_dependency "jquery-ui-rails"
   s.add_dependency "aasm"
   s.add_dependency "nested_form"
   s.add_dependency "sidekiq"
-  s.add_dependency "maymay"
-  s.add_dependency "ransack"
+  # s.add_dependency "maymay"
+  s.add_dependency "ransack", "2.1.1"
   s.add_dependency "kaminari"
   s.add_dependency "carrierwave"
   s.add_dependency "mime-types"
   s.add_dependency 'active_record_union'
+
+  s.add_dependency "nokogiri", ">= 1.10.4"
+  s.add_dependency "mini_magick", ">= 4.9.4"
+
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'factory_girl_rails'

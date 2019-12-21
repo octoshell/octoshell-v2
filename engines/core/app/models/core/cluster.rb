@@ -21,7 +21,9 @@
 #
 
 module Core
-  class Cluster < ActiveRecord::Base
+  class Cluster < ApplicationRecord
+
+    
 
     translates :name
 
@@ -40,6 +42,10 @@ module Core
     validates_translated :name, presence: true
     scope :finder, lambda { |q| where("lower(#{current_locale_column(:name)}) like :q", q: "%#{q.mb_chars.downcase}%").order current_locale_column(:name) }
 
+
+    before_create do
+      generate_ssh_keys
+    end
     # state_machine initial: :active do
     #   state :active
     #   state :inactive
@@ -57,10 +63,10 @@ module Core
     #   end
     # end
 
-    def create_or_update
-      generate_ssh_keys if new_record?
-      super
-    end
+    # def create_or_update
+    #   generate_ssh_keys if new_record?
+    #   super
+    # end
 
     def log(message, project)
       logs.create!(message: message, project: project)

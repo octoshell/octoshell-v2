@@ -1,5 +1,5 @@
 # This migration comes from authentication (originally 20141107114219)
-class AddActivityFieldsForUsers < ActiveRecord::Migration
+class AddActivityFieldsForUsers < ActiveRecord::Migration[4.2]
   def self.up
     add_column :users, :last_login_at,     :datetime, :default => nil
     add_column :users, :last_logout_at,    :datetime, :default => nil

@@ -30,6 +30,7 @@ config/dumps/
 public/uploads/
 public/system/
 public/assets/
+public/wikiplus/
 public/system_archive.tar.gz
 vendor/
 deploy/

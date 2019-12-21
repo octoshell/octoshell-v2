@@ -12,10 +12,10 @@
 //
 //= require i18n.js
 //= require i18n/translations
+//= require marked.min
 //= require face/application
 //= require core/application
-//= require support/application
 //= require sessions/application
 //= require announcements/application
 //= require pack/application
-//= require_tree .
+//= require_tree ./site-wide

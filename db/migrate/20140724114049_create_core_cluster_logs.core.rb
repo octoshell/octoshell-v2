@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140721095738)
-class CreateCoreClusterLogs < ActiveRecord::Migration
+class CreateCoreClusterLogs < ActiveRecord::Migration[4.2]
   def change
     create_table :core_cluster_logs do |t|
       t.integer  "cluster_id", null: false

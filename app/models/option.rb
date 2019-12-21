@@ -15,7 +15,7 @@
 #  updated_at          :datetime         not null
 #
 
-class Option < ActiveRecord::Base
+class Option < ApplicationRecord
   belongs_to :owner, inverse_of: :options, polymorphic: true
   belongs_to :category_value, inverse_of: :options
   belongs_to :options_category, inverse_of: :strict_options
@@ -78,11 +78,11 @@ class Option < ActiveRecord::Base
   end
 
   def readable_value
-    value || category_value.value
+    value || (category_value ? category_value.value : nil)
   end
 
   def readable_name
-    name || options_category.name
+    name || (options_category ? options_category.name : nil)
   end
 
 end

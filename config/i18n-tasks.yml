@@ -1,11 +1,10 @@
 # i18n-tasks finds and manages missing and unused translations: https://github.com/glebm/i18n-tasks
-
 # The "main" locale.
-base_locale: en
+base_locale: ru
 ## All available locales are inferred from the data by default. Alternatively, specify them explicitly:
-# locales: [es, fr]
+locales: [ru, en]
 ## Reporting locale, default: en. Available: en, ru.
-# internal_locale: en
+internal_locale: ru
 
 # Read and write translations.
 data:
@@ -16,17 +15,23 @@ data:
   # Locale files or `File.find` patterns where translations are read from:
   read:
     ## Default:
-    # - config/locales/%{locale}.yml
+    - config/locales/%{locale}.yml
     ## More files:
-    # - config/locales/**/*.%{locale}.yml
+    - engines/*/config/locales/%{locale}.yml
+    # - engines/wikiplus/config/locales/%{locale}.yml
+    # - engines/face/config/locales/%{locale}.yml
 
   # Locale files to write new keys to, based on a list of key pattern => file rules. Matched from top to bottom:
   # `i18n-tasks normalize -p` will force move the keys according to these rules
+  engines_path_for_write: engines/*
   write:
+    # - ['{:}.*', 'config/locales/\1.%{locale}.yml']
+    #- ['{pack}.*', 'engines/\1/config/locales/%{locale}.yml']
     ## For example, write devise and simple form keys to their respective files:
     # - ['{devise, simple_form}.*', 'config/locales/\1.%{locale}.yml']
+    # - ['devise.*', 'config/locales/devise.%{locale}.yml']
     ## Catch-all default:
-    # - config/locales/%{locale}.yml
+    - config/locales/%{locale}.yml
 
   # External locale data (e.g. gems).
   # This data is not considered unused and is never written to.
@@ -40,7 +45,7 @@ data:
   yaml:
     write:
       # do not wrap lines at 80 characters
-      line_width: -1
+      line_width: 80
 
   ## Pretty-print JSON:
   # json:
@@ -55,15 +60,26 @@ search:
   ## Paths or `File.find` patterns to search in:
   paths:
    - app/
-   - engines/*/app/
+   - engines/*
+   # - engines/wikiplus
+
+   # - engines/core
+   # - engines/support
+   # - engines/sessions
 
   ## Root directories for relative keys resolution.
-  # relative_roots:
-  #   - app/controllers
-  #   - app/helpers
-  #   - app/mailers
-  #   - app/presenters
-  #   - app/views
+  relative_roots:
+    - app/controllers
+    - engines/*/app/controllers/
+    - app/helpers
+    - engines/*/app/helpers/
+    - app/mailers
+    - engines/*/app/mailers/
+    - app/presenters
+    - engines/*/app/presenters/
+    - app/views
+    - engines/*/app/views/
+    - engines/*/app/notificators/
 
   ## Files or `File.fnmatch` patterns to exclude from search. Some files are always excluded regardless of this setting:
   ##   %w(*.jpg *.png *.gif *.svg *.ico *.eot *.otf *.ttf *.woff *.woff2 *.pdf *.css *.sass *.scss *.less *.yml *.json)
@@ -71,10 +87,11 @@ search:
     - app/assets/images
     - app/assets/fonts
     - app/assets/videos
-
+    - engines/support/test
+    - engines/wikiplus/test
   ## Alternatively, the only files or `File.fnmatch patterns` to search in `paths`:
   ## If specified, this settings takes priority over `exclude`, but `exclude` still applies.
-  # only: ["*.rb", "*.html.slim"]
+  # only: ["*.html.slim"]
 
   ## If `strict` is `false`, guess usages such as t("categories.#{category}.title"). The default is `true`.
   # strict: true
@@ -89,7 +106,8 @@ search:
 #   api_key: "AbC-dEf5"
 
 ## Do not consider these keys missing:
-# ignore_missing:
+ignore_missing:
+    - 'comments.*'
 # - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
 # - '{devise,simple_form}.*'
 

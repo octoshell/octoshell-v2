@@ -1,5 +1,8 @@
 module Jobstat
   class ApiController < ActionController::Base
+    before_action :parse_request
+    #before_action :parse_request, :authenticate_from_token!, only: [:push]
+
     def post_info
       cluster = @json["cluster"]
       drms_job_id = @json["job_id"]
@@ -130,9 +133,6 @@ module Jobstat
           .update({value: entry["avg"]})
       end
     end
-
-    before_filter :parse_request
-    #before_filter :parse_request, :authenticate_from_token!, only: [:push]
 
     protected
 

@@ -1,0 +1,36 @@
+h1
+= render partial: 'form', locals: {do_submit: false}
+= link_to t('.edit'), edit_admin_export_path(@export)
+|  | 
+= link_to t('.back'), admin_exports_path
+
+
+
+/p#notice
+  = notice
+
+/  = f.collection_select :access_key_ids, Api::AccessKey.all, :id, :key, {multiselect: true}
+  = f.text_field :request
+
+	= link_to 'Edit', edit_admin_export_path(@export)
+	|  | 
+	= link_to 'Back', admin_exports_path
+
+/div
+	p
+	  strong
+	    = t('.export_title')
+	  = @export.title
+	p
+	  strong
+	    = t('.access_keys')
+	  = @export.access_keys.map {|k| k.key}.join(' ; ')
+	p
+	  strong
+	    = t('.export_request')
+	  textarea
+	  	= @export.request
+
+	= link_to 'Edit', edit_admin_export_path(@export)
+	|  | 
+	= link_to 'Back', admin_exports_path

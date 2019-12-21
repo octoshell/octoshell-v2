@@ -25,9 +25,9 @@
 #
 
 module Core
-  class Member < ActiveRecord::Base
+  class Member < ApplicationRecord
 
-    belongs_to :user, class_name: Core.user_class, foreign_key: :user_id, inverse_of: :accounts
+    belongs_to :user, class_name: Core.user_class.to_s, foreign_key: :user_id, inverse_of: :accounts
     belongs_to :project, inverse_of: :members
     belongs_to :organization
     belongs_to :organization_department
@@ -36,6 +36,10 @@ module Core
     scope :finder, (lambda do |q|
       where("lower(login) like :q", q: "%#{q}%").order(:login)
     end)
+
+    before_create do
+      assign_login
+    end
 
     include AASM
     include ::AASM_Additions
@@ -103,10 +107,10 @@ module Core
       end
     end
 
-    def create_or_update
-      assign_login if new_record?
-      super
-    end
+    # def create_or_update
+    #   assign_login if new_record?
+    #   super
+    # end
 
     def toggle_project_access_state!
       if allowed?

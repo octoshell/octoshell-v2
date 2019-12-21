@@ -10,7 +10,7 @@ https://users.parallel.ru/
 
 We assume, that all below is doing as user `octo` (or root, if it is said 'as root'). You can use another user. Please, note, that linux account `octo` and database role `octo` are not connected, but we prefer to use the same name for both cases. You can create user by command like `adduser octo`
 
-1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo`)
+1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo yarn`)
 1. install as root redis (under debian/ubuntu: `sudo apt-get install -y redis-server redis-tools`)
 1. install postgresql (under debian/ubuntu: `sudo apt-get install -y postgresql postgresql-server-dev-all`)
 1. as root add database user octo: `sudo -u postgres bash -c "psql -c \"CREATE USER octo WITH PASSWORD 'HERE_COMES_YOUR_DESIRED_PASSWORD';\""`
@@ -20,20 +20,17 @@ We assume, that all below is doing as user `octo` (or root, if it is said 'as ro
 1. create databases: `for database in new_octoshell new_octoshell_test new_octoshell_development; do sudo -u postgres createdb -O octo $database; done`
 1. as user install rbenv (e.g. `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
 1. make sure rbenv is loaded automatically, by adding to ~/.bashrc these lines:
-
 ```
   export PATH=~/.rbenv/bin:$PATH
   eval "$(rbenv init -)"
 ```
 1. reopen your terminal session or execute lines from point above in console
 1. install ruby:
-
 ```
   rbenv install 2.5.1
   rbenv global 2.5.1
 ```
-
-1. execute `gem install bundler`
+1. execute `gem install bundler --version '< 2.0'`
 1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
 1. go into cloned directory `cd octoshell-v2`
 1. execute `bundle install`
@@ -58,6 +55,12 @@ To run in **production** mode:
 
 Best way is to test in development mode and then do deploy on production (or stage) server. See **Deploy** section for more details.
 
+## Notes
+
+### Wikiplus module
+
+For correct work of images and video uploading you'll need to install imagemagick and ffmpegthumbnailer packages.
+
 ## Hacks
 
 ### Localization
@@ -67,8 +70,7 @@ Currently  Octoshell supports 2 locales: ru (Russian) and en (English). Other lo
 
 Users table has the  'language' column. User's working language is stored here. `lib/localized_emails` contains code for emails localization. Email locale depends on user language. If you want to send an email to unregistered user, 'en' locale will be chosen. You can preview your emails with [Rails Email Preview gem](https://github.com/glebm/rails_email_preview).
 
-[I18n-tasks gem](https://github.com/glebm/i18n-tasks) is used to manage locales in the project. But native gem is not designed to work with Rails engines. `lib/relative_keys_extension.rb` extends gem to find missing keys.
-
+[I18n-tasks gem](https://github.com/glebm/i18n-tasks) is used to manage locales in the project. But native gem is not designed to work with Rails engines. [See this fork](https://github.com/apaokin/i18n-tasks).
 ### Front-end
 
 javascript libraries: jquery, handlebars, select2 and alpaca.js(for building forms).
@@ -84,6 +86,34 @@ Example:
 ### Notificators
 
 You may need to notify administrators using support tickets (requests). Special class was designed to do it. Its functionality is very similar to ActionMailer::Base class (`engines/support/lib/support/notificator.rb`). Example: `engines/core/app/notificators/core/notificator.rb  engines/core/lib/core/checkable.rb`. Be careful with the `topic_name` method. It must be used only inside "action" method like `Notificator.check`. Pay special attention that the `new` method is not used here explicitly and method_missing is used to set correct options.    
+
+### Key-value storage for ApplicationRecord
+
+Use "options" to extend desription  of any model.
+##### Usage
+1. In model (see app/models/application_record.rb for details):
+        class YourModel < ApplicationRecord
+          extend_with_options
+        end
+1. In your form use #form_for_options  and    bootstrap_nested_form_for (nested_form_for) methods:
+        = bootstrap_nested_form_for :@instance do |f|
+         # your  fields
+        = form_for_options(f)
+1. show_options helper:
+        = show_options(@instance) do
+         - can? :manage, :packages #user will see only options
+         with admin boolean attribute set to false if he can't manage packages
+         = show_options(@instance) # user will see all options for this instance
+1. in your controller params:
+            def your_model_params
+              params.require(:your_model)
+                    .permit(:your_attrs, options_attributes: options_attributes)
+            end
+
+##### Possibilities
+  You can autocomplete name and value fields. Edit all name and values available for autocomplete here: /admin/options_categories
+
+
 
 
 ## Deploy
@@ -133,7 +163,7 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 
 Далее считаем, что установка производится под пользователем `octo` (или `root`, если сказано `под рутом`). Можно использовать другое имя пользователя. Отметим, что имя пользователя и имя роли базы данных не обязаны совпадать, но мы используем одинаковые. Пользователя можно создать, например, командой `adduser octo`
 
-1. под рутом ставим пакеты (debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo`)
+1. под рутом ставим пакеты (debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo yarn`)
 1. под рутом ставим redis (debian/ubuntu: `sudo apt-get install -y redis-server redis-tools`)
 1. под рутом ставим postgresql (debian/ubuntu: `sudo apt-get install -y postgresql postgresql-server-dev-all`)
 1. под рутом добавим роль для БД octo: `sudo -u postgres bash -c "psql -c \"CREATE USER octo WITH PASSWORD 'ТУТ_ПАРОЛЬ_ПОЛЬЗОВАТЕЛЯ_БД';\""`
@@ -141,7 +171,6 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 1. проверяем, что postgresql слушает на 127.0.0.1 порт 5432 (например `ss -lpn |grep 5432`). Если нет, проверяем настройки postgresql (в debian/ubuntu - /etc/postgresql/VERSION/main/postgresql.conf, строчка 'port')
 1. под пользователем ставим rbenv (проще всего так: `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
 1. в ~/.bashrc пользователя должны быть добавлены эти строки, чтобы работал rbenv:
-
 ```
   export PATH=~/.rbenv/bin:$PATH
   eval "$(rbenv init -)"
@@ -154,7 +183,7 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
   rbenv global 2.5.1
 ```
 
-1. выполняем `gem install bundler`
+1. выполняем `gem install bundler --version '< 2.0'`
 1. выполняем `git clone https://github.com/octoshell/octoshell-v2.git`
 1. переходим в созданный каталог `cd octoshell-v2`
 1. выполняем `bundle install`
@@ -193,6 +222,12 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 1. Войдите на сервер деплоя и запустите сервисы `systemctl start octoshell`
 
 Последующие деплои можно выполнять командой `git fetch; ./do_deploy` и последующим перезапуском сервиса на сервере `systemctl restart octoshell`.
+
+## Замечания
+
+### Wikiplus
+
+Для корректной работы с картинками и видео необходимо установить пакеты  imagemagick и ffmpegthumbnailer.
 
 # Форкни и улучши!
 

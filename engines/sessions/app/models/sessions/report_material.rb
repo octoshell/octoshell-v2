@@ -1,5 +1,8 @@
 module Sessions
   class ReportMaterial < ActiveRecord::Base
+
+    
+
     belongs_to :report, inverse_of: :report_materials
     mount_uploader :materials, ReportMaterialsUploader
     validates :materials, presence: true

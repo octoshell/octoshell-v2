@@ -1,60 +1,54 @@
 ---
 en:
-  admin_submenu:
-    hardware: Hardware
   activerecord:
-    models:
-      hardware/item: "Device"
-      hardware/state: "State of device"
-      hardware/kind: "Device kind"
     attributes:
       hardware/item:
-        kind_id: Kind
-        name: Name
-        description: Description
         current_state: Current state
-        last_state_description: Current state description
-        states: All states of the device
-        last_state: Current state
-
-      hardware/state:
-        name: Name
         description: Description
-        reason: Reason of last state update
-        updated_at: Updated at
-        from_states: Состояния, из которых средства могут перейти в это состояние
-        to_states: Состояния, в которые могут перейти средства с этим состоянием
-      hardware/items_state:
+        kind_id: Kind
+        last_state: Current state
+        last_state_description: Current state description
         name: Name
+        states: All states of the device
+      hardware/items_state:
+        created_at: Created at
         description: State description
+        name: Name
         reason: Reason for change of state
         updated_at: Updated at
-        created_at: Created at
-
       hardware/kind:
-        name: Name
         description: Description
+        name: Name
+      hardware/state:
+        description: Description
+        from_states: From which states asset can change into this
+        name: Name
+        reason: Reason of last state update
+        to_states: States, asset can chane to from this state
+        updated_at: Updated at
+    errors:
+      models:
+        hardware/state:
+          attributes:
+            base:
+              restrict_dependent_destroy:
+                many: You cannot delete state while any device has it
+    models:
+      hardware/item: Device
+      hardware/kind: Device kind
+      hardware/state: State of device
+  admin_submenu:
+    hardware: Hardware
   hardware:
     admin:
-      items_states:
-        index:
-          created_before: Created before
-          created_after: Created after
-          item_name_en_cont: Name(en) of item contains
-          item_name_ru_cont: Name(ru) of item contains
-          title: States
-        table:
-          no_items_states: Нет состояний
-
       items:
         edit:
           title: Edit device
         index:
-          new_item: New device
-          title: Devices list
-          only_deleted: Show devices of deleted state
           index_json: JSON representation
-
+          new_item: New device
+          only_deleted: Show devices of deleted state
+          title: Devices list
         items_states_table:
           no_items_states: No states
         new:
@@ -66,6 +60,15 @@ en:
           no_items: No devices
         update_state:
           stale: State was updated while you were editing this item. Repeat it please
+      items_states:
+        index:
+          created_after: Created after
+          created_before: Created before
+          item_name_en_cont: Name(en) of item contains
+          item_name_ru_cont: Name(ru) of item contains
+          title: States
+        table:
+          no_items_states: No states
       kinds:
         edit:
           title: Edit device kind
@@ -81,11 +84,11 @@ en:
           new_state: New state
         table:
           confirm: Do you really want to remove this device kind?
-          no_kinds: Нет видов устройств
+          no_kinds: No device kinds yet
       states:
         edit:
-          title: Edit state
           do_not_touch_deleted: Better do not touch this state
+          title: Edit state
         new:
           title: New state
         show:
@@ -97,8 +100,8 @@ en:
           no_states: No states
     engine_submenu:
       items: Devices
-      kinds: Device kinds
       items_states: States of devices
+      kinds: Device kinds
     self_error: Self error
   layouts:
     hardware:

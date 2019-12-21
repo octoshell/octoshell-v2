@@ -1,5 +1,6 @@
 module Core
   class Admin::ProjectKindsController < Admin::ApplicationController
+    before_action :octo_authorize!
     def index
       @search = ProjectKind.search(params[:q])
       @project_kinds = @search.result(distinct: true).page(params[:page])

@@ -22,7 +22,7 @@
 require "csv"
 
 module Sessions
-  class Stat < ActiveRecord::Base
+  class Stat < ApplicationRecord
     GROUPS_BY = [:count]
 
     belongs_to :session

@@ -1,5 +1,6 @@
 module Sessions
   class Admin::ReportSubmitDenialReasonsController < Admin::ApplicationController
+    before_action :octo_authorize!
     def index
       @reasons = ReportSubmitDenialReason.all
     end

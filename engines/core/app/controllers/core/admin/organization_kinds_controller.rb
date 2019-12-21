@@ -1,5 +1,6 @@
 module Core
   class Admin::OrganizationKindsController < Admin::ApplicationController
+    before_action :octo_authorize!
     def index
       @search = OrganizationKind.search(params[:q])
       @organization_kinds = @search.result(distinct: true).page(params[:page])

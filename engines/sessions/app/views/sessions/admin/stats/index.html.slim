@@ -1,5 +1,5 @@
-javascript:
-  google.load('visualization', '1.0', {'packages':['corechart']})
+link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous"
+script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"
 
 div class="page-header"
   h1 = t(".title", session_name: @session.description)
@@ -23,3 +23,63 @@ div class="well"
       |  #{t('.edit')}
 
   hr style="margin-bottom: 40px;"
+
+javascript:
+  //google.load('visualization', '1.0', {'packages':['corechart']})
+  (function() {
+    var ClassicCyclic13 = [
+      '#1f83b4', '#12a2a8', '#2ca030', '#78a641', '#bcbd22',
+      '#ffbf50', '#ffaa0e', '#ff7f0e', '#d63a3a', '#c7519c',
+      '#ba43b4', '#8a60b0', '#6f63bb' ];
+    var color_len = ClassicCyclic13.length;
+    // var color_function = function(c){
+    //   return ClassicCyclic13[c.dataIndex % color_len];
+    // }
+    var fill_colors = function(len){
+      var arr = new Array(len);
+      for(let i=0;i<len;i++){
+        arr[i] = ClassicCyclic13[ i % color_len ];
+      }
+      return arr;
+    }
+    var initChart = function() {
+      $('.graph-pie').each(function(_,e){
+        var d = JSON.parse($(e).attr('data-source'));
+        d.datasets[0]['backgroundColor'] = fill_colors(d.datasets[0].data.length);
+        var chart = new Chart(e, {
+          type: "doughnut",
+          data: d,
+          options: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        });  
+      });
+      $('.graph-bar').each(function(_,e){
+        var d = JSON.parse($(e).attr('data-source'));
+        d.datasets[0]['backgroundColor'] = fill_colors(d.datasets[0].data.length);
+        var chart = new Chart(e, {
+          type: "bar",
+          data: d,
+          options: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        });  
+      });
+    };
+
+    if (typeof Chart !== "undefined" && Chart !== null) {
+      initChart();
+    }
+    else {
+      if (window.addEventListener) {
+        window.addEventListener("load", initChart, false);
+      }
+      else if (window.attachEvent) {
+        window.attachEvent("onload", initChart);
+      }
+    }
+  })();

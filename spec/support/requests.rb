@@ -9,8 +9,8 @@ module Requests
       click_button "Войти"
     end
 
-    def sign_in(user = nil)
-      user ||= seed(:user)
+    def sign_in(user = create(:user))
+      # user ||= seed(:user)
       sign_in_with user.email, "123456"
     end
 
