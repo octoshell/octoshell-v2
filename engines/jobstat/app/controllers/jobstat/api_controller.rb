@@ -134,6 +134,16 @@ module Jobstat
       end
     end
 
+    def check_exist
+      cluster = @json["cluster"]
+      drms_job_id = Integer(@json["job_id"])
+      drms_task_id = Integer(@json.fetch("task_id", 0))
+
+      @job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+
+      render :status => 404 unless @job
+    end
+
     protected
 
     def authenticate_from_token!
@@ -144,7 +154,11 @@ module Jobstat
     end
 
     def parse_request
-      @json = JSON.parse(request.body.read)
+      begin
+        @json = JSON.parse(request.body.read)
+      rescue
+        @json = {}
+      end
     end
   end
 end

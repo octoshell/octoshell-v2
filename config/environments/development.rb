@@ -80,4 +80,7 @@ Rails.application.configure do
   config.factory_bot.definition_file_paths += Dir[Rails.root.join('engines/*/spec/factories')]
 
   config.i18n.fallbacks = [I18n.default_locale]
+  logger           = ActiveSupport::Logger.new(STDOUT)
+  logger.formatter = config.log_formatter
+  config.logger = ActiveSupport::TaggedLogging.new(logger)
 end
