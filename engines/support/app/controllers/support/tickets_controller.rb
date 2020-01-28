@@ -19,7 +19,8 @@ module Support
     def continue
       @ticket = current_user.tickets.build(ticket_params)
       if @ticket.show_form?
-        @field_values_form = Support::FieldValuesForm.new(@ticket)
+        init_field_values_form
+        # @field_values_form = Support::FieldValuesForm.new(@ticket)
       end
       @ticket.message = @ticket.template if @ticket.template.present?
       render :new
@@ -28,7 +29,8 @@ module Support
     def create
       @ticket = current_user.tickets.build(ticket_params)
       @ticket.tags << @ticket.topic.tags
-      @field_values_form = Support::FieldValuesForm.new(@ticket, params[:ticket][:field_values])
+      init_field_values_form
+      # @field_values_form = Support::FieldValuesForm.new(@ticket, params[:ticket][:field_values])
       valid = @field_values_form.valid?
       if @ticket.valid? && valid
         @ticket.save
@@ -75,12 +77,17 @@ module Support
 
     def edit
       @ticket = find_ticket(params[:id])
+      init_field_values_form
     end
 
     # TODO: ajax
     def update
       @ticket = find_ticket(params[:id])
-      if @ticket.update(ticket_params)
+      @ticket.assign_attributes(ticket_params)
+      init_field_values_form
+      valid = @field_values_form.valid?
+      if @ticket.valid? && valid
+        @ticket.save
         redirect_to @ticket
       else
         render :edit
@@ -106,6 +113,11 @@ module Support
     def setup_default_filter
       params[:q] ||= { state_not_in: ["closed"] }
       params[:meta_sort] ||= "id.asc"
+    end
+
+    def init_field_values_form
+      second_arg = params[:ticket] && params[:ticket][:field_values]
+      @field_values_form = Support::FieldValuesForm.new(@ticket, second_arg)
     end
   end
 end

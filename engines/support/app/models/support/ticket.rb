@@ -284,6 +284,20 @@ module Support
            .uniq(&:field_id)
     end
 
+    def old_fields(topic_id)
+      Support::Topic.all_fields(topic_id) - topics_fields_to_fill
+    end
+
+    def new_fields(topic_id)
+      topics_fields_to_fill - Support::Topic.all_fields(topic_id)
+    end
+
+    def destroy_stale_fields!
+      field_values.reject do |f_v|
+        topics_fields_to_fill.include?(f_v.topics_field)
+      end.each(&:destroy)
+    end
+
     private
 
     def add_responsible

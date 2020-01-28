@@ -22,9 +22,14 @@ ru:
       support/field:
         contains_source_code: Поле будет содержать исходный код (логи)
         hint: 'Подсказка пользователю: что вводить в качестве значения поля'
+        kind: Вид
         name: Название
         required: Обязательное поле
         url: Содержимое оформить как ссылку
+        field_options: Опции поля
+        model_collection: Ссылка на объект
+      support/field_option:
+        name: Название
       support/reply:
         attachment: Приложенный файл
         author: Автор
@@ -78,8 +83,16 @@ ru:
       models:
         support/ticket:
           equal_to_template: Измените описание проблемы (сейчас там шаблон)
+        support/field:
+          attributes:
+            kind:
+              collection_present: Нельзя выбрать такой вид поля при условии существования ссылки на объект класса в данном поле.
+              field_options_present: Нельзя выбрать такой вид поля при условии существования опций поля для данного класса.
+
     models:
       support/field: Дополнительное поле
+      support/field_option: Опция поля
+
       support/reply: Ответ
       support/reply_template: Шаблон ответа
       support/tag: Тег
@@ -101,6 +114,10 @@ ru:
   support:
     admin:
       fields:
+        form:
+          model_collection: Поле будет содержать ссылку на объект класса
+          remove_option: Удалить опцию
+          add_option: Добавить опцию
         edit:
           title: Редактирование доп. поля
         index:
@@ -175,6 +192,7 @@ ru:
           title: Редактирование темы заявок
         form:
           attach: Прикрепить
+          add_responsible: Добавить ответственного
         index:
           new_topic: Создать тему
           title: Темы заявок

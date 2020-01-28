@@ -101,6 +101,8 @@ en:
   support:
     admin:
       fields:
+        form:
+          model_collection: This field will contain link to an object of class
         edit:
           title: Edit extra field
         index:
@@ -174,6 +176,8 @@ en:
           title: Edit support topic
         form:
           attach: Attach
+          add_responsible: Add responsible
+
         index:
           new_topic: Create topic
           title: Requests topics

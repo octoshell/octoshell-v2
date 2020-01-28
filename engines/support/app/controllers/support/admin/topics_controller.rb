@@ -10,7 +10,7 @@ module Support
     end
 
     def new
-      @topic = Topic.new() #topic_params)
+      @topic = Topic.new(params[:topic] && topic_params)
     end
 
     def create

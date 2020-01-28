@@ -101,5 +101,11 @@ module Support
       end
       array
     end
+
+    def self.all_fields(topic_id)
+      Support::Topic.find(topic_id)
+                    .parents_with_self.map { |t| t.topics_fields.to_a }.flatten
+                    .uniq(&:field_id)
+    end
   end
 end
