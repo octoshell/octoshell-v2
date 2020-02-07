@@ -25,6 +25,10 @@ module Octoface
       # instance_eval(&block)
     end
 
+    def self.find_by_role(role)
+      instances[role]
+    end
+
     def finish_intialization
       instance_eval(&@settings)
     end

@@ -24,4 +24,13 @@ module ApplicationHelper
     options = record.options.select { |o| !o.admin || res }
     render partial: 'options/index', locals: { options: options }
   end
+
+  def custom_helper(role, helper, f, prefix = '', options = {}, html_options = {})
+    octo_config = Octoface::OctoConfig.find_by_role(role)
+    return nil unless octo_config
+
+    octo_config.mod.const_get('BootstrapFormHelper')
+               .try(helper, f, prefix, options, html_options)
+    # method.call(prefix, label)
+  end
 end

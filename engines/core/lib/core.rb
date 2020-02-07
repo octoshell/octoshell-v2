@@ -3,6 +3,8 @@ require "core/merge_organizations"
 require "core/merge_departments"
 require "core/merge_error"
 require "core/checkable"
+require "core/bootstrap_form_helper"
+
 # require "maymay"
 require "decorators"
 require "aasm"

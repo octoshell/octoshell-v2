@@ -20,7 +20,9 @@
 module Sessions
   class Session < ApplicationRecord
 
-    
+    include SessionProject
+
+
 
     translates :description, :motivation
 
@@ -30,8 +32,8 @@ module Sessions
 
     has_many :reports, dependent: :destroy
 
-    has_many :projects_in_sessions
-    has_many :involved_projects, class_name: "Core::Project", source: :project, through: :projects_in_sessions
+    # has_many :projects_in_sessions
+    # has_many :involved_projects, class_name: "Core::Project", source: :project, through: :projects_in_sessions
 
     has_many :surveys, dependent: :destroy
     has_many :user_surveys, dependent: :destroy
@@ -92,8 +94,10 @@ module Sessions
     end
 
     def create_reports_and_users_surveys
-      involved_projects.each do |project|
-        create_report_and_surveys_for(project)
+      if Sessions::ExternalLink.link?(:project)
+        involved_projects.each do |project|
+          create_report_and_surveys_for(project)
+        end
       end
       create_personal_user_surveys
     end
@@ -107,45 +111,47 @@ module Sessions
       end
     end
 
-    def create_report_and_surveys_for(project)
-      project.reports.create!(session: self, author: project.owner)
-      surveys_per_project = surveys.reject { |s| s.personal? }
-      surveys_per_project.each do |survey|
-        if survey.only_for_project_owners?
-          project.owner.surveys.create!(session: self, survey: survey, project: project)
-        else
-          project.members.where(:project_access_state=>:allowed).each do |member|
-            member.user.surveys.create!(session: self, survey: survey, project: project)
-          end
-        end
-      end
-    end
-
-    def moderate_included_projects(selected_project_ids)
-      exclude_projects_from_session(selected_project_ids)
-      update(involved_project_ids: selected_project_ids)
-    end
-
-    def exclude_projects_from_session(selected_project_ids)
-      excluded_project_ids = involved_project_ids.select do |project_id|
-        !selected_project_ids.include? project_id
-      end
-      excluded_projects = ProjectsInSession.where(session: self).where(project_id: excluded_project_ids)
-      excluded_projects.each { |ip| clear_report_and_surveys_for(ip.project) } if self.active?
-      excluded_projects.destroy_all
-    end
-
-    def clear_report_and_surveys_for(project)
-      project.reports.where(session: self).destroy_all
-      project.members.where(:project_access_state=>:allowed).each do |member|
-        member.user.surveys.where(session: self, project: project).destroy_all
-      end
-      # TODO Mailer: project is excluded from session.
-      # Sessions::MailerWorker
-    end
+    # def create_report_and_surveys_for(project)
+    #   project.reports.create!(session: self, author: project.owner)
+    #   surveys_per_project = surveys.reject { |s| s.personal? }
+    #   surveys_per_project.each do |survey|
+    #     if survey.only_for_project_owners?
+    #       project.owner.surveys.create!(session: self, survey: survey, project: project)
+    #     else
+    #       project.members.where(:project_access_state=>:allowed).each do |member|
+    #         member.user.surveys.create!(session: self, survey: survey, project: project)
+    #       end
+    #     end
+    #   end
+    # end
+    #
+    # def moderate_included_projects(selected_project_ids)
+    #   exclude_projects_from_session(selected_project_ids)
+    #   update(involved_project_ids: selected_project_ids)
+    # end
+    #
+    # def exclude_projects_from_session(selected_project_ids)
+    #   excluded_project_ids = involved_project_ids.select do |project_id|
+    #     !selected_project_ids.include? project_id
+    #   end
+    #   excluded_projects = ProjectsInSession.where(session: self).where(project_id: excluded_project_ids)
+    #   excluded_projects.each { |ip| clear_report_and_surveys_for(ip.project) } if self.active?
+    #   excluded_projects.destroy_all
+    # end
+    #
+    # def clear_report_and_surveys_for(project)
+    #   project.reports.where(session: self).destroy_all
+    #   project.members.where(:project_access_state=>:allowed).each do |member|
+    #     member.user.surveys.where(session: self, project: project).destroy_all
+    #   end
+    #   # TODO Mailer: project is excluded from session.
+    #   # Sessions::MailerWorker
+    # end
 
     def validate_reports_and_surveys
-      reports.where(:state=>:assessed).select(&:failed?).map(&:close_project!)
+      if Sessions::ExternalLink.link?(:project)
+        reports.where(:state=>:assessed).select(&:failed?).map(&:close_project!)
+      end
       reports.where(:state=>[:pending, :accepted, :rejected]).map(&:postdate!)
       notify_experts_about_submitted_reports if reports.where(:state=>:submitted).any?
       notify_experts_about_assessing_reports if reports.where(:state=>:assessing).any?

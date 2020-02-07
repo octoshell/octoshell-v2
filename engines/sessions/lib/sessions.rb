@@ -1,4 +1,8 @@
 require "sessions/engine"
+require "sessions/external_link"
+require "sessions/report_project"
+require "sessions/session_project"
+
 # require "maymay"
 require "decorators"
 #require "state_machine"
