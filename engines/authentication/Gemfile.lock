@@ -99,7 +99,7 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     pg (0.21.0)
-    rack (2.0.7)
+    rack (2.2.2)
     rack-protection (2.0.7)
       rack
     rack-test (1.1.0)
