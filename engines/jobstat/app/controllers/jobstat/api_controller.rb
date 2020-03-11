@@ -54,7 +54,7 @@ module Jobstat
 
     def check_job(job)
       logger.info CHECKER_PREFIX + ": checking job #{job.id}: state = #{job.state}, end_time = #{job.end_time}"
-
+      logger.info "EVERYTHING ABOUT JOB: #{job.inspect}"
       user = Core::Member.where(login: job.login).take.user
 
       if group_match(job, user) && time_match(job)
@@ -72,11 +72,39 @@ module Jobstat
       tags = @json["tags"]
       job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
 
-      StringDatum.where(job_id: job.id).destroy_all
+      StringDatum.where(job_id: job.id, name: "tag").destroy_all
 
       return if tags.nil?
       tags.each do |name|
         StringDatum.where(job_id: job.id, name: "tag", value: name).first_or_create()
+      end
+
+      check_job(job)
+    end
+
+    def post_detailed
+      cluster = @json["cluster"]
+      drms_job_id = @json["job_id"]
+      drms_task_id = @json.fetch("task_id", 0)
+
+      origin_cluster = @json["origin"]["cluster"]
+      origin_drms_job_id = @json["origin"]["job_id"]
+      origin_drms_task_id = @json["origin"].fetch("task_id", 0)
+
+      tags = @json["tags"]
+
+      job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+      origin_job = Job.where(cluster: origin_cluster, drms_job_id: origin_drms_job_id, drms_task_id: origin_drms_task_id).first()
+
+      job.initiatees << origin_job
+      origin_job.initiator = job
+
+      StringDatum.where(job_id: job.id, name: "extra_data").first_or_create.update({value: @json["extra_data"].to_json})
+
+      StringDatum.where(job_id: job.id, name: "detailed").destroy_all
+
+      tags and tags.each do |name|
+          StringDatum.where(job_id: job.id, name: "detailed", value: name).first_or_create()
       end
 
       check_job(job)
@@ -143,6 +171,8 @@ module Jobstat
 
       render :status => 404 unless @job
     end
+
+    before_filter :parse_request
 
     protected
 
