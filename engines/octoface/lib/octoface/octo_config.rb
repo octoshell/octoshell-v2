@@ -1,6 +1,6 @@
 module Octoface
   class OctoConfig
-    attr_reader :abilities, :mod, :controller_abilities, :routes_block
+    attr_reader :abilities, :mod, :controller_abilities, :routes_block, :classes
     def initialize(mod, role, &block)
       @mod = mod
       @role = role
@@ -9,6 +9,7 @@ module Octoface
       if self.class.instances[role]
         raise "You are trying to redefine #{role} role"
       end
+      @classes = []
 
       self.class.instances[role] = self
       @settings = block
@@ -29,12 +30,29 @@ module Octoface
       instances[role]
     end
 
+    def self.role_class?(role, class_name)
+      role = find_by_role(role)
+      return false unless role
+      return false unless role.classes.include?(class_name)
+
+      true
+    end
+
+    def self.mod_class_string(role, class_name)
+      return class_name if role == :main_app
+
+      "#{find_by_role(role).mod}::#{class_name}"
+    end
+
     def finish_intialization
       instance_eval(&@settings)
     end
 
-    def add(name, &obj)
-      self.class.mod_methods[name] = obj
+    def add(name)
+      @classes << name
+      # self.class.mod_methods[name] = obj
+      # mod.define_singleton_method(name, &obj)
+
     end
 
     #add_ability do
@@ -123,7 +141,7 @@ module Octoface
         #   end
         # end
         instances.values.each(&:finish_intialization)
-        forward_classes!
+        # forward_classes!
       end
     end
 

@@ -1,21 +1,4 @@
-Sessions.user_class = "::User"
-module Sessions
-  extend Octoface
-  octo_configure :sessions do
-    add(:report_class) { Report }
-    add(:session_class) { Session }
-    add(:user_survey_class) { UserSurvey }
-    add_ability(:manage, :reports, 'superadmins', 'experts')
-    add_controller_ability(:manage, :reports, 'admin/reports', 'admin/report_projects')
-    add_ability(:manage, :sessions, 'superadmins', 'experts')
-    add_controller_ability(:manage, :sessions, 'admin/sessions',
-                           'admin/surveys',
-                           'admin/report_submit_denial_reasons',
-                           'admin/projects')
-
-  end
-end
-
+Sessions.user_class = '::User'
 Face::MyMenu.items_for(:user_submenu) do
   sessions_warning = current_user.warning_surveys.exists? ||
                      current_user.warning_reports.exists?

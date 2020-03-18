@@ -53,6 +53,7 @@ gem "mina" #, github: "zhum/mina", require: false
 gem "rollbar"
 gem "foreman"
 gem "puma"
+gem "octoface",       path: "engines/octoface"
 gem "face",           path: "engines/face"
 gem "authentication", path: "engines/authentication"
 gem "core",           path: "engines/core"

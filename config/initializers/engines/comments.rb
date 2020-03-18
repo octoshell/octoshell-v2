@@ -1,12 +1,7 @@
 # unless ( File.basename($0) == 'rake')
   Comments.inline_types = %w[png jpeg jpg bmp gif]
 # end
-module Comments
-  extend Octoface
-  octo_configure :comments do
-  end
 
-end
 
 Face::MyMenu.items_for(:user_submenu) do
   add_item('comments', t("user_submenu.comments"), comments.index_all_comments_path, /^comments/)

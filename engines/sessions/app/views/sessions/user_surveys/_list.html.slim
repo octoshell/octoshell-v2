@@ -5,7 +5,8 @@
     tr
       th class="col-xs-1" #
       th #{t('.title')}
-      th #{t('.project')}
+      - if Sessions::ExternalLink.link?(:project)
+        th #{t('.project')}
       th #{t('.status')}
       th #{t('.session')}
 
@@ -14,8 +15,9 @@
         td = survey.id
         td
           strong = link_to survey, sessions.admin_user_survey_path(survey)
-        td
-          = link_to survey.project.title, core.admin_project_path(survey.project) if survey.project
+        - if Sessions::ExternalLink.link?(:project)
+          td
+            = link_to survey.project.title, core.admin_project_path(survey.project) if survey.project
         td
           label class="label label-#{report_status_label(survey)}" = survey.human_state_name
         td

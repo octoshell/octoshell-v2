@@ -9,7 +9,15 @@ module Sessions
       end
     end
   end
-  if Support.respond_to?(:project_class)
+  if ::Octoface.role_class?(:core, 'Project')
     ExternalLink.links << :project
   end
+  
+  if ::Octoface.role_class?(:core, 'Organization')
+    ExternalLink.links << :organization
+  end
+
+  ::Octoface::Hook.add_hook(:sessions, "sessions/hooks/admin_users_show",
+                             :main_app, :admin_users_show)
+
 end

@@ -1,11 +1,3 @@
-module Jobstat
-  extend Octoface
-  octo_configure :jobstat do
-  end
-
-end
-
-
 Face::MyMenu.items_for(:user_submenu) do
   add_item('jobstat_summary', t("user_submenu.job_stat"), jobstat.account_summary_show_path,
            %r{^jobstat/account_summary})

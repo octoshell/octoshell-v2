@@ -8,7 +8,8 @@ div class="page-header"
     = link_to t('.continue_expertise'), [:admin, @report, :pick], class: "btn btn-success", method: :patch
 
 legend = link_to t('.open_report_author_profile'), main_app.admin_user_path(@report.author)
-legend = link_to t('.open_project_card'), core.admin_project_path(@report.project)
+-if Sessions::ExternalLink.link?(:project)
+  legend = link_to t('.open_project_card'), core.admin_project_path(@report.project)
 
 - if @report.can_not_be_submitted?
   div class="well"

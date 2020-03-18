@@ -1,5 +1,6 @@
 module Sessions
   class Admin::StatsController < Admin::ApplicationController
+    octo_use(:organization_class, :core, 'Organization')
     def index
       @session = Session.find(params[:session_id])
       @stats = @session.stats

@@ -13,7 +13,6 @@ end
 #   self.include_root_in_json = true
 # end
 
-Octoface::OctoConfig.finalize!
 # ActiveSupport.on_load(:action_controller) do
 #   puts 'init'.red
 #   Face::MyMenu.validate_keys!

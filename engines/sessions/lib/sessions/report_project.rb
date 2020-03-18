@@ -3,7 +3,8 @@ module Sessions
     if ExternalLink.link?(:project)
       extend ActiveSupport::Concern
       included do
-        belongs_to :project, class_name: "Core::Project", foreign_key: :project_id
+        octo_use(:project_class, :core, 'Project')
+        belongs_to :project, class_name: project_class_to_s, foreign_key: :project_id
       end
 
       def block_project

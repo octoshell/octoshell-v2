@@ -2,6 +2,7 @@ require "sessions/engine"
 require "sessions/external_link"
 require "sessions/report_project"
 require "sessions/session_project"
+require "sessions/stat_organization"
 
 # require "maymay"
 require "decorators"

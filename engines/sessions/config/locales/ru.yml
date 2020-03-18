@@ -233,6 +233,7 @@ ru:
           start_session: Начать
           started_at: Началась %{date}
           title: Перерегистрация «%{name}»
+      projects:
         show_projects:
           activated_after: Активирован после
           activated_before: Активирован до

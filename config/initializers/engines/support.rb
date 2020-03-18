@@ -1,13 +1,5 @@
 Support.dash_number = 150
 
-module Support
-  extend Octoface
-  octo_configure :support do
-    add_ability(:manage, :tickets, 'superadmins', 'support')
-    # add_controller_ability(:manage, :reports, 'admin/reports', 'admin/report_projects')
-  end
-end
-
 Face::MyMenu.items_for(:user_submenu) do
   tickets_warning = current_user.tickets.where(state: :answered_by_support).any?
   tickets_title = if tickets_warning

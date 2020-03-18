@@ -33,4 +33,8 @@ module ApplicationHelper
                .try(helper, f, prefix, options, html_options)
     # method.call(prefix, label)
   end
+
+  def register_hook(role, name, maps, *order)
+    Octoface::Hook.find_or_initialize_hook(role, name).render(self, maps, *order)
+  end
 end

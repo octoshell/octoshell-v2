@@ -1,24 +1,6 @@
+Core.user_class = '::User'
 module Core
-  extend Octoface
   octo_configure :core do
-    add(:project_class) { Project }
-    add(:cluster_class) { Cluster }
-    add_ability(:manage, :projects, 'superadmins')
-    add_controller_ability(:manage, :projects, 'admin/projects',
-                           'admin/project_kinds', 'admin/direction_of_sciences',
-                           'admin/critical_technologies', 'admin/research_areas',
-                           'admin/group_of_research_areas')
-    add_ability(:manage, :sureties, 'superadmins')
-    add_controller_ability(:manage, :sureties, 'admin/sureties')
-    add_ability(:manage, :requests, 'superadmins')
-    add_controller_ability(:manage, :requests, 'admin/requests')
-    add_ability(:manage, :organizations, 'superadmins')
-    add_controller_ability(:manage, :organizations, 'admin/organizations', 'admin/organization_kinds')
-    add_ability(:manage, :clusters, 'superadmins')
-    add_controller_ability(:manage, :clusters, 'admin/clusters', 'admin/cluster_logs', 'admin/quota_kinds')
-    add_ability(:manage, :geography, 'superadmins')
-    add_controller_ability(:manage, :geography, 'admin/cities', 'admin/countries')
-
     set :support do
       ticket_field(key: :cluster,
                    admin_link: proc { |id| can?(:manage, :clusters) ? core.admin_cluster_path(id) : nil },
@@ -43,12 +25,6 @@ module Core
     end
 
   end
-
-
-
-  # menu.add_item(Face::MenuItem.new({name: t("admin_submenu.projects"),
-  #                                   url: core.admin_projects_path,
-  #                                   regexp: /core\/admin\/projects/})) if  :manage, :projects
 
 end
 

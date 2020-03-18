@@ -2,6 +2,11 @@ module Sessions
   class Admin::ReportsController < Admin::ApplicationController
     # before_action { authorize! :manage, :reports }
     before_action :octo_authorize!
+    octo_use(:project_class, :core, 'Project')
+    octo_use(:group_research_area_class, :core, 'GroupOfResearchArea')
+    octo_use(:critical_technology_class, :core, 'CriticalTechnology')
+    octo_use(:direction_of_science_class, :core, 'DirectionOfScience')
+    octo_use(:research_area_class, :core, 'ResearchArea')
 
     def index
       @search = Report.includes([{ project: :research_areas },
