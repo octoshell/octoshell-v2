@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit
 
   def authorize_admins
+    #logger.error "ADMINS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     authorize!(:access, :admin)
   end
 
@@ -11,6 +12,8 @@ class ApplicationController < ActionController::Base
   end
 
   def not_authorized
+    # logger.error "-------------------------------------------"
+    # logger.error caller(0).join("\n");
     redirect_to main_app.root_path, alert: t("flash.not_authorized")
   end
 
@@ -22,7 +25,10 @@ class ApplicationController < ActionController::Base
   end
 
   def octo_authorize!
-    authorize!(*::Octoface.action_and_subject_by_path(params[:controller]))
+    # logger.warn "AUTH: #{params[:controller]}"
+    ret = authorize!(*::Octoface.action_and_subject_by_path(params[:controller]))
+    # logger.warn "AUTH ret: #{ret}"
+    ret
   end
 
   def options_attributes

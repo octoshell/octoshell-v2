@@ -15,5 +15,8 @@
 
 module Jobstat
   class DataType < ApplicationRecord
+    def versions_enabled
+      false
+    end
   end
 end

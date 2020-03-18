@@ -16,5 +16,8 @@
 
 module Jobstat
   class StringDatum < ApplicationRecord
+    def versions_enabled
+      false
+    end
   end
 end

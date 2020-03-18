@@ -17,5 +17,8 @@
 
 module Jobstat
   class DigestStringDatum < ApplicationRecord
+    def versions_enabled
+      false
+    end
   end
 end
