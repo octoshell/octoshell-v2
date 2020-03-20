@@ -51,7 +51,7 @@ gem "mina" #, github: "zhum/mina", require: false
 #gem "mina-git"
 
 #gem "rollbar"
-#gem "airbrake"
+gem "airbrake"
 gem "foreman"
 gem "puma"
 gem "face",           path: "engines/face"

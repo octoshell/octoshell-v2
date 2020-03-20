@@ -1,12 +1,12 @@
 div class="well"
-  = link_to t(".new_access_key"), new_admin_access_key_path, class: "btn btn-default"
+  = link_to t("new_access_key"), new_admin_access_key_path, class: "btn btn-default"
 
 table class="table table-striped"
   tr
     th class="col-xs-1"
-      = t('.access_key_key')
+      = t('access_key_key')
     th
-      = t('.access_key_exports')
+      = t('access_key_exports')
     th class="col-xs-1"
       
   - @access_keys.each do |a|

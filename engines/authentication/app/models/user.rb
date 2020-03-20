@@ -77,7 +77,7 @@ class User < ApplicationRecord
     unless self.email.nil?
       email.downcase!
       email.gsub!(/\(.*\)/){|comment| ''}
-      email.gsub!(%r(^[a-zA-Z0-9!\#$%&'*+-\/=?^_`\{\}~.@|]), '')
+      email.tr! "a-zA-Z0-9!\#$%&*+-\/=?^_\`\{\}~.@|\'", ''
     end
   end
 

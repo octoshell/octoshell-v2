@@ -1,8 +1,8 @@
 = bootstrap_form_for [:admin, @access_key] do |f|
 
-  = f.text_field :key, label: t('.access_key_key')
+  = f.text_field :key, label: t('access_key_key')
 
-  = f.collection_select :export_ids, Api::Export.all, :id, :title, {label: t('.access_key_exports_list')}, {multiple: true}
+  = f.collection_select :export_ids, Api::Export.all, :id, :title, {label: t('access_key_exports_list')}, {multiple: true}
 
   = f.submit :class => "btn btn-default"
 
