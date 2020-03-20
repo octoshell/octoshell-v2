@@ -8,11 +8,11 @@ module Api
         auth = request.headers['X-OctoAPI-Auth']
         access_key = AccessKey.where(key: auth).take
         if access_key.nil?
-          render plain: t('.not_allowed'), status: 404
+          render plain: t('not_allowed'), status: 404
         else
           req = Export.joins(:access_keys).where(api_access_keys:{id: access_key.id}).where(request: params[:req]).take
           if req.nil?
-            render plain: t('.not_allowed_explained', req: params[:req], id: access_key.id, key: access_key.key), status: 403
+            render plain: t('not_allowed_explained', req: params[:req], id: access_key.id, key: access_key.key), status: 403
           else
             vars = Hash[req.key_parameters.map{|p| [p.name,(params[p.name]||p.default)]}]
             text = execute_request req.text, vars, req.safe
@@ -20,7 +20,7 @@ module Api
           end
         end
       rescue => e
-        render plain: t('.error', err: e.message), status: 500
+        render plain: t('error', err: e.message), status: 500
       end
     end
 
