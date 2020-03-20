@@ -423,7 +423,6 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.datetime "first_activation_at"
     t.datetime "finished_at"
     t.datetime "estimated_finish_date"
-    t.boolean "users_can_request_quotas", default: false, null: false
     t.index ["kind_id"], name: "index_core_projects_on_kind_id"
     t.index ["organization_department_id"], name: "index_core_projects_on_organization_department_id"
     t.index ["organization_id"], name: "index_core_projects_on_organization_id"
@@ -822,59 +821,6 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.text "about"
     t.boolean "receive_info_mails", default: true
     t.boolean "receive_special_mails", default: true
-  end
-
-  create_table "quotas_cluster_quota_kinds", id: :serial, force: :cascade do |t|
-    t.integer "cluster_id", null: false
-    t.integer "quota_kind_id", null: false
-    t.string "name_on_cluster", null: false
-    t.string "comment_ru"
-    t.string "comment_en"
-    t.boolean "applies_to_partitions", null: false
-    t.string "semantics_type", null: false
-    t.integer "semantics_data_id"
-    t.string "semantics_data_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["cluster_id", "name_on_cluster"], name: "i_cqk_on_cluster_and_name_on_cluster", unique: true
-    t.index ["cluster_id", "quota_kind_id"], name: "i_cqk_on_cluster_and_quota_kind", unique: true
-  end
-
-  create_table "quotas_override_semantics_data", id: :serial, force: :cascade do |t|
-    t.string "current_priority", null: false
-    t.string "desired_priority", null: false
-    t.boolean "syncing", default: false, null: false
-    t.bigint "lock_version", default: 1, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "quotas_quota_kinds", id: :serial, force: :cascade do |t|
-    t.string "name_ru"
-    t.string "name_en"
-    t.string "unit_ru"
-    t.string "unit_en"
-    t.string "comment_ru"
-    t.string "comment_en"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "quotas_quotas", id: :serial, force: :cascade do |t|
-    t.integer "_uniq_subject_id", null: false
-    t.string "_uniq_subject_type", null: false
-    t.integer "subject_id"
-    t.string "subject_type"
-    t.integer "kind_id", null: false
-    t.integer "domain_id", null: false
-    t.string "domain_type", null: false
-    t.boolean "syncing", default: false, null: false
-    t.bigint "current_value"
-    t.bigint "desired_value"
-    t.bigint "lock_version", default: 1, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["_uniq_subject_id", "_uniq_subject_type", "kind_id", "domain_id", "domain_type"], name: "i_quotas_on_subject_kind_and_domain", unique: true
   end
 
   create_table "sessions_projects_in_sessions", id: :serial, force: :cascade do |t|
