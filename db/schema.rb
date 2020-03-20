@@ -823,6 +823,15 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.boolean "receive_special_mails", default: true
   end
 
+  create_table "sessions_managers", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "session_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_managers_on_session_id"
+    t.index ["user_id"], name: "index_sessions_managers_on_user_id"
+  end
+
   create_table "sessions_projects_in_sessions", id: :serial, force: :cascade do |t|
     t.integer "session_id"
     t.integer "project_id"
@@ -984,13 +993,24 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.datetime "updated_at"
   end
 
+  create_table "support_field_options", force: :cascade do |t|
+    t.bigint "field_id"
+    t.text "name_ru"
+    t.text "name_en"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_support_field_options_on_field_id"
+  end
+
   create_table "support_field_values", id: :serial, force: :cascade do |t|
     t.integer "field_id"
     t.integer "ticket_id"
     t.text "value"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.bigint "topics_field_id"
     t.index ["ticket_id"], name: "index_support_field_values_on_ticket_id"
+    t.index ["topics_field_id"], name: "index_support_field_values_on_topics_field_id"
   end
 
   create_table "support_fields", id: :serial, force: :cascade do |t|
@@ -1003,6 +1023,9 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.datetime "updated_at"
     t.string "name_en"
     t.string "hint_en"
+    t.string "model_collection"
+    t.integer "kind", default: 0
+    t.boolean "search", default: false
   end
 
   create_table "support_replies", id: :serial, force: :cascade do |t|
@@ -1089,6 +1112,7 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
   create_table "support_topics_fields", id: :serial, force: :cascade do |t|
     t.integer "topic_id"
     t.integer "field_id"
+    t.boolean "required", default: false
   end
 
   create_table "support_topics_tags", id: :serial, force: :cascade do |t|
@@ -1185,4 +1209,5 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.index ["url"], name: "index_wikiplus_pages_on_url", unique: true
   end
 
+  add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"
 end
