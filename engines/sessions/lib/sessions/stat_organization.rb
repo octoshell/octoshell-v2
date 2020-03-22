@@ -1,6 +1,6 @@
 module Sessions
   module StatOrganization
-    if ExternalLink.link?(:organization)
+    if Sessions.link?(:organization)
       extend ActiveSupport::Concern
       included do
         octo_use(:organization_class, :core, 'Organization')

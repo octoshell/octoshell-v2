@@ -64,7 +64,8 @@ class ApplicationController < ActionController::Base
   def check_notices
     return unless current_user
     return if request[:controller] =~ /\/admin\//
-
+    return unless Octoface::OctoConfig.find_by_role(:core)
+    
     #FIXME: each category should be processed separately in outstanding code
     notices = Core::Notice.where(sourceable: current_user, category: 1)
     return if notices.count==0

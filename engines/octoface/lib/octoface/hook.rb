@@ -20,10 +20,10 @@ module Octoface
       role_partials << partial
     end
 
-    def render(view, maps)
+    def render(view, maps, *order)
       output = ''
-      partials.values.each do |a|
-        a.each do |partial|
+      (order + (partials.keys - order)).each do |o|
+        partials[o].each do |partial|
           output << view.render(partial: partial, locals: maps)
         end
       end

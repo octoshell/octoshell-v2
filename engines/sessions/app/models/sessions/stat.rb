@@ -40,7 +40,7 @@ module Sessions
     end
 
     def graph_data
-      return graph_data_for_count unless ExternalLink.link?(:organization)
+      return graph_data_for_count unless Sessions.link?(:organization)
 
       (group_by == "subdivisions") ? graph_data_for_count_in_org : graph_data_for_count
     end
@@ -74,7 +74,7 @@ module Sessions
     end
 
     def title
-      by = if ExternalLink.link?(:organization) && organization
+      by = if Sessions.link?(:organization) && organization
         "по количеству в #{organization.short_name}"
       else
         "по количеству"

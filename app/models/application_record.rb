@@ -25,8 +25,10 @@ class ApplicationRecord < ActiveRecord::Base
     order(*name_array)
   end
 
-  # def self.allowed_for(user)
-  #   where(id)
-  #   where(id: [1,2]).all & where(id: [2,3]).all
-  # end
+  def self.for_link(link)
+    return self unless eval(to_s.split('::').first).link?(link)
+
+    yield(self)
+  end
+
 end

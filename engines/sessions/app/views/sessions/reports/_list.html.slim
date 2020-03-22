@@ -5,7 +5,7 @@
     tr
       th class="col-xs-1" #
       th #{t('.report')}
-      -if Sessions::ExternalLink.link?(:project)
+      -if Sessions.link?(:project)
         th #{t('.project')}
         th = project_class.human_attribute_name(:research_areas)
       th #{t('.status')}
@@ -17,7 +17,7 @@
         td = report.id
         td
           strong = link_to t('.report_id', id: report.id), sessions.admin_report_path(report)
-        -if Sessions::ExternalLink.link?(:project)
+        -if Sessions.link?(:project)
           td
             = link_to report.project.title, core.admin_project_path(report.project) if report.project
           td

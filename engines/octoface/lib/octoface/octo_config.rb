@@ -1,6 +1,6 @@
 module Octoface
   class OctoConfig
-    attr_reader :abilities, :mod, :controller_abilities, :routes_block, :classes
+    attr_reader :abilities, :mod, :controller_abilities, :routes_block, :classes, :role
     def initialize(mod, role, &block)
       @mod = mod
       @role = role
@@ -9,21 +9,23 @@ module Octoface
       if self.class.instances[role]
         raise "You are trying to redefine #{role} role"
       end
-      @classes = []
+      @classes = {}
 
       self.class.instances[role] = self
-      @settings = block
+      # @settings = block
+      # yield(self) if block_given?
+      instance_eval(&block)
+      @mod.define_singleton_method(:links) do
+        @@links ||= []
+      end
 
-      # @mod = mod
-      # @role = role
-      # @abilities = []
-      # @controller_abilities = []
-      # if self.class.instances[role]
-      #   raise "You are trying to redefine #{role} role"
-      # end
-      #
-      # self.class.instances[role] = self
-      # instance_eval(&block)
+      @mod.define_singleton_method(:add_link) do |name|
+        links << name
+      end
+
+      @mod.define_singleton_method(:link?) do |name|
+        links.include?(name)
+      end
     end
 
     def self.find_by_role(role)
@@ -33,9 +35,15 @@ module Octoface
     def self.role_class?(role, class_name)
       role = find_by_role(role)
       return false unless role
-      return false unless role.classes.include?(class_name)
+      return false unless role.classes.keys.include?(class_name)
 
       true
+    end
+
+    def self.role_class(role, class_name)
+       return nil unless role_class?(role, class_name)
+
+       find_by_role(role).get_klass(class_name)
     end
 
     def self.mod_class_string(role, class_name)
@@ -44,12 +52,16 @@ module Octoface
       "#{find_by_role(role).mod}::#{class_name}"
     end
 
+    def get_klass(class_name)
+      mod.const_get(class_name)
+    end
+
     def finish_intialization
-      instance_eval(&@settings)
+      instance_eval(&@init_block) if @init_block
     end
 
     def add(name)
-      @classes << name
+      @classes[name] = []
       # self.class.mod_methods[name] = obj
       # mod.define_singleton_method(name, &obj)
 
@@ -69,6 +81,10 @@ module Octoface
 
     def add_routes(&block)
       @routes_block = block
+    end
+
+    def after_init(&block)
+      @init_block = block
     end
 
     def set(role, &block)
@@ -122,26 +138,10 @@ module Octoface
         end
       end
 
-      def forward_classes!
-        instances.values.each do |instance|
-          mod_methods.each do |key, value|
-            instance.mod.define_singleton_method(key, &value)
-          end
-        end
-      end
-
-      # def add_later(mod, role, &block)
-      #   instance_eval(&block)
-      # end
 
       def finalize!
-        # instances.keys.each do |key|
-        #   define_method(key) do
-        #     instances[key].mod.send(:process_foreign_engines_settings)
-        #   end
-        # end
         instances.values.each(&:finish_intialization)
-        # forward_classes!
+        create_abilities!
       end
     end
 

@@ -146,7 +146,7 @@ module Sessions
 
     def notify_about_assess
       Sessions::MailerWorker.perform_async(:report_assessed, id)
-      if Sessions::ExternalLink.link?(:project)
+      if Sessions.link?(:project)
         if failed?
           block_project
         end
@@ -158,7 +158,7 @@ module Sessions
     end
 
     def postdate_callback
-      if Sessions::ExternalLink.link?(:project)
+      if Sessions.link?(:project)
         block_project
       end
     end

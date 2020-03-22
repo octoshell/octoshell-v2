@@ -1,0 +1,15 @@
+---
+en:
+  octoface:
+    admin:
+      roles:
+        index:
+          title: Octoshell engines
+        show:
+          class: Class
+          dependencies: Depend
+          name_of_hook: Name of hook
+          partials: Partials
+        table:
+          mod: Mod
+          name: Name

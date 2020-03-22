@@ -17,3 +17,4 @@ end
 #   puts 'init'.red
 #   Face::MyMenu.validate_keys!
 # end
+Octoface::OctoConfig.finalize!

@@ -6,12 +6,16 @@ ApplicationController.class_eval do
   def menu_items
     menu = Face::MyMenu.new
     # menu.items.clear
-    menu.add_item_without_key(t("main_menu.working_area"), core.root_path, /^((?!admin|wiki).)*$/s) if logged_in?
+    if Octoface::OctoConfig.find_by_role(:core)
+      menu.add_item_without_key(t("main_menu.working_area"), core.root_path, /^((?!admin|wiki).)*$/s) if logged_in?
+    end
     if can?(:access, :admin)
       menu.add_item_without_key(t("main_menu.admin_area"), admin_redirect_path, /admin/)
     end
     # menu.add_item_without_key(wiki_item)
-    menu.add_item_without_key(t("main_menu.wikiplus"), wikiplus.root_path, /wikiplus/)
+    if Octoface::OctoConfig.find_by_role(:wiki)
+      menu.add_item_without_key(t("main_menu.wikiplus"), wikiplus.root_path, /wikiplus/)
+    end
 
     # menu.add_item(working_area_item) if logged_in?
     # menu.add_item(admin_area_item) if can?(:access, :admin)

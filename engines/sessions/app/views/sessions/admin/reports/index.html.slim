@@ -7,28 +7,37 @@ div class="page-header"
       = f.collection_select :session_id_in, Sessions::Session.all, :id, :description, { label: t('.session'), include_blank: true }, { multiple: true }
       /= f.collection_select :author_id_eq, Sessions.user_class.joins(:owned_projects).includes(:profile).distinct.all, :id, :full_name_with_email, label: Sessions::Report.human_attribute_name(:author), include_blank: true
       = f.select :state_in, Sessions::Report.state_names(:state).map { |n| [Sessions::Report.human_state_name(n), n] }, { label: Sessions::Report.human_attribute_name(:state), include_blank: true }, { multiple: true }
-      -if Sessions::ExternalLink.link?(:project)
-        = f.autocomplete_field :project_id_eq,{ label: Sessions::Report.human_attribute_name(:project), source: core.projects_path} do |val|
-          -project_class.find(val).title
-        = f.collection_select :project_group_of_research_areas_id_in, group_research_area_class.order_by_name, :id, :name,
-          {label: t('.group_of_research_areas_id_in'),  include_blank: true}, multiple: true
-
-        = f.grouped_collection_select :project_research_areas_id_in, group_research_area_class.order_by_name_with_areas,
-                                      :research_areas, :name, :id, :name,
-                                      {label: t('.research_areas_id_in'),  include_blank: true}, multiple: true
+      = custom_helper(:core, 'autocomplete_project_id_eq', f, '',
+                      label: Sessions::Report.human_attribute_name(:project) )
+      /= f.autocomplete_field :project_id_eq,{ label: Sessions::Report.human_attribute_name(:project), source: core.projects_path} do |val|
+      /  -project_class.find(val).title
+      = custom_helper(:core, 'project_group_of_research_areas_id_in', f, '',
+                      label: t('.group_of_research_areas_id_in') )
+      /= f.collection_select :project_group_of_research_areas_id_in, group_research_area_class.order_by_name, :id, :name,
+      /  {label: t('.group_of_research_areas_id_in'),  include_blank: true}, multiple: true
+      = custom_helper(:core, 'project_research_areas_id_in', f, '',
+                      label: t('.research_areas_id_in') )
+      /= f.grouped_collection_select :project_research_areas_id_in, group_research_area_class.order_by_name_with_areas,
+      /                              :research_areas, :name, :id, :name,
+      /                              {label: t('.research_areas_id_in'),  include_blank: true}, multiple: true
 
     div class="col-md-6"
-      -if Sessions::ExternalLink.link?(:project)
+      -if Sessions.link?(:project)
         = f.autocomplete_field :author_id_eq,{ label: Sessions::Report.human_attribute_name(:author), source: core.with_owned_projects_finder_admin_users_path} do |val|
           - User.find(val).full_name_with_email
       - if Sessions.user_class.superadmins.include? current_user
         = f.collection_select :expert_id_eq, Sessions.user_class.experts.includes(:profile), :id, :full_name, priority: [current_user], label: t('.expert'), include_blank: true
-      -if Sessions::ExternalLink.link?(:project)
-        = f.collection_select :project_research_areas_id_in,research_area_class.all, :id, :name, { label: research_area_class.model_name.human, include_blank: true}, {multiple: true}
-        = f.collection_select :project_critical_technologies_id_in, critical_technology_class.order_by_name, :id, :name,
-          {label: t('.critical_technologies_id_in'),  include_blank: true}, multiple: true
-        = f.collection_select :project_direction_of_sciences_id_in, direction_of_science_class.order_by_name, :id, :name,
-          {label: t('.direction_of_sciences_id_in'),  include_blank: true}, multiple: true
+      = custom_helper(:core, 'usual_project_research_areas_id_in', f)
+      /= f.collection_select :project_research_areas_id_in,research_area_class.all, :id, :name, { label: research_area_class.model_name.human, include_blank: true}, {multiple: true}
+      = custom_helper(:core, 'project_critical_technologies_id_in', f, '',
+                              label: t('.critical_technologies_id_in') )
+      /= f.collection_select :project_critical_technologies_id_in, critical_technology_class.order_by_name, :id, :name,
+      /  {label: t('.critical_technologies_id_in'),  include_blank: true}, multiple: true
+      = custom_helper(:core, 'project_direction_of_sciences_id_in', f, '',
+                              label: t('.direction_of_sciences_id_in') )
+
+      /= f.collection_select :project_direction_of_sciences_id_in, direction_of_science_class.order_by_name, :id, :name,
+      /  {label: t('.direction_of_sciences_id_in'),  include_blank: true}, multiple: true
 
 
   /* = search_check_boxes(f, :illustration_points_in, t('.figures')) */

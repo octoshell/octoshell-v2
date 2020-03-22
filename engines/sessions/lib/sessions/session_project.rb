@@ -1,6 +1,6 @@
 module Sessions
   module SessionProject
-    if ExternalLink.link?(:project)
+    if Sessions.link?(:project)
       extend ActiveSupport::Concern
       included do
         has_many :projects_in_sessions

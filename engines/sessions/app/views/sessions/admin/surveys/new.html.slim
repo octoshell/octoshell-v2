@@ -7,8 +7,9 @@ div class="page-header"
   -selected = nil
   -selected = params[:survey][:template_survey_id] if params[:survey] && params[:survey][:template_survey_id]
   = f.grouped_collection_select :template_survey_id, @template_surveys, :last, :first, :id, :name, label: t('.use_survey_as_template'), selected: selected , include_blank: true
-  = f.form_group do
-    = f.check_box :only_for_project_owners
+  -if Sessions.link?(:project)
+    = f.form_group do
+      = f.check_box :only_for_project_owners
 
   = f.form_group do
     = f.submit t("actions.save")

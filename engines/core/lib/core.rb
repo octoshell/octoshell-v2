@@ -25,6 +25,8 @@ require 'core/remove_spaces'
 
 
 module Core
+  ::Octoface::Hook.add_hook(:core, "core/hooks/admin_users_show",
+                            :main_app, :admin_users_show)
   mattr_accessor :user_class
 
   class UserClassAbsenceError < StandardError; end

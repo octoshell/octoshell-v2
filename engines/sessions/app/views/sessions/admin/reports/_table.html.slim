@@ -9,7 +9,7 @@
         - else
           | #
       th = t('.report')
-      - if Sessions::ExternalLink.link?(:project)
+      - if Sessions.link?(:project)
         th = project_class.human_attribute_name(:research_areas)
       th = t('.status')
       th class="col-xs-2"
@@ -27,10 +27,10 @@
           ul class="list-unstyled"
             li
               strong = link_to_if (can?(:review, :reports) || report.expert), t('.report_id', id: report.id), [:admin, report]
-            - if Sessions::ExternalLink.link?(:project)
+            - if Sessions.link?(:project)
               li = link_to_if can?(:review, :projects), report.project.title, core.admin_project_path(report.project)
             li = link_to report.author.full_name, main_app.admin_user_path(report.author), class: "text-muted"
-        - if Sessions::ExternalLink.link?(:project)
+        - if Sessions.link?(:project)
           td
             ul class="list-unstyled"
               - report.project.research_areas.each do |area|

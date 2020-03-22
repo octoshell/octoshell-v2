@@ -2,15 +2,18 @@ div class="page-header"
   h1 = t(".title", default: "Projects")
 
 = bootstrap_form_for @search, url: admin_session_show_projects_path(@session), method: :get, layout: :horizontal do |f|
-  /- f.extend Core::BootstrapFormHelpers
   = custom_helper(:core, 'project_kind_id_eq', f)
-  /= f.project_kind_id_eq('ssss')
-  = autocomplete f, name: :id_eq, label: project_class.human_attribute_name(:title), source: core.projects_path
-  = f.collection_select :kind_id_eq, project_kind_class.all, :id, :name, label: project_kind_class.model_name.human, include_blank: true
-  = f.collection_select :owner_id_eq, User.joins(:account_owners).preload(:profile).distinct, :id, :full_name_with_email, label: Core::Project.human_attribute_name("owner"), include_blank: true
-  = f.collection_select :organization_kind_id_eq, organization_kind_class.order(organization_kind_class.current_locale_column(:name)), :id, :name, label: Core::OrganizationKind.model_name.human, include_blank: true
-  = f.collection_select :organization_id_eq, organization_class.order(:name), :id, :full_name, label: Core::Project.human_attribute_name(:organization), include_blank: true
-  = f.select :state_in, project_class.human_state_names_with_original, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
+  /= f.collection_select :kind_id_eq, project_kind_class.all, :id, :name, label: project_kind_class.model_name.human, include_blank: true
+  = custom_helper(:core, 'project_id_eq', f)
+  /= autocomplete f, name: :id_eq, label: project_class.human_attribute_name(:title), source: core.projects_path
+  = custom_helper(:core, 'owner_id_eq', f)
+  /= f.collection_select :owner_id_eq, User.joins(:account_owners).preload(:profile).distinct, :id, :full_name_with_email, label: Core::Project.human_attribute_name("owner"), include_blank: true
+  = custom_helper(:core, 'organization_kind_id_eq', f, 'organization_')
+  /= f.collection_select :organization_kind_id_eq, organization_kind_class.order(organization_kind_class.current_locale_column(:name)), :id, :name, label: Core::OrganizationKind.model_name.human, include_blank: true
+  = custom_helper(:core, 'organization_id_eq', f)
+  /= f.collection_select :organization_id_eq, organization_class.order(:name), :id, :full_name, label: Core::Project.human_attribute_name(:organization), include_blank: true
+  = custom_helper(:core, 'project_state_in', f)
+  /= f.select :state_in, project_class.human_state_names_with_original, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
   - options = common_datepicker_options
   div class="col-md-6"
     = f.text_field :created_at_gt, options.merge(label: t('.created_after'))

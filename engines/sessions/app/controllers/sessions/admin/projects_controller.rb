@@ -1,12 +1,8 @@
 # encoding: utf-8
 module Sessions
-  if ExternalLink.link?(:project)
+  if link?(:project)
     class Admin::ProjectsController < Admin::ApplicationController
       octo_use(:project_class, :core, 'Project')
-      octo_use(:organization_class, :core, 'Organization')
-      octo_use(:organization_kind_class, :core, 'OrganizationKind')
-      octo_use(:project_kind_class, :core, 'ProjectKind')
-
       before_action :octo_authorize!
 
       def show_projects

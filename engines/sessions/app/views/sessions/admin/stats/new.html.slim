@@ -13,7 +13,7 @@ div class="page-header"
           optgroup label="#{survey.name}"
             - survey.fields.each do |field|
               option value="#{field.id}" selected="#{'selected' if @stat.survey_field_id == field.id}" = field.name
-  - if Sessions::ExternalLink.link?(:organization)
+  - if Sessions.link?(:organization)
     = f.autocomplete_field :organization_id, source: core.organizations_path do |val|
       - organization_class.find(val).name_with_id
   = f.text_field :weight

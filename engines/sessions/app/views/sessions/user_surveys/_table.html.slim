@@ -18,7 +18,7 @@
         td = survey.id
         td
           strong = link_to survey, sessions.user_survey_path(survey)
-        - if Sessions::ExternalLink.link?(:project)
+        - if Sessions.link?(:project)
           td
             = link_to survey.project.title, core.project_path(survey.project) if survey.project
         td

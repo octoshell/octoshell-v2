@@ -9,5 +9,15 @@ module Reports
     # add_ability(:manage, :sessions, 'superadmins', 'experts')
     # add_controller_ability(:manage, :sessions, 'admin/sessions', 'admin/surveys', 'admin/report_submit_denial_reasons')
     #
+    add_routes do
+      mount Reports::Engine, :at => "/reports"
+    end
+    after_init do
+      Face::MyMenu.items_for(:admin_submenu) do
+        if can?(:manage, :reports_engine)
+          add_item('reports_engine', t("admin_submenu.reports_engine"),main_app.reports_path, 'reports/constructor')
+        end
+      end
+    end
   end
 end

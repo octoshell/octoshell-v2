@@ -1,6 +1,6 @@
 module Sessions
   module ReportProject
-    if ExternalLink.link?(:project)
+    if Sessions.link?(:project)
       extend ActiveSupport::Concern
       included do
         octo_use(:project_class, :core, 'Project')

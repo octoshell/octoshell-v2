@@ -2,6 +2,17 @@ module Wikiplus
   extend Octoface
   octo_configure :wiki do
     add_ability(:manage, :wikiplus, 'superadmins')
+    add_routes do
+      mount Wikiplus::Engine, :at => "/wikiplus"
+    end
+    after_init do
+      Face::MyMenu.items_for(:admin_submenu) do
+        if can? :manage, :wikiplus
+          add_item('wiki', t("admin_submenu.wikiplus"),
+                   wikiplus.admin_pages_path, %r{admin/wikiplus})
+        end
+      end
+    end
   end
 
   def self.engines_links

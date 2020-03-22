@@ -1,5 +1,5 @@
 module Sessions
-  if ExternalLink.link?(:project)
+  if link?(:project)
     class Admin::ReportProjectsController < Admin::ApplicationController
       # before_action { authorize! :manage, :reports }
       octo_use(:project_class, :core, 'Project')

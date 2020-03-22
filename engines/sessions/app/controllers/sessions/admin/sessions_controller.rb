@@ -14,9 +14,11 @@ module Sessions
     def create
       @session = Session.new(session_params)
       if @session.save
-        if ExternalLink.links.include? :projects
+        if Sessions.links.include? :projects
           redirect_to admin_session_show_projects_path(@session),
                       notice: t(".session_is_successfully_created")
+        else
+          redirect_to [:admin, @session]
         end
       else
         flash.now[:alert] = @session.errors.full_messages.to_sentence

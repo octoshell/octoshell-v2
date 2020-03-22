@@ -9,7 +9,7 @@
         - else
           | #
       th #{t('.report')}
-      - if Sessions::ExternalLink.link?(:project)
+      - if Sessions.link?(:project)
         th #{t('.project')}
       th #{t('.status')}
       th #{t('.complete_by')}
@@ -20,7 +20,7 @@
         td = report.id
         td
           strong = link_to t('.report_id', id: report.id), sessions.report_path(report)
-        - if Sessions::ExternalLink.link?(:project)
+        - if Sessions.link?(:project)
           td
             = link_to report.project.title, core.project_path(report.project) if report.project
         td

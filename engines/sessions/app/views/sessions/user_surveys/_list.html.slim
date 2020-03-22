@@ -5,7 +5,7 @@
     tr
       th class="col-xs-1" #
       th #{t('.title')}
-      - if Sessions::ExternalLink.link?(:project)
+      - if Sessions.link?(:project)
         th #{t('.project')}
       th #{t('.status')}
       th #{t('.session')}
@@ -15,7 +15,7 @@
         td = survey.id
         td
           strong = link_to survey, sessions.admin_user_survey_path(survey)
-        - if Sessions::ExternalLink.link?(:project)
+        - if Sessions.link?(:project)
           td
             = link_to survey.project.title, core.admin_project_path(survey.project) if survey.project
         td

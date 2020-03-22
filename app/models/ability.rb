@@ -15,17 +15,20 @@ class Ability
       end
     end
 
-    if can?(:manage, :tickets)
-      can :access, Support::Topic
-    end
-
-    user.available_topics.each do |user_topic|
-      user_topic.all_subtopics_with_self.each do |u_t|
-        can :access, Support::Topic, id: u_t.id
+    if Octoface::OctoConfig.find_by_role(:support)
+      if can?(:manage, :tickets)
+        can :access, Support::Topic
       end
+
+      user.available_topics.each do |user_topic|
+        user_topic.all_subtopics_with_self.each do |u_t|
+          can :access, Support::Topic, id: u_t.id
+        end
+      end
+
+      can :access, :admin if user.available_topics.any?
     end
 
-    can :access, :admin if user.available_topics.any?
     # user.permissions.each do |permission|
     #   can permission.action,
     # end

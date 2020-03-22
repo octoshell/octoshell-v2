@@ -9,9 +9,10 @@ div class="well"
       class: "btn btn-large btn-success",
       method: :put, data: { confirm: t("actions.confirm") },
       disabled: !@session.may_start?
-    = link_to t(".edit_projects"), [:admin, @session, :show_projects],
-      class: "btn btn-large btn-warning",
-      disabled: @session.ended?
+    - if Sessions.link?(:project)
+      = link_to t(".edit_projects"), [:admin, @session, :show_projects],
+        class: "btn btn-large btn-warning",
+        disabled: @session.ended?
     = link_to t('.end_session'), [:admin, @session, :stop],
       class: "btn btn-large btn-danger",
       method: :put, data: { confirm: t("actions.confirm") },
@@ -49,4 +50,3 @@ div class="alert alert-info" id="graphs-alert"
 = link_to t(".show_graphs"), [:admin, @session, :stats],
   class: "btn btn-large btn-primary pull-right", id: "graphs-button",
   disabled: @session.may_stop?
-

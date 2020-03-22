@@ -44,7 +44,7 @@ module Sessions
     validates :receiving_to, presence: true
     validates_translated :description, presence: true
 
-    include AASM
+    include ::AASM
     include ::AASM_Additions
     aasm(:state, :column => :state) do
       state :pending, :initial => true
@@ -94,7 +94,7 @@ module Sessions
     end
 
     def create_reports_and_users_surveys
-      if Sessions::ExternalLink.link?(:project)
+      if Sessions.link?(:project)
         involved_projects.each do |project|
           create_report_and_surveys_for(project)
         end
@@ -149,7 +149,7 @@ module Sessions
     # end
 
     def validate_reports_and_surveys
-      if Sessions::ExternalLink.link?(:project)
+      if Sessions.link?(:project)
         reports.where(:state=>:assessed).select(&:failed?).map(&:close_project!)
       end
       reports.where(:state=>[:pending, :accepted, :rejected]).map(&:postdate!)

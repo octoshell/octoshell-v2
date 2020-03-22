@@ -9,7 +9,7 @@ div class="well"
   = link_to t(".add_graph"), new_admin_session_stat_path(@session), class: "btn btn-default"
 
 - @stats.each do |stat|
-  - if Sessions::ExternalLink.link?(:organization) && stat.organization
+  - if Sessions.link?(:organization) && stat.organization
     div class="graph-subdivisions"
       - stat.graph_data_for_count_in_org.each do |name, data|
         - if data.any?

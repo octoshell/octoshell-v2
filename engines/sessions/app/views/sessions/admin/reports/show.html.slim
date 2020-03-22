@@ -8,7 +8,7 @@ div class="page-header"
     = link_to t('.continue_expertise'), [:admin, @report, :pick], class: "btn btn-success", method: :patch
 
 legend = link_to t('.open_report_author_profile'), main_app.admin_user_path(@report.author)
--if Sessions::ExternalLink.link?(:project)
+-if Sessions.link?(:project)
   legend = link_to t('.open_project_card'), core.admin_project_path(@report.project)
 
 - if @report.can_not_be_submitted?
@@ -120,6 +120,6 @@ div class="panel"
           h4 = link_to survey, admin_user_survey_path(survey)
   - else
     p #{t('.no_completed_surveys')}
-= render_attachments(@report,:comments)
-= render_attachments(@report,:tags)
-= render_attachments(@report,:files)
+= custom_helper(:comments, :render_attachments,@report,:comments)
+= custom_helper(:comments, :render_attachments,@report,:tags)
+= custom_helper(:comments, :render_attachments,@report,:files)
