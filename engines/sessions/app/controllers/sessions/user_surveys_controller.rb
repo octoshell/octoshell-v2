@@ -1,5 +1,5 @@
 module Sessions
-  class UserSurveysController < ApplicationController
+  class UserSurveysController < Sessions::ApplicationController
     layout "layouts/sessions/user"
 
     def index

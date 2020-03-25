@@ -19,7 +19,7 @@
 #
 
 module Comments
-  class Comment < ActiveRecord::Base
+  class Comment < ApplicationRecord
     include Attachable
     DEFAUlT_PER = 10
     validates :text, presence: true

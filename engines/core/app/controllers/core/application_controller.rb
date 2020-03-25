@@ -1,6 +1,6 @@
 module Core
   class ApplicationController < ::ApplicationController #ActionController::Base
-    include AuthMayMay
+    before_action :require_login
     layout "layouts/application"
 
     def provide_cities_hash
@@ -17,7 +17,7 @@ module Core
       redirect_to projects_path if current_user.closed?
     end
 
-#    before_filter :journal_user
+#    before_action :journal_user
 #
 #    def journal_user
 #      logger.info "JOURNAL: url=#{request.url}/#{request.method}; user_id=#{current_user ? current_user.id : 'none'}"

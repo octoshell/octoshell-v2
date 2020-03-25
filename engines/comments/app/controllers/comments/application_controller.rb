@@ -1,6 +1,6 @@
 module Comments
   class ApplicationController < ::ApplicationController
-    include AuthMayMay
+    before_action :require_login
     layout 'layouts/comments/application'
 
     def ransackable_params

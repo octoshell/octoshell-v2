@@ -20,7 +20,7 @@
 #
 
 module Core
-  class Organization < ActiveRecord::Base
+  class Organization < ApplicationRecord
     remove_spaces :name
     MERGED_ASSOC = [Employment, Member, Project, SuretyMember].freeze
     include MergeOrganzations
@@ -32,7 +32,7 @@ module Core
     has_many :departments, class_name: "::Core::OrganizationDepartment", inverse_of: :organization
 
     has_many :employments, inverse_of: :organization, autosave: true
-    has_many :users, class_name: Core.user_class, through: :employments, inverse_of: :organizations
+    has_many :users, class_name: Core.user_class.to_s, through: :employments, inverse_of: :organizations
 
     has_many :projects, inverse_of: :organization
 

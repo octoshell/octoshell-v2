@@ -13,7 +13,7 @@
 #
 
 module Core
-  class Partition < ActiveRecord::Base
+  class Partition < ApplicationRecord
     belongs_to :cluster
   end
 end

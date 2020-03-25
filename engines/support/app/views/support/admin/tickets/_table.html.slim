@@ -45,9 +45,9 @@
           - else
             span class="label label-danger" N/A
         td class="col-xs-2"
-          = l ticket.created_at
+          = l ticket.updated_at
           |  / 
           br
-          span class="text-muted" = l ticket.updated_at
+          span class="text-muted" = l ticket.created_at
 - else
   p = t(".no_tickets")

@@ -67,8 +67,8 @@ en:
         project_id: Project
         state: State
         statement_points: Statement
-        submit_denial_description: Describe in detail why it is necessary
-          to save the project
+        submit_denial_description: Describe in detail why it is necessary to save
+          the project
         submit_denial_reason: Reason for refusing report submission
         submitted_at: Submitted at
         summary_points: Summary points
@@ -122,27 +122,26 @@ en:
         surveys: Surveys
     models:
       sessions/report: Report
-      sessions/report_submit_denial_reason: Reason for refusal to submit a
-        project report
+      sessions/report_submit_denial_reason: Reason for refusal to submit a project
+        report
       sessions/session: Reregistration
       sessions/survey: Survey
       sessions/survey_value: Value
       sessions/user_survey: Filled survey
   cant_submit_report_because_of_errors: >-
-    The report is incomplete or contains errors. Please check all the fields
-    marked with a red box at all stages of the report
+    The report is incomplete or contains errors. Please check all the fields marked
+    with a red box at all stages of the report
   engine_submenu:
     reports: Reports
     surveys: Surveys
   flash:
     fill_out_report_and_surveys: >-
-      You have not completed and / or not submitted reports and questionnaires
-      as part of the  "%{session_name}" re-registration. Please fill in and
-      send it to %{receiving_date}.
+      You have not completed and / or not submitted reports and questionnaires as
+      part of the  "%{session_name}" re-registration. Please fill in and send it to
+      %{receiving_date}.
     you_must_provide_report_materials: You must provide report materials file!
   reply: Reply
-  report_returned_to_user_for_edit: The report has been return  to the user
-    for editing
+  report_returned_to_user_for_edit: The report has been return  to the user for editing
   report_submitted: The report is submitted for review
   report_successfuly_assessed: The report has been successfully rated
   reports_draft_saved: The draft report has been saved
@@ -158,10 +157,14 @@ en:
           title: Report submit denial reason creation
       reports:
         index:
+          critical_technologies_id_in: project has one of critical technologies
+          direction_of_sciences_id_in: project has one of science directions
           expert: Expert
           figures: Illustrations
+          group_of_research_areas_id_in: project has one of research area groups
           overall_assessment: Overall mark
           presentation: Statement
+          research_areas_id_in: project has one of research areas
           session: Reregistration
           title: List of project reports
         show:
@@ -180,8 +183,7 @@ en:
           not_evaluated: Not rated
           open_project_card: Proceed to project card
           open_report_author_profile: Open report author profile
-          other_report_title: The report No.%{id} in the "%{session_name}"
-            re-registration
+          other_report_title: The report No.%{id} in the "%{session_name}" re-registration
           previous_sessions_reports: Previous sessions project reports
           project_surveys: Project surveys
           recommit: Return to user
@@ -192,8 +194,8 @@ en:
           report_submit_denial_reason: Report submit denial reason
           take_for_evaluation: Take for evaluation
           title: >-
-            The report No.%{id} for the  "%{project_title}" project in the
-            "%{session_name}" re-registration
+            The report No.%{id} for the  "%{project_title}" project in the "%{session_name}"
+            re-registration
         table:
           expert: Expert
           no_reports: No report
@@ -206,8 +208,8 @@ en:
       sessions:
         create:
           session_is_successfully_created: >-
-            Reregistration is created. Select projects that will participate
-            in the re-registration.
+            Reregistration is created. Select projects that will participate in the
+            re-registration.
         index:
           new_session: Create re-registration
           title: Reregistrations list
@@ -220,9 +222,9 @@ en:
           graphs_alert:
             html: >-
               <h3>Attention!</h3> <p> Displaying the graphs may take a significant
-              amount of time. Your browser may display a message that the
-              script has been working too long. Please do not interrupt the
-              script. Otherwise the graphs will not be displayed.</p>
+              amount of time. Your browser may display a message that the script has
+              been working too long. Please do not interrupt the script. Otherwise
+              the graphs will not be displayed.</p>
           new_survey: New survey
           session_archive_create: Create archive
           session_archive_link_msg: Download_link will be sent by email.
@@ -251,13 +253,12 @@ en:
           title: Edit survey field
         form:
           collection_help: >-
-            Only for radio-buttons, lists and scientometrics. Fill in each
-            value in "%{locales}" format to localize collection
+            Only for radio-buttons, lists and scientometrics. Fill in each value in
+            "%{locales}" format to localize collection
           max_values_help: Only for Multiple select and User Lists
-          regexp_help: 'You can test regexps here: http://rubular.com/ Choose
-            1.9.3 ruby version'
-          strict_collection_help: Does not allow to save values not from the
-            list
+          regexp_help: 'You can test regexps here: http://rubular.com/ Choose 1.9.3
+            ruby version'
+          strict_collection_help: Does not allow to save values not from the list
           weight_help: Higher the value, lower in a list
         new:
           title: New survey field
@@ -294,120 +295,117 @@ en:
         hello_unknown: Hello!
       new_report:
         attention: ATTENTION
-        attention1: If you delay the sending of the report, the project will
-          be blocked.
-        attention2: If the report is rated as "unsatisfactory", the project
-          will be closed.
+        attention1: If you delay the sending of the report, the project will be blocked.
+        attention2: If the report is rated as "unsatisfactory", the project will be
+          closed.
         complete_report: Proceed to fill out the report.
         decline_submitting: I can not provide an adequate report text
-        if_decline_submitting1: If you can not provide a report, press the
-          button «
+        if_decline_submitting1: If you can not provide a report, press the button
+          «
         if_decline_submitting2: >-
-          Choose the appropriate reason and describe in detail the reason
-          why you need to save the project.
+          Choose the appropriate reason and describe in detail the reason why you
+          need to save the project.
         report_form: 'The report must be submitted in the following form:'
         report_form10: Project/research name.
         report_form20: Authors, their job places and  e-mail.
-        report_form30: 'A popular annotation to the description of the project:
-          1-2 paragraphs.'
+        report_form30: 'A popular annotation to the description of the project: 1-2
+          paragraphs.'
         report_form40: >-
-          Brief description of the project / study (plain text, volume - about
-          5000 characters) in an accessible form.
+          Brief description of the project / study (plain text, volume - about 5000
+          characters) in an accessible form.
         report_form41: >-
-          The text of the report should indicate: MSU  supercomputer systems 
-          involved in the course of work on the project, to what extent.
+          The text of the report should indicate: MSU  supercomputer systems involved
+          in the course of work on the project, to what extent.
         report_form50: >-
-          2-3 bright, illustrative pictures / charts / graphics / photos are
-          required. They must reflect your work.
+          2-3 bright, illustrative pictures / charts / graphics / photos are required.
+          They must reflect your work.
         report_form51: >-
-          They must be presented in the form of separate files of high quality,
-          suitable for printing quality.
-        report_form60: 'A complete list of articles since the very beginning
-          of the project. '
+          They must be presented in the form of separate files of high quality, suitable
+          for printing quality.
+        report_form60: 'A complete list of articles since the very beginning of the
+          project. '
         report_form61: >-
-          You have to provide only works with the explicit references indicating
-          that the works have being carried on the MSU supercomputer centre
-          systems ("Chebyshev","Lomonosov", "Lomonosov-2") according to the
-          access rules.
+          You have to provide only works with the explicit references indicating that
+          the works have being carried on the MSU supercomputer centre systems ("Chebyshev","Lomonosov",
+          "Lomonosov-2") according to the access rules.
         session_deadline: >-
           You must provide a report on your work to %{to_date} on your %{pid}:"%{title}"
           project in the re-registration.
         session_started: Reregistration has been started
         subject: You have to fill the "%{title}" project report
         surveys_notification: >-
-          Also, as part of the re-registration, surveys were created for you
-          and other project members, which must be completed and sent to %{to_date}.
-          If the survey is overdue, the user's account will be blocked. You
-          can open the "Reregistration" tab and go to the "Polls" section
-          to fill out the questionnaires
+          Also, as part of the re-registration, surveys were created for you and other
+          project members, which must be completed and sent to %{to_date}. If the
+          survey is overdue, the user's account will be blocked. You can open the
+          "Reregistration" tab and go to the "Polls" section to fill out the questionnaires
       notify_expert_about_assessing_reports:
         msg_num_reports: You should rate the %{reports} unrated reports.
         msg_speedup_assessment: Please rate them as quickly as possible.
         subject: You have %{count} unrated reports
       notify_experts_about_submitted_reports:
         msg_num_reports: >-
-          The "%{session}" Reregistration is nearing completion, but %{reports}
-          reports have not taken for evaluation yet and are awaiting consideration.
+          The "%{session}" Reregistration is nearing completion, but %{reports} reports
+          have not taken for evaluation yet and are awaiting consideration.
         msg_speedup_assessment: Please rate them as quickly as possible.
         subject: " %{count} reports are awaiting evaluation"
       postdated_report_on_project:
         complete_report: Proceed to fill out the report.
         decline_submitting: I can not provide an adequate report text
-        if_decline_submitting1: If you can not provide a report, press the
-          button «
+        if_decline_submitting1: If you can not provide a report, press the button
+          «
         if_decline_submitting2: >-
-          Choose the appropriate reason and describe in detail the reason
-          why you need to save the project.
+          Choose the appropriate reason and describe in detail the reason why you
+          need to save the project.
         msg_postdated: >-
-          You have not sent a report №%{id} for the  %{pid}:"%{title}" project
-          in  the «%{session}» re-registration in time.
+          You have not sent a report №%{id} for the  %{pid}:"%{title}" project in
+          the «%{session}» re-registration in time.
         msg_project_blocked: >-
-          According to the rules, your project is blocked. You can unblock
-          it by filling out the report.
+          According to the rules, your project is blocked. You can unblock it by filling
+          out the report.
         subject: You have not sent a report №%{id} in time
       project_failed_session:
         msg_report_failed: >-
-          Your report %{id} for the  %{pid}:«%{title}» project has not passed 
-          the "%{session}" re-registration and have been closed.
+          Your report %{id} for the  %{pid}:«%{title}» project has not passed the
+          "%{session}" re-registration and have been closed.
         subject: Your report %{id} have not passed re-registration
       report_assessed:
         assessment: 'Mark (on a five-point scale from 2 to 5):'
         assessment_bad: >-
-          Unfortunately, your report has at least one "unsatisfactory" mark,
-          which entails closing the project.
+          Unfortunately, your report has at least one "unsatisfactory" mark, which
+          entails closing the project.
         assessment_ok: Your report has passed the re-registration!
         illustration_points: Illustrations
         msg_future_note: >-
-          Please take into account the remarks and wishes of the expert (if
-          any) in the subsequent work on the project.
+          Please take into account the remarks and wishes of the expert (if any) in
+          the subsequent work on the project.
         msg_report_assessed: >-
-          Your report  No. %{id} for the %{pid}:«%{title}» project has been
-          rated by expert  for  the «%{session}» re-registration.
+          Your report  No. %{id} for the %{pid}:«%{title}» project has been rated
+          by expert  for  the «%{session}» re-registration.
         statement_points: Statement
         subject: Your report №%{id} have been rated by expert.
         summary_points: Summary point
       report_picked:
         msg_follow_comments: >-
-          Please keep an eye out for updates in the report: respond to expert
-          comments and correct mistakes.
+          Please keep an eye out for updates in the report: respond to expert comments
+          and correct mistakes.
         msg_report_picked: >-
-          Your report  No. %{id} for the %{pid}:«%{title}» project has been
-          taken for evaluation by expert in the "%{session}" re-registration.
+          Your report  No. %{id} for the %{pid}:«%{title}» project has been taken
+          for evaluation by expert in the "%{session}" re-registration.
         subject: The report No.%{id} has been taken for evaluation
       report_rejected:
         msg_report_rejected: >-
-          The expert returned the report %{id} for the  %{pid}: "%{title}"
-          project to you for revision in the "%{session}" re-registration.
+          The expert returned the report %{id} for the  %{pid}: "%{title}" project
+          to you for revision in the "%{session}" re-registration.
         msg_report_update: >-
-          Please fix the flaws as soon as possible. Otherwise your project
-          will be blocked at the end of the re-registration.
+          Please fix the flaws as soon as possible. Otherwise your project will be
+          blocked at the end of the re-registration.
         proceed_to_report: Proceed to finalize the report.
         subject: The report No.%{id} has been rejected, revision is necessary
       report_reply:
         expert: Expert
         msg_report_reply: >-
-          New message in the report No.%{id} for the %{pid}:"%{title}" project
-          in the "%{session}" re-registration.
+          New message in the report No.%{id} for the %{pid}:"%{title}" project in
+          the "%{session}" re-registration.
         open_report: Open the report
         subject: New message in the report No.%{id}
       report_resubmitted:
@@ -416,8 +414,8 @@ en:
           The  %{pid}:«%{title}» project manager in the «%{session}» re-registration
           has prepared the report  No.%{id} for evaluation.
         msg_report_updated: >-
-          The report No.%{id} for the  %{pid}:"%{title}" has been updated
-          in the "%{session}" re-registration and is ready to re-evaluate.
+          The report No.%{id} for the  %{pid}:"%{title}" has been updated in the "%{session}"
+          re-registration and is ready to re-evaluate.
         subject: The report №%{id} has been updated
       report_submitted:
         assess_report: Proceed to report evaluation.
@@ -427,16 +425,14 @@ en:
         subject: The report No.%{id} is prepared for evaluation
       user_postdated_survey_and_blocked:
         msg_account_blocked: >-
-          According to the rules, your account has been blocked. You must
-          fill in all the late surveys and then apply for support to unblock
-          your account.
+          According to the rules, your account has been blocked. You must fill in
+          all the late surveys and then apply for support to unblock your account.
         msg_survey_postdated: >-
-          You are late completing the survey  No."%{survey_name}" for the
-          "%{session}" re-registration.
+          You are late completing the survey  No."%{survey_name}" for the "%{session}"
+          re-registration.
         proceed_to_survey: Proceed to fill out the survey.
-        subject: >-
-          The account has been blocked: you are late completing the survey
-          No.%{name}
+        subject: 'The account has been blocked: you are late completing the survey
+          No.%{name}'
     reports:
       edit:
         title: Edit report
@@ -459,23 +455,19 @@ en:
         decline_submitting: I can not provide an adequate report text
         download_report_file: Download report files
         expert: Exper
-        if_decline_submitting: If you can not provide a report, press the
-          button «
+        if_decline_submitting: If you can not provide a report, press the button «
         message: Message
         motivation_to_keep_the_project: Motivation to keep the project
         not_evaluated: Not rated
         report_evaluation: Marks
         report_file_help: >-
-          %{fs} archive, no more than 20MB, in the archive - in addition to
-          the text of the report, at least one with the extension of the graphic
-          file type (at least one illustration). All versions of your materials
-          will be saved.
+          %{fs} archive, no more than 20MB, in the archive - in addition to the text
+          of the report, at least one with the extension of the graphic file type
+          (at least one illustration). All versions of your materials will be saved.
         report_submit_denial_reason: Report submit denial reason
         size: Size
         start_report_completion: Start report completion
-        title: >-
-          The "%{project_title}" project report  in the «%{session_name}»
-          re-registration
+        title: The "%{project_title}" project report  in the «%{session_name}» re-registration
         update_report_file: Update report file
       table:
         complete_by: Must be submitted before

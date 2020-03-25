@@ -17,7 +17,10 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rails", "~> 4.2.11.1"
+  s.add_dependency "rails", "~> 5.0"
+
+  s.add_dependency "nokogiri", ">= 1.10.4"
+  s.add_dependency "mini_magick", ">= 4.9.4"
 
   #s.add_development_dependency "sqlite3"
   s.add_development_dependency "annotate"

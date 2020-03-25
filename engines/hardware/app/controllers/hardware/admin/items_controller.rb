@@ -1,8 +1,7 @@
 module Hardware
   class Admin::ItemsController < Admin::ApplicationController
 
-    skip_before_actions :verify_authenticity_token, :not_authorized,
-                        :not_authenticated, :require_login, :check_abilities,
+    skip_before_actions :verify_authenticity_token, :check_abilities,
                         only: :json_update
     # skip_before_action :verify_authenticity_token, only: :json_update
     # skip_before_action :not_authorized, only: :json_update
@@ -107,7 +106,8 @@ module Hardware
       I18n.locale = params[:language] if params[:language].present?
 
       params.permit!
-      Hardware::ItemsUpdaterService.from_a params[:data]
+      data = JSON.parse(params[:data] || request.body.read)
+      Hardware::ItemsUpdaterService.from_a data
       head :ok
     end
 
@@ -119,10 +119,7 @@ module Hardware
     def item_params
 
       params.require(:item).permit(*Item.locale_columns(:name, :description),
-                                    :kind_id, options_attributes: [:id, :name, :category,
-                                      :name_type, :options_category_id, :value_type,
-                                      :category_value_id, :name_ru, :name_en,
-                                      :value_ru, :value_en, :_destroy])
+                                    :kind_id, options_attributes: options_attributes)
     end
   end
 end

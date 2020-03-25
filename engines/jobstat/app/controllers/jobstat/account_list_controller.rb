@@ -5,13 +5,14 @@ module Jobstat
     include JobHelper
 
     def index
+      params.permit!
       #@owned_logins = get_owned_logins
       #@involved_logins = get_involved_logins
       #
       # !!! FIXME   adding 'true' argument returns ALL available projects (for admins/experts)
       #             use it for admin version
       @projects=get_all_projects #{project: [login1,...], prj2: [log3,...]}
-      @params = get_defaults.merge(params.symbolize_keys)
+      @params = get_defaults.merge(params.to_h.symbolize_keys)
       @total_count = 0
       @shown = 0
       @js_cond=''
@@ -150,7 +151,7 @@ module Jobstat
       jobs_feedback=Job::get_feedback_job(params[:user].to_i, joblist) || {}
       #logger.info "JOBLIST got: #{jobs_feedback}"
       #[{user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string, condition=string},{...}]
-      
+
       @jobs_feedback={}
       jobs_feedback.each { |f|
         @jobs_feedback[f['job_id']]||={}
@@ -207,13 +208,13 @@ module Jobstat
       uri=URI("#{Rails.application.config.octo_feedback_host}/api/feedback-job")
       #user=UID_octoshell(int), class=int(0=ok,1=not_ok), cluster=string, job_id=int, task_id=int, condition=string, feedback=string.
       if !parm.kind_of?(Enumerable)
-        logger.info("Ooooops! feedback_all_jobs got bad argument: #{parm}") 
+        logger.info("Ooooops! feedback_all_jobs got bad argument: #{parm}")
         return 500,''
       end
       arr= (parm.kind_of?(Hash) ? parm.map{|k,v| v} : parm.map{|x| x})
       code=200
       arr.each do |job|
-        resp=Job::post_data(uri,job)  
+        resp=Job::post_data(uri,job)
         unless Net::HTTPSuccess === resp
           logger.info "feedback_multi_jobs: post code=#{resp ? resp.code : -1}"
           code=500

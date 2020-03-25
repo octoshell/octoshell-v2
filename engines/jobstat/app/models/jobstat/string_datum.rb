@@ -15,6 +15,9 @@
 #
 
 module Jobstat
-  class StringDatum < ActiveRecord::Base
+  class StringDatum < ApplicationRecord
+    def versions_enabled
+      false
+    end
   end
 end

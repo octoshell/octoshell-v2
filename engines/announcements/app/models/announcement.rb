@@ -20,13 +20,13 @@
 #  index_announcements_on_created_by_id  (created_by_id)
 #
 
-class Announcement < ActiveRecord::Base
+class Announcement < ApplicationRecord
 
   translates :title, :body
 
   has_many :announcement_recipients, dependent: :destroy
-  has_many :recipients, class_name: "User", source: :user, through: :announcement_recipients
-  belongs_to :created_by, class_name: 'User'
+  has_many :recipients, class_name: Announcements.user_class.to_s, source: :user, through: :announcement_recipients
+  belongs_to :created_by, class_name: Announcements.user_class.to_s
   mount_uploader :attachment, Announcements::AttachmentUploader
 
   validates_translated :body, :title, presence: true

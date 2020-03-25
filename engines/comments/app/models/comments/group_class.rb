@@ -17,7 +17,7 @@
 #
 
 module Comments
-  class GroupClass < ActiveRecord::Base
+  class GroupClass < ApplicationRecord
     enum type_ab: %i[read_ab update_ab create_ab create_with_context_ab]
     belongs_to :group
     validates :type_ab, presence: true
@@ -30,7 +30,7 @@ module Comments
     end
 
     def validate_class_name
-      b =  Object.const_defined?(class_name) && eval(class_name) < ActiveRecord::Base
+      b =  Object.const_defined?(class_name) && eval(class_name) < ApplicationRecord
     rescue NameError, ArgumentError
       b = false
     ensure

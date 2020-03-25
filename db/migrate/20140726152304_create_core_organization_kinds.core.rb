@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140726135431)
-class CreateCoreOrganizationKinds < ActiveRecord::Migration
+class CreateCoreOrganizationKinds < ActiveRecord::Migration[4.2]
   def change
     create_table :core_organization_kinds do |t|
       t.string :name

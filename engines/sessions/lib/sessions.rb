@@ -1,5 +1,5 @@
 require "sessions/engine"
-require "maymay"
+# require "maymay"
 require "decorators"
 #require "state_machine"
 require "sidekiq"

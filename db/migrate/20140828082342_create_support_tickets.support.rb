@@ -1,5 +1,5 @@
 # This migration comes from support (originally 20140827134108)
-class CreateSupportTickets < ActiveRecord::Migration
+class CreateSupportTickets < ActiveRecord::Migration[4.2]
   def change
     create_table :support_tickets do |t|
       t.integer :topic_id

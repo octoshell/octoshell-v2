@@ -38,8 +38,8 @@ en:
       expired: Expired
       requested: Requested
     success: >-
-      Action succeeded.Access state: "%{status}". If you have questions, you
-      can write us.
+      Action succeeded.Access state: "%{status}". If you have questions, you can write
+      us.
     sucess: Action succeeded
     title: Accesses
   actions:
@@ -66,6 +66,7 @@ en:
         not_forever: With expiration date
         status: Status
         status_readable: Status
+        to: For
         version: Version
         version_name: Version name
         versions: Versions
@@ -81,6 +82,7 @@ en:
         category: Category
         values: Values
       pack/package:
+        accesses_to_package: Accesses to package
         deleted: Removed
         deleted?: Removed/active
         description: Description
@@ -113,28 +115,30 @@ en:
         value: Value
     errors:
       messages:
-        deleted_record: "This record (%{value}) has been deleted while u have
-          been editing the form "
-        uniq_access: The user / project already has access / request for this
-          version
+        deleted_record: 'This record (%{value}) has been deleted while u have been
+          editing the form '
+        uniq_access: The user / project already has access / request for this version
       models:
         pack/access:
           attributes:
             end_lic:
               blank_not_forever: Specify a date for the access
             new_end_lic:
-              incorrect_forever: You can not create endless access requests
-                with a date
+              incorrect_forever: You can not create endless access requests with a
+                date
               status_only: >-
-                The renewal request date is only available for accesses with
-                the status "authorized" or "expired"
+                The renewal request date is only available for accesses with the status
+                "authorized" or "expired"
             new_end_lic_forever:
               status_only: >-
-                The renewal request date is only available for accesses with
-                the status "authorized" or "expired"
+                The renewal request date is only available for accesses with the status
+                "authorized" or "expired"
             status:
-              version_deleted: Version is removed. The access status can only
-                be "removed".
+              version_deleted: Version is removed. The access status can only be "removed".
+            to_id:
+              accesses_to_package: >-
+                Access creation is not allowed for this object. See "accesses to package"
+                attribute
         pack/clusterver:
           attributes:
             action:
@@ -143,12 +147,12 @@ en:
           attributes:
             deleted:
               pack_deleted: >-
-                The package with this version was removed. The version must
-                has  'removed' state too.
+                The package with this version was removed. The version must has  'removed'
+                state too.
         pack/version_option:
           taken: >-
-            The option for this version with this name already exists (option
-            names must be unique)
+            The option for this version with this name already exists (option names
+            must be unique)
     models:
       pack/access: Access
       pack/category_value: Category values
@@ -161,8 +165,7 @@ en:
   clusters: Clusters
   clvers:
     green: Version is active and ready for usage
-    note: 'Note: if the cluster is not listed, the version is not installed
-      on it!'
+    note: 'Note: if the cluster is not listed, the version is not installed on it!'
     red: Version is installed on cluster,but it is inactive at the moment
     title: Clusters activity
   colors:
@@ -174,14 +177,12 @@ en:
     yellow: yellow
   confirm: Are you sure you want to delete this entry?
   cost: Cost
-  delete: Delete
   deleted: Show only removed
   deleted?: removed/active
   denied: denied
   description: Description
   destroy: Destroy
   disable: Hide
-  edit: Edit
   edit_access: Package permissions
   engine_submenu:
     accesses_list: Accesses
@@ -201,35 +202,33 @@ en:
   from_user: From user
   group: Group
   integration:
-    support_theme_name: Request for package version access
+    support_theme_name: Заявка на доступ к пакету
   legend: legend
   mailer_messages:
     allowed: You have been allowed access
     body: >-
-      %{status_info} for the %{link} version. For details, write to us or
-      check the responses of the administrators for your requests
+      %{status_info} for the %{link}. Write us or check the responses of the administrators
+      for details
     deleted: Your access has been removed
-    denied: You have been denied access
-    denied_longer: You have been denied in access prolongation
+    denied: Your access has been rejected
+    denied_longer: You have been rejected in access prolongation
     end_lic_changed: Your access expiration date has been changed
     expired: Your access has expired
     show_vers: Show version
-    subject: Your access to package version %{version_name} was changed
+    subject: "%{to}: Your access state has changed"
   mailer_version_messages:
     available: The license is valid until "%{date}"
     expired: The License has expired
     forever: The license does not have an end date
-  name: Name
   new_package: New package
   no_packages_found: No packages have been found
-  no_records_found: No records found
   not available: Not available
   not_deleted: Show existing
   not_for_ever: Not forever
   notice:
     pack_deleted: >-
-      The package that includes this version is removed. Version will be removed
-      by defuault
+      The package that includes this version is removed. Version will be removed by
+      defuault
   options_list: Options
   pack:
     access:
@@ -237,22 +236,166 @@ en:
         Unable to send an request. At the time of filling out the form  administrator
         most likely  granted u access to the version.
       updated_during_edit_static: >-
-        You can not perform an action. Something happened At the time of filling
-        out the form. Re-enter the data
+        You can not perform an action. Something happened At the time of filling out
+        the form. Re-enter the data
+    accesses:
+      update_accesses:
+        not_owned_project: The project does not belong to you. You can not work with
+          this project access
+        unable to_create: Unable to create access for this version
+        updated_during_edit: >-
+          You can not perform an action. Something happened At the time of filling
+          out the form. Re-enter the data
+    admin:
+      accesses:
+        edit:
+          title: Edit access
+        end_lic_with_req:
+          delete_request: Delete information about the renewal request
+        index:
+          delete: Delete
+          edit: Edit
+          new: New access
+          new_package: New access
+          title: List of accesses to packages
+        new:
+          title: New access
+        q:
+          show_requests_only: Show only renewals requests
+          to_type_eq_empty: All
+        requested:
+          expired_date: >-
+            The date entered by the user is deprecated. If you approve an request
+            without editing access, then access will be "expired".
+        show:
+          transitions: >-
+            Note that depending on the expiration date you have set, the access status
+            may change from expired to allowed and vice versa
+        table:
+          no_accesses_found: No accesses found
+      options_categories:
+        edit:
+          title: Edit categories
+        form:
+          add_value: Добавить значение
+          remove_value: Удалить значение
+        index:
+          new: New category
+          title: Categories for versions options
+        new:
+          title: New category
+        table:
+          confirm: Are you sure to delete this options category?
+          no_found: No options categories
+      packages:
+        edit:
+          title: Edit package
+        index:
+          delete: Delete
+          edit: Edit
+          new_package: New package
+          no_packages_found: No packages found
+          title: Packages list
+        new:
+          title: New package
+        table:
+          confirm: Are you sure you want to delete the package irrevocably?!
+      versions:
+        edit:
+          title: Edit version
+        form2:
+          new: Add option
+        index:
+          title: Versions list
+        new:
+          title: New version
+        show:
+          title: Version information
+        version_opts_fields:
+          remove_option: Remove option
+          with_category: Autocomplete
+          without_category: Not autocomplete
+    docs:
+      docs_ru:
+        header: Package engine wiki
     mailer:
-      email_vers_state_changed:
+      access_changed_allowed:
+        body: You have been granted access to %{link}.
+        subject: You have been granted access to %{to}
+      access_changed_deleted:
+        body: >-
+          Your access for %{link} has been deleted automically probably because of
+          our licence has expired. Write us for details.
+        subject: Your access for  %{to} has been deleted
+      access_changed_denied:
+        body: Your access for %{link} has been rejected.
+        subject: Your access for %{to} has been rejected.
+      access_changed_denied_longer:
+        body: Your request for prolongation for %{link} has been rejected.
+        subject: Your request for prolongation for %{to} has been rejected.
+      access_changed_end_lic:
+        body: Your access expiration date for %{link} has been changed to %{end_lic}.
+        subject: Your access expiration date for %{to} has been changed.
+      access_changed_expired:
+        body: >-
+          Your access for %{link} has expired. You can go to %{link} and create a
+          request for prolongation.
+        subject: Your access for %{to} has expired.
+      body: >-
+        %{status_info} к версии  %{link}. Для подробностей напишите нам или просмотрите
+        ответы администраторов на Ваши заявки
+      header:
+        hello_known_name: Hello, %{name}!
+        hello_unknown: Hello!
+      subject: Subject
+      to_package: the "%{to}" package
+      to_version: the "%{to}" version
+      version_state_changed:
         body: The license information for the %{link} version has changed.%{message}.
-        subject: Information about the "%{version_name}" version license has
-          changed
-    notificators:
+        subject: Information about the "%{version_name}" version license has changed
+    notificator:
       notify_about_expiring_versions:
         subject: Packages versions with expiring license
-        title: Packages versions with expiring license
-        topic: Packages versions with expiring license
+        title: Software versions with expiring license
+        topic: Версии ПО с истекающей лицензией
+    packages:
+      allowed_expired:
+        success: The request has been sent  successfully
+        title: Request for  renewal of version access
+      index:
+        title: Packages list
+      new:
+        new_access: New request for access to version
+        success: The request has been sent  successfully
+      show:
+        actions_with_packages: Actions with package
+        actions_with_versions: Actions with version
+        can_delete_requested: >-
+          An application for access to the version has been sent. It has not been
+          considered yet. You can remove the request
+        end_lic_expired: Your access to version expired.
+        end_lic_null: Your access is endless
+        new_end_lic: >-
+          You have already requested for the prolongation of access to ${access.new_end_lic}.
+          Do you want to change the request?
+        new_end_lic_forever: >-
+          You have already requested for prolongation to endless access to the version.
+          Do you want to change the request?
+        success_delete: Request has been removed
+        user: User
+    update_access:
+      updated_during_edit_static: >-
+        You can not perform an action. Something happened At the time of filling out
+        the form. Re-enter the data
+    versions:
+      index:
+        title: Versions list
+      show:
+        title: Version
   pack_list: Packages list
   pack_search:
     packages:
-      active_cl: Show only active on cluster
+      active_cl: Show only active on clusters
       clusters: Clusters
       end_lic_gt: Version license expires after
       end_lic_lt: Version license expires not earlier than
@@ -283,11 +426,8 @@ en:
   tickets: Requests for support
   tickets_access:
     subject:
-      new_lic_req: >-
-        Request for prolongation for %{version_name} created by %{user} for
-        project %{who_name}
-      requested: >-
-        Request for %{version_name} for created by %{user} for project %{who_name}
+      new_end_lic: Request for prolongation for %{who_name} created by %{user}
+      requested: Request for %{who_name} created by %{user}
   'true': 'Yes'
   user: User
   user(me): For user(myself)
@@ -306,8 +446,7 @@ en:
       active: active
       not_active: inactive
     clusters: 'Installed on clusters:'
-    exp_mes: >-
-      The license of this version has expired. You can not use the expired
+    exp_mes: The license of this version has expired. You can not use the expired
       version.
     expired: expired
     forever: without expiration date

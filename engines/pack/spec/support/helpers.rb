@@ -17,13 +17,13 @@ module PackHelpers
 
   def access_with_status(overrides = nil)
     access = FactoryBot.build(:access, overrides)
-    access.save
+    access.save!
     access
   end
 
   def access_with_status_without_validation(overrides = nil)
     access = FactoryBot.build(:access, overrides)
-    access.save(:validate => false)
+    access.save!(:validate => false)
     access
   end
 

@@ -149,7 +149,7 @@ All access rights are managed by MayMay gem. To create new Access object create 
 
 Then you can add to admin controllers this:
 
-    before_filter :authorize_admins
+    before_action :authorize_admins
     def authorize_admins
       authorize!(:access, :foo) # here 'foo' is the same as in Ability.create
     end
@@ -179,3 +179,15 @@ Then open created migration and fill in:
 
 Note ':id => false' and plural name of new table.
 
+## Show markdown text
+
+Use this helper:
+
+    = markdown @text
+
+If you need to insert editor with preview, then do this:
+
+Put your text into textarea like this:
+
+    = bootstrap_form_for @my_model do |f|
+      = markdown_area f, @my_model.text

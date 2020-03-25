@@ -1,0 +1,9 @@
+= stylesheet_link_tag params[:controller]
+
+div class="page-header"
+  h1 = t(".title")
+
+div#dirtable
+
+	= nested_list @pages do |p|
+		= link_to p.name, page_path(p)

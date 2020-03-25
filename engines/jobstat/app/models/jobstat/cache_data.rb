@@ -1,5 +1,8 @@
 module Jobstat
   class CacheData
+
+  
+
   include Singleton
 
   class << self

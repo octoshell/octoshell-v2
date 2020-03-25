@@ -1,6 +1,7 @@
 module Sessions
   class Admin::ReportsController < Admin::ApplicationController
-    before_filter { authorize! :manage, :reports }
+    # before_action { authorize! :manage, :reports }
+    before_action :octo_authorize!
 
     def index
       @search = Report.includes([{ project: :research_areas },
@@ -58,7 +59,7 @@ module Sessions
         @report.save
         redirect_to [:admin, @report]
       else
-        raise MayMay::Unauthorized
+        raise CanCan::AccessDenied
       end
     end
 

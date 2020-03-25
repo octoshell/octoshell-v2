@@ -8,15 +8,46 @@
       = f.select :status_in, Pack::Access.states_list_readable,{label:  Pack::Access.human_attribute_name(:status)},{multiple: true}
     div class='col-md-4'
         = f.autocomplete_field :user_access_without_select,{label: Pack::Access.human_attribute_name(:con_to_user), source:  main_app.users_path},include_blank: true do |val|
-          -User.find(val).full_name_with_email
+          - User.find(val).full_name_with_email
   div class='row'
-    div class='col-md-3'
+    div class='col-md-4'
+       =  f.label Pack::Access.human_attribute_name(:to)
+       = f.radio_button :to_type_eq, Pack::Package.to_s, label: Pack::Package.model_name.human.to_s
+       = f.radio_button :to_type_eq, Pack::Version.to_s, label: Pack::Version.model_name.human.to_s
+       = f.radio_button :to_type_eq, '', label: t('.to_type_eq_empty')
+       = f.autocomplete_field :to_id_in,{ hide_label: true}, class: 'select2-custom' ,include_blank: true do |val|
+        - (f.object.to_type_eq == Pack::Package.to_s ? Pack::Package : Pack::Version ).find(val).to_s
+    div class='col-md-4'
        = f.check_box :requests, {label: t('.show_requests_only')},"1",""
-    div class='col-md-9'
-      = f.collection_select :version_id_in,Pack::Version.all.includes(:package), :id, :name_with_package, {label: Pack::Access.human_attribute_name(:versions)},multiple: true
     div class='row'
       = display_all_tag
     = f.form_group do
           = f.submit t("actions.find"), class: "btn btn-primary"
 
     -@f=f
+javascript:
+    var toID = $('#q_to_id_in');
+    $("input[type='radio']").change(function(){
+      toID.empty().trigger('change');
+      var self = $(this);
+      if(self.is(':checked')){
+        if(self.val() == 'Pack::Package'){
+          apply_select_to(toID,'#{admin_packages_path}');
+        }else if(self.val() == 'Pack::Version'){
+          apply_select_to(toID,'#{admin_versions_path}');
+        }
+      }
+    });
+
+    $("input[type='radio']").each(function(){
+      var self = $(this);
+      if(self.is(':checked')){
+        if(self.val() == 'Pack::Package'){
+          apply_select_to(toID,'#{admin_packages_path}');
+        }else if(self.val() == 'Pack::Version'){
+          apply_select_to(toID,'#{admin_versions_path}');
+        }
+      }
+    });
+
+    //$('div#to-container').trigger('change');

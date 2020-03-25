@@ -1,0 +1,14 @@
+div class="container marked-container"
+  div.col-md-6
+    - text_area_field =~ /\sid=\"([^"]+)"/
+    - @editid = $1
+    = text_area_field
+  div.col-md-6
+    div.form-group
+    	- l = preview_label || t(".#{method}_preview")
+    	= label_tag("#{@editid}_preview", l, :class => 'control-label col-sm-2 required')
+    	div.marked-preview.col-sm-10 data-myid="#{@editid}" id="#{@editid}_preview"
+
+javascript:
+  apply_markdown();
+/= markdown_js.html_safe

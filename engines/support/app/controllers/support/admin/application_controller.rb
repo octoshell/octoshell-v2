@@ -2,8 +2,8 @@ module Support
   class Admin::ApplicationController < Support::ApplicationController
     layout "layouts/support/admin"
 
-    before_filter :authorize_admins, :journal_user
-    rescue_from MayMay::Unauthorized, with: :not_authorized
+    before_action :authorize_admins, :journal_user
+    # rescue_from MayMay::Unauthorized, with: :not_authorized
 
     def authorize_admins
       authorize!(:access, :admin) && authorize!(:manage, :tickets)

@@ -1,7 +1,7 @@
 module Core
   class Admin::ClusterLogsController < Admin::ApplicationController
-    before_filter :setup_default_filter
-
+    before_action :setup_default_filter
+    before_action :octo_authorize!
     def index
       respond_to do |format|
         format.html do

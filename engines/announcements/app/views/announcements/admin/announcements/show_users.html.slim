@@ -3,13 +3,13 @@ div class="page-header"
 
 = bootstrap_form_for @search, url: admin_announcement_show_users_path(@announcement), method: :get, layout: :horizontal do |f|
   = f.autocomplete_field :id_eq, source:  main_app.users_path, label: t('.user') do |id|
-    - User.find(id).full_name_with_email
-  = f.select :owned_projects_state_in, Core::Project.human_state_names_with_original, { label: t('.managed_project_statuses'), include_blank: true }, { multiple: true }
-  = f.select :projects_state_in, Core::Project.human_state_names_with_original, { label: t('.participated_project_statuses'), include_blank: true }, { multiple: true }
-  = f.collection_select :available_projects_available_clusters_id_eq, Core::Cluster.all, :id, :name, label: t('.has_account_on_clusters'), include_blank: true
-  = f.collection_select :sessions_id_in, Sessions::Session.all, :id, :description, { label: t('.rereg_participated'), include_blank: true }, { multiple: true }
-  = f.select :reports_state_in, Sessions::Report.human_state_names_with_original, { label: t('.has_rereg_report_statuses'), include_blank: true }, { multiple: true }
-  = f.select :surveys_state_in, Sessions::UserSurvey.human_state_names_with_original, { label: t('.has_survey_statuses'), include_blank: true }, { multiple: true }
+    - Announcements.user_class.find(id).full_name_with_email
+  = f.select :owned_projects_state_in, Announcements.project_class.human_state_names_with_original, { label: t('.managed_project_statuses'), include_blank: true }, { multiple: true }
+  = f.select :projects_state_in, Announcements.project_class.human_state_names_with_original, { label: t('.participated_project_statuses'), include_blank: true }, { multiple: true }
+  = f.collection_select :available_projects_available_clusters_id_eq, Announcements.cluster_class.all, :id, :name, label: t('.has_account_on_clusters'), include_blank: true
+  = f.collection_select :sessions_id_in, Announcements.session_class.all, :id, :description, { label: t('.rereg_participated'), include_blank: true }, { multiple: true }
+  = f.select :reports_state_in, Announcements.report_class.human_state_names_with_original, { label: t('.has_rereg_report_statuses'), include_blank: true }, { multiple: true }
+  = f.select :surveys_state_in, Announcements.user_survey_class.human_state_names_with_original, { label: t('.has_survey_statuses'), include_blank: true }, { multiple: true }
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
 
@@ -22,9 +22,9 @@ div class="page-header"
         tr
           th = check_box_tag "check-all-box"
           th #
-          th = User.human_attribute_name(:email)
-          th = User.human_attribute_name(:full_name)
-          th = User.human_attribute_name(:created_at)
+          th = Announcements.user_class.human_attribute_name(:email)
+          th = Announcements.user_class.human_attribute_name(:full_name)
+          th = Announcements.user_class.human_attribute_name(:created_at)
           th
         - @users.each do |user|
           tr
@@ -32,7 +32,8 @@ div class="page-header"
                                @recipient_ids.include?(user.id)
             td = user.id
             td = user.email
-            td = link_to user.full_name, main_app.admin_user_path(user)
+            td = link_to user.full_name, octo_url_for(:admin, user)
+            /td = link_to user.full_name, main_app.admin_user_path(user)
             td class="col-xs-2" = l user.created_at.to_date
   - else
     div class="panel-body"

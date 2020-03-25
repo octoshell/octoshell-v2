@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140726125927)
-class CreateCoreCountriesAndCities < ActiveRecord::Migration
+class CreateCoreCountriesAndCities < ActiveRecord::Migration[4.2]
   def change
     create_table :core_countries do |t|
       t.string :title_ru

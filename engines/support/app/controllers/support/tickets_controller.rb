@@ -1,13 +1,13 @@
 # coding: utf-8
 module Support
-  class TicketsController < ApplicationController
-    before_filter :require_login
-    before_filter :setup_default_filter, only: :index
+  class TicketsController < Support::ApplicationController
+    before_action :require_login
+    before_action :setup_default_filter, only: :index
 
     def index
       @search = current_user.tickets.search(params[:q])
       @tickets = @search.result(distinct: true)
-                        .order("id DESC, updated_at DESC")
+                        .order("updated_at DESC, id DESC")
                         .page(params[:page])
     end
 

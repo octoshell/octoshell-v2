@@ -13,7 +13,7 @@
 
   div class="row"
     div class='col-md-4'
-      =f.check_box :user_access,{label: t("pack_search.packages.my_packs") }, current_user.id
+      =f.check_box :user_access,{label: t("pack_search.packages.my_packs") }
   div class='row'
     div class='col-md-4'
       =f.select :accesses_who_type_in, (["User","Core::Project","Group"].map{ |t| [t('who_types.'+t),t] } ),{ label: t("pack_search.packages.who_type") },{class: "change_user_access", multiple: true}

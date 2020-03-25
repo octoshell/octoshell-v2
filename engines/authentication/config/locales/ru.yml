@@ -13,9 +13,8 @@ ru:
         user:
           attributes:
             base:
-              user_is_not_activated: >-
-                Пользователь еще не активирован. Пройдите по ссылке в письме
-                об активации.
+              user_is_not_activated: Пользователь еще не активирован. Пройдите по
+                ссылке в письме об активации.
               user_is_not_registered: Пользователь не зарегистрирован.
               wrong_password: Неверный пароль.
             email:
@@ -66,8 +65,7 @@ ru:
     sessions:
       new:
         forgot_password: Забыли пароль?
-        have_not_received_confirmation_instructions: Не получили инструкции
-          по подтверждению?
+        have_not_received_confirmation_instructions: Не получили инструкции по подтверждению?
         or: или
         sign_in: Войти
         title: Авторизация
@@ -75,8 +73,7 @@ ru:
     signup: Регистрация
     users:
       confirmation:
-        message: На ваш email %{email} отправлена инструкция по активации
-          аккаунта.
+        message: На ваш email %{email} отправлена инструкция по активации аккаунта.
         title: Подтвердите свой email
       new:
         cond_accepted: Я разрешаю МГУ им.М.В.Ломоносова обработку моих персональных

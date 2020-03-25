@@ -3,6 +3,7 @@ module Comments
 
     def self.create_permissions(class_name:, ids:, user:)
       return false unless ids.count == 1
+
       GroupClass.create_permissions(class_name, ids.first, user.id)
     end
 

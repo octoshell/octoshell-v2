@@ -25,8 +25,8 @@
         td
           ul class="list-unstyled"
             li
-              strong = link_to_if (may?(:review, :reports) || report.expert), t('.report_id', id: report.id), [:admin, report]
-            li = link_to_if may?(:review, :projects), report.project.title, core.admin_project_path(report.project)
+              strong = link_to_if (can?(:review, :reports) || report.expert), t('.report_id', id: report.id), [:admin, report]
+            li = link_to_if can?(:review, :projects), report.project.title, core.admin_project_path(report.project)
             li = link_to report.author.full_name, main_app.admin_user_path(report.author), class: "text-muted"
         td
           ul class="list-unstyled"
@@ -38,8 +38,8 @@
           = l report.updated_at, format: :long if report.updated_at
         td
           - if report.expert
-            = link_to_if may?(:manage, :users), report.expert.full_name, main_app.admin_user_path(report.expert), class: "muted"
-          - elsif may?(:manage, :reports) && report.may_pick?
+            = link_to_if can?(:manage, :users), report.expert.full_name, main_app.admin_user_path(report.expert), class: "muted"
+          - elsif can?(:manage, :reports) && report.may_pick?
             = link_to "Взять на оценку", [:admin, report, :pick], method: :patch, class: "btn btn-info"
 
           - if report.assessed?

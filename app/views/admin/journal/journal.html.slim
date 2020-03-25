@@ -1,0 +1,66 @@
+
+div class="page-header"
+  h1 = t(".title", default: "Users")
+= bootstrap_form_for @search, method: :get, url: admin_journal_path, layout: :vertical do |f|
+  .row
+    .col-md-4
+      = f.select :item_type_in, PaperTrail::Version.distinct.pluck(:item_type),  {label: t('.item_type_in'), include_blank: true}, multiple: true
+      = f.select :event_in, PaperTrail::Version.distinct.pluck(:event),  {label: t('.event_in'), include_blank: true}, multiple: true
+      = f.text_field :object_changes_cont, label: t('.object_changes_cont')
+    .col-md-4
+      = f.autocomplete_field :whodunnit_in,{label: t('.whodunnit_in'), source:  main_app.users_path}, multiple: true do |id|
+        -User.find(id).full_name_with_email
+      = f.collection_select :user_user_groups_group_id_in, Group.all, :id, :name, {label: t('.group'), include_blank: true}, multiple: true
+      = f.check_box :whodunnit_null, label: t('.system_only')
+    .col-md-4
+      = f.text_field :created_at_gt, label: t('.created_at_gt')
+      = f.text_field :created_at_lt, label: t('.created_at_lt')
+      = f.label t('.chain_id')
+      = f.form_group do
+        = number_field_tag :chain_id, params[:chain_id]
+
+
+  .row
+    = f.form_group do
+      = display_all_tag
+      = f.primary t("actions.find")
+      = f.primary t('.week_ago'), onclick: "ago('week');"
+      = f.primary t('.month_ago'), onclick: "ago('month');"
+css:
+  TABLE {
+    width: auto;
+    border-collapse: collapse;
+   }
+   TD, TH {
+    padding: 3px;
+    text-align: center;
+    border: 1px solid black;
+   }
+= render "table", { versions: @versions, chains: @chains }
+= safe_paginate @versions
+
+javascript:
+  format = "YYYY.MM.DD HH:mm";
+  $('#q_created_at_gt, #q_created_at_lt').datetimepicker({
+    locale: window.locale,
+    format: format
+  });
+  function ago(time){
+    if(time == 'week')
+      dateFrom = moment().subtract(7,'d').format(format);
+    else
+      dateFrom = moment().subtract(1,'M').format(format);
+    $('#q_created_at_gt').val(dateFrom).trigger('change');
+    $(`input[type='submit']`).first().trigger('click');
+    return false;
+  }
+  $('#q_whodunnit_null').change(function() {
+    if($(this).is(":checked")) {
+        $('#q_whodunnit_in').prop( "disabled", true ).trigger('change');
+        $('#q_user_user_groups_group_id_in').prop( "disabled", true ).trigger('change');
+    }else{
+    $('#q_whodunnit_in').prop( "disabled", false ).trigger('change');
+    $('#q_user_user_groups_group_id_in').prop( "disabled", false ).trigger('change');
+
+    }
+  }).trigger('change');

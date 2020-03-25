@@ -1,16 +1,16 @@
 require_dependency "api/admin/application_controller"
 
-module Api
-  class Admin::KeyParametersController < Admin::ApplicationController
+module Api::Admin
+  class KeyParametersController < Api::Admin::ApplicationController
     before_action :set_key_parameters, only: [:show, :edit, :update, :destroy]
-    before_filter :authorize_admins
+    before_action :authorize_admins
     def authorize_admins
-      authorize!(:access, :api_engine)
+      authorize!(:manage, :api_engine)
     end
 
     # GET /key_parameters
     def index
-      @key_parameters = KeyParameter.all
+      @key_parameters = Api::KeyParameter.all
     end
 
     # GET /key_parameters/1
@@ -19,7 +19,7 @@ module Api
 
     # GET /key_parameters/new
     def new
-      @key_parameters = KeyParameter.new
+      @key_parameters = Api::KeyParameter.new
     end
 
     # GET /key_parameters/1/edit
@@ -28,7 +28,7 @@ module Api
 
     # POST /key_parameters
     def create
-      @key_parameters = KeyParameter.new(key_params)
+      @key_parameters = Api::KeyParameter.new(key_params)
 
       if @key_parameters.save
         redirect_to admin_key_parameters_url, notice: 'Param was successfully created.'
@@ -56,7 +56,7 @@ module Api
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_key_parameters
-        @key_parameters = KeyParameter.find(params[:id])
+        @key_parameters = Api::KeyParameter.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.

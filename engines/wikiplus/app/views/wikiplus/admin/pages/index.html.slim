@@ -1,0 +1,79 @@
+= javascript_include_tag "jquery.mjs.nestedSortable.js"
+
+div class="page-header"
+  h1 = t(".title")
+
+div class="panel panel-default"
+  div class="panel-heading clearfix"
+    = link_to t(".new_page"), new_admin_page_path, class: "btn btn-default"
+    /= link_to t(".new_image"), new_admin_image_path, class: "btn btn-default"
+    = link_to t(".all_images"), admin_images_path, class: "btn btn-default"
+    = link_to t('.submit_structure'), '#', class: "btn btn-default", id: "submit_structure"
+  - if @pages.any?
+    div.panel-body
+      - oldlevel = 0
+      - first_item = true
+      ol.sortable
+        - @list.each do |lst|
+          - page = Wikiplus::Page.find(lst[0])
+          - level = lst[1]-1
+          - if level>oldlevel
+            = "<ol class=\"sortable\">".html_safe
+          - elsif level<oldlevel
+            = "</ol>\n".html_safe
+          - elsif !first_item
+            = "</li>\n".html_safe
+          - else
+            - first_item = false
+
+          = "<li id=\"page-#{lst[0]}\">".html_safe
+          - oldlevel = level
+          div
+            span
+              i.fas.fa-bars.drag-handle
+            span
+              | &nbsp; &nbsp;
+              = link_to page.name, [:admin, page]
+            span style="float: right"
+              | &nbsp;
+              = url_for page
+              | &nbsp;
+              /- name = t(".newsub_page")
+              - name = '<i class="fas fa-plus"></i>'.html_safe
+              = link_to name, newsubpage_admin_page_path(page), class: "btn btn-default btn-sm btn-inline"
+              | &nbsp;
+              /- name = t(".edit", default: "edit")
+              - name = '<i class="fas fa-edit"></i>'.html_safe
+              = link_to name, edit_admin_page_path(page.id), class: "btn btn-default btn-sm btn-inline"
+              /- name = t(".delete", default: "delete")
+              | &nbsp;
+              - name = '<i class="fas fa-times"></i>'.html_safe
+              - confirm = t(".confirm", default: "Are You shure?")
+              - data = { method: :delete, confirm: confirm }
+              /li class="text-left"
+              = link_to name, admin_page_path(page.id), data: data, class: "btn btn-danger btn-sm btn-inline"
+
+  - else
+    div class="panel-body"
+      p = t(".no_pages_found", default: "No Pages Found")
+javascript:
+  $(function(){
+    $('.sortable').nestedSortable({items: 'li'});
+    $('#submit_structure').click(function(e){
+      var s = $('ol.sortable').nestedSortable('serialize');
+      //$('#out').text(s+'\n\n');
+      $.ajax({
+        type: "POST",
+        url: "#{{admin_change_structure_path}}",
+        data: { relations: s },
+        success: function(data){
+          alert(data);
+          return false;
+        },
+        error: function(data){
+          alert(data);
+          return false
+        }
+      });
+    });
+  });

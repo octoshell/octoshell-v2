@@ -1,5 +1,5 @@
 module Sessions
-  class ReportsController < ApplicationController
+  class ReportsController < Sessions::ApplicationController
     layout "layouts/sessions/user"
 
     def index
@@ -57,18 +57,22 @@ module Sessions
         redirect_to @report, alert: t("flash.you_must_provide_report_materials")
         return
       end
-      if @report.update(report_params)
-        if @report.rejected?
-          @report.resubmit!
+      begin
+        if @report.update(report_params)
+          if @report.rejected?
+            @report.resubmit!
+          else
+            @report.submit! if @report.may_submit?
+          end
+          redirect_to @report
         else
-          @report.submit! if @report.may_submit?
+          @reply = @report.replies.build do |reply|
+            reply.user = current_user
+          end
+          render :show
         end
-        redirect_to @report
-      else
-        @reply = @report.replies.build do |reply|
-          reply.user = current_user
-        end
-        render :show
+      rescue CarrierWave::IntegrityError => e
+        redirect_to @report, alert: e.message
       end
     end
 

@@ -65,7 +65,7 @@
 #                             PUT    /admin/options_categories/:id(.:format)      admin/options_categories#update
 #                             DELETE /admin/options_categories/:id(.:format)      admin/options_categories#destroy
 #                    rails_db        /rails/db                                    RailsDb::Engine
-# 
+#
 # Routes for RailsEmailPreview::Engine:
 #               rep_emails GET  /(:email_locale)(.:format)                                   rails_email_preview/emails#index {:email_locale=>/ru|en/}
 #                rep_email GET  (/:email_locale)/:preview_id(/:part_type)(.:format)          rails_email_preview/emails#show {:email_locale=>/ru|en/, :part_type=>/html|plain|raw/, :preview_id=>/\w+-\w+/}
@@ -74,7 +74,7 @@
 # rep_raw_email_attachment GET  (/:email_locale)/:preview_id/attachments/:filename(.:format) rails_email_preview/emails#show_attachment {:email_locale=>/ru|en/, :preview_id=>/\w+-\w+/}
 #        rep_email_headers GET  (/:email_locale)/:preview_id/headers(.:format)               rails_email_preview/emails#show_headers {:email_locale=>/ru|en/, :preview_id=>/\w+-\w+/}
 #                 rep_root GET  /(:email_locale)(.:format)                                   rails_email_preview/emails#index {:email_locale=>/ru|en/}
-# 
+#
 # Routes for Api::Engine:
 #    abilities GET    /abilities(.:format)          api/abilities#index
 #              POST   /abilities(.:format)          api/abilities#create
@@ -92,7 +92,7 @@
 #              PATCH  /exports/:id(.:format)        api/exports#update
 #              PUT    /exports/:id(.:format)        api/exports#update
 #              DELETE /exports/:id(.:format)        api/exports#destroy
-# 
+#
 # Routes for Wiki::Engine:
 #     tasks GET    /tasks(.:format)          wiki/tasks#index
 #           POST   /tasks(.:format)          wiki/tasks#create
@@ -111,7 +111,7 @@
 #           PUT    /pages/:id(.:format)      wiki/pages#update
 #           DELETE /pages/:id(.:format)      wiki/pages#destroy
 #      root GET    /                         wiki/pages#index
-# 
+#
 # Routes for Jobstat::Engine:
 #       account_list_index GET    /account/list/index(.:format)        jobstat/account_list#index
 #   account_list_all_rules GET    /account/list/all_rules(.:format)    jobstat/account_list#all_rules
@@ -132,7 +132,7 @@
 #          job_performance POST   /job/performance(.:format)           jobstat/api#post_performance
 #               job_digest POST   /job/digest(.:format)                jobstat/api#post_digest
 #                 job_tags POST   /job/tags(.:format)                  jobstat/api#post_tags
-# 
+#
 # Routes for Statistics::Engine:
 #         calculate_stats_users POST /users/calculate_stats(.:format)         statistics/users#calculate_stats
 #                         users GET  /users(.:format)                         statistics/users#index
@@ -142,7 +142,7 @@
 #                 organizations GET  /organizations(.:format)                 statistics/organizations#index
 #      calculate_stats_sessions POST /sessions/calculate_stats(.:format)      statistics/sessions#calculate_stats
 #                      sessions GET  /sessions(.:format)                      statistics/sessions#index
-# 
+#
 # Routes for Sessions::Engine:
 #                          report_accept PUT    /reports/:report_id/accept(.:format)                   sessions/reports#accept
 #              report_decline_submitting PUT    /reports/:report_id/decline_submitting(.:format)       sessions/reports#decline_submitting
@@ -215,7 +215,7 @@
 #                      admin_user_survey GET    /admin/user_surveys/:id(.:format)                      sessions/admin/user_surveys#show
 #                             admin_root GET    /admin(.:format)                                       sessions/admin/sessions#index
 #                                   root GET    /                                                      sessions/reports#index
-# 
+#
 # Routes for Support::Engine:
 #            admin_ticket_close PUT    /admin/tickets/:ticket_id/close(.:format)     support/admin/tickets#close
 #           admin_ticket_reopen PUT    /admin/tickets/:ticket_id/reopen(.:format)    support/admin/tickets#reopen
@@ -275,7 +275,7 @@
 #                               PUT    /tickets/:id(.:format)                        support/tickets#update
 #                       replies POST   /replies(.:format)                            support/replies#create
 #                          root GET    /                                             support/tickets#index
-# 
+#
 # Routes for Core::Engine:
 #                             admin_members GET    /admin/members(.:format)                                             core/admin/members#index
 #                    activate_admin_project GET    /admin/projects/:id/activate(.:format)                               core/admin/projects#activate
@@ -499,10 +499,10 @@
 #                                           PUT    /cities/:id(.:format)                                                core/cities#update
 #                                           DELETE /cities/:id(.:format)                                                core/cities#destroy
 #                                      root GET    /                                                                    core/projects#index
-# 
+#
 # Routes for Face::Engine:
 #   root GET  /           face/home#show
-# 
+#
 # Routes for Authentication::Engine:
 #      activate_user GET    /users/activate/:token(.:format) authentication/users#activate
 # confirmation_users GET    /users/confirmation(.:format)    authentication/users#confirmation
@@ -518,7 +518,7 @@
 #       new_password GET    /password/new(.:format)          authentication/passwords#new
 #    change_password GET    /password/:token(.:format)       authentication/passwords#change
 #               root GET    /                                authentication/sessions#new
-# 
+#
 # Routes for Pack::Engine:
 #                  admin_root GET    /admin(.:format)                                        pack/admin/versions#index
 #  manage_access_admin_access POST   /admin/accesses/:id/manage_access(.:format)             pack/admin/accesses#manage_access
@@ -590,7 +590,7 @@
 #                             POST   /accesses/destroy(.:format)                             pack/accesses#destroy
 #  load_for_versions_accesses GET    /accesses/load_for_versions(.:format)                   pack/accesses#load_for_versions
 #       values_category_value GET    /category_values/:id/values(.:format)                   pack/category_values#values
-# 
+#
 # Routes for Announcements::Engine:
 #           admin_announcement_deliver PUT    /admin/announcements/:announcement_id/deliver(.:format)           announcements/admin/announcements#deliver
 #              admin_announcement_test PUT    /admin/announcements/:announcement_id/test(.:format)              announcements/admin/announcements#test
@@ -605,7 +605,7 @@
 #                                      PUT    /admin/announcements/:id(.:format)                                announcements/admin/announcements#update
 #                                      DELETE /admin/announcements/:id(.:format)                                announcements/admin/announcements#destroy
 #                           admin_root GET    /admin(.:format)                                                  announcements/admin/announcements#index
-# 
+#
 # Routes for Comments::Engine:
 #                         comments POST   /comments/update(.:format)                  comments/comments#update
 #                                  POST   /comments/create(.:format)                  comments/comments#create
@@ -645,7 +645,7 @@
 #                    admin_context PATCH  /admin/contexts/:id(.:format)               comments/admin/contexts#update
 #                                  PUT    /admin/contexts/:id(.:format)               comments/admin/contexts#update
 #                                  DELETE /admin/contexts/:id(.:format)               comments/admin/contexts#destroy
-# 
+#
 # Routes for Hardware::Engine:
 #                  admin_root GET    /admin(.:format)                                hardware/admin/kinds#index
 #          admin_items_states GET    /admin/items_states(.:format)                   hardware/admin/items_states#index
@@ -685,7 +685,7 @@
 #                             PATCH  /admin/items/:id(.:format)                      hardware/admin/items#update
 #                             PUT    /admin/items/:id(.:format)                      hardware/admin/items#update
 #                             DELETE /admin/items/:id(.:format)                      hardware/admin/items#destroy
-# 
+#
 # Routes for RailsDb::Engine:
 #             root GET  /                                    rails_db/dashboard#index
 #       table_data GET  /tables/:table_id/data(.:format)     rails_db/tables#data
@@ -712,13 +712,18 @@ require "sidekiq/web"
 require "admin_constraint"
 
 Octoshell::Application.routes.draw do
+
   mount RailsEmailPreview::Engine, at: '/admin/emails'
 
-  # This line mounts Wiki routes at /wiki by default.
+  # This line mounts Api routes at /api by default.
   mount Api::Engine, :at => "/api"
 
+  # This line mounts Wikiplus routes at /wikiplus by default.
+  mount Wikiplus::Engine, :at => "/wikiplus"
+
   # This line mounts Wiki routes at /wiki by default.
-  mount Wiki::Engine, :at => "/wiki"
+  #mount Wiki::Engine, :at => "/wiki"
+
   # This line mounts Jobstat routes at /jobstat by default.
   mount Jobstat::Engine, at: "/jobstat"
 
@@ -741,12 +746,19 @@ Octoshell::Application.routes.draw do
   mount Authentication::Engine, at: "/auth"
 
   mount Pack::Engine, at: "/pack"
-  mount Announcements::Engine, :at => "/announcements"
+  # mount Announcements::Engine, :at => "/announcements"
+
+  Octoface::OctoConfig.instances.each do |instance|
+    instance_eval &instance.routes_block if instance.routes_block
+  end
   mount Comments::Engine, :at => "/comments"
   mount Hardware::Engine, at: "/hardware"
+  mount Reports::Engine, at: "/reports"
+
 
   root "face/home#show"
 
+  # Journal
   resources :users do
     get :login_as, on: :member
     get :return_to_self, on: :member
@@ -774,6 +786,8 @@ Octoshell::Application.routes.draw do
 
   namespace :admin do
     mount Sidekiq::Web => "/sidekiq", :constraints => AdminConstraint.new
+    get 'journal' => 'journal#journal'
+    # get "journal" => "journal#journal"
 
     resources :users do
       member do
@@ -792,4 +806,16 @@ Octoshell::Application.routes.draw do
 
 
   end
+  get '*path.:ext', to: 'catch_all#index', xhr: true
 end
+# require "#{Rails.root}/engines/core/config/routes.rb"
+
+# Dir.entries("#{Rails.root}/engines").select { |path| path.first != '.' }.map do |engine|
+#   puts engine.red
+#   require "#{Rails.root}/engines/#{engine}/config/routes.rb"
+# end
+# puts Octoface::OctoConfig.instances.map(&:mod).map{ |mod| eval("#{mod}::Engine").root.to_s }.inspect.red
+# ActiveSupport.on_load(:i18n) do
+#   puts 'init'.red
+#   # Face::MyMenu.validate_keys!
+# end

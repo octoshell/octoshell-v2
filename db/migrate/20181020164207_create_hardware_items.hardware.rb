@@ -1,5 +1,5 @@
 # This migration comes from hardware (originally 20181017142435)
-class CreateHardwareItems < ActiveRecord::Migration
+class CreateHardwareItems < ActiveRecord::Migration[4.2]
   def change
     create_table :hardware_items do |t|
       t.string :name_ru

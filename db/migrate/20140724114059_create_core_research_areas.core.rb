@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140722122723)
-class CreateCoreResearchAreas < ActiveRecord::Migration
+class CreateCoreResearchAreas < ActiveRecord::Migration[4.2]
   def change
     create_table :core_research_areas do |t|
       t.string :name

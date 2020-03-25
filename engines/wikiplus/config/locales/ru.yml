@@ -1,0 +1,86 @@
+---
+ru:
+  activerecord:
+    attributes:
+      wikiplus/page:
+        content: Текст
+        name: Название
+        sortid: Приоритет страницы
+        url: url
+    models:
+      wikiplus/page: Страница wiki
+  wikiplus:
+    admin:
+      images:
+        index:
+          confirm: Вы действительно хотите удалить картинку?
+          delete: Удалить
+          link: Ссылка
+          name: Название
+          new_image: Загрузить картинку
+          no_images_found: Нет картинок
+          preview: Предпросмотр
+          title: Все картинки/видео
+        new:
+          title: Новая картинка
+      pages:
+        edit:
+          title: Редактирование страницы
+        index:
+          all_images: Картинки и видео
+          confirm: Вы действительно хотите удалить страницу?
+          delete: Удалить
+          edit: Редактировать
+          link: Ссылка
+          name: Название
+          new_page: Новая страница
+          newsub_page: Создать подстраницу
+          no_pages_found: Ещё не создано ни одной wiki-страницы.
+          submit_structure: Отправить структуру
+          title: Справка по работе с Octoshell
+        new:
+          title: Новая страница
+        newsubpage:
+          title: Новая подстраница
+        subpageindex:
+          confirm: Confirm
+          delete: Delete
+          newsub_page: Создать подстраницу
+    common:
+      back: Back
+      edit: Редактировать!
+    markdown_help: >-
+      Для разметки используется <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
+    pages:
+      _test:
+        confirm: Вы действительно хотите удалить страницу?
+        delete: Удалить
+        edit: Редактировать
+        link: Ссылка
+        name: Название
+        new_page: Новая страница
+        no_pages_found: Ещё не создано ни одной wiki-страницы.
+        title: Справка по работе с Octoshell
+      edit:
+        title: Редактирование страницы
+      index:
+        all_images: Все картинки
+        confirm: Вы действительно хотите удалить страницу?
+        createsubpage: ''
+        delete: Удалить
+        edit: Редактировать
+        link: Ссылка
+        name: Название
+        new_image: Загрузить картинку
+        new_page: Новая страница
+        newsub_page: Создать подстраницу
+        no_pages_found: Ещё не создано ни одной wiki-страницы.
+        title: Справка по работе с Octoshell
+      new:
+        title: Новая страница
+      newsubpage:
+        title: Title
+      subpageindex:
+        confirm: Вы действительно хотите удалить подстраницу?
+        delete: Удалить
+        newsub_page: Создать подстраницу

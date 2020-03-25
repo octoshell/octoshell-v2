@@ -23,7 +23,7 @@
 #
 
 module Core
-  class Project < ActiveRecord::Base
+  class Project < ApplicationRecord
 
     belongs_to :kind, class_name: "Core::ProjectKind", foreign_key: :kind_id
     belongs_to :organization
@@ -35,13 +35,16 @@ module Core
     has_and_belongs_to_many :critical_technologies, join_table: "core_critical_technologies_per_projects"
     has_and_belongs_to_many :direction_of_sciences, join_table: "core_direction_of_sciences_per_projects"
     has_and_belongs_to_many :research_areas, join_table: "core_research_areas_per_projects"
+    has_many :group_of_research_areas, through: :research_areas,
+                                       class_name: GroupOfResearchArea.to_s,
+                                       source: :group
 
     has_many :members, dependent: :destroy, inverse_of: :project
-    has_many :users, through: :members, class_name: Core.user_class, inverse_of: :projects
+    has_many :users, through: :members, class_name: Core.user_class.to_s, inverse_of: :projects
 
-    has_one :member_owner, -> { where(owner: true) }, class_name: Member
+    has_one :member_owner, -> { where(owner: true) }, class_name: Member.to_s
     has_one :owner, through: :member_owner,
-                    class_name: Core.user_class,
+                    class_name: Core.user_class.to_s,
                     source: :user,
                     inverse_of: :owned_projects
 
@@ -60,9 +63,10 @@ module Core
 
     has_many :invitations, class_name: "Core::ProjectInvitation"
 
+
     accepts_nested_attributes_for :card, :sureties
 
-    validates :card, :title, :organization, presence: true, if: :project_is_not_closing?
+    validates :card, :title, :organization, :kind, presence: true, if: :project_is_not_closing?
     validates :direction_of_science_ids, :critical_technology_ids,
       :research_area_ids, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }, if: :project_is_not_closing?
     validate do
@@ -70,6 +74,11 @@ module Core
     end
 
     scope :finder, lambda { |q| where("lower(title) like :q", q: "%#{q.mb_chars.downcase}%").order("title asc") }
+
+    def members_for_new_surety
+      members.joins(:user).where(project_access_state: :engaged,
+                                  users: { access_state: 'active'})
+    end
 
     after_create :engage_owner
 

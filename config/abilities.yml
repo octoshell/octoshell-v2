@@ -68,3 +68,11 @@ hardware:
   - manage
 announcements:
   - manage
+reports_engine:
+  - manage
+wikiplus:
+  - manage
+api_engine:
+  - manage
+options:
+  - manage

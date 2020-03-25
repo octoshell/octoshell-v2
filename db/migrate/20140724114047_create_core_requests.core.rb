@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20140721095316)
-class CreateCoreRequests < ActiveRecord::Migration
+class CreateCoreRequests < ActiveRecord::Migration[4.2]
   def change
     create_table :core_requests do |t|
       t.integer  "project_id", null: false

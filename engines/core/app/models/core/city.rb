@@ -15,7 +15,7 @@
 #
 
 module Core
-  class City < ActiveRecord::Base
+  class City < ApplicationRecord
     include Checkable
     belongs_to :country
     has_many :organizations
@@ -27,10 +27,10 @@ module Core
     end
     validates :title_ru, format: { with: /\A[а-яё№\d[:space:][:punct:]\+]+\z/i,
                                    message: I18n.t("errors.must_be_in_russian")},
-                         if: 'title_ru.present? && checked'
+                         if: proc { |c| c.title_ru.present? && checked }
     validates :title_en, format: { with: /\A[a-z\d[:space:][:punct:]\+]+\z/i,
                                    message: I18n.t("errors.must_be_in_english") },
-                         if: 'title_en.present? && checked'
+                         if: proc { |c| c.title_en.present? && checked }
 
     scope :finder, ->(q){ where("title_ru like :q OR title_en like :q", q: "%#{q.mb_chars}%").order(:title_ru) }
 

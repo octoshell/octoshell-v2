@@ -92,6 +92,7 @@ en:
       core/cluster:
         admin_login: Admin login
         available_for_work: Available for work
+        description: Description
         host: Host
         name: Name
         state: Status
@@ -104,6 +105,7 @@ en:
         project_id: Project
       core/cluster_quota:
         name: Name
+        quota_kind_id: Quota kind
         value: Value
       core/country:
         checked: Checked
@@ -128,6 +130,8 @@ en:
         organization_department_id: Organization department
         organization_id: Organization
         primary: Main job
+      core/group_of_research_area:
+        name: Name
       core/member:
         login: Login
         organization: Organization
@@ -223,6 +227,7 @@ en:
         state: Status
       core/research_area:
         group: Group
+        group_id: Group
         name: Name
       core/surety:
         author: Author
@@ -295,8 +300,7 @@ en:
     admin:
       cities:
         destroy:
-          org_exist: You can not delete city with an existing organization
-            in it
+          org_exist: You can not delete city with an existing organization in it
         edit:
           title: Edit the city
         index:
@@ -323,10 +327,10 @@ en:
           add_partition: "+ add partition"
           add_quota: "+ add quota"
           help: >-
-            You can set default resources quotas values by clicking on "+
-            add quota". These values will be used by users to create resource
-            quota request.
+            You can set default resources quotas values by clicking on "+ add quota".
+            These values will be used by users to create resource quota request.
           partitions: Partitions
+          quotas: Quotas
           remove_partition: remove partition
           remove_quota: remove quota
         index:
@@ -335,21 +339,19 @@ en:
           edit: Edit
           new_cluster: Create a new cluster
           no_clusters_found: No clusters have been found
-          quotas_info: Resources quota
-          title: Clusters
+          quotas_info: Quotas info
+          title: Clusters list
         new:
           title: New cluster
         show:
           info: Cluster information
-          pub_key_help_html: >-
-            To make an application work with the cluster  copy the key in
-            <code>/home/%{admin_login}/.ssh/authorized_keys</code>
+          partitions: Partitions
+          pub_key_help_html: Pub key help html
           quotas_info: Resources quota
           show_logs: Show logs
       countries:
         destroy:
-          org_exist: You ca not delete country with an existing organization
-            in it
+          org_exist: You ca not delete country with an existing organization in it
         edit:
           title: Edit the country
         index:
@@ -371,8 +373,7 @@ en:
           title: Edit critical technology
         index:
           new_critical_technology: Add critical technology
-          no_critical_technologies_found: No critical technologies have been
-            found
+          no_critical_technologies_found: No critical technologies have been found
           title: Critical technologies
         new:
           title: New critical technology
@@ -381,11 +382,19 @@ en:
           title: Edit research direction
         index:
           new_direction_of_science: Add a direction of research
-          no_direction_of_sciences_found: No directions of research have been
-            found
+          no_direction_of_sciences_found: No directions of research have been found
           title: Directions of research
         new:
           title: New direction of research
+      employments:
+        list:
+          employments: Employments
+          no_employments_created: Employments have not been created yet
+      group_of_research_areas:
+        edit:
+          title: Edit group of research areas
+        new:
+          title: New group of research areas
       organization_kinds:
         edit:
           title: Edit organization kind
@@ -400,9 +409,8 @@ en:
         edit:
           add_department: "+ add a department"
           help: >-
-            You can set default resources quotas values by clicking on "+
-            add quota". These values will be used by users to create resources
-            quota request.
+            You can set default resources quotas values by clicking on "+ add quota".
+            These values will be used by users to create resources quota request.
           remove_department: delete the department
           title: Edit organization
         index:
@@ -425,8 +433,7 @@ en:
           choose_to_dep: Choose a department to merge with
           choose_to_org: Choose an organization to merge with
           create_organization: Allocate to a new organization
-          create_organization_error: You can allocate only department to a
-            new organization
+          create_organization_error: You can allocate only department to a new organization
           department: The "{{department_name}}" department with  id {{department_id}}
           department_title: New department name
           from: from
@@ -447,18 +454,16 @@ en:
         merge_update:
           forbidden: Do not merge organizations with departments.
           here: here
-          mergers_exists: >-
-            This organization has unmerged departments. Follow the "%{link}"
+          mergers_exists: This organization has unmerged departments. Follow the "%{link}"
             and merge them
-          not_auto: "<p>Can not be merged automically. Further instructions
-            \ %{link}</p>\n"
+          not_auto: "<p>Can not be merged automically. Further instructions  %{link}</p>\n"
           same_object: You are not allowed to merge object with itself
           stale_organization_id: >-
             You are trying to merge source object with the "%{dep_name}" department,
             which  is not in the  "%{org_name}" organization now.
           stale_organization_id_source: >-
-            You are trying to merge  "%{dep_name}" department, which  is not
-            in the  "%{org_name}" organization now.
+            You are trying to merge  "%{dep_name}" department, which  is not in the
+            "%{org_name}" organization now.
           update: Please update the page.
         new:
           title: Create a new organization
@@ -468,14 +473,13 @@ en:
       prepare_merge:
         edit:
           automerged: The following project memberships will be merged automically
-          automerged_surety_members_without_core_members: The following sureties
-            will be merged automically
+          automerged_surety_members_without_core_members: The following sureties will
+            be merged automically
           merge?: Merge?
-          not_automerged: The following project memberships will not be merged
-            automically
+          not_automerged: The following project memberships will not be merged automically
           not_automerged_projects: Projects merger
-          not_automerged_surety_members_without_core_members: The following
-            sureties will not be merged automically
+          not_automerged_surety_members_without_core_members: The following sureties
+            will not be merged automically
           title: Merger
           with_surety: With surety?
         index:
@@ -498,6 +502,10 @@ en:
           activated_before: Activated before
           created_after: Created after
           created_before: Created before
+          critical_technologies_id_in: has one of critical technologies
+          direction_of_sciences_id_in: has one of science directions
+          group_of_research_areas_id_in: has one of research area groups
+          research_areas_id_in: has one of research areas
           title: Projects
           updated_after: Updated after
           updated_before: Updated before
@@ -565,6 +573,9 @@ en:
         edit:
           title: Edit research area
         index:
+          delete_group: Delete group
+          edit_group: Edit group
+          new_group_of_research_area: Add a group of research areas
           new_research_area: Add a research area
           no_research_areas_found: No research areas have been found
           title: Research area
@@ -605,9 +616,8 @@ en:
         confirm: Do you really want to deactivate the key?
         credentials: ssh-keys
         msg_help_sshkey: >-
-          If you do not know how to add public ssh-key, follow the link: <a
-          href="http://parallel.ru/cluster/ssh-keys/ssh_keys.html" target="_blank">Public
-          ssh-key addition</a>.
+          If you do not know how to add public ssh-key, follow the link: <a href="http://parallel.ru/cluster/ssh-keys/ssh_keys.html"
+          target="_blank">Public ssh-key addition</a>.
         no_credentials_found: Add your public ssh-key!
       new:
         help: copy the contents of the .ssh/*.pub file here
@@ -628,11 +638,9 @@ en:
         title: The job place
     mailer:
       access_to_project_denied:
-        msg_project_acc_denied: >-
-          The project manager %{pid}:"%{title}" has closed your access to
-          the project.
-        msg_recommendation: Please contact the project manager to find out
-          the cause.
+        msg_project_acc_denied: The project manager %{pid}:"%{title}" has closed your
+          access to the project.
+        msg_recommendation: Please contact the project manager to find out the cause.
         subject: You have been closed access to "%{title}" project
       access_to_project_granted:
         msg_project_acc_granted: You have been authorized to access the %{pid}:"%{title}"
@@ -647,30 +655,27 @@ en:
         hello_unknown: Hello!
       invitation_to_octoshell:
         hello_known_name: Hello, %{name}!
-        msg_accept_invitation: ' You have to confirm your project membership
-          on the  "Projects" tab.'
+        msg_accept_invitation: ' You have to confirm your project membership on the  "Projects"
+          tab.'
         msg_first_step: >-
-          You have to fill your initials, job place  or place of study, public
-          ssh-key in your profile after registation. Please follow the link
-          in the profile page to get the information how to work with your
-          public ssh-key.
+          You have to fill your initials, job place  or place of study, public ssh-key
+          in your profile after registation. Please follow the link in the profile
+          page to get the information how to work with your public ssh-key.
         msg_project_invitation: >-
-          The manager of the  %{pid}:"%{title}" project has invited you to
-          participate in the project work.
-        msg_register: To start your project work please register using the
-          link
+          The manager of the  %{pid}:"%{title}" project has invited you to participate
+          in the project work.
+        msg_register: To start your project work please register using the link
         msg_register_email: >-
-          Please keep in mind that you have to register using email, which
-          received the letter
+          Please keep in mind that you have to register using email, which received
+          the letter
         registration: Registration in Octoshell
         subject: The invitation to the "%{title}" project in "Octoshell" system
       invitation_to_project:
-        msg_confirm_invitation: >-
-          Please confirm your project membership. You can do this on the 
-          "Projects" tab.
+        msg_confirm_invitation: Please confirm your project membership. You can do
+          this on the "Projects" tab.
         msg_project_invitation: >-
-          The manager of the %{pid}:"%{title}" project  has invited you to
-          participate in the project work.
+          The manager of the %{pid}:"%{title}" project  has invited you to participate
+          in the project work.
         open_projects_list: Open projects list.
         subject: 'Invitatation to the "%{title}" project '
       new_organization:
@@ -681,51 +686,50 @@ en:
         subject: A new departent has been created in organization %{org_title}
       project_activated:
         msg_access: Access to clusters is authourized at this moment
-        msg_project_activated: >-
-          The %{pid}:"%{title}" project has been activated! You can get down
-          to work.
+        msg_project_activated: The %{pid}:"%{title}" project has been activated! You
+          can get down to work.
         msg_project_head: 'The project manager: %{full_name}'
         msg_project_members_logins: Project members logins
         msg_quotas: Quotas
         subject: The "%{title}" project has been activated
       project_closed:
         msg_project_closed: >-
-          The %{pid}:"%{title}" project has been finished. The cluster accesses
-          are closed.
+          The %{pid}:"%{title}" project has been finished. The cluster accesses are
+          closed.
         msg_recommendation: >-
-          To find out the cause and to ask other questions you can visit our
-          technical support section.
+          To find out the cause and to ask other questions you can visit our technical
+          support section.
         open_support: The technical support section.
         subject: The "%{title}" project has been finished
       project_suspended:
         msg_project_suspended: >-
-          The %{pid}:"%{title}" project has been suspended. The cluster accesses
-          are closed.
+          The %{pid}:"%{title}" project has been suspended. The cluster accesses are
+          closed.
         msg_recommendation: >-
-          To find out the cause and to ask other questions you can visit our
-          technical support section.
+          To find out the cause and to ask other questions you can visit our technical
+          support section.
         open_support: The technical support section.
         subject: The "%{title}" project has been suspended
       request_accepted:
         msg_comment: We wish you fruitful work and successes in your research!
         msg_request_accepted: >-
-          The request №%{id} to authorize access to the %{name} cluster has
-          been approved! The access is authorized for your  %{pid}:"%{title}"
-          project with the following quotas: %{info}.
+          The request №%{id} to authorize access to the %{name} cluster has been approved!
+          The access is authorized for your  %{pid}:"%{title}" project with the following
+          quotas: %{info}.
         subject: The request №%{number} has been approved
       request_rejected:
         msg_recommendation: >-
-          To find out the cause and to ask other questions you can visit our
-          technical support section.
+          To find out the cause and to ask other questions you can visit our technical
+          support section.
         msg_request_rejected: >-
-          The request№%{id} to authorize access for the %{pid}:"%{title}"
-          project to the %{name} cluster has been rejected.
+          The request№%{id} to authorize access for the %{pid}:"%{title}" project
+          to the %{name} cluster has been rejected.
         open_support: The technical support section.
         subject: The request №%{number} has been approved
       surety_accepted:
         msg_comment: We wish you fruitful work and successes in your research!
-        msg_surety_accepted: Surety №%{id} for %{pid}:"%{title}" project  has
-          been approved!
+        msg_surety_accepted: Surety №%{id} for %{pid}:"%{title}" project  has been
+          approved!
         subject: The surety №%{number} has been approved
       surety_confirmed:
         msg_surety_confirmed: User %{full_name} has filled the surety №%{id}.
@@ -734,33 +738,32 @@ en:
         subject: The surety №%{number} is ready for consideration
       surety_rejected:
         msg_recommendation: >-
-          To find out the cause and to ask other questions you can visit our
-          technical support section.
-        msg_surety_rejected: Surety №%{id} for %{pid}:"%{title}" project  has
-          been rejected.
+          To find out the cause and to ask other questions you can visit our technical
+          support section.
+        msg_surety_rejected: Surety №%{id} for %{pid}:"%{title}" project  has been
+          rejected.
         open_support: The technical support section.
         subject: The surety №%{number} has been rejected
       user_access_activated:
-        msg_activated: Your account is active again. You can continue your
-          job in our system.
+        msg_activated: Your account is active again. You can continue your job in
+          our system.
         subject: Your account has been activated
       user_access_suspended:
         msg_access_suspended: >-
-          Your account has been blocked because you did not pass re-registration
-          (you did not send us filled questionnaire or project report) or
-          violated the work rules  of MSU Supercomputing Center. If you correct
-          your mistakes, your access can be resurrected.
+          Your account has been blocked because you did not pass re-registration (you
+          did not send us filled questionnaire or project report) or violated the
+          work rules  of MSU Supercomputing Center. If you correct your mistakes,
+          your access can be resurrected.
         msg_recommendation: >-
-          To find out the cause and to ask other questions you can visit our
-          technical support section.
+          To find out the cause and to ask other questions you can visit our technical
+          support section.
         open_support: The technical support section.
         subject: Your account has been blocked
     members:
       edit:
         accept_invitation: Join the project
         add_employment: Add a job place.
-        choose_organization: >-
-          Choose the organization on behalf of which you will participate
+        choose_organization: Choose the organization on behalf of which you will participate
           in the project
         no_employments: |
           <strong>You have not filled your job place in your profile.</strong>
@@ -768,7 +771,7 @@ en:
         title: Invitation to the  "%{project_title}" project
       form:
         nothing: Without department
-    notificators:
+    notificator:
       check:
         show: Show record page
         subject: 'New record is created. %{model_name} : %{to_s}'
@@ -790,23 +793,21 @@ en:
         title: Edit project profile
       form:
         card: Project card
-        card_driver_help: Description of the task for which the project is
-          directed
+        card_driver_help: Description of the task for which the project is directed
         card_help:
           html: >-
-            <a href="http://parallel.ru/cluster/reregistration/project_card",
-            target="_blank">Project card example</a>
+            <a href="http://parallel.ru/cluster/reregistration/project_card", target="_blank">Project
+            card example</a>
         card_impact_help: >-
           The expected impact of a successful solution of the problem (scientific
           / commercial / social)
         card_name_help: You should fill the real name of your research project
-        card_objective_help: Description of the purpose for which the specific
-          task is aimed
-        card_strategy_help: the idea description of the approach to solving
-          the problem
+        card_objective_help: Description of the purpose for which the specific task
+          is aimed
+        card_strategy_help: the idea description of the approach to solving the problem
         card_usage_help: >-
-          The industries, the economic sectors, the areas of science, where
-          the results of the project can be used
+          The industries, the economic sectors, the areas of science, where the results
+          of the project can be used
         errors: These attributes are invalid
         nothing: Without department
       index:
@@ -818,17 +819,17 @@ en:
         title: Projects
         user_has_not_access_to_projects:
           html: >-
-            <p> You can not participate in projects, since you have not filled
-            out job place and have not attached your public ssh-key. Please
-            go to your profile and fill required fields.</p>
+            <p> You can not participate in projects, since you have not filled out
+            job place and have not attached your public ssh-key. Please go to your
+            profile and fill required fields.</p>
         your_access_is_closed:
           html: >-
-            Based on the results of the analysis of the work reports for 2014,
-            it was found that you did not complete the surveys (for each project
-            - for project managers, personal - for each  SCC user). This action 
-            is required by the MSU SCC rules (http://parallel.ru/cluster/reregistration).<br
-            /> <br />Your access is blocked before you fill these forms. <br
-            /><br />Forms of polls are available in your personal account(http://users.parallel.ru).
+            Based on the results of the analysis of the work reports for 2014, it
+            was found that you did not complete the surveys (for each project - for
+            project managers, personal - for each  SCC user). This action is required
+            by the MSU SCC rules (http://parallel.ru/cluster/reregistration).<br />
+            <br />Your access is blocked before you fill these forms. <br /><br />Forms
+            of polls are available in your personal account(http://users.parallel.ru).
             Reregistration tab, surveys subsection.
       invited_users:
         invitation_csv_file: ".csv file in UTF-8 encoding."
@@ -836,17 +837,13 @@ en:
         members_invited: Invited members
         msg_if_member_unregistered: >-
           If users are not registered in Octoshell, you can send them invitations.
-          Your language is %{language}. Add one of the following languages:
-          %{locales} to the end of line to specify different language for
-          an invitation email
+          Your language is %{language}. Add one of the following languages: %{locales}
+          to the end of line to specify different language for an invitation email
         msg_intitation_csv_col: email, Surname Name Middle name, language
-        msg_invitation_csv: You should form the .csv document with the following
-          columns
+        msg_invitation_csv: You should form the .csv document with the following columns
         msg_invitation_csv_example: Example
-        msg_invitation_csv_example_body1: gav@abyrvalg.com,Sharikov Polygraph
-          Polygraphovich,ru
-        msg_invitation_csv_example_body2: filipp@mail.ru,Preobrazhensky Filipp
-          Filippovich,en
+        msg_invitation_csv_example_body1: gav@abyrvalg.com,Sharikov Polygraph Polygraphovich,ru
+        msg_invitation_csv_example_body2: filipp@mail.ru,Preobrazhensky Filipp Filippovich,en
         resend_invitations: Resend invitations
         send_invitations: Send invitations to new members
       members:
@@ -885,9 +882,8 @@ en:
     requests:
       form:
         help: >-
-          Fill the form fields with the amount of resources that you will
-          need during the project work. Currently, the quota sizes are set
-          by default.
+          Fill the form fields with the amount of resources that you will need during
+          the project work. Currently, the quota sizes are set by default.
       new:
         title: Create a resources request
     sureties:
@@ -902,12 +898,11 @@ en:
         confirm_message: Have you completed the surety?
         download_surety_document: Download the surety
         edit_scans: Edit attached scans
-        print_reminder: Print the surety on your organization letterhead,
-          sign and seal it.
-        send_reminder: 'Send to: 119234 Moscow, Leninskiye Gory, 1, str.4,MSU
-          RCC direction'
-        upload_scans: Attach scans of signed documents to gain access access
-          faster
+        print_reminder: Print the surety on your organization letterhead, sign and
+          seal it.
+        send_reminder: 'Send to: 119234 Moscow, Leninskiye Gory, 1, str.4,MSU RCC
+          direction'
+        upload_scans: Attach scans of signed documents to gain access access faster
   core_confirm: Are you sure
   core_no_name: No name specified
   countries:
@@ -926,18 +921,19 @@ en:
       employment:
         organization_was_incorrect_and_deleted:
           html: >-
-            <span class="fa fa-exclamation-triangle text-danger"> Organization
-            was deleted by administration</span>
-    user_is_already_in_members: The user with  email %{email} has already
-      joined the project.
-    user_is_not_registered: >-
-      The user is not registered in Octoshell! But yout can  invite him to
-      Octoshell!
+            <span class="fa fa-exclamation-triangle text-danger"> Organization was
+            deleted by administration</span>
+    user_is_already_in_members: The user with  email %{email} has already joined the
+      project.
+    user_is_not_registered: The user is not registered in Octoshell! But yout can  invite
+      him to Octoshell!
     wrong_key: incorrect key
   flash:
+    alerts:
+      surety_not_found: Surety has not been found
     bad_csv_file: >-
-      Oops,  it is impossible to  parse the file... Please check file format
-      and encoding(encoding must be UTF-8)
+      Oops,  it is impossible to  parse the file... Please check file format and encoding(encoding
+      must be UTF-8)
     cluster_created: The cluster has been created
     cluster_updated: The cluster has been updated
     duplicated_invite: This user is already invited.
@@ -947,6 +943,7 @@ en:
     project_updated: The project has been updated
     request_created: The request has been created
     request_updated: The request has been updated
+    scan_uploaded: Your scan has been uploaded
     template_loaded: The template has been loaded
     template_recreated_from_default: The template has been recreated
     template_saved: The template has been saved

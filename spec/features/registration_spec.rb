@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require "spec_helper"
+require "main_spec_helper"
 
 feature "Sign up", js: true do
   scenario "with valid data" do
@@ -8,7 +8,8 @@ feature "Sign up", js: true do
     fill_in "Email", with: "octo@shell.com"
     fill_in "Пароль", with: "123456"
     fill_in "Подтверждение", with: "123456"
+    check 'cond_cond_accepted'
     click_on "Зарегистрироваться"
-    expect(page).to have_content(I18n.t("authentication.flash.registrated_successfully"))
+    expect(page).to have_content('отправлена инструкция по активации аккаунта')
   end
 end

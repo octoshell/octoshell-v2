@@ -89,11 +89,15 @@ module ReceiveEmails
     end
 
     def create_reply(ticket_id)
-      reply = Support::Reply.new(message: new_ticket_message.rpartition(/-{#{Support.dash_number}}/).last,
+      if User.superadmins.exclude?(user) && User.support.exclude?(user) &&
+         Support::Ticket.find(ticket_id).reporter != user
+        raise 'foreign ticket'
+      end
+      message_body = new_ticket_message.rpartition(/-{#{Support.dash_number}}/).last
+      reply = Support::Reply.new(message:  message_body,
                                  ticket_id: ticket_id,
                                  author: user)
       reply.ticket.reopen if reply.ticket.may_reopen?
-      raise 'foreign ticket' if User.superadmins.exclude?(user) && User.support.exclude?(user) && reply.ticket.reporter != user
       add_attachments_and_save reply
     end
 

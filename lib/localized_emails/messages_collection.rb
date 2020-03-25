@@ -8,11 +8,9 @@ module LocalizedEmails
       @mails << mail
     end
 
-    def deliver!
-      begin
-        mails.each(&:deliver!)
-      rescue => e
-        logger.info "Email Deliver error: #{e.message}"
+    %i[deliver deliver!].each do |sym|
+      define_method(sym) do
+        mails.each(&sym)
       end
     end
   end

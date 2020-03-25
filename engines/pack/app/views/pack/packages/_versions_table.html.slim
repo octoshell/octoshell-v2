@@ -1,60 +1,85 @@
-   - if records.any?
-    div class="row" style="border:1px solid #cecece;"
-      h3 =t('legend')
-      div class="col-xs-6"
-        h4 =t('clvers.title')
-        table class='table'
-          tr
-            td
-              font color='red'
-                =t 'colors.red'
-
-            td
-                =t 'clvers.red'
-          tr
-            td
-              font color='green'
-                =t 'colors.green'
-            td
-                =t 'clvers.green'
-        h5 =t 'clvers.note'
-      div class="col-xs-6"
-        h4 =t('accesses.title')
-        table class="table"
-          -['red','blue','green','brown','black'].each do |col|
-            tr
-              td
-                font color=col
-                  =t "colors.#{col}"
-              td
-                =t "accesses.#{col}"
-    h3 =t("Versions")
-    div class="panel-body"
-      table   class="table table-hover" cols="6" cellspacing="30"
+- if records.any?
+  div class="row" style="border:1px solid #cecece;"
+    h3 =t('legend')
+    div class="col-xs-6"
+      h4 =t('clvers.title')
+      table class='table'
         tr
-          -['name','description','clusters','access_user',"available_for_user?"].each do |str|
-            th =Pack::Version.human_attribute_name str
-          th   #{t("actions_pack")}
-        - for version in records
+          td
+            font color='red'
+              =t 'colors.red'
+
+          td
+              =t 'clvers.red'
+        tr
+          td
+            font color='green'
+              =t 'colors.green'
+          td
+              =t 'clvers.green'
+      h5 =t 'clvers.note'
+    div class="col-xs-6"
+      h4 =t('accesses.title')
+      table class="table"
+        -['red','blue','green','brown','black'].each do |col|
           tr
-            td  =link_to version.name,version
-            td  #{markdown version.description}
+            td
+              font color=col
+                =t "colors.#{col}"
+            td
+              =t "accesses.#{col}"
+  h3 =t("Versions")
+  /table class="table table-hover" cols="7" cellspacing="30"
+  table.pack-table border='1'
+    tr
+      th = Pack::Version.human_attribute_name :package
+      -['name','description','clusters','access_user',"available_for_user?"].each do |str|
+        th =Pack::Version.human_attribute_name str
+      th   #{t("actions_pack")}
+    - grouped_packages = records.group_by { |v|  v.package }
+    - grouped_packages.each do |package, versions|
+      tbody package_id=(package.accesses_to_package ? package.id : nil )
+        - versions.each do |version|
+          tr version_id=(package.accesses_to_package ? nil : version.id )
+            -if version == versions.first
+              td.package-name rowspan=versions.count = link_to package.name, package
+            td.version-name  = link_to version.name, version
+            td  = markdown version.description
 
             td
               =render "pack/packages/clustervers",clustervers: version.clustervers
+            - if package.accesses_to_package
+              - if version == versions.first
+                td.accesses rowspan=versions.count
+            - else
+              td.accesses
+            td.availability  available=version.available_for_user?
+            -if package.accesses_to_package
+              -if version == versions.first &&  !version.deleted && !version.service
+                td rowspan=versions.count
+                   button class="btn btn-primary access" = t("want")
+            -else
+              td
+                -if !version.deleted && !version.service
+                   button class="btn btn-primary access" = t("want")
+  div.accesses-form-container
+    h3#access-header
+    div.top-alpaca-form
+    p.server-messages
+    p.accesses-messages
+    div.bottom-alpaca-form
+-else
+ p = t("no_records_found")
+css:
+  table.pack-table{
+    width: 100%;
+  }
 
-            td class="accesses-info" version_id=version.id  class="col-xs-3"
-            td class='version-availability'
-            td
-              -if !version.deleted && !version.service
-                 button class="btn btn-primary btn_access" version_id= version.id  = t("want",default:"want this")
-
-          tr
-             td colspan='6'
-               div class='accesses_form_container col-xs-6' hidden=""
-                 div class='top-alpaca-form'
-                 p class='server-messages'
-                 p class='accesses-messages'
-                 div class='bottom-alpaca-form'
-   -else
-     p = t("no_records_found")
+  table.pack-table{
+    width: 100%;
+  }
+  .pack-table > thead > tr > th, .pack-table > tbody > tr > th, .pack-table > tfoot > tr > th,
+  .pack-table > thead > tr > td, .pack-table > tbody > tr > td, .pack-table > tfoot > tr > td {
+    padding: 8px;
+    align: center;
+  }

@@ -16,6 +16,9 @@
 #
 
 module Jobstat
-  class DigestFloatDatum < ActiveRecord::Base
+  class DigestFloatDatum < ApplicationRecord
+    def versions_enabled
+      false
+    end
   end
 end

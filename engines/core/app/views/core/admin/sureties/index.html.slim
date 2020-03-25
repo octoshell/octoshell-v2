@@ -21,10 +21,10 @@ div class="page-header"
       - options = { include_blank: true, 'data-date-start-date': '2012.1.1', 'data-date-end-date': '0d', class: "datepicker" }
       = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
       = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
+  = f.form_group :scans_id_not_null,label: {text: Core::Surety.human_attribute_name(:scans)} do
+    = f.check_box :scans_id_not_null,label: ''
   = f.form_group
     = f.submit t("actions.find"), class: "btn btn-primary"
-    = f.form_group :scans_id_not_null,label: {text: Core::Surety.human_attribute_name(:scans)} do
-      = f.check_box :scans_id_not_null,label: ''
     = display_all_tag
 
 = safe_paginate @sureties

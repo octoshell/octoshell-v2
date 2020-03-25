@@ -1,5 +1,8 @@
 module Jobstat
   class ApiController < ActionController::Base
+    before_action :parse_request
+    #before_action :parse_request, :authenticate_from_token!, only: [:push]
+
     def post_info
       cluster = @json["cluster"]
       drms_job_id = @json["job_id"]
@@ -160,17 +163,16 @@ module Jobstat
     end
 
     def check_exist
-      cluster = params["cluster"]
-      drms_job_id = params["job_id"]
-      drms_task_id = params.fetch("task_id", 0)
+      cluster = @json["cluster"]
+      drms_job_id = Integer(@json["job_id"])
+      drms_task_id = Integer(@json.fetch("task_id", 0))
 
       @job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
 
       render :status => 404 unless @job
     end
 
-    before_filter :parse_request
-    #before_filter :parse_request, :authenticate_from_token!, only: [:push]
+    before_action :parse_request
 
     protected
 
@@ -182,7 +184,11 @@ module Jobstat
     end
 
     def parse_request
-      @json = JSON.parse(request.body.read) rescue {}
+      begin
+        @json = JSON.parse(request.body.read)
+      rescue
+        @json = {}
+      end
     end
   end
 end

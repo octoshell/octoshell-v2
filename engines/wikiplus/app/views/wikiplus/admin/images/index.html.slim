@@ -1,0 +1,41 @@
+div class="image-header"
+  h1 = t(".title")
+
+= link_to t('common.back'), [:admin, :pages]
+
+div class="panel panel-default"
+  = bootstrap_form_for [:admin, @img] do |f|
+    = f.file_field :image, label: t('.new_image')
+    = f.form_group do
+      = f.submit t("buttons.save", default: "Save")
+
+/- if current_user && User.superadmins.include?(current_user)
+div
+  div class="panel panel-default"
+    - if @images.any?
+        table class="table table-hover"
+          tr
+            th = t(".name")
+            th = t(".link")
+            th = t(".preview")
+          - @images.each do |image|
+            tr
+              td class="col-xs-4"
+                = link_to image.image_identifier, image.image.url
+              td
+                = image.image.url
+              td
+                img src="#{image.image.thumb.url}" width="45"
+              td
+                - name = t(".delete", default: "delete")
+                - confirm = t(".confirm", default: "Are You shure?")
+                - data = { method: :delete, confirm: confirm }
+                li class="text-left"
+                  = link_to name, admin_image_path(image.id), data: data, class: "text-danger"
+
+    - else
+      div class="panel-body"
+        p = t(".no_images_found", default: "No images Found")
+
+= link_to t('common.back'), [:admin, :pages]
+

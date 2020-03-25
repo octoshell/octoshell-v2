@@ -101,6 +101,7 @@ en:
       group:
         name: Name
       option:
+        admin: for administrators only
         category_value_id: Value from values list for categories
         name: Name of option
         options_category_id: Option of category
@@ -108,6 +109,12 @@ en:
       options_category:
         name: Category
         values: Values
+      paper_trail/version:
+        event: Event
+        item_id: Object ID
+        item_type: Class
+        object_changes: Changes
+        whodunnit: Initiator
       profile:
         first_name: Name
         last_name: Surname
@@ -138,6 +145,25 @@ en:
         title: User groups
       new:
         title: Group creation
+    journal:
+      journal:
+        chain_id: Chain ID
+        created_at_gt: Later than
+        created_at_lt: Earlier than
+        event_in: Event
+        group: Group
+        item_type_in: Class
+        month_ago: Month ago
+        object_changes_cont: Changes contain
+        system_only: Only system changes
+        title: Journal
+        week_ago: Week ago
+        whodunnit_in: Initiator
+      table:
+        chain_id: Chain ID
+        created_at: Date
+        id: ID
+        system: System
     options_categories:
       edit:
         title: Category edition
@@ -180,8 +206,8 @@ en:
       table:
         no_employment:
           html: >-
-            <span class='fa fa-exclamation-triangle text-danger'> no job place
-            is filled</span>
+            <span class='fa fa-exclamation-triangle text-danger'> no job place is
+            filled</span>
   admin_submenu:
     announcements: Announcements
     api: API
@@ -194,6 +220,7 @@ en:
     direction_of_sciences: Research directions
     emails: Emails
     groups: Access groups
+    journal: Journal
     options: Options
     organization_kinds: Organization kinds
     organizations: Organizations
@@ -202,6 +229,7 @@ en:
     quota_kinds: Resource quota kind
     report_submit_denial_reasons: Reasons for refusal to provide a report
     reports: Reports
+    reports_engine: Query constructor
     requests: Requests
     requests_with_count:
       html: Requests <span class="badge info">%{count}</span>
@@ -216,8 +244,15 @@ en:
     sureties_with_count:
       html: Sureties <span class="badge info">%{count}</span>
     users: Users
+    wikiplus: Wiki
   bad_job: 'Bad job: '
   bad_jobs: 'Bad jobs: '
+  buttons:
+    save: Save
+  common:
+    back: Back
+  delete: Delete
+  edit: Edit
   flash:
     not_authorized: You are not authorized for this action.
     not_logged_in: You haven't logged in. Log in or register.
@@ -226,8 +261,8 @@ en:
   helpers:
     page_entries_info:
       more_pages:
-        display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> pages are shown
-          \ of <b>%{total}</b>"
+        display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> pages are shown  of
+          <b>%{total}</b>"
       one_page:
         display_entries:
           few: Shown <b>%{count}</b>
@@ -238,25 +273,38 @@ en:
   main_menu:
     admin_area: Administator's office
     wiki: Wiki
+    wikiplus: Help
     working_area: Study
   model_translation:
     en: in english
     ru: in russian
+  name: Name
+  no_records_found: No records have been found
   options:
     fields:
+      hide: Hide
+      name_with_category: Autocomplete name
+      name_without_category: Usual name
       new: New option
       remove_option: Remove option
+      show: Show from
+      value_with_category: Autocomplete value
+      value_without_category: Usual value
       with_category: Autocompleted
       without_category: Not autocompleted
+    form:
+      hide: Hide
+      new: New option
+      show: Show from
   profiles:
     form:
       info_mails_help: >-
-        Tick if you agree to receive newsletters about future seminars and
-        other useful information.
+        Tick if you agree to receive newsletters about future seminars and other useful
+        information.
       save: Save
       special_mails_help: >-
-        Tick if you agree to receive a newsletter about the status of clusters,
-        preventive works and other service information.
+        Tick if you agree to receive a newsletter about the status of clusters, preventive
+        works and other service information.
     show:
       change_password: Change password
       is_admin: Administator
@@ -265,14 +313,13 @@ en:
     comments: Comments
     job_stat: Statistics
     job_table: Efficiency
+    menu_items: Edit menu layouts
     packages: Packages
     profile: Profile
     projects: Projects
     sessions: Reregistrations
     sessions_warning:
-      html: >-
-        Reregistrations <span class="badge warning"><i class="fa fa-bell">
-        </i></span>
+      html: Reregistrations <span class="badge warning"><i class="fa fa-bell"> </i></span>
     tickets: Support
     tickets_warning:
       html: Support <span class="badge warning"><i class="fa fa-bell"></i></span>
@@ -292,6 +339,8 @@ en:
       next: Next
       previous: Previous
       truncate: "..."
+  who_types:
+    ":": ":"
   without_pagination:
     display_all_records: Display all records on single page(may be long)
     displaying_all_records: All records are displayed

@@ -1,5 +1,5 @@
 # This migration comes from statistics (originally 20141209133338)
-class CreateSessionStats < ActiveRecord::Migration
+class CreateSessionStats < ActiveRecord::Migration[4.2]
   def change
     create_table :statistics_session_stats do |t|
       t.string :kind

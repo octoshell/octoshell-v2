@@ -16,5 +16,5 @@ table class="table table-striped"
       td
         = a.exports.map{|e| link_to e.title, edit_admin_export_path(e)}.join(' | ').html_safe
       td
-        = link_to [:admin, a], method: :delete, data: { confirm: 'Are you sure?' }
+        = link_to [:admin, a], method: :delete, data: { confirm: t('.sure') }
           i class="fa fa-times text-danger"

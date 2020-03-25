@@ -1,6 +1,6 @@
 module Wiki
   class PagesController < ApplicationController
-    before_filter :check_abilities, except: [:index, :show]
+    before_action :check_abilities, except: [:index, :show]
 
     def index
       @pages = Page.order(Page.current_locale_column(:name))

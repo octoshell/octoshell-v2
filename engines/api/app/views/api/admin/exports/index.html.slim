@@ -8,6 +8,7 @@ table class="table table-striped"
     th = Api::Export.human_attribute_name(:request)
     th = Api::Export.human_attribute_name(:access_keys)
     th = Api::Export.human_attribute_name(:key_parameters)
+    th = t('.address')
     th = Api::Export.human_attribute_name(:safe)
     th
   - @exports.each do |export|
@@ -20,10 +21,16 @@ table class="table table-striped"
       td
         = export.key_parameters.map{|k| link_to k.name, edit_admin_key_parameter_path(k)}.join(' | ').html_safe
       td
+        - port = request.port==80 ? '' : ":#{request.port}"
+        = "#{request.host}#{port}/api/req/#{export.request}"
+      td
         - if export.safe
           i class="fa fa-check-circle alert alert-success"
         - else
           i class="fa fa-times-circle alert alert-danger"
       td
-        = link_to [:admin, export], method: :delete, data: { confirm: 'Are you sure?' }
+        = link_to [:admin, export], method: :delete, data: { confirm: t('.sure') }
           i class="fa fa-times text-danger"
+
+p
+  = t('.note')

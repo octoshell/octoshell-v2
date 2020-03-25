@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20141113105618)
-class AddQuotaKindToCoreTables < ActiveRecord::Migration
+class AddQuotaKindToCoreTables < ActiveRecord::Migration[4.2]
   def change
     add_column :core_cluster_quotas, :quota_kind_id, :integer
     add_column :core_request_fields, :quota_kind_id, :integer

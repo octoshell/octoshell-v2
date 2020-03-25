@@ -17,7 +17,9 @@
 #
 
 module Wiki
-  class Page < ActiveRecord::Base
+  class Page < ApplicationRecord
+
+    
 
     translates :name, :content
     validates_translated :content, :name, presence: true

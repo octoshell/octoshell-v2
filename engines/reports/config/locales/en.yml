@@ -1,0 +1,28 @@
+---
+en:
+  reports:
+    constructor:
+      show:
+        add_join: Add join by sql
+        alias: Alias
+        array: Show results on current page
+        associations: Associations
+        attributes: Attributes
+        choose_attributes: Choose attribute for Select
+        class_name: Name of class
+        condition: Expression
+        csv: Show in CSV file
+        delete: Delete
+        having: Having
+        inner_join: Inner join
+        join_table: Class
+        join_type: Join type
+        left_join: Left join
+        link: Association
+        loading: Loading...
+        'on': 'On'
+        per: Amount of record on a single page
+        selected: This assocation has been already selected
+        title: Query constructor
+        to_sql: Show sql
+        where: Where

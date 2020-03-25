@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.platform = 'java' if RUBY_ENGINE == 'jruby'
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 4.2"
+  s.add_dependency "rails", "~> 5.0"
   s.add_dependency "activerecord-jdbcpostgresql-adapter" if /java/.match(RUBY_PLATFORM)
   s.add_dependency "pg", "~> 0.18" unless /java/.match(RUBY_PLATFORM)
   s.add_dependency "decorators", "~> 1.0.2"
@@ -28,15 +28,18 @@ Gem::Specification.new do |s|
   s.add_dependency "sshkey"
   s.add_dependency "net-ssh"
   s.add_dependency "net-scp"
-  s.add_dependency "maymay"
-  s.add_dependency "ransack"
+  # s.add_dependency "maymay"
+  s.add_dependency "ransack", "2.1.1"
   s.add_dependency "kaminari"
   s.add_dependency "clbustos-rtf"
-  s.add_dependency "mini_magick"
   s.add_dependency "carrierwave"
   s.add_dependency "roo"
   s.add_dependency "colorize"
   s.add_dependency 'write_xlsx'
+
+  s.add_dependency "nokogiri", ">= 1.10.4"
+  s.add_dependency "mini_magick", ">= 4.9.4"
+
 
   s.test_files = Dir["spec/**/*"]
 

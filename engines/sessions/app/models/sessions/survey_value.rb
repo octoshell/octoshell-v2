@@ -20,7 +20,7 @@
 # SurveyFields из Survey значениями SurveyValue.
 
 module Sessions
-  class SurveyValue < ActiveRecord::Base
+  class SurveyValue < ApplicationRecord
     belongs_to :user_survey
     belongs_to :field, class_name: "Sessions::SurveyField", foreign_key: :survey_field_id
     belongs_to :reference, polymorphic: true

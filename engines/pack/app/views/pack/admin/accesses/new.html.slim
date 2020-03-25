@@ -14,7 +14,13 @@ div class="page-header"
     =f.radio_button  "who_type", "Group", label: t("group"),class: 'hid-decision'
     = f.collection_select :who_id, Group.all, :id, :name, label: t("group")
   br
-  = f.collection_select :version_id, Pack::Version.all, :id, :name,label: Pack::Version.model_name.human
+  div#to-container
+    = f.label :to
+    = f.radio_button :to_type, Pack::Package.to_s, label: Pack::Package.model_name.human.to_s
+    = f.radio_button :to_type, Pack::Version.to_s, label: Pack::Version.model_name.human.to_s
+    = f.select :to_id, [],{ label: 'ID'}, {class: 'select2-custom'}
+
+  /= f.collection_select :version_id, Pack::Version.all, :id, :name,label: Pack::Version.model_name.human
   = label_tag 'd',Pack::Access.human_attribute_name(:forever)
   = radio_button_tag 'access[forever]',true , !@access.end_lic,enab: "disable"
   = label_tag 'd2',Pack::Access.human_attribute_name(:not_forever)
@@ -33,4 +39,20 @@ javascript:
   $(".hid-decision").change(function(i,e){
     $(".hid-decision").parents(".radio").next().find("select").prop('disabled',true);
     $(this).parents(".radio").next().find("select").prop('disabled',false);
+  });
+  var func = function(){
+    var toID = $('#access_to_id');
+    var self = $(this);
+    self.find("input[type='radio']").each(function(){
+      var self = $(this);
+      if(self.is(':checked')){
+        if(self.val() == 'Pack::Package'){
+          apply_select_to(toID,'#{admin_packages_path}');
+        }else{
+          apply_select_to(toID,'#{admin_versions_path}');
+        }
+      }
     });
+  }
+  $('div#to-container').change(func);
+  $('div#to-container').trigger('change');

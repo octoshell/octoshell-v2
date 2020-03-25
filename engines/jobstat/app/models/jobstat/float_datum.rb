@@ -15,6 +15,9 @@
 #
 
 module Jobstat
-  class FloatDatum < ActiveRecord::Base
+  class FloatDatum < ApplicationRecord
+    def versions_enabled
+      false
+    end
   end
 end

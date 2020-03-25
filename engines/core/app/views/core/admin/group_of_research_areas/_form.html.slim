@@ -1,0 +1,5 @@
+= bootstrap_form_for [:admin, @group_of_research_area] do |f|
+  -Core::GroupOfResearchArea.locale_columns(:name).each do |column|
+    = f.text_field column
+  = f.form_group do
+    = f.submit t("actions.save")

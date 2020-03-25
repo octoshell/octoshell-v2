@@ -1,5 +1,6 @@
 module Core
   class Admin::CitiesController < Admin::ApplicationController
+    before_action :octo_authorize!
     def index
       respond_to do |format|
         format.html do

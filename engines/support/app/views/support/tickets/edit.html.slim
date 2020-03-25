@@ -10,7 +10,6 @@ div class="page-header"
   = f.file_field :attachment
   = f.collection_select :project_id, current_user.projects, :id, :title, label: Support::Ticket.human_attribute_name(:project), include_blank: true
   /= autocomplete f, name: 'ticket[project_id]', label: Support::Ticket.human_attribute_name(:project), source: core.projects_path, include_blank: true
-  /= autocomplete f, name: 'ticket[cluster_id]', source: core.admin_clusters_path, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
   = f.collection_select :cluster_id, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
   = f.fields_for :field_values do |fv_f|
     - value = fv_f.object

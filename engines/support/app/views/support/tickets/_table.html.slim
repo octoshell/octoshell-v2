@@ -9,11 +9,13 @@
       th class="col-xs-7" = Support::Ticket.human_attribute_name(:subject)
       th class="col-xs-4"
         - if @search
+          = sort_link @search, :updated_at, Support::Ticket.human_attribute_name(:updated_at), default_order: :desc
+          |  / 
           = sort_link @search, :created_at, Support::Ticket.human_attribute_name(:created_at), default_order: :desc
         - else
           = Support::Ticket.human_attribute_name(:created_at)
-        |  / 
-        = Support::Ticket.human_attribute_name(:updated_at)
+          |  / 
+          = Support::Ticket.human_attribute_name(:updated_at)
     - tickets.each do |ticket|
       tr
         td = link_to ticket.id, ticket
@@ -34,9 +36,9 @@
               li
                 | #{Support::Ticket.human_attribute_name(:cluster)}: #{ticket.cluster}
         td
-          = l ticket.created_at
+          = l ticket.updated_at
           |  / 
           br
-          span class="text-muted" = l ticket.updated_at
+          span class="text-muted" = l ticket.created_at
 - else
   p = t(".no_tickets", default: "There are no tickets")

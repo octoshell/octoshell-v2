@@ -15,6 +15,8 @@ function endLicWithoutReq(){
         },
         "lock_version":{
         },
+        "authenticity_token":{
+        },
         "end_lic":{
           "title": '<%=raw Pack::Access.human_attribute_name("end_lic")%>',
           "required": true,
@@ -34,6 +36,9 @@ function endLicWithoutReq(){
           "dependencies":{
             "forever": "false"
           }
+        },
+        "authenticity_token":{
+          "type": "hidden"
         },
         "status":{
           "type": "hidden"
@@ -58,6 +63,7 @@ function endLicWithoutReq(){
                       {
                         control.getControlByPath('end_lic').setValue('');
                       }
+                      control.getControlByPath('authenticity_token').setValue('<%=form_authenticity_token%>');
                       this.submit();
                     }
                   }

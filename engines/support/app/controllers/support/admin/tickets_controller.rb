@@ -1,7 +1,7 @@
 # coding: utf-8
 module Support
   class Admin::TicketsController < Admin::ApplicationController
-    before_filter :setup_default_filter, only: :index
+    before_action :setup_default_filter, only: :index
 
     #autocomplete :ticket, :project
 
@@ -9,7 +9,7 @@ module Support
       @search = Ticket.search(params[:q])
       @tickets = @search.result(distinct: true)
                         .includes({reporter: :profile}, {responsible: :profile})
-                        .order("id DESC, updated_at DESC")
+                        .order("updated_at DESC, id DESC")
       without_pagination(:tickets)
       # записываем отрисованные тикеты в куки, для перехода к следующему тикету после ответа
       cookies[:tickets_list] = @tickets.map(&:id).join(',')

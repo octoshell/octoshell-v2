@@ -8,7 +8,9 @@
 #
 
 module Sessions
-  class ReportSubmitDenialReason < ActiveRecord::Base
+  class ReportSubmitDenialReason < ApplicationRecord
+
+    
 
     translates :name
     validates_translated :name, presence: true

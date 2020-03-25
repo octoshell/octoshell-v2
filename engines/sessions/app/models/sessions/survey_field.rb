@@ -25,7 +25,7 @@
 
 # Поле опроса
 module Sessions
-  class SurveyField < ActiveRecord::Base
+  class SurveyField < ApplicationRecord
     include ActionView::Helpers::JavaScriptHelper
     translates :name, :hint
 

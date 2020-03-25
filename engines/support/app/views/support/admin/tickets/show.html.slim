@@ -5,7 +5,7 @@ div class="page-header"
         div class="col-md-6 col-xs-12"
           h2
             = t(".title", id: @ticket.id)
-            | &nbsp; 
+            | &nbsp;
             - state = { pending: "danger", answered_by_support: "warning", answered_by_reporter: "danger", resolved: "success", closed: "default" }[@ticket.state_name.to_sym]
             span class="label label-#{state}" = @ticket.human_state_name
           - if @ticket.closed?
@@ -21,7 +21,7 @@ div class="page-header"
           h2
             a href="#related-tags" data-toggle="collapse"
               i class="glyphicon glyphicon-chevron-down"
-            | &nbsp; 
+            | &nbsp;
             = Support::Ticket.human_attribute_name(:tags)
           div id="related-tags" class='collapse'
             = render "tags_form", ticket: @ticket
@@ -39,11 +39,11 @@ div class="page-header"
       tr
         td
           = Support::Ticket.human_attribute_name(:reporter)
-          | : 
+          | :
           = link_to @ticket.reporter.full_name, main_app.admin_user_path(@ticket.reporter)
         td
           = Support::Ticket.human_attribute_name(:responsible)
-          | : 
+          | :
           - if @ticket.responsible
             = @ticket.responsible
           - else
@@ -51,12 +51,12 @@ div class="page-header"
       tr
         td
           = Support::Ticket.human_attribute_name(:reporter_logins)
-          | : 
+          | :
           = @ticket.reporter_logins
         td
           - if @ticket.cluster.present?
             = Support::Ticket.human_attribute_name(:cluster)
-            | : 
+            | :
             = link_to @ticket.cluster, core.admin_cluster_path(@ticket.cluster)
           - else
             | &nbsp;
@@ -71,15 +71,16 @@ div class="page-header"
           td
             = Support::Ticket.human_attribute_name(:attachment)
           td
+            = link_to_attachment(@ticket)
       - if @ticket.project.present?
         tr
           td
             = Support::Ticket.human_attribute_name(:project)
-            | : 
+            | :
             = link_to @ticket.project, core.admin_project_path(@ticket.project)
           td
             = Support::Ticket.human_attribute_name(:project_id)
-            | : 
+            | :
             = @ticket.project.id
 
       - if @ticket.cluster.present?
@@ -107,7 +108,7 @@ div.row
     h3
       a href="#subscribers-collapse" data-toggle="collapse"
         i class="glyphicon glyphicon-chevron-down"
-      | &nbsp; 
+      | &nbsp;
       = Support::Ticket.human_attribute_name(:subscribers)
     div id="ticket-subscribers"
       = render "subscribers_form", ticket: @ticket
@@ -115,7 +116,7 @@ div.row
     h3
       a href="#resposible-collapse" data-toggle="collapse"
         i class="glyphicon glyphicon-chevron-down"
-      | &nbsp; 
+      | &nbsp;
       = Support::Ticket.human_attribute_name(:responsible)
     div id="ticket-responsible"
       = render "responsible_form", ticket: @ticket
@@ -125,7 +126,7 @@ div class="row panel panel-default" id="reply"
     h4
       a href="#collapse1" data-toggle="collapse"
         i class="glyphicon glyphicon-chevron-down"
-        | &nbsp; 
+        | &nbsp;
         = Support::Ticket.human_attribute_name(:message)
         | &nbsp;
         | (#{l @ticket.created_at} / #{l @ticket.updated_at})
@@ -137,7 +138,7 @@ div class="row panel panel-default" id="reply"
 div.row
   a href="#collapse-tags" data-toggle="collapse"
     i class="glyphicon glyphicon-chevron-down"
-    | &nbsp; 
+    | &nbsp;
     = t('.tags-etc')
 div.row.bg-info.collapse id="collapse-tags"
   div.col-sm-12.col-md-4
@@ -149,17 +150,17 @@ div.row.bg-info.collapse id="collapse-tags"
 
 - unless @ticket.resolved? || @ticket.closed?
   legend = t(".new_reply")
-  = bootstrap_form_for [:admin, @ticket.replies.build], layout: :horizontal, multipart: true do |f|
+  = bootstrap_form_for [:admin, @ticket.replies.build], layout: :horizontal, html: { multipart: true } do |f|
     = f.form_group do
       = select_tag :reply_template, options_from_collection_for_select(Support::ReplyTemplate.all, :message, :subject), prompt: Support::ReplyTemplate.model_name.human, style: "width: 100%"
     = f.hidden_field :ticket_id
-    = markdown_area f,:message, rows: 5, help: link_to(t(".create_reply_template"), new_admin_reply_template_path, id: "reply-template-maker")
+    = markdown_area f,:message, rows: 4, help: link_to(t(".create_reply_template"), new_admin_reply_template_path, id: "reply-template-maker"), vertical: true
     div class="btn-toolbar"
       = f.primary t(".send")
       = f.primary t(".send_and_show_result"), name: :show_self
       - if @next_ticket.present?
         = f.primary t(".send_and_show_next"), name: :show_next
-      | &nbsp; 
+      | &nbsp;
       label for='reply_attachment' = t('.attach')
       input style='display: inline;' type='file' name='reply[attachment]' id='reply_attachment'
 

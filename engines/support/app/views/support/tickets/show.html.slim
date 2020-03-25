@@ -1,7 +1,7 @@
 div class="page-header"
   h1
     = t(".title", id: @ticket.id)
-    | &nbsp; 
+    | &nbsp;
     - state = { "pending"=> "danger", "answered_by_support" => "danger", "answered_by_reporter" => "warning", "resolved" => "success", "closed" => "default" }[@ticket.state_name]
     span class="label label-#{state}" = @ticket.human_state_name.to_s
   h2 = @ticket.subject
@@ -82,9 +82,9 @@ div class="panel panel-default" id="reply"
   div class="panel-heading"
     h4
       a href="#collapse1" data-toggle="collapse"
-        | > &nbsp; 
+        | > &nbsp;
       = Support::Ticket.human_attribute_name(:message)
-      | &nbsp; 
+      | &nbsp;
       | (#{l @ticket.created_at} / #{l @ticket.updated_at})
   div class="panel-collapse panel-body collapse" id="collapse1"
     = markdown @ticket.message
@@ -102,11 +102,11 @@ div class="panel panel-default" id="reply"
       - if current_user.id == @ticket.reporter.id
         = t(".problem_solved")
         = link_to Support::Ticket.human_state_event_name(:resolve), ticket_resolve_path(@ticket), method: :put, class: "btn btn-success"
-      | &nbsp; 
+      | &nbsp;
       = t(".if_not")
       = f.submit t("actions.send")
       /= f.file_field :attachment, wrapper: {:class => 'help-block'}
-      | &nbsp; 
+      | &nbsp;
       label for='reply_attachment' = t('.attach')
       input style='display: inline;' type='file' name='reply[attachment]' id='reply_attachment'
 

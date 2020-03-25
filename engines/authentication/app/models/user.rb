@@ -33,13 +33,13 @@
 #  index_users_on_reset_password_token  (reset_password_token)
 #
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   authenticates_with_sorcery!
   validates :password, confirmation: true, length: { minimum: 6 }, on: :create
   validates :password, confirmation: true, length: { minimum: 6 }, on: :update, if: :password?
   validates :email, presence: true, uniqueness: true
   validate do
-    errors.add(:email, :postmaster) if email[/postmaster/]
+    errors.add(:email, :postmaster) if email && email[/postmaster/]
   end
   before_validation :downcase_email
 
@@ -74,7 +74,11 @@ class User < ActiveRecord::Base
   end
 
   def downcase_email
-    email.downcase! unless self.email.nil?
+    unless self.email.nil?
+      email.downcase!
+      email.gsub!(/\(.*\)/){|comment| ''}
+      email.gsub!(%r(^[a-zA-Z0-9!\#$%&'*+-\/=?^_`\{\}~.@|]), '')
+    end
   end
 
   def self.delete_pending_users

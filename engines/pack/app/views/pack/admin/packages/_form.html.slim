@@ -4,6 +4,7 @@ div class="row"
       -Pack::Package.locale_columns(:name, :description).each do |column|
         = f.text_field column
       = f.check_box :deleted
+      = f.check_box :accesses_to_package
 
       = f.form_group do
         = f.submit t("buttons.save", default: "Save")

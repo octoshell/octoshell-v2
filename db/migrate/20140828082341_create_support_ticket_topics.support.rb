@@ -1,5 +1,5 @@
 # This migration comes from support (originally 20140827082329)
-class CreateSupportTicketTopics < ActiveRecord::Migration
+class CreateSupportTicketTopics < ActiveRecord::Migration[4.2]
   def change
     create_table :support_topics do |t|
       t.string  :name

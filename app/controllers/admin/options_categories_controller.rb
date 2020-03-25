@@ -2,6 +2,11 @@ require_dependency "pack/application_controller"
 
 class Admin::OptionsCategoriesController < Admin::ApplicationController
 
+  before_action do
+    authorize! :manage, :options
+  end
+
+
   def index
     @records = OptionsCategory.order(:id)
     without_pagination(:records)

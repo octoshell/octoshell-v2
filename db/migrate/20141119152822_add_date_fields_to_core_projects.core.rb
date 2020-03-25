@@ -1,5 +1,5 @@
 # This migration comes from core (originally 20141119144122)
-class AddDateFieldsToCoreProjects < ActiveRecord::Migration
+class AddDateFieldsToCoreProjects < ActiveRecord::Migration[4.2]
   def change
     add_column :core_projects, :first_activation_at, :datetime
     add_column :core_projects, :finished_at, :datetime

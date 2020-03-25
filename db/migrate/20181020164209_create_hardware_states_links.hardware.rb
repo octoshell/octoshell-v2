@@ -1,5 +1,5 @@
 # This migration comes from hardware (originally 20181020153214)
-class CreateHardwareStatesLinks < ActiveRecord::Migration
+class CreateHardwareStatesLinks < ActiveRecord::Migration[4.2]
   def change
     create_table :hardware_states_links do |t|
       t.belongs_to :from

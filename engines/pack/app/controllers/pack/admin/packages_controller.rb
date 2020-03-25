@@ -1,4 +1,4 @@
-require_dependency "pack/application_controller"
+# require_dependency "pack/application_controller"
 
 module Pack
   class Admin::PackagesController < Admin::ApplicationController
@@ -11,7 +11,7 @@ module Pack
           without_pagination(:packages)
         } # index.html.erb
         format.json do
-          @packages = Package.finder(params[:q]).allowed_for_users_with_joins(current_user.id)
+          @packages = Package.finder(params[:q])
           render json: { records: @packages.page(params[:page]).per(params[:per]), total: @packages.count }
         end
       end
@@ -57,7 +57,9 @@ module Pack
     private
 
     def package_params
-      params.require(:package).permit(*Package.locale_columns(:description, :name), :deleted, :lock_version)
+      params.require(:package)
+            .permit(*Package.locale_columns(:description, :name),
+                    :deleted, :lock_version, :accesses_to_package)
     end
 
     def search_params

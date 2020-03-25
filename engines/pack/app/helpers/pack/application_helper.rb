@@ -1,25 +1,6 @@
 module Pack
   module ApplicationHelper
 
-    def add_version(t, version)
-      if version
-        t
-      else
-        "version_#{t}"
-      end
-    end
-
-    def show_errors(f, attr)
-      if f.object.errors[attr]!=[]
-        errors=f.object.errors[attr].join(" ")
-        content_tag("p", content_tag("font",errors,color: "red")  )
-      end
-    end
-
-    def readable_attrs(record)
-      record.attributes.reject{|key,value|  key.match(/_id$/) || ['id','lock_version','updated_at','created_at'].include?(key)  }
-    end
-
     def access_who_name(access)
       case access.who_type
       when 'Core::Project'
@@ -32,41 +13,30 @@ module Pack
     end
 
     def pack_admin_submenu_items
-      menu = Face::Menu.new
-      menu.items.clear
-      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.versions_list"),
-                                        url: [:admin, :versions],
-                                        regexp: /versions/))
-      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.packages_list"),
-                                        url: [:admin, :packages],
-                                        regexp: /packages/))
-
-      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.accesses_list"),
-                                        url: [:admin, :accesses],
-                                        regexp: /accesses/))
-      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.options_list"),
-                                        url: [:admin, :options_categories],
-                                        regexp: /options_categories/))
-      menu.add_item(Face::MenuItem.new(name: t("pack.docs.docs_ru.header"),
-                                        url: { controller: "/pack/docs", action: "show", page: 'docs_ru' },
-                                        regexp: /docs/))
-      menu.items
+      menu = Face::MyMenu.new
+      menu.add_item_without_key(t("engine_submenu.packages_list"),
+                                admin_packages_path, 'pack/admin/packages')
+      menu.add_item_without_key(t("engine_submenu.versions_list"),
+                                admin_versions_path, 'pack/admin/versions')
+      menu.add_item_without_key(t("engine_submenu.accesses_list"),
+                                admin_accesses_path, 'pack/admin/accesses')
+      menu.add_item_without_key(t("pack.docs.docs_ru.header"),
+                                { controller: "/pack/docs", action: "show",
+                                  page: 'docs_ru' }, 'pack/docs')
+      menu.items(self)
     end
 
     def pack_submenu_items
-      menu = Face::Menu.new
-      menu.items.clear
-      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.versions_list"),
-                                        url: [:versions],
-                                        regexp: /versions/))
-      menu.add_item(Face::MenuItem.new(name: t("engine_submenu.packages_list"),
-                                        url: [:packages],
-                                        regexp: /packages/))
-      menu.add_item(Face::MenuItem.new(name: t("pack.docs.docs_ru.header"),
-                                        url: { controller: "docs", action: "show", page: 'docs_ru' },
-                                        regexp: /docs/))
-
-      menu.items
+      menu = Face::MyMenu.new
+      # menu.items.clear
+      menu.add_item_without_key(t("engine_submenu.packages_list"),
+                                packages_path, 'pack/packages')
+      menu.add_item_without_key(t("engine_submenu.versions_list"),
+                                versions_path, 'pack/versions')
+      menu.add_item_without_key(t("pack.docs.docs_ru.header"),
+                                { controller: "/pack/docs", action: "show",
+                                  page: 'docs_ru' }, 'pack/docs')
+      menu.items(self)
     end
 
 

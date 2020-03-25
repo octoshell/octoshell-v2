@@ -21,7 +21,7 @@ en:
     - Fri.
     - Sat.
     abbr_month_names:
-    - 
+    -
     - Jan.
     - Feb.
     - Mar.
@@ -47,7 +47,7 @@ en:
       long: "%Y %B %d"
       short: "%b %d"
     month_names:
-    - 
+    -
     - January
     - February
     - March
@@ -173,11 +173,38 @@ en:
       show:
         about:
           html: >
-            <p>The access management system for the Supercomputer Complex
-            of the Lomonosov Moscow State University.</p>
+            <p>The access management system for the Supercomputer Complex of the Lomonosov
+            Moscow State University.</p>
         sign_in: Sign in
         sign_up: Sign up
         welcome: Octoshell
+    menu_items:
+      edit_all:
+        admin_menu: to the admininstrator menu
+        copy_from_default: Copy the default layout
+        create_custom: create custom layout
+        default_pref_custom_empty: >
+          You edit default layout of menu elements. You can %{link} by copying default
+          layout
+        default_pref_custom_exists: 'You edit default layout of menu elements. Switch
+          to %{link}?
+
+'
+        header: Edit elements of menu disposition
+        superadmin_instruction: >
+          You can edit default and your own layouts of menu elements. You can return
+          to your previous layout at any moment
+        switch_to_default: Switch to the default layout
+        to_custom: your custom layout
+        user_menu: the usual user menu
+        you_edit_admin_menu: You are editing menu of admininstrator. Go to %{link}
+        you_edit_user_menu: You are editing menu of usual users. Go to %{link}
+        your_pref: 'You edit your own layout. You can:
+
+'
+      update_all:
+        not_allowed_to_edit: You are not allowed to edit this layout
+        saved: The layout is saved
     shared:
       admin_submenu:
         more: 'More '

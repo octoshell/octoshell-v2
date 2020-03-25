@@ -1,4 +1,7 @@
 function applySelectToOptionValue(selectValue, id){
+  if(id == null || id == ''){
+    return;
+  }
   var path = " /options/" + id + "/values";
   var id = selectValue.select2('val');
   // alert(id);
@@ -12,18 +15,95 @@ function applySelectToOptionValue(selectValue, id){
 
 
 $(document).on('select2:select','.attach-category', function (e) {
-  var selectValue = $(this).parents('.option-container').find('.attach-value');
+  var selectValue = $(this).parents('div.dialog').find('.attach-value');
   applySelectToOptionValue(selectValue,e.params.data.id);
 });
 
 
 
 $(document).on('nested:fieldAdded', function(event){
+  var field = $(event.field);
+  initialize(field.find('div.dialog'));
   apply_select();
+  $('div#options-container div.col-xs-3').last().text('<%= t(".new") %>');
+  $('.marked-preview').each(function(e){
+    var src = $('#'+$(this).attr('data-myid'));
+    $(this).height(src.height());
+  });
+  add_markdown_toolbar();
+
 });
 apply_select();
 $('.attach-category').each(function(indx, element){
   element = $(element);
-  var selectValue = element.parents('.option-container').find('.attach-value');
+  var selectValue = element.parents('div.dialog').find('.attach-value');
   applySelectToOptionValue(selectValue,element.children("option:selected").val());
+});
+
+$('div#options-container').on('click', 'button[show]',function(){
+  var dialog = $(this).parents('div.row').next('div.row').find('div.dialog');
+  dialog.show();
+  var width = $('div.col-xs-6').css('width');
+  dialog.find('span.select2-container').removeAttr('style').css('width', width);
+
+  return false;
+});
+$('div#options-container').on('click', 'button:not([show])',function(){
+  $(this).parents('div.dialog').hide();
+  return false;
+});
+
+$.fn.toggleAttr = function(attr, val) {
+  return this.each(function() {
+    var self = $(this);
+    if(self.attr(attr))
+      self.removeAttr(attr);
+    else
+      self.attr(attr, val);
+  });
+};
+
+
+function initialize(dialog){
+  var checkedInput = dialog.find('div.name-chooser input:checked');
+  if(checkedInput.val() == 'without_category'){
+    dialog.find('div.name-text').removeAttr('hidden');
+    dialog.find('div.name-select').attr('hidden','');
+    dialog.find('div.value-chooser').attr('hidden','');
+  }
+  else{
+    dialog.find('div.name-text').attr('hidden', '');
+    dialog.find('div.name-select').removeAttr('hidden');
+  };
+  var checkedValInput = dialog.find('div.value-chooser input:checked');
+
+  if(checkedValInput.val() == 'without_category'){
+    dialog.find('div.value-text').removeAttr('hidden');
+    dialog.find('div.value-select').attr('hidden','');
+  }
+  else{
+    dialog.find('div.value-text').attr('hidden', '');
+    dialog.find('div.value-select').removeAttr('hidden');
+  };
+  dialog.find('div.value-chooser input').change(function(){
+    dialog.find('div.value-select,div.value-text').toggleAttr('hidden', '');
+  });
+
+  dialog.find('div.name-chooser input').change(function(){
+    var valueCheckedVal = $('div.value-chooser input:checked').val();
+    if($(this).is(':checked') && $(this).val() == 'without_category' &&
+      valueCheckedVal == 'with_category'){
+      dialog.find("div.value-chooser input[value='without_category']")
+            .prop('checked', true).trigger('change');
+    }
+    dialog.find('div.name-select,div.name-text,div.value-chooser').toggleAttr('hidden', '');
+  });
+};
+
+$('div#options-container div.dialog').each(function(){
+  initialize($(this));
+});
+$('.marked-preview').each(function(e){
+  var src = $('#'+$(this).attr('data-myid'));
+  $(this).height(src.height());
 });
