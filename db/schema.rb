@@ -666,6 +666,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_170149) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "nodelist"
+    t.integer "initiator_id"
     t.index ["end_time"], name: "index_jobstat_jobs_on_end_time"
     t.index ["login"], name: "index_jobstat_jobs_on_login"
     t.index ["partition"], name: "index_jobstat_jobs_on_partition"
