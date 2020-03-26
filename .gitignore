@@ -44,3 +44,5 @@ tests/
 
 config/database.yml
 engines/jobstat/cache.yaml
+docs/build
+

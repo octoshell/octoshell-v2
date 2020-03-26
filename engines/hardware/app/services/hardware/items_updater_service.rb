@@ -28,6 +28,7 @@ module Hardware
 
 
     def self.update!(array)
+      errors=[]
       array.each do |attributes|
         state_attributes = attributes.delete('state')
         id = attributes.delete('id')
@@ -35,11 +36,17 @@ module Hardware
           item = Item.find(id)
           item.update!(attributes)
         else
-          item = Item.create!(attributes)
+          begin
+            item = Item.create!(attributes)
+          rescue => e
+            errors << "#{e.message} (#{attributes.inspect})"
+            next
+          end
         end
         # item.last_items_state
         update_state(item, state_attributes) if state_attributes
       end
+      errors
     end
 
     def self.update_state(item, hash)
