@@ -4,7 +4,7 @@
 #
 #  id                 :integer          not null, primary key
 #  admin_login        :string(255)
-#  available_for_work :boolean          default(TRUE)
+#  available_for_work :boolean          default("true")
 #  description        :text
 #  host               :string(255)      not null
 #  name_en            :string
