@@ -3,7 +3,7 @@
 # Table name: core_organization_departments
 #
 #  id              :integer          not null, primary key
-#  checked         :boolean          default(FALSE)
+#  checked         :boolean          default("false")
 #  name            :string(255)
 #  organization_id :integer
 #
