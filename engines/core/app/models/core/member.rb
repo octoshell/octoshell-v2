@@ -4,7 +4,7 @@
 #
 #  id                         :integer          not null, primary key
 #  login                      :string(255)
-#  owner                      :boolean          default(FALSE)
+#  owner                      :boolean          default("false")
 #  project_access_state       :string(255)
 #  created_at                 :datetime
 #  updated_at                 :datetime
