@@ -3,11 +3,11 @@
 # Table name: core_organization_kinds
 #
 #  id                   :integer          not null, primary key
+#  departments_required :boolean          default("false")
+#  name_en              :string
 #  name_ru              :string(255)
-#  departments_required :boolean          default(FALSE)
 #  created_at           :datetime
 #  updated_at           :datetime
-#  name_en              :string
 #
 
 module Core

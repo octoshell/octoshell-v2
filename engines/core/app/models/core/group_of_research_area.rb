@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: core_group_of_research_areas
+#
+#  id         :bigint(8)        not null, primary key
+#  name_en    :string
+#  name_ru    :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 module Core
   class GroupOfResearchArea < ApplicationRecord
     has_many :research_areas, inverse_of: :group, foreign_key: :group_id

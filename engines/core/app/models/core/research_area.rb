@@ -3,11 +3,16 @@
 # Table name: core_research_areas
 #
 #  id         :integer          not null, primary key
+#  name_en    :string
 #  name_ru    :string(255)
-#  group      :string(255)
+#  old_group  :string(255)
 #  created_at :datetime
 #  updated_at :datetime
-#  name_en    :string
+#  group_id   :bigint(8)
+#
+# Indexes
+#
+#  index_core_research_areas_on_group_id  (group_id)
 #
 
 module Core
