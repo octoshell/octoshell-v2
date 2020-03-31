@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_11_131415) do
+ActiveRecord::Schema.define(version: 2020_03_30_093927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "announcement_recipients", id: :serial, force: :cascade do |t|
     t.integer "user_id"
@@ -338,6 +359,10 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category"
+    t.string "kind"
+    t.datetime "show_from"
+    t.datetime "show_till"
+    t.boolean "active"
     t.index ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id"
     t.index ["sourceable_type", "sourceable_id"], name: "index_core_notices_on_sourceable_type_and_sourceable_id"
   end
@@ -823,15 +848,6 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.boolean "receive_special_mails", default: true
   end
 
-  create_table "sessions_managers", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "session_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_sessions_managers_on_session_id"
-    t.index ["user_id"], name: "index_sessions_managers_on_user_id"
-  end
-
   create_table "sessions_projects_in_sessions", id: :serial, force: :cascade do |t|
     t.integer "session_id"
     t.integer "project_id"
@@ -993,24 +1009,13 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.datetime "updated_at"
   end
 
-  create_table "support_field_options", force: :cascade do |t|
-    t.bigint "field_id"
-    t.text "name_ru"
-    t.text "name_en"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["field_id"], name: "index_support_field_options_on_field_id"
-  end
-
   create_table "support_field_values", id: :serial, force: :cascade do |t|
     t.integer "field_id"
     t.integer "ticket_id"
     t.text "value"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.bigint "topics_field_id"
     t.index ["ticket_id"], name: "index_support_field_values_on_ticket_id"
-    t.index ["topics_field_id"], name: "index_support_field_values_on_topics_field_id"
   end
 
   create_table "support_fields", id: :serial, force: :cascade do |t|
@@ -1023,9 +1028,6 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.datetime "updated_at"
     t.string "name_en"
     t.string "hint_en"
-    t.string "model_collection"
-    t.integer "kind", default: 0
-    t.boolean "search", default: false
   end
 
   create_table "support_replies", id: :serial, force: :cascade do |t|
@@ -1112,7 +1114,6 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
   create_table "support_topics_fields", id: :serial, force: :cascade do |t|
     t.integer "topic_id"
     t.integer "field_id"
-    t.boolean "required", default: false
   end
 
   create_table "support_topics_tags", id: :serial, force: :cascade do |t|
@@ -1209,5 +1210,5 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.index ["url"], name: "index_wikiplus_pages_on_url", unique: true
   end
 
-  add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
 end

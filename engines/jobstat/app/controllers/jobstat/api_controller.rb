@@ -26,18 +26,18 @@ module Jobstat
     CHECKER_PREFIX = '[                checker                ]'
 
     def add_notice(job, user)
-      Core::Notice.where(sourceable: user, linkable: job, category: 1).destroy_all
+      Core::Notice.where(sourceable: user, linkable: job, category: 0).destroy_all
       note=Core::Notice.create(
         sourceable: user,
         message: view_context.link_to(job.drms_job_id, jobstat.job_path(job)),
         linkable: job,
-        category: 1)
+        category: 0)
       note.save!
       logger.info "#{CHECKER_PREFIX}: new notice for #{job.drms_job_id}"
     end
 
     def remove_notice(job, user)
-      Core::Notice.where(sourceable: user, linkable: job, category: 1).destroy_all
+      Core::Notice.where(sourceable: user, linkable: job, category: 0).destroy_all
       logger.info CHECKER_PREFIX + ": removed notice for #{job.drms_job_id}"
     end
 

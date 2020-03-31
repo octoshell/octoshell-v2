@@ -55,20 +55,35 @@ class ApplicationController < ActionController::Base
 
   def check_notices
     return unless current_user
-    return if request[:controller] =~ /\/admin\//
+    #return if request[:controller] =~ /\/admin\//
 
-    #FIXME: each category should be processed separately in outstanding code
-    notices = Core::Notice.where(sourceable: current_user, category: 1)
-    return if notices.count==0
-
-    list=[]
-    notices.each do |note|
-      list << note.message
-      #next if flash[:'alert-badjobs'] && flash[:'alert-badjobs'].include?(text)
-      #job=note.linkable
+    # per-user
+    Core::Notice.where(category: 0, sourceable: current_user).each do |note|
+      logger.warn "--->>> #{current_user.id} <<<---"
+      data = Core::Notice.handle note, current_user, params, request
+      flash_now_message(data[0],data[1]) if data
+      logger.warn "data0=#{data}" if data
     end
-    text = "#{notices.count==1 ? t('bad_job') : t('bad_jobs')} #{list.join '; '}"
-    flash.now[:'alert-badjobs'] = raw text
+
+    # others
+    Core::Notice.where('category > 0').each do |note|
+      data = Core::Notice.handle note, current_user, params, request
+      flash_now_message(data[0],data[1]) if data
+      logger.warn "dataX=#{data}" if data
+    end
+
+    # #FIXME: each category should be processed separately in outstanding code
+    # notices = Core::Notice.where(sourceable: current_user, category: 1)
+    # return if notices.count==0
+
+    # list=[]
+    # notices.each do |note|
+    #   list << note.message
+    #   #next if flash[:'alert-badjobs'] && flash[:'alert-badjobs'].include?(text)
+    #   #job=note.linkable
+    # end
+    # text = "#{notices.count==1 ? t('bad_job') : t('bad_jobs')} #{list.join '; '}"
+    # flash.now[:'alert-badjobs'] = raw text
 
   end
 end
