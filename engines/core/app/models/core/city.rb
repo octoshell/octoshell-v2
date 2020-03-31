@@ -3,7 +3,7 @@
 # Table name: core_cities
 #
 #  id         :integer          not null, primary key
-#  checked    :boolean          default(FALSE)
+#  checked    :boolean          default("false")
 #  title_en   :string(255)
 #  title_ru   :string(255)
 #  country_id :integer
