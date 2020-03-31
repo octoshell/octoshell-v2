@@ -3,12 +3,15 @@
 # Table name: core_notices
 #
 #  id              :integer          not null, primary key
+#  active          :boolean
 #  category        :integer
 #  count           :integer
+#  kind            :string
 #  linkable_type   :string
 #  message         :text
+#  show_from       :datetime
+#  show_till       :datetime
 #  sourceable_type :string
-#  type            :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  linkable_id     :integer
@@ -22,8 +25,8 @@
 
 module Core
   class Notice < ApplicationRecord
-    belongs_to :sourceable, polymorphic: true
-    belongs_to :linkable, polymorphic: true
+    belongs_to :sourceable, polymorphic: true # user or object which should be noticed
+    belongs_to :linkable, polymorphic: true   # extra data
 
     # message:  text    = notice text
     # count:    integer = notices count if applicable
