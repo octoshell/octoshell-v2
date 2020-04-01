@@ -101,25 +101,7 @@ module Core
       par = notice_params
       @notice = Notice.find_by_id(par[:id])
       if @notice
-        @notice.destroy
-      end
-      if par[:retpath]
-        redirect_to par[:retpath]
-      else
-        redirect_to [:admin, Notice]
-      end
-    end
 
-
-    def hide
-      par = notice_params
-      #logger.warn "=== #{params.inspect}"
-      @notice = Notice.find_by_id(par[:notice_id])
-      if @notice
-        if can?(:manage, :notices) or (@notice.category==0 && @notice.sourceable==current_user)
-          # logger.warn "==================================== No destroy #{@notice.id} (#{par[:retpath]})"
-          @notice.active = false
-          @notice.save
         end
       end
       if par[:retpath]
