@@ -57,12 +57,12 @@ class ApplicationController < ActionController::Base
     return unless current_user
     #return if request[:controller] =~ /\/admin\//
 
-    # per-user
+    # per-user: show only if sourceable is current user
     Core::Notice.where(category: 0, sourceable: current_user).each do |note|
       logger.warn "--->>> #{current_user.id} <<<---"
       data = Core::Notice.handle note, current_user, params, request
       flash_now_message(data[0],data[1]) if data
-      logger.warn "data0=#{data}" if data
+      #logger.warn "data0=#{data}" if data
     end
 
   end
@@ -90,5 +90,16 @@ class ApplicationController < ActionController::Base
     # text = "#{notices.count==1 ? t('bad_job') : t('bad_jobs')} #{list.join '; '}"
     # flash.now[:'alert-badjobs'] = raw text
 
+  end
+
+  def conditional_show_notice note
+    n = TimeDate.now
+    return if note.show_from && note.show_from < n
+    return if note.show_till && note.show_till > n
+    return if note.active==false
+    data = Core::Notice.handle note, current_user, params, request
+    if data
+      flash_now_message(data[0],data[1])
+    end
   end
 end
