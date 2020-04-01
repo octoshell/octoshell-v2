@@ -45,5 +45,6 @@ tests/
 config/database.yml
 engines/jobstat/cache.yaml
 docs/build
+node_modules/.yarn-integrity
 
 config/secrets.yml
