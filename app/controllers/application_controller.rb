@@ -60,14 +60,16 @@ class ApplicationController < ActionController::Base
     # per-user: show only if sourceable is current user
     Core::Notice.where(category: 0, sourceable: current_user).each do |note|
       logger.warn "--->>> #{current_user.id} <<<---"
-      data = Core::Notice.handle note, current_user, params, request
+      #data = Core::Notice.handle note, current_user, params, request
+      data = conditional_show_notice note
       flash_now_message(data[0],data[1]) if data
       #logger.warn "data0=#{data}" if data
     end
 
     # others: show for all (if handler returns not nil)
     Core::Notice.where(category: 1).each do |note|
-      data = Core::Notice.handle note, current_user, params, request
+      #data = Core::Notice.handle note, current_user, params, request
+      data = conditional_show_notice note
       flash_now_message(data[0],data[1]) if data
       #logger.warn "dataX=#{data}" if data
     end
@@ -88,7 +90,7 @@ class ApplicationController < ActionController::Base
   end
 
   def conditional_show_notice note
-    n = TimeDate.now
+    n = Time.current
     return if note.show_from && note.show_from < n
     return if note.show_till && note.show_till > n
     return if note.active==false
