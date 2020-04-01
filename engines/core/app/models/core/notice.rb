@@ -56,20 +56,19 @@ module Core
           sourceable.title_ru : sourceable.name_ru
     end
 
+    # 
     def self.register_def_per_user_handler
       Core::Notice.register_kind nil do |notice, user, params, request|
-        logger.warn "-> #{notice.id}/#{notice.kind}/#{notice.category}"
+        #logger.warn "-> #{notice.id}/#{notice.kind}/#{notice.category}"
         [:info,(notice.message+' '+notice.add_close(request)).html_safe]
       end 
     end
 
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
-    #include UrlFor
     def add_close request
-      #link = link_to 'Destroy', "/core/admin/notices/#{id}", method: :delete, remote: true, class: 'btn btn-mini btn-danger'
       #FIXME!!!! [:admin, :core, self] does not work :(((((
-      link = link_to 'Destroy', "/core/admin/notices/#{id}", data:{method: :delete, retpath: request.fullpath}, class: 'btn btn-mini btn-danger'
+      link = link_to 'X', "/core/admin/notices/#{id}", data:{method: :delete, retpath: request.fullpath}, class: 'btn btn-mini btn-danger'
       link
     end
   end
