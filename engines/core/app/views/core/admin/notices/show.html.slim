@@ -1,0 +1,40 @@
+div class="page-header"
+  h1 = @city.title_ru
+div class="well"
+  = link_to t("actions.edit"), [:edit, :admin, @city], class: "btn btn-default"
+  - name = t("actions.delete", default: "delete")
+  - confirm = t("core_confirm", default: "Are You sure?")
+  - data = { method: :delete, confirm: confirm }
+  = link_to name, [:admin, @city], data: data, class: "btn btn-default"
+  = form_tag [:merge, :admin, @city] do
+    = autocomplete nil, name: :merge_id, label: Core::City.model_name.human, source: core.finder_cities_path
+    =submit_tag t('.merge'),class: "btn btn-success"
+
+
+
+table class="table table-hover"
+  tr
+      td class='col-xs-6'
+        h4 = Core::City.human_attribute_name :title_ru
+      td class='col-xs-6'
+        h4 = @city.title_ru
+  tr
+      td class='col-xs-6'
+        h4 = Core::City.human_attribute_name :title_en
+      td class='col-xs-6'
+        h4 = @city.title_en
+  tr
+      td class='col-xs-6'
+        h4 = Core::City.human_attribute_name :checked
+      td class='col-xs-6'
+        h4 = @city.checked ? t('answers.yess',default: 'yes') : t('answers.noo',default: 'no')
+  tr
+      td class='col-xs-6'
+        h4 = Core::City.human_attribute_name :country_title_ru
+      td class='col-xs-6'
+        h4 = link_to no_name_c(@city.country), [:admin, @city.country]
+  tr
+      td class='col-xs-6'
+        h4 = Core::City.human_attribute_name :country_title_en
+      td class='col-xs-6'
+        h4 = @city.country.title_en

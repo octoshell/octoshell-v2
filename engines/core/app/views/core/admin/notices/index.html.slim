@@ -1,0 +1,19 @@
+div class="page-header"
+  h1 = t(".title", default: "Notices")
+
+div class="well"
+  = link_to t(".new_notice"), new_admin_notice_path, class: "btn btn-default"
+
+= bootstrap_form_for @search, url: admin_notices_path , method: :get, layout: :horizontal do |f|
+ /=f.form_group :checked_eq, label: { text: t('.checked') } do
+  = f.radio_button :checked_eq, nil, label: t('.none')
+  = f.radio_button :checked_eq, true, label: t('.yes')
+  = f.radio_button :checked_eq, false, label: t('.no')
+ = display_all_tag
+ = f.form_group do
+    = f.submit t("actions.find"), class: "btn btn-primary"
+ 
+
+= safe_paginate @notices
+= render "table", notices: @notices
+= safe_paginate @notices
