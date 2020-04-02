@@ -1,64 +1,67 @@
 module Core
   class Admin::NoticesController < Admin::ApplicationController
+    load_and_authorize_resource :class => "Core::Notice", except: [:show, :hide]
+
     def index
+      par = notice_params
       respond_to do |format|
         format.html do
-          @search = Notice.search(params[:q])
+          @search = Notice.search(par[:q])
           search_result = @search.result(distinct: true).order(:id)
           @notices = search_result
           without_pagination :notices
         end
         format.json do
-          @notices = Notice.search(params[:q])
-          json = { records: @notices.page(params[:page]).per(params[:per]), total: @notices.count }
+          @notices = Notice.search(par[:q])
+          json = { records: @notices.page(par[:page]).per(par[:per]), total: @notices.count }
           render json: json
         end
-
       end
     end
 
     def new
+      par = notice_params
       @notice = Notice.new
-      @notice.sourceable_id = params[:sourceable_id]
-      @notice.sourceable_type = params[:sourceable_type]
-      @notice.linkable_id = params[:linkable_id] if params[:linkable_id]
-      @notice.linkable_type = params[:linkable_type] if params[:linkable_type]
-      @notice.category = params[:category].to_i
-      @notice.message = params[:message]
-      @notice.count = params[:count].to_i
+      @notice.sourceable_id = par[:sourceable_id]
+      @notice.sourceable_type = par[:sourceable_type]
+      @notice.linkable_id = par[:linkable_id] if par[:linkable_id]
+      @notice.linkable_type = par[:linkable_type] if par[:linkable_type]
+      @notice.category = par[:category].to_i
+      @notice.message = par[:message]
+      @notice.count = par[:count].to_i
     end
 
     def create
-      if can? :manage, :notices
-        @notice = Notice.new
-        @notice.sourceable_id = params[:sourceable_id]
-        @notice.sourceable_type = params[:sourceable_type]
-        @notice.linkable_id = params[:linkable_id] if params[:linkable_id]
-        @notice.linkable_type = params[:linkable_type] if params[:linkable_type]
-        @notice.category = params[:category].to_i
-        @notice.message = params[:message]
-        @notice.count = params[:count].to_i
-        if @notice.save
-          redirect_to [:admin, @notice]
-        else
-          render :new
-        end
+      par = notice_params
+      @notice = Notice.new
+      @notice.sourceable_id = par[:sourceable_id]
+      @notice.sourceable_type = par[:sourceable_type]
+      @notice.linkable_id = par[:linkable_id] if par[:linkable_id]
+      @notice.linkable_type = par[:linkable_type] if par[:linkable_type]
+      @notice.category = par[:category].to_i
+      @notice.message = par[:message]
+      @notice.count = par[:count].to_i
+      if @notice.save
+        redirect_to [:admin, @notice]
       else
-        redirect_to :notices
+        render :new
       end
     end
 
     def show
-      @notice = Notice.find(params[:id])
+      par = notice_params
+      @notice = Notice.find(par[:id])
     end
 
     def edit
-      @notice = Notice.find(params[:id])
+      par = notice_params
+      @notice = Notice.find(par[:id])
     end
 
     def update
-      @notice = Notice.find(params[:id])
-      if @notice.update notice_params
+      par = notice_params
+      @notice = Notice.find(par[:id])
+      if @notice.update notice_par
         redirect_to [:admin, @notice]
       else
         render :edit
@@ -66,33 +69,39 @@ module Core
     end
 
     def destroy
-      @notice = Notice.find_by_id(params[:id])
+      par = notice_params
+      @notice = Notice.find_by_id(par[:id])
       if @notice
-        if can? :manage, :notices
-          @notice.destroy
-          if params[:retpath]
-            redirect_to params[:retpath]
-          else
-            redirect_to [:admin, Notice]
-          end
-        else
-          # cannot destroy... Just hide it.
-          logger.warn "==================================== No destroy #{@notice.id}"
-          @notice.active = false
-          @notice.save
-          if params[:retpath]
-            redirect_to params[:retpath]
-          else
-            redirect_to [:admin, Notice]
-          end
-        end
+        @notice.destroy
+      end
+      if par[:retpath]
+        redirect_to par[:retpath]
+      else
+        redirect_to [:admin, Notice]
+      end
+    end
+
+
+    def hide
+      par = notice_params
+      #logger.warn "=== #{params.inspect}"
+      @notice = Notice.find_by_id(par[:notice_id])
+      if @notice
+       # logger.warn "==================================== No destroy #{@notice.id} (#{par[:retpath]})"
+        @notice.active = false
+        @notice.save
+      end
+      if par[:retpath]
+        redirect_to par[:retpath]
+      else
+        redirect_to [:admin, Notice]
       end
     end
 
     private
 
     def notice_params
-      params.require(:notice).permit(
+      params.permit(:id,:notice_id,
         :sourceable_id, :sourceable_type,
         :linkable_id, :linkable_type,
         :type, :message, :count, :retpath

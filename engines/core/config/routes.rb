@@ -1,6 +1,8 @@
 Core::Engine.routes.draw do
   namespace :admin do
-    resources :notices
+    resources :notices do
+      get :hide
+    end
     resources :members, only: :index
     resources :projects do
       member do

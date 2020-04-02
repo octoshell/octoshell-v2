@@ -7,8 +7,10 @@ module Hardware
 end
 
 Face::MyMenu.items_for(:admin_submenu) do
-  add_item('notices', t("notices"), core.admin_notices_path,
-           %r{^notices})
+  if can?(:manage, :tickets)
+    add_item('notices', t("notices"), core.admin_notices_path,
+             %r{^notices})
+  end
 end
 
 Core::Notice.register_def_per_user_handler

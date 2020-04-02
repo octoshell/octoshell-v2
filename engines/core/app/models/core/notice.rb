@@ -68,7 +68,7 @@ module Core
     include ActionView::Helpers::UrlHelper
     def add_close request
       #FIXME!!!! [:admin, :core, self] does not work :(((((
-      link = link_to 'X', "/core/admin/notices/#{id}", data:{method: :delete, retpath: request.fullpath}, class: 'btn btn-mini btn-danger'
+      link = link_to '<i class="fas fa-bell-slash close"></i>'.html_safe, "/core/admin/notices/#{id}/hide?retpath=#{request.fullpath}", data:{retpath: request.fullpath}
       link
     end
   end
