@@ -1,3 +1,17 @@
 div class="page-header"
-  h1 = t(".title", default: "New City")
-= render 'form'
+  h1 = t(".title", default: "New Notice")
+/= render 'form'
+
+= bootstrap_form_for [:admin, @notice], layout: :horizontal do |f|
+  = f.autocomplete_field :who_id,label: t("user"), source:  main_app.users_path
+  /= f.text_field :sourceable_id
+  /= f.text_field :sourceable_type
+  = f.text_field :linkable_id
+  = f.text_field :linkable_type
+  = f.text_field :category
+  = f.text_field :message
+  = f.text_field :count
+  / = f.form_group :checked,label:{text: '.checked')} do
+  /   = f.check_box :checked,label: ''
+  = f.form_group do
+    = f.submit t("actions.save")

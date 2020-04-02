@@ -1,4 +1,4 @@
-module Hardware
+module Core
   extend Octoface
   octo_configure do
     add_ability(:manage,  :notices, 'superadmins')

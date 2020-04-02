@@ -1,20 +1,27 @@
 module Core
   class Admin::NoticesController < Admin::ApplicationController
-    load_and_authorize_resource :class => "Core::Notice", except: [:show, :hide]
+    #load_and_authorize_resource :class => "Core::Notice", except: [:show, :hide, :index]
+    load_resource :class => "Notice" #, except: [:show, :hide, :index]
 
     def index
-      par = notice_params
-      respond_to do |format|
-        format.html do
-          @search = Notice.search(par[:q])
-          search_result = @search.result(distinct: true).order(:id)
-          @notices = search_result
-          without_pagination :notices
-        end
-        format.json do
-          @notices = Notice.search(par[:q])
-          json = { records: @notices.page(par[:page]).per(par[:per]), total: @notices.count }
-          render json: json
+      logger.warn "--> #{self.instance_variables}"
+      if !can? :manage, :notices
+        logger.warn "********** Not authorized"
+        redirect_to '/core'
+      else
+        par = notice_params
+        respond_to do |format|
+          format.html do
+            @search = Notice.search(sourceable_id: 1)#par[:q])
+            search_result = @search.result()#distinct: true).order(:id)
+            @notices = search_result
+            without_pagination :notices
+          end
+          format.json do
+            @notices = Notice.search(par[:q])
+            json = { records: @notices.page(par[:page]).per(par[:per]), total: @notices.count }
+            render json: json
+          end
         end
       end
     end
@@ -103,7 +110,7 @@ module Core
     private
 
     def notice_params
-      params.permit(:id,:notice_id, :category
+      params.permit(:id,:notice_id, :category,
         :sourceable_id, :sourceable_type,
         :linkable_id, :linkable_type,
         :type, :message, :count, :retpath
