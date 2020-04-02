@@ -87,9 +87,11 @@ module Core
       #logger.warn "=== #{params.inspect}"
       @notice = Notice.find_by_id(par[:notice_id])
       if @notice
-       # logger.warn "==================================== No destroy #{@notice.id} (#{par[:retpath]})"
-        @notice.active = false
-        @notice.save
+        if can?(:manage, :notices) or (@notice.category==0 && notice.sourceable==current_user)
+          # logger.warn "==================================== No destroy #{@notice.id} (#{par[:retpath]})"
+          @notice.active = false
+          @notice.save
+        end
       end
       if par[:retpath]
         redirect_to par[:retpath]
@@ -101,7 +103,7 @@ module Core
     private
 
     def notice_params
-      params.permit(:id,:notice_id,
+      params.permit(:id,:notice_id, :category
         :sourceable_id, :sourceable_type,
         :linkable_id, :linkable_type,
         :type, :message, :count, :retpath

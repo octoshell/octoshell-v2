@@ -60,7 +60,13 @@ module Core
     def self.register_def_per_user_handler
       Core::Notice.register_kind nil do |notice, user, params, request|
         #logger.warn "-> #{notice.id}/#{notice.kind}/#{notice.category}"
-        [:info,(notice.message+' '+notice.add_close(request)).html_safe]
+        [
+          :info,
+          (notice.category==0 ?
+            "#{notice.message} #{notice.add_close(request)}" :
+            notice.message
+          ).html_safe
+        ]
       end 
     end
 
