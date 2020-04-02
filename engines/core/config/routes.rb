@@ -4,7 +4,9 @@ Core::Engine.routes.draw do
     get :generate
   end
   namespace :admin do
-    resources :notices
+    resources :notices do
+      get :hide
+    end
     resources :members, only: :index
     resources :projects do
       member do
