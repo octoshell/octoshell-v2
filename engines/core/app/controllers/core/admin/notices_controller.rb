@@ -123,7 +123,7 @@ module Core
     private
 
     def notice_params
-      params.permit(:id, :notice_id, :category,
+
         :sourceable_id, :sourceable_type,
         :sourceable_id_eq, :sourceable_type_eq,
         :linkable_id, :linkable_type,
