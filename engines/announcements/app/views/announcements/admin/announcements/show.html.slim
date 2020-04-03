@@ -34,6 +34,7 @@ div class="well"
 - else
   legend #{t('.recipients')}
   div class="row"
+    - puts Announcements.user_class.to_s.inspect.red
     - email_groups = @announcement.recipients.pluck(:email).in_groups(3, false)
     - email_groups.each do |group|
       div class="col-xs-4"

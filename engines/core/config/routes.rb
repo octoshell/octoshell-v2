@@ -1,5 +1,6 @@
 Core::Engine.routes.draw do
   namespace :admin do
+    resources :not
     resources :members, only: :index
     resources :projects do
       member do

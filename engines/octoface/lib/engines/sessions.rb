@@ -1,6 +1,7 @@
 module Sessions
   extend Octoface
   octo_configure :sessions do
+    # add('Stat')
     add_ability(:manage, :reports, 'superadmins', 'experts')
     add_controller_ability(:manage, :reports, 'admin/reports', 'admin/report_projects')
     add_ability(:manage, :sessions, 'superadmins', 'experts')

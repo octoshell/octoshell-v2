@@ -22,6 +22,7 @@ require "core/join_orgs"
 require "core/join_orgs/join_row"
 require 'active_record_union'
 require 'core/remove_spaces'
+require 'core/interface'
 
 
 module Core

@@ -21,6 +21,7 @@
 
 module Core
   class Organization < ApplicationRecord
+    octo_use(:stat_class, :sessions, 'Stat')
     remove_spaces :name
     MERGED_ASSOC = [Employment, Member, Project, SuretyMember].freeze
     include MergeOrganzations
@@ -39,9 +40,9 @@ module Core
     has_many :members, inverse_of: :organization
 
     has_many :surety_members, inverse_of: :organization
-
-    has_many :sessions_stats, inverse_of: :organization, class_name: '::Sessions::Stat'
-
+    if Octoface.role_class?(:sessions, 'Stat')
+      has_many :sessions_stats, inverse_of: :organization, class_name: stat_class.to_s
+    end
     after_create :notify_admins
 
     accepts_nested_attributes_for :departments, allow_destroy: true
@@ -59,7 +60,7 @@ module Core
       disallow = employments.where(state: 'active').exists? ||
                  members.exists? ||
                  surety_members.exists? ||
-                 sessions_stats.exists? ||
+                 (Octoface.role_class?(:sessions, 'Stat') && sessions_stats.exists?) ||
                  projects.exists? ||
                  department_mergers_any?
       !disallow

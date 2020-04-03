@@ -99,6 +99,7 @@ en:
       size_too_small: File size is too small (must be %{file_size} at least)
       wrong_size: File size is incorrect (must be %{file_size})
   support:
+    open_support: The technical support section.
     admin:
       fields:
         form:

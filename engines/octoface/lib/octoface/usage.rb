@@ -4,7 +4,8 @@ module Octoface
       # puts role.inspect.red
       # puts  Octoface::OctoConfig.find_by_role(role).inspect.red
       if (role_class = Octoface::OctoConfig.find_by_role(role))
-        unless role_class.classes[const].include?(self)
+
+        if role_class.classes[const] && !role_class.classes[const].include?(self)
           role_class.classes[const] << self
         end
       end

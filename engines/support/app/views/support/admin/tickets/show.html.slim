@@ -142,11 +142,11 @@ div.row
     = t('.tags-etc')
 div.row.bg-info.collapse id="collapse-tags"
   div.col-sm-12.col-md-4
-    = render_attachments(@ticket,:comments)
+    = custom_helper(:comments, :render_attachments,@ticket,:comments)
   div.col-sm-12.col-md-4
-    = render_attachments(@ticket,:tags)
+    = custom_helper(:comments, :render_attachments,@ticket,:tags)
   div.col-sm-12.col-md-4
-    = render_attachments(@ticket,:files)
+    = custom_helper(:comments, :render_attachments,@ticket,:files)
 
 - unless @ticket.resolved? || @ticket.closed?
   legend = t(".new_reply")

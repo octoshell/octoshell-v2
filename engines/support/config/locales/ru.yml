@@ -112,6 +112,7 @@ ru:
         %{file_size})
       wrong_size: размер файла некорректен (должен быть %{file_size})
   support:
+    open_support: Открыть раздел техподдержки.
     admin:
       fields:
         form:

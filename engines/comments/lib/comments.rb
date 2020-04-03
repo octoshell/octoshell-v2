@@ -1,10 +1,10 @@
 require "comments/engine"
 require "comments/attachable"
-require "comments/integration"
 require "comments/integration/attr_renderer"
 require "comments/integration/custom_view"
 require "comments/permissions"
 require "comments/models_list"
+require "comments/interface"
 require 'translit'
 require 'active_record_union'
 module Comments

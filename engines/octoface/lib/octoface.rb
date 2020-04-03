@@ -3,6 +3,8 @@ require "octoface/railtie"
 require "octoface/hook"
 require "octoface/octo_config"
 require "octoface/usage"
+require "octoface/bootstrap_form_helper"
+
 module Octoface
   def octo_configure(role, &block)
     @octo_config ||= OctoConfig.new self, role, &block
@@ -48,3 +50,8 @@ require 'engines/main_app'
 require 'engines/face'
 require 'engines/sessions'
 require 'engines/core'
+require 'engines/statistics'
+require 'engines/support'
+require 'engines/wikiplus'
+require 'engines/comments'
+require 'engines/announcements'

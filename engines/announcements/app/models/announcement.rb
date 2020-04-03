@@ -19,38 +19,39 @@
 #
 #  index_announcements_on_created_by_id  (created_by_id)
 #
+# module Announcements
+  class Announcement < ApplicationRecord
 
-class Announcement < ApplicationRecord
+    translates :title, :body
+    has_many :announcement_recipients, dependent: :destroy
+    has_many :recipients, class_name: Announcements.user_class.to_s,
+                          source: :user, through: :announcement_recipients
+    belongs_to :created_by, class_name: Announcements.user_class.to_s
+    mount_uploader :attachment, Announcements::AttachmentUploader
 
-  translates :title, :body
+    validates_translated :body, :title, presence: true
+    include AASM
+    include ::AASM_Additions
+    aasm :state, :column => :state do
+      state :pending, :initial => true
+      state :delivered
 
-  has_many :announcement_recipients, dependent: :destroy
-  has_many :recipients, class_name: Announcements.user_class.to_s, source: :user, through: :announcement_recipients
-  belongs_to :created_by, class_name: Announcements.user_class.to_s
-  mount_uploader :attachment, Announcements::AttachmentUploader
+      event :deliver do
+        transitions :from => :pending, :to => :delivered, :after => :send_mails
+      end
 
-  validates_translated :body, :title, presence: true
-  include AASM
-  include ::AASM_Additions
-  aasm :state, :column => :state do
-    state :pending, :initial => true
-    state :delivered
-
-    event :deliver do
-      transitions :from => :pending, :to => :delivered, :after => :send_mails
+      #after_transition on: :deliver, &:send_mails #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FIX
     end
 
-    #after_transition on: :deliver, &:send_mails #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FIX
-  end
+    def send_mails
+      announcement_recipients.find_each do |recipient|
+        Announcements::MailerWorker.perform_async(:announcement, recipient.id)
+      end
+    end
 
-  def send_mails
-    announcement_recipients.find_each do |recipient|
+    def test_send(test_user)
+      recipient = announcement_recipients.where(user: test_user).first_or_create!
       Announcements::MailerWorker.perform_async(:announcement, recipient.id)
     end
   end
-
-  def test_send(test_user)
-    recipient = announcement_recipients.where(user: test_user).first_or_create!
-    Announcements::MailerWorker.perform_async(:announcement, recipient.id)
-  end
-end
+# end

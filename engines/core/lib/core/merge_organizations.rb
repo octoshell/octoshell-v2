@@ -115,10 +115,14 @@ module Core
         rec.update!(update_hash)
         end
       end
+
+      return unless Octoface.role_class?(:sessions, 'Stat')
+
       stat = ::Sessions::Stat.where where_hash.slice :organization_id
       stat.each do |rec|
         rec.update update_hash.slice :organization_id
       end
+
 
     end
   end

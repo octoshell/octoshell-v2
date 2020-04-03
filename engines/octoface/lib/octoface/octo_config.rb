@@ -28,30 +28,6 @@ module Octoface
       end
     end
 
-    def self.find_by_role(role)
-      instances[role]
-    end
-
-    def self.role_class?(role, class_name)
-      role = find_by_role(role)
-      return false unless role
-      return false unless role.classes.keys.include?(class_name)
-
-      true
-    end
-
-    def self.role_class(role, class_name)
-       return nil unless role_class?(role, class_name)
-
-       find_by_role(role).get_klass(class_name)
-    end
-
-    def self.mod_class_string(role, class_name)
-      return class_name if role == :main_app
-
-      "#{find_by_role(role).mod}::#{class_name}"
-    end
-
     def get_klass(class_name)
       mod.const_get(class_name)
     end
@@ -95,6 +71,32 @@ module Octoface
     end
 
     class << self
+
+      def find_by_role(role)
+        instances[role]
+      end
+
+      def role_class?(role, class_name)
+        role = find_by_role(role)
+        return false unless role
+        return false unless role.classes.keys.include?(class_name)
+
+        true
+      end
+
+      def role_class(role, class_name)
+        return nil unless role_class?(role, class_name)
+
+        find_by_role(role).get_klass(class_name)
+      end
+
+      def mod_class_string(role, class_name)
+        return class_name if role == :main_app
+
+        "#{find_by_role(role).mod}::#{class_name}"
+      end
+
+
       def action_and_subject_by_path(path)
         mod = path.split('/').first
         inside_engine_path = path.split('/')[1..-1].join('/')

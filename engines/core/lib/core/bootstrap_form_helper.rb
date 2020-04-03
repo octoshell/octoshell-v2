@@ -1,19 +1,5 @@
 module Core
-  class BootstrapFormHelper
-    attr_reader :name, :options, :html_options, :f, :prefix
-    def initialize(view, f, prefix = '', options = {}, html_options = {})
-      @f = f
-      @prefix = prefix
-      @view = view
-      @options = options
-      @html_options = html_options
-    end
-
-    def method_missing(name, *args, &block)
-      return @view.send(name, *args, &block) if @view.respond_to?(name)
-
-      super
-    end
+  class BootstrapFormHelper < Octoface::BootstrapFormHelper
 
     def project_kind_id_eq
       options[:label] ||= Core::ProjectKind.model_name.human
@@ -138,14 +124,5 @@ module Core
       f.collection_select prefix + 'available_projects_available_clusters_id_in',
                           Core::Cluster.all, :id, :name, m_options, multiple: true
     end
-
-
-
-
-
-
-
-
-
   end
 end

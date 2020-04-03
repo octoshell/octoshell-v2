@@ -29,12 +29,18 @@ module ApplicationHelper
     octo_config = Octoface::OctoConfig.find_by_role(role)
     return nil unless octo_config
 
-    if args[0].is_a? ActionView::Helpers::FormBuilder
-      octo_config.mod.const_get('BootstrapFormHelper').new(self, *args)
-                 .try(helper)
-    else
-      octo_config.send(helper, *args)
-    end
+    octo_config.mod.const_get('Interface')
+                   .send(:handle_view, self, helper, *args)
+
+     # new(self, *args)
+     #           .try(helper)
+
+    # if args[0].is_a? ActionView::Helpers::FormBuilder
+    #   octo_config.mod.const_get('BootstrapFormHelper').new(self, *args)
+    #              .try(helper)
+    # else
+    #   octo_config.send(helper, *args)
+    # end
   end
 
   def register_hook(role, name, maps, *order)
