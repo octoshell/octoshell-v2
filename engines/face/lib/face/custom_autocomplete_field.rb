@@ -7,6 +7,7 @@ module CustomAutocompleteField
     sel_opts = [[]]
     begin
       value = object.send method
+      #Rails.logger.warn "////// value=#{value} #{options} #{html_options}"
     rescue NoMethodError
       value = nil
     end

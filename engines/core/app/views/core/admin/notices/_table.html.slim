@@ -1,0 +1,29 @@
+- if notices.any?
+  table class="table table-hover"
+    tr
+      th = Core::Notice.human_attribute_name(:message)
+      th = Core::Notice.human_attribute_name(:category)
+      th Тип
+      th Кто
+      th = Core::Notice.human_attribute_name(:active)
+      th action
+    - notices.each do |c|
+      tr
+        //td = link_to no_name_c(c), [:admin, c]
+        td = c.message
+        td = c.category
+        td = c.sourceable.class
+        td = c.source_name
+        td = c.active.nil? ? t('.none') : c.active ? t('yes') : t('no')
+
+        td
+          div class="btn-group pull-right"
+            = link_to t("actions.edit", default: "edit"), [:edit, :admin, c], class: "btn btn-default btn-sm"
+            button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+              span class="caret"
+            ul class="dropdown-menu" role="menu"
+              - name = t("actions.delete", default: "delete")
+              - confirm = t("core_confirm", default: "Are You sure?")
+              - data = { method: :delete, confirm: confirm }
+              li class="text-left"
+                = link_to name, [:admin, c], data: data, class: "text-danger"
