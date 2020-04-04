@@ -5,6 +5,7 @@
       th = Core::Notice.human_attribute_name(:category)
       th Тип
       th Кто
+      th = Core::Notice.human_attribute_name(:active)
       th action
     - notices.each do |c|
       tr
@@ -13,6 +14,8 @@
         td = c.category
         td = c.sourceable.class
         td = c.source_name
+        td = c.active.nil? ? t('.none') : c.active ? t('yes') : t('no')
+
         td
           div class="btn-group pull-right"
             = link_to t("actions.edit", default: "edit"), [:edit, :admin, c], class: "btn btn-default btn-sm"

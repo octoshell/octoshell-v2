@@ -50,6 +50,7 @@ module Core
     end
 
     def source_name
+      sourceable.nil? ? '----' :
       sourceable.respond_to?(:full_name) ?
         sourceable.full_name :
         sourceable.respond_to?(:title_ru) ?
