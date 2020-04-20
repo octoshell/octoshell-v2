@@ -314,6 +314,7 @@ ru:
         time: Время
         type: Тип
         value: Значение
+        initiated_by: Инициированно задачей
         initiated_found: Найденные инициированные задачи
         initiated_not_found: Инициированных задач не найдено
         detailed_available: Доступны следующие типы детального анализа
