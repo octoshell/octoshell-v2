@@ -256,19 +256,19 @@ br
 - count_initiatees = @job.initiatees.length
 - if count_initiatees != 0 
   p 
-    | Найденные инициированные задачи:
+    | t('.initiated_found')
     br
     - @job.initiatees.each do |cond|
       - link = "#{cond.id}"
       a href="#{link}" Job id = #{link}
       br
 - else
-  p Инициированных задач не найдено.
+  p t('.initiated_not_found')
   br
 - type_list = @rules_plus['detailed_analysis_types']
 p
   |
-    Доступны следующие типы детального анализа:
+  t('.detailed_available')
   - type_list.each do |step|
       br
       a href= "detailed?analysis_id=#{step[0]}&id=#{@job.id}" #{step[1]['type_text']} (#{step[1]['soft_text']})
