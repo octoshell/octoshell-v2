@@ -71,18 +71,18 @@ module Jobstat
           if @job_extra_data.key?(rule_descr['name'])
             replace_dict = @job_extra_data[rule_descr['name']]
             replace_dict.each do |key, value|
-              rule_descr['description'].gsub! key, value
-              rule_descr['supposition'].gsub! key, value
-              rule_descr['text_recommendation'].gsub! key, value
+              rule_descr['description'].gsub! key, value.to_s
+              rule_descr['supposition'].gsub! key, value.to_s
+              rule_descr['text_recommendation'].gsub! key, value.to_s
             end
           end
         end
       end
       # end making rules description
 
-      if cpu_user.nil? || cpu_user.value.nil?
-        render :show_no_data
-      end
+#      if cpu_user.nil? || cpu_user.value.nil?
+#        render :show_no_data
+#      end
     end
 
     def show_direct
