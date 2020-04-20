@@ -300,6 +300,7 @@ en:
           problems are planned in the future. Now this ability is implemented
           only on all jobs list page.
         supposition: "Supposition"
+        initiated_by: Initiated by
         initiated_found: Initiated tasks
         initiated_not_found: Initiated tasks not found
         detailed_available: Available analysys types
