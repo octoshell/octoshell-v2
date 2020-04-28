@@ -59,22 +59,19 @@ class ApplicationController < ActionController::Base
 
     # per-user: show only if sourceable is current user
     Core::Notice.where(category: 0, sourceable: current_user).each do |note|
-      logger.warn "--->>> #{current_user.id} <<<---"
       data = Core::Notice.handle note, current_user, params, request
-      flash_now_message(data[0],data[1]) if data
-      #logger.warn "data0=#{data}" if data
+      logger.warn "--->>> #{current_user.id} <<<---"# #{data.inspect}"
+      data = conditional_show_notice note
+      #logger.warn "data0=#{data.inspect}" if data
+      #flash_now_message(data[0],data[1]) if data
     end
 
-  end
-
-  def conditional_show_notice note
-    n = Time.current
-    return if note.show_from && (note.show_from > n)
-    return if note.show_till && (note.show_till < n)
-    return if !note.active.nil? and note.active==false
-    data = Core::Notice.handle note, current_user, params, request
-    if data
-      flash_now_message(data[0],data[1])
+    # others: show for all (if handler returns not nil)
+    Core::Notice.where(category: 1).each do |note|
+      #data = Core::Notice.handle note, current_user, params, request
+      data = conditional_show_notice note
+      #flash_now_message(data[0],data[1]) if data
+      #logger.warn "dataX=#{data.inspect}" if data
     end
 
     # #FIXME: each category should be processed separately in outstanding code
@@ -93,10 +90,10 @@ class ApplicationController < ActionController::Base
   end
 
   def conditional_show_notice note
-    n = TimeDate.now
-    return if note.show_from && note.show_from < n
-    return if note.show_till && note.show_till > n
-    return if note.active==false
+    n = Time.current
+    return if note.show_from && (note.show_from > n)
+    return if note.show_till && (note.show_till < n)
+    return if !note.active.nil? and note.active==false
     data = Core::Notice.handle note, current_user, params, request
     if data
       flash_now_message(data[0],data[1])
