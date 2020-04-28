@@ -23,7 +23,7 @@ require "csv"
 
 module Sessions
   class Stat < ApplicationRecord
-    include StatOrganization
+    prepend(StatOrganization) if Sessions.link?(:organization)
     GROUPS_BY = [:count]
 
     belongs_to :session
@@ -40,9 +40,7 @@ module Sessions
     end
 
     def graph_data
-      return graph_data_for_count unless Sessions.link?(:organization)
-
-      (group_by == "subdivisions") ? graph_data_for_count_in_org : graph_data_for_count
+      graph_data_for_count
     end
 
     def graph_data_for_count
@@ -74,12 +72,7 @@ module Sessions
     end
 
     def title
-      by = if Sessions.link?(:organization) && organization
-        "по количеству в #{organization.short_name}"
-      else
-        "по количеству"
-      end
-      "#{survey_field.name} #{by}"
+      "#{survey_field.name} по количеству"
     end
 
     def to_csv

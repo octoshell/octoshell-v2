@@ -51,7 +51,6 @@ module Pack
       if @version.update(version_params)
         redirect_to admin_package_version_path(@package, @version)
       else
-        puts @version.errors.inspect.red
         render :edit
       end
 

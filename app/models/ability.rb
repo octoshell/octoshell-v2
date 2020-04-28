@@ -4,7 +4,6 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # puts 'AAAAAAAAAA'.red
     return unless user
 
     user.permissions.where(available: true).each do |permission|
@@ -14,20 +13,14 @@ class Ability
         can permission.action.to_sym, permission.subject_class.to_sym
       end
     end
-
-    if Octoface::OctoConfig.find_by_role(:support)
-      if can?(:manage, :tickets)
-        can :access, Support::Topic
+    Octoface::OctoConfig.instances.values.each do |instance|
+      instance.ability_blocks.each do |b|
+        instance_exec user, &b
       end
-
-      user.available_topics.each do |user_topic|
-        user_topic.all_subtopics_with_self.each do |u_t|
-          can :access, Support::Topic, id: u_t.id
-        end
-      end
-
-      can :access, :admin if user.available_topics.any?
     end
+
+    # if Octoface::OctoConfig.find_by_role(:support)
+    # end
 
     # user.permissions.each do |permission|
     #   can permission.action,

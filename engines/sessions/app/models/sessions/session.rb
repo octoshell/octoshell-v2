@@ -20,7 +20,7 @@
 module Sessions
   class Session < ApplicationRecord
 
-    include SessionProject
+    prepend(SessionProject) if Sessions.link?(:project)
 
 
 
@@ -94,11 +94,6 @@ module Sessions
     end
 
     def create_reports_and_users_surveys
-      if Sessions.link?(:project)
-        involved_projects.each do |project|
-          create_report_and_surveys_for(project)
-        end
-      end
       create_personal_user_surveys
     end
 
@@ -149,13 +144,9 @@ module Sessions
     # end
 
     def validate_reports_and_surveys
-      if Sessions.link?(:project)
-        reports.where(:state=>:assessed).select(&:failed?).map(&:close_project!)
-      end
       reports.where(:state=>[:pending, :accepted, :rejected]).map(&:postdate!)
       notify_experts_about_submitted_reports if reports.where(:state=>:submitted).any?
       notify_experts_about_assessing_reports if reports.where(:state=>:assessing).any?
-
       user_surveys.where(:state=>[:pending, :filling, :postfilling]).map(&:postdate!)
     end
 

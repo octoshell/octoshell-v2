@@ -34,7 +34,8 @@
 module Sessions
   class Report < ApplicationRecord
 
-    include ReportProject
+
+    prepend(ReportProject) if Sessions.link?(:project)
 
 
     POINT_RANGE = (0..5)
@@ -146,22 +147,13 @@ module Sessions
 
     def notify_about_assess
       Sessions::MailerWorker.perform_async(:report_assessed, id)
-      if Sessions.link?(:project)
-        if failed?
-          block_project
-        end
-      end
     end
 
     def notify_about_resubmit
       Sessions::MailerWorker.perform_async(:report_resubmitted, id)
     end
 
-    def postdate_callback
-      if Sessions.link?(:project)
-        block_project
-      end
-    end
+    def postdate_callback; end
 
     # def block_project
     #   # Sessions::MailerWorker.perform_async(:postdated_report_on_project, id)

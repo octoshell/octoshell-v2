@@ -7,9 +7,20 @@ module Support
     add_routes do
       mount Support::Engine, :at => "/support"
     end
+    add_ability do |user|
+      if can?(:manage, :tickets)
+        can :access, Support::Topic
+      end
+      user.available_topics.each do |user_topic|
+        user_topic.all_subtopics_with_self.each do |u_t|
+          can :access, Support::Topic, id: u_t.id
+        end
+      end
+      can :access, :admin if user.available_topics.any?
+    end
     after_init do
       Support.dash_number = 150
-
+      Support.user_class = '::User'
       Face::MyMenu.items_for(:user_submenu) do
         tickets_warning = current_user.tickets.where(state: :answered_by_support).any?
         tickets_title = if tickets_warning

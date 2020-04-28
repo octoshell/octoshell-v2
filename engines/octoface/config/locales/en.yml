@@ -7,7 +7,7 @@ en:
           title: Octoshell engines
         show:
           class: Class
-          dependencies: Depend
+          dependencies: Dependent classes
           name_of_hook: Name of hook
           partials: Partials
         table:

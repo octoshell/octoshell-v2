@@ -1,10 +1,12 @@
 module Octoface
   class OctoConfig
-    attr_reader :abilities, :mod, :controller_abilities, :routes_block, :classes, :role
+    attr_reader :abilities, :mod, :controller_abilities, :routes_block,
+                :classes, :role, :ability_blocks
     def initialize(mod, role, &block)
       @mod = mod
       @role = role
       @abilities = []
+      @ability_blocks = []
       @controller_abilities = []
       if self.class.instances[role]
         raise "You are trying to redefine #{role} role"
@@ -43,12 +45,9 @@ module Octoface
 
     end
 
-    #add_ability do
-    # [:manage, :admin, '', 'superadmins']
-    #end
-
-    def add_ability(*args)
-      @abilities << args
+    def add_ability(*args, &block)
+      @abilities << args if args.any?
+      @ability_blocks << block if block
     end
 
     def add_controller_ability(*args)

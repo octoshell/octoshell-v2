@@ -9,9 +9,13 @@ module Sessions
 end
 require "sessions/engine"
 require "sessions/external_link"
-require "sessions/report_project"
-require "sessions/session_project"
-require "sessions/stat_organization"
+if Sessions.link?(:project)
+  require "sessions/report_project"
+  require "sessions/session_project"
+end
+if Sessions.link?(:organization)
+  require "sessions/stat_organization"
+end
 require "sessions/interface"
 require "sessions/bootstrap_form_helper"
 

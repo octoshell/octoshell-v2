@@ -42,16 +42,16 @@ arr << '*'
 # puts File.join(Rails.root, 'engines', 'octoface', 'lib', 'engines')
 # puts Dir.glob(File.join(Rails.root, 'engines', 'octoface', 'lib', 'engines', '*')).inspect.red
 
-# Dir.glob(arr.join('/')).each do |f|
-#   require f
-# end
-require 'engines/octoface'
-require 'engines/main_app'
-require 'engines/face'
-require 'engines/sessions'
-require 'engines/core'
-require 'engines/statistics'
-require 'engines/support'
-require 'engines/wikiplus'
-require 'engines/comments'
-require 'engines/announcements'
+Dir.glob(arr.join('/')).each do |f|
+  require f
+end
+# require 'engines/octoface'
+# require 'engines/main_app'
+# require 'engines/face'
+# require 'engines/sessions'
+# require 'engines/core'
+# require 'engines/statistics'
+# require 'engines/support'
+# require 'engines/wikiplus'
+# require 'engines/comments'
+# require 'engines/announcements'
