@@ -91,9 +91,9 @@ class ApplicationController < ActionController::Base
 
   def conditional_show_notice note
     n = Time.current
-    return if note.show_from && note.show_from < n
-    return if note.show_till && note.show_till > n
-    return if note.active==false
+    return if note.show_from && (note.show_from > n)
+    return if note.show_till && (note.show_till < n)
+    return if !note.active.nil? and note.active==false
     data = Core::Notice.handle note, current_user, params, request
     if data
       flash_now_message(data[0],data[1])
