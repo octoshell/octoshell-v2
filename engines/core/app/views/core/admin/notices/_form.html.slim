@@ -1,18 +1,26 @@
-= bootstrap_form_for [:admin, @notice], layout: :horizontal do |f|
+- options = {class: "datepicker",:'data-date-end-date' => "+1000d", :'data-date-start-date' => "+0d", :'data-date-today-btn' => true, format: 'yyyy.mm.dd'}
+- def_user = @notice.sourceable ? @notice.sourceable.id : nil
+- from = @notice.show_from ? @notice.show_from.strftime("%Y.%m.%d") : nil
+- till = @notice.show_till ? @notice.show_till.strftime("%Y.%m.%d") : nil
+
+= bootstrap_form_for [:admin, @notice], layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10" do |f|
   = f.hidden_field :id
-  = f.autocomplete_field :sourceable_id, {source: main_app.users_path}, {selected: @notice.sourceable.id} do |x|
+  = f.autocomplete_field :sourceable_id, {source: main_app.users_path}, {selected: def_user} do |x|
     - User.find_by_id(x).email
-  /, label: t('user')
-  /= f.autocomplete_field :sourceable_id, label: t("user"), source:  main_app.users_path
-  /= f.autocomplete_field_tag :sourceable_id, @notice.sourceable_id, source:  main_app.users_path
-  - options = {class: "datepicker",:'data-date-end-date' => "+1000d", :'data-date-start-date' => "+0d", :'data-date-today-btn' => true, format: 'yyyy.mm.dd'}
-  = f.text_field :show_from, options.merge(value: @notice.show_from.strftime("%Y.%m.%d"), label: t('.show_from'))
-  = f.text_field :show_till, options.merge(value: @notice.show_from.strftime("%Y.%m.%d"), label: t('.show_till'))
+    /, label: t('user')
+    /= f.autocomplete_field :sourceable_id, label: t("user"), source:  main_app.users_path
+    /= f.autocomplete_field_tag :sourceable_id, @notice.sourceable_id, source:  main_app.users_path
   = f.text_field :linkable_id
   = f.text_field :linkable_type
   = f.text_field :category
   = f.text_field :message
   = f.text_field :count
+  = f.form_group :active, label: {text: t('.active')} do
+    = f.radio_button :active, true, label: t('yes'), value: :true, inline: true
+    = f.radio_button :active, false, label: t('no'), value: :false, inline: true
+    = f.radio_button :active, nil, label: 'none', value: :nil, inline: true
+  = f.text_field :show_from, options.merge(value: from, label: t('.show_from'))
+  = f.text_field :show_till, options.merge(value: till, label: t('.show_till'))
   / = f.form_group :checked,label:{text: '.checked')} do
   /   = f.check_box :checked,label: ''
   /= f.form_group do

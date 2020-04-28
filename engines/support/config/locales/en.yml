@@ -158,8 +158,8 @@ en:
         show:
           accept: Accept
           attach: Attach file
-          message_preview: Preview
           create_reply_template: Create reply template from current reply
+          message_preview: Preview
           new_reply: New reply
           no_replies: No replies
           problem_solved: If your problem is solved, press
@@ -225,8 +225,8 @@ en:
         attach: 'Attach file: '
         earlier: 'Earlier: '
         if_not: 'If not, press '
-        new_reply: New reply
         message_preview: Preview
+        new_reply: New reply
         no_replies: No replies
         problem_solved: 'Have your problem been solved? Press '
         title: Request No%{id}

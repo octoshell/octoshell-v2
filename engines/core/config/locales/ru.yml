@@ -585,6 +585,35 @@ ru:
           title: Области науки
         new:
           title: Добавление новой области науки
+      notices:
+        show:
+          notices: Уведомления
+        form:
+          active: Активно?
+          none: Неизвестно
+          message: Сообщение
+          category: Категория
+          type: Тип
+          sourceable: Пользователь
+          action: Действие
+          show_from: Показ с
+          show_till: Показ до
+        create:
+          notice_succeed: Уведомление создано успешно
+          notice_failed: Не получилось создать уведомление
+        index:
+          title: Уведомления
+          new_notice: Создать уведомление
+          table:
+            message: Сообщение
+            category: Категория
+            type: Тип
+            sourceable: Пользователь
+            active: Активно?
+            action: Действие
+            show_from: Показ с
+            show_till: Показ до
+          none: отсутствует
       sureties:
         activate_or_reject:
           reason_empty: Пустая причина одобрения/ отклонения

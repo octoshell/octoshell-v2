@@ -116,7 +116,7 @@ module Core
       #logger.warn "=== #{params.inspect}"
       @notice = Notice.find_by_id(par[:notice_id])
       if @notice
-        if can?(:manage, :notices) or (@notice.category==0 && notice.sourceable==current_user)
+        if can?(:manage, :notices) or (@notice.category==0 && @notice.sourceable==current_user)
           # logger.warn "==================================== No destroy #{@notice.id} (#{par[:retpath]})"
           @notice.active = false
           @notice.save
