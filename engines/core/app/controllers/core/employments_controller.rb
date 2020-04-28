@@ -4,6 +4,8 @@ module Core
 
     before_action :filter_blocked_users
 
+    before_action :filter_blocked_users
+
     def new
       @employment = current_user.employments.build do |employment|
         hash = employment_params

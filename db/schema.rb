@@ -667,6 +667,7 @@ ActiveRecord::Schema.define(version: 2020_03_11_131415) do
     t.datetime "updated_at", null: false
     t.text "nodelist"
     t.index ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true
+    t.integer "initiator_id"
     t.index ["end_time"], name: "index_jobstat_jobs_on_end_time"
     t.index ["login"], name: "index_jobstat_jobs_on_login"
     t.index ["partition"], name: "index_jobstat_jobs_on_partition"

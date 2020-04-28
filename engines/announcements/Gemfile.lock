@@ -161,7 +161,7 @@ GEM
       i18n
     ruby-vips (2.0.17)
       ffi (~> 1.9)
-    sidekiq (6.0.6)
+    sidekiq (6.0.7)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       rack-protection (>= 2.0.0)

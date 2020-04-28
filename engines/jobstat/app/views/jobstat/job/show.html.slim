@@ -64,12 +64,17 @@ div class="row"
         td
           =t('.time')
         td
-          = number_with_precision(@job.get_duration_hours, :precision => 1)
+          = number_with_precision(@job.get_duration_hours, :precision => 1) + " " +  t('.h-short')
       tr
         td
           =t('.nodes')
         td
           = @job[:nodelist].gsub(',',', ')
+      tr
+        td
+          ="extra_data"
+        td
+          = @job.get_extra_data
 
   div class="col-md-4"
     //fixme! translate
@@ -155,11 +160,11 @@ table class="table table-bordered table-striped"
     th
       =t('.description')
     th
-      =t('.suggestion')
+      =t('.supposition')
     th
       =t('.recomendation')
 
-  - rules=@job.get_rules(@current_user)
+  - rules = @job_rules_description
   - if rules.length > 0
     - rules.each do |cond|
       - cond_name=cond['name']
@@ -231,12 +236,13 @@ table class="table table-bordered table-striped"
                 a class="octo-close-popup2" onClick="return popup_hide('agree#{id}_#{cond_name}')"
 
         td
-          strong class="hidden_name" style="display: none;"
-            = "id: "
-            = cond['name']
+          p class="hidden_name hidden"
+            strong
+              = "id: "
+              = cond['name']
           = cond['description']
         td
-          = cond['suggestion']
+          = cond['supposition']
         td
           = cond['text_recommendation']
   - else
@@ -246,9 +252,40 @@ table class="table table-bordered table-striped"
 
 br
 
+//// Part about detailed analysis
+
+- if @job.initiator != nil
+  p
+    = t('.initiated_by')
+    span = " "
+    - link = "#{@job.initiator.id}"
+    a href="#{link}" Job id = #{link}
+
+- count_initiatees = @job.initiatees.length
+- if count_initiatees != 0
+  p
+    = t('.initiated_found')
+    br
+    - @job.initiatees.sort_by{ |job| job.id }.each do |cond|
+      - link = "#{cond.id}"
+      a href="#{link}" Job id = #{link}
+      br
+- else
+  p = t('.initiated_not_found')
+
+- type_list = @rules_plus['detailed_analysis_types']
+p
+  = t('.detailed_available')
+  br
+  - type_list.each do |step|
+    a href= "detailed?analysis_id=#{step[0]}&id=#{@job.id}" #{step[1]['type_text']} (#{step[1]['soft_text']})
+    br
+
+//// end of part about detailed analysis
+
 h3 = t('.dynamics')
 
-p = link_to(t('.details'), "https://graphit.parallel.ru:5001/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36))
+p = link_to(t('.details'), "#{Rails.application.config.octo_jd_host}/jd/share/" + (@job[:drms_job_id]*2+1).to_s.reverse.to_i.to_s(36))
 
 div class="row"
   div class="col-md-4" style="height: 250px"
@@ -285,9 +322,11 @@ javascript:
 
   function DrawSingleGraph(target, sensor_data, max)
   {
-    for(var i = 0; i < sensor_data.length; i++)
-      sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
-
+    var max_val = 0;
+    for(var i = 0; i < sensor_data.length; i++){
+      sensor_data[i][0] = new Date(sensor_data[i][0] * 1000);
+      max_val = Math.max(max_val, sensor_data[i][1]);
+    }
     var data = new google.visualization.DataTable();
     data.addColumn('date', "#{{t('.time')}}" );
     data.addColumn('number', "#{{t('.value')}}");
@@ -306,7 +345,8 @@ javascript:
       chartArea: {'width': '85%'},
       legend: {'position': 'none'},
     };
-
+    if (max_val < 1)
+        options.vAxis.maxValue = 1;
     if(max) options.vAxis.maxValue = max;
 
     var chart = new google.visualization.LineChart(document.getElementById(target));
@@ -315,11 +355,13 @@ javascript:
 
   function DrawSendRecvGraph(target, sensor_data)
   {
+    var max_val = 0;
     for(var i = 0; i < sensor_data.length; i++)
     {
       sensor_data[i][0] = new Date(sensor_data[i][0]*1000);
       sensor_data[i][1] /= 1024 * 1024;
       sensor_data[i][2] /= 1024 * 1024;
+      max_val = Math.max(max_val, sensor_data[i][1], sensor_data[i][2]);
     }
 
     var data = new google.visualization.DataTable();
@@ -343,6 +385,8 @@ javascript:
       legend: {'position': 'bottom'},
     };
 
+    if (max_val < 1)
+        options.vAxis.maxValue = 1;
     var chart = new google.visualization.LineChart(document.getElementById(target));
     chart.draw(data, options);
   }
@@ -363,7 +407,7 @@ javascript:
 
     document.onkeyup=function(e) {
       if (e.ctrlKey && e.which == 89){
-        $(".hidden_name").css('display','block')
+        $(".hidden_name").toggleClass('hidden')
       }
     };
     
