@@ -1,5 +1,7 @@
 module Jobstat
   class ApiController < ActionController::Base
+    include AbnormalJobChecker
+
     before_action :parse_request
     #before_action :parse_request, :authenticate_from_token!, only: [:push]
 
@@ -21,47 +23,6 @@ module Jobstat
                    num_cores: @json["num_cores"],
                    num_nodes: @json["num_nodes"],
                   })
-    end
-
-    CHECKER_PREFIX = '[                checker                ]'
-
-    def add_notice(job, user)
-      Core::Notice.where(sourceable: user, linkable: job, category: 1).destroy_all
-      note=Core::Notice.create(
-        sourceable: user,
-        message: view_context.link_to(job.drms_job_id, jobstat.job_path(job)),
-        linkable: job,
-        category: 1)
-      note.save!
-      logger.info "#{CHECKER_PREFIX}: new notice for #{job.drms_job_id}"
-    end
-
-    def remove_notice(job, user)
-      Core::Notice.where(sourceable: user, linkable: job, category: 1).destroy_all
-      logger.info CHECKER_PREFIX + ": removed notice for #{job.drms_job_id}"
-    end
-
-    def group_match(job, user)
-      job.get_rules(user).each { |r|
-        return true if r['group'] == 'disaster'
-      }
-      return false
-    end
-
-    def time_match(job)
-      return job.end_time > Time.new && job.state != 'COMPLETED'
-    end
-
-    def check_job(job)
-      logger.info CHECKER_PREFIX + ": checking job #{job.id}: state = #{job.state}, end_time = #{job.end_time}"
-      logger.info "EVERYTHING ABOUT JOB: #{job.inspect}"
-      user = Core::Member.where(login: job.login).take.user
-
-      if group_match(job, user) && time_match(job)
-        add_notice(job, user)
-      else
-        remove_notice(job, user)
-      end
     end
 
     def fetch_job_or_404(params)
