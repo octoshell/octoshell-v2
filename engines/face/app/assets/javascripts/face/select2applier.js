@@ -45,6 +45,7 @@ $(function(){
    url=url.replace('{{user_id}}',user_id)
    window.location.href = url.replace('{{id}}',id);
   });
+});
 
   function apply_select(){
     select2_localization = {
@@ -125,5 +126,3 @@ $(function(){
       }
     select.select2 && select.select2(options);
   }
-
-});

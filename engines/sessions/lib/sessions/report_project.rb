@@ -1,11 +1,17 @@
 module Sessions
   module ReportProject
-    extend ActiveSupport::Concern
-    included do
-      octo_use(:project_class, :core, 'Project')
-      belongs_to :project, class_name: project_class_to_s,
-                           foreign_key: :project_id
+    def self.prepended(base)
+      base.class_eval do
+        octo_use(:project_class, :core, 'Project')
+        belongs_to :project, class_name: project_class_to_s,
+                             foreign_key: :project_id
+      end
     end
+    # prepended do
+    #   octo_use(:project_class, :core, 'Project')
+    #   belongs_to :project, class_name: project_class_to_s,
+    #                        foreign_key: :project_id
+    # end
 
     def notify_about_assess
       super

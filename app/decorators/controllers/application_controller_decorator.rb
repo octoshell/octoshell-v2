@@ -57,7 +57,6 @@ ApplicationController.class_eval do
     })
   end
 
-  # TODO: workout mess
   def user_submenu_items
     Face::MyMenu.user_submenu(self)
   end

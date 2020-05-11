@@ -7,7 +7,7 @@
       th #{t('.report')}
       -if Sessions.link?(:project)
         th #{t('.project')}
-        th = project_class.human_attribute_name(:research_areas)
+        th = Octoface.role_class(:core, 'Project').human_attribute_name(:research_areas)
       th #{t('.status')}
       th #{t('.complete_by')}
       th #{t('.session')}

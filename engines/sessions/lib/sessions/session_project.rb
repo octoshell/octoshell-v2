@@ -1,13 +1,22 @@
 module Sessions
   module SessionProject
-    extend ActiveSupport::Concern
-    included do
-      octo_use(:project_class, :core, 'Project')
-      has_many :projects_in_sessions
-      has_many :involved_projects, class_name: project_class_to_s,
-                                   source: :project,
-                                   through: :projects_in_sessions
+    def self.prepended(base)
+      base.class_eval do
+        octo_use(:project_class, :core, 'Project')
+        has_many :projects_in_sessions
+        has_many :involved_projects, class_name: project_class_to_s,
+                                     source: :project,
+                                     through: :projects_in_sessions
+      end
     end
+
+    # prepended do
+    #   octo_use(:project_class, :core, 'Project')
+    #   has_many :projects_in_sessions
+    #   has_many :involved_projects, class_name: project_class_to_s,
+    #                                source: :project,
+    #                                through: :projects_in_sessions
+    # end
 
     def create_reports_and_users_surveys
       super
