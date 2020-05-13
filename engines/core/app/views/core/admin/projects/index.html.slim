@@ -1,6 +1,7 @@
 div class="page-header"
   h1 = t(".title")
 
+- options = common_datepicker_options
 = bootstrap_form_for @search, url: admin_projects_path, method: :get, layout: :vertical do |f|
   div class="col-md-12"
     div class="col-md-3"
@@ -15,7 +16,6 @@ div class="page-header"
       /= f.collection_select :members_id_eq, Core::Member.all.order(:login), :id, :login, label: Core::Member.human_attribute_name(:login), include_blank: true
       = f.select :state_in, Core::Project.human_state_names_with_original, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
       = f.collection_select :kind_id_eq, Core::ProjectKind.all, :id, :name, label: Core::Project.human_attribute_name(:kind), include_blank: true
-      - options = common_datepicker_options
     div class="col-md-3"
       = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
       = f.text_field :first_activation_at_lt, options.merge(label: t('.activated_before'))
