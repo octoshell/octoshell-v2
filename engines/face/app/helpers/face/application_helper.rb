@@ -177,9 +177,9 @@ module Face
     }
     end
 
-    def display_all_tag
+    def display_all_tag tag='q'
       content_tag(:div, class: "col-xs-12") do
-        check_box_tag('q[display_all]', '1', display_all_applied?) +
+        check_box_tag("#{tag}[display_all]", '1', display_all_applied?) +
         label_tag(t('without_pagination.display_all_records'))
       end
     end

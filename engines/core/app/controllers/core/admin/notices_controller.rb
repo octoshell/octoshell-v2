@@ -14,16 +14,24 @@ module Core
       #   logger.warn "********** Not authorized"
       #   redirect_to '/core'
       # else
-        par = notice_params
+        #logger.warn "============ #{params.inspect}"
+        par = notice_params.to_hash
+        par['notice'] ||= {}
         respond_to do |format|
+          category = params[:category] ? params[:category] : 0
+          par['notice'][:category] = category
+          if par['notice'][:sourceable_id_enotice]
+            par['notice'][:sourceable] = User.find_by_id par['notice'][:sourceable_id_enotice]
+          end
           format.html do
-            @search = Notice.search(sourceable_id: 1)#par[:q])
+            @search = Notice.search(par['notice'])
             search_result = @search.result()#distinct: true).order(:id)
             @notices = search_result
+            #logger.warn  "------------------------------\n #{par['notice'].inspect}\n#{@notices.inspect}"
             without_pagination :notices
           end
           format.json do
-            @notices = Notice.search(par[:q])
+            @notices = Notice.search(par['notice'])
             json = { records: @notices.page(par[:page]).per(par[:per]), total: @notices.count }
             render json: json
           end
@@ -53,7 +61,8 @@ module Core
       user = User.find_by_id(par[:notice][:sourceable_id])
       logger.warn "User = #{user}"
       
-      @notice = Notice.create({sourceable_type: 'User'}.merge par[:notice])
+      opts = {sourceable_type: 'User'}.merge par[:notice]
+      @notice = Notice.create(opts.reject{|k,v| v.nil?})
       
       # if user
       #   @notice.sourceable = user
@@ -116,14 +125,17 @@ module Core
     def notice_params
       params.permit(:id, :notice_id, :category,
         :sourceable_id, :sourceable_type,
+        :sourceable_id_eq, :sourceable_type_eq,
         :linkable_id, :linkable_type,
         :type, :message, :count, :retpath,
         :show_till, :show_from,
+        :category_alt,
         :notice => [:id, :category,
           :sourceable_id, :sourceable_type,
+          :sourceable_id_eq, :sourceable_type_eq,
           :linkable_id, :linkable_type,
           :show_till, :show_from,
-          :type, :message, :count]
+          :type, :message, :count],
         )
     end
   end

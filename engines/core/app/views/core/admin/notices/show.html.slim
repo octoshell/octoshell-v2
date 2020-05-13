@@ -1,3 +1,5 @@
+- from = @notice.show_from ? @notice.show_from.strftime("%Y.%m.%d") : nil
+- till = @notice.show_till ? @notice.show_till.strftime("%Y.%m.%d") : nil
 div class="page-header"
   h2 = @notice.id
   a = link_to t('.notices'), [:admin,:notices]
@@ -39,9 +41,9 @@ table class="table table-hover"
       td class='col-xs-6'
         h4 = Core::Notice.human_attribute_name :show_from
       td class='col-xs-6'
-        h4 = @notice.show_from.strftime("%Y.%m.%d")
+        h4 = from
   tr
       td class='col-xs-6'
         h4 = Core::Notice.human_attribute_name :show_till
       td class='col-xs-6'
-        h4 = @notice.show_till.strftime("%Y.%m.%d")
+        h4 = till
