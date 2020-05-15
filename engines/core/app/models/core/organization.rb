@@ -4,7 +4,7 @@
 #
 #  id           :integer          not null, primary key
 #  abbreviation :string(255)
-#  checked      :boolean          default("false")
+#  checked      :boolean          default(FALSE)
 #  name         :string(255)
 #  created_at   :datetime
 #  updated_at   :datetime
