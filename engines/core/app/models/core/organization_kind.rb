@@ -3,7 +3,7 @@
 # Table name: core_organization_kinds
 #
 #  id                   :integer          not null, primary key
-#  departments_required :boolean          default("false")
+#  departments_required :boolean          default(FALSE)
 #  name_en              :string
 #  name_ru              :string(255)
 #  created_at           :datetime
