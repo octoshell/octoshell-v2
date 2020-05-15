@@ -31,7 +31,7 @@ module Core
             without_pagination :notices
           end
           format.json do
-            @notices = Notice.search(par['notice'])
+            @notices = Notice.search(par['notice']).includes(:notice_show_options)
             json = { records: @notices.page(par[:page]).per(par[:per]), total: @notices.count }
             render json: json
           end
@@ -98,8 +98,20 @@ module Core
 
     def update
       par = notice_params[:notice]
+      visible = par.delete('visible')
+      category_alt = par.delete('category_alt')
       @notice = Notice.find(par[:id])
       if @notice.update par
+        if category_alt != ''
+          @notice.category = category_alt.to_i
+          @notice.save
+        end
+        if visible != @notice.visible?
+          # need to change visibility
+          opt = Core::NoticeShowOption.find_or_create_by(user: current_user, notice: @notice)
+          opt.hidden = !!visible
+          opt.save
+        end
         redirect_to [:admin, @notice]
       else
         render :edit
@@ -125,11 +137,14 @@ module Core
       #logger.warn "=== #{params.inspect}"
       @notice = Notice.find_by_id(par[:notice_id])
       if @notice
-        if can?(:manage, :notices) or (@notice.category==0 && @notice.sourceable==current_user)
-          # logger.warn "==================================== No destroy #{@notice.id} (#{par[:retpath]})"
-          @notice.active = false
-          @notice.save
-        end
+        # if can?(:manage, :notices) or (@notice.category==0 && @notice.sourceable==current_user)
+        #   # logger.warn "==================================== No destroy #{@notice.id} (#{par[:retpath]})"
+        #   @notice.active = false
+        #   @notice.save
+        # end
+        opt = ::Core::NoticeShowOption.find_or_create_by(user: current_user, notice: @notice)
+        opt.hidden = true
+        opt.save
       end
       if par[:retpath]
         redirect_to par[:retpath]
@@ -147,8 +162,11 @@ module Core
         :linkable_id, :linkable_type,
         :type, :message, :count, :retpath,
         :show_till, :show_from,
-        :category_alt,
+        :category_alt, :visible,
         :notice => [:id, :category,
+          :category_alt, :kind,
+          :visible,
+          :active,
           :sourceable_id, :sourceable_type,
           :sourceable_id_eq, :sourceable_type_eq,
           :linkable_id, :linkable_type,

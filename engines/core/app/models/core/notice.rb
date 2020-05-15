@@ -31,12 +31,18 @@ module Core
 
     # message:  text    = notice text
     # count:    integer = notices count if applicable
-    # category: integer = 0 for per-user notices, 1 for wide notices, other - undefined
+    # category: integer = 0 for wide notices, >0 for per-user notices, other - undefined
+    #                     1 = simple per-user notification, 2+ = call handler...
     # kind:     string  = for handler selection
     # show_from: date   = when start to show (nil=now)
     # show_till: date   = when stop to show  (nil=forever)
     # active:   integer = 1(or nil) = is active now (for use in handler only)
     
+    def visible?
+      opt = self.notice_show_options.take
+      ! opt&.hidden
+    end
+
     def self.register_kind k, &block
       @notice_handlers ||= {}
       @notice_handlers[k] = block
@@ -64,20 +70,56 @@ module Core
         #logger.warn "-> #{notice.id}/#{notice.kind}/#{notice.category}"
         [
           :info,
-          (notice.category==0 ?
-            "#{notice.message} #{notice.add_close(request)}" :
-            notice.message
-          ).html_safe
+          "#{notice.message} #{notice.add_close(request)}".html_safe
         ]
       end 
     end
 
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
+
     def add_close request
       #FIXME!!!! [:admin, :core, self] does not work :(((((
       link = link_to '<i class="fas fa-bell-slash close"></i>'.html_safe, "/core/admin/notices/#{id}/hide?retpath=#{request.fullpath}", data:{retpath: request.fullpath}
       link
     end
+
+    def self.show_notices current_user, params, request
+      # per-user: show only if sourceable is current user
+      data = []
+      Core::Notice.where('category > 0').where(sourceable: current_user, active: true)
+        .includes(:notice_show_options)
+        .each do |note|
+        
+        user_option = note.notice_show_options.where(user: current_user).take
+        #logger.warn "+++++++++++++++++ #{user_option.inspect}"
+        next if user_option && user_option.hidden
+
+        #logger.warn "--->>> #{current_user.id} <<<---"# #{data.inspect}"
+        data << conditional_show_notice(note, current_user, params, request)
+      end
+
+      # others: show for all (if handler returns not nil)
+      Core::Notice.where('category < 1').where(active: true)
+        .includes(:notice_show_options)
+        .each do |note|
+
+        user_option = note.notice_show_options.where(user: current_user).take
+        #logger.warn "================== #{user_option.inspect}"
+        next if user_option && user_option.hidden
+
+        data << conditional_show_notice(note, current_user, params, request)
+      end
+      data.reject{|x| x.nil?}
+    end
+
+    def self.conditional_show_notice note, current_user, params, request
+      logger.warn "------------------- #{note.inspect}"
+      n = Time.current
+      return if note.show_from && (note.show_from > n)
+      return if note.show_till && (note.show_till < n)
+      Core::Notice.handle(note, current_user, params, request)
+    end
+
   end
 end
