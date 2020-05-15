@@ -3,7 +3,7 @@
 # Table name: core_notices
 #
 #  id              :integer          not null, primary key
-#  active          :boolean
+#  active          :integer
 #  category        :integer
 #  count           :integer
 #  kind            :string
@@ -27,6 +27,7 @@ module Core
   class Notice < ApplicationRecord
     belongs_to :sourceable, polymorphic: true # user or object which should be noticed
     belongs_to :linkable, polymorphic: true   # extra data
+    has_many :notice_show_options
 
     # message:  text    = notice text
     # count:    integer = notices count if applicable
@@ -34,7 +35,7 @@ module Core
     # kind:     string  = for handler selection
     # show_from: date   = when start to show (nil=now)
     # show_till: date   = when stop to show  (nil=forever)
-    # active:   bool    = is active now (for use in handler only)
+    # active:   integer = 1(or nil) = is active now (for use in handler only)
     
     def self.register_kind k, &block
       @notice_handlers ||= {}
