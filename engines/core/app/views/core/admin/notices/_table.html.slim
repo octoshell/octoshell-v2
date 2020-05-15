@@ -3,18 +3,22 @@
     tr
       th = t('.message')
       th = t('.category')
+      th = t('.kind')
       th = t('.type')
       th = t('.sourceable')
       th = t('.active')
+      th = t('.visible')
       th = t('.action')
     - notices.each do |c|
       tr
         //td = link_to no_name_c(c), [:admin, c]
         td = c.message
         td = c.category
+        td = c.kind
         td = c.sourceable.class
         td = c.source_name
-        td = c.active.nil? ? t('.none') : c.active ? t('yes') : t('no')
+        td = c.active.nil? ? t('none') : (c.active ? t('yes') : t('no'))
+        td = c.visible? ? t('yes') : t('no')
 
         td
           div class="btn-group pull-right"

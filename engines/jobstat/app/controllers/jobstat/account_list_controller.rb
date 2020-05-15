@@ -53,9 +53,15 @@ module Jobstat
         # -> [cond1,cond2,...]
         @fake_data = params[:fake_data].to_i
         @start_intro = 0
-        note=Core::Notice.where(sourceable: current_user, category: 2, kind: 'intro:jobstat').take
+        note=Core::Notice.where(sourceable: current_user, category: 2, kind: 'jobstat').take
         if note.nil?
-          Core::Notice.create(sourceable: current_user, category: 2, kind: 'intro:jobstat', message: '1').save
+          Core::Notice.create(
+            sourceable: current_user,
+            category: 2,
+            kind: 'jobstat',
+            message: '1',
+            active: false
+          ).save
           @start_intro = 1
           @fake_data = 10
         end
