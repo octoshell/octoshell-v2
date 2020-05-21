@@ -87,7 +87,7 @@ module Core
     def self.show_notices current_user, params, request
       # per-user: show only if sourceable is current user
       data = []
-      Core::Notice.where('category > 0').where(sourceable: current_user, active: true)
+      Core::Notice.where('category > 0').where(sourceable: current_user, active: 1)
         .includes(:notice_show_options)
         .each do |note|
         
@@ -100,7 +100,7 @@ module Core
       end
 
       # others: show for all (if handler returns not nil)
-      Core::Notice.where('category < 1').where(active: true)
+      Core::Notice.where('category < 1').where(active: 1)
         .includes(:notice_show_options)
         .each do |note|
 
