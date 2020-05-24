@@ -1,6 +1,2 @@
-git config core.eol lf
-git config core.autocrlf input
 #* text=auto
-help.autocorrect 30
-
 
