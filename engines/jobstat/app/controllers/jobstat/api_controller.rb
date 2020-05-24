@@ -127,7 +127,7 @@ module Jobstat
       DigestFloatDatum.where(job_id: job.id, name: params["name"]).destroy_all
 
       params["data"].each do |entry|
-	      DigestFloatDatum.where(job_id: job.id, name: params["name"], time: Time.at(entry["time"]).utc.to_datetime).first_or_create
+      DigestFloatDatum.where(job_id: job.id, name: params["name"], time: Time.at(entry["time"]).utc.to_datetime).first_or_create
           .update({value: entry["avg"]})
       end
 
@@ -140,8 +140,6 @@ module Jobstat
 
       head 200
     end
-
-    before_action :parse_request
 
     protected
 
