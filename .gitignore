@@ -37,6 +37,7 @@ deploy/
 tests/
 
 .ruby-version
+yarn.lock
 
 *~
 *.bak
