@@ -289,6 +289,8 @@ en:
       show: Show from
       value_with_category: Autocomplete value
       value_without_category: Usual value
+      with_category: Autocompleted
+      without_category: Not autocompleted
     form:
       hide: Hide
       new: New option

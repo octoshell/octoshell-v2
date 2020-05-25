@@ -1,5 +1,7 @@
 module Jobstat
   class ApiController < ActionController::Base
+    include AbnormalJobChecker
+
     before_action :parse_request
     #before_action :parse_request, :authenticate_from_token!, only: [:push]
 
@@ -23,55 +25,26 @@ module Jobstat
                   })
     end
 
-    CHECKER_PREFIX = '[                checker                ]'
+    def fetch_job_or_404(params)
+      cluster = params["cluster"]
+      drms_job_id = params["job_id"]
+      drms_task_id = params.fetch("task_id", 0)
 
-    def add_notice(job, user)
-      Core::Notice.where(sourceable: user, linkable: job, category: 0).destroy_all
-      note=Core::Notice.create(
-        sourceable: user,
-        message: view_context.link_to(job.drms_job_id, jobstat.job_path(job)),
-        linkable: job,
-        category: 0)
-      note.save!
-      logger.info "#{CHECKER_PREFIX}: new notice for #{job.drms_job_id}"
-    end
+      job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
 
-    def remove_notice(job, user)
-      Core::Notice.where(sourceable: user, linkable: job, category: 0).destroy_all
-      logger.info CHECKER_PREFIX + ": removed notice for #{job.drms_job_id}"
-    end
-
-    def group_match(job, user)
-      job.get_rules(user).each { |r|
-        return true if r['group'] == 'disaster'
-      }
-      return false
-    end
-
-    def time_match(job)
-      return job.end_time > Time.new && job.state != 'COMPLETED'
-    end
-
-    def check_job(job)
-      logger.info CHECKER_PREFIX + ": checking job #{job.id}: state = #{job.state}, end_time = #{job.end_time}"
-      logger.info "EVERYTHING ABOUT JOB: #{job.inspect}"
-      user = Core::Member.where(login: job.login).take.user
-
-      if group_match(job, user) && time_match(job)
-        add_notice(job, user)
-      else
-        remove_notice(job, user)
+      if job.nil?
+        logger.error "ERROR(jobstat): Basic job info not found: #{cluster} #{drms_job_id}"
+        head 404
       end
+
+      return job
     end
 
     def post_tags
-      cluster = @json["cluster"]
-      drms_job_id = @json["job_id"]
-      drms_task_id = @json.fetch("task_id", 0)
+      job = fetch_job_or_404(@json)
+      return if job.nil?
 
       tags = @json["tags"]
-      job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
-
       StringDatum.where(job_id: job.id, name: "tag").destroy_all
 
       return if tags.nil?
@@ -80,12 +53,13 @@ module Jobstat
       end
 
       check_job(job)
+
+      head 200
     end
 
     def post_detailed
-      cluster = @json["cluster"]
-      drms_job_id = @json["job_id"]
-      drms_task_id = @json.fetch("task_id", 0)
+      job = fetch_job_or_404(@json)
+      return if job.nil?
 
       origin_cluster = @json["origin"]["cluster"]
       origin_drms_job_id = @json["origin"]["job_id"]
@@ -93,11 +67,10 @@ module Jobstat
 
       tags = @json["tags"]
 
-      job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
       origin_job = Job.where(cluster: origin_cluster, drms_job_id: origin_drms_job_id, drms_task_id: origin_drms_task_id).first()
 
-      job.initiatees << origin_job
-      origin_job.initiator = job
+      origin_job.initiatees << job
+      job.initiator = origin_job
 
       StringDatum.where(job_id: job.id, name: "extra_data").first_or_create.update({value: @json["extra_data"].to_json})
 
@@ -108,14 +81,12 @@ module Jobstat
       end
 
       check_job(job)
+      head 200
     end
 
     def post_performance
-      cluster = @json["cluster"]
-      drms_job_id = @json["job_id"]
-      drms_task_id = @json.fetch("task_id", 0)
-
-      job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+      job = fetch_job_or_404(@json)
+      return if job.nil?
 
       FloatDatum.where(job_id: job.id).destroy_all
 
@@ -142,37 +113,33 @@ module Jobstat
           .update({value: @json["avg"]["ib_rcv_data_mpi"]})
       FloatDatum.where(job_id: job.id, name: "ib_xmit_data_mpi").first_or_create
           .update({value: @json["avg"]["ib_xmit_data_mpi"]})
+
+      head 200
     end
     
     def post_digest
       return unless params.key?("data")
       return if params["data"].nil?
 
-      cluster = params["cluster"]
-      drms_job_id = params["job_id"]
-      drms_task_id = params.fetch("task_id", 0)
-
-      job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+      job = fetch_job_or_404(params)
+      return if job.nil?
 
       DigestFloatDatum.where(job_id: job.id, name: params["name"]).destroy_all
 
       params["data"].each do |entry|
-	      DigestFloatDatum.where(job_id: job.id, name: params["name"], time: Time.at(entry["time"]).utc.to_datetime).first_or_create
+      DigestFloatDatum.where(job_id: job.id, name: params["name"], time: Time.at(entry["time"]).utc.to_datetime).first_or_create
           .update({value: entry["avg"]})
       end
+
+      head 200
     end
 
     def check_exist
-      cluster = @json["cluster"]
-      drms_job_id = Integer(@json["job_id"])
-      drms_task_id = Integer(@json.fetch("task_id", 0))
+      job = fetch_job_or_404(params)
+      return if job.nil?
 
-      @job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
-
-      render :status => 404 unless @job
+      head 200
     end
-
-    before_filter :parse_request
 
     protected
 

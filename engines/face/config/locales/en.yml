@@ -9,6 +9,8 @@ en:
     next: Continue
     save: Save
     send: Send
+  buttons:
+    save: Save
   date:
     abbr_day_names:
     - Sun.
@@ -19,7 +21,7 @@ en:
     - Fri.
     - Sat.
     abbr_month_names:
-    - 
+    -
     - Jan.
     - Feb.
     - Mar.
@@ -45,7 +47,7 @@ en:
       long: "%Y %B %d"
       short: "%b %d"
     month_names:
-    - 
+    -
     - January
     - February
     - March

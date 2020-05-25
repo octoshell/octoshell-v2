@@ -1,0 +1,31 @@
+- require 'base64'
+- require 'json'
+
+h1 = @detailed_info[:type_text]
+- man_list = @detailed_info['manual'].split("\n")
+
+p
+  <b>Тип анализа:</b> #{@detailed_info['type_text']}
+  br
+  <b>Используемый инструмент анализа:</b> #{@detailed_info['soft_text']}
+
+p
+  |
+    Для того чтобы выполнить данный тип анализа, необходимо выполнить следующие шаги:
+  - guid_array = [@analysis_id, @job.cluster, @job.drms_job_id, @job.drms_task_id]
+  - guid = guid_array.to_json
+  /- guid = Base64.encode64(guid)
+  - man_list.each do |step|
+      br
+      = step
+
+p = "В конце необходимо выполнить на кластере команду, указав имя выходного файла анализатора и ID задачи:"
+code
+  = "/opt/analysis/upload -i '#{guid}' -f "
+  b = "<ENTER_OUTPUT_FILENAME>"
+  = " -j "
+  b = "<ENTER_JOB_ID>"
+
+= form_tag url: "analyze?id=#{@analysis_id}", method: "get" do
+  = submit_tag("Analyze") 
+

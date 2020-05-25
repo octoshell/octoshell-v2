@@ -63,14 +63,46 @@ module Jobstat
       #@filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''} # TODO:FILTERS
       @filters=[]
 
-      if cpu_user.nil? || cpu_user.value.nil?
-        render :show_no_data
+      # compile full rules descriptions
+      @job_extra_data = @job.get_extra_data
+      @job_rules_description = @job.get_rules(@current_user) + @job.get_detailed
+      if @job_extra_data.present?
+        @job_rules_description.each do |rule_descr|
+          if @job_extra_data.key?(rule_descr['name'])
+            replace_dict = @job_extra_data[rule_descr['name']]
+            replace_dict.each do |key, value|
+              rule_descr['description'].gsub! key, value.to_s
+              rule_descr['supposition'].gsub! key, value.to_s
+              rule_descr['text_recommendation'].gsub! key, value.to_s
+            end
+          end
+        end
       end
+      # end making rules description
+
+#      if cpu_user.nil? || cpu_user.value.nil?
+#        render :show_no_data
+#      end
     end
 
     def show_direct
       job = Job.where(drms_job_id: params["drms_job_id"], cluster: params["cluster"]).take
       redirect_to :action => 'show', :id => job.id
+    end
+
+
+
+    def detailed
+      @detailed_info = Job.rules['detailed_analysis_types'][params[:analysis_id]]
+      @analysis_id = params[:analysis_id]
+      @job = Job.find(params[:id])
+      if @detailed_info.nil?
+          render :detailed_no_data
+      end
+    end
+
+    def detailed_no_data
+      
     end
   end
 end

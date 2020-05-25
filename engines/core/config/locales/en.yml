@@ -334,20 +334,20 @@ en:
           remove_partition: remove partition
           remove_quota: remove quota
         index:
-          confirm: Confirm
+          confirm: Are you sure?
           delete: Delete
           edit: Edit
-          new_cluster: New cluster
-          no_clusters_found: No clusters found
+          new_cluster: Create a new cluster
+          no_clusters_found: No clusters have been found
           quotas_info: Quotas info
           title: Clusters list
         new:
           title: New cluster
         show:
-          info: Info
+          info: Cluster information
           partitions: Partitions
           pub_key_help_html: Pub key help html
-          quotas_info: Quotas info
+          quotas_info: Resources quota
           show_logs: Show logs
       countries:
         destroy:
@@ -576,7 +576,7 @@ en:
           delete_group: Delete group
           edit_group: Edit group
           new_group_of_research_area: Add a group of research areas
-          new_research_area: Add aresearch area
+          new_research_area: Add a research area
           no_research_areas_found: No research areas have been found
           title: Research area
         new:

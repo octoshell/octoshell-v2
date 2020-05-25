@@ -357,7 +357,7 @@ en:
           Choose the appropriate reason and describe in detail the reason why you
           need to save the project.
         msg_postdated: >-
-          You have not sent a report №%{id} for the  %{pid}:"%{title}" project in 
+          You have not sent a report №%{id} for the  %{pid}:"%{title}" project in
           the «%{session}» re-registration in time.
         msg_project_blocked: >-
           According to the rules, your project is blocked. You can unblock it by filling

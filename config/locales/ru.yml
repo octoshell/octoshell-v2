@@ -288,6 +288,8 @@ ru:
       show: Показать форму
       value_with_category: Значение автозаполнением
       value_without_category: Значение без автозаполнения
+      with_category: Автозаполнение
+      without_category: Без автозаполнения
     form:
       hide: Скрыть
       new: Новая опция
