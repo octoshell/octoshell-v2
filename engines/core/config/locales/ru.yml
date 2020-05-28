@@ -297,6 +297,8 @@ ru:
     yess: да
   choose_value: Выберите значение
   core:
+    notice:
+      notices_menu: Уведомления
     admin:
       cities:
         destroy:
