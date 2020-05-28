@@ -45,19 +45,17 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
-  before_action :journal_user, :show_notices
-
-  # rescue_from MayMay::Unauthorized, with: :not_authorized
+  before_action :journal_user, :check_notices
 
   def journal_user
     logger.info "JOURNAL: url=#{request.url}/#{request.method}; user_id=#{current_user ? current_user.id : 'none'}"
   end
 
-  def show_notices
-    if current_user
-      Core::Notice.show_notices(current_user, params, request).each do |data|
-        flash_now_message(data[0],data[1])        
-      end
+  def check_notices
+    return unless current_user
+    #return if request[:controller] =~ /\/admin\//
+    Core::Notice.show_notices(current_user, params, request).each do |data|
+      flash_now_message(data[0],data[1])
     end
   end
 end
