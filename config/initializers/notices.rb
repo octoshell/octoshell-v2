@@ -9,9 +9,14 @@ end
 
 Face::MyMenu.items_for(:admin_submenu) do
   if can?(:manage, :tickets)
-    add_item('notices', t("notices"), core.admin_notices_path,
+    add_item('notices', t("core.notice.notices_menu"), core.admin_notices_path,
              %r{^notices})
   end
+end
+
+Face::MyMenu.items_for(:user_submenu) do
+  add_item('notices', t("core.notice.notices_menu"), core.notices_path,
+           %r{^notices})
 end
 
 Core::Notice.register_def_per_user_handler

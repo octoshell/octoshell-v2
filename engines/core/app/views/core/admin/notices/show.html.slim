@@ -10,16 +10,18 @@ div.row
     - name = t("actions.delete", default: "delete")
     - confirm = t("core_confirm", default: "Are You sure?")
     - data = { method: :delete, confirm: confirm }
+    - src = @notice.sourceable
     = link_to name, [:admin, @notice], data: data, class: "btn btn-default"
 
   div.col-md-6.col-xs-12
     table class="table table-hover"
-      - if @notice.category == 0
-        tr
-          td class='col-xs-6'
-            h4 = Core::Notice.human_attribute_name :user
-          td class='col-xs-6'
-            h4 = link_to "#{@notice.sourceable.full_name} (#{@notice.sourceable.email})", main_app.user_path(@notice.sourceable)
+      tr
+        td class='col-xs-6'
+          h4 = Core::Notice.human_attribute_name :user
+        td class='col-xs-6'
+          h4
+            - if src
+              = link_to "#{src.full_name} (#{src.email})", main_app.user_path(src)
       tr
           td class='col-xs-6'
             h4 = Core::Notice.human_attribute_name :message

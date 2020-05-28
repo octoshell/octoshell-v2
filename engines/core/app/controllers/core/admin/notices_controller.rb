@@ -40,8 +40,7 @@ module Core
     end
 
     def new
-      par = notice_params
-      npar = par[:notice] || {}
+      npar = notice_params[:notice] || {}
       @notice = Notice.new
       @notice.sourceable_id = npar[:sourceable_id] if npar[:sourceable_id]
       @notice.sourceable_type = npar[:sourceable_type] if npar[:sourceable_type]
@@ -57,18 +56,23 @@ module Core
       #  "linkable_id"=>"", "linkable_type"=>"", "category"=>"0", 
       #  "message"=>"тест тест, меня слышно?", "count"=>"21"}
 
-      par = notice_params
-      user = User.find_by_id(par[:notice][:sourceable_id])
-      logger.warn "User = #{user}"
+      par = notice_params[:notice]
+      category_alt = par.delete(:category_alt)
+      par[:category] = category_alt.to_i if category_alt != ''
+      par[:category] = par[:category].to_i
+
+      # user = User.find_by_id(par[:sourceable_id])
+      # logger.warn "User = #{user}"
       
-      opts = {sourceable_type: 'User'}.merge par[:notice]
+      opts = {sourceable_type: 'User'}.merge par
+      if category_alt != ''
+        opts[:category] = category_alt.to_i
+      end
+      # logger.warn "-------------------------- #{@opts}"
       @notice = Notice.create(opts.reject{|k,v| v.nil?})
       
-      # if user
-      #   @notice.sourceable = user
-      # end
       if @notice.save
-        logger.warn "***** #{@notice.inspect}"
+        # logger.warn "***** #{@notice.inspect}"
         flash_message :info, t('.notice_succeed')
         redirect_to [:admin, @notice]
       else
@@ -80,7 +84,7 @@ module Core
     def show
       par = notice_params
       @notice = Notice.find(par[:id])
-      logger.warn "Notice=#{@notice.inspect}"
+      # logger.warn "Notice=#{@notice.inspect}"
       if @notice && !can?(:manage, :notices)
         logger.warn "can - not!"
         if @notice.category == 0 && @notice.sourceable != current_user
@@ -101,11 +105,10 @@ module Core
       visible = par.delete('visible')
       category_alt = par.delete('category_alt')
       @notice = Notice.find(par[:id])
+      par[:category] = category_alt.to_i if category_alt != ''
+      par[:category] = par[:category].to_i
+      # logger.warn "-------------------------- #{par}"
       if @notice.update par
-        if category_alt != ''
-          @notice.category = category_alt.to_i
-          @notice.save
-        end
         if visible != @notice.visible?
           # need to change visibility
           opt = Core::NoticeShowOption.find_or_create_by(user: current_user, notice: @notice)
