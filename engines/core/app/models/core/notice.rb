@@ -29,6 +29,9 @@ module Core
     belongs_to :linkable, polymorphic: true   # extra data
     has_many :notice_show_options
 
+    SITE_WIDE = 0
+    PER_USER = 1
+    OTHER = -1
     # message:  text    = notice text
     # count:    integer = notices count if applicable
     # category: integer = 0 for wide notices, >0 for per-user notices, other - undefined
@@ -46,13 +49,15 @@ module Core
     def self.register_kind k, &block
       @notice_handlers ||= {}
       @notice_handlers[k] = block
+      logger.warn "::: @handlers= #{@notice_handlers.inspect}"
     end
 
     def self.handle notice, user, params, request
       return nil if ! @notice_handlers
 
-      handler = @notice_handlers[notice.kind]
+      handler = @notice_handlers[notice.kind.to_s]
       # nil / [:flash_type, message]
+      logger.warn "-++> #{handler}"
       handler.nil? ? nil : handler.call(notice, user, params, request)
     end
 
@@ -66,8 +71,8 @@ module Core
 
     # 
     def self.register_def_per_user_handler
-      Core::Notice.register_kind nil do |notice, user, params, request|
-        #logger.warn "-> #{notice.id}/#{notice.kind}/#{notice.category}"
+      Core::Notice.register_kind nil.to_s do |notice, user, params, request|
+        # logger.warn "-> #{notice.id}/#{notice.kind}/#{notice.category}"
         [
           :info,
           "#{notice.message} #{notice.add_close(request)}".html_safe
@@ -87,6 +92,7 @@ module Core
     def self.show_notices current_user, params, request
       # per-user: show only if sourceable is current user
       data = []
+      # ----------------- PER USER -----------------------
       Core::Notice.where('category > 0').where(sourceable: current_user, active: 1)
         .includes(:notice_show_options)
         .each do |note|
@@ -100,12 +106,13 @@ module Core
       end
 
       # others: show for all (if handler returns not nil)
+      # ----------------- SITE WIDE (0) & OTHERS -----------------------
       Core::Notice.where('category < 1').where(active: 1)
         .includes(:notice_show_options)
         .each do |note|
 
         user_option = note.notice_show_options.where(user: current_user).take
-        #logger.warn "================== #{user_option.inspect}"
+        logger.warn "================== #{user_option.inspect}; #{note.inspect}"
         next if user_option && user_option.hidden
 
         data << conditional_show_notice(note, current_user, params, request)
@@ -118,7 +125,9 @@ module Core
       n = Time.current
       return if note.show_from && (note.show_from > n)
       return if note.show_till && (note.show_till < n)
-      Core::Notice.handle(note, current_user, params, request)
+      ret = Core::Notice.handle(note, current_user, params, request)
+      logger.warn ">>> #{ret}"
+      ret
     end
 
   end
