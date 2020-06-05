@@ -256,6 +256,7 @@ en:
           In many cases recomendation includes type of analysis, suggested
           to be performed; we will improve this function in the future.
         description: Description
+        detailed: Detailed analysis
         details: Detailed description
         dynamics: Program execution dynamics
         end: End time
@@ -266,6 +267,7 @@ en:
         gpu_avg: Average GPU load (%)
         gpu_percent: GPU load (0% .. 100%)
         h-short: h.
+        initial: Initial analysis
         job_id: Job ID
         job_info: 'Information on job # %{id}'
         login: Login

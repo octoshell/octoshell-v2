@@ -65,9 +65,20 @@ module Jobstat
 
       # compile full rules descriptions
       @job_extra_data = @job.get_extra_data
-      @job_rules_description = @job.get_rules(@current_user) + @job.get_detailed
+      @job_rules_description = @job.get_rules(@current_user)
+      @job_detailed_description = @job.get_detailed
       if @job_extra_data.present?
         @job_rules_description.each do |rule_descr|
+          if @job_extra_data.key?(rule_descr['name'])
+            replace_dict = @job_extra_data[rule_descr['name']]
+            replace_dict.each do |key, value|
+              rule_descr['description'].gsub! key, value.to_s
+              rule_descr['supposition'].gsub! key, value.to_s
+              rule_descr['text_recommendation'].gsub! key, value.to_s
+            end
+          end
+        end
+        @job_detailed_description.each do |rule_descr|
           if @job_extra_data.key?(rule_descr['name'])
             replace_dict = @job_extra_data[rule_descr['name']]
             replace_dict.each do |key, value|
