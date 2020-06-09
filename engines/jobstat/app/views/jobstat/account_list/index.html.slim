@@ -177,6 +177,7 @@ div class="perf-table"
       - if @fake_data==0
         - #job_cond = job.get_rules @current_user #@jobs_plus[job.drms_job_id]['rules']
         - job_cond = @jobs_plus[job.drms_job_id]['rules'].keys
+        - detailed = @jobs_plus[job.drms_job_id]['detailed']
         - perf_data_present=!job_performance[:cpu_user].nil?
         - row_id = job.drms_job_id
       - else
@@ -271,29 +272,34 @@ div class="perf-table"
                 = t('.no_task_info')
           a class="octo-close-popup" onClick="$('#job_info_#{index}').removeClass('target')"
         td id=("fake_cond" if @fake_data!=0 && index==1) data-disable-interaction="1"
-          /- if @fake_data==1
-            a href="#" class="em12 visible"
-              i class="align-left fa fa-times-circle color-red inline cond-div" title="#{t('.anomaly_task_info')}" data-rule-div="rule_anomaly"
-            |  
-          - if perf_data_present
-            - if job_cond.size > 0
-              - hidden_count = (@fake_data==0 ? 0 : 2)
-              - job_cond.each do |cond|
-                - rule = @rules_plus['rules'].fetch(cond, nil)
-                - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
-                - hidden_count+=1 if @filters.include?(cond)
-                a href="all_rules#go-#{cond}" class="em12 #{@filters.include?(cond) ? 'hidden' : 'visible'}"
-                  i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{@rules_plus['rules'].fetch(cond,{}).fetch('description','...')}" data-rule-div="#{cond}"
-                |  
-              - if hidden_count>0
-                - hidden = @jobs_plus[job.drms_job_id]['filtered']
-                span class="gray-text hidden_rules_count" data-id="#{job.drms_job_id}" title="#{t('.hidden_count')}" +#{@fake_data==0 ? hidden : 2}
+          div class="rule-icon-container"
+            /- if @fake_data==1
+              a href="#" class="em12 visible"
+                i class="align-left fa fa-times-circle color-red inline cond-div" title="#{t('.anomaly_task_info')}" data-rule-div="rule_anomaly"
+              |
+            - if perf_data_present
+              - if job_cond.size > 0
+                - hidden_count = (@fake_data==0 ? 0 : 2)
+                - job_cond.each do |cond|
+                  - rule = @rules_plus['rules'].fetch(cond, nil)
+                  - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
+                  - hidden_count+=1 if @filters.include?(cond)
+                  a href="all_rules#go-#{cond}" class="em12 #{@filters.include?(cond) ? 'hidden' : 'visible'}"
+                    i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{@rules_plus['rules'].fetch(cond,{}).fetch('description','...')}" data-rule-div="#{cond}"
+                  |
+                - if hidden_count>0
+                  - hidden = @jobs_plus[job.drms_job_id]['filtered']
+                  span class="gray-text hidden_rules_count" data-id="#{job.drms_job_id}" title="#{t('.hidden_count')}" +#{@fake_data==0 ? hidden : 2}
+              - else
+                /= image_tag "ok.png", size: "20", border: 2
+                i class="fas fa-fw fa-check em12 color-green" title="#{t('.no_marks')}"
+              - if detailed
+                a class="em12 visible"
+                  i class="fa-fw align-left fas fa-exclamation-triangle inline cond-div color-regular" title="#{t(".detailed_conducted")}"
+                |
             - else
-              /= image_tag "ok.png", size: "20", border: 2
-              i class="fas fa-fw fa-check em12 color-green" title="#{t('.no_marks')}"
-          - else
-            p 
-              = t('.no_info')
+              p
+                = t('.no_info')
         td id=("fake_id" if (index==1 && @fake_data!=0))
           - d="#{t('.more_task_info')} #{job.get_command}\nУзлы: #{job.nodelist}"
           p title="#{d}"

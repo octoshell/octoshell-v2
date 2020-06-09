@@ -39,6 +39,7 @@ en:
         any_questions: 'Any questions or notices? Write us '
         cpu_info: in percents of full load
         cpu_load: CPU load
+        detailed_conducted: Detailed analysis
         disagree_info: >
           Select jobs in left column. In the area below would be shown rules,
           common to selected jobs. Select all rules, you don't agree and send

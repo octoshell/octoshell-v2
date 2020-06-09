@@ -132,7 +132,7 @@ module Jobstat
 
           @jobs.each{|j|
             rules=j.get_rules(@current_user)
-            @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0}
+            @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0,'detailed'=>(j.get_detailed.length > 0)}
             rules.each{|r|
               @jobs_plus[j.drms_job_id]['rules'][r['name']] = r['description']
               @jobs_plus[j.drms_job_id]['filtered']+=1 if @filters.include? r['name']
