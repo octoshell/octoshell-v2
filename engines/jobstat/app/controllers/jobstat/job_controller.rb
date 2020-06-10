@@ -32,12 +32,12 @@ module Jobstat
 
     def show
       @job = Job.find(params[:id])
+      @current_user = current_user
       @jobs_plus={@job.drms_job_id => [:id, :cluster, :drms_job_id, :drms_task_id, :login, :partition, :submit_time, :start_time, :end_time, :timelimit, :command, :state, :num_cores, :num_nodes].map{|i| [i.to_s, @job[i]]}.to_h}
-      @feedbacks=Job::get_feedback_job(params[:user].to_i, @job.id) || {}
+      @feedbacks=Job::get_feedback_job(@current_user.id, @job.drms_job_id) || {}
 
       @job_perf = @job.get_performance
       @ranking = @job.get_ranking
-      @current_user = current_user
 
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
@@ -98,7 +98,7 @@ module Jobstat
 
     def show_direct
       job = Job.where(drms_job_id: params["drms_job_id"], cluster: params["cluster"]).take
-      redirect_to :action => 'show', :id => job.id
+      redirect_to :action => 'show', :id => job.id, :user => current_user.id
     end
 
 

@@ -183,8 +183,8 @@ table class="table table-bordered table-striped"
               td style="text-align: center"
                 // current feedback icon
                 - fb = @feedbacks.select{|x| x['condition']==cond_name}[0] || {}
-                - flag_index = fb.fetch('klass',99)
-                i id="af-#{id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
+                - flag_index = fb.fetch('class',99)
+                i id="af-#{id}-#{cond_name}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
                 |&nbsp;
             tr class='spacer'
               td
@@ -286,8 +286,8 @@ br
                 td style="text-align: center"
                   // current feedback icon
                   - fb = @feedbacks.select{|x| x['condition']==cond_name}[0] || {}
-                  - flag_index = fb.fetch('klass',99)
-                  i id="af-#{id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
+                  - flag_index = fb.fetch('class',99)
+                  i id="af-#{id}-#{cond_name}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99) data="#{fb}"
                   |&nbsp;
               tr class='spacer'
                 td
