@@ -258,106 +258,102 @@ br
 
 // блок детального анализа
 
-h4 = t('.detailed')
+- rules = @job_detailed_description
+- if rules.length > 0
+  h4 = t('.detailed')
 
-table class="table table-bordered table-striped"
-  tr
-    th
-      =t('.type')
-    th
-      =t('.description')
-    th
-      =t('.supposition')
-    th
-      =t('.recomendation')
-
-  - rules = @job_detailed_description
-  - if rules.length > 0
-    - rules.each do |cond|
-      - cond_name=cond['name']
-      tr style=("background-color: #ffcccc;" if cond['group']=='disaster')
-        td
-          table
-            tr
-              td style="text-align: center"
-                // rule icon
-                - icon = @rules_plus['groups'].fetch(cond['group'],def_icon)
-                i class="fa-fw align-left inline #{icon['icon']} #{icon['color']}"
-              td style="text-align: center"
-                // current feedback icon
-                - fb = @feedbacks.select{|x| x['condition']==cond_name}[0] || {}
-                - flag_index = fb.fetch('klass',99)
-                i id="af-#{id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
-                |&nbsp;
-            tr class='spacer'
-              td
-                p
-            tr
-              td style="text-align: center"
-                // "why hide?" dialog
-                - tint = @filters.any?{|x|x==cond_name} ? "tinted" : ""
-                button id="btn-hide-#{cond_name}" class="btn-danger #{tint}" onClick="all_pre_hide_rule('#{cond_name}');$('#text_hide_rule_#{cond_name}').focus();" title="#{t('jobstat.common.hide_show')}"
-                  i class="fa-fw far fa-bell-slash"
-                div class="octo-popup content" id="hide_rule_#{cond_name}"
-                  form onSubmit="all_hide_rule('#{cond_name}',false); return false;"
-                    div class="centered x-white"
-                      = t('jobstat.common.why_hide')
-                    input type="text" id="text_hide_rule_#{cond_name}" class="fullwidth" style="display: block"
-                    div class="centered x-white"
-                      button class="btn-info" type="submit"
-                        = t('jobstat.common.hide')
-                      button onClick="$('#hide_rule_#{cond_name}').removeClass('target'); return false;"
-                        = t('jobstat.common.not_hide')
-                a class="octo-close-popup" onClick="$('#hide_rule_#{cond_name}').removeClass('target'); return false"
-                | &nbsp;
-              td style="text-align: center"
-                // "I disagree with rule" button
-                button class="btn-warning disagree-button" onClick="popup_show('disagree#{id}_#{cond_name}','question_#{id}_#{cond_name}');" title="Не согласен!"
-                  i class="#{@agree_flags[1]}"
-                  /"far fa-angry"
-                |&nbsp;
-                // "Disagree" dialog
-                div class="octo-popup container" id="popup_disagree#{id}_#{cond_name}"
-                  form onSubmit="popup_hide('disagree#{id}_#{cond_name}');disagree('#{id}','#{cond_name}',0); return false;"
-                    div class="centered"
-                      = t('jobstat.common.why_dont_agree')
-                    input type="text" id="question_#{id}_#{cond_name}" class="fullwidth"
-                    div class="centered"
-                      button class="btn-info" type="submit"
-                        = t('jobstat.common.send')
-                      button class="btn-info" onClick="return popup_hide('disagree#{id}_#{cond_name}')"
-                        = t('jobstat.common.not_send')
-                a class="octo-close-popup" onClick="return popup_hide('disagree#{id}_#{cond_name}')"
-              td style="text-align: center"
-                button class="btn-warning" onClick="popup_show('agree#{id}_#{cond_name}','question_#{id}_#{cond_name}');" title="#{t('jobstat.common.agree_button')}"
-                  i class="#{@agree_flags[0]}"
-                |&nbsp;
-                // 'Agree' dialog
-                div class="octo-popup container" id="popup_agree#{id}_#{cond_name}"
-                  form onSubmit="popup_hide('agree#{id}_#{cond_name}'); agree('#{id}','#{cond_name}',0,''); return false;"
-                    div class="centered"
-                      button class="btn-info" type="submit"
-                        = t('jobstat.common.agree_rule')
-                      button class="btn-info" onClick="return popup_hide('agree#{id}_#{cond_name}')"
-                        = t('jobstat.common.not_send')
-                a class="octo-close-popup2" onClick="return popup_hide('agree#{id}_#{cond_name}')"
-
-        td
-          p class="hidden_name hidden"
-            strong
-              = "id: "
-              = cond['name']
-          = cond['description']
-        td
-          = cond['supposition']
-        td
-          = cond['text_recommendation']
-  - else
+  table class="table table-bordered table-striped"
     tr
-      td colspan="4"
-        = t('.no_problems')
+      th
+        =t('.type')
+      th
+        =t('.description')
+      th
+        =t('.supposition')
+      th
+        =t('.recomendation')
 
-br
+      - rules.each do |cond|
+        - cond_name=cond['name']
+        tr style=("background-color: #ffcccc;" if cond['group']=='disaster')
+          td
+            table
+              tr
+                td style="text-align: center"
+                  // rule icon
+                  - icon = @rules_plus['groups'].fetch(cond['group'],def_icon)
+                  i class="fa-fw align-left inline #{icon['icon']} #{icon['color']}"
+                td style="text-align: center"
+                  // current feedback icon
+                  - fb = @feedbacks.select{|x| x['condition']==cond_name}[0] || {}
+                  - flag_index = fb.fetch('klass',99)
+                  i id="af-#{id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
+                  |&nbsp;
+              tr class='spacer'
+                td
+                  p
+              tr
+                td style="text-align: center"
+                  // "why hide?" dialog
+                  - tint = @filters.any?{|x|x==cond_name} ? "tinted" : ""
+                  button id="btn-hide-#{cond_name}" class="btn-danger #{tint}" onClick="all_pre_hide_rule('#{cond_name}');$('#text_hide_rule_#{cond_name}').focus();" title="#{t('jobstat.common.hide_show')}"
+                    i class="fa-fw far fa-bell-slash"
+                  div class="octo-popup content" id="hide_rule_#{cond_name}"
+                    form onSubmit="all_hide_rule('#{cond_name}',false); return false;"
+                      div class="centered x-white"
+                        = t('jobstat.common.why_hide')
+                      input type="text" id="text_hide_rule_#{cond_name}" class="fullwidth" style="display: block"
+                      div class="centered x-white"
+                        button class="btn-info" type="submit"
+                          = t('jobstat.common.hide')
+                        button onClick="$('#hide_rule_#{cond_name}').removeClass('target'); return false;"
+                          = t('jobstat.common.not_hide')
+                  a class="octo-close-popup" onClick="$('#hide_rule_#{cond_name}').removeClass('target'); return false"
+                  | &nbsp;
+                td style="text-align: center"
+                  // "I disagree with rule" button
+                  button class="btn-warning disagree-button" onClick="popup_show('disagree#{id}_#{cond_name}','question_#{id}_#{cond_name}');" title="Не согласен!"
+                    i class="#{@agree_flags[1]}"
+                    /"far fa-angry"
+                  |&nbsp;
+                  // "Disagree" dialog
+                  div class="octo-popup container" id="popup_disagree#{id}_#{cond_name}"
+                    form onSubmit="popup_hide('disagree#{id}_#{cond_name}');disagree('#{id}','#{cond_name}',0); return false;"
+                      div class="centered"
+                        = t('jobstat.common.why_dont_agree')
+                      input type="text" id="question_#{id}_#{cond_name}" class="fullwidth"
+                      div class="centered"
+                        button class="btn-info" type="submit"
+                          = t('jobstat.common.send')
+                        button class="btn-info" onClick="return popup_hide('disagree#{id}_#{cond_name}')"
+                          = t('jobstat.common.not_send')
+                  a class="octo-close-popup" onClick="return popup_hide('disagree#{id}_#{cond_name}')"
+                td style="text-align: center"
+                  button class="btn-warning" onClick="popup_show('agree#{id}_#{cond_name}','question_#{id}_#{cond_name}');" title="#{t('jobstat.common.agree_button')}"
+                    i class="#{@agree_flags[0]}"
+                  |&nbsp;
+                  // 'Agree' dialog
+                  div class="octo-popup container" id="popup_agree#{id}_#{cond_name}"
+                    form onSubmit="popup_hide('agree#{id}_#{cond_name}'); agree('#{id}','#{cond_name}',0,''); return false;"
+                      div class="centered"
+                        button class="btn-info" type="submit"
+                          = t('jobstat.common.agree_rule')
+                        button class="btn-info" onClick="return popup_hide('agree#{id}_#{cond_name}')"
+                          = t('jobstat.common.not_send')
+                  a class="octo-close-popup2" onClick="return popup_hide('agree#{id}_#{cond_name}')"
+
+          td
+            p class="hidden_name hidden"
+              strong
+                = "id: "
+                = cond['name']
+            = cond['description']
+          td
+            = cond['supposition']
+          td
+            = cond['text_recommendation']
+
+  br
 
 //// Part about detailed analysis
 
