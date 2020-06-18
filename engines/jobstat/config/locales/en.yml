@@ -256,6 +256,12 @@ en:
           and recommendations (what we are suggest to do for you) are listed.
           In many cases recomendation includes type of analysis, suggested
           to be performed; we will improve this function in the future.
+        descr3: >-
+          This area shows what performance problems were detected during the
+          automatic analysis of all jobs performed on the supercomputer.
+        descr4: >-
+          This area shows what performance problems were found during the
+          specified types of detailed analysis:
         description: Description
         detailed: Detailed analysis
         details: Detailed description
@@ -286,6 +292,7 @@ en:
         perf: Performance
         potential: Found efficiency problems
         queued: Submit time
+        rating: Feedback
         received: MB received
         recomendation: Recommendation
         return: Return to jobs list
@@ -308,8 +315,8 @@ en:
           problems are planned in the future. Now this ability is implemented
           only on all jobs list page.
         supposition: "Supposition"
-        initiated_by: Initiated by
-        initiated_found: Initiated tasks
+        initiated_by: A detailed analysis was carried out after studying the job
+        initiated_found: After studying this problem, a detailed analysis was carried out, the results of which can be seen in these jobs
         initiated_not_found: Initiated tasks not found
-        detailed_available: Available analysys types
+        detailed_available: Available detailed analysys types
 

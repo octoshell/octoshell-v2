@@ -198,8 +198,8 @@ div class="perf-table"
                 - job_cond.each do |cond|
                   div class="cond-div #{@filters.include?(cond) ? 'hidden' : 'visible'}" data-rule-div="#{cond}"
                     // current feedback icon
-                    - feedback=@jobs_plus[job.drms_job_id]['feedback']
-                    - flag_index = feedback.fetch('klass',99)
+                    - feedback=(@jobs_feedback[job.drms_job_id] || {})[cond] || {}
+                    - flag_index = feedback[:class] || 99
                     i id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
                     /'fa-ok agreed-flag'
                     | &nbsp;
@@ -295,7 +295,7 @@ div class="perf-table"
                 i class="fas fa-fw fa-check em12 color-green" title="#{t('.no_marks')}"
               - if detailed
                 a class="em12 visible"
-                  i class="fa-fw align-left fas fa-exclamation-triangle inline cond-div color-regular" title="#{t(".detailed_conducted")}"
+                  i class="fa-fw align-left fas fa-exclamation-triangle inline cond-div color-blue" title="#{t(".detailed_conducted")}"
                 |
             - else
               p

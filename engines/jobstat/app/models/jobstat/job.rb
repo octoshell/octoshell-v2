@@ -220,6 +220,9 @@ module Jobstat
       result = {}
 
       get_detailed_types.each do |type|
+        (Job.rules['detailed'][type]||{}).each do |k,sub_type|
+          sub_type['type'] = type
+        end
         result = result.merge(Job.rules['detailed'][type] || {})
       end
 

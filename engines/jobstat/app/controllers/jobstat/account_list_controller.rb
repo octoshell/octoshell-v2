@@ -148,7 +148,8 @@ module Jobstat
 
       joblist=@jobs.map{|j| j.drms_job_id}
       #logger.info "JOBLIST: #{joblist.inspect}"
-      jobs_feedback=Job::get_feedback_job(params[:user].to_i, joblist) || {}
+      @current_user = current_user
+      jobs_feedback=Job::get_feedback_job(@current_user.id, joblist) || {}
       #logger.info "JOBLIST got: #{jobs_feedback}"
       #[{user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string, condition=string},{...}]
 
@@ -157,7 +158,7 @@ module Jobstat
         @jobs_feedback[f['job_id']]||={}
         @jobs_feedback[f['job_id']][f['condition']]={
           user: f['user'], cluster: f['cluster'],
-          task_id: f['task_id'], klass: f['class'], feedback: f['feedback']
+          task_id: f['task_id'], class: f['class'], feedback: f['feedback']
         }
       }
 
@@ -168,12 +169,6 @@ module Jobstat
          'timelimit', 'command', 'state', 'num_cores', 'num_nodes'].each{|i|
           @jobs_plus[id][i]=job[i]
         }
-        @jobs_plus[id]['feedback']=if(@jobs_feedback.fetch(id,false))
-          # there is a feedback!
-          {'class' => @jobs_feedback[id][:klass]}
-        else
-          {}
-        end
       end
 
       # FIXME!!!!!! (see all_rules)
