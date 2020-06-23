@@ -96,3 +96,4 @@ group :test do
   gem "phantomjs", github: "colszowka/phantomjs-gem"
   gem "codeclimate-test-reporter", require: false
 end
+gem 'sprockets-rails', '2.3.3'

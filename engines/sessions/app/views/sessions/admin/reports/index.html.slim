@@ -5,7 +5,7 @@ div class="page-header"
   div class="container"
     div class="col-md-6"
       = f.collection_select :session_id_in, Sessions::Session.all, :id, :description, { label: t('.session'), include_blank: true }, { multiple: true }
-      /= f.collection_select :author_id_eq, Sessions.user_class.joins(:owned_projects).includes(:profile).distinct.all, :id, :full_name_with_email, label: Sessions::Report.human_attribute_name(:author), include_blank: true
+      = f.collection_select :author_id_eq, Sessions.user_class.joins(:owned_projects).includes(:profile).distinct.all, :id, :full_name_with_email, label: Sessions::Report.human_attribute_name(:author), include_blank: true
       = f.select :state_in, Sessions::Report.state_names(:state).map { |n| [Sessions::Report.human_state_name(n), n] }, { label: Sessions::Report.human_attribute_name(:state), include_blank: true }, { multiple: true }
       = custom_helper(:core, 'autocomplete_project_id_eq', f, '',
                       label: Sessions::Report.human_attribute_name(:project) )
@@ -29,7 +29,7 @@ div class="page-header"
         = f.collection_select :expert_id_eq, Sessions.user_class.experts.includes(:profile), :id, :full_name, priority: [current_user], label: t('.expert'), include_blank: true
       = custom_helper(:core, 'usual_project_research_areas_id_in', f)
       /= f.collection_select :project_research_areas_id_in,research_area_class.all, :id, :name, { label: research_area_class.model_name.human, include_blank: true}, {multiple: true}
-      = custom_helper(:core, 'project_critical_technologies_id_in', f, '',
+      = custom_helper(:core, 'project_critical_technologies_id_in', f,
                               label: t('.critical_technologies_id_in') )
       /= f.collection_select :project_critical_technologies_id_in, critical_technology_class.order_by_name, :id, :name,
       /  {label: t('.critical_technologies_id_in'),  include_blank: true}, multiple: true
