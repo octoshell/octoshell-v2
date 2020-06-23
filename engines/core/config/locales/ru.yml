@@ -130,6 +130,8 @@ ru:
         organization_department_id: Подразделение организации
         organization_id: Организация
         primary: Основное место работы
+      core/group_of_research_area:
+        name: Название
       core/member:
         login: Логин
         organization: Организация
@@ -227,8 +229,6 @@ ru:
         group: Группа
         group_id: Группа
         name: Наименование
-      core/group_of_research_area:
-        name: Название
       core/surety:
         author: Автор
         boss_full_name: ФИО руководителя организации-поручителя
@@ -585,6 +585,35 @@ ru:
           title: Области науки
         new:
           title: Добавление новой области науки
+      notices:
+        show:
+          notices: Уведомления
+        form:
+          active: Активно?
+          none: Неизвестно
+          message: Сообщение
+          category: Категория
+          type: Тип
+          sourceable: Пользователь
+          action: Действие
+          show_from: Показ с
+          show_till: Показ до
+        create:
+          notice_succeed: Уведомление создано успешно
+          notice_failed: Не получилось создать уведомление
+        index:
+          title: Уведомления
+          new_notice: Создать уведомление
+          table:
+            message: Сообщение
+            category: Категория
+            type: Тип
+            sourceable: Пользователь
+            active: Активно?
+            action: Действие
+            show_from: Показ с
+            show_till: Показ до
+          none: отсутствует
       sureties:
         activate_or_reject:
           reason_empty: Пустая причина одобрения/ отклонения
@@ -641,6 +670,15 @@ ru:
         title: Новое место работы
       show:
         title: Место работы
+    bot_links:
+      list:
+        generate_token: Сгенерировать токен
+        confirm: Вы действительно хотите сгенерировать новый токен? Подключенных ботов надо будет снова связать.
+        bot_links: Токен для ботов
+        msg_help_token: >-
+          Токены нужны для связи профиля Octoshell с ботом. Их необходимо ввести в боте, чтобы
+          получить удаленный доступ из бота к функциональности Octoshell.
+        no_bot_links_found: Сгенерируйте токен, если хотите работать в Octoshell из бота.
     mailer:
       access_to_project_denied:
         msg_project_acc_denied: Руководитель проекта «%{title}» (%{pid}) закрыл Вам

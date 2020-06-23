@@ -1,9 +1,15 @@
 class ApplicationRecord < ActiveRecord::Base
   extend ModelTranslation::ActiveRecord
   def self.inherited(subclass)
-    subclass.has_paper_trail versions: { name: :paper_trail_versions },
-                             version: :paper_trail_version
+    if subclass.versions_enabled
+      subclass.has_paper_trail versions: { name: :paper_trail_versions },
+                               version: :paper_trail_version
+    end
     super
+  end
+
+  def self.versions_enabled
+    true
   end
 
   self.abstract_class = true

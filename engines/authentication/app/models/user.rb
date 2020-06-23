@@ -74,7 +74,11 @@ class User < ApplicationRecord
   end
 
   def downcase_email
-    email.downcase! unless self.email.nil?
+    unless self.email.nil?
+      email.downcase!
+      email.gsub!(/\(.*\)/){|comment| ''}
+      email.tr! "a-zA-Z0-9!\#$%&*+-\/=?^_\`\{\}~.@|\'", ''
+    end
   end
 
   def self.delete_pending_users

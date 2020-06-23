@@ -15,7 +15,6 @@
 //= require marked.min
 //= require face/application
 //= require core/application
-//= require support/application
 //= require sessions/application
 //= require announcements/application
 //= require_tree ./site-wide

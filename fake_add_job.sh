@@ -2,14 +2,14 @@
 cd "$(dirname "$0")"
 
 export HOST="http://localhost:5000"
-export CLUSTER="mytest"
+export CLUSTER="lomonosov-2"
 export ACC='admin_1'
-export PART='test'
+export PART='compute'
+export T=`date +%s`
 
-LAST_ID=`psql -h localhost -U octo -t new_octoshell2 -c ' select max(drms_job_id) from jobstat_jobs;'`
+LAST_ID=`psql -h localhost -U octo -t new_octoshell -c ' select max(drms_job_id) from jobstat_jobs;'`
 
 JOB_ID=$((LAST_ID+1))
-JOB_ID=15
 
 if [ "x$1" != x ]; then
   post_tags=0
@@ -21,25 +21,27 @@ fi
 # exit 0
 
 INFO='{
-  "account": "$ACC", 
-  "command": "fake_command", 
-  "job_id": '"$JOB_ID"', 
+  "account": "'$ACC'",
+  "command": "fake_command",
+  "job_id": '"$JOB_ID"',
+  "cluster": "'$CLUSTER'",
   "nodelist": "n48418", 
-  "num_cores": 14, 
-  "num_nodes": 1, 
-  "partition": "$PART", 
+  "num_cores": 14,
+  "num_nodes": 1,
+  "partition": "'$PART'",
   "priority": 4294729060, 
-  "state": "RUNNING", 
-  "t_end": 1544310112, 
-  "t_start": 1543223712, 
-  "t_submit": 1542223712, 
+  "state": "COMPLETED",
+  "t_end": '"$((T - 100000 - $RANDOM))"',
+  "t_start": '"$((T - 200000 - $RANDOM))"',
+  "t_submit": '"$((T - 300000 - $RANDOM))"',
   "task_id": 0, 
   "timelimit": 259200, 
   "workdir": "fake_workdir"
 }'
 
 TAGS='{
-  "job_id": '"$JOB_ID"', 
+  "job_id": '"$JOB_ID"',
+  "cluster": "'$CLUSTER'",
   "tags": [
     "rule_normal_serial", 
     "rule_bad_locality", 
@@ -67,6 +69,9 @@ TAGS='{
 }'
 
 PERF='{
+  "job_id": '"$JOB_ID"',
+  "cluster": "'$CLUSTER'",
+
   "avg": {
    
     "cpu_iowait": 0.00252202132591562, 
@@ -152,7 +157,6 @@ PERF='{
     "perf_counter4": 289109.93
   }
 }'
-
 
 MON_DATA='[
   {
@@ -255,14 +259,14 @@ MON_DATA='[
 
 
 echo post info
-curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/info?cluster=$CLUSTER&job_id=$JOB_ID" --data "$INFO"
+curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/info" --data "$INFO"
 
 if [ $post_tags = 1 ]; then
-  echo post tags
-  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/tags?cluster=$CLUSTER&job_id=$JOB_ID" --data "$TAGS"
-
   echo post perf
-  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/performance?cluster=$CLUSTER&job_id=$JOB_ID" --data "$PERF" &
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/performance" --data "$PERF" &
+
+  echo post tags
+  curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/tags" --data "$TAGS"
 
   echo post monitoring data
   curl --request POST -H "Content-Type: application/json" "$HOST/jobstat/job/digest?cluster=$CLUSTER&job_id=$JOB_ID&name=cpu_user" --data "{\"data\": $MON_DATA}" &

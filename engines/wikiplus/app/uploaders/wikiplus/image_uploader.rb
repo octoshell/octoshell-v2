@@ -11,7 +11,7 @@ module Wikiplus
     end
 
     def store_dir
-      "wikiplus/pages/pictures/"
+      "images/wikiplus/pictures/"
     end
 
     version :thumb do

@@ -122,9 +122,9 @@ en:
       q:
         all: Does not matter
     rake:
-      name: 'Модуль комментариев: Правила доступа к заметкам'
+      name: 'Comments module: rules of notes access'
       regexp: "^# Правила доступа к заметкам"
-      short_name: Правила доступа к заметкам
+      short_name: rules of notes access
       url: comments_guide
     tags:
       create:

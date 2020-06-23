@@ -1,0 +1,33 @@
+---
+en:
+  access_key_exports_list: Access key exports!
+  access_key_key: Access key name....
+  address: Address
+  api: qqq
+  back: Back
+  edit: Edit
+  edit_export: Edit export
+  edit_key_parameter: Edit key parameter
+  error: 'Auch! Got error: %{err}.
+
+'
+  export_access_keys_list: Access key list
+  export_key_parameters_list: Key parameters list
+  export_request: Export request
+  export_text: Export text
+  export_title: Export title
+  key_parameters_default: Parameter default value
+  key_parameters_export_list: Exports list
+  key_parameters_name: Parameter name
+  new_access_key: New access key
+  new_export: New export
+  new_key_parameter: New key parameter
+  not_allowed: 'Whoops! You cannot make such requests.
+
+'
+  not_allowed_explained: 'Request ''%{req}'' for ability %{id} (%{key}) is not allowed.
+
+'
+  note: 'Note: use X-OctoAPI-Auth header to specify access key.'
+  safe: is safe
+  sure: Are you sure?

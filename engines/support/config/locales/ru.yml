@@ -108,8 +108,7 @@ ru:
   errors:
     messages:
       size_too_big: 'файл слишком большой (максимальный размер: %{file_size})'
-      size_too_small: файл слишком малого размера (должен быть как минимум
-        %{file_size})
+      size_too_small: файл слишком малого размера (должен быть как минимум %{file_size})
       wrong_size: размер файла некорректен (должен быть %{file_size})
   support:
     open_support: Открыть раздел техподдержки.
@@ -177,6 +176,7 @@ ru:
           accept: Принять в работу
           attach: Приложить файл
           create_reply_template: Создать шаблон из текущего сообщения
+          message_preview: Предпросмотр
           new_reply: Новое сообщение
           no_replies: Нет сообщений
           problem_solved: Проблема решена? Нажмите
@@ -185,7 +185,6 @@ ru:
           send_and_show_result: Отправить и показать результат
           tags-etc: Теги/файлы/комментарии
           title: Заявка №%{id}
-          message_preview: Предпросмотр
         table:
           no_tickets: Нет тикетов
       topics:
@@ -206,8 +205,7 @@ ru:
       answered_tickets_notification:
         subject: Напоминание о зависших заявках в техподдержке
       footer:
-        maintained_by: Лаборатория Параллельных информационных технологий
-          НИВЦ МГУ.
+        maintained_by: Лаборатория Параллельных информационных технологий НИВЦ МГУ.
         octo_regards: С уважением, Octoshell.
       header:
         hello_known_name: Здравствуйте, %{name}!
@@ -220,15 +218,14 @@ ru:
         user_created_request: Пользователь %{full_name} создал заявку в поддержку.
       new_ticket_reply:
         remain: >-
-          Не удаляйте эту строку! Вы можете добавить ответ к этой заявке,
-          записав Ваш ответ после следующей пунктирной линии.
+          Не удаляйте эту строку! Вы можете добавить ответ к этой заявке, записав
+          Ваш ответ после следующей пунктирной линии.
         show_request_details: Перейти к заявке
         subject: Новый ответ в заявке №%{number}
       reply_error:
         errors: 'Ошибки:'
         show_request_details: Перейти к заявке
-        subject: Не удалось оставить ответ к  заявке №%{number} по причине
-          ошибок
+        subject: Не удалось оставить ответ к  заявке №%{number} по причине ошибок
     tickets:
       edit:
         title: Редактирование заявки
@@ -245,11 +242,11 @@ ru:
         attach: 'Приложить файл: '
         earlier: 'Ранее: '
         if_not: Если нет, нажмите
+        message_preview: Предпросмотр
         new_reply: Новое сообщение
         no_replies: Нет ответов
         problem_solved: 'Проблема решена? Нажмите '
         title: Заявка №%{id}
-        message_preview: Предпросмотр
       table:
         no_tickets: Нет заявок в поддержку
   support_responsible_for: 'Ответственный за:'

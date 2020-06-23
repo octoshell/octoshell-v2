@@ -77,8 +77,8 @@ en:
     errors:
       models:
         support/ticket:
-          equal_to_template: Change your problem description  (it is equal
-            to template now)
+          equal_to_template: Change your problem description  (it is equal to template
+            now)
     models:
       support/field: Extra field
       support/reply: Reply
@@ -162,6 +162,7 @@ en:
           accept: Accept
           attach: Attach file
           create_reply_template: Create reply template from current reply
+          message_preview: Preview
           new_reply: New reply
           no_replies: No replies
           problem_solved: If your problem is solved, press
@@ -201,12 +202,12 @@ en:
         subject: New request for technical support
         ticket: Question
         topic: Topic
-        user_created_request: User %{full_name} has created the request for
-          techincal support.
+        user_created_request: User %{full_name} has created the request for techincal
+          support.
       new_ticket_reply:
         remain: >-
-          Do not remove this line! You can add your reply to this request
-          by writing it after the following dash line.
+          Do not remove this line! You can add your reply to this request by writing
+          it after the following dash line.
         show_request_details: Show request
         subject: New reply in request No%{number}
       reply_error:
@@ -229,6 +230,7 @@ en:
         attach: 'Attach file: '
         earlier: 'Earlier: '
         if_not: 'If not, press '
+        message_preview: Preview
         new_reply: New reply
         no_replies: No replies
         problem_solved: 'Have your problem been solved? Press '

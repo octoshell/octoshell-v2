@@ -38,6 +38,8 @@ require 'yaml/store'
 module Jobstat
   class Job < ApplicationRecord
     include JobHelper
+    has_many :initiatees, class_name: "Job", foreign_key: "initiator_id"
+    belongs_to :initiator, class_name: "Job"
 
     def get_duration_hours
       (end_time - start_time) / 3600
@@ -92,11 +94,6 @@ module Jobstat
       data[:ib_xmit_data_mpi] /= 1024 * 1024 unless data[:ib_xmit_data_mpi].nil?
 
       return data
-    end
-
-
-    def get_tags
-      tags=StringDatum.where(job_id: id, name: "tag").pluck(:value)
     end
 
     def get_ranking
@@ -154,30 +151,83 @@ module Jobstat
       result
     end
 
-    # def get_thresholds
-    #   slice(Conditions.instance.thresholds, get_tags)
-    # end
-
-    def get_classes
-      priority_filtration(slice(Job.rules['classes'], get_tags))
-    end
-
-    def get_not_public_rules()
+    def get_not_public_by_type(types)
       result = []
-      Job.rules['rules'].each do |rule, data|
-        if data['public'] == 0
-          result.push(data['name'])
+
+      types.each do |section_name|
+        (Job.rules[section_name] || {}).each do |condition, fields|
+          if fields['public'] == 0
+            result << condition
+          end
         end
       end
       result
     end
 
+# primary
+    def get_primary_types
+      ['classes', 'thresholds', 'rules']
+    end
+
+    def get_primary_names
+      names = StringDatum.where(job_id: id, name: "tag").pluck(:value)
+      names - get_not_public_by_type(get_primary_types)
+    end
+
+    def get_thresholds
+      slice(Job.rules['thresholds'], get_primary_names)
+    end
+
+    def get_classes
+      priority_filtration(slice(Job.rules['classes'], get_primary_names))
+    end
+
     def get_rules user
-      filters=Job::get_filters(user)|| [] # TODO:FILTERS
-      tags=get_tags
-      tags=tags - filters # remove rules wich are filtered out
-      tags=tags - get_not_public_rules() # remove rules wich are not public
-      priority_filtration(slice(Job.rules['rules'], tags)) # sort by groups priority
+      filters = Job::get_filters(user)|| [] # TODO:FILTERS
+
+      names = get_primary_names - filters # remove rules wich are filtered out
+
+      priority_filtration(slice(Job.rules['rules'], names)) # sort by groups priority
+    end
+
+# detailed
+
+    def get_detailed_types
+      types = []
+
+      Job.rules['detailed_analysis_types'].each do |name, _|
+        types << name
+      end
+
+      types
+    end
+
+    def get_extra_data
+      extra_data = StringDatum.where(job_id: id, name: "extra_data").first
+      if extra_data
+        return JSON.parse(extra_data.value)
+      else
+        return {}
+      end
+    end
+
+    def get_detailed_names
+      names = StringDatum.where(job_id: id, name: "detailed").pluck(:value)
+      names - get_not_public_by_type(get_detailed_types)
+    end
+
+    def get_detailed
+      result = {}
+
+      get_detailed_types.each do |type|
+        result = result.merge(Job.rules['detailed'][type] || {})
+      end
+
+      slice(result, get_detailed_names)
+    end
+
+    def get_detailed_by_type(type)
+      slice(Job.rules[type], get_detailed_names)
     end
 
     # def get_cached data
@@ -223,7 +273,7 @@ module Jobstat
       user_id=user.id
 
       data=get_data("jobstat:filters:#{user_id}",
-        URI("http://graphit.parallel.ru:8123/api/filters?user=#{user_id}"))
+        URI("#{Rails.application.config.octo_feedback_host}/api/filters?user=#{user_id}"))
       #logger.info "get_filters: data=#{data.inspect}"
       data || []
     end
@@ -233,7 +283,7 @@ module Jobstat
       jobs=joblist.kind_of?(Array) ? joblist.join(',') : joblist
 
       get_data("jobstat:feedback_job:#{user_id}:#{jobs}",
-        URI("http://graphit.parallel.ru:8123/api/feedback-job?user=#{user_id}&cluster=lomonosov-2&job_id=#{jobs}")
+        URI("#{Rails.application.config.octo_feedback_host}/api/feedback-job?user=#{user_id}&cluster=lomonosov-2&job_id=#{jobs}")
         )
     end
 
@@ -289,9 +339,8 @@ module Jobstat
       if @rules.nil? || force_reload
         @rules={}
         begin
-          File.open("engines/jobstat/config/rules-plus.json", "r") { |file|
+          File.open("engines/jobstat/config/conditions.json", "r") { |file|
             @rules=JSON.load(file)
-            @rules['rules'].keys.each{|k| @rules['rules'][k]['name']=k}
           }
         rescue
         end

@@ -82,7 +82,7 @@ module Sessions
 
     def fill_values(fields)
       transaction do
-        saves = fields.map do |field_id, value|
+        saves = fields.to_hash.map do |field_id, value|
           record = values.find { |v| v.survey_field_id == field_id.to_i }
           record.update_value(value)
         end

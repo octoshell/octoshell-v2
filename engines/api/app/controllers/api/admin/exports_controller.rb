@@ -10,7 +10,7 @@ module Api::Admin
 
     # GET /exports
     def index
-      @exports = Export.all
+      @exports = ::Api::Export.all
     end
 
     # GET /exports/1
@@ -19,7 +19,7 @@ module Api::Admin
 
     # GET /exports/new
     def new
-      @export = Export.new
+      @export = ::Api::Export.new
     end
 
     # GET /exports/1/edit
@@ -29,7 +29,7 @@ module Api::Admin
     # POST /exports
     def create
       par = export_params
-      @export = Export.new(par)
+      @export = ::Api::Export.new(par)
 
       if @export.save
         redirect_to admin_exports_url, notice: 'Export was successfully created.'
@@ -57,7 +57,7 @@ module Api::Admin
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_export
-        @export = Export.find(params[:id])
+        @export = ::Api::Export.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.

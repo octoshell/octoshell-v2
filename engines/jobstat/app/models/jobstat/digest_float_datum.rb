@@ -17,5 +17,8 @@
 
 module Jobstat
   class DigestFloatDatum < ApplicationRecord
+    def versions_enabled
+      false
+    end
   end
 end

@@ -1,0 +1,17 @@
+h4 = t(".bot_links")
+table class="table table-condensed"
+  tr
+    td colspan="3"
+      div class="alert alert-info"
+        =t('.msg_help_token').html_safe
+      strong
+        small = link_to t(".generate_token"), core.bot_link_generate_path(@profile.user)
+  - if bot_links.any?
+    - bot_links.each do |bot_link|
+      tr
+        td
+          pre
+            code = bot_link.token
+  - else
+    tr class="warning"
+      td colspan="3" = t(".no_bot_links_found")

@@ -12,6 +12,7 @@
  *
  *= require jquery-tablesorter/theme.bootstrap
  *= require jquery-tablesorter/theme.blue
+ * = r jquery-tablesorter/theme.default
  *= require_tree .
  *= require_self
  */

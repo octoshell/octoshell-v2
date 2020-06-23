@@ -7,7 +7,7 @@ module Support
     def index
       @search = current_user.tickets.search(params[:q])
       @tickets = @search.result(distinct: true)
-                        .order("id DESC, updated_at DESC")
+                        .order("updated_at DESC, id DESC")
                         .page(params[:page])
     end
 
@@ -49,6 +49,7 @@ module Support
       if @ticket.close
         @ticket.save
         redirect_to @ticket
+        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'close')
       else
         redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
       end
@@ -59,6 +60,7 @@ module Support
       if @ticket.resolve
         @ticket.save
         redirect_to @ticket
+        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'resolve')
       else
         @ticket.save
         redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
@@ -70,6 +72,7 @@ module Support
       if @ticket.reopen
         @ticket.save
         redirect_to @ticket
+        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'reopen')
       else
         redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
       end
@@ -89,6 +92,7 @@ module Support
       if @ticket.valid? && valid
         @ticket.save
         redirect_to @ticket
+        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'update')
       else
         render :edit
       end

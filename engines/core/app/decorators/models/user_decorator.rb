@@ -71,6 +71,10 @@ Core.user_class.class_eval do
 
   has_many :authored_sureties, class_name: "::Core::Surety", foreign_key: :author_id, inverse_of: :author
 
+  has_many :bot_links,
+    class_name: "::Core::BotLink",
+    foreign_key: :user_id, inverse_of: :user
+
   scope :with_active_projects, -> { joins(accounts: :project).where(core_projects: {state: "active"}, core_members: {project_access_state: "allowed"}).distinct }
   scope :owners_finder, (lambda do |q|
     joins(:account_owners).finder(q)

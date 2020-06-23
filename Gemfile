@@ -50,7 +50,8 @@ gem "mina" #, github: "zhum/mina", require: false
 #gem "mina-rails"
 #gem "mina-git"
 
-gem "rollbar"
+#gem "rollbar"
+gem "airbrake"
 gem "foreman"
 gem "puma"
 gem "octoface",       path: "engines/octoface"

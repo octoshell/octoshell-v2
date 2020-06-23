@@ -10,7 +10,7 @@ module Api::Admin
 
     # GET /key_parameters
     def index
-      @key_parameters = KeyParameter.all
+      @key_parameters = Api::KeyParameter.all
     end
 
     # GET /key_parameters/1
@@ -19,7 +19,7 @@ module Api::Admin
 
     # GET /key_parameters/new
     def new
-      @key_parameters = KeyParameter.new
+      @key_parameters = Api::KeyParameter.new
     end
 
     # GET /key_parameters/1/edit
@@ -28,7 +28,7 @@ module Api::Admin
 
     # POST /key_parameters
     def create
-      @key_parameters = KeyParameter.new(key_params)
+      @key_parameters = Api::KeyParameter.new(key_params)
 
       if @key_parameters.save
         redirect_to admin_key_parameters_url, notice: 'Param was successfully created.'
@@ -56,7 +56,7 @@ module Api::Admin
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_key_parameters
-        @key_parameters = KeyParameter.find(params[:id])
+        @key_parameters = Api::KeyParameter.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.

@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit
 
   def authorize_admins
+    #logger.error "ADMINS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     authorize!(:access, :admin)
   end
 
@@ -11,6 +12,8 @@ class ApplicationController < ActionController::Base
   end
 
   def not_authorized
+    # logger.error "-------------------------------------------"
+    # logger.error caller(0).join("\n");
     redirect_to main_app.root_path, alert: t("flash.not_authorized")
   end
 
@@ -22,7 +25,10 @@ class ApplicationController < ActionController::Base
   end
 
   def octo_authorize!
-    authorize!(*::Octoface.action_and_subject_by_path(params[:controller]))
+    # logger.warn "AUTH: #{params[:controller]}"
+    ret = authorize!(*::Octoface.action_and_subject_by_path(params[:controller]))
+    # logger.warn "AUTH ret: #{ret}"
+    ret
   end
 
   def admin_redirect_path
@@ -70,11 +76,16 @@ class ApplicationController < ActionController::Base
     notices = Core::Notice.where(sourceable: current_user, category: 1)
     return if notices.count==0
 
-    list=[]
-    notices.each do |note|
-      list << note.message
-      #next if flash[:'alert-badjobs'] && flash[:'alert-badjobs'].include?(text)
-      #job=note.linkable
+  end
+
+  def conditional_show_notice note
+    n = Time.current
+    return if note.show_from && (note.show_from > n)
+    return if note.show_till && (note.show_till < n)
+    return if !note.active.nil? and note.active==false
+    data = Core::Notice.handle note, current_user, params, request
+    if data
+      flash_now_message(data[0],data[1])
     end
     text = "#{notices.count==1 ? t('bad_job') : t('bad_jobs')} #{list.join '; '}"
     flash.now[:'alert-badjobs'] = raw text

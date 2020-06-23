@@ -1,12 +1,12 @@
 div class="well"
-  = link_to t(".new_access_key"), new_admin_access_key_path, class: "btn btn-default"
+  = link_to t("new_access_key"), new_admin_access_key_path, class: "btn btn-default"
 
 table class="table table-striped"
   tr
     th class="col-xs-1"
-      = t('.access_key_key')
+      = t('access_key_key')
     th
-      = t('.access_key_exports')
+      = t('access_key_exports')
     th class="col-xs-1"
       
   - @access_keys.each do |a|
@@ -16,5 +16,5 @@ table class="table table-striped"
       td
         = a.exports.map{|e| link_to e.title, edit_admin_export_path(e)}.join(' | ').html_safe
       td
-        = link_to [:admin, a], method: :delete, data: { confirm: 'Are you sure?' }
+        = link_to [:admin, a], method: :delete, data: { confirm: t('.sure') }
           i class="fa fa-times text-danger"

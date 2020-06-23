@@ -1,21 +1,9 @@
-# Ransack.configure do |c|
-#   #c.sanitize_custom_scope_booleans = false
-# end
-#
-# # module Ransack::Naming
-# #   def model_name
-# #     self.class.model_name
-# #   end
-# # end
-#
-# module SimpleForm::ActionViewExtensions::FormHelper
-#   alias_method :original_simple_form_for, :simple_form_for
-#
-#   def simple_form_for(record, options = {}, &block)
-#     if record.instance_of?(Ransack::Search) && !options.key?(:as)
-#       options[:as] = :q
-#     end
-#
-#     original_simple_form_for(record, options, &block)
-#   end
-# end
+Ransack.configure do |config|
+  config.add_predicate 'exists',
+                        arel_predicate: proc { |v| v ? Ransack::Constants::NOT_EQ_ALL : Ransack::Constants::EQ_ANY },
+                        compounds: false,
+                        type: :boolean,
+                        validator: proc { |v| Ransack::Constants::BOOLEAN_VALUES.include?(v) },
+                        formatter: proc { |v| [nil].freeze }
+  #config.sanitize_custom_scope_booleans = false
+end

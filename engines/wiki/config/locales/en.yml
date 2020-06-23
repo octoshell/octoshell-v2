@@ -10,8 +10,8 @@ en:
       wiki/page: Wiki page
   wiki:
     markdown_help: >-
-      <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>
-      is used for markdown
+      <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> is
+      used for markdown
     pages:
       edit:
         title: Page edition

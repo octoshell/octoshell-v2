@@ -3,9 +3,9 @@ h5 style="color: 666;" #{t('.topic')}: #{@ticket.topic.name_with_parents}
 p
   strong = @ticket.subject
 - if (Support.user_class.support | Support.user_class.superadmins).include?(@user)
-  p = link_to t('.show_request_details'), polymorphic_url([:admin, @ticket], anchor: 'reply')
+  p = link_to t('.show_request_details'), polymorphic_path([:support, :admin, ticket], anchor: 'reply')
 - else
-  p = link_to t('.show_request_details'), polymorphic_url([:admin, @ticket], anchor: 'reply')
+  p = link_to t('.show_request_details'), polymorphic_path([:support, :admin, ticket], anchor: 'reply')
 p
   =t '.errors'
 p

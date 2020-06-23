@@ -715,6 +715,7 @@ Octoshell::Application.routes.draw do
 
   mount RailsEmailPreview::Engine, at: '/admin/emails'
 
+
   # This line mounts Api routes at /api by default.
 
   # This line mounts Wikiplus routes at /wikiplus by default.
@@ -723,6 +724,8 @@ Octoshell::Application.routes.draw do
   # This line mounts Wiki routes at /wiki by default.
   #mount Wiki::Engine, :at => "/wiki"
 
+  # This line mounts Wiki routes at /wiki by default.
+  mount Wiki::Engine, :at => "/wiki"
   # This line mounts Jobstat routes at /jobstat by default.
   # mount Jobstat::Engine, at: "/jobstat"
 

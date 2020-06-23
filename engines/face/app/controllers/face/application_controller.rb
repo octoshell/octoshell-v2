@@ -1,7 +1,7 @@
 module Face
   class ApplicationController < ::ApplicationController
     layout "layouts/application"
-     # helper Face::ApplicationHelper
+    helper Face::ApplicationHelper
 #    before_action :journal_user
 #
 #    def journal_user

@@ -9,6 +9,8 @@ ru:
     next: Продолжить
     save: Сохранить
     send: Отправить
+  buttons:
+    save: Сохранить
   date:
     abbr_day_names:
     - Вс
@@ -19,7 +21,7 @@ ru:
     - Пт
     - Сб
     abbr_month_names:
-    - 
+    -
     - янв.
     - февр.
     - марта
@@ -45,7 +47,7 @@ ru:
       long: "%Y %B %d"
       short: "%b %d"
     month_names:
-    - 
+    -
     - января
     - февраля
     - марта
