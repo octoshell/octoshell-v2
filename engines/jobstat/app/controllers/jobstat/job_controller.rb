@@ -60,15 +60,13 @@ module Jobstat
 
       @agree_flags=Job.agree_flags
       @rules_plus=Job.rules
-      #@filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''} # TODO:FILTERS
-      @filters=[]
+      @filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''} # TODO:FILTERS
 
       # compile full rules descriptions
       @job_extra_data = @job.get_extra_data
       @job_rules_description = @job.get_rules(@current_user)
       @job_detailed_description = @job.get_detailed
       @detailed_types = @job_detailed_description.map{|x| @rules_plus["detailed_analysis_types"][x["type"]]}
-      logger.info @rules_plus["detailed_analysis_types"]
       if @job_extra_data.present?
         @job_rules_description.each do |rule_descr|
           if @job_extra_data.key?(rule_descr['name'])

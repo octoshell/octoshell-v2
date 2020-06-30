@@ -187,7 +187,11 @@ module Jobstat
 
       names = get_primary_names - filters # remove rules wich are filtered out
 
-      priority_filtration(slice(Job.rules['rules'], names)) # sort by groups priority
+      result = priority_filtration(slice(Job.rules['rules'], names)) # sort by groups priority
+      result.each do |type|
+        type["modules"] = type["module_recommendation"].split(",").map {|x| Job.rules['detailed_analysis_types'][x]||{} }.reject{|x| x.empty?}
+      end
+      result
     end
 
 # detailed
@@ -225,8 +229,11 @@ module Jobstat
         end
         result = result.merge(Job.rules['detailed'][type] || {})
       end
-
-      slice(result, get_detailed_names)
+      result = slice(result, get_detailed_names)
+      result.each do |type|
+        type["modules"] = type["module_recommendation"].split(",").map {|x| Job.rules['detailed_analysis_types'][x]||{} }.reject{|x| x.empty?}
+      end
+      result
     end
 
     def get_detailed_by_type(type)
@@ -263,8 +270,8 @@ module Jobstat
       end
     end
 
-    def self.get_filters user
-      return [] # TODO:FILTERS
+    def self.get_filters(user)
+      return []  # TODO:FILTERS
       # user=get_user login
       # user_id=nil
       # if user
@@ -277,7 +284,7 @@ module Jobstat
 
       data=get_data("jobstat:filters:#{user_id}",
         URI("#{Rails.application.config.octo_feedback_host}/api/filters?user=#{user_id}"))
-      #logger.info "get_filters: data=#{data.inspect}"
+      logger.info "get_filters: data=#{data.inspect}"
       data || []
     end
 

@@ -168,6 +168,8 @@ table class="table table-bordered table-striped"
       =t('.supposition')
     th
       =t('.recomendation')
+    th
+      =t('.module_recomendation')
 
   - rules = @job_rules_description
   - if rules.length > 0
@@ -250,6 +252,11 @@ table class="table table-bordered table-striped"
           = cond['supposition']
         td
           = cond['text_recommendation']
+        td
+          div
+          - cond["modules"].each do |module_info|
+            a class="list-group-item list-group-item-action" href= "detailed?analysis_id=#{module_info[:name]}&id=#{@job.id}"
+              div title="#{module_info['type_text']}" = module_info['soft_text']
   - else
     tr
       td colspan="4"
@@ -276,6 +283,8 @@ br
         =t('.supposition')
       th
         =t('.recomendation')
+      th
+        =t('.module_recomendation')
 
     - rules.each do |cond|
       - cond_name=cond['name']
@@ -358,6 +367,11 @@ br
           = cond['supposition']
         td
           = cond['text_recommendation']
+        td
+          div
+          - cond["modules"].each do |module_info|
+            a class="list-group-item list-group-item-action" href= "detailed?analysis_id=#{module_info[:name]}&id=#{@job.id}"
+              div title="#{module_info['type_text']}" = module_info['soft_text']
 
   br
 

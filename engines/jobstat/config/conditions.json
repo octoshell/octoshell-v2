@@ -223,8 +223,8 @@
             "name": "thr_high_ib_mpi",
             "is_enabled": 1,
             "public": 1,
-            "description": "MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s",
-            "comment": "MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s",
+            "description": "MPI IB speed (recv OR xmit) > 1.0 * 10 ** 9 B/s",
+            "comment": "MPI IB speed (recv OR xmit) > 1.0 * 10 ** 9 B/s",
             "src_file": "thresholds.py"
         },
         "thr_low_ib_mpi": {
@@ -232,8 +232,8 @@
             "name": "thr_low_ib_mpi",
             "is_enabled": 1,
             "public": 1,
-            "description": "MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
-            "comment": "MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
+            "description": "MPI IB speed (recv AND xmit)  < 4.0 * 10 ** 6 B/s",
+            "comment": "MPI IB speed (recv AND xmit)  < 4.0 * 10 ** 6 B/s",
             "src_file": "thresholds.py"
         },
         "thr_high_ib_fs": {
@@ -241,8 +241,8 @@
             "name": "thr_high_ib_fs",
             "is_enabled": 1,
             "public": 1,
-            "description": "FS IB speed (recv OR xmit)  > 1 * 10 ** 8 B/s",
-            "comment": "FS IB speed (recv OR xmit)  > 1 * 10 ** 8 B/s",
+            "description": "FS IB speed (recv OR xmit)  > 4.0 * 10 ** 8 B/s",
+            "comment": "FS IB speed (recv OR xmit)  > 4.0 * 10 ** 8 B/s",
             "src_file": "thresholds.py"
         },
         "thr_low_ib_fs": {
@@ -250,8 +250,8 @@
             "name": "thr_low_ib_fs",
             "is_enabled": 1,
             "public": 1,
-            "description": "FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
-            "comment": "FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s",
+            "description": "FS IB speed (recv AND xmit)  < 4.0 * 10 ** 6 B/s",
+            "comment": "FS IB speed (recv AND xmit)  < 4.0 * 10 ** 6 B/s",
             "src_file": "thresholds.py"
         },
         "thr_high_ib": {
@@ -259,8 +259,8 @@
             "name": "thr_high_ib",
             "is_enabled": 1,
             "public": 1,
-            "description": "High MPI and FS IB speed (MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s AND FS IB speed (recv OR xmit)  > 2.5 * 10 ** 8 B/s)",
-            "comment": "High MPI and FS IB speed (MPI IB speed (recv OR xmit) > 2.5 * 10 ** 8 B/s AND FS IB speed (recv OR xmit)  > 2.5 * 10 ** 8 B/s)",
+            "description": "High MPI and FS IB speed (MPI IB speed (recv OR xmit) > 1.0 * 10 ** 9 B/s AND FS IB speed (recv OR xmit)  > 1.0 * 10 ** 9 B/s)",
+            "comment": "High MPI and FS IB speed (MPI IB speed (recv OR xmit) > 1.0 * 10 ** 9 B/s AND FS IB speed (recv OR xmit)  > 1.0 * 10 ** 9 B/s)",
             "src_file": "thresholds.py"
         },
         "thr_low_ib": {
@@ -268,8 +268,8 @@
             "name": "thr_low_ib",
             "is_enabled": 1,
             "public": 1,
-            "description": "Low MPI and FS IB speed (MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s AND FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s)",
-            "comment": "Low MPI and FS IB speed (MPI IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s AND FS IB speed (recv AND xmit)  < 1.0 * 10 ** 6 B/s)",
+            "description": "Low MPI and FS IB speed (MPI IB speed (recv AND xmit)  < 4.0 * 10 ** 6 B/s AND FS IB speed (recv AND xmit)  < 4.0 * 10 ** 6 B/s)",
+            "comment": "Low MPI and FS IB speed (MPI IB speed (recv AND xmit)  < 4.0 * 10 ** 6 B/s AND FS IB speed (recv AND xmit)  < 4.0 * 10 ** 6 B/s)",
             "src_file": "thresholds.py"
         },
         "thr_high_mem_load": {
@@ -400,8 +400,21 @@
         }
     },
     "classes": {
-        "class_high_cpu_at_la": {
+        "class_suspicious": {
             "index": 1,
+            "name": "class_suspicious",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Задача практически не использует вычислительные ресурсы СК",
+            "comment": "Средняя загрузка процессора и средний load average меньше нормальной загрузки при 1 активном процессе на узле; загрузка ГПУ также низкая. ",
+            "src_file": "classes.py",
+            "group": "general_efficiency",
+            "priority": 2,
+            "confidence": 4,
+            "criticalness": 4
+        },
+        "class_high_cpu_at_la": {
+            "index": 2,
             "name": "class_high_cpu_at_la",
             "is_enabled": 1,
             "public": 1,
@@ -414,7 +427,7 @@
             "criticalness": 3
         },
         "class_less_suspicious": {
-            "index": 2,
+            "index": 3,
             "name": "class_less_suspicious",
             "is_enabled": 1,
             "public": 1,
@@ -427,7 +440,7 @@
             "criticalness": 3
         },
         "class_low_cpu_at_la": {
-            "index": 3,
+            "index": 4,
             "name": "class_low_cpu_at_la",
             "is_enabled": 1,
             "public": 1,
@@ -439,47 +452,8 @@
             "confidence": 2,
             "criticalness": 3
         },
-        "class_sc_appropriate": {
-            "index": 4,
-            "name": "class_sc_appropriate",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Задача хорошо использует ресурсы СК",
-            "comment": "Средний load average оптимальный, также задача активно использует MPI.",
-            "src_file": "classes.py",
-            "group": "general_efficiency",
-            "priority": 1,
-            "confidence": 4,
-            "criticalness": 1
-        },
-        "class_suspicious": {
-            "index": 5,
-            "name": "class_suspicious",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Задача практически не использует вычислительные ресурсы СК",
-            "comment": "Средняя загрузка процессора и средний load average меньше нормальной загрузки при 1 активном процессе на узле; загрузка ГПУ также низкая. ",
-            "src_file": "classes.py",
-            "group": "general_efficiency",
-            "priority": 2,
-            "confidence": 4,
-            "criticalness": 4
-        },
-        "class_gpu_hybrid_good": {
-            "index": 6,
-            "name": "class_gpu_hybrid_good",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Задача хорошо испольует и GPU и CPU",
-            "comment": "Загрузка ГПУ и загрузка процессора достаточно высока.",
-            "src_file": "classes.py",
-            "group": "gpu_based",
-            "priority": 1,
-            "confidence": 3,
-            "criticalness": 1
-        },
         "class_gpu_pure": {
-            "index": 7,
+            "index": 5,
             "name": "class_gpu_pure",
             "is_enabled": 1,
             "public": 1,
@@ -491,47 +465,8 @@
             "confidence": 3,
             "criticalness": 3
         },
-        "class_low_ib_high_gpu": {
-            "index": 8,
-            "name": "class_low_ib_high_gpu",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Задача активно испольузет GPU, а узлы мало общаются между собой",
-            "comment": "Задача задействует более 1 узла, загрузка ГПУ высока, но задача слабо использует MPI.",
-            "src_file": "classes.py",
-            "group": "gpu_based",
-            "priority": 1,
-            "confidence": 3,
-            "criticalness": 2
-        },
-        "class_short": {
-            "index": 9,
-            "name": "class_short",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Короткая задача (< 15 минут)",
-            "comment": "Задачи с данным тегом выполняются очень быстро, поэтому не представляют большого интереса для анализа эффективности.",
-            "src_file": "classes.py",
-            "group": "job_duration",
-            "priority": 1,
-            "confidence": 5,
-            "criticalness": 1
-        },
-        "class_super_short": {
-            "index": 10,
-            "name": "class_super_short",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Очень короткая задача (< 6 минут)",
-            "comment": "Задачи с данным тегом не могут быть проанализированы, поскольку для них не собираются данные системного монтиоринга.",
-            "src_file": "classes.py",
-            "group": "job_duration",
-            "priority": 2,
-            "confidence": 5,
-            "criticalness": 1
-        },
         "class_bad_locality": {
-            "index": 11,
+            "index": 6,
             "name": "class_bad_locality",
             "is_enabled": 1,
             "public": 1,
@@ -543,34 +478,47 @@
             "confidence": 3,
             "criticalness": 3
         },
-        "class_data_intensive": {
-            "index": 12,
-            "name": "class_data_intensive",
+        "class_big_job_not_comm": {
+            "index": 7,
+            "name": "class_big_job_not_comm",
             "is_enabled": 1,
             "public": 1,
-            "description": "Задача активно работает с памятью",
-            "comment": "Интенсивность выполнения операций чтения или записи высока.",
+            "description": "Задача занимает много узлов, но MPI коммуникаций совсем мало.",
+            "comment": "Задача занимает много узлов, но вычисления на узлах практически независимы.",
             "src_file": "classes.py",
-            "group": "memory_based",
-            "priority": 1,
-            "confidence": 4,
-            "criticalness": 1
+            "group": "MPI_based",
+            "priority": 2,
+            "confidence": 3,
+            "criticalness": 3
         },
-        "class_good_locality": {
-            "index": 13,
-            "name": "class_good_locality",
+        "class_ml_activity_decrease": {
+            "index": 8,
+            "name": "class_ml_activity_decrease",
             "is_enabled": 1,
             "public": 1,
-            "description": "Задача имеет высокую локальность обращений в память",
-            "comment": "Соотношение интенсивности (load+store) операций к L1 кэш-промахам, а также соотношение L1 к L3 кэш-промахам достаточно большое.",
+            "description": "Постепенное снижение активности работы задачи",
+            "comment": "Сработал тип Дениса activity_decrease.",
             "src_file": "classes.py",
-            "group": "memory_based",
+            "group": "general_properties",
             "priority": 1,
             "confidence": 3,
-            "criticalness": 1
+            "criticalness": 3
+        },
+        "class_low_ib_high_gpu": {
+            "index": 9,
+            "name": "class_low_ib_high_gpu",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Задача активно испольузет GPU, а узлы мало общаются между собой",
+            "comment": "Задача задействует более 1 узла, загрузка ГПУ высока, но задача слабо использует MPI.",
+            "src_file": "classes.py",
+            "group": "gpu_based",
+            "priority": 1,
+            "confidence": 3,
+            "criticalness": 2
         },
         "class_low_avg_mem_usage": {
-            "index": 14,
+            "index": 10,
             "name": "class_low_avg_mem_usage",
             "is_enabled": 1,
             "public": 1,
@@ -583,7 +531,7 @@
             "criticalness": 2
         },
         "class_weird_locality": {
-            "index": 15,
+            "index": 11,
             "name": "class_weird_locality",
             "is_enabled": 1,
             "public": 1,
@@ -595,21 +543,8 @@
             "confidence": 3,
             "criticalness": 2
         },
-        "class_comm_data": {
-            "index": 16,
-            "name": "class_comm_data",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "В задаче много MPI коммуникаций",
-            "comment": "Задача активно использует MPI.",
-            "src_file": "classes.py",
-            "group": "MPI_based",
-            "priority": 1,
-            "confidence": 4,
-            "criticalness": 1
-        },
         "class_comm_packets": {
-            "index": 17,
+            "index": 12,
             "name": "class_comm_packets",
             "is_enabled": 1,
             "public": 1,
@@ -622,7 +557,7 @@
             "criticalness": 2
         },
         "class_not_comm": {
-            "index": 18,
+            "index": 13,
             "name": "class_not_comm",
             "is_enabled": 1,
             "public": 1,
@@ -634,21 +569,8 @@
             "confidence": 3,
             "criticalness": 2
         },
-        "class_big_job_not_comm": {
-            "index": 19,
-            "name": "class_big_job_not_comm",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Задача занимает много узлов, но MPI коммуникаций совсем мало.",
-            "comment": "Задача занимает много узлов, но вычисления на узлах практически независимы.",
-            "src_file": "classes.py",
-            "group": "MPI_based",
-            "priority": 2,
-            "confidence": 3,
-            "criticalness": 3
-        },
         "class_serial": {
-            "index": 20,
+            "index": 14,
             "name": "class_serial",
             "is_enabled": 1,
             "public": 1,
@@ -660,8 +582,99 @@
             "confidence": 4,
             "criticalness": 2
         },
-        "class_single": {
+        "class_sc_appropriate": {
+            "index": 15,
+            "name": "class_sc_appropriate",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Задача хорошо использует ресурсы СК",
+            "comment": "Средний load average оптимальный, также задача активно использует MPI.",
+            "src_file": "classes.py",
+            "group": "general_efficiency",
+            "priority": 1,
+            "confidence": 4,
+            "criticalness": 1
+        },
+        "class_gpu_hybrid_good": {
+            "index": 16,
+            "name": "class_gpu_hybrid_good",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Задача хорошо испольует и GPU и CPU",
+            "comment": "Загрузка ГПУ и загрузка процессора достаточно высока.",
+            "src_file": "classes.py",
+            "group": "gpu_based",
+            "priority": 1,
+            "confidence": 3,
+            "criticalness": 1
+        },
+        "class_short": {
+            "index": 17,
+            "name": "class_short",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Короткая задача (< 15 минут)",
+            "comment": "Задачи с данным тегом выполняются очень быстро, поэтому не представляют большого интереса для анализа эффективности.",
+            "src_file": "classes.py",
+            "group": "job_duration",
+            "priority": 1,
+            "confidence": 5,
+            "criticalness": 1
+        },
+        "class_super_short": {
+            "index": 18,
+            "name": "class_super_short",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Очень короткая задача (< 6 минут)",
+            "comment": "Задачи с данным тегом не могут быть проанализированы, поскольку для них не собираются данные системного монтиоринга.",
+            "src_file": "classes.py",
+            "group": "job_duration",
+            "priority": 2,
+            "confidence": 5,
+            "criticalness": 1
+        },
+        "class_data_intensive": {
+            "index": 19,
+            "name": "class_data_intensive",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Задача активно работает с памятью",
+            "comment": "Интенсивность выполнения операций чтения или записи высока.",
+            "src_file": "classes.py",
+            "group": "memory_based",
+            "priority": 1,
+            "confidence": 4,
+            "criticalness": 1
+        },
+        "class_good_locality": {
+            "index": 20,
+            "name": "class_good_locality",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Задача имеет высокую локальность обращений в память",
+            "comment": "Соотношение интенсивности (load+store) операций к L1 кэш-промахам, а также соотношение L1 к L3 кэш-промахам достаточно большое.",
+            "src_file": "classes.py",
+            "group": "memory_based",
+            "priority": 1,
+            "confidence": 3,
+            "criticalness": 1
+        },
+        "class_comm_data": {
             "index": 21,
+            "name": "class_comm_data",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "В задаче много MPI коммуникаций",
+            "comment": "Задача активно использует MPI.",
+            "src_file": "classes.py",
+            "group": "MPI_based",
+            "priority": 1,
+            "confidence": 4,
+            "criticalness": 1
+        },
+        "class_single": {
+            "index": 22,
             "name": "class_single",
             "is_enabled": 1,
             "public": 1,
@@ -674,7 +687,7 @@
             "criticalness": 1
         },
         "class_ml_initial_data_read": {
-            "index": 22,
+            "index": 23,
             "name": "class_ml_initial_data_read",
             "is_enabled": 1,
             "public": 1,
@@ -687,7 +700,7 @@
             "criticalness": 1
         },
         "class_ml_final_data_write": {
-            "index": 23,
+            "index": 24,
             "name": "class_ml_final_data_write",
             "is_enabled": 0,
             "public": 0,
@@ -698,19 +711,6 @@
             "priority": 1,
             "confidence": 3,
             "criticalness": 1
-        },
-        "class_ml_activity_decrease": {
-            "index": 24,
-            "name": "class_ml_activity_decrease",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Постепенное снижение активности работы задачи",
-            "comment": "Сработал тип Дениса activity_decrease.",
-            "src_file": "classes.py",
-            "group": "general_properties",
-            "priority": 1,
-            "confidence": 3,
-            "criticalness": 3
         }
     },
     "rules": {
@@ -758,7 +758,7 @@
             "priority": 1,
             "confidence": 4,
             "criticalness": 5,
-            "supposition": "Задача зависла.",
+            "supposition": "На данном этапе определить причины зависания задачи не представляется возможным.",
             "text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его.",
             "module_recommendation": "---"
         },
@@ -775,8 +775,8 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Разбалансировка нагрузки между узлами.",
-            "text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ последовательных программ (если нет MPI);3) Анализ MPI -> Профилировка (если MPI есть).",
-            "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling"
+            "text_recommendation": "1) Анализ динамики выполнения приложения; 2) Общий анализ последовательных программ; 3) Анализ MPI -> Профилировка.",
+            "module_recommendation": "execution_dynamics,general-aps,profiling-mpip"
         },
         "rule_node_disbalance": {
             "index": 5,
@@ -792,7 +792,7 @@
             "criticalness": 3,
             "supposition": "Разбалансировка нагрузки между узлами.",
             "text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ последовательных программ (если нет MPI);3) Анализ MPI -> Профилировка (если MPI есть).",
-            "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling"
+            "module_recommendation": "execution_dynamics,general-aps,profiling-mpip"
         },
         "rule_disbalance_cpu_la": {
             "index": 6,
@@ -808,7 +808,7 @@
             "criticalness": 3,
             "supposition": "Разбалансировка нагрузки внутри узла либо между узлами.",
             "text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ последовательных программ (если нет MPI);3) Анализ MPI -> Профилировка (если MPI есть).",
-            "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling"
+            "module_recommendation": "execution_dynamics,general-aps,profiling-mpip"
         },
         "rule_mem_disbalance": {
             "index": 7,
@@ -824,7 +824,7 @@
             "criticalness": 3,
             "supposition": "Такой заметный дисбаланс приводит к снижению эффективности работы программы, поскольку одним узлам приходится ждать другие.",
             "text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ последовательных программ; 3) Анализ работы с памятью -> Эффективность.",
-            "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling,memory_efficiency"
+            "module_recommendation": "execution_dynamics,general-aps,mem_eff-valgrind"
         },
         "rule_low_ipc": {
             "index": 8,
@@ -840,7 +840,7 @@
             "criticalness": 3,
             "supposition": "Программа без видимых внешних причин работает недостаточно эффективно. На данном этапе недостаточно информации для определения причин данной неэффективности.",
             "text_recommendation": "Общий анализ последовательных программ",
-            "module_recommendation": "general_serial_analysis"
+            "module_recommendation": "general-aps"
         },
         "rule_ml_cold_start": {
             "index": 9,
@@ -872,7 +872,7 @@
             "criticalness": 3,
             "supposition": "Программа без видимых внешних причин работает недостаточно эффективно, по сравнению с остальными задачами на данном суперкомпьютере. На данном этапе недостаточно информации для определения причин данной неэффективности.",
             "text_recommendation": "Общий анализ последовательных программ",
-            "module_recommendation": "general_serial_analysis"
+            "module_recommendation": "general-aps"
         },
         "rule_ml_low_job_activity": {
             "index": 11,
@@ -886,9 +886,9 @@
             "priority": "",
             "confidence": "",
             "criticalness": "",
-            "supposition": "",
-            "text_recommendation": "",
-            "module_recommendation": ""
+            "supposition": "Вероятно, только очень небольшая доля процессов активно работает, остальные практически все время простаивают. Вероятно, требуется уменьшить число процессов либо оптимизировать распределение вычислительной нагрузки между узлами.",
+            "text_recommendation": "1) Анализ динамики выполнения приложения; 2) Анализ MPI -> Профилировка.",
+            "module_recommendation": "execution_dynamics,profiling-mpip"
         },
         "rule_high_la": {
             "index": 12,
@@ -904,7 +904,7 @@
             "criticalness": 3,
             "supposition": "Накладные расходны на организацию работы такого большого количества потоков могут быть существенными.",
             "text_recommendation": "Анализ многопоточной программы ",
-            "module_recommendation": "thread_analysis"
+            "module_recommendation": "thread-vtune"
         },
         "rule_ml_stall": {
             "index": 13,
@@ -968,7 +968,7 @@
             "criticalness": 3,
             "supposition": "Вероятно, некорректное использование MPI.",
             "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "mpi_profiling"
+            "module_recommendation": "profiling-mpip"
         },
         "rule_irq_iowait": {
             "index": 17,
@@ -1016,7 +1016,7 @@
             "criticalness": 3,
             "supposition": "Вероятно, работа с MPI организована неэффективно.",
             "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "mpi_profiling"
+            "module_recommendation": "profiling-mpip"
         },
         "rule_mpi_high_system": {
             "index": 20,
@@ -1032,7 +1032,7 @@
             "criticalness": 3,
             "supposition": "Вероятно, работа с MPI сетью или сетью для ФС организована неэффективно.",
             "text_recommendation": "1) Анализ MPI программ -> Профилировка (если проблема с MPI сетью);2) Анализ ввода/вывода (если проблема с сетью для ФС).",
-            "module_recommendation": "mpi_profiling,io_analysis"
+            "module_recommendation": "profiling-mpip,io-vtune"
         },
         "rule_mpi_bad_locality": {
             "index": 21,
@@ -1048,7 +1048,7 @@
             "criticalness": 3,
             "supposition": "При запуске задачи менеджером ресурсов был выбран неудачный набор узлов. Рекомендуется при необходимости явно указывать узлы, на которых будет производиться запуск проргаммы, либо пытаться оптимизировать работу с MPI.",
             "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "mpi_profiling"
+            "module_recommendation": "profiling-mpip"
         },
         "rule_mpi_issues": {
             "index": 22,
@@ -1064,7 +1064,7 @@
             "criticalness": 4,
             "supposition": "Выполнение MPI операций, вероятно, занимает слишком много времени, требуется оптимизация.",
             "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "mpi_profiling"
+            "module_recommendation": "profiling-mpip"
         },
         "rule_mpi_small_packets": {
             "index": 23,
@@ -1079,8 +1079,8 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Накладные расходы на передачу MPI сообщений могут быть существенными.",
-            "text_recommendation": "Анализ MPI программ -> Профилировка (если проблема с MPI сетью)",
-            "module_recommendation": "mpi_profiling"
+            "text_recommendation": "Анализ MPI программ -> Профилировка",
+            "module_recommendation": "profiling-mpip"
         },
         "rule_fs_small_packets": {
             "index": 24,
@@ -1094,9 +1094,9 @@
             "priority": 1,
             "confidence": 2,
             "criticalness": 3,
-            "supposition": "Накладные расходы на передачу MPI сообщений могут быть существенными.",
-            "text_recommendation": "Анализ ввода/вывода (если проблема с сетью для ФС).",
-            "module_recommendation": "io_analysis"
+            "supposition": "Накладные расходы на передачу данных для чтения/записи в файловую систему могут быть существенными.",
+            "text_recommendation": "Анализ ввода/вывода",
+            "module_recommendation": "io-vtune"
         },
         "rule_mpi_packets": {
             "index": 25,
@@ -1112,7 +1112,7 @@
             "criticalness": 4,
             "supposition": "Накладные расходы на передачу MPI сообщений могут быть существенными.",
             "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "mpi_profiling"
+            "module_recommendation": "profiling-mpip"
         },
         "rule_one_active_process": {
             "index": 26,
@@ -1144,7 +1144,7 @@
             "criticalness": 4,
             "supposition": "Для работы на суперкомпьютере стоит распараллелить данную задачу.",
             "text_recommendation": "Общий анализ последовательных программ ",
-            "module_recommendation": "general_serial_analysis"
+            "module_recommendation": "general-aps"
         },
         "rule_not_effective": {
             "index": 28,
@@ -1160,7 +1160,7 @@
             "criticalness": 4,
             "supposition": "Причина низкой эффективности не обнаружена, требуется общий анализ.",
             "text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ последовательных программ (если нет MPI);3) Анализ MPI -> Профилировка (если MPI есть).",
-            "module_recommendation": "execution_dynamics,general_serial_analysis,mpi_profiling"
+            "module_recommendation": "execution_dynamics,general-aps,profiling-mpip"
         },
         "rule_bad_mem": {
             "index": 29,
@@ -1176,7 +1176,7 @@
             "criticalness": 4,
             "supposition": "Работы с памятью, вероятно, занимает слишком много времени, требуется оптимизация.",
             "text_recommendation": "Анализ работы с памятью -> Эффективность",
-            "module_recommendation": "memory_efficiency"
+            "module_recommendation": "mem_eff-valgrind"
         },
         "rule_bad_locality": {
             "index": 30,
@@ -1192,7 +1192,7 @@
             "criticalness": 4,
             "supposition": "Работы с памятью, вероятно, организована неэффективно, требуется оптимизация.",
             "text_recommendation": "Анализ работы с памятью -> Эффективность",
-            "module_recommendation": "memory_efficiency"
+            "module_recommendation": "mem_eff-valgrind"
         },
         "rule_locality": {
             "index": 31,
@@ -1208,7 +1208,7 @@
             "criticalness": 3,
             "supposition": "Работы с памятью, вероятно, организована неэффективно, требуется оптимизация.",
             "text_recommendation": "Анализ работы с памятью -> Эффективность",
-            "module_recommendation": "memory_efficiency"
+            "module_recommendation": "mem_eff-valgrind"
         },
         "rule_cache": {
             "index": 32,
@@ -1224,7 +1224,7 @@
             "criticalness": 4,
             "supposition": "Работы с памятью, вероятно, занимает слишком много времени и организована неэффективно, требуется оптимизация.",
             "text_recommendation": "Анализ работы с памятью -> Эффективность",
-            "module_recommendation": "memory_efficiency"
+            "module_recommendation": "mem_eff-valgrind"
         },
         "rule_interleave": {
             "index": 33,
@@ -1240,7 +1240,7 @@
             "criticalness": 4,
             "supposition": "Работы с памятью занимает слишком много времени, но организована эффективно. Можно попробовать совмещать обработку данных с остальной работой в задаче (передачей данных или выполнением вычислений).",
             "text_recommendation": "1) Анализ работы с памятью -> Эффективность»;2) Статический анализ.",
-            "module_recommendation": "memory_efficiency,static_analysis"
+            "module_recommendation": "mem_eff-valgrind,static_analysis"
         },
         "rule_wrong_partition_io": {
             "index": 34,
@@ -1273,237 +1273,161 @@
             "supposition": "Неправильно выбран раздел для задачи.",
             "text_recommendation": "Рекомендуется сменить раздел.",
             "module_recommendation": "---"
+        },
+        "rule_mpi_high_OS_jitter": {
+            "index": 36,
+            "name": "rule_mpi_high_OS_jitter",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Системные вызовы занимают слишком много времени, при этом интенсивность использования сети низкая.",
+            "comment": "thr_low_ib AND thr_high_cpu_system",
+            "src_file": "rules_integral_based.py",
+            "group": "incorrect_behavior",
+            "priority": 1,
+            "confidence": 1,
+            "criticalness": 1,
+            "supposition": "Вероятно, шумы ОС слишком велики.",
+            "text_recommendation": "Рекомендуется проверить корректность запуска задачи. Если запуск корректен, стоит сообщить администратору системы.",
+            "module_recommendation": "---"
         }
     },
     "detailed_analysis_types": {
-        "dynamics-jd": {
-            "index": 1,
-            "name": "dynamics-jd",
-            "type_text": "Анализ динамики выполнения приложения",
-            "type_name": "dynamics",
-            "soft_text": "JobDigest",
-            "soft_name": "jd",
-            "manual": "1. JobDigest\n2. ???\n3. Profit!"
-        },
         "monitoring-dimmon": {
-            "index": 2,
+            "index": 1,
             "name": "monitoring-dimmon",
             "type_text": "Более детальный мониторинг",
             "type_name": "monitoring",
             "soft_text": "DimMon",
             "soft_name": "dimmon",
-            "manual": "1. DimMon\n2. ???\n3. Profit!"
+            "manual": "TODO: Добавить в мониторинг поддержку ключа для регулирования частоты сбора."
         },
         "profiling-mpip": {
-            "index": 3,
+            "index": 2,
             "name": "profiling-mpip",
             "type_text": "Анализ MPI-программ -> Профилировка",
             "type_name": "profiling",
             "soft_text": "mpiP",
             "soft_name": "mpip",
-            "manual": "1. (Опционально) Скомпилировать программу, указав ключ для сбора дебаг информации (обычно -g).\n2. Запустить программу с предзагрузкой библиотеки анализа \"LD_PRELOAD=/opt/software/mpip/libmpiP.so sbatch ... <стандартная строка запуска>\""
-        },
-        "profiling-scalasca": {
-            "index": 4,
-            "name": "profiling-scalasca",
-            "type_text": "Анализ MPI-программ -> Профилировка",
-            "type_name": "profiling",
-            "soft_text": "Scalasca",
-            "soft_name": "scalasca",
-            "manual": "1. Scalasca\n2. ???\n3. Profit!"
-        },
-        "tracing-vampir": {
-            "index": 5,
-            "name": "tracing-vampir",
-            "type_text": "Анализ MPI-программ -> Трассировка",
-            "type_name": "tracing",
-            "soft_text": "Vampir",
-            "soft_name": "vampir",
-            "manual": "1. Vampir\n2. ???\n3. Profit!"
-        },
-        "tracing-scalasca": {
-            "index": 6,
-            "name": "tracing-scalasca",
-            "type_text": "Анализ MPI-программ -> Трассировка",
-            "type_name": "tracing",
-            "soft_text": "Scalasca",
-            "soft_name": "scalasca",
-            "manual": "1. Scalasca\n2. ???\n3. Profit!"
+            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить модуль Slurm:\n    module add slurm\n3. (Опционально) Скомпилировать программу, указав ключ для сбора дебаг информации (обычно -g).\n4. Запустить программу с предзагрузкой библиотеки анализа:\n    LD_PRELOAD=/opt/software/mpip/libmpiP.so sbatch <slurm параметры> <вызов программы>\n5. В папке появится текстовый файл с результатами работы mpiP \"<имя_исполняемого файла>.<число процессов>.<набор цифр>.mpiP\", можно посмотреть его в обычном редакторе.\n6. В конце необходимо выполнить на кластере команду, указав имя выходного файла анализатора и ID задачи:\n    /opt/analysis/upload -i '[\"profiling-mpip\",\"lomonosov-2\",1108573,0]' -f <ENTER_OUTPUT_FILENAME> -j <ENTER_JOB_ID>\n\nПодробную инструкцию по анализу полученных результатов mpiP можно прочитать здесь: http://mpip.sourceforge.net/#mpiP_Output"
         },
         "tracing-itac": {
-            "index": 7,
+            "index": 3,
             "name": "tracing-itac",
             "type_text": "Анализ MPI-программ -> Трассировка",
             "type_name": "tracing",
-            "soft_text": "ITAC",
+            "soft_text": "Intel ITAC",
             "soft_name": "itac",
-            "manual": "1. ITAC\n2. ???\n3. Profit!"
-        },
-        "thread-ompp": {
-            "index": 8,
-            "name": "thread-ompp",
-            "type_text": "Анализ многопоточной программы",
-            "type_name": "thread",
-            "soft_text": "ompP",
-            "soft_name": "ompp",
-            "manual": "1. ompP\n2. ???\n3. Profit!"
+            "manual": "1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды (да, команду source надо выполнить дважды):\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n    module add openmpi\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n3. Скомпилировать свою программу с mpicc/mpicxx\n4. создать файл run.sbatch с содержимым(без кавычек):\n    #!/bin/bash\n    mpirun -trace <вызов программы>\n5. Запустить программу:\n    sbatch <slurm параметры> run.sbatch\n6. В папке появится трасса запуска, можно посмотреть её, выполнив:\n    traceanalyzer <имя трассы>.stf\n\nПодробную инструкцию по работе с Intel ITAC и анализу полученных результатов можно прочитать здесь: https://software.intel.com/en-us/ita-user-and-reference-guide"
         },
         "thread-vtune": {
-            "index": 9,
+            "index": 4,
             "name": "thread-vtune",
             "type_text": "Анализ многопоточной программы",
             "type_name": "thread",
-            "soft_text": "VTune",
+            "soft_text": "VTune Amplifier",
             "soft_name": "vtune",
-            "manual": "1. Vtune\n2. ???\n3. Profit!"
+            "manual": "В случае MPI программы:\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n    module add openmpi\n3. Скомпилировать свою программу с mpicc/mpicxx (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch <slurm параметры> ompi amplxe-cl -r vtune-result -collect threading -- <вызов программы>\n5. Появится папка вида vtune-result.n48627.10p.parallel.ru, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n  5в. Изучить выдачу Summary, при необходимости посмотреть интересующие детали.\n\nВ случае OpenMP программы (без использования MPI):\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n3. Скомпилировать свою программу с icc (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch <slurm параметры> run amplxe-cl -r vtune-result -collect threading -- <вызов программы>\n5. Появится папка вида vtune-result, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n  5в. Изучить выдачу Summary, при необходимости посмотреть интересующие детали.\n\nПодробную инструкцию по анализу эффективности организации OpenMP потоков в программах с помощью Intel VTune можно прочитать здесь: https://software.intel.com/en-us/vtune-cookbook-openmp-code-analysis-method"
         },
         "mem_eff-valgrind": {
-            "index": 10,
+            "index": 5,
             "name": "mem_eff-valgrind",
             "type_text": "Анализ работы с памятью -> Эффективность",
             "type_name": "mem_eff",
-            "soft_text": "Valgrind",
+            "soft_text": "Valgrind (Callgrind)",
             "soft_name": "valgrind",
-            "manual": "1. Valgrind\n2. ???\n3. Profit!"
-        },
-        "mem_eff-vtune": {
-            "index": 11,
-            "name": "mem_eff-vtune",
-            "type_text": "Анализ работы с памятью -> Эффективность",
-            "type_name": "mem_eff",
-            "soft_text": "VTune",
-            "soft_name": "vtune",
-            "manual": "1. Vtune\n2. ???\n3. Profit!"
+            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm valgrind/3.12.0\n3. Запустить анализируемую программу с помощью команды:\n    sbatch <slurm параметры> valgrind --tool=callgrind --cacheuse=yes --trace-children=yes --callgrind-out-file=\"callgrind_perf_%p\" <вызов программы>\n4. В папке появятся файлы \"valgrind_perf_%p\", по одному на каждый процесс.\n5. Запустить команду:\n    callgrind_annotate callgrind_perf_<выбранный процесс> > callgrind_output\n6. Файл callgrind_output является текстовым, можно посмотреть его в обычном редакторе.\n\nПодробную инструкцию по анализу полученных результатов Callgrind можно прочитать здесь: https://valgrind.org/docs/manual/cg-manual.html#cg-manual.the-output-preamble (Callgrind использует в работе Cachegrind, поэтому приведена ссылка на его инструкцию)"
         },
         "mem_corr-valgrind": {
-            "index": 12,
+            "index": 6,
             "name": "mem_corr-valgrind",
             "type_text": "Анализ работы с памятью -> Корректность",
             "type_name": "mem_corr",
-            "soft_text": "Valgrind",
+            "soft_text": "Valgrind (Memcheck)",
             "soft_name": "valgrind",
-            "manual": "1. Valgrind\n2. ???\n3. Profit!"
-        },
-        "mem_corr-inspector": {
-            "index": 13,
-            "name": "mem_corr-inspector",
-            "type_text": "Анализ работы с памятью -> Корректность",
-            "type_name": "mem_corr",
-            "soft_text": "Intel Inspector",
-            "soft_name": "inspector",
-            "manual": "1. Inspector\n2. ???\n3. Profit!"
-        },
-        "serial-vtune": {
-            "index": 14,
-            "name": "serial-vtune",
-            "type_text": "Общий анализ последовательных программ",
-            "type_name": "serial",
-            "soft_text": "VTune",
-            "soft_name": "vtune",
-            "manual": "1. Vtune\n2. ???\n3. Profit!"
+            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm valgrind/3.12.0\n3. Запустить анализируемую программу с помощью команды:\n    sbatch <slurm параметры> valgrind --log-file=\"valgrind_check_%p\"  --trace-children=yes --tool=memcheck --leak-check=full --show-leak-kinds=all <вызов программы>\n4. В папке появятся файлы \"valgrind_check_%p\", по одному на каждый процесс, можно посмотреть их в обычном редакторе.\n\nПодробную инструкцию по анализу полученных результатов Memcheck можно прочитать здесь: https://www.valgrind.org/docs/manual/mc-manual.html#mc-manual.errormsgs"
         },
         "io-vtune": {
-            "index": 15,
+            "index": 7,
             "name": "io-vtune",
             "type_text": "Анализ ввода/вывода",
             "type_name": "io",
-            "soft_text": "VTune",
+            "soft_text": "VTune Amplifier",
             "soft_name": "vtune",
-            "manual": "1. Vtune\n2. ???\n3. Profit!"
-        },
-        "network-jd": {
-            "index": 16,
-            "name": "network-jd",
-            "type_text": "Анализ сетевой активности",
-            "type_name": "network",
-            "soft_text": "JobDigest",
-            "soft_name": "jd",
-            "manual": "1. JobDigest\n2. ???\n3. Profit!"
-        },
-        "low_level-papi": {
-            "index": 17,
-            "name": "low_level-papi",
-            "type_text": "Низкоуровневый анализ",
-            "type_name": "low_level",
-            "soft_text": "PAPI",
-            "soft_name": "papi",
-            "manual": "1. PAPI\n2. ???\n3. Profit!"
+            "manual": "В случае MPI программы:\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n    module add openmpi\n3. Скомпилировать свою программу с mpicc/mpicxx (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch -C nomonitoring <slurm параметры> ompi amplxe-cl -r vtune-result -collect io -knob kernel-stack=false  -- <вызов программы>\n5. Появится папка вида vtune-result.n48627.10p.parallel.ru, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n\nВ случае последовательной/OpenMP программы:\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n3. Скомпилировать свою программу с icc (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch -C nomonitoring <slurm параметры> run amplxe-cl -r vtune-result -collect io -knob kernel-stack=false -- <вызов программы>\n5. Появится папка вида vtune-result, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n\nПодробную инструкцию по анализу I/O в Intel VTune можно прочитать здесь: https://software.intel.com/en-us/vtune-help-disk-input-and-output-analysis"
         },
         "low_level-vtune": {
-            "index": 18,
+            "index": 8,
             "name": "low_level-vtune",
             "type_text": "Низкоуровневый анализ",
             "type_name": "low_level",
-            "soft_text": "VTune",
+            "soft_text": "VTune Amplifier",
             "soft_name": "vtune",
-            "manual": "1. Vtune\n2. ???\n3. Profit!"
+            "manual": "В случае MPI программы:\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n    module add openmpi\n3. Скомпилировать свою программу с mpicc/mpicxx (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch -C nomonitoring <slurm параметры> ompi amplxe-cl -r vtune-result -collect hpc-performance -- <вызов программы>\n5. Появится папка вида vtune-result.n48627.10p.parallel.ru, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n  5в. Выбрать вкладку \"Microarchitecture exploration\" наверху в появившемся окне\n\nВ случае последовательной/OpenMP программы:\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n3. Скомпилировать свою программу с icc (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch -C nomonitoring <slurm параметры> run amplxe-cl -r vtune-result -collect hpc-performance -- <вызов программы>\n5. Появится папка вида vtune-result, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n  5в. Выбрать вкладку \"Microarchitecture exploration\" наверху в появившемся окне\n\n\nПодробную инструкцию по работе с Top-down подходом в Intel VTune можно прочитать здесь: https://software.intel.com/en-us/vtune-cookbook-top-down-microarchitecture-analysis-method"
         },
         "gpu-nvprof_basic": {
-            "index": 19,
+            "index": 9,
             "name": "gpu-nvprof_basic",
-            "type_text": "Анализ работы с ускорителями",
+            "type_text": "Анализ работы с ускорителями, часть 1",
             "type_name": "gpu",
             "soft_text": "nvprof",
             "soft_name": "nvprof_basic",
-            "manual": "1. NSIGHT\n2. ???\n3. Profit!"
+            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm cuda\n3. Запустить программу с помощью nvprof:\n    sbatch ... nvprof --csv --log-file \"nvprof_%p\" <вызов программы>\n4. Запустить команду для объединения файлов выдачи (убедитесь, что не будут использованы файлы от предыдущих запусков):\n    cat nvprof_*  > nvprof_all\n(доп) Полную инструкцию по анализу приложений с помощью nvprof можно прочитать здесь: https://docs.nvidia.com/cuda/profiler-users-guide/index.html#nvprof-overview"
         },
         "gpu-nvprof": {
-            "index": 20,
+            "index": 10,
             "name": "gpu-nvprof",
-            "type_text": "Анализ работы с ускорителями",
+            "type_text": "Анализ работы с ускорителями, часть 2",
             "type_name": "gpu",
             "soft_text": "nvprof",
             "soft_name": "nvprof",
-            "manual": "1. NSIGHT\n2. ???\n3. Profit!"
+            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm cuda\n3. Запустить программу с помощью nvprof:\n    sbatch ... nvprof --log-file \"nvprof_%p\" --csv --metrics sm_efficiency,sm_activity,executed_ipc,ipc,achieved_occupancy,dram_utilization,l2_utilization,flop_sp_efficiency,flop_dp_efficiency,gst_efficiency,gld_efficiency,shared_efficiency,shared_utilization,warp_execution_efficiency <вызов программы>\n4. Запустить команду для объединения файлов выдачи (убедитесь, что не будут использованы файлы от предыдущих запусков):\n    cat nvprof_*  > nvprof_all\n(доп) Полную инструкцию по анализу приложений с помощью nvprof можно прочитать здесь: https://docs.nvidia.com/cuda/profiler-users-guide/index.html#nvprof-overview"
         },
-        "gpu-nsight": {
-            "index": 21,
-            "name": "gpu-nsight",
-            "type_text": "Анализ работы с ускорителями",
-            "type_name": "gpu",
-            "soft_text": "nsight",
-            "soft_name": "nsight",
-            "manual": "1. NSIGHT\n2. ???\n3. Profit!"
-        },
-        "scalability-???": {
-            "index": 22,
-            "name": "scalability-???",
-            "type_text": "Анализ масштабируемости",
-            "type_name": "scalability",
-            "soft_text": "???",
-            "soft_name": "???",
-            "manual": "1. ???\n2. ???\n3. Profit!"
-        },
-        "series-???": {
-            "index": 23,
-            "name": "series-???",
-            "type_text": "Анализ серии запусков",
-            "type_name": "series",
-            "soft_text": "???",
-            "soft_name": "???",
-            "manual": "1. ???\n2. ???\n3. Profit!"
-        },
-        "prediction-valgrind": {
-            "index": 24,
-            "name": "prediction-valgrind",
-            "type_text": "Прогноз поведения программы",
-            "type_name": "prediction",
-            "soft_text": "Valgrind",
-            "soft_name": "valgrind",
-            "manual": "1. Valgrind\n2. ???\n3. Profit!"
-        },
-        "prediction-threadspotter": {
-            "index": 25,
-            "name": "prediction-threadspotter",
-            "type_text": "Прогноз поведения программы",
-            "type_name": "prediction",
-            "soft_text": "Threadspotter",
-            "soft_name": "threadspotter",
-            "manual": "1. Threadspotter\n2. ???\n3. Profit!"
+        "general-aps": {
+            "index": 11,
+            "name": "general-aps",
+            "type_text": "Общий анализ программы",
+            "type_name": "general",
+            "soft_text": "Intel APS",
+            "soft_name": "aps",
+            "manual": "В случае MPI программы:\n1. Зайти на Ломоносов-2\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/vtune2019/performance_snapshots_2019.3.0.590814/apsvars.sh\n    module add openmpi\n    export APS_DIR=`mktemp -d -p . -t 'aps-result-XXXX'`\n3. Запустить задачу, используя aps перед вызовом программы:\n    sbatch -C nomonitoring <slurm параметры> ompi aps -r=$APS_DIR -c=all <вызов программы>\n4. Выполнить команды:\n    aps --report=$APS_DIR > ${APS_DIR}_report\n5. В текущей папке будет создан файл вида aps_report_20200402_140923.html, можно скачать его к себе и открыть в любом браузере, или воспользоваться средствами анализа в Octoshell. Также можно посмотреть текстовую версию отчета в файле ${APS_DIR}_report.\n\nВ случае последовательной/OpenMP программы:\n1. Зайти на Ломоносов-2\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/vtune2019/performance_snapshots_2019.3.0.590814/apsvars.sh\n    export APS_DIR=`mktemp -d -p . -t 'aps-result-XXXX'`\n3. Запустить задачу, используя aps перед вызовом программы:\n    sbatch -C nomonitoring <slurm параметры> run aps -r=$APS_DIR -c=all <вызов программы>\n4. Выполнить команды:\n    aps --report=$APS_DIR > ${APS_DIR}_report\n5. В текущей папке будет создан файл вида aps_report_20200402_140923.html, можно скачать его к себе и открыть в любом браузере, или воспользоваться средствами анализа в Octoshell. Также можно посмотреть текстовую версию отчета в файле ${APS_DIR}_report.\n\nПодробную инструкцию по работе с Intel APS и анализу полученных результатов можно прочитать здесь: https://software.intel.com/en-us/node/836966\n"
         }
     },
     "detailed": {
         "profiling-mpip": {
+            "nvprof_slow_host_mem": {
+                "index": 1,
+                "name": "nvprof_slow_host_mem",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Передача данных на ГПУ занимает слишком много времени по сравнению с временем счета на ГПУ.",
+                "comment": "transfer_time > kernel_time \nTODO показывать самые долгие ядра",
+                "src_file": "nvprof.py",
+                "group": "nvprof",
+                "priority": 1,
+                "confidence": 4,
+                "criticalness": 4,
+                "supposition": "Возможно, текущая реализация не подходит для ГПУ.",
+                "text_recommendation": "Следует уменьшить объем данных, копируемых между хостом и ГПУ.",
+                "module_recommendation": "---"
+            },
+            "nvprof_good_host_mem": {
+                "index": 2,
+                "name": "nvprof_good_host_mem",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Анализ не показал проблем с копированием данных между хостом и ГПУ. ",
+                "comment": "kernel_time > transfer_time \nTODO показывать самые долгие ядра",
+                "src_file": "nvprof.py",
+                "group": "nvprof",
+                "priority": 1,
+                "confidence": 3,
+                "criticalness": 1,
+                "supposition": "Возможно, анализ вычислений на ГПУ поможет выявить проблемы с эффективостью.",
+                "text_recommendation": "Рекомендуется провести анализ эффективности вычислений на ГПУ.",
+                "module_recommendation": "gpu-nvprof"
+            }
+        },
+        "gpu-nvprof_basic": {
             "mpip_low_pe": {
                 "index": 1,
                 "name": "mpip_low_pe",
@@ -1583,40 +1507,6 @@
                 "supposition": "Вероятно, присутствует разбалансировка вычислительной нагрузки между процессами, что приводит к простою некоторых процессов при выполнении MPI-операций.",
                 "text_recommendation": "Анализ MPI программ -> Трассировка",
                 "module_recommendation": "mpi_tracing"
-            }
-        },
-        "gpu-nvprof_basic": {
-            "nvprof_slow_host_mem": {
-                "index": 1,
-                "name": "nvprof_slow_host_mem",
-                "is_enabled": 1,
-                "public": 1,
-                "description": "Передача данных на ГПУ занимает слишком много времени по сравнению с временем счета на ГПУ.",
-                "comment": "transfer_time > kernel_time TODO показывать самые долгие ядра",
-                "src_file": "nvprof.py",
-                "group": "nvprof",
-                "priority": 1,
-                "confidence": 4,
-                "criticalness": 4,
-                "supposition": "Возможно, текущая реализация не подходит для ГПУ.",
-                "text_recommendation": "Следует уменьшить объем данных, копируемых между хостом и ГПУ.",
-                "module_recommendation": "---"
-            },
-            "nvprof_good_host_mem": {
-                "index": 2,
-                "name": "nvprof_good_host_mem",
-                "is_enabled": 1,
-                "public": 1,
-                "description": "Анализ не показал проблем с копированием данных между хостом и ГПУ. ",
-                "comment": "transfer_time > kernel_time TODO показывать самые долгие ядра",
-                "src_file": "nvprof.py",
-                "group": "nvprof",
-                "priority": 1,
-                "confidence": 3,
-                "criticalness": 1,
-                "supposition": "Возможно, анализ вычислений на ГПУ поможет выявить проблемы с эффективостью.",
-                "text_recommendation": "Рекомендуется провести анализ эффективности вычислений на ГПУ.",
-                "module_recommendation": "gpu-nvprof"
             }
         },
         "gpu-nvprof": {
@@ -2013,7 +1903,7 @@
                 "name": "valgrind_bad_temporal_l1_func",
                 "is_enabled": 1,
                 "public": 1,
-                "description": "В программе обнаружена функция с очень низкой временной локальностью обращений в L1.",
+                "description": "В программе обнаружены функции с очень низкой временной локальностью обращений в L1. Список этих функций (в порядке убывания занимаемой доли программы по числу обращений в память): {functions}.",
                 "comment": "стоит поправить это правило, чтобы оно выдавало не только True/False, но и название таких функций",
                 "src_file": "valgrind_perf.py",
                 "group": "valgrind",
@@ -2103,6 +1993,136 @@
                 "supposition": ".",
                 "text_recommendation": ".",
                 "module_recommendation": "."
+            }
+        },
+        "general-aps": {
+            "aps_mpi_time": {
+                "index": 1,
+                "name": "aps_mpi_time",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Слишком большая доля времени приходится на выполнение MPI функций.",
+                "comment": "mpi_time > C.APS_MPI_TIME",
+                "src_file": "aps.py",
+                "group": "aps",
+                "priority": 1,
+                "confidence": 2,
+                "criticalness": 2,
+                "supposition": "Вероятно, работа с MPI организована не очень эффективно. Необходима оптимизация.",
+                "text_recommendation": "Анализ MPI программ -> Профилирование",
+                "module_recommendation": "mpi_profiling"
+            },
+            "aps_openmp_imbalance": {
+                "index": 2,
+                "name": "aps_openmp_imbalance",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Слишком большая доля времени приходится на синхронизацию OpenMP потоков.",
+                "comment": "openmp_imbalance > C.APS_OPENMP_IMBALANCE",
+                "src_file": "aps.py",
+                "group": "aps",
+                "priority": 1,
+                "confidence": 2,
+                "criticalness": 2,
+                "supposition": "Вероятно, присутствует заметный дисбаланс между OpenMP потоками, из-за чего барьеры долго выполняются.",
+                "text_recommendation": "Анализ многопоточной программы ",
+                "module_recommendation": "thread_analysis"
+            },
+            "aps_memory_stalls": {
+                "index": 3,
+                "name": "aps_memory_stalls",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Процессор простаивал слишком долго в ожидании выполнения операций работы с памятью.",
+                "comment": "memory_stalls > C.APS_MEMORY_STALLS",
+                "src_file": "aps.py",
+                "group": "aps",
+                "priority": 1,
+                "confidence": 2,
+                "criticalness": 2,
+                "supposition": "Работы с памятью, вероятно, организована неэффективно, требуется оптимизация.",
+                "text_recommendation": "Анализ работы с памятью -> Эффективность",
+                "module_recommendation": "memory_efficiency"
+            },
+            "aps_io_bound": {
+                "index": 4,
+                "name": "aps_io_bound",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Процессор простаивал слишком долго в ожидании выполнения операций ввода/вывода.",
+                "comment": "io_bound > C.APS_IO_BOUND",
+                "src_file": "aps.py",
+                "group": "aps",
+                "priority": 1,
+                "confidence": 2,
+                "criticalness": 2,
+                "supposition": "Работы с файлами, вероятно, организована неэффективно, требуется оптимизация.",
+                "text_recommendation": "Анализ ввода/вывода",
+                "module_recommendation": "io_analysis"
+            },
+            "aps_vectorization": {
+                "index": 5,
+                "name": "aps_vectorization",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Большая часть операций с плавающей точкой не векторизована.",
+                "comment": "vectorization > C.APS_VECTORIZATION",
+                "src_file": "aps.py",
+                "group": "aps",
+                "priority": 1,
+                "confidence": 2,
+                "criticalness": 2,
+                "supposition": "Возможности по векторизации слабо используются. Вероятно, не был указан ключ компилятору для использования векторных инструкций, либо данная программа плохо векторизуется.",
+                "text_recommendation": "Необходимо провести анализ возможности векторизации программы, например, с помощью Intel Advisor.",
+                "module_recommendation": "---"
+            },
+            "aps_mpi_imbalance": {
+                "index": 6,
+                "name": "aps_mpi_imbalance",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Некоторые процессы слишком долго ожидают данных во время выполнения MPI операций.",
+                "comment": "mpi_imbalance > C.APS_MPI_IMBALANCE",
+                "src_file": "aps.py",
+                "group": "aps",
+                "priority": 1,
+                "confidence": 2,
+                "criticalness": 2,
+                "supposition": "Вероятно, присутствует заметный дисбаланс между MPI процессами.",
+                "text_recommendation": "Анализ MPI программ -> Профилирование",
+                "module_recommendation": "mpi_profiling"
+            },
+            "aps_cache_stalls": {
+                "index": 7,
+                "name": "aps_cache_stalls",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Процессор простаивал слишком долго, ожидая выполнения операций чтения/записи данных в кэш-память.",
+                "comment": "not aps_memory_stalls.check() and cache_stalls > C.MEMORY_STALLS",
+                "src_file": "aps.py",
+                "group": "aps",
+                "priority": 1,
+                "confidence": 2,
+                "criticalness": 2,
+                "supposition": "Вероятно, в программе происходит слишком много кэш-промахов, требуется оптимизация.",
+                "text_recommendation": "Анализ работы с памятью -> Эффективность",
+                "module_recommendation": "memory_efficiency"
+            },
+            "aps_dram_stalls": {
+                "index": 8,
+                "name": "aps_dram_stalls",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Процессор простаивал слишком долго, ожидая выполнения операций чтения/записи данных в оперативную память.",
+                "comment": "not aps_memory_stalls.check() and dram_stalls > C.MEMORY_STALLS",
+                "src_file": "aps.py",
+                "group": "aps",
+                "priority": 1,
+                "confidence": 2,
+                "criticalness": 2,
+                "supposition": "Вероятно, в программе происходит часто происходят обращения в оперативную память, требуется оптимизация.",
+                "text_recommendation": "Анализ работы с памятью -> Эффективность",
+                "module_recommendation": "memory_efficiency"
             }
         }
     }

@@ -279,6 +279,7 @@ en:
         job_info: 'Information on job # %{id}'
         login: Login
         metric: Metric
+        module_recomendation: Recommended detailed analysis types
         mpi: MPI usage (MB/s)
         no-data: Нет полных данных по этой задаче
         no_data: >-
