@@ -39,7 +39,7 @@ en:
         any_questions: 'Any questions or notices? Write us '
         cpu_info: in percents of full load
         cpu_load: CPU load
-        detailed_conducted: Detailed analysis
+        detailed_conducted: Detailed analysis was conducted
         disagree_info: >
           Select jobs in left column. In the area below would be shown rules,
           common to selected jobs. Select all rules, you don't agree and send
@@ -259,9 +259,10 @@ en:
         descr3: >-
           This area shows what performance problems were detected during the
           automatic analysis of all jobs performed on the supercomputer.
-        descr4: >-
+        descr4_1: >-
           This area shows what performance problems were found during the
-          specified types of detailed analysis:
+          detailed analysis:
+        descr4_2: using
         description: Description
         detailed: Detailed analysis
         details: Detailed description
@@ -274,7 +275,7 @@ en:
         gpu_avg: Average GPU load (%)
         gpu_percent: GPU load (0% .. 100%)
         h-short: h.
-        initial: Initial analysis
+        initial: Basic analysis
         job_id: Job ID
         job_info: 'Information on job # %{id}'
         login: Login
@@ -312,12 +313,14 @@ en:
           In many cases recomendation includes type of analysis, suggested to be
           performed; we will improve this function in the future.
         descr2: >-
-          Abilities to estimate correctness and changing of detected efficiency
-          problems are planned in the future. Now this ability is implemented
-          only on all jobs list page.
+          Performance problems can be detected in two ways. The first is when
+          conducting a basic analysis of programs that is performed automatically
+          for all tasks performed on a supercomputer. The second - during a more
+          detailed study of the selected program using existing external performance
+          analysis tools.
         supposition: "Supposition"
         initiated_by: A detailed analysis was carried out after studying the job
         initiated_found: After studying this problem, a detailed analysis was carried out, the results of which can be seen in these jobs
         initiated_not_found: Initiated tasks not found
-        detailed_available: Available detailed analysys types
+        detailed_available: Conduct a detailed analysis of the application
 

@@ -728,7 +728,8 @@
             "criticalness": 5,
             "supposition": "Задача работает некорректно или зависла.",
             "text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его."
         },
         "rule_anomaly": {
             "index": 2,
@@ -744,7 +745,8 @@
             "criticalness": 5,
             "supposition": "Задача работает некорректно или зависла.",
             "text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его."
         },
         "rule_ml_job_hang": {
             "index": 3,
@@ -760,7 +762,8 @@
             "criticalness": 5,
             "supposition": "На данном этапе определить причины зависания задачи не представляется возможным.",
             "text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его."
         },
         "rule_avg_disbalance": {
             "index": 4,
@@ -775,8 +778,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Разбалансировка нагрузки между узлами.",
-            "text_recommendation": "1) Анализ динамики выполнения приложения; 2) Общий анализ последовательных программ; 3) Анализ MPI -> Профилировка.",
-            "module_recommendation": "execution_dynamics,general-aps,profiling-mpip"
+            "text_recommendation": "Стоит изучить поведение приложения во время выполнения, см. ссылку ниже \"Более подробное описание\". Также попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "general-aps,profiling-mpip",
+            "old_text_recommendation": "1) Анализ динамики выполнения приложения; 2) Общий анализ программы; 3) Профилирование MPI-программы."
         },
         "rule_node_disbalance": {
             "index": 5,
@@ -791,8 +795,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Разбалансировка нагрузки между узлами.",
-            "text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ последовательных программ (если нет MPI);3) Анализ MPI -> Профилировка (если MPI есть).",
-            "module_recommendation": "execution_dynamics,general-aps,profiling-mpip"
+            "text_recommendation": "Стоит изучить поведение приложения во время выполнения, см. ссылку ниже \"Более подробное описание\". Также попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "general-aps,profiling-mpip",
+            "old_text_recommendation": "1) Анализ динамики выполнения приложения; 2) Общий анализ программы; 3) Профилирование MPI-программы."
         },
         "rule_disbalance_cpu_la": {
             "index": 6,
@@ -807,8 +812,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Разбалансировка нагрузки внутри узла либо между узлами.",
-            "text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ последовательных программ (если нет MPI);3) Анализ MPI -> Профилировка (если MPI есть).",
-            "module_recommendation": "execution_dynamics,general-aps,profiling-mpip"
+            "text_recommendation": "Стоит изучить поведение приложения во время выполнения, см. ссылку ниже \"Более подробное описание\". Также попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "general-aps,profiling-mpip",
+            "old_text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ программы (если нет MPI);3) Профилирование MPI-программы (если MPI есть)."
         },
         "rule_mem_disbalance": {
             "index": 7,
@@ -823,8 +829,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Такой заметный дисбаланс приводит к снижению эффективности работы программы, поскольку одним узлам приходится ждать другие.",
-            "text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ последовательных программ; 3) Анализ работы с памятью -> Эффективность.",
-            "module_recommendation": "execution_dynamics,general-aps,mem_eff-valgrind"
+            "text_recommendation": "Стоит изучить поведение приложения во время выполнения, см. ссылку ниже \"Более подробное описание\". Также попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "general-aps,mem_eff-valgrind",
+            "old_text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ программы; 3) Анализ эффективности работы с памятью."
         },
         "rule_low_ipc": {
             "index": 8,
@@ -839,8 +846,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Программа без видимых внешних причин работает недостаточно эффективно. На данном этапе недостаточно информации для определения причин данной неэффективности.",
-            "text_recommendation": "Общий анализ последовательных программ",
-            "module_recommendation": "general-aps"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "general-aps",
+            "old_text_recommendation": "Общий анализ программы."
         },
         "rule_ml_cold_start": {
             "index": 9,
@@ -856,7 +864,8 @@
             "criticalness": 3,
             "supposition": "Вероятно, процесс старта задачи занял продолжительное время (из-за внешних сбоев в системе или проблем в самой задаче).",
             "text_recommendation": "Рекомендуется проверить корректность запуска.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить корректность запуска."
         },
         "rule_ml_suspicious": {
             "index": 10,
@@ -871,8 +880,9 @@
             "confidence": 3,
             "criticalness": 3,
             "supposition": "Программа без видимых внешних причин работает недостаточно эффективно, по сравнению с остальными задачами на данном суперкомпьютере. На данном этапе недостаточно информации для определения причин данной неэффективности.",
-            "text_recommendation": "Общий анализ последовательных программ",
-            "module_recommendation": "general-aps"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "general-aps",
+            "old_text_recommendation": "Общий анализ программы."
         },
         "rule_ml_low_job_activity": {
             "index": 11,
@@ -887,8 +897,9 @@
             "confidence": "",
             "criticalness": "",
             "supposition": "Вероятно, только очень небольшая доля процессов активно работает, остальные практически все время простаивают. Вероятно, требуется уменьшить число процессов либо оптимизировать распределение вычислительной нагрузки между узлами.",
-            "text_recommendation": "1) Анализ динамики выполнения приложения; 2) Анализ MPI -> Профилировка.",
-            "module_recommendation": "execution_dynamics,profiling-mpip"
+            "text_recommendation": "Стоит изучить поведение приложения во время выполнения, см. ссылку ниже \"Более подробное описание\". Также попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "profiling-mpip",
+            "old_text_recommendation": "1) Анализ динамики выполнения приложения; 2) Профилирование MPI-программы."
         },
         "rule_high_la": {
             "index": 12,
@@ -903,8 +914,9 @@
             "confidence": 3,
             "criticalness": 3,
             "supposition": "Накладные расходны на организацию работы такого большого количества потоков могут быть существенными.",
-            "text_recommendation": "Анализ многопоточной программы ",
-            "module_recommendation": "thread-vtune"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "thread-vtune",
+            "old_text_recommendation": "Анализ многопоточной программы."
         },
         "rule_ml_stall": {
             "index": 13,
@@ -920,7 +932,8 @@
             "criticalness": 3,
             "supposition": "Задача некоторое время была зависшей, поэтому ее выполнение может быть некорректным.",
             "text_recommendation": "Рекомендуется проверить корректность запуска.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить корректность запуска."
         },
         "rule_cpu_gpu": {
             "index": 14,
@@ -935,8 +948,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Можно попробовать одновременно загружать и CPU, и GPU.",
-            "text_recommendation": "Анализ работы с ускорителями",
-            "module_recommendation": "gpu-nvprof_basic"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "gpu-nvprof_basic",
+            "old_text_recommendation": "Анализ работы с ускорителями, часть 1."
         },
         "rule_more_cpu_gpu": {
             "index": 15,
@@ -951,8 +965,9 @@
             "confidence": 3,
             "criticalness": 4,
             "supposition": "Можно попробовать одновременно загружать и CPU, и GPU.",
-            "text_recommendation": "Анализ работы с ускорителями",
-            "module_recommendation": "gpu-nvprof_basic"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "gpu-nvprof_basic",
+            "old_text_recommendation": "Анализ работы с ускорителями, часть 1."
         },
         "rule_mpi_disbalance": {
             "index": 16,
@@ -967,8 +982,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Вероятно, некорректное использование MPI.",
-            "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "profiling-mpip"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "profiling-mpip",
+            "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_irq_iowait": {
             "index": 17,
@@ -984,7 +1000,8 @@
             "criticalness": 3,
             "supposition": "Вероятно, некорректный режим работы задачи.",
             "text_recommendation": "Рекомендуется проверить параметры запуска задачи.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить параметры запуска задачи."
         },
         "rule_nice": {
             "index": 18,
@@ -1000,7 +1017,8 @@
             "criticalness": 3,
             "supposition": "Используются процессы с низким приоритетом.",
             "text_recommendation": "Рекомендуется перезапустить задачу с нормальным приоритетом.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется перезапустить задачу с нормальным приоритетом."
         },
         "rule_mpi_many_operations": {
             "index": 19,
@@ -1015,8 +1033,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Вероятно, работа с MPI организована неэффективно.",
-            "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "profiling-mpip"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "profiling-mpip",
+            "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_mpi_high_system": {
             "index": 20,
@@ -1031,8 +1050,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Вероятно, работа с MPI сетью или сетью для ФС организована неэффективно.",
-            "text_recommendation": "1) Анализ MPI программ -> Профилировка (если проблема с MPI сетью);2) Анализ ввода/вывода (если проблема с сетью для ФС).",
-            "module_recommendation": "profiling-mpip,io-vtune"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "profiling-mpip,io-vtune",
+            "old_text_recommendation": "1) Профилирование MPI-программы (если проблема с MPI сетью); 2) Анализ ввода/вывода (если проблема с сетью для ФС)."
         },
         "rule_mpi_bad_locality": {
             "index": 21,
@@ -1047,8 +1067,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "При запуске задачи менеджером ресурсов был выбран неудачный набор узлов. Рекомендуется при необходимости явно указывать узлы, на которых будет производиться запуск проргаммы, либо пытаться оптимизировать работу с MPI.",
-            "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "profiling-mpip"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "profiling-mpip",
+            "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_mpi_issues": {
             "index": 22,
@@ -1063,8 +1084,9 @@
             "confidence": 3,
             "criticalness": 4,
             "supposition": "Выполнение MPI операций, вероятно, занимает слишком много времени, требуется оптимизация.",
-            "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "profiling-mpip"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "profiling-mpip",
+            "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_mpi_small_packets": {
             "index": 23,
@@ -1079,8 +1101,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Накладные расходы на передачу MPI сообщений могут быть существенными.",
-            "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "profiling-mpip"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "profiling-mpip",
+            "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_fs_small_packets": {
             "index": 24,
@@ -1095,8 +1118,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Накладные расходы на передачу данных для чтения/записи в файловую систему могут быть существенными.",
-            "text_recommendation": "Анализ ввода/вывода",
-            "module_recommendation": "io-vtune"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "io-vtune",
+            "old_text_recommendation": "Анализ ввода/вывода."
         },
         "rule_mpi_packets": {
             "index": 25,
@@ -1111,8 +1135,9 @@
             "confidence": 3,
             "criticalness": 4,
             "supposition": "Накладные расходы на передачу MPI сообщений могут быть существенными.",
-            "text_recommendation": "Анализ MPI программ -> Профилировка",
-            "module_recommendation": "profiling-mpip"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "profiling-mpip",
+            "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_one_active_process": {
             "index": 26,
@@ -1128,7 +1153,8 @@
             "criticalness": 3,
             "supposition": "Вероятно, при запуске задачи указывается размещение 1 процесса на узел.",
             "text_recommendation": "Рекомендуется запускать с большим числом процессов на узел.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется запускать с большим числом процессов на узел."
         },
         "rule_normal_serial": {
             "index": 27,
@@ -1143,8 +1169,9 @@
             "confidence": 2,
             "criticalness": 4,
             "supposition": "Для работы на суперкомпьютере стоит распараллелить данную задачу.",
-            "text_recommendation": "Общий анализ последовательных программ ",
-            "module_recommendation": "general-aps"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "general-aps",
+            "old_text_recommendation": "Общий анализ программы."
         },
         "rule_not_effective": {
             "index": 28,
@@ -1159,8 +1186,9 @@
             "confidence": 3,
             "criticalness": 4,
             "supposition": "Причина низкой эффективности не обнаружена, требуется общий анализ.",
-            "text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ последовательных программ (если нет MPI);3) Анализ MPI -> Профилировка (если MPI есть).",
-            "module_recommendation": "execution_dynamics,general-aps,profiling-mpip"
+            "text_recommendation": "Стоит изучить поведение приложения во время выполнения, см. ссылку ниже \"Более подробное описание\". Также попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "general-aps,profiling-mpip",
+            "old_text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ программы (если нет MPI);3) Профилирование MPI-программы (если MPI есть)."
         },
         "rule_bad_mem": {
             "index": 29,
@@ -1175,8 +1203,9 @@
             "confidence": 2,
             "criticalness": 4,
             "supposition": "Работы с памятью, вероятно, занимает слишком много времени, требуется оптимизация.",
-            "text_recommendation": "Анализ работы с памятью -> Эффективность",
-            "module_recommendation": "mem_eff-valgrind"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "mem_eff-valgrind",
+            "old_text_recommendation": "Анализ эффективности работы с памятью."
         },
         "rule_bad_locality": {
             "index": 30,
@@ -1191,8 +1220,9 @@
             "confidence": 2,
             "criticalness": 4,
             "supposition": "Работы с памятью, вероятно, организована неэффективно, требуется оптимизация.",
-            "text_recommendation": "Анализ работы с памятью -> Эффективность",
-            "module_recommendation": "mem_eff-valgrind"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "mem_eff-valgrind",
+            "old_text_recommendation": "Анализ эффективности работы с памятью."
         },
         "rule_locality": {
             "index": 31,
@@ -1207,8 +1237,9 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Работы с памятью, вероятно, организована неэффективно, требуется оптимизация.",
-            "text_recommendation": "Анализ работы с памятью -> Эффективность",
-            "module_recommendation": "mem_eff-valgrind"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "mem_eff-valgrind",
+            "old_text_recommendation": "Анализ эффективности работы с памятью."
         },
         "rule_cache": {
             "index": 32,
@@ -1223,8 +1254,9 @@
             "confidence": 3,
             "criticalness": 4,
             "supposition": "Работы с памятью, вероятно, занимает слишком много времени и организована неэффективно, требуется оптимизация.",
-            "text_recommendation": "Анализ работы с памятью -> Эффективность",
-            "module_recommendation": "mem_eff-valgrind"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "mem_eff-valgrind",
+            "old_text_recommendation": "Анализ эффективности работы с памятью."
         },
         "rule_interleave": {
             "index": 33,
@@ -1239,8 +1271,9 @@
             "confidence": 2,
             "criticalness": 4,
             "supposition": "Работы с памятью занимает слишком много времени, но организована эффективно. Можно попробовать совмещать обработку данных с остальной работой в задаче (передачей данных или выполнением вычислений).",
-            "text_recommendation": "1) Анализ работы с памятью -> Эффективность»;2) Статический анализ.",
-            "module_recommendation": "mem_eff-valgrind,static_analysis"
+            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "module_recommendation": "mem_eff-valgrind",
+            "old_text_recommendation": "Анализ эффективности работы с памятью."
         },
         "rule_wrong_partition_io": {
             "index": 34,
@@ -1256,7 +1289,8 @@
             "criticalness": 4,
             "supposition": "Неправильно выбран раздел для задачи.",
             "text_recommendation": "Рекомендуется сменить раздел.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется сменить раздел."
         },
         "rule_wrong_partition_gpu": {
             "index": 35,
@@ -1272,7 +1306,8 @@
             "criticalness": 4,
             "supposition": "Неправильно выбран раздел для задачи.",
             "text_recommendation": "Рекомендуется сменить раздел.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется сменить раздел."
         },
         "rule_mpi_high_OS_jitter": {
             "index": 36,
@@ -1288,39 +1323,31 @@
             "criticalness": 1,
             "supposition": "Вероятно, шумы ОС слишком велики.",
             "text_recommendation": "Рекомендуется проверить корректность запуска задачи. Если запуск корректен, стоит сообщить администратору системы.",
-            "module_recommendation": "---"
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить корректность запуска задачи. Если запуск корректен, стоит сообщить администратору системы."
         }
     },
     "detailed_analysis_types": {
-        "monitoring-dimmon": {
-            "index": 1,
-            "name": "monitoring-dimmon",
-            "type_text": "Более детальный мониторинг",
-            "type_name": "monitoring",
-            "soft_text": "DimMon",
-            "soft_name": "dimmon",
-            "manual": "TODO: Добавить в мониторинг поддержку ключа для регулирования частоты сбора."
-        },
         "profiling-mpip": {
-            "index": 2,
+            "index": 1,
             "name": "profiling-mpip",
-            "type_text": "Анализ MPI-программ -> Профилировка",
+            "type_text": "Профилирование MPI-программы",
             "type_name": "profiling",
             "soft_text": "mpiP",
             "soft_name": "mpip",
             "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить модуль Slurm:\n    module add slurm\n3. (Опционально) Скомпилировать программу, указав ключ для сбора дебаг информации (обычно -g).\n4. Запустить программу с предзагрузкой библиотеки анализа:\n    LD_PRELOAD=/opt/software/mpip/libmpiP.so sbatch <slurm параметры> <вызов программы>\n5. В папке появится текстовый файл с результатами работы mpiP \"<имя_исполняемого файла>.<число процессов>.<набор цифр>.mpiP\", можно посмотреть его в обычном редакторе.\n6. В конце необходимо выполнить на кластере команду, указав имя выходного файла анализатора и ID задачи:\n    /opt/analysis/upload -i '[\"profiling-mpip\",\"lomonosov-2\",1108573,0]' -f <ENTER_OUTPUT_FILENAME> -j <ENTER_JOB_ID>\n\nПодробную инструкцию по анализу полученных результатов mpiP можно прочитать здесь: http://mpip.sourceforge.net/#mpiP_Output"
         },
         "tracing-itac": {
-            "index": 3,
+            "index": 2,
             "name": "tracing-itac",
-            "type_text": "Анализ MPI-программ -> Трассировка",
+            "type_text": "Трассировка MPI-программы",
             "type_name": "tracing",
             "soft_text": "Intel ITAC",
             "soft_name": "itac",
             "manual": "1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды (да, команду source надо выполнить дважды):\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n    module add openmpi\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n3. Скомпилировать свою программу с mpicc/mpicxx\n4. создать файл run.sbatch с содержимым(без кавычек):\n    #!/bin/bash\n    mpirun -trace <вызов программы>\n5. Запустить программу:\n    sbatch <slurm параметры> run.sbatch\n6. В папке появится трасса запуска, можно посмотреть её, выполнив:\n    traceanalyzer <имя трассы>.stf\n\nПодробную инструкцию по работе с Intel ITAC и анализу полученных результатов можно прочитать здесь: https://software.intel.com/en-us/ita-user-and-reference-guide"
         },
         "thread-vtune": {
-            "index": 4,
+            "index": 3,
             "name": "thread-vtune",
             "type_text": "Анализ многопоточной программы",
             "type_name": "thread",
@@ -1329,25 +1356,25 @@
             "manual": "В случае MPI программы:\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n    module add openmpi\n3. Скомпилировать свою программу с mpicc/mpicxx (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch <slurm параметры> ompi amplxe-cl -r vtune-result -collect threading -- <вызов программы>\n5. Появится папка вида vtune-result.n48627.10p.parallel.ru, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n  5в. Изучить выдачу Summary, при необходимости посмотреть интересующие детали.\n\nВ случае OpenMP программы (без использования MPI):\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n3. Скомпилировать свою программу с icc (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch <slurm параметры> run amplxe-cl -r vtune-result -collect threading -- <вызов программы>\n5. Появится папка вида vtune-result, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n  5в. Изучить выдачу Summary, при необходимости посмотреть интересующие детали.\n\nПодробную инструкцию по анализу эффективности организации OpenMP потоков в программах с помощью Intel VTune можно прочитать здесь: https://software.intel.com/en-us/vtune-cookbook-openmp-code-analysis-method"
         },
         "mem_eff-valgrind": {
-            "index": 5,
+            "index": 4,
             "name": "mem_eff-valgrind",
-            "type_text": "Анализ работы с памятью -> Эффективность",
+            "type_text": "Анализ эффективности работы с памятью",
             "type_name": "mem_eff",
             "soft_text": "Valgrind (Callgrind)",
             "soft_name": "valgrind",
             "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm valgrind/3.12.0\n3. Запустить анализируемую программу с помощью команды:\n    sbatch <slurm параметры> valgrind --tool=callgrind --cacheuse=yes --trace-children=yes --callgrind-out-file=\"callgrind_perf_%p\" <вызов программы>\n4. В папке появятся файлы \"valgrind_perf_%p\", по одному на каждый процесс.\n5. Запустить команду:\n    callgrind_annotate callgrind_perf_<выбранный процесс> > callgrind_output\n6. Файл callgrind_output является текстовым, можно посмотреть его в обычном редакторе.\n\nПодробную инструкцию по анализу полученных результатов Callgrind можно прочитать здесь: https://valgrind.org/docs/manual/cg-manual.html#cg-manual.the-output-preamble (Callgrind использует в работе Cachegrind, поэтому приведена ссылка на его инструкцию)"
         },
         "mem_corr-valgrind": {
-            "index": 6,
+            "index": 5,
             "name": "mem_corr-valgrind",
-            "type_text": "Анализ работы с памятью -> Корректность",
+            "type_text": "Анализ корректности работы с памятью",
             "type_name": "mem_corr",
             "soft_text": "Valgrind (Memcheck)",
             "soft_name": "valgrind",
             "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm valgrind/3.12.0\n3. Запустить анализируемую программу с помощью команды:\n    sbatch <slurm параметры> valgrind --log-file=\"valgrind_check_%p\"  --trace-children=yes --tool=memcheck --leak-check=full --show-leak-kinds=all <вызов программы>\n4. В папке появятся файлы \"valgrind_check_%p\", по одному на каждый процесс, можно посмотреть их в обычном редакторе.\n\nПодробную инструкцию по анализу полученных результатов Memcheck можно прочитать здесь: https://www.valgrind.org/docs/manual/mc-manual.html#mc-manual.errormsgs"
         },
         "io-vtune": {
-            "index": 7,
+            "index": 6,
             "name": "io-vtune",
             "type_text": "Анализ ввода/вывода",
             "type_name": "io",
@@ -1356,7 +1383,7 @@
             "manual": "В случае MPI программы:\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n    module add openmpi\n3. Скомпилировать свою программу с mpicc/mpicxx (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch -C nomonitoring <slurm параметры> ompi amplxe-cl -r vtune-result -collect io -knob kernel-stack=false  -- <вызов программы>\n5. Появится папка вида vtune-result.n48627.10p.parallel.ru, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n\nВ случае последовательной/OpenMP программы:\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n3. Скомпилировать свою программу с icc (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch -C nomonitoring <slurm параметры> run amplxe-cl -r vtune-result -collect io -knob kernel-stack=false -- <вызов программы>\n5. Появится папка вида vtune-result, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n\nПодробную инструкцию по анализу I/O в Intel VTune можно прочитать здесь: https://software.intel.com/en-us/vtune-help-disk-input-and-output-analysis"
         },
         "low_level-vtune": {
-            "index": 8,
+            "index": 7,
             "name": "low_level-vtune",
             "type_text": "Низкоуровневый анализ",
             "type_name": "low_level",
@@ -1365,7 +1392,7 @@
             "manual": "В случае MPI программы:\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n    module add openmpi\n3. Скомпилировать свою программу с mpicc/mpicxx (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch -C nomonitoring <slurm параметры> ompi amplxe-cl -r vtune-result -collect hpc-performance -- <вызов программы>\n5. Появится папка вида vtune-result.n48627.10p.parallel.ru, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n  5в. Выбрать вкладку \"Microarchitecture exploration\" наверху в появившемся окне\n\nВ случае последовательной/OpenMP программы:\n1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды:\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n3. Скомпилировать свою программу с icc (указав ключ для сбора дебаг информации -g)\n4. Запустить программу:\n    sbatch -C nomonitoring <slurm параметры> run amplxe-cl -r vtune-result -collect hpc-performance -- <вызов программы>\n5. Появится папка вида vtune-result, в ней находится собранная трасса. Её можно посмотреть в визуальном интерфейсе VTune. Для этого надо:\n  5а. Выполнить команду:\n        amplxe-gui &\n  5б. Открыть собранную трассу (выбрать Open result и указать полученный файл *.amplxe)\n  5в. Выбрать вкладку \"Microarchitecture exploration\" наверху в появившемся окне\n\n\nПодробную инструкцию по работе с Top-down подходом в Intel VTune можно прочитать здесь: https://software.intel.com/en-us/vtune-cookbook-top-down-microarchitecture-analysis-method"
         },
         "gpu-nvprof_basic": {
-            "index": 9,
+            "index": 8,
             "name": "gpu-nvprof_basic",
             "type_text": "Анализ работы с ускорителями, часть 1",
             "type_name": "gpu",
@@ -1374,7 +1401,7 @@
             "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm cuda\n3. Запустить программу с помощью nvprof:\n    sbatch ... nvprof --csv --log-file \"nvprof_%p\" <вызов программы>\n4. Запустить команду для объединения файлов выдачи (убедитесь, что не будут использованы файлы от предыдущих запусков):\n    cat nvprof_*  > nvprof_all\n(доп) Полную инструкцию по анализу приложений с помощью nvprof можно прочитать здесь: https://docs.nvidia.com/cuda/profiler-users-guide/index.html#nvprof-overview"
         },
         "gpu-nvprof": {
-            "index": 10,
+            "index": 9,
             "name": "gpu-nvprof",
             "type_text": "Анализ работы с ускорителями, часть 2",
             "type_name": "gpu",
@@ -1383,7 +1410,7 @@
             "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm cuda\n3. Запустить программу с помощью nvprof:\n    sbatch ... nvprof --log-file \"nvprof_%p\" --csv --metrics sm_efficiency,sm_activity,executed_ipc,ipc,achieved_occupancy,dram_utilization,l2_utilization,flop_sp_efficiency,flop_dp_efficiency,gst_efficiency,gld_efficiency,shared_efficiency,shared_utilization,warp_execution_efficiency <вызов программы>\n4. Запустить команду для объединения файлов выдачи (убедитесь, что не будут использованы файлы от предыдущих запусков):\n    cat nvprof_*  > nvprof_all\n(доп) Полную инструкцию по анализу приложений с помощью nvprof можно прочитать здесь: https://docs.nvidia.com/cuda/profiler-users-guide/index.html#nvprof-overview"
         },
         "general-aps": {
-            "index": 11,
+            "index": 10,
             "name": "general-aps",
             "type_text": "Общий анализ программы",
             "type_name": "general",
