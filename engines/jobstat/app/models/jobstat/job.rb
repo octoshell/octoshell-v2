@@ -183,7 +183,10 @@ module Jobstat
     end
 
     def get_rules user
-      filters = Job::get_filters(user)|| [] # TODO:FILTERS
+      filters = Job::get_filters(user)
+      if filters.length > 0
+        filters = filters[-1]["filters"] || []
+      end
 
       names = get_primary_names - filters # remove rules wich are filtered out
 
@@ -271,7 +274,7 @@ module Jobstat
     end
 
     def self.get_filters(user)
-      return []  # TODO:FILTERS
+      # return []
       # user=get_user login
       # user_id=nil
       # if user
@@ -284,7 +287,7 @@ module Jobstat
 
       data=get_data("jobstat:filters:#{user_id}",
         URI("#{Rails.application.config.octo_feedback_host}/api/filters?user=#{user_id}"))
-      logger.info "get_filters: data=#{data.inspect}"
+      # logger.info "get_filters: data=#{data.inspect}"
       data || []
     end
 

@@ -33,18 +33,18 @@ function all_hide_rule(rule_id,del) {
     delete: (del ? 1 : 0),
     feedback: $("#text_hide_rule_"+rule_id).val(),
   }
-  filters.push(rule_id)
   if(del){
     $("#btn-hide-"+rule_id).removeClass("tinted")
   }
   else{
     $("#btn-hide-"+rule_id).addClass("tinted")
+    filters.push(rule_id)
   }
   $("#hide_rule_"+rule_id).removeClass('target')
 
   $.ajax({
     type: "POST",
-    url: "feedback",
+    url: feedback_url,
     data: {'feedback': feedback, 'type': 'hide_rule'},
   })
 }

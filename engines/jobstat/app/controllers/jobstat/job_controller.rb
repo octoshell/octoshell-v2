@@ -60,7 +60,10 @@ module Jobstat
 
       @agree_flags=Job.agree_flags
       @rules_plus=Job.rules
-      @filters=Job.get_filters(current_user).map { |x| x['filters'] }.flatten.uniq.reject{|x| x==''} # TODO:FILTERS
+      @filters=Job::get_filters(current_user)
+      if @filters.length > 0
+        @filters = @filters[-1]["filters"] || []
+      end
 
       # compile full rules descriptions
       @job_extra_data = @job.get_extra_data

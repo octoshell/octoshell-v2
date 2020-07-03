@@ -45,9 +45,10 @@ module Jobstat
 
       begin
         # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
-        @filters=Job::get_filters(current_user).map { |x|
-          x['filters']
-        }.flatten.uniq.reject{|x| x==''}
+        @filters=Job::get_filters(current_user)
+        if @filters.length > 0
+          @filters = @filters[-1]["filters"] || []
+        end
         # -> [cond1,cond2,...]
 
         @fake_data = params[:fake_data].to_i
@@ -221,7 +222,11 @@ module Jobstat
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
       @rules_plus=Job.rules
-      @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq
+      @filters=Job::get_filters(current_user)
+      if @filters.length > 0
+        @filters = @filters[-1]["filters"] || []
+      end
+
       @current_user=current_user
 
       @emails = JobMailFilter.filters_for_user current_user.id
@@ -278,9 +283,9 @@ module Jobstat
       uri=URI("#{Rails.application.config.octo_feedback_host}/api/filters")
 
       filters=Job::get_filters(current_user)
-        .map { |x| x['filters'] }
-        .flatten
-        .uniq
+      if filters.length > 0
+        filters = filters[-1]["filters"] || []
+      end
       if parm[:delete].to_s=='1'
         filters.reject! {|x| x==cond}
       else
