@@ -76,8 +76,9 @@ class User < ApplicationRecord
   def downcase_email
     unless self.email.nil?
       email.downcase!
-      email.gsub!(/\(.*\)/){|comment| ''}
-      email.tr! "a-zA-Z0-9!\#$%&*+-\/=?^_\`\{\}~.@|\'", ''
+      #email.gsub!(/\(.*\)/){|comment| ''}
+      #email.tr! "a-zA-Z0-9!\#$%&*+-\/=?^_\`\{\}~.@|\'", ''
+      email.tr! "!\#$%&*\/=?^_\`\{\}~|\'", ''
     end
   end
 
