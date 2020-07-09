@@ -32,7 +32,9 @@ div class="page-header"
         td = c.message
         td = c.active.nil? ? t('none') : (c.active ? t('yes') : t('no'))
         td
-          - d = {} # remote: true, url: url_for(controller: :notices, id: c.id, action: :visible, method: :post), state: @notice.visible?}
+          / - d = {} # remote: true, url: url_for(controller: :notices, id: c.id, action: :visible, method: :post), state: @notice.visible?}
+          - url = notice_visible_path(c)
+          - d = { myupdate: true, url: url.to_s}
           = check_box_tag "visible-#{c.id}", c.visible?, c.visible?, data: d
 
 javascript:
@@ -40,7 +42,7 @@ javascript:
     $("[data-myupdate]").change(function(event) {
       event.preventDefault();
       var url = this.getAttribute('data-url');
-      var data = 'visible='+this.checked;
+      var data = 'visible='+(this.checked ? '0' : '1');
       var callback = renderResponse.bind(this);
 
       $.post(url, data, callback);
