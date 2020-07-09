@@ -1,0 +1,53 @@
+div class="page-header"
+  h1 = t(".title", default: "Notices")
+
+/= render :table, my_notices: @my_notices, site_wide_notices: @site_wide_notices
+
+- if @my_notices.any?
+  h3 = t('.my_notices')
+  table class="table table-hover"
+    tr
+      th = t('.message')
+      th = t('.active')
+      th = t('.visible')
+    - @my_notices.each do |c|
+      tr
+        td = "#{c.message} #{c.id}/#{c.category}"
+        td = c.active.nil? ? t('none') : (c.active ? t('yes') : t('no'))
+        td
+          /- url = url_for(controller: :notices, id: c.id, action: :visible, method: :post)
+          - url = notice_visible_path(c)
+          - d = { url: url.to_s, params: "visible=#{c.visible? ? 1 : 0}", myupdate: true}
+          = check_box_tag "visible-#{c.id}", nil, c.visible?, data: d
+
+- if @site_wide_notices.any?
+  h3 = t('.site_wide_notices')
+  table class="table table-hover"
+    tr
+      th = t('.message')
+      th = t('.active')
+      th = t('.visible')
+    - @site_wide_notices.each do |c|
+      tr
+        td = c.message
+        td = c.active.nil? ? t('none') : (c.active ? t('yes') : t('no'))
+        td
+          - d = {} # remote: true, url: url_for(controller: :notices, id: c.id, action: :visible, method: :post), state: @notice.visible?}
+          = check_box_tag "visible-#{c.id}", c.visible?, c.visible?, data: d
+
+javascript:
+  $(document).ready(function() {
+    $("[data-myupdate]").change(function(event) {
+      event.preventDefault();
+      var url = this.getAttribute('data-url');
+      var data = 'visible='+this.checked;
+      var callback = renderResponse.bind(this);
+
+      $.post(url, data, callback);
+    });
+
+    function renderResponse(response) {
+      var container = $(this).data("myupdate");
+      alert(response);
+    }
+  });
