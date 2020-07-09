@@ -21,12 +21,8 @@
 
   div.form-group.col-sm-4
     = f.label :sourceable_id, class: 'control-label col-sm-5'
-    = f.autocomplete_field :sourceable_id, {label: Core.user_class.model_name.human, source:  main_app.users_path}, include_blank: true
-
-    /= f.autocomplete_field :id_in,{ label: User.model_name.human, source: main_app.users_path, include_blank: true}, 'redirect-url': "/admin/users/{{id}}" do |val|
-
-    / = f.autocomplete_field :sourceable_id, {source: main_app.admin_users_path}, {class: 'col-sm-6', selected: def_user, label: t('user')} do |x|
-    /   - User.find_by_id(x).email
+    = f.autocomplete_field :sourceable_id, {source: main_app.users_path}, {class: 'col-sm-6', selected: def_user, label: t('user')} do |x|
+      - User.find_by_id(x).email
     /, label: t('user')
     /= f.autocomplete_field :sourceable_id, label: t("user"), source:  main_app.users_path
     /= f.autocomplete_field_tag :sourceable_id, @notice.sourceable_id, source:  main_app.users_path

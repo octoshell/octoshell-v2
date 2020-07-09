@@ -1,45 +1,29 @@
 module Core
-  class Admin::NoticesController < Admin::ApplicationController
-    #load_and_authorize_resource :class => "Core::Notice", except: [:show, :hide, :index]
-    #load_resource :class => "Core::Notice" #, except: [:show, :hide, :index]
-    before_action :check_auth, except: [:show,:hide]
-
-    def check_auth
-      can? :manage, :notices
-    end
+  class NoticesController < ApplicationController
 
     def index
-     # logger.warn "--> #{self.instance_variables}"
-      # if !can?(:manage, :notices) #!can?(:manage, Core::Notice) && 
-      #   logger.warn "********** Not authorized"
-      #   redirect_to '/core'
-      # else
-        #logger.warn "============ #{params.inspect}"
-        par = notice_params.to_hash
-        par['notice'] ||= {}
-        respond_to do |format|
-          category = params[:category] ? params[:category] : 0
-          par['notice'][:category] = category
-          if par['notice'][:sourceable_id_enotice]
-            par['notice'][:sourceable] = User.find_by_id par['notice'][:sourceable_id_enotice]
-          end
-          format.html do
-            @search = Notice.search(par['notice'])
-            search_result = @search.result()#distinct: true).order(:id)
-            @notices = search_result
-            #logger.warn  "------------------------------\n #{par['notice'].inspect}\n#{@notices.inspect}"
-            without_pagination :notices
-          end
-          format.json do
-            # @notices = Notice.search(par['notice']).includes(:notice_show_options)
-            # json = { records: @notices.page(par[:page]).per(par[:per]), total: @notices.count }
-            # render json: json
-            @users = User.finder(params[:q])
-            render json: { records: @users.page(params[:page]).per(params[:per]),
-                           total: @users.count }
-          end
+      respond_to do |format|
+        format.html do
+          # @search = Notice.ransack(sourceable: current_user, category: 1, active: 1)
+          # @my_notices = @search.result()
+          @my_notices = Notice.where(sourceable: current_user, category: 1)
+
+          # @search2 = Notice.ransack(category: 0, active: 1)
+          # @site_wide_notices = @search2.result()
+          @site_wide_notices = Notice.where(category: 0, active: 1)
+
+          render :index
         end
-      # end
+        format.json do
+          @my_notices = Notice.ransack(sourceable: current_user, category: 1, active: 1).includes(:notice_show_options)
+          json = { records: @my_notices.page(par[:page]).per(par[:per]), total: @my_notices.count }
+
+          @sw_notices = Notice.ransack(sourceable: current_user, category: 1, active: 1).includes(:notice_show_options)
+          json[:records] << @sw_notices.page(par[:page]).per(par[:per])
+          json[:total] += @sw_notices.count
+          render json: json
+        end
+      end
     end
 
     def new
@@ -157,6 +141,21 @@ module Core
       else
         redirect_to [:admin, Notice]
       end
+    end
+
+    def visible
+      # logger.warn "<<<<<<<<<<<< #{params.inspect}"
+      par = notice_params
+      @notice = Notice.find_by_id(par[:notice_id])
+      updated = par[:visible].to_i == 0
+      Core::Notice.mylog "visible=#{par[:visible]} #{par[:visible].to_i}"
+      if @notice
+        opt = ::Core::NoticeShowOption.find_or_create_by(user: current_user, notice: @notice)
+        opt.hidden = updated
+        opt.save
+        Core::Notice.mylog "opt=#{opt.inspect} #{par[:visible].to_i}"
+      end
+      render json: {myupdate: updated ? 1 :0}
     end
 
     private
