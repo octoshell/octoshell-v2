@@ -31,9 +31,12 @@ module Core
             without_pagination :notices
           end
           format.json do
-            @notices = Notice.search(par['notice']).includes(:notice_show_options)
-            json = { records: @notices.page(par[:page]).per(par[:per]), total: @notices.count }
-            render json: json
+            # @notices = Notice.search(par['notice']).includes(:notice_show_options)
+            # json = { records: @notices.page(par[:page]).per(par[:per]), total: @notices.count }
+            # render json: json
+            @users = User.finder(params[:q])
+            render json: { records: @users.page(params[:page]).per(params[:per]),
+                           total: @users.count }
           end
         end
       # end
