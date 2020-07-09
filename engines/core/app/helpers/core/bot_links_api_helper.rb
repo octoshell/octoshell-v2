@@ -165,15 +165,21 @@ module Core
       data = Hash.new
 
       topic = Support::Topic.where(id: ticket.topic_id).take
-      data["topic_name_ru"] = topic.name_ru
-      data["topic_name_en"] = topic.name_en
+      unless topic.nil?
+        data["topic_name_ru"] = topic.name_ru
+        data["topic_name_en"] = topic.name_en
+      end
 
       project = Core::Project.where(id: ticket.project_id).take
-      data["project_title"] = project.title
+      unless project.nil?
+        data["project_title"] = project.title
+      end
 
       cluster = Core::Cluster.where(id: ticket.cluster_id).take
-      data["cluster_name_ru"] = cluster.name_ru
-      data["cluster_name_en"] = cluster.name_en
+      unless cluster.nil?
+        data["cluster_name_ru"] = cluster.name_ru
+        data["cluster_name_en"] = cluster.name_en
+      end
 
       data["who"] = who
       data["subject"] = ticket.subject
