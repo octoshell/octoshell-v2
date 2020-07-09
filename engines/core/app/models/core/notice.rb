@@ -90,42 +90,46 @@ module Core
       link
     end
 
-    def self.mylog txt
-      File.open("mylog.txt","a+"){|f| f.write "#{txt}\n"}
+    def self.mylog(txt)
+      File.open('mylog.txt', 'a+') { |f| f.write "#{txt}\n" }
     end
 
-    def self.show_notices current_user, params, request
+    def self.show_notices(current_user, params, request)
       # per-user: show only if sourceable is current user
       data = []
       # ----------------- PER USER -----------------------
-      Core::Notice.where('category > 0').where(sourceable: current_user, active: 1)
+      Core::Notice
+        .where('category > 0')
+        .where(sourceable: current_user, active: 1)
         .includes(:notice_show_options)
         .each do |note|
-        
+
         user_option = note.notice_show_options.where(user: current_user).take
         mylog "PerUser : #{note.notice_show_options.where(user: current_user).all.to_a.inspect}\n-------------\n"
-        next if user_option && user_option.hidden
+        next if user_option&.hidden
 
-        #logger.warn "--->>> #{current_user.id} <<<---"# #{data.inspect}"
+        # logger.warn "--->>> #{current_user.id} <<<---"# #{data.inspect}"
         data << conditional_show_notice(note, current_user, params, request)
       end
 
       # others: show for all (if handler returns not nil)
       # ----------------- SITE WIDE (0) & OTHERS -----------------------
-      Core::Notice.where('category < 1').where(active: 1)
+      Core::Notice
+        .where('category < 1')
+        .where(active: 1)
         .includes(:notice_show_options)
         .each do |note|
 
         user_option = note.notice_show_options.where(user: current_user).take
         mylog "SiteWide ================== #{user_option.inspect}; #{note.inspect}"
-        next if user_option && user_option.hidden
+        next if user_option&.hidden
 
         data << conditional_show_notice(note, current_user, params, request)
       end
-      data.reject{|x| x.nil?}
+      data.reject(&:nil?)
     end
 
-    def self.conditional_show_notice note, current_user, params, request
+    def self.conditional_show_notice(note, current_user, params, request)
       mylog "cond1 #{note.inspect}"
       n = Time.current
       return if note.show_from && (note.show_from > n)
