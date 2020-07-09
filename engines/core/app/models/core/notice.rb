@@ -53,6 +53,7 @@ module Core
     end
 
     def self.handle notice, user, params, request
+      # logger.warn "||||| #{@notice_handlers.inspect}"
       return nil if ! @notice_handlers
 
       handler = @notice_handlers[notice.kind.to_s]
@@ -89,6 +90,10 @@ module Core
       link
     end
 
+    def self.mylog txt
+      File.open("mylog.txt","a+"){|f| f.write "#{txt}\n"}
+    end
+
     def self.show_notices current_user, params, request
       # per-user: show only if sourceable is current user
       data = []
@@ -98,7 +103,7 @@ module Core
         .each do |note|
         
         user_option = note.notice_show_options.where(user: current_user).take
-        #logger.warn "+++++++++++++++++ #{user_option.inspect}"
+        mylog "PerUser : #{note.notice_show_options.where(user: current_user).all.to_a.inspect}\n-------------\n"
         next if user_option && user_option.hidden
 
         #logger.warn "--->>> #{current_user.id} <<<---"# #{data.inspect}"
@@ -112,7 +117,7 @@ module Core
         .each do |note|
 
         user_option = note.notice_show_options.where(user: current_user).take
-        logger.warn "================== #{user_option.inspect}; #{note.inspect}"
+        mylog "SiteWide ================== #{user_option.inspect}; #{note.inspect}"
         next if user_option && user_option.hidden
 
         data << conditional_show_notice(note, current_user, params, request)
@@ -121,14 +126,13 @@ module Core
     end
 
     def self.conditional_show_notice note, current_user, params, request
-      logger.warn "------------------- #{note.inspect}"
+      mylog "cond1 #{note.inspect}"
       n = Time.current
       return if note.show_from && (note.show_from > n)
       return if note.show_till && (note.show_till < n)
       ret = Core::Notice.handle(note, current_user, params, request)
-      logger.warn ">>> #{ret}"
+      mylog "cond2 - result=#{ret}"
       ret
     end
-
   end
 end
