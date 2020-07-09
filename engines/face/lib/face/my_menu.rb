@@ -117,7 +117,7 @@ module Face
            else
              new_items = find_items(user_menu, view_items)
            end
-           raise 'new_items.count != view_items.count' if new_items.count != view_items.count
+           #raise 'new_items.count != view_items.count' if new_items.count != view_items.count
            conditions = { menu: value.name.to_s, admin: true }
            rel = Face::MenuItemPref.where(conditions)
 
