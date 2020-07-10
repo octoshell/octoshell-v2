@@ -239,6 +239,8 @@ en:
       why_dont_agree: Please, tell us why you don't agree with this?
       why_hide: Please, tell us why do you want to hide this rule?
     job:
+      detailed:
+        back: Return
       show:
         avg: Average %{link}
         base: Base features

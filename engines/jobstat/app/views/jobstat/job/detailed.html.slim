@@ -18,14 +18,18 @@ p
   - man_list.each do |step|
       br
       = step
+- if @detailed_types_count > 0
+  p = "После выполнения всех указанных выше шагов необходимо выполнить на кластере команду, указав имя выходного файла анализатора и ID задачи:"
+  code
+    = "/opt/analysis/upload -i '#{guid}' -f "
+    b = "<ENTER_OUTPUT_FILENAME>"
+    = " -j "
+    b = "<ENTER_JOB_ID>"
 
-p = "В конце необходимо выполнить на кластере команду, указав имя выходного файла анализатора и ID задачи:"
-code
-  = "/opt/analysis/upload -i '#{guid}' -f "
-  b = "<ENTER_OUTPUT_FILENAME>"
-  = " -j "
-  b = "<ENTER_JOB_ID>"
+br
 
-= form_tag url: "analyze?id=#{@analysis_id}", method: "get" do
-  = submit_tag("Analyze") 
+- link = @job.id
+a href="#{link}" class="btn btn-default" style="width : 15%;" role="button"
+  = t(".back")
+
 

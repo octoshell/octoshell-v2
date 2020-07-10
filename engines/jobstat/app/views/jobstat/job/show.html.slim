@@ -70,11 +70,6 @@ div class="row"
           =t('.nodes')
         td
           = @job[:nodelist].gsub(',',', ')
-      tr
-        td
-          ="extra_data"
-        td
-          = @job.get_extra_data
 
   div class="col-md-4"
     //fixme! translate
@@ -252,7 +247,7 @@ table class="table table-bordered table-striped"
           - if cond["modules"].length > 0
             br
             - cond["modules"].each do |module_info|
-              a class="list-group-item list-group-item-action" href= "detailed?analysis_id=#{module_info[:name]}&id=#{@job.id}"
+              a class="list-group-item list-group-item-action" href= "detailed?analysis_id=#{module_info["name"]}&id=#{@job.id}"
                 div title="#{module_info['type_text']}" = module_info['soft_text']
   - else
     tr
@@ -266,7 +261,7 @@ table class="table table-bordered table-striped"
 - type_list = @rules_plus['detailed_analysis_types']
 - if rules.length > 0
   h4 = t('.detailed')
-  p = "#{t('.descr4_1')} #{@detailed_types[0]['type_text']} #{t('.descr4_2')} #{@detailed_types[0]['soft_text']}."
+  p = "#{t('.descr4_1')} \"#{@detailed_types[0]['type_text']}\" #{t('.descr4_2')} #{@detailed_types[0]['soft_text']}."
   table class="table table-bordered table-striped"
     tr
       th
@@ -358,7 +353,7 @@ table class="table table-bordered table-striped"
           - if cond["modules"].length > 0
             br
             - cond["modules"].each do |module_info|
-              a class="list-group-item list-group-item-action" href= "detailed?analysis_id=#{module_info[:name]}&id=#{@job.id}"
+              a class="list-group-item list-group-item-action" href= "detailed?analysis_id=#{module_info["name"]}&id=#{@job.id}"
                 div title="#{module_info['type_text']}" = module_info['soft_text']
 
 
@@ -376,7 +371,7 @@ div class="detailed-available"
   p
     = t('.initiated_by')
     span = " "
-    - link = "#{@job.initiator.id}"
+    - link = "#{@job.initiator.drms_job_id}"
     a href="#{link}" ##{link}.
 
 - count_initiatees = @job.initiatees.length
@@ -385,7 +380,7 @@ div class="detailed-available"
     = t('.initiated_found')
     br
     - @job.initiatees.sort_by{ |job| job.id }.each do |cond|
-      - link = "#{cond.id}"
+      - link = "#{cond.drms_job_id}"
       a href="#{link}" ##{link}
       br
 

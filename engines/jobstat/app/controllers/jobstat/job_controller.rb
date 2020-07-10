@@ -108,6 +108,7 @@ module Jobstat
 
     def detailed
       @detailed_info = Job.rules['detailed_analysis_types'][params[:analysis_id]]
+      @detailed_types_count = (Job.rules['detailed'][params[:analysis_id]] || {}).reject{|_,obj| obj["public"]==0}.length || 0
       @analysis_id = params[:analysis_id]
       @job = Job.find(params[:id])
       if @detailed_info.nil?
