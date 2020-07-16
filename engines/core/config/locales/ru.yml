@@ -295,6 +295,7 @@ ru:
   answers:
     noo: нет
     yess: да
+    other: другое
   choose_value: Выберите значение
   core:
     notice:
@@ -305,6 +306,7 @@ ru:
         visible: Показывается
         active: Активно
         message: Содержание
+        category: Категория
         hidden-by-user: Скрыто пользователем
         site_wide_notices: Общие
         my_notices: Персональные
