@@ -19,7 +19,8 @@ Face::MyMenu.items_for(:user_submenu) do
            %r{^notices})
 end
 
-Core::Notice.register_def_per_user_handler
+Core::Notice.register_def_nil_kind_handler
+# Core::Notice.register_def_woldwide_handler
 
 Core::Notice.register_kind 'jobstat' do |notice, user, params, request|
   nil

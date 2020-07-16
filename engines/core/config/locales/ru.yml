@@ -299,6 +299,15 @@ ru:
   core:
     notice:
       notices_menu: Уведомления
+    notices:
+      index:
+        title: Уведомления
+        visible: Показывается
+        active: Активно
+        message: Содержание
+        hidden-by-user: Скрыто пользователем
+        site_wide_notices: Общие
+        my_notices: Персональные
     admin:
       cities:
         destroy:
@@ -588,6 +597,9 @@ ru:
         new:
           title: Добавление новой области науки
       notices:
+        site-wide: Общее
+        per-user: Персональное
+        other: Другое
         show:
           notices: Уведомления
         form:

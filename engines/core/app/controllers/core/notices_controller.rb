@@ -11,18 +11,24 @@ module Core
         format.html do
           # @search = Notice.ransack(sourceable: current_user, category: 1, active: 1)
           # @my_notices = @search.result()
-          @my_notices = Notice.where(sourceable: current_user, category: 1)
+          @my_notices = Notice.where(
+            sourceable: current_user,
+            category: Notice::PER_USER
+          )
 
           # @search2 = Notice.ransack(category: 0, active: 1)
           # @site_wide_notices = @search2.result()
-          @site_wide_notices = Notice.where(category: 0, active: 1)
+          @site_wide_notices = Notice.where(
+            category: Notice::SITE_WIDE,
+            active: 1,
+          )
 
           render :index
         end
         format.json do
           @my_notices = Notice.ransack(
             sourceable: current_user,
-            category: 1,
+            category: Notice.PER_USER,
             active: 1
           ).includes(:notice_show_options)
           json = {
@@ -32,7 +38,7 @@ module Core
 
           @sw_notices = Notice.ransack(
             sourceable: current_user,
-            category: 1,
+            category: Notice.SITE_WIDE,
             active: 1
           ).includes(:notice_show_options)
           json[:records] << @sw_notices.page(par[:page]).per(par[:per])
@@ -128,7 +134,7 @@ module Core
     def destroy
       par = notice_params
       @notice = Notice.find_by_id(par[:id])
-      @notice.destroy if @notice
+      @notice&.destroy
       if par[:retpath]
         redirect_to par[:retpath]
       else
@@ -164,6 +170,7 @@ module Core
       # logger.warn "<<<<<<<<<<<< #{params.inspect}"
       par = notice_params
       @notice = Notice.find_by_id(par[:notice_id])
+      # is_my = notice_params[:my].to_i == 1
       updated = !par[:visible].to_i.zero?
       Core::Notice.mylog "visible=#{par[:visible]} #{updated}"
       if @notice
@@ -182,7 +189,7 @@ module Core
 
     def notice_params
       params.permit(
-        :id, :notice_id, :category,
+        :id, :notice_id, :category, :my,
         :sourceable_id, :sourceable_type,
         :sourceable_id_eq, :sourceable_type_eq,
         :linkable_id, :linkable_type,
