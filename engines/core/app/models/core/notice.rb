@@ -25,7 +25,7 @@
 
 module Core
   class Notice < ApplicationRecord
-    belongs_to :sourceable, polymorphic: true # user or object which should be noticed
+    belongs_to :sourceable, polymorphic: true # user or object to be noticed
     belongs_to :linkable, polymorphic: true   # extra data
     has_many :notice_show_options
 
@@ -52,16 +52,16 @@ module Core
     def self.register_kind(k, &block)
       @notice_handlers ||= {}
       @notice_handlers[k] = block
-      logger.warn "::: @handlers= #{@notice_handlers.inspect}"
+      # logger.warn "::: @handlers= #{@notice_handlers.inspect}"
     end
 
     def self.handle(notice, user, params, request)
-      mylog "||||| #{@notice_handlers.inspect}"
+      # mylog "||||| #{@notice_handlers.inspect}"
       return nil unless @notice_handlers
 
       handler = @notice_handlers[notice.kind.to_s]
       # nil / [:flash_type, message]
-      mylog "-++> #{handler}"
+      # mylog "-++> #{handler}"
       handler.nil? ? nil : handler.call(notice, user, params, request)
     end
 
@@ -114,9 +114,9 @@ module Core
       link
     end
 
-    def self.mylog(txt)
-      File.open('mylog.txt', 'a+') { |f| f.write "#{txt}\n" }
-    end
+    # def self.mylog(txt)
+    #   File.open('mylog.txt', 'a+') { |f| f.write "#{txt}\n" }
+    # end
 
     def category_str
       if category.zero?
@@ -139,7 +139,7 @@ module Core
         .each do |note|
 
         user_option = note.notice_show_options.where(user: current_user).take
-        mylog "PerUser : #{note.notice_show_options.where(user: current_user).all.to_a.inspect}\n-------------\n"
+        # mylog "PerUser : #{note.notice_show_options.where(user: current_user).all.to_a.inspect}\n-------------\n"
         next if user_option&.hidden
 
         # logger.warn "--->>> #{current_user.id} <<<---"# #{data.inspect}"
@@ -155,7 +155,7 @@ module Core
         .each do |note|
 
         user_option = note.notice_show_options.where(user: current_user).take
-        mylog "SiteWide =============== #{user_option.inspect}; #{note.inspect}"
+        # mylog "SiteWide =============== #{user_option.inspect}; #{note.inspect}"
         next if user_option&.hidden
 
         data << conditional_show_notice(note, current_user, params, request)
@@ -164,12 +164,12 @@ module Core
     end
 
     def self.conditional_show_notice(note, current_user, params, request)
-      mylog "cond1 #{note.inspect}"
+      # mylog "cond1 #{note.inspect}"
       n = Time.current
       return nil if note.show_from && (note.show_from > n)
       return nil if note.show_till && (note.show_till < n)
       ret = Core::Notice.handle(note, current_user, params, request)
-      mylog "cond2 - result=#{ret.inspect}"
+      # mylog "cond2 - result=#{ret.inspect}"
       ret
     end
   end
