@@ -4,7 +4,7 @@ services:
   octoshell:
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
 
     image: octoshell
 

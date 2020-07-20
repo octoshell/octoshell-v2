@@ -1,4 +1,4 @@
-FROM debian
+FROM debian:buster
 MAINTAINER srcc
 
 # update and install dependencies
@@ -24,18 +24,26 @@ RUN curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rben
 RUN echo "export PATH=~/.rbenv/bin:\$PATH" >> ~/.bashrc
 RUN echo "eval \"\$(rbenv init -)\"" >> ~/.bashrc
 
-WORKDIR /root/
+RUN bash -c "source ~/.bashrc ; rbenv install 2.5.1 ; rbenv global 2.5.1"
+RUN bash -c "source ~/.bashrc ; gem install bundler --version '< 2.0' ; bundle config --global --jobs 8"
 
-RUN git clone https://github.com/octoshell/octoshell-v2.git
-WORKDIR octoshell-v2
+RUN mkdir /root/octoshell-v2-build
+WORKDIR /root/octoshell-v2-build
+
+COPY ./Gemfile ./
+RUN cat Gemfile | grep -E -v "path.*engines" > Gemfile.global
+
+RUN bash -c "source ~/.bashrc ; bundle install --gemfile=Gemfile.global"
+
+COPY ./ /root/octoshell-v2
+WORKDIR /root/octoshell-v2
 
 RUN rm -f Gemfile.lock
+RUN bash -c "source ~/.bashrc ; bundle install"
+
 RUN cp config/database.yml.example config/database.yml
 
-RUN bash -c "source ~/.bashrc ; rbenv install 2.5.1 ; rbenv global 2.5.1"
-RUN bash -c "source ~/.bashrc ; gem install bundler --version '< 2.0' ; bundle install"
-
-COPY docker_init.sh  /root/
+COPY docker/docker_init.sh  /root/
 
 ENTRYPOINT ["/bin/bash", "-c"]
 

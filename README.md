@@ -12,7 +12,6 @@ Important: all data is lost if you delete the container.
 Requires: Docker and Docker Composer
 
 1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
-1. execute `cd octoshell-v2/docker`
 1. execute `docker-compose up -d --build`
 1. visit `127.0.0.1:35000` (login: `admin@octoshell.ru`, password: `123456`)
 
@@ -24,7 +23,7 @@ We assume, that all below is doing as user `octo` (or root, if it is said 'as ro
 1. install as root redis (under debian/ubuntu: `sudo apt-get install -y redis-server redis-tools`)
 1. install postgresql (under debian/ubuntu: `sudo apt-get install -y postgresql postgresql-server-dev-all`)
 1. as root add database user octo: `sudo -u postgres bash -c "psql -c \"CREATE USER octo WITH PASSWORD 'HERE_COMES_YOUR_DESIRED_PASSWORD';\""`
-1. as root add database user octo: `sudo -u postgres bash -c "psql -c \"ALTER USER octo CREATEDB;\""`
+1. as root allow user octo to create databases: `sudo -u postgres bash -c "psql -c \"ALTER USER octo CREATEDB;\""`
 1. enable and start redis and postgresql (e.g. `systemctl enable redis; systemctl enable postgresql; systemctl start redis; systemctl start postgresql`)
 1. check if your postgresql is listening 127.0.0.1 port 5432 (e.g. `ss -lpn |grep 5432`). If it is not, check postgresql config files (in debian/ubuntu - /etc/postgresql/VERSION/main/postgresql.conf, 'port' parameter)
 1. as user install rbenv (e.g. `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
