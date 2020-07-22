@@ -1,7 +1,14 @@
 div class="page-header"
   h1 = t(".title", default: "Notices")
 
-- if @my_notices.any?
+- any_my = @my_notices.any?
+- any_site = @site_wide_notices.any?
+
+- if ! (any_my || any_site)
+  div.text-center.text-success
+    b = t('.no_notices')
+
+- if any_my
   h3 = t('.my_notices')
   table class="table table-hover"
     tr
@@ -31,7 +38,7 @@ div class="page-header"
           a.btn.btn-default.hidden-value data-url="#{url}" data-id="is_hidden_#{c.id}"
             = t('change')
 
-- if @site_wide_notices.any?
+- if any_site
   h3 = t('.site_wide_notices')
   table class="table table-hover"
     tr

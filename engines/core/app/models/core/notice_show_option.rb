@@ -30,7 +30,7 @@ module Core
     # answer:   string  = optional (user answer)
 
     def self.versions_enabled
-      true
+      false
     end
   end
 end

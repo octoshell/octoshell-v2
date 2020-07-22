@@ -312,6 +312,7 @@ ru:
         hidden-by-user: Скрыто пользователем
         site_wide_notices: Общие
         my_notices: Персональные
+        no_notices: Уведомлений нет
     admin:
       cities:
         destroy:

@@ -31,9 +31,9 @@
           td
             - organization = project.organization
             = organization.present? ? organization.name : t(".no_organization.html")
-            - if organization_department.present?
+            - if project.organization_department.present?
               | (
-              = organization_department.name
+              = project.organization_department.name
               | )
           td
             = @count_all_members[project.id] || 0

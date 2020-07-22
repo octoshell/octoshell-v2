@@ -45,14 +45,14 @@
     = f.radio_button :active, nil, label: 'none', value: :nil, inline: true
   div.form-group.col-sm-4
     = f.label :show_from, class: 'control-label col-sm-4'
-    = f.text_field :show_from, options.merge(value: from, label: t('.show_from'), class: 'col-sm-8 datepicker')
+    = f.text_field :show_from, options.merge(value: from, label: t('.show_from'), class: 'col-sm-8 datepicker', :'data-date-start-date' => '01.01.1900')
   div.form-group.col-sm-4
     = f.label :show_till, class: 'control-label col-sm-4'
-    = f.text_field :show_till, options.merge(value: till, label: t('.show_till'), class: 'col-sm-8 datepicker')
+    = f.text_field :show_till, options.merge(value: till, label: t('.show_till'), class: 'col-sm-8 datepicker', :'data-date-end-date' => '+3650d')
 
-  div.form-group.col-sm-4
+  / div.form-group.col-sm-4
     = f.label :visible, class: 'control-label col-sm-4'
-    = check_box_tag t('visible'), @notice.visible?, @notice.visible?, options.merge(class: 'col-sm-8')
+    = f.check_box :visible, options.merge(class: 'col-sm-8')
 
   div.form-group.col-sm-4
     = f.label :active, class: 'control-label col-sm-4'

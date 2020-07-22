@@ -4,8 +4,10 @@
       th = t('.message')
       th = t('.category')
       th = t('.kind')
-      th = t('.type')
       th = t('.sourceable')
+      th = t('.source_name')
+      th = t('.show_from')
+      th = t('.show_till')
       th = t('.active')
       th = t('.visible')
       th = t('.action')
@@ -17,6 +19,8 @@
         td = c.kind
         td = c.sourceable.class
         td = c.source_name
+        td = c.show_from
+        td = c.show_till
         td = c.active.nil? ? t('none') : (c.active ? t('yes') : t('no'))
         td = c.visible? ? t('yes') : t('no')
 

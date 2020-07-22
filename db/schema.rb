@@ -192,6 +192,15 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.index ["project_id"], name: "index_core_accesses_on_project_id"
   end
 
+  create_table "core_bot_links", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "token"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_core_bot_links_on_user_id"
+ end
+
   create_table "core_cities", id: :serial, force: :cascade do |t|
     t.integer "country_id"
     t.string "title_ru", limit: 255
@@ -1221,4 +1230,5 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "core_bot_links", "users"
 end
