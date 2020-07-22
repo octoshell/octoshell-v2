@@ -104,7 +104,7 @@ module Core
       # FIXME!!!! [:admin, :core, self] does not work :(((((
       link = link_to(
         '<i class="fas fa-bell-slash close"></i>'.html_safe,
-        "/core/admin/notices/#{id}/hide?retpath=#{request.fullpath}",
+        "/core/notices/#{id}/hide?retpath=#{request.fullpath}",
         data: { retpath: request.fullpath }
       )
       link

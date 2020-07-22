@@ -4,9 +4,6 @@ Core::Engine.routes.draw do
     get :generate
   end
   namespace :admin do
-    resources :notices do
-      get :hide
-    end
     resources :members, only: :index
     resources :projects do
       member do
@@ -95,6 +92,7 @@ Core::Engine.routes.draw do
 
   resources :notices do
     post :visible
+    get :hide
   end
 
   resources :credentials, only: [:new, :create] do

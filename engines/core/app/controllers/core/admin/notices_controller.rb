@@ -1,7 +1,7 @@
 module Core
   class Admin::NoticesController < Admin::ApplicationController
-    #load_and_authorize_resource :class => "Core::Notice", except: [:show, :hide, :index]
-    #load_resource :class => "Core::Notice" #, except: [:show, :hide, :index]
+    # load_and_authorize_resource :class => "Core::Notice", except: [:show, :hide, :index]
+    # load_resource :class => "Core::Notice" #, except: [:show, :hide, :index]
     before_action :check_auth, except: [:show,:hide]
 
     def check_auth
@@ -9,34 +9,27 @@ module Core
     end
 
     def index
-     # logger.warn "--> #{self.instance_variables}"
-      # if !can?(:manage, :notices) #!can?(:manage, Core::Notice) && 
-      #   logger.warn "********** Not authorized"
-      #   redirect_to '/core'
-      # else
-        #logger.warn "============ #{params.inspect}"
-        par = notice_params.to_hash
-        par['notice'] ||= {}
-        respond_to do |format|
-          category = params[:category] ? params[:category] : 0
-          par['notice'][:category] = category
-          if par['notice'][:sourceable_id_enotice]
-            par['notice'][:sourceable] = User.find_by_id par['notice'][:sourceable_id_enotice]
-          end
-          format.html do
-            @search = Notice.search(par['notice'])
-            search_result = @search.result()#distinct: true).order(:id)
-            @notices = search_result
-            #logger.warn  "------------------------------\n #{par['notice'].inspect}\n#{@notices.inspect}"
-            without_pagination :notices
-          end
-          format.json do
-            @notices = Notice.search(par['notice'])
-            json = { records: @notices.page(par[:page]).per(par[:per]), total: @notices.count }
-            render json: json
-          end
+      par = notice_params.to_hash
+      par['notice'] ||= {}
+      respond_to do |format|
+        category = params[:category] ? params[:category] : 0
+        par['notice'][:category] = category
+        if par['notice'][:sourceable_id_enotice]
+          par['notice'][:sourceable] = User.find_by_id par['notice'][:sourceable_id_enotice]
         end
-      # end
+        format.html do
+          @search = Notice.search(par['notice'])
+          search_result = @search.result() # distinct: true).order(:id)
+          @notices = search_result
+          # logger.warn  "------------------------------\n #{par['notice'].inspect}\n#{@notices.inspect}"
+          without_pagination :notices
+        end
+        format.json do
+          @notices = Notice.search(par['notice'])
+          json = { records: @notices.page(par[:page]).per(par[:per]), total: @notices.count }
+          render json: json
+        end
+      end
     end
 
     def new
@@ -53,22 +46,17 @@ module Core
     end
 
     def create
-      #"notice"=>{"id"=>"11", "show_from"=>"2020.04.03", "show_till"=>"2020.04.03",
-      #  "linkable_id"=>"", "linkable_type"=>"", "category"=>"0", 
-      #  "message"=>"тест тест, меня слышно?", "count"=>"21"}
-
       par = notice_params
-      user = User.find_by_id(par[:notice][:sourceable_id])
-      logger.warn "User = #{user}"
-      
-      opts = {sourceable_type: 'User'}.merge par[:notice]
-      @notice = Notice.create(opts.reject{|k,v| v.nil?})
-      
-      # if user
-      #   @notice.sourceable = user
-      # end
+      # user = User.find_by_id(par[:notice][:sourceable_id])
+
+      category_alt = par[:notice].delete(:category_alt)
+      par[:category] = category_alt.to_i if category_alt != ''
+      par[:category] = par[:category].to_i
+      opts = { sourceable_type: 'User' }.merge par[:notice]
+      @notice = Notice.create(opts.reject { |_, v| v.nil? })
+
       if @notice.save
-        logger.warn "***** #{@notice.inspect}"
+        # logger.warn "***** #{@notice.inspect}"
         flash_message :info, t('.notice_succeed')
         redirect_to [:admin, @notice]
       else
@@ -80,15 +68,13 @@ module Core
     def show
       par = notice_params
       @notice = Notice.find(par[:id])
-      logger.warn "Notice=#{@notice.inspect}"
-      if @notice && !can?(:manage, :notices)
-        logger.warn "can - not!"
-        if @notice.category == 0 && @notice.sourceable != current_user
-          logger.warn "#{@notice.sourceable} != #{current_user}"
-          # NOT SHOW
-          @notice = nil
-        end
-      end
+      # logger.warn "Notice=#{@notice.inspect}"
+      return unless @notice && !can?(:manage, :notices)
+      # logger.warn "can - not!"
+      return unless @notice.category.zero? && @notice.sourceable != current_user
+      # logger.warn "#{@notice.sourceable} != #{current_user}"
+      # NOT SHOW
+      @notice = nil
     end
 
     def edit
@@ -98,6 +84,9 @@ module Core
 
     def update
       par = notice_params[:notice]
+      category_alt = par.delete(:category_alt)
+      par[:category] = category_alt.to_i if category_alt != ''
+      par[:category] = par[:category].to_i
       @notice = Notice.find(par[:id])
       if @notice.update par
         redirect_to [:admin, @notice]
@@ -109,10 +98,7 @@ module Core
     def destroy
       par = notice_params
       @notice = Notice.find_by_id(par[:id])
-      if @notice
-
-        end
-      end
+      @notice&.destroy
       if par[:retpath]
         redirect_to par[:retpath]
       else
@@ -123,21 +109,25 @@ module Core
     private
 
     def notice_params
-
-      params.permit(:id, :notice_id, :category,
+      params.permit(
+        :id, :notice_id, :category,
         :sourceable_id, :sourceable_type,
         :sourceable_id_eq, :sourceable_type_eq,
         :linkable_id, :linkable_type,
         :type, :message, :count, :retpath,
         :show_till, :show_from,
         :category_alt,
-        :notice => [:id, :category,
+        :notice => [
+          :id, :category,
           :sourceable_id, :sourceable_type,
           :sourceable_id_eq, :sourceable_type_eq,
           :linkable_id, :linkable_type,
           :show_till, :show_from,
-          :type, :message, :count],
-        )
+          :type, :message, :count,
+          :active, :category_alt, :kind,
+          :category, :show_from_gt, :show_till_lt
+        ]
+      )
     end
   end
 end
