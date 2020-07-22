@@ -56,12 +56,9 @@ module Core
     end
 
     def self.handle(notice, user, params, request)
-      # mylog "||||| #{@notice_handlers.inspect}"
       return nil unless @notice_handlers
 
       handler = @notice_handlers[notice.kind.to_s]
-      # nil / [:flash_type, message]
-      # mylog "-++> #{handler}"
       handler.nil? ? nil : handler.call(notice, user, params, request)
     end
 
@@ -79,7 +76,6 @@ module Core
 
     def self.register_def_nil_kind_handler
       Core::Notice.register_kind nil.to_s do |notice, user, _, request|
-        # logger.warn "-> #{notice.id}/#{notice.kind}/#{notice.category}"
         if notice.visible? user
           [
             :info,
@@ -114,10 +110,6 @@ module Core
       link
     end
 
-    # def self.mylog(txt)
-    #   File.open('mylog.txt', 'a+') { |f| f.write "#{txt}\n" }
-    # end
-
     def category_str
       if category.zero?
         I18n.t('.core.admin.notices.site-wide')
@@ -139,10 +131,8 @@ module Core
         .each do |note|
 
         user_option = note.notice_show_options.where(user: current_user).take
-        # mylog "PerUser : #{note.notice_show_options.where(user: current_user).all.to_a.inspect}\n-------------\n"
         next if user_option&.hidden
 
-        # logger.warn "--->>> #{current_user.id} <<<---"# #{data.inspect}"
         data << conditional_show_notice(note, current_user, params, request)
       end
 
@@ -155,7 +145,6 @@ module Core
         .each do |note|
 
         user_option = note.notice_show_options.where(user: current_user).take
-        # mylog "SiteWide =============== #{user_option.inspect}; #{note.inspect}"
         next if user_option&.hidden
 
         data << conditional_show_notice(note, current_user, params, request)
@@ -164,13 +153,22 @@ module Core
     end
 
     def self.conditional_show_notice(note, current_user, params, request)
-      # mylog "cond1 #{note.inspect}"
       n = Time.current
       return nil if note.show_from && (note.show_from > n)
       return nil if note.show_till && (note.show_till < n)
       ret = Core::Notice.handle(note, current_user, params, request)
-      # mylog "cond2 - result=#{ret.inspect}"
       ret
+    end
+
+    def self.get_count_for_user(user)
+      peruser = Core::Notice
+        .where('category > 0')
+        .where(sourceable: user, active: 1)
+        .count
+      sitewide = Core::Notice
+        .where('category < 1')
+        .where(active: 1).count
+      peruser + sitewide
     end
   end
 end

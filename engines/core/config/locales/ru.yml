@@ -300,6 +300,8 @@ ru:
   core:
     notice:
       notices_menu: Уведомления
+      notices_menu_count:
+        html: Уведомления <span class="badge info">%{count}</span>
     notices:
       index:
         title: Уведомления
@@ -1014,3 +1016,5 @@ ru:
     you_have_to_fill_departments: Вы должны создать подразделения для организации!
   'no': нет
   'yes': да
+  'none': отсутствует
+  'change': сменить

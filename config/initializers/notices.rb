@@ -8,15 +8,25 @@ module Core
 end
 
 Face::MyMenu.items_for(:admin_submenu) do
-  if can?(:manage, :tickets)
-    add_item('notices', t("core.notice.notices_menu"), core.admin_notices_path,
-             %r{^notices})
-  end
+  return unless can?(:manage, :notices)
+  add_item('notices', t('core.notice.notices_menu'), core.admin_notices_path,
+           %r{^notices})
 end
 
 Face::MyMenu.items_for(:user_submenu) do
-  add_item('notices', t("core.notice.notices_menu"), core.notices_path,
-           %r{^notices})
+  notices_count = Core::Notice.get_count_for_user current_user
+  if notices_count.zero?
+    add_item('notices', t('core.notice.notices_menu'), core.notices_path,
+             %r{^notices})
+  else
+    add_item(
+      'notices',
+      t('core.notice.notices_menu_count.html', count: notices_count).html_safe,
+      core.notices_path,
+      %r{^notices})
+  end
+  # add_item('notices', t('core.notice.notices_menu'), core.notices_path,
+  #          %r{^notices})
 end
 
 Core::Notice.register_def_nil_kind_handler

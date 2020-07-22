@@ -1,6 +1,5 @@
 module Support
   module ApplicationHelper
-
     def responsible_user_topics(ticket)
       ticket.possible_responsibles.map do |r|
         user_topics_array = r.second
@@ -19,22 +18,32 @@ module Support
 
     def support_admin_submenu_items
       menu = Face::MyMenu.new
-      menu.add_item_without_key(t("engine_submenu.tickets_list"),
-                                admin_tickets_path, 'support/admin/tickets')
+      menu.add_item_without_key(
+        t('engine_submenu.tickets_list'),
+        admin_tickets_path,
+        'support/admin/tickets'
+      )
 
-      menu.add_item_without_key(t("engine_submenu.reply_templates"),
-                                admin_reply_templates_path, 'support/admin/reply_templates')
+      menu.add_item_without_key(
+        t('engine_submenu.reply_templates'),
+        admin_reply_templates_path,
+        'support/admin/reply_templates'
+      )
 
-      menu.add_item_without_key(t("engine_submenu.tags"),
-                                admin_tags_path, 'support/admin/tags')
+      menu.add_item_without_key(
+        t('engine_submenu.tags'),
+        admin_tags_path,
+        'support/admin/tags'
+      )
 
-      menu.add_item_without_key(t("engine_submenu.topics"),
-                                admin_topics_path, 'support/admin/topics')
+      menu.add_item_without_key(
+        t('engine_submenu.topics'),
+        admin_topics_path,
+        'support/admin/topics'
+      )
 
-      menu.add_item_without_key(t("engine_submenu.fields"),
+      menu.add_item_without_key(t('engine_submenu.fields'),
                                 admin_fields_path, 'support/admin/fields')
-
-
 
       # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.tickets_list"),
       #                                   url: [:admin, :tickets],
