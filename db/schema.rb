@@ -378,7 +378,10 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category"
-
+    t.string "kind"
+    t.datetime "show_from"
+    t.datetime "show_till"
+    t.integer "active"
     t.index ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id"
     t.index ["sourceable_type", "sourceable_id"], name: "index_core_notices_on_sourceable_type_and_sourceable_id"
   end
@@ -1226,5 +1229,6 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.index ["url"], name: "index_wikiplus_pages_on_url", unique: true
   end
 
-
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "core_bot_links", "users"
 end

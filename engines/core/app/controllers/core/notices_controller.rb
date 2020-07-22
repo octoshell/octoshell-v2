@@ -77,9 +77,8 @@ module Core
       opts = { sourceable_type: 'User' }.merge par
       opts[:category] = category_alt.to_i if category_alt != ''
 
-      # logger.warn "-------------------------- #{@opts}"
       @notice = Notice.create(opts.reject { |_, v| v.nil? })
-
+      
       if @notice.save
         # logger.warn "***** #{@notice.inspect}"
         flash_message :info, t('.notice_succeed')
@@ -188,13 +187,14 @@ module Core
         :linkable_id, :linkable_type,
         :type, :message, :count, :retpath,
         :show_till, :show_from, :category_alt,
-        :visible, :hidden,
+        :hidden,
         notice: %i[
           id category category_alt kind visible active
           sourceable_id sourceable_type
           sourceable_id_eq sourceable_type_eq
           linkable_id linkable_type
           show_till show_from type message count
+          category_alt kind active
         ]
       )
     end
