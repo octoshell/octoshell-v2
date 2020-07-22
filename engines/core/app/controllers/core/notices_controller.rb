@@ -147,11 +147,6 @@ module Core
       # logger.warn "=== #{params.inspect}"
       @notice = Notice.find_by_id(par[:notice_id])
       if @notice
-        # if can?(:manage, :notices) or (@notice.category==0 && @notice.sourceable==current_user)
-        #   # logger.warn "==================================== No destroy #{@notice.id} (#{par[:retpath]})"
-        #   @notice.active = false
-        #   @notice.save
-        # end
         opt = ::Core::NoticeShowOption.find_or_create_by(
           user: current_user,
           notice: @notice
@@ -171,18 +166,16 @@ module Core
       par = notice_params
       @notice = Notice.find_by_id(par[:notice_id])
       # is_my = notice_params[:my].to_i == 1
-      updated = !par[:visible].to_i.zero?
-      Core::Notice.mylog "visible=#{par[:visible]} #{updated}"
+      hidden_now = par[:hidden].to_i.zero?
       if @notice
         opt = ::Core::NoticeShowOption.find_or_create_by(
           user: current_user,
           notice: @notice
         )
-        opt.hidden = updated
+        opt.hidden = hidden_now
         opt.save
-        Core::Notice.mylog "opt=#{opt.inspect}"
       end
-      render json: { myupdate: updated ? 1 : 0 }
+      render json: { myupdate: hidden_now ? 1 : 0 }
     end
 
     private
@@ -194,7 +187,8 @@ module Core
         :sourceable_id_eq, :sourceable_type_eq,
         :linkable_id, :linkable_type,
         :type, :message, :count, :retpath,
-        :show_till, :show_from, :category_alt, :visible,
+        :show_till, :show_from, :category_alt,
+        :visible, :hidden,
         notice: %i[
           id category category_alt kind visible active
           sourceable_id sourceable_type

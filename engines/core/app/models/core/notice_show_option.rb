@@ -14,7 +14,13 @@
 #  index_core_notice_show_options_on_core_notice_id  (core_notice_id)
 #  index_core_notice_show_options_on_core_user_id    (core_user_id)
 #
+
 module Core
+  #
+  # Disable notice show by user and possibly other useful things
+  #
+  # @author [serg]
+  #
   class NoticeShowOption < ApplicationRecord
     belongs_to :user
     belongs_to :notice
@@ -22,5 +28,9 @@ module Core
     # hidden:   boolean = is hidden by user
     # resolved: boolean = optional (mark as resolved)
     # answer:   string  = optional (user answer)
+
+    def self.versions_enabled
+      true
+    end
   end
 end
