@@ -90,6 +90,11 @@ Core::Engine.routes.draw do
     end
   end
 
+  resources :notices do
+    post :visible
+    get :hide
+  end
+
   resources :credentials, only: [:new, :create] do
     put :deactivate
   end

@@ -177,9 +177,9 @@ module Face
     }
     end
 
-    def display_all_tag
+    def display_all_tag tag='q'
       content_tag(:div, class: "col-xs-12") do
-        check_box_tag('q[display_all]', '1', display_all_applied?) +
+        check_box_tag("#{tag}[display_all]", '1', display_all_applied?) +
         label_tag(t('without_pagination.display_all_records'))
       end
     end
@@ -191,15 +191,15 @@ module Face
 
 
     def bootstrap_class_for(flash_type)
-      case flash_type
-      when "success"
-        "alert-success" # Green
-      when "error"
-        "alert-danger" # Red
-      when "alert"
-        "alert-warning" # Yellow
-      when "notice"
-        "alert-info" # Blue
+      case flash_type.to_s
+      when 'success', 'ok'
+        'alert-success' # Green
+      when 'error', 'danger'
+        'alert-danger' # Red
+      when 'alert', 'warn', 'warning'
+        'alert-warning' # Yellow
+      when 'notice', 'info'
+        'alert-info' # Blue
       else
         flash_type
       end

@@ -88,4 +88,8 @@ class User < ApplicationRecord
             Date.today - Authentication.delete_after).each(&:destroy)
     end
   end
+
+  def ability
+    @ability ||= Ability.new(self)
+  end
 end

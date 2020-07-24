@@ -295,8 +295,24 @@ ru:
   answers:
     noo: нет
     yess: да
+    other: другое
   choose_value: Выберите значение
   core:
+    notice:
+      notices_menu: Уведомления
+      notices_menu_count:
+        html: Уведомления <span class="badge info">%{count}</span>
+    notices:
+      index:
+        title: Уведомления
+        visible: Показывается
+        active: Активно
+        message: Содержание
+        category: Категория
+        hidden-by-user: Скрыто пользователем
+        site_wide_notices: Общие
+        my_notices: Персональные
+        no_notices: Уведомлений нет
     admin:
       cities:
         destroy:
@@ -586,6 +602,9 @@ ru:
         new:
           title: Добавление новой области науки
       notices:
+        site-wide: Общее
+        per-user: Персональное
+        other: Другое
         show:
           notices: Уведомления
         form:
@@ -998,3 +1017,5 @@ ru:
     you_have_to_fill_departments: Вы должны создать подразделения для организации!
   'no': нет
   'yes': да
+  'none': отсутствует
+  'change': сменить

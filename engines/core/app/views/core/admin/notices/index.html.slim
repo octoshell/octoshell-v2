@@ -1,0 +1,37 @@
+div class='page-header'
+  h1 = t('.title', default: 'Notices')
+
+div class='well'
+  = link_to t('.new_notice'), new_admin_notice_path, class: 'btn btn-default'
+
+= bootstrap_form_for :notice, url: admin_notices_path , method: :get, layout: :horizontal do |f|
+  /= bootstrap_form_for @search, url: admin_notices_path , method: :get, layout: :horizontal do |f|
+  /=f.form_group :checked_eq, label: { text: t('.checked') } do
+   = f.radio_button :checked_eq, nil, label: t('.none')
+   = f.radio_button :checked_eq, true, label: t('.yes')
+   = f.radio_button :checked_eq, false, label: t('.no')
+  div.col-sm-12.col-md-4
+    = f.autocomplete_field :sourceable_id_eq, {label: Core.user_class.model_name.human, source: main_app.users_path}, include_blank: true do |id|
+      - User.find(id).full_name_with_email
+  div.col-sm-12.col-md-4
+    = f.select :category, [[t('.site_wide_notices'),0],[t('.my_notices'),1],[t('other'),-1]], {label: t('.category'), include_blank: true }, { multiple: true }
+
+  div.col-sm-12.col-md-4
+    = f.select :active, [[t('.inactive'),0],[t('.active'),1]], {label: t('.active'), include_blank: true}
+
+  - options = {class: "datepicker",:'data-date-end-date' => "+1000d", :'data-date-start-date' => "+0d", :'data-date-today-btn' => true, format: 'yyyy.mm.dd'}
+  div.col-sm-6
+    / = f.label :show_from, class: 'control-label col-sm-4'
+    = f.text_field :show_from_gt, options.merge(class: 'col-sm-4 datepicker', :'data-date-start-date' => '01.01.1900')
+  div.col-sm-6
+    / = f.label :show_till, class: 'control-label col-sm-4'
+    = f.text_field :show_till_lt, options.merge(class: 'col-sm-4 datepicker', :'data-date-end-date' => '+3650d')
+
+  = display_all_tag :notice
+  = f.form_group do
+     = f.submit t('actions.find'), class: 'btn btn-primary'
+ 
+
+= safe_paginate @notices
+= render 'table', notices: @notices
+= safe_paginate @notices

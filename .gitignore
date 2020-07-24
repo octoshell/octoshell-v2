@@ -37,6 +37,7 @@ deploy/
 tests/
 
 .ruby-version
+yarn.lock
 
 *~
 *.bak
@@ -45,4 +46,6 @@ tests/
 config/database.yml
 engines/jobstat/cache.yaml
 docs/build
+node_modules/.yarn-integrity
 
+config/secrets.yml

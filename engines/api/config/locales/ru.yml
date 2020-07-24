@@ -1,0 +1,32 @@
+---
+ru:
+  access_key_exports_list: Список экспортов
+  access_key_key: Имя ключа доступа
+  address: Адрес
+  back: Назад
+  edit: Редактировать
+  edit_export: Редактировать экспорт
+  edit_key_parameter: Редактировать параметр ключа
+  error: 'Ой! Ошибка: %{err}.
+
+'
+  export_access_keys_list: Список ключей доступа
+  export_key_parameters_list: Список параметров ключей
+  export_request: Имя запроса экспорта
+  export_text: Текст экспорта
+  export_title: Название экспорта
+  key_parameters_default: Значение по умолчанию
+  key_parameters_export_list: Список экспортов
+  key_parameters_name: Имя параметра
+  new_access_key: Новый ключ доступа
+  new_export: Новый экспорт
+  new_key_parameter: Новый параметр ключа
+  not_allowed: 'Ой, вам нельзя такой запрос выполнять...
+
+'
+  not_allowed_explained: 'Запрос ''%{req}'' с ключом %{id} (%{key}) не разрешается.
+
+'
+  note: 'Внимание: используйте заголовок X-OctoAPI-Auth для указания ключа.'
+  safe: безопасный (r/o)
+  sure: Уверены?

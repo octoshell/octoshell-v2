@@ -19,7 +19,6 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied, with: :not_authorized
 
-
   def info_for_paper_trail
     { session_id: request.session.id }
   end
@@ -55,25 +54,22 @@ class ApplicationController < ActionController::Base
 
   def check_notices
     return unless current_user
-    return if request[:controller] =~ /\/admin\//
-
-    #FIXME: each category should be processed separately in outstanding code
-    notices = Core::Notice.where(sourceable: current_user, category: 1)
-    return if notices.count==0
-
-  end
-
-  def conditional_show_notice note
-    n = Time.current
-    return if note.show_from && (note.show_from > n)
-    return if note.show_till && (note.show_till < n)
-    return if !note.active.nil? and note.active==false
-    data = Core::Notice.handle note, current_user, params, request
-    if data
+    Core::Notice.show_notices(current_user, params, request).each do |data|
       flash_now_message(data[0],data[1])
     end
-    text = "#{notices.count==1 ? t('bad_job') : t('bad_jobs')} #{list.join '; '}"
-    flash.now[:'alert-badjobs'] = raw text
-
   end
 end
+
+  #   # return if request[:controller] =~ /\/admin\//
+
+  #   # per-user: show only if sourceable is current user
+  #   Core::Notice.where(category: 0, sourceable: current_user).each do |note|
+  #     logger.warn "--->>> #{current_user.id} <<<---"
+  #     data = Core::Notice.handle note, current_user, params, request
+  #     flash_now_message(data[0],data[1]) if data
+  #     # logger.warn "data0=#{data}" if data
+  #   end
+  # end
+
+  # def conditional_show_notice note
+  #   return unless current_user

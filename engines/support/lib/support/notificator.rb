@@ -1,10 +1,8 @@
 module Support
   class Notificator < AbstractController::Base
-
     # def topic_name
     #   'Уведомления'.freeze
     # end
-
 
     def self.parent_topic
       Topic.find_or_create_by!(name_ru: 'Уведомления', name_en: 'Notifications', visible_on_create: false)
@@ -14,7 +12,6 @@ module Support
       self.class.parent_topic
     end
 
-
     def self.name_ru
       'Уведомления'
     end
@@ -22,7 +19,6 @@ module Support
     def self.name_en
       'Notifications'
     end
-
 
     def self.email
       'support_bot@octoshell.ru'.freeze
@@ -95,6 +91,5 @@ module Support
         super
       end
     end
-
   end
 end

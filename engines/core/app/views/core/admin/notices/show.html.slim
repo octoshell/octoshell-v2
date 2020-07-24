@@ -1,47 +1,71 @@
+- from = @notice.show_from ? @notice.show_from.strftime("%Y.%m.%d") : nil
+- till = @notice.show_till ? @notice.show_till.strftime("%Y.%m.%d") : nil
 div class="page-header"
   h2 = @notice.id
   a = link_to t('.notices'), [:admin,:notices]
-div class="well"
-  = link_to t("actions.edit"), [:edit, :admin, @notice], class: "btn btn-default"
-  - name = t("actions.delete", default: "delete")
-  - confirm = t("core_confirm", default: "Are You sure?")
-  - data = { method: :delete, confirm: confirm }
-  = link_to name, [:admin, @notice], data: data, class: "btn btn-default"
 
-table class="table table-hover"
-  - if @notice.category == 0
-    tr
-      td class='col-xs-6'
-        h4 = Core::Notice.human_attribute_name :user
-      td class='col-xs-6'
-        h4 = link_to "#{@notice.sourceable.full_name} (#{@notice.sourceable.email})", main_app.user_path(@notice.sourceable)
-  tr
-      td class='col-xs-6'
-        h4 = Core::Notice.human_attribute_name :message
-      td class='col-xs-6'
-        h4 = @notice.message
-  tr
-      td class='col-xs-6'
-        h4 = Core::Notice.human_attribute_name :count
-      td class='col-xs-6'
-        h4 = @notice.count
-  tr
-      td class='col-xs-6' 
-        h4 = Core::Notice.human_attribute_name :category
-      td class='col-xs-6'
-        h4 = @notice.category == 0 ? t('.personal') : @notice.category == 1 ? t('.site-wide') : t('.other')
-  tr
-      td class='col-xs-6'
-        h4 = Core::Notice.human_attribute_name :active
-      td class='col-xs-6'
-        h4 = @notice.active.nil? ? t('.none') : @notice.active ? t('yes') : t('no')
-  tr
-      td class='col-xs-6'
-        h4 = Core::Notice.human_attribute_name :show_from
-      td class='col-xs-6'
-        h4 = @notice.show_from.strftime("%Y.%m.%d")
-  tr
-      td class='col-xs-6'
-        h4 = Core::Notice.human_attribute_name :show_till
-      td class='col-xs-6'
-        h4 = @notice.show_till.strftime("%Y.%m.%d")
+div.row
+  div class="well col-xs-12"
+    = link_to t("actions.edit"), [:edit, :admin, @notice], class: "btn btn-default"
+    - name = t("actions.delete", default: "delete")
+    - confirm = t("core_confirm", default: "Are You sure?")
+    - data = { method: :delete, confirm: confirm }
+    - src = @notice.sourceable
+    = link_to name, [:admin, @notice], data: data, class: "btn btn-default"
+
+  div.col-md-6.col-xs-12
+    table class="table table-hover"
+      tr
+        td class='col-xs-6'
+          h4 = Core::Notice.human_attribute_name :user
+        td class='col-xs-6'
+          h4
+            - if src
+              = link_to "#{src.full_name} (#{src.email})", main_app.user_path(src)
+      tr
+          td class='col-xs-6'
+            h4 = Core::Notice.human_attribute_name :message
+          td class='col-xs-6'
+            h4 = @notice.message
+      tr
+          td class='col-xs-6'
+            h4 = Core::Notice.human_attribute_name :count
+          td class='col-xs-6'
+            h4 = @notice.count
+      tr
+          td class='col-xs-6' 
+            h4 = Core::Notice.human_attribute_name :category
+          td class='col-xs-6'
+            h4 
+              = @notice.category > 0 ? t('.personal') : @notice.category == 0 ? t('.site-wide') : t('.other')
+              | (
+              = @notice.category
+              |)
+  div.col-md-6.col-xs-12
+    table class="table table-hover"
+      tr
+          td class='col-xs-6'
+            h4 = Core::Notice.human_attribute_name :show_from
+          td class='col-xs-6'
+            h4 = from
+      tr
+          td class='col-xs-6'
+            h4 = Core::Notice.human_attribute_name :show_till
+          td class='col-xs-6'
+            h4 = till
+      tr
+          td class='col-xs-6'
+            h4 = Core::Notice.human_attribute_name :active
+          td class='col-xs-6'
+            h4
+              = @notice.active.nil? ? t('.none') : @notice.active ? t('yes') : t('no')
+              | (
+              = @notice.active
+              |)
+      tr
+          td class='col-xs-6'
+            h4
+              = t('hidden')
+              |?
+          td class='col-xs-6'
+            h4 = @notice.visible? ? t('visible') : t('hidden')
