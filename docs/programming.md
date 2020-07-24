@@ -1,40 +1,41 @@
-# Заметки о программировании в Octoshell
+# Notes about Octoshell programming 
 
-Здесь собраны некоторые заметки об устройстве Octhoshell, возможно, не полные.
+Here you can find notes about Octoshell programming, if you want to change/add something.
 
-# Как устроен Octoshell
+# How Octoshell is constructed
 
-Octoshell - приложение на Runy-on-Rails. Почти вся функциональность вынесена в
-модули (engines). В основном приложении находится модель User, позволяющая
-регистрироваться в Octoshell и выполнять минимальные действия. Ключевые модули -
-Core (содержит понятия "проект", "кластер" и т.п.) и Face (содержит основной
-шаблон страницы и интерфейс к главному меню).
+Octoshell is an Runy-on-Rails application. Almost all functions are implemented
+via modules (RoR engines). Main app contains **User** model, which allows users
+to register and do minimal actions. Key modules: **Core** (contains models
+**Project**, **Cluster**, etc.) and **Face** (contains default pages layout and
+main menu).
 
-# Интерфейс
+# UI
 
-Во view используется шаблонизатор slim. Допускается использование других (erb 
-и т.п.), но не приветствуется. Уже подключены Bootstrap 5, JQuery, FontAwesome -
-их использование приветствуется.
+All views use slim template engine. You can use others, e.g. **erb**, but it
+is not recommended. Bootstrap 5, JQuery, FontAwesome are included yet, feel free
+to use them.
 
-## Автодополнения
+## Fields autocompletion
 
-Пример поля с автодополнением выбора пользователя:
+Example of autocomplete user select field:
 
 ```
   = f.autocomplete_field :id, label: t("user"), source: main_app.users_path
 ```
 
-Для реализации в контроллере (если хотите предоставить автодополнение своих
-моделей) используйте код по примеру User:
+If you want to implement autocomplete for your fields, you should implement
+in your contoller a code similar to this (taken from User model):
 
 ```
-  # User - замените на свою модель
-  # format.json - необходимо для механизма автодополнения
+  # User - change to your model
+  # format.json - needed for autocomplete
   format.json do
     @users = User.finder(params[:q])
     
-    # проверка прав, не-суперадминам данные выдаются в урезанном виде
-    # это не обязательно. Важно: поля records=список_записей и total: число записей
+    # user rights check - admins get more data
+    # This is optional
+    # Important: records = list of records, total = number of records
 
     if User.superadmins.include? current_user
       render json: { records: @users.page(params[:page]).per(params[:per]),
@@ -48,42 +49,41 @@ Core (содержит понятия "проект", "кластер" и т.п.
   end
 ```
 
-## Flash-оповещения
+## Flash-notifications
 
-Чтобы вывести пользователю короткое сообщение на страничке при следующем
-обращении (если далее будет вызван redirect_to, например) или текущем (перед
-вызовом render и т.п.) нужно воспользоваться одним из хелперов:
+If you want to show to user a short flash message on the next shown page,
+use these helpers:
 
 ```
-  flash_message TYPE, message      # для следующего обращения
-  flash_now_message TYPE, message  # для текущего обращения
+  flash_message TYPE, message      # for NEXT request
+  flash_now_message TYPE, message  # in THIS request
 ```
 
-Здесь TYPE определяет оформление (css-стиль), рекомендуются значения 'success',
-'ok', 'error', 'danger', 'alert', 'warn', 'warning', 'notice', 'info'. Иные
-значения будут интерпретированы как явное имя css-класса.
+Here TYPE is a css style name. We recommend to use 'success',
+'ok', 'error', 'danger', 'alert', 'warn', 'warning', 'notice', 'info'.
+Other values will be interpreted as css-class name, it should exist in your
+assets.
 
-Несколько вызовов хелпера выведут несколько сообщений (поэтому
-**не пишите в flash напрямую!**). Текст сообщения не фильтруется на предмет
-html-разметки, поэтому можно вставлять ссылки и т.п. а также соблюдать
-осторожность при выводе сообщений, составленных пользователем.
+Several helper call will create several messages (so, do not call **flash()**
+directly!). Message text is **not** filtered, so you can insert html-tags,
+links etc, but also be extremely careful if you insert user text here.
 
-## Оповещения (Notify)
+## Notify
+Persistent (almost) messages to user are implemented by **Notify** class.
+Notify class is declared in Core module. It contains:
 
-Класс Notify определён в модуле Core. Он содержит поля:
+- message:        text
+- count:          (opt) a number of something
+- category:       0=per-user message, 1=site-wide message, other=not show by default
+- kind:           (opt) string to select handler, nil = just show (default)
+- show_from:      (opt) show only after this time
+- show_till:      (opt) show only till this time
+- active:         nil/int. 0 = do not show (nil/1 = show)
+- sourceable:     object, associated with this. For category=0 it must be User
+- linkable:       (opt) linked object
 
-- message:        текст
-- count:          число копий уведомления (опционально)
-- category:       0=уведомление для одного пользователя, 1=широковещательное, другое=по умолчанию не показывать
-- kind:           строка (или nil) для выбора обработчика. nil = просто показать
-- show_from:      nil или время с которого показывать уведомление
-- show_till:      nil или время до которого показывать уведомление
-- active:         nil/int. 0 = не показывать (nil/1 = показываем)
-- sourceable:     объект, к которому привязано оповещение (обычно пользователь, для category=0 обязательно пользователь)
-- linkable:       связанный объект (опционально)
-
-В ROOT/config/initializers/notice.rb (или в ином месте) можно зарегистрировать обработчик
-определённого типа (kind) сообщений:
+In ROOT/config/initializers/notice.rb (or in other initializer) you can register
+a handler for custom notify kind:
 
 ```
 Core::Notice.register_kind 'mykind' do |notice, user, params, request|
@@ -92,8 +92,7 @@ Core::Notice.register_kind 'mykind' do |notice, user, params, request|
 end
 ```
 
-Обработчик принимает строку с типом оповещений и блок. Блок вызывается для проверки
-того, надо ли показывать уведомление. Онвозвращает либо nil (не показывать), либо
-массив из двух элементов: стиль уведомления ('success', 'ok', 'error', 'danger',
-'alert', 'warn', 'warning', 'notice', 'info', либо явное имя css-стиля) и текст.
-**Внимание!** текст будет показан с интерпретацией всех html-тегов!
+Handler receives kind string and block. Block is called to check if message
+should be shown. It returns nil (if don't show) or an array of two elements:
+css-style name ('success', 'ok', etc, see above) and text.
+**Attention!** text will be show without html sanation!
