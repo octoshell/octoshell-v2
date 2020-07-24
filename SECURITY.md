@@ -19,6 +19,6 @@ We support version 2.8.x.
   - Sidekiq version
   - How to reproduce a vulnerability:
     - preparations, if needed,
-    - steps to reproducem
+    - steps to reproduce,
     - impact.
     

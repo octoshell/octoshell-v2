@@ -161,11 +161,13 @@ module Core
     end
 
     def self.get_count_for_user(user)
-      peruser = Core::Notice
+      peruser =
+        Core::Notice
         .where('category > 0')
         .where(sourceable: user, active: 1)
         .count
-      sitewide = Core::Notice
+      sitewide =
+        Core::Notice
         .where('category < 1')
         .where(active: 1).count
       peruser + sitewide
