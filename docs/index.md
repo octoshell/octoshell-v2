@@ -3,3 +3,5 @@
 - [How to install Octoshell](install.md)
 - [How to use Octoshell](use.md)
 - [How to extend Octoshell](programming.md)
+- [How to create new module](howto-implement-new-module.md)
+
