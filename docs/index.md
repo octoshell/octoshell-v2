@@ -1,5 +1,5 @@
 ## Octoshell - control your supercomputer comfortable!
 
-- [How to install Octoshell](install)
-- [How to use Octoshell](use)
-- [How to extend Octoshell](programming)
+- [How to install Octoshell](install.md)
+- [How to use Octoshell](use.md)
+- [How to extend Octoshell](programming.md)
