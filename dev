@@ -1,2 +1,8 @@
 ENV=development
+
+export ERRBIT_ENABLED=true
+export ERRBIT_HOST='http://errbit.parallel.ru'
+export ERRBIT_ID=1 # required, but any positive integer works
+export ERRBIT_KEY='df720022b01edc3b8496e75c8b508f83'
+
 bundle exec bin/rails server -e $ENV -p 5000 -b 0.0.0.0

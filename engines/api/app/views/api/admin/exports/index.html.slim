@@ -1,5 +1,5 @@
 div class="well"
-  = link_to t(".new_export"), new_admin_export_path, class: "btn btn-default"
+  = link_to t("new_export"), new_admin_export_path, class: "btn btn-default"
 
 table class="table table-striped"
   tr
@@ -8,7 +8,7 @@ table class="table table-striped"
     th = Api::Export.human_attribute_name(:request)
     th = Api::Export.human_attribute_name(:access_keys)
     th = Api::Export.human_attribute_name(:key_parameters)
-    th = t('.address')
+    th = t('address')
     th = Api::Export.human_attribute_name(:safe)
     th
   - @exports.each do |export|
@@ -29,8 +29,8 @@ table class="table table-striped"
         - else
           i class="fa fa-times-circle alert alert-danger"
       td
-        = link_to [:admin, export], method: :delete, data: { confirm: t('.sure') }
+        = link_to [:admin, export], method: :delete, data: { confirm: t('sure') }
           i class="fa fa-times text-danger"
 
 p
-  = t('.note')
+  = t('note')

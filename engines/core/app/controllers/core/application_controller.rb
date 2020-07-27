@@ -1,6 +1,6 @@
 module Core
   class ApplicationController < ::ApplicationController #ActionController::Base
-    before_action :require_login
+    # before_action :require_login
     layout "layouts/application"
 
     def provide_cities_hash

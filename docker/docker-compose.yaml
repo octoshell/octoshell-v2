@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  octoshell:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+
+    image: octoshell
+
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+
+    ports:
+      - "35000:5000"
+
+    restart: always
+

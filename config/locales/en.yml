@@ -252,7 +252,6 @@ en:
   common:
     back: Back
   delete: Delete
-  edit: Edit
   flash:
     not_authorized: You are not authorized for this action.
     not_logged_in: You haven't logged in. Log in or register.

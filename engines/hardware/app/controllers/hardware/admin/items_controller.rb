@@ -98,7 +98,8 @@ module Hardware
     end
 
     def json_update
-      if params[:password] != Rails.application.secrets.hardware_api
+      auth = request.headers['X-OctoAPI-Auth']
+      if auth != Rails.application.secrets.hardware_api
         render plain: 'incorrect password', status: :forbidden
         return
       end
@@ -106,9 +107,17 @@ module Hardware
       I18n.locale = params[:language] if params[:language].present?
 
       params.permit!
-      data = JSON.parse(params[:data] || request.body.read)
-      Hardware::ItemsUpdaterService.from_a data
-      head :ok
+      data = if params[:data]
+        JSON.parse(params[:data])
+      else
+        JSON.parse(request.body.read)['data']
+      end
+      errors = Hardware::ItemsUpdaterService.from_a data
+      if errors.size > 0
+        render plain: errors.join("\n"), status: 202
+      else
+        render plain: 'ok', status: 201
+      end
     end
 
     private

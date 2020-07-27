@@ -55,7 +55,21 @@ class Admin::UsersController < Admin::ApplicationController
 
   def destroy
     user = User.find(params[:id])
-    user.destroy!
+    #user.destroy!
+    user.deleted_at = Time.now
+    user.email = '-'
+    #FIXME: add new state?
+    #user.state = 'deleted'
+    user.state = 'closed'
+    user.save
+    profile = user.profile
+    profile.last_name= '-'
+    profile.middle_name= '-'
+    profile.first_name= '-'
+    profile.save
+    user.employments.each{|e|
+      e.positions.delete_all
+    }
     redirect_to admin_users_path
   end
 

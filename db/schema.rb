@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_170149) do
+ActiveRecord::Schema.define(version: 2020_05_15_110709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "announcement_recipients", id: :serial, force: :cascade do |t|
     t.integer "user_id"
@@ -169,6 +190,15 @@ ActiveRecord::Schema.define(version: 2019_09_12_170149) do
     t.index ["cluster_id"], name: "index_core_accesses_on_cluster_id"
     t.index ["project_id", "cluster_id"], name: "index_core_accesses_on_project_id_and_cluster_id", unique: true
     t.index ["project_id"], name: "index_core_accesses_on_project_id"
+  end
+
+  create_table "core_bot_links", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "token"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_core_bot_links_on_user_id"
   end
 
   create_table "core_cities", id: :serial, force: :cascade do |t|
@@ -328,6 +358,16 @@ ActiveRecord::Schema.define(version: 2019_09_12_170149) do
     t.index ["user_id"], name: "index_core_members_on_user_id"
   end
 
+  create_table "core_notice_show_options", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "notice_id"
+    t.boolean "hidden", default: false, null: false
+    t.boolean "resolved", default: false, null: false
+    t.string "answer"
+    t.index ["notice_id"], name: "index_core_notice_show_options_on_notice_id"
+    t.index ["user_id"], name: "index_core_notice_show_options_on_user_id"
+  end
+
   create_table "core_notices", id: :serial, force: :cascade do |t|
     t.string "sourceable_type"
     t.integer "sourceable_id"
@@ -338,6 +378,10 @@ ActiveRecord::Schema.define(version: 2019_09_12_170149) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category"
+    t.string "kind"
+    t.datetime "show_from"
+    t.datetime "show_till"
+    t.integer "active"
     t.index ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id"
     t.index ["sourceable_type", "sourceable_id"], name: "index_core_notices_on_sourceable_type_and_sourceable_id"
   end
@@ -667,6 +711,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_170149) do
     t.datetime "updated_at", null: false
     t.text "nodelist"
     t.integer "initiator_id"
+    t.index ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true
     t.index ["end_time"], name: "index_jobstat_jobs_on_end_time"
     t.index ["login"], name: "index_jobstat_jobs_on_login"
     t.index ["partition"], name: "index_jobstat_jobs_on_partition"
@@ -1145,7 +1190,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_170149) do
     t.string "event", null: false
     t.integer "whodunnit"
     t.text "object"
-    t.integer "session_id"
+    t.string "session_id"
     t.datetime "created_at"
     t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
@@ -1185,4 +1230,6 @@ ActiveRecord::Schema.define(version: 2019_09_12_170149) do
     t.index ["url"], name: "index_wikiplus_pages_on_url", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "core_bot_links", "users"
 end

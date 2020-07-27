@@ -61,11 +61,16 @@ class ApplicationController < ActionController::Base
     notices = Core::Notice.where(sourceable: current_user, category: 1)
     return if notices.count==0
 
-    list=[]
-    notices.each do |note|
-      list << note.message
-      #next if flash[:'alert-badjobs'] && flash[:'alert-badjobs'].include?(text)
-      #job=note.linkable
+  end
+
+  def conditional_show_notice note
+    n = Time.current
+    return if note.show_from && (note.show_from > n)
+    return if note.show_till && (note.show_till < n)
+    return if !note.active.nil? and note.active==false
+    data = Core::Notice.handle note, current_user, params, request
+    if data
+      flash_now_message(data[0],data[1])
     end
     text = "#{notices.count==1 ? t('bad_job') : t('bad_jobs')} #{list.join '; '}"
     flash.now[:'alert-badjobs'] = raw text

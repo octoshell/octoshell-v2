@@ -43,9 +43,10 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: "localhost:9000" }
   config.serve_static_files = true
   config.assets.compile = true
+  config.assets.compress = true
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = Uglifier.new(:output => {:beautify => true, :indent_level => 2}, :mangle => false ,:harmony => true)
+  #! ATTENTION! May break assets:precompile!    config.assets.js_compressor = Uglifier.new(:output => {:beautify => true, :indent_level => 2}, :mangle => false ,:harmony => true)
 
 
   # Print deprecation notices to the Rails logger.

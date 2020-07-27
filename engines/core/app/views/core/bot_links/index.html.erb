@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Bot Links</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Token</th>
+      <th>Active</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bot_links.each do |bot_link| %>
+      <tr>
+        <td><%= bot_link.user %></td>
+        <td><%= bot_link.token %></td>
+        <td><%= bot_link.active %></td>
+        <td><%= link_to 'Show', bot_link %></td>
+        <td><%= link_to 'Edit', edit_bot_link_path(bot_link) %></td>
+        <td><%= link_to 'Destroy', bot_link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Bot Link', new_bot_link_path %>

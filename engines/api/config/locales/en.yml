@@ -1,26 +1,33 @@
 ---
 en:
+  access_key_exports_list: Access key exports!
+  access_key_key: Access key name....
   address: Address
-  note: 'Note: use X-OctoAPI-Auth header to specify access key.'
-  sure: 'Are you sure?'
-  edit: Edit
+  api: qqq
   back: Back
-  export_title: Export title
-  export_request: Export request
-  export_text: Export text
+  edit: Edit
+  edit_export: Edit export
+  edit_key_parameter: Edit key parameter
+  error: 'Auch! Got error: %{err}.
+
+'
   export_access_keys_list: Access key list
   export_key_parameters_list: Key parameters list
-  safe: is safe
-  edit_export: Edit export
-  new_export: New export
-  access_key_key: Access key name
-  access_key_exports_list: Access key exports
-  new_access_key: New access key
-  edit_key_parameter: Edit key parameter
-  key_parameters_name: Parameter name
+  export_request: Export request
+  export_text: Export text
+  export_title: Export title
   key_parameters_default: Parameter default value
   key_parameters_export_list: Exports list
+  key_parameters_name: Parameter name
+  new_access_key: New access key
+  new_export: New export
   new_key_parameter: New key parameter
-  not_allowed: "Whoops! You cannot make such requests.\n"
-  error: "Auch! Got error: %{err}.\n"
-  not_allowed_explained: "Request '%{req}' for ability %{id} (%{key}) is not allowed.\n"
+  not_allowed: 'Whoops! You cannot make such requests.
+
+'
+  not_allowed_explained: 'Request ''%{req}'' for ability %{id} (%{key}) is not allowed.
+
+'
+  note: 'Note: use X-OctoAPI-Auth header to specify access key.'
+  safe: is safe
+  sure: Are you sure?
