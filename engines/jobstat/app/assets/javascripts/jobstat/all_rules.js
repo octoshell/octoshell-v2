@@ -25,13 +25,13 @@ function all_pre_hide_rule(rule_id) {
   }
 }
 
-function all_hide_rule(rule_id,del) {
+function all_hide_rule(rule_id,del,text) {
   var feedback={
     user: current_user,
     condition: rule_id,
     cluster: 'all',
     delete: (del ? 1 : 0),
-    feedback: $("#text_hide_rule_"+rule_id).val(),
+    feedback: text || $("#text_hide_rule_"+rule_id).val(),
   }
   if(del){
     $("#btn-hide-"+rule_id).removeClass("tinted")

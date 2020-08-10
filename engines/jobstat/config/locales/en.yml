@@ -212,7 +212,8 @@ en:
         total: Total
     common:
       agree_button: I agree with estimation
-      agree_rule: Yes, I agree with this rule estimation
+      agree_rule: Yes
+      agree_rule_label: Do you agree with this rule estimation?
       faled_send_try_later: >-
         Ой, не получилось сохранить Ваш отзыв, попробуйте чуть позже ещё раз его отправить.
       hide: Hide rule!
@@ -260,7 +261,7 @@ en:
           detailed analysis:
         descr4_2: using
         description: Description
-        detailed: Detailed analysis
+        detailed: Detailed analysis results
         details: Detailed description
         dynamics: Program execution dynamics
         end: End time
@@ -271,7 +272,7 @@ en:
         gpu_avg: Average GPU load (%)
         gpu_percent: GPU load (0% .. 100%)
         h-short: h.
-        initial: Basic analysis
+        initial: Basic analysis results
         job_id: Job ID
         job_info: 'Information on job # %{id}'
         login: Login
@@ -318,5 +319,5 @@ en:
         initiated_by: A detailed analysis was carried out after studying the job
         initiated_found: After studying this problem, a detailed analysis was carried out, the results of which can be seen in these jobs
         initiated_not_found: Initiated tasks not found
-        detailed_available: Conduct a detailed analysis of the application
+        detailed_available: Available detailed analysys types
 
