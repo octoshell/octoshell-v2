@@ -345,7 +345,67 @@ div class="row"
     p
   div class="col-md-4" style="height: 250px"
     h4 = t('.fs')
-    div id="g_ib_fs"
+    div id="g_ib_fs"z
+
+
+
+// MODALS FOR POPUP DIALOGS (DISAGREE, HIDE, AGREE)
+div class="modal fade" id="popup_disagree" tabindex="-1" role="dialog"
+  div class="modal-dialog" role="document"
+    div class="modal-content"
+      div class="modal-header"
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h5 class="modal-title" id="popup_disagree_label"
+          = t('jobstat.common.why_dont_agree')
+
+      div class="modal-body"
+        form onSubmit="disagree($('#popup_disagree').data('id'),$('#popup_disagree').data('cond'),0, $('#popup_disagree #popup_disagree_question').val()); $('#popup_disagree').modal('hide'); return false;"
+          div class="form-group"
+            input type="text" class="form-control" id="popup_disagree_question"
+            input type="submit" id="disagree-submit-form" class="hidden"
+      div class="modal-footer"
+        label for="disagree-submit-form" class="btn btn-primary"
+          = t('jobstat.common.send')
+        button type="button" class="btn btn-secondary" data-dismiss="modal"
+          = t('jobstat.common.not_send')
+
+div class="modal fade" id="popup_hide" tabindex="-1" role="dialog"
+  div class="modal-dialog" role="document"
+    div class="modal-content"
+      div class="modal-header"
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h5 class="modal-title" id="popup_hide_label"
+          = t('jobstat.common.why_hide')
+
+      div class="modal-body"
+        form onSubmit="all_hide_rule($('#popup_hide').data('cond'), false, $('#popup_hide #popup_hide_question').val()); $('#popup_hide').modal('hide'); return false;"
+          div class="form-group"
+            input type="text" class="form-control" id="popup_hide_question"
+            input type="submit" id="hide-submit-form" class="hidden"
+      div class="modal-footer"
+        label for="hide-submit-form" class="btn btn-primary"
+          = t('jobstat.common.hide')
+        button type="button" class="btn btn-secondary" data-dismiss="modal"
+          = t('jobstat.common.not_hide')
+
+div class="modal fade" id="popup_agree" tabindex="-1" role="dialog"
+  div class="modal-dialog" role="document"
+    div class="modal-content"
+      div class="modal-header"
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h5 class="modal-title" id="popup_agree_label"
+          = t('jobstat.common.agree_rule_label')
+        form onSubmit="agree($('#popup_agree').data('id'),$('#popup_agree').data('cond'),0,''); $('#popup_agree').modal('hide'); return false;"
+          div class="form-group"
+            input type="submit" id="agree-submit-form" class="hidden"
+      div class="modal-footer"
+        label for="agree-submit-form" class="btn btn-primary"
+          = t('jobstat.common.agree_rule')
+        button type="button" class="btn btn-secondary" data-dismiss="modal"
+          = t('jobstat.common.not_send')
 
 
 
