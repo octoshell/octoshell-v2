@@ -48,7 +48,7 @@ module Sessions
     def graph_data_for_count
       if survey_field.kind == "scientometrics"
         survey_field.collection_values.each_with_index.map do |type, i|
-          [type, raw_survey_values.map { |value| value.value[i].to_i }.sum]
+          [type, raw_survey_values.map { |value| value.value? value.value[i].to_i : 0}.sum]
         end
       else
         survey_values.group_by{|v| v.to_s.downcase}.map { |k, v| [k, v.size] }.
