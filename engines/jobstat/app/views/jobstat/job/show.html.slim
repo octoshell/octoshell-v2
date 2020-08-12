@@ -226,7 +226,6 @@ table class="table table-bordered table-striped"
 
 
 // блок детального анализа
-
 - rules = @job_detailed_description
 - type_list = @rules_plus['detailed_analysis_types']
 - if rules.length > 0
@@ -297,8 +296,6 @@ table class="table table-bordered table-striped"
 
 
 //// Part about detailed analysis
-
-
 h4 = t('.detailed_available')
 div class="detailed-available"
   - type_list.each do |step|
@@ -310,8 +307,7 @@ div class="detailed-available"
   p
     = t('.initiated_by')
     span = " "
-    - link = "#{@job.initiator.drms_job_id}"
-    a href="#{link}" ##{link}.
+    a href="#{@job.initiator.id}" ##{@job.initiator.drms_job_id}.
 
 - count_initiatees = @job.initiatees.length
 - if count_initiatees != 0
@@ -319,8 +315,7 @@ div class="detailed-available"
     = t('.initiated_found')
     br
     - @job.initiatees.sort_by{ |job| job.id }.each do |cond|
-      - link = "#{cond.drms_job_id}"
-      a href="#{link}" ##{link}
+      a href="#{cond.id}" ##{cond.drms_job_id}
       br
 
 //// end of part about detailed analysis

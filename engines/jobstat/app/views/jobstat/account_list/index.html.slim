@@ -40,10 +40,10 @@ div
     /= t('.ticket_better')
     a href="/support/tickets/new" = t('.here')
 div
-  button class="btn btn-default" onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
-      = t('.i_dont_agree')
-  |  
-  | &nbsp;&nbsp;&nbsp;
+  / button class="btn btn-default" onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
+  /     = t('.i_dont_agree')
+  / |
+  / | &nbsp;&nbsp;&nbsp;
   button class="btn btn-default" onClick="window.open('all_rules','_self')"
       = t('.rules_list')
   |  
@@ -130,7 +130,7 @@ div class="perf-table"
         th class="login-data"
           p title="#{t('.login_info')}"
             =t('.login')
-        th class="login-data"
+        th
           p title="#{t('.partition_info')}"
             =t('.partition')
         th
@@ -266,7 +266,7 @@ div class="perf-table"
             | &nbsp;
             = @fake_data==0 ? link_to(job.drms_job_id, job) : job.drms_job_id
         td class="login-data" = job.login
-        td class="login-data" = job.partition
+        td = job.partition
         td = job.start_time.strftime('%F %T')
         td = job.end_time.strftime('%F %T')
         td class="task_state_#{job.state} centered"
@@ -328,7 +328,8 @@ div class="modal fade" id="popup_rules" tabindex="-1" role="dialog"
         button type="button" class="close" data-dismiss="modal" aria-label="Close"
           span aria-hidden="true" &times;
         h5 class="modal-title" id="popup_rules_label"
-          = t('jobstat.account_list.all_rules.rules_list')
+          = t('jobstat.account_list.all_rules.rules_list_job') + " #"
+          span class="job-id-span"
 
       div class="modal-body"
 
@@ -470,6 +471,7 @@ javascript:
       startIntro(4);
     }
     $("#_fake_data").val(#{@params[:fake_data].to_i > 0 ? 1 : 0});
+    $("#hide-login-checkbox").prop('checked', #{@params[:all_logins].length == 1});
   });
 
   function intro_change(new_element){
@@ -523,6 +525,7 @@ javascript:
   }
 
   function launchBulkRulesPopup(elem){
+      var job_id = $(elem).closest('tr').data("jobid");
       var $this = $(elem).closest('td').find('.rules-container').clone();
       $this.find("i").each(function(){
           var $this = $(this);
@@ -530,6 +533,7 @@ javascript:
               $this.attr("id", $this.attr("_id"));
       });
       $('#popup_rules .modal-body').html($this);
+      $("#popup_rules .job-id-span").html(job_id);
       $('#popup_rules .rules-container').removeClass('hidden');
       $('#popup_rules').modal();
   }

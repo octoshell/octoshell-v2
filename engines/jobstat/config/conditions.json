@@ -383,8 +383,8 @@
         "thr_high_ipc": {
             "index": 33,
             "name": "thr_high_ipc",
-            "is_enabled": 0,
-            "public": 0,
+            "is_enabled": 1,
+            "public": 1,
             "description": "IPC > 2.25",
             "comment": "IPC > 2.25",
             "src_file": "thresholds.py"
@@ -392,10 +392,28 @@
         "thr_low_ipc": {
             "index": 34,
             "name": "thr_low_ipc",
-            "is_enabled": 0,
-            "public": 0,
+            "is_enabled": 1,
+            "public": 1,
             "description": "IPC < 0.75",
             "comment": "IPC < 0.75",
+            "src_file": "thresholds.py"
+        },
+        "thr_low_memory_free": {
+            "index": 35,
+            "name": "thr_low_memory_free",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "memory_free < 16 * 10 ** 9",
+            "comment": "memory_free < 16 * 10 ** 9",
+            "src_file": "thresholds.py"
+        },
+        "thr_high_memory_free": {
+            "index": 36,
+            "name": "thr_high_memory_free",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "memory_free > 60 * 10 ** 9 (90 for pascal)",
+            "comment": "memory_free > 60 * 10 ** 9 (90 for pascal)",
             "src_file": "thresholds.py"
         }
     },
@@ -714,59 +732,8 @@
         }
     },
     "rules": {
-        "rule_ml_anomaly": {
-            "index": 1,
-            "name": "rule_ml_anomaly",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Задача выполняется аномально неэффективно.",
-            "comment": "Классификатор Дениса отметил данную задачу как аномальную.",
-            "src_file": "rules_integral_based.py",
-            "group": "disaster",
-            "priority": 1,
-            "confidence": 5,
-            "criticalness": 5,
-            "supposition": "Задача работает некорректно или зависла.",
-            "text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его.",
-            "module_recommendation": "---",
-            "old_text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его."
-        },
-        "rule_anomaly": {
-            "index": 2,
-            "name": "rule_anomaly",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Чрезвычайно низкая активность использования всех доступных ресурсов.",
-            "comment": "Средняя загрузка процессора и средний load average катастрофически низки; загрузка ГПУ также очень низкая. ",
-            "src_file": "rules_integral_based.py",
-            "group": "disaster",
-            "priority": 1,
-            "confidence": 5,
-            "criticalness": 5,
-            "supposition": "Задача работает некорректно или зависла.",
-            "text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его.",
-            "module_recommendation": "---",
-            "old_text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его."
-        },
-        "rule_ml_job_hang": {
-            "index": 3,
-            "name": "rule_ml_job_hang",
-            "is_enabled": 1,
-            "public": 1,
-            "description": "Согласно данным мониторинга, задача зависла.",
-            "comment": "Сработал тип Дениса job_hang.",
-            "src_file": "rules_integral_based.py",
-            "group": "disaster",
-            "priority": 1,
-            "confidence": 4,
-            "criticalness": 5,
-            "supposition": "На данном этапе определить причины зависания задачи не представляется возможным.",
-            "text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его.",
-            "module_recommendation": "---",
-            "old_text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его."
-        },
         "rule_avg_disbalance": {
-            "index": 4,
+            "index": 1,
             "name": "rule_avg_disbalance",
             "is_enabled": 0,
             "public": 0,
@@ -783,7 +750,7 @@
             "old_text_recommendation": "1) Анализ динамики выполнения приложения; 2) Общий анализ программы; 3) Профилирование MPI-программы."
         },
         "rule_node_disbalance": {
-            "index": 5,
+            "index": 2,
             "name": "rule_node_disbalance",
             "is_enabled": 0,
             "public": 0,
@@ -799,8 +766,127 @@
             "module_recommendation": "general-aps,profiling-mpip",
             "old_text_recommendation": "1) Анализ динамики выполнения приложения; 2) Общий анализ программы; 3) Профилирование MPI-программы."
         },
-        "rule_disbalance_cpu_la": {
+        "rule_low_ipc": {
+            "index": 3,
+            "name": "rule_low_ipc",
+            "is_enabled": 0,
+            "public": 0,
+            "description": "Скорость выполнения инструкций слишком мала. При этом не наблюдается высокой внешней активности (расчетов на ГПУ или передачи данных по сети).",
+            "comment": "thr_low_ipc AND class_not_comm AND thr_low_gpu_load",
+            "src_file": "rules_integral_based.py",
+            "group": "general_low_efficiency",
+            "priority": 1,
+            "confidence": 2,
+            "criticalness": 3,
+            "supposition": "Программа без видимых внешних причин работает недостаточно эффективно. На данном этапе недостаточно информации для определения причин данной неэффективности.",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+            "module_recommendation": "general-aps",
+            "old_text_recommendation": "Общий анализ программы."
+        },
+        "rule_ml_cold_start": {
+            "index": 4,
+            "name": "rule_ml_cold_start",
+            "is_enabled": 0,
+            "public": 0,
+            "description": "Согласно данным мониторинга, активность задачи сразу после запуска была очень низкой.",
+            "comment": "Сработал тип Дениса cold_start.",
+            "src_file": "rules_integral_based.py",
+            "group": "general_low_efficiency",
+            "priority": 1,
+            "confidence": 3,
+            "criticalness": 3,
+            "supposition": "Вероятно, процесс старта задачи занял продолжительное время (из-за внешних сбоев в системе или проблем в самой задаче).",
+            "text_recommendation": "Рекомендуется проверить корректность запуска.",
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить корректность запуска."
+        },
+        "rule_mpi_many_operations": {
+            "index": 5,
+            "name": "rule_mpi_many_operations",
+            "is_enabled": 0,
+            "public": 0,
+            "description": "Низкая интенсивность использования MPI сети, однако число MPI операций велико.",
+            "comment": "TODO",
+            "src_file": "rules_integral_based.py",
+            "group": "inefficient_mpi",
+            "priority": 1,
+            "confidence": 2,
+            "criticalness": 3,
+            "supposition": "Вероятно, работа с MPI организована неэффективно.",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+            "module_recommendation": "profiling-mpip",
+            "old_text_recommendation": "Профилирование MPI-программы."
+        },
+        "rule_wrong_partition_io": {
             "index": 6,
+            "name": "rule_wrong_partition_io",
+            "is_enabled": 0,
+            "public": 0,
+            "description": "Задача запущена в разделе для задач с невысокими требованиям к скорости вовода/вывода, однако в этой задаче интенсивность ввода/вывода велика.",
+            "comment": "not thr_low_ib_fs AND partition in LOW_IO_PARTITIONS",
+            "src_file": "rules_integral_based.py",
+            "group": "wrong_partition",
+            "priority": 1,
+            "confidence": 4,
+            "criticalness": 4,
+            "supposition": "Неправильно выбран раздел для задачи.",
+            "text_recommendation": "Рекомендуется сменить раздел.",
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется сменить раздел."
+        },
+        "rule_ml_anomaly": {
+            "index": 7,
+            "name": "rule_ml_anomaly",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Задача выполняется аномально неэффективно.",
+            "comment": "Классификатор Дениса отметил данную задачу как аномальную.",
+            "src_file": "rules_integral_based.py",
+            "group": "disaster",
+            "priority": 1,
+            "confidence": 5,
+            "criticalness": 5,
+            "supposition": "Задача работает некорректно или зависла.",
+            "text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его.",
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его."
+        },
+        "rule_anomaly": {
+            "index": 8,
+            "name": "rule_anomaly",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Чрезвычайно низкая активность использования всех доступных ресурсов.",
+            "comment": "Средняя загрузка процессора и средний load average катастрофически низки; загрузка ГПУ также очень низкая. ",
+            "src_file": "rules_integral_based.py",
+            "group": "disaster",
+            "priority": 1,
+            "confidence": 5,
+            "criticalness": 5,
+            "supposition": "Задача работает некорректно или зависла.",
+            "text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его.",
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его."
+        },
+        "rule_ml_job_hang": {
+            "index": 9,
+            "name": "rule_ml_job_hang",
+            "is_enabled": 1,
+            "public": 1,
+            "description": "Согласно данным мониторинга, задача зависла.",
+            "comment": "Сработал тип Дениса job_hang.",
+            "src_file": "rules_integral_based.py",
+            "group": "disaster",
+            "priority": 1,
+            "confidence": 4,
+            "criticalness": 5,
+            "supposition": "На данном этапе определить причины зависания задачи не представляется возможным.",
+            "text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его.",
+            "module_recommendation": "---",
+            "old_text_recommendation": "Рекомендуется проверить корректность запуска и при необходимости отменить его."
+        },
+        "rule_disbalance_cpu_la": {
+            "index": 10,
             "name": "rule_disbalance_cpu_la",
             "is_enabled": 1,
             "public": 1,
@@ -817,7 +903,7 @@
             "old_text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ программы (если нет MPI);3) Профилирование MPI-программы (если MPI есть)."
         },
         "rule_mem_disbalance": {
-            "index": 7,
+            "index": 11,
             "name": "rule_mem_disbalance",
             "is_enabled": 1,
             "public": 1,
@@ -833,42 +919,8 @@
             "module_recommendation": "general-aps,mem_eff-valgrind",
             "old_text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ программы; 3) Анализ эффективности работы с памятью."
         },
-        "rule_low_ipc": {
-            "index": 8,
-            "name": "rule_low_ipc",
-            "is_enabled": 0,
-            "public": 0,
-            "description": "Скорость выполнения инструкций слишком мала. При этом не наблюдается высокой внешней активности (расчетов на ГПУ или передачи данных по сети).",
-            "comment": "thr_low_ipc AND class_not_comm AND thr_low_gpu_load",
-            "src_file": "rules_integral_based.py",
-            "group": "general_low_efficiency",
-            "priority": 1,
-            "confidence": 2,
-            "criticalness": 3,
-            "supposition": "Программа без видимых внешних причин работает недостаточно эффективно. На данном этапе недостаточно информации для определения причин данной неэффективности.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
-            "module_recommendation": "general-aps",
-            "old_text_recommendation": "Общий анализ программы."
-        },
-        "rule_ml_cold_start": {
-            "index": 9,
-            "name": "rule_ml_cold_start",
-            "is_enabled": 0,
-            "public": 0,
-            "description": "Согласно данным мониторинга, активность задачи сразу после запуска была очень низкой.",
-            "comment": "Сработал тип Дениса cold_start.",
-            "src_file": "rules_integral_based.py",
-            "group": "general_low_efficiency",
-            "priority": 1,
-            "confidence": 3,
-            "criticalness": 3,
-            "supposition": "Вероятно, процесс старта задачи занял продолжительное время (из-за внешних сбоев в системе или проблем в самой задаче).",
-            "text_recommendation": "Рекомендуется проверить корректность запуска.",
-            "module_recommendation": "---",
-            "old_text_recommendation": "Рекомендуется проверить корректность запуска."
-        },
         "rule_ml_suspicious": {
-            "index": 10,
+            "index": 12,
             "name": "rule_ml_suspicious",
             "is_enabled": 1,
             "public": 1,
@@ -880,12 +932,12 @@
             "confidence": 3,
             "criticalness": 3,
             "supposition": "Программа без видимых внешних причин работает недостаточно эффективно, по сравнению с остальными задачами на данном суперкомпьютере. На данном этапе недостаточно информации для определения причин данной неэффективности.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "general-aps",
             "old_text_recommendation": "Общий анализ программы."
         },
         "rule_ml_low_job_activity": {
-            "index": 11,
+            "index": 13,
             "name": "rule_ml_low_job_activity",
             "is_enabled": 1,
             "public": 0,
@@ -897,12 +949,12 @@
             "confidence": "",
             "criticalness": "",
             "supposition": "Вероятно, только очень небольшая доля процессов активно работает, остальные практически все время простаивают. Вероятно, требуется уменьшить число процессов либо оптимизировать распределение вычислительной нагрузки между узлами.",
-            "text_recommendation": "Стоит изучить поведение приложения во время выполнения, см. ссылку ниже \"Более подробное описание\". Также попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Стоит изучить поведение приложения во время выполнения, см. ссылку ниже \"Более подробное описание\". Также попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "profiling-mpip",
             "old_text_recommendation": "1) Анализ динамики выполнения приложения; 2) Профилирование MPI-программы."
         },
         "rule_high_la": {
-            "index": 12,
+            "index": 14,
             "name": "rule_high_la",
             "is_enabled": 1,
             "public": 0,
@@ -914,12 +966,12 @@
             "confidence": 3,
             "criticalness": 3,
             "supposition": "Накладные расходны на организацию работы такого большого количества потоков могут быть существенными.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "thread-vtune",
             "old_text_recommendation": "Анализ многопоточной программы."
         },
         "rule_ml_stall": {
-            "index": 13,
+            "index": 15,
             "name": "rule_ml_stall",
             "is_enabled": 1,
             "public": 1,
@@ -936,7 +988,7 @@
             "old_text_recommendation": "Рекомендуется проверить корректность запуска."
         },
         "rule_cpu_gpu": {
-            "index": 14,
+            "index": 16,
             "name": "rule_cpu_gpu",
             "is_enabled": 1,
             "public": 1,
@@ -948,12 +1000,12 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Можно попробовать одновременно загружать и CPU, и GPU.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "gpu-nvprof_basic",
             "old_text_recommendation": "Анализ работы с ускорителями, часть 1."
         },
         "rule_more_cpu_gpu": {
-            "index": 15,
+            "index": 17,
             "name": "rule_more_cpu_gpu",
             "is_enabled": 1,
             "public": 1,
@@ -965,12 +1017,12 @@
             "confidence": 3,
             "criticalness": 4,
             "supposition": "Можно попробовать одновременно загружать и CPU, и GPU.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "gpu-nvprof_basic",
             "old_text_recommendation": "Анализ работы с ускорителями, часть 1."
         },
         "rule_mpi_disbalance": {
-            "index": 16,
+            "index": 18,
             "name": "rule_mpi_disbalance",
             "is_enabled": 1,
             "public": 1,
@@ -982,12 +1034,12 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Вероятно, некорректное использование MPI.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "profiling-mpip",
             "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_irq_iowait": {
-            "index": 17,
+            "index": 19,
             "name": "rule_irq_iowait",
             "is_enabled": 1,
             "public": 1,
@@ -1004,7 +1056,7 @@
             "old_text_recommendation": "Рекомендуется проверить параметры запуска задачи."
         },
         "rule_nice": {
-            "index": 18,
+            "index": 20,
             "name": "rule_nice",
             "is_enabled": 1,
             "public": 1,
@@ -1020,25 +1072,8 @@
             "module_recommendation": "---",
             "old_text_recommendation": "Рекомендуется перезапустить задачу с нормальным приоритетом."
         },
-        "rule_mpi_many_operations": {
-            "index": 19,
-            "name": "rule_mpi_many_operations",
-            "is_enabled": 0,
-            "public": 0,
-            "description": "Низкая интенсивность использования MPI сети, однако число MPI операций велико.",
-            "comment": "TODO",
-            "src_file": "rules_integral_based.py",
-            "group": "inefficient_mpi",
-            "priority": 1,
-            "confidence": 2,
-            "criticalness": 3,
-            "supposition": "Вероятно, работа с MPI организована неэффективно.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
-            "module_recommendation": "profiling-mpip",
-            "old_text_recommendation": "Профилирование MPI-программы."
-        },
         "rule_mpi_high_system": {
-            "index": 20,
+            "index": 21,
             "name": "rule_mpi_high_system",
             "is_enabled": 1,
             "public": 1,
@@ -1055,7 +1090,7 @@
             "old_text_recommendation": "1) Профилирование MPI-программы (если проблема с MPI сетью); 2) Анализ ввода/вывода (если проблема с сетью для ФС)."
         },
         "rule_mpi_bad_locality": {
-            "index": 21,
+            "index": 22,
             "name": "rule_mpi_bad_locality",
             "is_enabled": 1,
             "public": 1,
@@ -1067,12 +1102,12 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "При запуске задачи менеджером ресурсов был выбран неудачный набор узлов. Рекомендуется при необходимости явно указывать узлы, на которых будет производиться запуск проргаммы, либо пытаться оптимизировать работу с MPI.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "profiling-mpip",
             "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_mpi_issues": {
-            "index": 22,
+            "index": 23,
             "name": "rule_mpi_issues",
             "is_enabled": 1,
             "public": 1,
@@ -1084,12 +1119,12 @@
             "confidence": 3,
             "criticalness": 4,
             "supposition": "Выполнение MPI операций, вероятно, занимает слишком много времени, требуется оптимизация.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "profiling-mpip",
             "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_mpi_small_packets": {
-            "index": 23,
+            "index": 24,
             "name": "rule_mpi_small_packets",
             "is_enabled": 1,
             "public": 1,
@@ -1101,12 +1136,12 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Накладные расходы на передачу MPI сообщений могут быть существенными.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "profiling-mpip",
             "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_fs_small_packets": {
-            "index": 24,
+            "index": 25,
             "name": "rule_fs_small_packets",
             "is_enabled": 1,
             "public": 1,
@@ -1118,12 +1153,12 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Накладные расходы на передачу данных для чтения/записи в файловую систему могут быть существенными.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "io-vtune",
             "old_text_recommendation": "Анализ ввода/вывода."
         },
         "rule_mpi_packets": {
-            "index": 25,
+            "index": 26,
             "name": "rule_mpi_packets",
             "is_enabled": 1,
             "public": 1,
@@ -1135,12 +1170,12 @@
             "confidence": 3,
             "criticalness": 4,
             "supposition": "Накладные расходы на передачу MPI сообщений могут быть существенными.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "profiling-mpip",
             "old_text_recommendation": "Профилирование MPI-программы."
         },
         "rule_one_active_process": {
-            "index": 26,
+            "index": 27,
             "name": "rule_one_active_process",
             "is_enabled": 1,
             "public": 1,
@@ -1157,7 +1192,7 @@
             "old_text_recommendation": "Рекомендуется запускать с большим числом процессов на узел."
         },
         "rule_normal_serial": {
-            "index": 27,
+            "index": 28,
             "name": "rule_normal_serial",
             "is_enabled": 1,
             "public": 1,
@@ -1169,12 +1204,12 @@
             "confidence": 2,
             "criticalness": 4,
             "supposition": "Для работы на суперкомпьютере стоит распараллелить данную задачу.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "general-aps",
             "old_text_recommendation": "Общий анализ программы."
         },
         "rule_not_effective": {
-            "index": 28,
+            "index": 29,
             "name": "rule_not_effective",
             "is_enabled": 1,
             "public": 1,
@@ -1191,7 +1226,7 @@
             "old_text_recommendation": "1) Анализ динамики выполнения приложения;2) Общий анализ программы (если нет MPI);3) Профилирование MPI-программы (если MPI есть)."
         },
         "rule_bad_mem": {
-            "index": 29,
+            "index": 30,
             "name": "rule_bad_mem",
             "is_enabled": 1,
             "public": 1,
@@ -1203,12 +1238,12 @@
             "confidence": 2,
             "criticalness": 4,
             "supposition": "Работы с памятью, вероятно, занимает слишком много времени, требуется оптимизация.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "mem_eff-valgrind",
             "old_text_recommendation": "Анализ эффективности работы с памятью."
         },
         "rule_bad_locality": {
-            "index": 30,
+            "index": 31,
             "name": "rule_bad_locality",
             "is_enabled": 1,
             "public": 1,
@@ -1220,12 +1255,12 @@
             "confidence": 2,
             "criticalness": 4,
             "supposition": "Работы с памятью, вероятно, организована неэффективно, требуется оптимизация.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "mem_eff-valgrind",
             "old_text_recommendation": "Анализ эффективности работы с памятью."
         },
         "rule_locality": {
-            "index": 31,
+            "index": 32,
             "name": "rule_locality",
             "is_enabled": 1,
             "public": 1,
@@ -1237,12 +1272,12 @@
             "confidence": 2,
             "criticalness": 3,
             "supposition": "Работы с памятью, вероятно, организована неэффективно, требуется оптимизация.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "mem_eff-valgrind",
             "old_text_recommendation": "Анализ эффективности работы с памятью."
         },
         "rule_cache": {
-            "index": 32,
+            "index": 33,
             "name": "rule_cache",
             "is_enabled": 1,
             "public": 1,
@@ -1254,12 +1289,12 @@
             "confidence": 3,
             "criticalness": 4,
             "supposition": "Работы с памятью, вероятно, занимает слишком много времени и организована неэффективно, требуется оптимизация.",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "mem_eff-valgrind",
             "old_text_recommendation": "Анализ эффективности работы с памятью."
         },
         "rule_interleave": {
-            "index": 33,
+            "index": 34,
             "name": "rule_interleave",
             "is_enabled": 1,
             "public": 1,
@@ -1271,26 +1306,9 @@
             "confidence": 2,
             "criticalness": 4,
             "supposition": "Работы с памятью занимает слишком много времени, но организована эффективно. Можно попробовать совмещать обработку данных с остальной работой в задаче (передачей данных или выполнением вычислений).",
-            "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+            "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
             "module_recommendation": "mem_eff-valgrind",
             "old_text_recommendation": "Анализ эффективности работы с памятью."
-        },
-        "rule_wrong_partition_io": {
-            "index": 34,
-            "name": "rule_wrong_partition_io",
-            "is_enabled": 0,
-            "public": 0,
-            "description": "Задача запущена в разделе для задач с невысокими требованиям к скорости вовода/вывода, однако в этой задаче интенсивность ввода/вывода велика.",
-            "comment": "not thr_low_ib_fs AND partition in LOW_IO_PARTITIONS",
-            "src_file": "rules_integral_based.py",
-            "group": "wrong_partition",
-            "priority": 1,
-            "confidence": 4,
-            "criticalness": 4,
-            "supposition": "Неправильно выбран раздел для задачи.",
-            "text_recommendation": "Рекомендуется сменить раздел.",
-            "module_recommendation": "---",
-            "old_text_recommendation": "Рекомендуется сменить раздел."
         },
         "rule_wrong_partition_gpu": {
             "index": 35,
@@ -1335,7 +1353,7 @@
             "type_name": "profiling",
             "soft_text": "mpiP",
             "soft_name": "mpip",
-            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить модуль Slurm:\n    module add slurm\n3. (Опционально) Скомпилировать программу, указав ключ для сбора дебаг информации (обычно -g).\n4. Запустить программу с предзагрузкой библиотеки анализа:\n    LD_PRELOAD=/opt/software/mpip/libmpiP.so sbatch <slurm параметры> <вызов программы>\n5. В папке появится текстовый файл с результатами работы mpiP \"<имя_исполняемого файла>.<число процессов>.<набор цифр>.mpiP\", можно посмотреть его в обычном редакторе.\n6. В конце необходимо выполнить на кластере команду, указав имя выходного файла анализатора и ID задачи:\n    /opt/analysis/upload -i '[\"profiling-mpip\",\"lomonosov-2\",1108573,0]' -f <ENTER_OUTPUT_FILENAME> -j <ENTER_JOB_ID>\n\nПодробную инструкцию по анализу полученных результатов mpiP можно прочитать здесь: http://mpip.sourceforge.net/#mpiP_Output"
+            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить модуль Slurm:\n    module add slurm\n3. (Опционально) Скомпилировать программу, указав ключ для сбора дебаг информации (обычно -g).\n4. Запустить программу с предзагрузкой библиотеки анализа:\n    LD_PRELOAD=/opt/software/mpip/libmpiP.so sbatch <slurm параметры> <вызов программы>\n5. В папке появится текстовый файл с результатами работы mpiP \"<имя_исполняемого файла>.<число процессов>.<набор цифр>.mpiP\", можно посмотреть его в обычном редакторе.\n\nПодробную инструкцию по анализу полученных результатов mpiP можно прочитать здесь: http://mpip.sourceforge.net/#mpiP_Output"
         },
         "tracing-itac": {
             "index": 2,
@@ -1420,7 +1438,7 @@
         }
     },
     "detailed": {
-        "profiling-mpip": {
+        "gpu-nvprof_basic": {
             "nvprof_slow_host_mem": {
                 "index": 1,
                 "name": "nvprof_slow_host_mem",
@@ -1435,7 +1453,8 @@
                 "criticalness": 4,
                 "supposition": "Возможно, текущая реализация не подходит для ГПУ.",
                 "text_recommendation": "Следует уменьшить объем данных, копируемых между хостом и ГПУ.",
-                "module_recommendation": "---"
+                "module_recommendation": "---",
+                "old_text_recommendation": "Следует уменьшить объем данных, копируемых между хостом и ГПУ."
             },
             "nvprof_good_host_mem": {
                 "index": 2,
@@ -1450,90 +1469,9 @@
                 "confidence": 3,
                 "criticalness": 1,
                 "supposition": "Возможно, анализ вычислений на ГПУ поможет выявить проблемы с эффективостью.",
-                "text_recommendation": "Рекомендуется провести анализ эффективности вычислений на ГПУ.",
-                "module_recommendation": "gpu-nvprof"
-            }
-        },
-        "gpu-nvprof_basic": {
-            "mpip_low_pe": {
-                "index": 1,
-                "name": "mpip_low_pe",
-                "is_enabled": 1,
-                "public": 1,
-                "description": "Задача обладает низкой параллельной эффективностью (т.е. неэффективно разделены вычисления между процессами и/или неэффективно выполняется обмен данными).",
-                "comment": "PoP метрика PE меньше порога.",
-                "src_file": "mpip.py",
-                "group": "mpip_pop",
-                "priority": 1,
-                "confidence": 3,
-                "criticalness": 2,
-                "supposition": "Вероятно, работа с MPI организована неэффективно.",
-                "text_recommendation": "Анализ MPI программ -> Трассировка",
-                "module_recommendation": "mpi_tracing"
-            },
-            "mpip_low_lb": {
-                "index": 2,
-                "name": "mpip_low_lb",
-                "is_enabled": 1,
-                "public": 1,
-                "description": "Присутствует дисбаланс вычислительной нагрузки между процессами.",
-                "comment": "PoP метрика LB меньше порога.",
-                "src_file": "mpip.py",
-                "group": "mpip_pop",
-                "priority": 2,
-                "confidence": 3,
-                "criticalness": 3,
-                "supposition": "Разбалансировка нагрузки между узлами.",
-                "text_recommendation": "Анализ MPI программ -> Трассировка",
-                "module_recommendation": "mpi_tracing"
-            },
-            "mpip_low_comme": {
-                "index": 3,
-                "name": "mpip_low_comme",
-                "is_enabled": 1,
-                "public": 1,
-                "description": "В программе много времени тратится на выполнение обмена данными, во время которого отсутствует полезная вычислительная нагрузка.",
-                "comment": "PoP метрика CommE меньше порога.",
-                "src_file": "mpip.py",
-                "group": "mpip_pop",
-                "priority": 2,
-                "confidence": 3,
-                "criticalness": 3,
-                "supposition": "Выполнение MPI операций, вероятно, занимает слишком много времени, требуется оптимизация.",
-                "text_recommendation": "Анализ MPI программ -> Трассировка",
-                "module_recommendation": "mpi_tracing"
-            },
-            "mpip_callsite_disbalance_single": {
-                "index": 4,
-                "name": "mpip_callsite_disbalance_single",
-                "is_enabled": 1,
-                "public": 1,
-                "description": "Время выполнения некоторых MPI инструкций существено отличается для разных вызовов на одном процессе",
-                "comment": "callsite_disbalance_single > 5",
-                "src_file": "mpip.py",
-                "group": "mpip_general",
-                "priority": 1,
-                "confidence": 3,
-                "criticalness": 3,
-                "supposition": "Вероятно, присутствует разбалансировка вычислительной нагрузки между процессами, что приводит к простою некоторых процессов при выполнении MPI-операций.",
-                "text_recommendation": "Анализ MPI программ -> Трассировка",
-                "module_recommendation": "mpi_tracing"
-            },
-            "mpip_callsite_disbalance_multi": {
-                "index": 5,
-                "name": "mpip_callsite_disbalance_multi",
-                "is_enabled": 1,
-                "public": 1,
-                "description": "Время выполнения некоторых MPI инструкций существено отличается для среди разных процессов",
-                "comment": "callsite_disbalance_multi > 5",
-                "src_file": "mpip.py",
-                "group": "mpip_general",
-                "priority": 1,
-                "confidence": 3,
-                "criticalness": 3,
-                "supposition": "Вероятно, присутствует разбалансировка вычислительной нагрузки между процессами, что приводит к простою некоторых процессов при выполнении MPI-операций.",
-                "text_recommendation": "Анализ MPI программ -> Трассировка",
-                "module_recommendation": "mpi_tracing"
+                "text_recommendation": "Попробуйте выполнить следующие типы детального анализа:",
+                "module_recommendation": "gpu-nvprof",
+                "old_text_recommendation": "Рекомендуется провести анализ эффективности вычислений на ГПУ."
             }
         },
         "gpu-nvprof": {
@@ -1550,8 +1488,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Возможно, сетка потоков выбрана неэффективным образом.",
-                "text_recommendation": "Следует проверить конфигурацию потоков.",
-                "module_recommendation": "gpu-nsight"
+                "text_recommendation": "Следует проверить конфигурацию потоков. Более подробную информацию можно получить, например, с помощью инструмента NVIDIA Nsight.",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Следует проверить конфигурацию потоков."
             },
             "nvprof_low_achieved_occupancy": {
                 "index": 2,
@@ -1566,8 +1505,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "ГПУ не может параллельно исполнить все блоки потоков в текущей конфигурации.",
-                "text_recommendation": "Следует изменить размер блока или потребляемые ими ресурсы (регистры и/или разделямую память).",
-                "module_recommendation": "gpu-nsight"
+                "text_recommendation": "Следует изменить размер блока или потребляемые ими ресурсы (регистры и/или разделямую память). Более подробную информацию можно получить, например, с помощью инструмента NVIDIA Nsight.",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Следует изменить размер блока или потребляемые ими ресурсы (регистры и/или разделямую память)."
             },
             "nvprof_low_flop_efficiency": {
                 "index": 3,
@@ -1582,8 +1522,9 @@
                 "confidence": 3,
                 "criticalness": 4,
                 "supposition": "Программа работает очень неэффективно (в случае если она активно использует операции с плавающей точкой). Либо программа практически не использует операции с плавающей точкой в принципе.",
-                "text_recommendation": "На данном этапе причина столь низкой эффективности непонятна, необходим более детальный анализ (например, с помощью инструмента NSight).\nВ случае если данная программа практически не использует операции с плавающей точкой, данный пункт стоит пропустить. ",
-                "module_recommendation": "gpu-nsight"
+                "text_recommendation": "На данном этапе причина столь низкой эффективности непонятна, необходим более детальный анализ (например, с помощью инструмента NVIDIA NSight). В случае если данная программа практически не использует операции с плавающей точкой, данный пункт стоит пропустить. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "На данном этапе причина столь низкой эффективности непонятна, необходим более детальный анализ (например, с помощью инструмента NSight).\nВ случае если данная программа практически не использует операции с плавающей точкой, данный пункт стоит пропустить. "
             },
             "nvprof_low_global_mem_efficiency": {
                 "index": 4,
@@ -1598,8 +1539,9 @@
                 "confidence": 3,
                 "criticalness": 2,
                 "supposition": "Шаблон обращений соседних потоков к глобальной памяти организован неэффективно - зачастую не срабатывает механизм coalescing.",
-                "text_recommendation": "Следует проверить соответствие шаблона обращения в глобальную память архитектуре ГПУ (с учетом механизма coalescing).",
-                "module_recommendation": "gpu-nsight"
+                "text_recommendation": "Следует проверить (например, с помощью NVIDIA Nsight) соответствие шаблона обращения в глобальную память архитектуре GPU (с учетом механизма coalescing).",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Следует проверить соответствие шаблона обращения в глобальную память архитектуре ГПУ (с учетом механизма coalescing)."
             },
             "nvprof_low_shared_efficiency": {
                 "index": 5,
@@ -1614,8 +1556,9 @@
                 "confidence": 3,
                 "criticalness": 2,
                 "supposition": "При работе с разделяемой памятью скорее всего происходит большое число конфликтов при обращении к одним и тем же банкам памяти.",
-                "text_recommendation": "Следует проверить соответствие шаблона обращения в разделяемую память ГПУ (с учётом механизма разделения памяти на банки).",
-                "module_recommendation": "gpu-nsight"
+                "text_recommendation": "Следует проверить  (например, с помощью NVIDIA Nsight) соответствие шаблона обращения в разделяемую память GPU (с учётом механизма разделения памяти на банки).",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Следует проверить соответствие шаблона обращения в разделяемую память ГПУ (с учётом механизма разделения памяти на банки)."
             },
             "nvprof_low_warp_execution_efficiency": {
                 "index": 6,
@@ -1630,8 +1573,9 @@
                 "confidence": 3,
                 "criticalness": 2,
                 "supposition": "В силу SIMD-природы варпа, в рамках одного варпа все потоки одновременно выполняют одну ветвь. При этом если части потоков требуется выполнение другой ветви, то эти потоки будут простаивать.\nПоэтому в данной программе наличие большого числа ветвлений, по всей видимости, приводит к простою существенной части ГПУ ресурсов.",
-                "text_recommendation": "Следует уменьшить число ветвлений среди потоков одного варпа.",
-                "module_recommendation": "gpu-nsight"
+                "text_recommendation": "Следует уменьшить число ветвлений среди потоков одного варпа. Более подробную информацию можно получить, например, с помощью инструмента NVIDIA Nsight.",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Следует уменьшить число ветвлений среди потоков одного варпа."
             },
             "todo_1": {
                 "index": 7,
@@ -1647,7 +1591,95 @@
                 "criticalness": 0,
                 "supposition": ".",
                 "text_recommendation": ".",
-                "module_recommendation": "."
+                "module_recommendation": ".",
+                "old_text_recommendation": ""
+            }
+        },
+        "profiling-mpip": {
+            "mpip_low_pe": {
+                "index": 1,
+                "name": "mpip_low_pe",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Задача обладает низкой параллельной эффективностью (т.е. неэффективно разделены вычисления между процессами и/или неэффективно выполняется обмен данными).",
+                "comment": "PoP метрика PE меньше порога.",
+                "src_file": "mpip.py",
+                "group": "mpip_pop",
+                "priority": 1,
+                "confidence": 3,
+                "criticalness": 2,
+                "supposition": "Вероятно, работа с MPI организована неэффективно.",
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "tracing-itac",
+                "old_text_recommendation": "Анализ MPI программ -> Трассировка"
+            },
+            "mpip_low_lb": {
+                "index": 2,
+                "name": "mpip_low_lb",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Присутствует дисбаланс вычислительной нагрузки между процессами.",
+                "comment": "PoP метрика LB меньше порога.",
+                "src_file": "mpip.py",
+                "group": "mpip_pop",
+                "priority": 2,
+                "confidence": 3,
+                "criticalness": 3,
+                "supposition": "Разбалансировка нагрузки между узлами.",
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "tracing-itac",
+                "old_text_recommendation": "Анализ MPI программ -> Трассировка"
+            },
+            "mpip_low_comme": {
+                "index": 3,
+                "name": "mpip_low_comme",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "В программе много времени тратится на выполнение обмена данными, во время которого отсутствует полезная вычислительная нагрузка.",
+                "comment": "PoP метрика CommE меньше порога.",
+                "src_file": "mpip.py",
+                "group": "mpip_pop",
+                "priority": 2,
+                "confidence": 3,
+                "criticalness": 3,
+                "supposition": "Выполнение MPI операций, вероятно, занимает слишком много времени, требуется оптимизация.",
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "tracing-itac",
+                "old_text_recommendation": "Анализ MPI программ -> Трассировка"
+            },
+            "mpip_callsite_disbalance_single": {
+                "index": 4,
+                "name": "mpip_callsite_disbalance_single",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Время выполнения некоторых MPI инструкций существено отличается для разных вызовов на одном процессе",
+                "comment": "callsite_disbalance_single > 5",
+                "src_file": "mpip.py",
+                "group": "mpip_general",
+                "priority": 1,
+                "confidence": 3,
+                "criticalness": 3,
+                "supposition": "Вероятно, присутствует разбалансировка вычислительной нагрузки между процессами, что приводит к простою некоторых процессов при выполнении MPI-операций.",
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "tracing-itac",
+                "old_text_recommendation": "Анализ MPI программ -> Трассировка"
+            },
+            "mpip_callsite_disbalance_multi": {
+                "index": 5,
+                "name": "mpip_callsite_disbalance_multi",
+                "is_enabled": 1,
+                "public": 1,
+                "description": "Время выполнения некоторых MPI инструкций существено отличается для среди разных процессов",
+                "comment": "callsite_disbalance_multi > 5",
+                "src_file": "mpip.py",
+                "group": "mpip_general",
+                "priority": 1,
+                "confidence": 3,
+                "criticalness": 3,
+                "supposition": "Вероятно, присутствует разбалансировка вычислительной нагрузки между процессами, что приводит к простою некоторых процессов при выполнении MPI-операций.",
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "tracing-itac",
+                "old_text_recommendation": "Анализ MPI программ -> Трассировка"
             }
         },
         "mem_corr-valgrind": {
@@ -1664,8 +1696,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Часть выделенной в программе памяти не освобождается.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_uninit_value": {
                 "index": 2,
@@ -1680,8 +1713,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_uninit_condition": {
                 "index": 3,
@@ -1696,8 +1730,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_syscall_param": {
                 "index": 4,
@@ -1712,8 +1747,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_client_check": {
                 "index": 5,
@@ -1728,8 +1764,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_invalid_free": {
                 "index": 6,
@@ -1744,8 +1781,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_mismatched_free": {
                 "index": 7,
@@ -1760,8 +1798,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_invalid_read": {
                 "index": 8,
@@ -1776,8 +1815,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_invalid_write": {
                 "index": 9,
@@ -1792,8 +1832,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_invalid_jump": {
                 "index": 10,
@@ -1808,8 +1849,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_overlap": {
                 "index": 11,
@@ -1824,8 +1866,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_invalid_mem_pool": {
                 "index": 12,
@@ -1840,8 +1883,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             },
             "valgrind_mem_fishy_value": {
                 "index": 13,
@@ -1856,8 +1900,9 @@
                 "confidence": 5,
                 "criticalness": 3,
                 "supposition": "Программа некорректно работает с памятью.",
-                "text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
-                "module_recommendation": "---"
+                "text_recommendation": "Рекомендуется детально изучить файл выдачи от Memcheck, который был получен при выполнении анализа программы. Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. ",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изучить детальный файл выдачи от Memcheck (представлен ниже). Если этого недостаточно, рекомендуется воспользоваться другими инструментами анализа, например, Intel Inspector или Massif, Helgrind, DPD от Valgrind. "
             }
         },
         "mem_eff-valgrind": {
@@ -1874,8 +1919,9 @@
                 "confidence": 3,
                 "criticalness": 3,
                 "supposition": "Низкая временная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
-                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
-                "module_recommendation": "mem_eff-vtune"
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind, который был получен при выполнении анализа программы. Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune)."
             },
             "valgrind_bad_temporal_l2": {
                 "index": 2,
@@ -1890,8 +1936,9 @@
                 "confidence": 3,
                 "criticalness": 3,
                 "supposition": "Низкая временная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
-                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
-                "module_recommendation": "mem_eff-vtune"
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind, который был получен при выполнении анализа программы. Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune)."
             },
             "valgrind_bad_spatial_l1": {
                 "index": 3,
@@ -1906,8 +1953,9 @@
                 "confidence": 3,
                 "criticalness": 3,
                 "supposition": "Низкая пространственная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
-                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
-                "module_recommendation": "mem_eff-vtune"
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind, который был получен при выполнении анализа программы. Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune)."
             },
             "valgrind_bad_spatial_l2": {
                 "index": 4,
@@ -1922,8 +1970,9 @@
                 "confidence": 3,
                 "criticalness": 3,
                 "supposition": "Низкая пространственная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
-                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
-                "module_recommendation": "mem_eff-vtune"
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind, который был получен при выполнении анализа программы. Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune)."
             },
             "valgrind_bad_temporal_l1_func": {
                 "index": 5,
@@ -1938,8 +1987,9 @@
                 "confidence": 3,
                 "criticalness": 3,
                 "supposition": "Низкая временная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
-                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
-                "module_recommendation": "mem_eff-vtune"
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind, который был получен при выполнении анализа программы. Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune)."
             },
             "valgrind_bad_temporal_l2_func": {
                 "index": 6,
@@ -1954,8 +2004,9 @@
                 "confidence": 3,
                 "criticalness": 3,
                 "supposition": "Низкая временная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
-                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
-                "module_recommendation": "mem_eff-vtune"
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind, который был получен при выполнении анализа программы. Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune)."
             },
             "valgrind_bad_spatial_l1_func": {
                 "index": 7,
@@ -1970,8 +2021,9 @@
                 "confidence": 3,
                 "criticalness": 3,
                 "supposition": "Низкая пространственная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
-                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
-                "module_recommendation": "mem_eff-vtune"
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind, который был получен при выполнении анализа программы. Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune)."
             },
             "valgrind_bad_spatial_l2_func": {
                 "index": 8,
@@ -1986,8 +2038,9 @@
                 "confidence": 3,
                 "criticalness": 3,
                 "supposition": "Низкая пространственная локальность зачастую приводит к существенным накладным расходам, связанным с ожиданием выполнения операций с памятью. Поэтому работы с памятью, вероятно, организована неэффективно.",
-                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
-                "module_recommendation": "mem_eff-vtune"
+                "text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind, который был получен при выполнении анализа программы. Также можно воспользоваться другими инструментами анализа (например, Intel VTune).",
+                "module_recommendation": "---",
+                "old_text_recommendation": "Рекомендуется изменить профиль обращений в память для более эффективной работы с подсистемой памяти. Для этих целей стоит изучить детальный файл выдачи от Callgrind (представлен ниже). Также можно воспользоваться другими инструментами анализа (например, Intel VTune)."
             },
             "todo_1": {
                 "index": 9,
@@ -2003,7 +2056,8 @@
                 "criticalness": 0,
                 "supposition": ".",
                 "text_recommendation": ".",
-                "module_recommendation": "."
+                "module_recommendation": ".",
+                "old_text_recommendation": ""
             },
             "todo_2": {
                 "index": 10,
@@ -2019,7 +2073,8 @@
                 "criticalness": 0,
                 "supposition": ".",
                 "text_recommendation": ".",
-                "module_recommendation": "."
+                "module_recommendation": ".",
+                "old_text_recommendation": ""
             }
         },
         "general-aps": {
@@ -2036,8 +2091,9 @@
                 "confidence": 2,
                 "criticalness": 2,
                 "supposition": "Вероятно, работа с MPI организована не очень эффективно. Необходима оптимизация.",
-                "text_recommendation": "Анализ MPI программ -> Профилирование",
-                "module_recommendation": "mpi_profiling"
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "profiling-mpip",
+                "old_text_recommendation": "Анализ MPI программ -> Профилирование"
             },
             "aps_openmp_imbalance": {
                 "index": 2,
@@ -2052,8 +2108,9 @@
                 "confidence": 2,
                 "criticalness": 2,
                 "supposition": "Вероятно, присутствует заметный дисбаланс между OpenMP потоками, из-за чего барьеры долго выполняются.",
-                "text_recommendation": "Анализ многопоточной программы ",
-                "module_recommendation": "thread_analysis"
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "thread-vtune",
+                "old_text_recommendation": "Анализ многопоточной программы "
             },
             "aps_memory_stalls": {
                 "index": 3,
@@ -2068,8 +2125,9 @@
                 "confidence": 2,
                 "criticalness": 2,
                 "supposition": "Работы с памятью, вероятно, организована неэффективно, требуется оптимизация.",
-                "text_recommendation": "Анализ работы с памятью -> Эффективность",
-                "module_recommendation": "memory_efficiency"
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "mem_eff-valgrind",
+                "old_text_recommendation": "Анализ работы с памятью -> Эффективность"
             },
             "aps_io_bound": {
                 "index": 4,
@@ -2084,8 +2142,9 @@
                 "confidence": 2,
                 "criticalness": 2,
                 "supposition": "Работы с файлами, вероятно, организована неэффективно, требуется оптимизация.",
-                "text_recommendation": "Анализ ввода/вывода",
-                "module_recommendation": "io_analysis"
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "io-vtune",
+                "old_text_recommendation": "Анализ ввода/вывода"
             },
             "aps_vectorization": {
                 "index": 5,
@@ -2101,7 +2160,8 @@
                 "criticalness": 2,
                 "supposition": "Возможности по векторизации слабо используются. Вероятно, не был указан ключ компилятору для использования векторных инструкций, либо данная программа плохо векторизуется.",
                 "text_recommendation": "Необходимо провести анализ возможности векторизации программы, например, с помощью Intel Advisor.",
-                "module_recommendation": "---"
+                "module_recommendation": "---",
+                "old_text_recommendation": "Необходимо провести анализ возможности векторизации программы, например, с помощью Intel Advisor."
             },
             "aps_mpi_imbalance": {
                 "index": 6,
@@ -2116,8 +2176,9 @@
                 "confidence": 2,
                 "criticalness": 2,
                 "supposition": "Вероятно, присутствует заметный дисбаланс между MPI процессами.",
-                "text_recommendation": "Анализ MPI программ -> Профилирование",
-                "module_recommendation": "mpi_profiling"
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "profiling-mpip",
+                "old_text_recommendation": "Анализ MPI программ -> Профилирование"
             },
             "aps_cache_stalls": {
                 "index": 7,
@@ -2132,8 +2193,9 @@
                 "confidence": 2,
                 "criticalness": 2,
                 "supposition": "Вероятно, в программе происходит слишком много кэш-промахов, требуется оптимизация.",
-                "text_recommendation": "Анализ работы с памятью -> Эффективность",
-                "module_recommendation": "memory_efficiency"
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "mem_eff-valgrind",
+                "old_text_recommendation": "Анализ работы с памятью -> Эффективность"
             },
             "aps_dram_stalls": {
                 "index": 8,
@@ -2148,8 +2210,9 @@
                 "confidence": 2,
                 "criticalness": 2,
                 "supposition": "Вероятно, в программе происходит часто происходят обращения в оперативную память, требуется оптимизация.",
-                "text_recommendation": "Анализ работы с памятью -> Эффективность",
-                "module_recommendation": "memory_efficiency"
+                "text_recommendation": "Попробуйте выполнить следующий тип детального анализа:",
+                "module_recommendation": "mem_eff-valgrind",
+                "old_text_recommendation": "Анализ работы с памятью -> Эффективность"
             }
         }
     }

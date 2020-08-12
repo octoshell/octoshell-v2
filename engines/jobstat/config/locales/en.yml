@@ -17,6 +17,7 @@ en:
         return_to_list: Return to jobs list
         rule_suggesttion: Send suggestion about the rule
         rules_list: All available rules list
+        rules_list_job: Potential problems of a job
         rules_list_descr: >-
           On this page you can find detailed descriptions of all rules, used at this
           moment to detect possible efficiency problems. For each rule you can suggest
@@ -57,7 +58,7 @@ en:
         here: here.
         hidden_count: Hidden rules count
         hidden_count_perf: 'Efficiency problems hidden: '
-        hide_login: Hile login/partition
+        hide_login: Hile login
         hide_performance: Hide performance info
         hide_rule_button: Hide rule
         i_dont_agree: I don't agree some estimations...
