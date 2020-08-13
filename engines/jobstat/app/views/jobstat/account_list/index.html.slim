@@ -537,3 +537,10 @@ javascript:
       $('#popup_rules .rules-container').removeClass('hidden');
       $('#popup_rules').modal();
   }
+
+  $("#popup_rules").on("show.bs.modal", function () {
+      $("*[data-jobid=" + $("#popup_rules .job-id-span").html() + "]").addClass('bg-success');
+  });
+  $("#popup_rules").on("hide.bs.modal", function () {
+      $("*[data-jobid=" + $("#popup_rules .job-id-span").html() + "]").removeClass('bg-success');
+  });
