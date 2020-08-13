@@ -195,7 +195,7 @@ div class="perf-table"
             - if perf_data_present
               - if job_cond.size > 0
                 - job_cond.each do |cond|
-                  div class="cond-div #{@filters.include?(cond) ? 'hidden' : 'visible'}" data-rule-div="#{cond}"
+                  div class="cond-div #{@filters.include?(cond) ? 'hidden' : 'visible'} rule-top-container" data-rule-div="#{cond}"
                     // current feedback icon
                     - feedback=(@jobs_feedback[job.drms_job_id] || {})[cond] || {}
                     - flag_index = feedback[:class] || 99
@@ -243,7 +243,7 @@ div class="perf-table"
                   - rule = @rules_plus['rules'].fetch(cond, nil)
                   - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
                   - hidden_count+=1 if @filters.include?(cond)
-                  a href="all_rules#go-#{cond}" class="em12 #{@filters.include?(cond) ? 'hidden' : 'visible'}"
+                  a href="all_rules#go-#{cond}" class="em12 #{@filters.include?(cond) ? 'hidden' : 'visible'} rule-top-container"
                     i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{@rules_plus['rules'].fetch(cond,{}).fetch('description','...')}" data-rule-div="#{cond}"
                   |
                 - if hidden_count>0
@@ -364,7 +364,7 @@ div class="modal fade" id="popup_hide" tabindex="-1" role="dialog"
           = t('jobstat.common.why_hide')
 
       div class="modal-body"
-        form onSubmit="all_hide_rule($('#popup_hide').data('cond'), false, $('#popup_hide #popup_hide_question').val()); $('#popup_hide').modal('hide'); return false;"
+        form onSubmit="all_hide_rule($('#popup_hide').data('cond'), false, $('#popup_hide #popup_hide_question').val()); $('#popup_hide').modal('hide'); redraw_hidden_count(); return false;"
           div class="form-group"
             input type="text" class="form-control" id="popup_hide_question"
             input type="submit" id="hide-submit-form" class="hidden"
@@ -447,14 +447,16 @@ javascript:
 
 
   // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
+  function redraw_hidden_count(){
+      var len = filters.length;
+      if (len > 0) {
+          $('#hidden_count').text("#{{t('.hidden_count_perf')}}" + len)
+      } else {
+          $('#hidden_count').text('#{{t(".no_perf_problems")}}')
+      }
+  }
   $(function(){
-    var len=filters.length;
-    if (len>0) {
-      $('#hidden_count').text("#{{t('.hidden_count_perf')}}"+len)
-    }
-    else {
-      $('#hidden_count').text('#{{t(".no_perf_problems")}}')
-    }
+    redraw_hidden_count();
     // mark hidden rules
     filters.forEach(function(rule){
       $("#btn-hide-"+rule).addClass("tinted")

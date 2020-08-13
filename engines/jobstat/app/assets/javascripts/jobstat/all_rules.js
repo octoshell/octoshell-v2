@@ -39,6 +39,10 @@ function all_hide_rule(rule_id,del,text) {
   else{
     $("#btn-hide-"+rule_id).addClass("tinted")
     filters.push(rule_id)
+    // hide all icons and stuff
+    $(filters).each(function(){
+      $("[data-rule-div=" + this + "]").closest(".rule-top-container").addClass("hidden");
+    });
   }
   $("#hide_rule_"+rule_id).removeClass('target')
 
