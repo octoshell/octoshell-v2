@@ -49,8 +49,8 @@ module Jobstat
         if @filters.length > 0
           @filters = @filters[-1]["filters"] || []
         end
+        @filters = @filters.reject { |x| x == "" }
         # -> [cond1,cond2,...]
-
         @fake_data = params[:fake_data].to_i
         @start_intro = 0
         note=Core::Notice.where(sourceable: current_user, category: 2, message: 'intro:jobstat').take
