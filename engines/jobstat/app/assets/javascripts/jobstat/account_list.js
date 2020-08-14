@@ -325,6 +325,10 @@ function update_jobs_agree(feedback){
         var id='#af-'+job+'-'+rule
         $(id).attr('class','agreed-flag') // reset other classes
         $(id).addClass(agree_flags[c])
+
+        id='[_id=af-'+job+'-'+rule+']'
+        $(id).attr('class','agreed-flag') // reset other classes
+        $(id).addClass(agree_flags[c])
       }
     }
   }
