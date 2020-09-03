@@ -14,6 +14,10 @@ i.color-green {
   color: green;
 }
 
+i.color-blue {
+  color: blue;
+}
+
 /************************************/
 /*  Usage:
   div class="accordion"
@@ -380,4 +384,16 @@ input.hide-perf-data:checked ~ .table>tbody>tr>td.perf-data, input.hide-perf-dat
 
 .gray-text {
   color: gray;
+}
+
+.detailed-available {
+  display: flex;
+  flex-flow: row wrap;
+  position: relative;
+}
+
+.detailed-available a{
+  width: calc(33%);
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
 }

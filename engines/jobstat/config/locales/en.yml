@@ -17,6 +17,7 @@ en:
         return_to_list: Return to jobs list
         rule_suggesttion: Send suggestion about the rule
         rules_list: All available rules list
+        rules_list_job: Potential problems of a job
         rules_list_descr: >-
           On this page you can find detailed descriptions of all rules, used at this
           moment to detect possible efficiency problems. For each rule you can suggest
@@ -40,6 +41,7 @@ en:
         any_questions: 'Any questions or notices? Write us '
         cpu_info: in percents of full load
         cpu_load: CPU load
+        detailed_conducted: Detailed analysis was conducted
         disagree_info: >
           Select jobs in left column. In the area below would be shown rules, common
           to selected jobs. Select all rules, you don't agree and send us your comment.
@@ -56,7 +58,7 @@ en:
         here: here.
         hidden_count: Hidden rules count
         hidden_count_perf: 'Efficiency problems hidden: '
-        hide_login: Hile login/partition
+        hide_login: Hile login
         hide_performance: Hide performance info
         hide_rule_button: Hide rule
         i_dont_agree: I don't agree some estimations...
@@ -211,7 +213,8 @@ en:
         total: Total
     common:
       agree_button: I agree with estimation
-      agree_rule: Yes, I agree with this rule estimation
+      agree_rule: Yes
+      agree_rule_label: Do you agree with this rule estimation?
       faled_send_try_later: >-
         Ой, не получилось сохранить Ваш отзыв, попробуйте чуть позже ещё раз его отправить.
       hide: Hide rule!
@@ -228,6 +231,8 @@ en:
       why_dont_agree: Please, tell us why you don't agree with this?
       why_hide: Please, tell us why do you want to hide this rule?
     job:
+      detailed:
+        back: Return
       show:
         avg: Average %{link}
         base: Base features
@@ -239,17 +244,25 @@ en:
         cpu_percent: CPU load (0% .. 100%)
         data_on_job: Информация о задаче %{job}
         descr1: >-
-          Here you can found list of efficiency problems, which were detected for
-          this job. For each problem its description (which basis was detected),
-          supposition (what could cause this problem by our opinion) and
-          recommendations (what we are suggest to do for you) are listed.
-          In many cases recomendation includes type of analysis, suggested to be
-          performed; we will improve this function in the future.
+          Here you can found list of efficiency problems, which were detected
+          for this job. For each problem its description (which basis was
+          detected), suggestion (what could cause this problem by our opinion)
+          and recommendations (what we are suggest to do for you) are listed.
+          In many cases recomendation includes type of analysis, suggested
+          to be performed; we will improve this function in the future.
         descr2: >-
           Abilities to estimate correctness and changing of detected efficiency
           problems are planned in the future. Now this ability is implemented
-          only on all jobs list page. 
+          only on all jobs list page.
+        descr3: >-
+          This area shows what performance problems were detected during the
+          automatic analysis of all jobs performed on the supercomputer.
+        descr4_1: >-
+          This area shows what performance problems were found during the
+          detailed analysis:
+        descr4_2: using
         description: Description
+        detailed: Detailed analysis results
         details: Detailed description
         dynamics: Program execution dynamics
         end: End time
@@ -260,10 +273,12 @@ en:
         gpu_avg: Average GPU load (%)
         gpu_percent: GPU load (0% .. 100%)
         h-short: h.
+        initial: Basic analysis results
         job_id: Job ID
         job_info: 'Information on job # %{id}'
         login: Login
         metric: Metric
+        module_recomendation: Recommended detailed analysis types
         mpi: MPI usage (MB/s)
         no-data: Нет полных данных по этой задаче
         no_data: >-
@@ -277,6 +292,7 @@ en:
         perf: Performance
         potential: Found efficiency problems
         queued: Submit time
+        rating: Feedback
         received: MB received
         recomendation: Recommendation
         return: Return to jobs list
@@ -296,12 +312,13 @@ en:
           In many cases recomendation includes type of analysis, suggested to be
           performed; we will improve this function in the future.
         descr2: >-
-          Abilities to estimate correctness and changing of detected efficiency
-          problems are planned in the future. Now this ability is implemented
-          only on all jobs list page.
-        supposition: "Supposition"
-        initiated_by: Initiated by
-        initiated_found: Initiated tasks
+          Performance problems can be detected in two ways. The first is when
+          conducting a basic analysis of programs that is performed automatically
+          for all tasks performed on a supercomputer. The second - during a more
+          detailed study of the selected program using existing external performance
+          analysis tools.
+        initiated_by: A detailed analysis was carried out after studying the job
+        initiated_found: After studying this problem, a detailed analysis was carried out, the results of which can be seen in these jobs
         initiated_not_found: Initiated tasks not found
-        detailed_available: Available analysys types
+        detailed_available: Available detailed analysys types
 

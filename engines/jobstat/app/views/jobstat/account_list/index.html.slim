@@ -40,10 +40,10 @@ div
     /= t('.ticket_better')
     a href="/support/tickets/new" = t('.here')
 div
-  button class="btn btn-default" onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
-      = t('.i_dont_agree')
-  |  
-  | &nbsp;&nbsp;&nbsp;
+  / button class="btn btn-default" onClick="$('#mass_notok').addClass('target'); multi_job_feedback_start()"
+  /     = t('.i_dont_agree')
+  / |
+  / | &nbsp;&nbsp;&nbsp;
   button class="btn btn-default" onClick="window.open('all_rules','_self')"
       = t('.rules_list')
   |  
@@ -130,7 +130,7 @@ div class="perf-table"
         th class="login-data"
           p title="#{t('.login_info')}"
             =t('.login')
-        th class="login-data"
+        th
           p title="#{t('.partition_info')}"
             =t('.partition')
         th
@@ -177,6 +177,7 @@ div class="perf-table"
       - if @fake_data==0
         - #job_cond = job.get_rules @current_user #@jobs_plus[job.drms_job_id]['rules']
         - job_cond = @jobs_plus[job.drms_job_id]['rules'].keys
+        - detailed = @jobs_plus[job.drms_job_id]['detailed']
         - perf_data_present=!job_performance[:cpu_user].nil?
         - row_id = job.drms_job_id
       - else
@@ -187,36 +188,32 @@ div class="perf-table"
       tr id="job_row_#{row_id}" data-jobid="#{job.drms_job_id}" data-info-state="#{perf_data_present ? 0 : -1}"
         td id=("fake_menu" if @fake_data!=0 && index==1)
           input type="checkbox" class="job_check" style="display: none;" data-job-id="#{job.drms_job_id}" onChange="job_check_clicked(#{job.drms_job_id})"
-          a class="red-on-hover" onClick="$('#job_info_#{index}').addClass('target')" title="#{t('.rules_info')}" data-disable-interaction="1"
+          a class="red-on-hover"  onClick="launchBulkRulesPopup(this);" title="#{t('.rules_info')}" data-disable-interaction="1"
             i class="fas fa-bars"
           // feedback dropdown window
-          div id="job_info_#{index}" class="octo-popup"
-            a class="octo-popup-close" onClick="$('#job_info_#{index}').removeClass('target')"&times;
+          div id="job_info_#{index}" class='rules-container hidden'
             - if perf_data_present
               - if job_cond.size > 0
                 - job_cond.each do |cond|
-                  div class="cond-div #{@filters.include?(cond) ? 'hidden' : 'visible'}" data-rule-div="#{cond}"
+                  div class="cond-div #{@filters.include?(cond) ? 'hidden' : 'visible'} rule-top-container" data-rule-div="#{cond}"
                     // current feedback icon
-                    - feedback=@jobs_plus[job.drms_job_id]['feedback']
-                    - flag_index = feedback.fetch('klass',99)
-                    i id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
+                    - feedback=(@jobs_feedback[job.drms_job_id] || {})[cond] || {}
+                    - flag_index = feedback[:class] || 99
+                    i _id="af-#{job.drms_job_id}-#{cond}" class="#{@agree_flags[flag_index]}" title=("#{t('.no_feedback_yet')}" if flag_index==99)
                     /'fa-ok agreed-flag'
                     | &nbsp;
-                    
-                    // "hide rule" button
-                    button class="btn-danger" onClick="popup_show('hide#{job.drms_job_id}_#{cond}','question_hide#{job.drms_job_id}_#{cond}');" title="#{t('.hide_rule_button')}" id=("fake_hide" if @fake_data!=0) data-disable-interaction="1"
-                      i class="far fa-bell-slash"
-                    | &nbsp; 
 
+                    // "hide rule" button
+                    button class="btn-danger" onClick="$('#popup_hide').data('cond', '#{cond}');$('#popup_hide').modal();" title="#{t('.hide_rule_button')}" id=("fake_hide" if @fake_data!=0) data-disable-interaction="1"
+                      i class="fa-fw far fa-bell-slash"
+                    | &nbsp;
                     // "I disagree with rule" button
-                    button class="btn-warning disagree-button" onClick="popup_show('disagree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="#{t('.not_agree_button')}" id=("fake_not_ok" if @fake_data!=0) data-disable-interaction="1"
+                    button class="btn-warning disagree-button" onclick="$('#popup_disagree').data('id', '#{job.drms_job_id}');$('#popup_disagree').data('cond', '#{cond}');$('#popup_disagree').modal();" title="#{t('.not_agree_button')}" id=("fake_not_ok" if @fake_data!=0) data-disable-interaction="1"
                       i class="#{@agree_flags[1]}"
-                    | &nbsp; 
-                    
-                    button class="btn-warning" onClick="popup_show('agree#{job.drms_job_id}_#{cond}','question_#{job.drms_job_id}_#{cond}');" title="#{t('jobstat.common.agree_button')}" id=("fake_hide" if @fake_ok!=0) data-disable-interaction="1"
+                    |&nbsp;
+                    button class="btn-warning agree-button" onclick="$('#popup_agree').data('id', '#{job.drms_job_id}');$('#popup_agree').data('cond', '#{cond}');$('#popup_agree').modal();" title="#{t('jobstat.common.agree_button')}" id=("fake_hide" if @fake_ok!=0) data-disable-interaction="1"
                       i class="#{@agree_flags[0]}"
-                    | &nbsp; 
-                    
+
                     // rule icon
                     - rule = @rules_plus['rules'].fetch(cond, nil)
                     - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
@@ -226,43 +223,6 @@ div class="perf-table"
 
                     = @rules_plus['rules'].fetch(cond,{}).fetch('description',t('.rule_error'))
 
-                    // "why hide?" dialog
-                    div class="octo-popup2 container" id="popup_hide#{job.drms_job_id}_#{cond}"
-                        /div class="content container"
-                        form onSubmit="popup_hide('hide#{job.drms_job_id}_#{cond}');hide_rule(#{job.drms_job_id},'#{cond}'); return false;"
-                          div class="centered"
-                            = t('.why_hide')
-                          input type="text" id="question_hide#{job.drms_job_id}_#{cond}" class="fullwidth"
-                          div class="centered col-12"
-                            button class="btn-info" type="submit"
-                              = t('.send')
-                            button class="btn-info" onClick="return popup_hide('hide#{job.drms_job_id}_#{cond}');"
-                              = t('.not_send')
-                    a class="octo-close-popup2" onClick="return popup_hide('hide#{job.drms_job_id}_#{cond}');"
-
-
-                    // "Disagree" dialog
-                    div class="octo-popup2 container" id="popup_disagree#{job.drms_job_id}_#{cond}"
-                      form onSubmit="popup_hide('disagree#{job.drms_job_id}_#{cond}');disagree('#{job.drms_job_id}','#{cond}',0); return false;"
-                        div class="centered"
-                          = t('.why_disagree')
-                        input type="text" id="question_#{job.drms_job_id}_#{cond}" class="fullwidth"
-                        div class="centered"
-                          button class="btn-info" type="submit"
-                            = t('.send')
-                          button class="btn-info" onClick="return popup_hide('disagree#{job.drms_job_id}_#{cond}')"
-                            = t('.not_send')
-                    a class="octo-close-popup2" onClick="return popup_hide('disagree#{job.drms_job_id}_#{cond}')"
-
-                    // 'Agree' dialog
-                    div class="octo-popup2 container" id="popup_agree#{job.drms_job_id}_#{cond}"
-                      form onSubmit="popup_hide('agree#{job.drms_job_id}_#{cond}'); agree('#{job.drms_job_id}','#{cond}',0,''); return false;"
-                        div class="centered"
-                          button class="btn-info" type="submit"
-                            = t('jobstat.common.agree_rule')
-                          button class="btn-info" onClick="return popup_hide('agree#{job.drms_job_id}_#{cond}')"
-                            = t('jobstat.common.not_send')
-                    a class="octo-close-popup2" onClick="return popup_hide('agree#{job.drms_job_id}_#{cond}')"
               - else
                 i class="em2 fas fa-fw fa-check color-green"
                 = t('.no_notices')
@@ -271,29 +231,34 @@ div class="perf-table"
                 = t('.no_task_info')
           a class="octo-close-popup" onClick="$('#job_info_#{index}').removeClass('target')"
         td id=("fake_cond" if @fake_data!=0 && index==1) data-disable-interaction="1"
-          /- if @fake_data==1
-            a href="#" class="em12 visible"
-              i class="align-left fa fa-times-circle color-red inline cond-div" title="#{t('.anomaly_task_info')}" data-rule-div="rule_anomaly"
-            |  
-          - if perf_data_present
-            - if job_cond.size > 0
-              - hidden_count = (@fake_data==0 ? 0 : 2)
-              - job_cond.each do |cond|
-                - rule = @rules_plus['rules'].fetch(cond, nil)
-                - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
-                - hidden_count+=1 if @filters.include?(cond)
-                a href="all_rules#go-#{cond}" class="em12 #{@filters.include?(cond) ? 'hidden' : 'visible'}"
-                  i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{@rules_plus['rules'].fetch(cond,{}).fetch('description','...')}" data-rule-div="#{cond}"
-                |  
-              - if hidden_count>0
-                - hidden = @jobs_plus[job.drms_job_id]['filtered']
-                span class="gray-text hidden_rules_count" data-id="#{job.drms_job_id}" title="#{t('.hidden_count')}" +#{@fake_data==0 ? hidden : 2}
+          div class="rule-icon-container"
+            /- if @fake_data==1
+              a href="#" class="em12 visible"
+                i class="align-left fa fa-times-circle color-red inline cond-div" title="#{t('.anomaly_task_info')}" data-rule-div="rule_anomaly"
+              |
+            - if perf_data_present
+              - if job_cond.size > 0
+                - hidden_count = (@fake_data==0 ? 0 : 2)
+                - job_cond.each do |cond|
+                  - rule = @rules_plus['rules'].fetch(cond, nil)
+                  - icon = rule ? group_plus.fetch(rule['group'],def_icon) : def_icon
+                  - hidden_count+=1 if @filters.include?(cond)
+                  a href="all_rules#go-#{cond}" class="em12 #{@filters.include?(cond) ? 'hidden' : 'visible'} rule-top-container"
+                    i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{@rules_plus['rules'].fetch(cond,{}).fetch('description','...')}" data-rule-div="#{cond}"
+                  |
+                - if hidden_count>0
+                  - hidden = @jobs_plus[job.drms_job_id]['filtered']
+                  span class="gray-text hidden_rules_count" data-id="#{job.drms_job_id}" title="#{t('.hidden_count')}" +#{@fake_data==0 ? hidden : 2}
+              - else
+                /= image_tag "ok.png", size: "20", border: 2
+                i class="fas fa-fw fa-check em12 color-green" title="#{t('.no_marks')}"
+              - if detailed
+                a class="em12 visible"
+                  i class="fa-fw align-left fas fa-exclamation-triangle inline cond-div color-blue" title="#{t(".detailed_conducted")}"
+                |
             - else
-              /= image_tag "ok.png", size: "20", border: 2
-              i class="fas fa-fw fa-check em12 color-green" title="#{t('.no_marks')}"
-          - else
-            p 
-              = t('.no_info')
+              p
+                = t('.no_info')
         td id=("fake_id" if (index==1 && @fake_data!=0))
           - d="#{t('.more_task_info')} #{job.get_command}\nУзлы: #{job.nodelist}"
           p title="#{d}"
@@ -301,7 +266,7 @@ div class="perf-table"
             | &nbsp;
             = @fake_data==0 ? link_to(job.drms_job_id, job) : job.drms_job_id
         td class="login-data" = job.login
-        td class="login-data" = job.partition
+        td = job.partition
         td = job.start_time.strftime('%F %T')
         td = job.end_time.strftime('%F %T')
         td class="task_state_#{job.state} centered"
@@ -352,8 +317,80 @@ table
       - if @jobs.length == 100
         a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
 
-button onclick="startIntro()" id="intro-finish"
+button onclick="startIntro()" id="intro-finish" class="btn btn-default"
   = t('.intro_tour')
+
+// MODAL FOR BULK RULE CHANGE POPUP
+div class="modal fade" id="popup_rules" tabindex="-1" role="dialog"
+  div class="modal-dialog" role="document"
+    div class="modal-content"
+      div class="modal-header"
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h5 class="modal-title" id="popup_rules_label"
+          = t('jobstat.account_list.all_rules.rules_list_job') + " #"
+          span class="job-id-span"
+
+      div class="modal-body"
+
+// MODALS FOR POPUP DIALOGS (DISAGREE, HIDE, AGREE)
+div class="modal fade" id="popup_disagree" tabindex="-1" role="dialog"
+  div class="modal-dialog" role="document"
+    div class="modal-content"
+      div class="modal-header"
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h5 class="modal-title" id="popup_disagree_label"
+          = t('jobstat.common.why_dont_agree')
+
+      div class="modal-body"
+        form onSubmit="disagree($('#popup_disagree').data('id'),$('#popup_disagree').data('cond'),0, $('#popup_disagree #popup_disagree_question').val()); $('#popup_disagree').modal('hide'); return false;"
+          div class="form-group"
+            input type="text" class="form-control" id="popup_disagree_question"
+            input type="submit" id="disagree-submit-form" class="hidden"
+      div class="modal-footer"
+        label for="disagree-submit-form" class="btn btn-primary"
+          = t('jobstat.common.send')
+        button type="button" class="btn btn-secondary" data-dismiss="modal"
+          = t('jobstat.common.not_send')
+
+div class="modal fade" id="popup_hide" tabindex="-1" role="dialog"
+  div class="modal-dialog" role="document"
+    div class="modal-content"
+      div class="modal-header"
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h5 class="modal-title" id="popup_hide_label"
+          = t('jobstat.common.why_hide')
+
+      div class="modal-body"
+        form onSubmit="all_hide_rule($('#popup_hide').data('cond'), false, $('#popup_hide #popup_hide_question').val()); $('#popup_hide').modal('hide'); redraw_hidden_count(); return false;"
+          div class="form-group"
+            input type="text" class="form-control" id="popup_hide_question"
+            input type="submit" id="hide-submit-form" class="hidden"
+      div class="modal-footer"
+        label for="hide-submit-form" class="btn btn-primary"
+          = t('jobstat.common.hide')
+        button type="button" class="btn btn-secondary" data-dismiss="modal"
+          = t('jobstat.common.not_hide')
+
+div class="modal fade" id="popup_agree" tabindex="-1" role="dialog"
+  div class="modal-dialog" role="document"
+    div class="modal-content"
+      div class="modal-header"
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h5 class="modal-title" id="popup_agree_label"
+          = t('jobstat.common.agree_rule_label')
+        form onSubmit="agree($('#popup_agree').data('id'),$('#popup_agree').data('cond'),0,''); $('#popup_agree').modal('hide'); return false;"
+          div class="form-group"
+            input type="submit" id="agree-submit-form" class="hidden"
+      div class="modal-footer"
+        label for="agree-submit-form" class="btn btn-primary"
+          = t('jobstat.common.agree_rule')
+        button type="button" class="btn btn-secondary" data-dismiss="modal"
+          = t('jobstat.common.not_send')
+
 
 javascript:
   var jobs=#{{@jobs_plus.to_json}};
@@ -410,14 +447,16 @@ javascript:
 
 
   // {user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string},{...}
+  function redraw_hidden_count(){
+      var len = filters.length;
+      if (len > 0) {
+          $('#hidden_count').text("#{{t('.hidden_count_perf')}}" + len)
+      } else {
+          $('#hidden_count').text('#{{t(".no_perf_problems")}}')
+      }
+  }
   $(function(){
-    var len=filters.length;
-    if (len>0) {
-      $('#hidden_count').text("#{{t('.hidden_count_perf')}}"+len)
-    }
-    else {
-      $('#hidden_count').text('#{{t(".no_perf_problems")}}')
-    }
+    redraw_hidden_count();
     // mark hidden rules
     filters.forEach(function(rule){
       $("#btn-hide-"+rule).addClass("tinted")
@@ -433,16 +472,17 @@ javascript:
     else if (fake_data>=1){
       startIntro(4);
     }
-    $("#_fake_data").val(#{@params[:fake_data].to_i > 0 ? 1 : 0});
+    $("#fake_data").val(#{@params[:fake_data].to_i > 0 ? 1 : 0});
+    $("#hide-login-checkbox").prop('checked', #{@params[:all_logins].length == 1});
   });
 
   function intro_change(new_element){
     var id=$(new_element).attr('id');
-    var fake=$('#_fake_data').val()
+    var fake=$('#fake_data').val()
 
     if(id=='intro-step3'){
       if(parseInt(fake)==0){
-        $('#_fake_data').val("1");
+        $('#fake_data').val("1");
         $('#intro-step2 > form').submit();
         return true;
       }
@@ -452,7 +492,7 @@ javascript:
       intro_finished = true
     }
     else {
-      $('#_fake_data').val("0");
+      $('#fake_data').val("0");
     }
   }
 
@@ -477,7 +517,7 @@ javascript:
       }
       var answer=confirm("#{{t('.finish_tour')}}");
       if(answer){
-        $('#_fake_data').val(0)
+        $('#fake_data').val(0)
         $('#start_time').val('')
         $('#end_time').val('')
         window.open("#{{url_for(action: 'index', controller: 'account_list',only_path: false, protocol: 'https')}}","_self")
@@ -485,3 +525,24 @@ javascript:
       return answer;
     }).start().goToStepNumber(startStep);
   }
+
+  function launchBulkRulesPopup(elem){
+      var job_id = $(elem).closest('tr').data("jobid");
+      var $this = $(elem).closest('td').find('.rules-container').clone();
+      $this.find("i").each(function(){
+          var $this = $(this);
+          if ($this.attr("_id"))
+              $this.attr("id", $this.attr("_id"));
+      });
+      $('#popup_rules .modal-body').html($this);
+      $("#popup_rules .job-id-span").html(job_id);
+      $('#popup_rules .rules-container').removeClass('hidden');
+      $('#popup_rules').modal();
+  }
+
+  $("#popup_rules").on("show.bs.modal", function () {
+      $("*[data-jobid=" + $("#popup_rules .job-id-span").html() + "]").addClass('bg-success');
+  });
+  $("#popup_rules").on("hide.bs.modal", function () {
+      $("*[data-jobid=" + $("#popup_rules .job-id-span").html() + "]").removeClass('bg-success');
+  });

@@ -25,26 +25,30 @@ function all_pre_hide_rule(rule_id) {
   }
 }
 
-function all_hide_rule(rule_id,del) {
+function all_hide_rule(rule_id,del,text) {
   var feedback={
     user: current_user,
     condition: rule_id,
     cluster: 'all',
     delete: (del ? 1 : 0),
-    feedback: $("#text_hide_rule_"+rule_id).val(),
+    feedback: text || $("#text_hide_rule_"+rule_id).val(),
   }
-  filters.push(rule_id)
   if(del){
     $("#btn-hide-"+rule_id).removeClass("tinted")
   }
   else{
     $("#btn-hide-"+rule_id).addClass("tinted")
+    filters.push(rule_id)
+    // hide all icons and stuff
+    $(filters).each(function(){
+      $("[data-rule-div=" + this + "]").closest(".rule-top-container").addClass("hidden");
+    });
   }
   $("#hide_rule_"+rule_id).removeClass('target')
 
   $.ajax({
     type: "POST",
-    url: "feedback",
+    url: feedback_url,
     data: {'feedback': feedback, 'type': 'hide_rule'},
   })
 }

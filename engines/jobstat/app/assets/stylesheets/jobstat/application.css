@@ -23,3 +23,7 @@
   border-width: 2px;
   background-color: #eee;
 }
+.modal-backdrop.fade.in {
+  height:100%;
+  position: fixed;
+}

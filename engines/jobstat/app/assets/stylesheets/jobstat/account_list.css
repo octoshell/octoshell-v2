@@ -13,3 +13,13 @@
 .feedback_list {
   background: #8c8;
 }
+
+.rule-icon-container {
+  display: flex;
+  flex-flow: row wrap;
+  position: relative;
+}
+
+.rule-icon-container a{
+  width : calc(30%);
+}
