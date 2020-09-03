@@ -8,16 +8,19 @@
 #  new_end_lic         :date
 #  new_end_lic_forever :boolean          default(FALSE)
 #  status              :string
+#  to_type             :string
 #  who_type            :string
 #  created_at          :datetime
 #  updated_at          :datetime
 #  allowed_by_id       :integer
 #  created_by_id       :integer
+#  to_id               :bigint(8)
 #  version_id          :integer
 #  who_id              :integer
 #
 # Indexes
 #
+#  index_pack_accesses_on_to_type_and_to_id    (to_type,to_id)
 #  index_pack_accesses_on_version_id           (version_id)
 #  index_pack_accesses_on_who_type_and_who_id  (who_type,who_id)
 #

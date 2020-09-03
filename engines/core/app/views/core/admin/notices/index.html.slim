@@ -5,11 +5,6 @@ div class='well'
   = link_to t('.new_notice'), new_admin_notice_path, class: 'btn btn-default'
 
 = bootstrap_form_for :notice, url: admin_notices_path , method: :get, layout: :horizontal do |f|
-  /= bootstrap_form_for @search, url: admin_notices_path , method: :get, layout: :horizontal do |f|
-  /=f.form_group :checked_eq, label: { text: t('.checked') } do
-   = f.radio_button :checked_eq, nil, label: t('.none')
-   = f.radio_button :checked_eq, true, label: t('.yes')
-   = f.radio_button :checked_eq, false, label: t('.no')
   div.col-sm-12.col-md-4
     = f.autocomplete_field :sourceable_id_eq, {label: Core.user_class.model_name.human, source: main_app.users_path}, include_blank: true do |id|
       - User.find(id).full_name_with_email

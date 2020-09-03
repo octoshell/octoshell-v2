@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: wikiplus_pages
+#
+#  id          :integer          not null, primary key
+#  content_en  :text
+#  content_ru  :text
+#  image       :string
+#  name_en     :string
+#  name_ru     :string
+#  show_all    :boolean          default(TRUE)
+#  sortid      :decimal(5, )
+#  url         :string
+#  created_at  :datetime
+#  updated_at  :datetime
+#  mainpage_id :integer
+#
+# Indexes
+#
+#  index_wikiplus_pages_on_mainpage_id  (mainpage_id)
+#  index_wikiplus_pages_on_url          (url) UNIQUE
+#
 module Wikiplus
   class Page < ActiveRecord::Base
     def test

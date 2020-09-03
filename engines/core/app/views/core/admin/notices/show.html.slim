@@ -58,7 +58,7 @@ div.row
             h4 = Core::Notice.human_attribute_name :active
           td class='col-xs-6'
             h4
-              = @notice.active.nil? ? t('.none') : @notice.active ? t('yes') : t('no')
+              = @notice.active.nil? ? t('none') : @notice.active ? t('yes') : t('no')
               | (
               = @notice.active
               |)

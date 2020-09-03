@@ -11,7 +11,7 @@
     = f.text_field :message, class: 'col-sm-10'
   div.form-group.col-sm-4
     = f.label :category, class: 'control-label col-sm-4'
-    = f.select :category, options_for_select([[t('.for_all'), 0],[t('.personal'), 1],[t('other'), -1]], @notice.category), {prompt: true, class: 'col-sm-8'}
+    = f.select :category, options_for_select([[t('.for_all'), 0],[t('.personal'), 1],[t('.other'), -1]], @notice.category), {prompt: true, class: 'col-sm-8'}
   div.form-group.col-sm-4
     = f.label :category_alt, class: 'control-label col-sm-4'
     = text_field_tag 'notice[category_alt]', nil, {class: 'col-sm-8'}
@@ -48,7 +48,7 @@
 
   div.form-group.col-sm-4
     = f.label :visible, class: 'control-label col-sm-4'
-    = check_box_tag t('visible'), @notice.visible?, @notice.visible?, options.merge(class: 'col-sm-8')
+    = check_box_tag t('.visible'), @notice.visible?, @notice.visible?, options.merge(class: 'col-sm-8')
 
   div.form-group.col-sm-4
     = f.label :active, class: 'control-label col-sm-4'

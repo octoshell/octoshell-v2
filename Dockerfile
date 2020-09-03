@@ -1,8 +1,9 @@
-FROM ubuntu:13.10
+#FROM bitnami/minideb:stretch
+FROM bitnami/minideb:latest
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update
+#RUN apt-get update
 
 # Locales
 
@@ -27,11 +28,11 @@ RUN apt-get -y install git-core
 RUN apt-get -y install build-essential zlib1g-dev libreadline-dev libssl-dev libcurl4-openssl-dev wget libpq-dev libxml2 libxslt-dev libxml2-dev libmagickwand-dev
 
 # Java 7 (openjdk)
-RUN apt-get install -y openjdk-7-jdk
+#RUN apt-get install -y openjdk-7-jdk
 
 # set a bunch of environment variables
-ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64/
-ENV PATH $JAVA_HOME/bin:$PATH
+#ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64/
+#ENV PATH $JAVA_HOME/bin:$PATH
 
 RUN git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
 RUN git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
@@ -42,27 +43,28 @@ RUN rbenv init -
 
 RUN echo "gem: --no-rdoc --no-ri" >> ~/.gemrc
 
-RUN rbenv install jruby-1.7.13 && rbenv global jruby-1.7.13
+#RUN rbenv install jruby-1.7.13 && rbenv global jruby-1.7.13
+RUN rbenv install 2.6.5 && rbenv global 2.6.5
 RUN gem install bundler
-RUN gem install foreman
+#RUN gem install foreman
 RUN rbenv rehash
 
 # PostgreSQL
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-RUN apt-get update
+#RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+#RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+#RUN apt-get update
 
 RUN apt-get -y -q install python-software-properties software-properties-common
-RUN apt-get -y -q install postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3
+RUN apt-get -y -q install postgresql-10 postgresql-client-10
 
 USER postgres
 
-RUN /etc/init.d/postgresql start &&\
+RUN service start postgresql &&\
     psql --command "CREATE USER octo WITH SUPERUSER PASSWORD 'octo';"
 USER root
 
-ADD config/docker/pg_hba.conf /etc/postgresql/9.3/main/pg_hba.conf
+ADD config/docker/pg_hba.conf /etc/postgresql/10/main/pg_hba.conf
 
 # SSH settings
 

@@ -292,27 +292,20 @@ ru:
       core/request: Запрос на доступ к кластеру
       core/research_area: Область науки
       core/surety: Поручительство
+  admin:
+    notices:
+      other: Другое
+      per-user: Персональное
+      site-wide: Для всех
   answers:
-    noo: нет
-    yess: да
+    'false': нет
+    noo: TRME false
     other: другое
+    'true': да
+    yess: TRME true
+  change: сменить
   choose_value: Выберите значение
   core:
-    notice:
-      notices_menu: Уведомления
-      notices_menu_count:
-        html: Уведомления <span class="badge info">%{count}</span>
-    notices:
-      index:
-        title: Уведомления
-        visible: Показывается
-        active: Активно
-        message: Содержание
-        category: Категория
-        hidden-by-user: Скрыто пользователем
-        site_wide_notices: Общие
-        my_notices: Персональные
-        no_notices: Уведомлений нет
     admin:
       cities:
         destroy:
@@ -412,6 +405,66 @@ ru:
           title: Редактировать группу областей науки
         new:
           title: Добавить группу областей науки
+      notices:
+        create:
+          notice_failed: Не получилось создать уведомление
+          notice_succeed: Уведомление создано успешно
+        edit:
+          title: Изменение уведомления
+        form:
+          action: Действие
+          active: Активно?
+          category: Категория
+          for_all: Для всех
+          message: Сообщение
+          none: Неизвестно
+          personal: Персональное
+          show_from: Показ с
+          show_till: Показ до
+          sourceable: Пользователь
+          type: Тип
+        index:
+          active: Активно
+          category: Категория
+          inactive: Не активно
+          my_notices: Персональные уведомления
+          new_notice: Создать уведомление
+          'no': нет
+          none: отсутствует
+          site_wide_notices: Общие уведомления
+          table:
+            action: Действие
+            active: Активно?
+            category: Категория
+            message: Сообщение
+            show_from: Показ с
+            show_till: Показ до
+            sourceable: Пользователь
+            type: Тип
+          title: Уведомления
+          'yes': Да
+        new:
+          title: Создание уведомления
+        other: Другое
+        per-user: Персональное
+        show:
+          none: Не определено
+          notices: Уведомления
+          other: Другое
+          personal: Личное
+          site-wide: Общее
+        site-wide: Общее
+        table:
+          action: Действие
+          active: Активно
+          category: Категория
+          kind: Вид
+          message: Сообщение
+          show_from: Показ с
+          show_till: Показ до
+          source_name: Имя
+          sourceable: Связанный тип
+          visible: Показывается
       organization_kinds:
         edit:
           title: Редактирование типа организаций
@@ -601,38 +654,6 @@ ru:
           title: Области науки
         new:
           title: Добавление новой области науки
-      notices:
-        site-wide: Общее
-        per-user: Персональное
-        other: Другое
-        show:
-          notices: Уведомления
-        form:
-          active: Активно?
-          none: Неизвестно
-          message: Сообщение
-          category: Категория
-          type: Тип
-          sourceable: Пользователь
-          action: Действие
-          show_from: Показ с
-          show_till: Показ до
-        create:
-          notice_succeed: Уведомление создано успешно
-          notice_failed: Не получилось создать уведомление
-        index:
-          title: Уведомления
-          new_notice: Создать уведомление
-          table:
-            message: Сообщение
-            category: Категория
-            type: Тип
-            sourceable: Пользователь
-            active: Активно?
-            action: Действие
-            show_from: Показ с
-            show_till: Показ до
-          none: отсутствует
       sureties:
         activate_or_reject:
           reason_empty: Пустая причина одобрения/ отклонения
@@ -662,6 +683,18 @@ ru:
           no_users_found: Пользователи не найдены
           reactivate: Возобновить
           title: Управление доступом пользователей к ресурсам
+    bot_links:
+      list:
+        bot_links: Токен для ботов
+        confirm: >-
+          Вы действительно хотите сгенерировать новый токен? Подключенных ботов надо
+          будет снова связать.
+        generate_token: Сгенерировать токен
+        msg_help_token: >-
+          Токены нужны для связи профиля Octoshell с ботом. Их необходимо ввести в
+          боте, чтобы получить удаленный доступ из бота к функциональности Octoshell.
+        no_bot_links_found: Сгенерируйте токен, если хотите работать в Octoshell из
+          бота.
     credentials:
       list:
         add_credential: Добавить публичный ключ
@@ -689,15 +722,6 @@ ru:
         title: Новое место работы
       show:
         title: Место работы
-    bot_links:
-      list:
-        generate_token: Сгенерировать токен
-        confirm: Вы действительно хотите сгенерировать новый токен? Подключенных ботов надо будет снова связать.
-        bot_links: Токен для ботов
-        msg_help_token: >-
-          Токены нужны для связи профиля Octoshell с ботом. Их необходимо ввести в боте, чтобы
-          получить удаленный доступ из бота к функциональности Octoshell.
-        no_bot_links_found: Сгенерируйте токен, если хотите работать в Octoshell из бота.
     mailer:
       access_to_project_denied:
         msg_project_acc_denied: Руководитель проекта «%{title}» (%{pid}) закрыл Вам
@@ -835,6 +859,37 @@ ru:
         title: Прилашение в проект «%{project_title}»
       form:
         nothing: без подразделения
+    notice:
+      notices_menu: Уведомления
+      notices_menu_count:
+        html: Уведомления <span class="badge info">%{count}</span>
+    notices:
+      create:
+        notice_failed: Уведомление создано
+        notice_succeed: Не удалось создать уведомление
+      form:
+        for_all: Для всех
+        other: 'TRME '
+        personal: Персональные
+        show_from: Показ с
+        show_till: Показ до
+        visible: 'TRME '
+      index:
+        active: Активно
+        category: Категория
+        hidden-by-user: Скрыто пользователем
+        message: Содержание
+        my_notices: Персональные
+        no_notices: Уведомлений нет
+        site_wide_notices: Общие
+        title: Уведомления
+        visible: Показывается
+      table:
+        for_all: Для всех
+        personal: Персональное
+        show_from: Показ с
+        show_till: Показ до
+        visible: 'TRME '
     notificator:
       check:
         show: Перейти на страницу записи
@@ -1016,6 +1071,5 @@ ru:
     template_saved: Шаблон сохранён
     you_have_to_fill_departments: Вы должны создать подразделения для организации!
   'no': нет
+  none: отсутствует
   'yes': да
-  'none': отсутствует
-  'change': сменить

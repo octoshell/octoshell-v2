@@ -3,12 +3,12 @@
 # Table name: api_exports
 #
 #  id         :integer          not null, primary key
-#  title      :string
 #  request    :text
-#  safe       :boolean
+#  safe       :boolean          default(TRUE)
+#  text       :text
+#  title      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  text       :text
 #
 
 module Api

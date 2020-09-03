@@ -148,7 +148,7 @@ Please, note, that from 2019 we are using Conventional Commits standart for comm
 Types:
 
 |Type|Description|
-|---|---|
+|:---|:---|
 |docs 	|Documantation update|
 |uix    |User interface changes|
 |feat 	|New functions and features|

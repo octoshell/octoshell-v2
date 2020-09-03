@@ -21,7 +21,7 @@ ru:
     - Пт
     - Сб
     abbr_month_names:
-    -
+    - 
     - янв.
     - февр.
     - марта
@@ -47,7 +47,7 @@ ru:
       long: "%Y %B %d"
       short: "%b %d"
     month_names:
-    -
+    - 
     - января
     - февраля
     - марта
@@ -210,6 +210,8 @@ ru:
     shared:
       admin_submenu:
         more: 'Еще '
+      new_submenu:
+        more: 'TRME '
       submenu:
         more: 'Еще '
       user_submenu:

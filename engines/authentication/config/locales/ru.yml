@@ -13,9 +13,8 @@ ru:
         user:
           attributes:
             base:
-              user_is_not_activated: >-
-                Пользователь еще не активирован. Пройдите по ссылке в письме
-                об активации.
+              user_is_not_activated: Пользователь еще не активирован. Пройдите по
+                ссылке в письме об активации.
               user_is_not_registered: Пользователь не зарегистрирован.
               wrong_password: Неверный пароль.
             email:

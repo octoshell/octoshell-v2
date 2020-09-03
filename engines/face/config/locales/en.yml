@@ -21,7 +21,7 @@ en:
     - Fri.
     - Sat.
     abbr_month_names:
-    -
+    - 
     - Jan.
     - Feb.
     - Mar.
@@ -47,7 +47,7 @@ en:
       long: "%Y %B %d"
       short: "%b %d"
     month_names:
-    -
+    - 
     - January
     - February
     - March
@@ -208,6 +208,8 @@ en:
     shared:
       admin_submenu:
         more: 'More '
+      new_submenu:
+        more: 'TRME TRME '
       submenu:
         more: 'More '
       user_submenu:

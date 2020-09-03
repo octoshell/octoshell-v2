@@ -2,14 +2,15 @@
 #
 # Table name: pack_packages
 #
-#  id             :integer          not null, primary key
-#  name_ru        :string
-#  created_at     :datetime
-#  updated_at     :datetime
-#  description_ru :text
-#  deleted        :boolean          default(FALSE), not null
-#  description_en :text
-#  name_en        :string
+#  id                  :integer          not null, primary key
+#  accesses_to_package :boolean          default(FALSE)
+#  deleted             :boolean          default(FALSE), not null
+#  description_en      :text
+#  description_ru      :text
+#  name_en             :string
+#  name_ru             :string
+#  created_at          :datetime
+#  updated_at          :datetime
 #
 
 module Pack
