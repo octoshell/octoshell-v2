@@ -317,7 +317,7 @@ table
       - if @jobs.length == 100
         a href="#{url_for @params.except(:offset).merge(offset: @params[:offset].to_i + @PER_PAGE)}" >>>
 
-button onclick="startIntro()" id="intro-finish"
+button onclick="startIntro()" id="intro-finish" class="btn btn-default"
   = t('.intro_tour')
 
 // MODAL FOR BULK RULE CHANGE POPUP
@@ -472,17 +472,17 @@ javascript:
     else if (fake_data>=1){
       startIntro(4);
     }
-    $("#_fake_data").val(#{@params[:fake_data].to_i > 0 ? 1 : 0});
+    $("#fake_data").val(#{@params[:fake_data].to_i > 0 ? 1 : 0});
     $("#hide-login-checkbox").prop('checked', #{@params[:all_logins].length == 1});
   });
 
   function intro_change(new_element){
     var id=$(new_element).attr('id');
-    var fake=$('#_fake_data').val()
+    var fake=$('#fake_data').val()
 
     if(id=='intro-step3'){
       if(parseInt(fake)==0){
-        $('#_fake_data').val("1");
+        $('#fake_data').val("1");
         $('#intro-step2 > form').submit();
         return true;
       }
@@ -492,7 +492,7 @@ javascript:
       intro_finished = true
     }
     else {
-      $('#_fake_data').val("0");
+      $('#fake_data').val("0");
     }
   }
 
@@ -517,7 +517,7 @@ javascript:
       }
       var answer=confirm("#{{t('.finish_tour')}}");
       if(answer){
-        $('#_fake_data').val(0)
+        $('#fake_data').val(0)
         $('#start_time').val('')
         $('#end_time').val('')
         window.open("#{{url_for(action: 'index', controller: 'account_list',only_path: false, protocol: 'https')}}","_self")
