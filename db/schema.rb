@@ -199,7 +199,7 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_core_bot_links_on_user_id"
- end
+  end
 
   create_table "core_cities", id: :serial, force: :cascade do |t|
     t.integer "country_id"
