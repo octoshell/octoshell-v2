@@ -18,6 +18,7 @@ engines/authentication/spec/dummy/log/*.log
 engines/face/spec/dummy/log/*.log
 log/*.log
 tmp
+*.sublime-*
 
 deploy_env
 .DS_Store
