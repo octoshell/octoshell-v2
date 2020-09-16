@@ -1,7 +1,7 @@
 //var $jq = jQuery.noConflict();
 
 $(document).ready(function(){
-  $('#reply_template').on('select',function(e){
+  $('#reply_template').on('change',function(e){
     var newValue = $('#reply_message').val() + $(this).val();
     $('#reply_message').val(newValue);
   });
