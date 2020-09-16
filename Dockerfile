@@ -5,6 +5,11 @@ ENV DEBIAN_FRONTEND noninteractive
 
 #RUN apt-get update
 
+# Gitlab dependencies
+# TODO: move on top
+RUN apt-get -y install libyaml-dev libgdbm-dev libncurses5-dev libffi-dev curl openssh-server checkinstall libicu-dev logrotate
+
+
 # Locales
 
 RUN locale-gen en_US.UTF-8
@@ -15,9 +20,9 @@ RUN update-locale LC_ALL="en_US.UTF-8" LANG="en_US.UTF-8" LANGUAGE="en_US"
 
 RUN apt-get -y install redis-server
 
-# NodeJS
+# NodeJS and Yarn
 
-RUN apt-get -y install nodejs
+RUN apt-get -y install nodejs yarnpkg
 
 # git
 
@@ -49,22 +54,22 @@ RUN gem install bundler
 #RUN gem install foreman
 RUN rbenv rehash
 
+RUN apt-get -y -q install python-software-properties software-properties-common
 # PostgreSQL
 
 #RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 #RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 #RUN apt-get update
-
-RUN apt-get -y -q install python-software-properties software-properties-common
-RUN apt-get -y -q install postgresql-10 postgresql-client-10
-
-USER postgres
-
-RUN service start postgresql &&\
-    psql --command "CREATE USER octo WITH SUPERUSER PASSWORD 'octo';"
-USER root
-
-ADD config/docker/pg_hba.conf /etc/postgresql/10/main/pg_hba.conf
+#
+#RUN apt-get -y -q install postgresql-10 postgresql-client-10
+#
+#USER postgres
+#
+#RUN service start postgresql &&\
+#    psql --command "CREATE USER octo WITH SUPERUSER PASSWORD 'octo';"
+#USER root
+#
+#ADD config/docker/pg_hba.conf /etc/postgresql/10/main/pg_hba.conf
 
 # SSH settings
 
@@ -78,10 +83,6 @@ RUN chown -R root:root /root/.ssh
 RUN apt-get -y install nginx
 RUN rm /etc/nginx/sites-available/default
 ADD config/docker/nginx_config /etc/nginx/conf.d/octoshell-basic.conf
-
-# Gitlub dependencies
-# TODO: move on top
-RUN apt-get -y install libyaml-dev libgdbm-dev libncurses5-dev libffi-dev curl openssh-server checkinstall libicu-dev logrotate
 
 # Rails
 
