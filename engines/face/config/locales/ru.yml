@@ -1,5 +1,6 @@
 ---
 ru:
+  not-specified: Не указано
   actions:
     confirm: Вы уверены?
     delete: Удалить

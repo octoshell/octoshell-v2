@@ -1,5 +1,6 @@
 ---
 en:
+  not-specified: Not specified
   actions:
     confirm: Are you sure?
     delete: Delete
