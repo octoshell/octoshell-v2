@@ -12,11 +12,11 @@ We support version 2.8.x.
 ## Reporting a Vulnerability
 
   To report a vulnerability, please create an issue and specify:
-  - Octoshell version
-  - Ruby version
-  - Postgresql version
-  - Redis version
-  - Sidekiq version
+  - Octoshell version,
+  - Ruby version,
+  - Postgresql version,
+  - Redis version,
+  - Sidekiq version,
   - How to reproduce a vulnerability:
     - preparations, if needed,
     - steps to reproduce,
