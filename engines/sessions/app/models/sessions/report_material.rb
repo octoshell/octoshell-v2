@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: sessions_report_materials
+#
+#  id                     :integer          not null, primary key
+#  materials              :string
+#  materials_content_type :string
+#  materials_file_size    :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  report_id              :integer
+#
 module Sessions
   class ReportMaterial < ActiveRecord::Base
 

@@ -10,8 +10,9 @@ Welcome to Octoshell's documentation!
    :maxdepth: 2
 
    octo-start
+   octo-use
    OCTOSHELL_PROGRAMMING
-
+   howto-implement-new-module
 
 
 Indices and tables

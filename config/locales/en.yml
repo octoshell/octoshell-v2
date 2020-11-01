@@ -1,5 +1,12 @@
 ---
 en:
+  '':
+    core:
+      admin:
+        notices:
+          other: 'TRME TRME '
+          per-user: 'TRME TRME '
+          site-wide: 'TRME TRME '
   "!": "!"
   abilities:
     accesses:
@@ -248,11 +255,14 @@ en:
     wikiplus: Wiki
   bad_job: 'Bad job: '
   bad_jobs: 'Bad jobs: '
-  buttons:
-    save: Save
   common:
     back: Back
   delete: Delete
+  engine_submenu:
+    jobs_by_projects: Jobs by projects
+    jobs_by_tags: Jobs by tags
+    jobs_by_users: Jobs by users
+    jobs_total: Jubs total
   flash:
     not_authorized: You are not authorized for this action.
     not_logged_in: You haven't logged in. Log in or register.
@@ -270,6 +280,7 @@ en:
           one: Shown <b>1</b>
           other: Shown <b>all %{count}</b>
           zero: Shown <b>0</b>
+  hidden: 'TRME TRME '
   main_menu:
     admin_area: Administator's office
     wiki: Wiki
@@ -296,6 +307,7 @@ en:
       hide: Hide
       new: New option
       show: Show from
+  other: 'TRME TRME '
   profiles:
     form:
       info_mails_help: >-
@@ -339,6 +351,7 @@ en:
       next: Next
       previous: Previous
       truncate: "..."
+  visible: 'TRME TRME '
   who_types:
     ":": ":"
   without_pagination:

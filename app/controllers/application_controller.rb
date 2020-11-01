@@ -61,34 +61,15 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   before_action :journal_user, :check_notices
 
-  # rescue_from MayMay::Unauthorized, with: :not_authorized
-
   def journal_user
     logger.info "JOURNAL: url=#{request.url}/#{request.method}; user_id=#{current_user ? current_user.id : 'none'}"
   end
 
   def check_notices
     return unless current_user
-    return if request[:controller] =~ /\/admin\//
-    return unless Octoface::OctoConfig.find_by_role(:core)
-    
-    #FIXME: each category should be processed separately in outstanding code
-    notices = Core::Notice.where(sourceable: current_user, category: 1)
-    return if notices.count==0
-
-  end
-
-  def conditional_show_notice note
-    n = Time.current
-    return if note.show_from && (note.show_from > n)
-    return if note.show_till && (note.show_till < n)
-    return if !note.active.nil? and note.active==false
-    data = Core::Notice.handle note, current_user, params, request
-    if data
+    #return if request[:controller] =~ /\/admin\//
+    Core::Notice.show_notices(current_user, params, request).each do |data|
       flash_now_message(data[0],data[1])
     end
-    text = "#{notices.count==1 ? t('bad_job') : t('bad_jobs')} #{list.join '; '}"
-    flash.now[:'alert-badjobs'] = raw text
-
   end
 end

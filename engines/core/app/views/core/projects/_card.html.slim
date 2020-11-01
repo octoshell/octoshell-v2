@@ -48,6 +48,10 @@ div class="row"
   h4 = Core::Project.human_attribute_name(:organization)
   div class="col-xs-offset-1"
     = project.organization.name
+    - if project.organization_department
+      | (
+      = project.organization_department.name
+      | )
 
 div class="row"
   h4 = Core::Project.human_attribute_name :direction_of_sciences

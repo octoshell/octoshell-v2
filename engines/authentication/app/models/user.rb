@@ -76,8 +76,9 @@ class User < ApplicationRecord
   def downcase_email
     unless self.email.nil?
       email.downcase!
-      email.gsub!(/\(.*\)/){|comment| ''}
-      # email.tr! "a-zA-Z0-9!\#$%&*+-\/=?^_\`\{\}~.@|\'", ''
+      #email.gsub!(/\(.*\)/){|comment| ''}
+      #email.tr! "a-zA-Z0-9!\#$%&*+-\/=?^_\`\{\}~.@|\'", ''
+      email.tr! "!\#$%&*\/=?^_\`\{\}~|\'", ''
     end
   end
 
@@ -86,5 +87,9 @@ class User < ApplicationRecord
       where("created_at < ? and activation_state = 'pending'",
             Date.today - Authentication.delete_after).each(&:destroy)
     end
+  end
+
+  def ability
+    @ability ||= Ability.new(self)
   end
 end

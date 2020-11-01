@@ -157,6 +157,5 @@ module Support
         super
       end
     end
-
   end
 end

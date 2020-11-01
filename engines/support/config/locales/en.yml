@@ -214,6 +214,10 @@ en:
         errors: 'Errors:'
         show_request_details: Show request
         subject: Your reply for request  №%{number} is incorrect
+        topic: 'TRME TRME '
+    notificator:
+      test_index:
+        ddd: 'TRME TRME '
     tickets:
       edit:
         title: Edit request

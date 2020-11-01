@@ -4,6 +4,11 @@ module ApplicationHelper
     flash[type] << msg
   end
 
+  def flash_now_message(type,msg)
+    flash.now[type] ||= []
+    flash.now[type] << msg
+  end
+
   def octo_url_for(*args)
     array = args.last.class.to_s.split('::')
     engine = if array.length == 1

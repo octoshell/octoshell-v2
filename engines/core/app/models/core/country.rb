@@ -3,9 +3,9 @@
 # Table name: core_countries
 #
 #  id       :integer          not null, primary key
-#  title_ru :string(255)
-#  title_en :string(255)
 #  checked  :boolean          default(FALSE)
+#  title_en :string(255)
+#  title_ru :string(255)
 #
 
 module Core

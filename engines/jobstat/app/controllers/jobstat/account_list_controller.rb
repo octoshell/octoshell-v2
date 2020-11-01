@@ -45,16 +45,23 @@ module Jobstat
 
       begin
         # [{user: int, cluster: [string,...], account=[string,...], filters=[string,..]},....]
-        @filters=Job::get_filters(current_user).map { |x|
-          x['filters']
-        }.flatten.uniq.reject{|x| x==''}
+        @filters=Job::get_filters(current_user)
+        if @filters.length > 0
+          @filters = @filters[-1]["filters"] || []
+        end
+        @filters = @filters.reject { |x| x == "" }
         # -> [cond1,cond2,...]
-
         @fake_data = params[:fake_data].to_i
         @start_intro = 0
-        note=Core::Notice.where(sourceable: current_user, category: 2, message: 'intro:jobstat').take
+        note=Core::Notice.where(sourceable: current_user, category: 2, kind: 'jobstat').take
         if note.nil?
-          Core::Notice.create(sourceable: current_user, category: 2, message: 'intro:jobstat').save
+          Core::Notice.create(
+            sourceable: current_user,
+            category: 2,
+            kind: 'jobstat',
+            message: '1',
+            active: false
+          ).save
           @start_intro = 1
           @fake_data = 10
         end
@@ -132,7 +139,7 @@ module Jobstat
 
           @jobs.each{|j|
             rules=j.get_rules(@current_user)
-            @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0}
+            @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0,'detailed'=>(j.get_detailed.length > 0)}
             rules.each{|r|
               @jobs_plus[j.drms_job_id]['rules'][r['name']] = r['description']
               @jobs_plus[j.drms_job_id]['filtered']+=1 if @filters.include? r['name']
@@ -148,7 +155,8 @@ module Jobstat
 
       joblist=@jobs.map{|j| j.drms_job_id}
       #logger.info "JOBLIST: #{joblist.inspect}"
-      jobs_feedback=Job::get_feedback_job(params[:user].to_i, joblist) || {}
+      @current_user = current_user
+      jobs_feedback=Job::get_feedback_job(@current_user.id, joblist) || {}
       #logger.info "JOBLIST got: #{jobs_feedback}"
       #[{user:int, cluster: string, job_id: int, task_id: int, class=int, feedback=string, condition=string},{...}]
 
@@ -157,7 +165,7 @@ module Jobstat
         @jobs_feedback[f['job_id']]||={}
         @jobs_feedback[f['job_id']][f['condition']]={
           user: f['user'], cluster: f['cluster'],
-          task_id: f['task_id'], klass: f['class'], feedback: f['feedback']
+          task_id: f['task_id'], class: f['class'], feedback: f['feedback']
         }
       }
 
@@ -168,12 +176,6 @@ module Jobstat
          'timelimit', 'command', 'state', 'num_cores', 'num_nodes'].each{|i|
           @jobs_plus[id][i]=job[i]
         }
-        @jobs_plus[id]['feedback']=if(@jobs_feedback.fetch(id,false))
-          # there is a feedback!
-          {'class' => @jobs_feedback[id][:klass]}
-        else
-          {}
-        end
       end
 
       # FIXME!!!!!! (see all_rules)
@@ -226,7 +228,11 @@ module Jobstat
       @extra_css='jobstat/application'
       @extra_js='jobstat/application'
       @rules_plus=Job.rules
-      @filters=Job::get_filters(current_user).map { |x| x['filters'] }.flatten.uniq
+      @filters=Job::get_filters(current_user)
+      if @filters.length > 0
+        @filters = @filters[-1]["filters"] || []
+      end
+
       @current_user=current_user
 
       @emails = JobMailFilter.filters_for_user current_user.id
@@ -283,9 +289,9 @@ module Jobstat
       uri=URI("#{Rails.application.config.octo_feedback_host}/api/filters")
 
       filters=Job::get_filters(current_user)
-        .map { |x| x['filters'] }
-        .flatten
-        .uniq
+      if filters.length > 0
+        filters = filters[-1]["filters"] || []
+      end
       if parm[:delete].to_s=='1'
         filters.reject! {|x| x==cond}
       else

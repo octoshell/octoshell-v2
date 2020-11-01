@@ -1,6 +1,5 @@
 module Support
   module ApplicationHelper
-
     def responsible_user_topics(ticket)
       ticket.possible_responsibles.map do |user, user_topics_array|
         # user_topics_array = r.second
@@ -37,7 +36,7 @@ module Support
                                   admin_fields_path, 'support/admin/fields')
       end
 
-
+  
       # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.tickets_list"),
       #                                   url: [:admin, :tickets],
       #                                   regexp: /tickets/}))

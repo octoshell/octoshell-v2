@@ -120,8 +120,9 @@ function agree(jobid, rule, mass, text) {
 function hide_rule_on_page(rule) {
   $(".cond-div").each(function(div){
     if($(this).attr("data-rule-div")==rule) {
-      $(this).removeClass("visible")
-      $(this).addClass("hidden")
+      $parent = $(this).closest("a")
+      $parent.removeClass("visible")
+      $parent.addClass("hidden")
     }
   })
   update_hidden_rules_count();
@@ -134,7 +135,7 @@ function update_hidden_rules_count(){
     var jobid=tr.attr('data-jobid')
     var count=0
     for(var rule in jobs[jobid]['rules']){
-      if(!filters[rule]){
+      if(filters.includes(rule)){
         count+=1;
       }
     }
@@ -152,6 +153,7 @@ function hide_rule(jobid, rule) {
     account: jobs[jobid]['login'],
     feedback: $("#question_hide" + jobid + '_' + rule).val(),
   }
+  filters.push(rule)
   $.ajax({
     type: "POST",
     url: feedback_url,//"feedback",
@@ -321,6 +323,10 @@ function update_jobs_agree(feedback){
         var c=(parseInt(jobs[job]['feedback'][rule]['class'])==0)? 0 : 1
 
         var id='#af-'+job+'-'+rule
+        $(id).attr('class','agreed-flag') // reset other classes
+        $(id).addClass(agree_flags[c])
+
+        id='[_id=af-'+job+'-'+rule+']'
         $(id).attr('class','agreed-flag') // reset other classes
         $(id).addClass(agree_flags[c])
       }

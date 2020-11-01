@@ -1,5 +1,12 @@
 ---
 ru:
+  '':
+    core:
+      admin:
+        notices:
+          other: 'TRME '
+          per-user: 'TRME '
+          site-wide: 'TRME '
   "!": "!"
   abilities:
     accesses:
@@ -248,11 +255,14 @@ ru:
     wikiplus: Справка
   bad_job: 'Проблемная задача: '
   bad_jobs: 'Проблемные задачи: '
-  buttons:
-    save: Сохранить
   common:
     back: Назад
   delete: Удалить
+  engine_submenu:
+    jobs_by_projects: Заданий по проектам
+    jobs_by_tags: Заданий по тегам
+    jobs_by_users: Заданий по пользователям
+    jobs_total: Заданий всего
   flash:
     not_authorized: У вас недостаточно прав для доступа.
     not_logged_in: Вы не вошли в систему. Войдите или зарегистрируйтесь.
@@ -269,6 +279,7 @@ ru:
           one: Показано <b>1</b>
           other: Показаны <b>все %{count}</b>
           zero: Показано <b>0</b>
+  hidden: 'TRME '
   main_menu:
     admin_area: Кабинет администратора
     wiki: Справка
@@ -295,6 +306,7 @@ ru:
       hide: Скрыть
       new: Новая опция
       show: Показать форму
+  other: 'TRME '
   profiles:
     form:
       info_mails_help: >-
@@ -338,6 +350,7 @@ ru:
       next: Следующая
       previous: Предыдущая
       truncate: "..."
+  visible: 'TRME '
   who_types:
     ":": ":"
   without_pagination:

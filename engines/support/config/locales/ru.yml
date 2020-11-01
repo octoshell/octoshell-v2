@@ -226,6 +226,10 @@ ru:
         errors: 'Ошибки:'
         show_request_details: Перейти к заявке
         subject: Не удалось оставить ответ к  заявке №%{number} по причине ошибок
+        topic: 'TRME '
+    notificator:
+      test_index:
+        ddd: 'TRME '
     tickets:
       edit:
         title: Редактирование заявки

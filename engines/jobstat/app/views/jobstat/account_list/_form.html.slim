@@ -30,8 +30,8 @@ javascript:
         $(id + ' option:first-child').attr("selected", "selected");
     }
 
-    $("#_only_long").prop('checked', #{@params[:only_long].to_i == 1});
-    $("#_only_with_data").prop('checked', #{@params[:only_with_data].to_i == 1});
+    $("#only_long").prop('checked', #{@params[:only_long].to_i == 1});
+    $("#only_with_data").prop('checked', #{@params[:only_with_data].to_i == 1});
     // dirty hack to force select2 select to show SELECTED item...
-    $("#_clusrter").select2().select2('val',$("#_clusrter").val());
+    // $("#cluster").select2().select2('val',$("#cluster").val());
   });
