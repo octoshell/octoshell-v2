@@ -1,4 +1,5 @@
 require "support/engine"
+require "support/settings"
 require "support/notificator"
 require "support/markdown_handler"
 require "support/interface"

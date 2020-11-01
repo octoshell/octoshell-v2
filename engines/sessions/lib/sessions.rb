@@ -1,3 +1,7 @@
+require "sessions/engine"
+require "sessions/settings"
+require "sessions/external_link"
+
 module Sessions
   if ::Octoface.role_class?(:core, 'Project')
     add_link :project
@@ -7,8 +11,6 @@ module Sessions
     add_link :organization
   end
 end
-require "sessions/engine"
-require "sessions/external_link"
 if Sessions.link?(:project)
   require "sessions/report_project"
   require "sessions/session_project"

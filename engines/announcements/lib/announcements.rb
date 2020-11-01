@@ -1,4 +1,6 @@
 require "announcements/engine"
+require "announcements/settings"
+
 # require "maymay"
 require "decorators"
 #require "state_machine"

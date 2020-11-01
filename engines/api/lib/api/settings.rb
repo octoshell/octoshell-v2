@@ -1,3 +1,4 @@
+require "api/settings"
 module Api
   extend Octoface
   octo_configure :api do

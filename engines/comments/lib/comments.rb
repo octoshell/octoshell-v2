@@ -1,4 +1,5 @@
 require "comments/engine"
+require 'comments/settings'
 require "comments/attachable"
 require "comments/integration/attr_renderer"
 require "comments/integration/custom_view"

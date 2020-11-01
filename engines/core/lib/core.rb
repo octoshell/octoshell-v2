@@ -1,4 +1,5 @@
 require "core/engine"
+require 'core/settings'
 require "core/merge_organizations"
 require "core/merge_departments"
 require "core/merge_error"

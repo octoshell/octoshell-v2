@@ -44,6 +44,9 @@ arr << '*'
 Dir.glob(arr.join('/')).each do |f|
   require f
 end
+
+require "octoface/settings"
+
 # require 'engines/octoface'
 # require 'engines/main_app'
 # require 'engines/face'

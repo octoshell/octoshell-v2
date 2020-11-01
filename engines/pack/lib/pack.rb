@@ -1,4 +1,5 @@
 require "pack/engine"
+require "pack/settings"
 require "pack/pack_search"
 require "decorators"
 require "aasm"
