@@ -21,6 +21,17 @@ module Pack
           add_item('packages', t('user_submenu.packages'), pack.admin_root_path, %r{pack/admin/})
         end
       end
+      set :support do
+        ticket_field(key: :pack_access,
+                     name_ru: 'Доступ',
+                     name_en: 'Access',
+                     admin_link: proc { |id| pack.admin_access_path(id) },
+                     user_query: proc { |user| Pack::Access.user_access(user.id) },
+                     admin_query: proc { Pack::Access.all },
+                   )
+
+
+      end
     end
   end
 end

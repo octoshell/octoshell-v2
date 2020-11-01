@@ -1,6 +1,6 @@
 module Core
   extend Octoface
-  octo_configure do
+  octo_configure :core do
     add_ability(:manage,  :notices, 'superadmins')
     add_ability(:manage,  Core::Notice, 'superadmins')
     add_ability(:destroy, :notices, 'superadmins') # <--- does not work

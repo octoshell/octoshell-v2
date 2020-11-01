@@ -142,7 +142,7 @@ module Octoface
 
       def finalize!
         instances.values.each(&:finish_intialization)
-        create_abilities!
+        # create_abilities!
       end
     end
 

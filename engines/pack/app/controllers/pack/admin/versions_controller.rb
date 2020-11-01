@@ -29,7 +29,7 @@ module Pack
     end
 
     def create
-      @version = Version.new(version_params)
+      @version = Version.new(end_lic_version_params)
       @version.package = @package
       if @version.save
         redirect_to admin_package_version_path(@package, @version)
@@ -48,7 +48,7 @@ module Pack
 
     def update
       @version = Version.find(params[:id])
-      if @version.update(version_params)
+      if @version.update(end_lic_version_params)
         redirect_to admin_package_version_path(@package, @version)
       else
         render :edit
@@ -76,6 +76,11 @@ module Pack
 
     def q_param
       params[:q] || { clustervers_active_in: '1' }
+    end
+
+    def end_lic_version_params
+      params[:version][:end_lic] ||= nil
+      version_params
     end
 
     def version_params

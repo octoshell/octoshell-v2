@@ -4,7 +4,6 @@ require "octoface/hook"
 require "octoface/octo_config"
 require "octoface/usage"
 require "octoface/bootstrap_form_helper"
-
 module Octoface
   def octo_configure(role, &block)
     @octo_config ||= OctoConfig.new self, role, &block

@@ -1,19 +1,12 @@
 module Core
   if Octoface.role_class?(:support, 'Notificator')
     class Notificator < Octoface.role_class(:support, 'Notificator')
-      def self.name_ru
+      def self.topic_ru
         'Проверить новую запись'
       end
 
-      def self.name_en
+      def self.topic_en
         'Check new record'
-      end
-
-
-      def topic
-        Support::Topic.find_or_create_by!(name_ru: self.class.name_ru,
-                                          name_en: self.class.name_en,
-                                          parent_topic: parent_topic)
       end
 
       def check(object, current_user)

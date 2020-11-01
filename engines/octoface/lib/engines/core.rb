@@ -90,7 +90,7 @@ module Core
 
         ticket_field(key: :project,
                      # метод для отображения объекта, если не указано, то :to_s
-                      human: :title,
+                     human: :title,
                      # Если есть права, показать в админке значение со ссылкой на проект
                      admin_link: proc { |id| core.admin_project_path(id) },
                      # Если есть права, показать в рабочем кабнете ссылку

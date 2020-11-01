@@ -41,10 +41,10 @@ table
         p class='alpaca-messages'
         div class='top-alpaca-form'
         div class='bottom-alpaca-form'
-h3 =t 'tickets'
--if @access.tickets
-  -@access.tickets.each do |ticket|
-      p = link_to ticket,support.admin_ticket_path(ticket)
+/h3 =t 'tickets'
+/-if @access.tickets
+/  -@access.tickets.each do |ticket|
+/      p = link_to ticket,support.admin_ticket_path(ticket)
 -else
   =t 'no_records_found'
 =javascript_tag do

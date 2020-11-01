@@ -33,7 +33,7 @@ module Pack
     extend_with_options
     validates :package, presence: true
     belongs_to :package, inverse_of: :versions
-    belongs_to :ticket, class_name: 'Support::Ticket'
+    # belongs_to :ticket, class_name: 'Support::Ticket'
     has_many :clustervers, inverse_of: :version, :dependent => :destroy
     has_many :version_options, inverse_of: :version, :dependent => :destroy
     # has_many :options_categories, through: :version_options
@@ -75,7 +75,9 @@ module Pack
     end
 
     def remove_ticket
-      self.ticket = nil if end_lic.blank? || end_lic > Date.today + Pack.expire_after
+      if end_lic.blank? || end_lic > Date.today + Pack.expire_after
+        self.ticket_created = false
+      end
     end
 
     def delete_accesses
@@ -137,15 +139,20 @@ module Pack
     def self.expiring_versions_without_ticket
       where("end_lic IS NOT NULL and end_lic < ?
             AND state='available'", Date.today + Pack.expire_after)
-        .where(ticket_id: nil)
+        .where(ticket_created: false)
     end
+    where("end_lic IS NOT NULL and end_lic < ? AND state='available'", Date.today).where(ticket_created: false)
+
 
     def self.notify_about_expiring_versions
       return unless expiring_versions_without_ticket.exists?
-      Version.transaction do
-        ticket = Notificator.notify_about_expiring_versions(expiring_versions_without_ticket)
-        expiring_versions_without_ticket.each do |version|
-          version.update!(ticket: ticket)
+      versions = expiring_versions_without_ticket.to_a
+      if Octoface.role_class?(:support, 'Notificator')
+        Version.transaction do
+          Notificator.notify_about_expiring_versions(expiring_versions_without_ticket)
+          versions.each do |version|
+            version.update!(ticket_created: true)
+          end
         end
       end
     end

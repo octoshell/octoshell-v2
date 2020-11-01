@@ -3,20 +3,21 @@
 module Support
   class ModelField
     attr_reader :key, :admin_query, :user_query, :human, :admin_link, :user_link,
-                :admin_source, :user_source
+                :admin_source, :user_source, :names
     def initialize(key:, **args)
       @key = key
       @admin_query = args[:admin_query] || args [:user_query]
       @user_query = args[:user_query] || args [:admin_query]
-      unless @admin_query || @user_query
-        raise 'You should pass :admin_query or :user_query'
-      end
+      # unless @admin_query || @user_query
+      #   raise 'You should pass :admin_query or :user_query'
+      # end
       @admin_link = args[:admin_link]
       @user_link = args[:user_link]
       @admin_source = args[:admin_source]
       @user_source = args[:user_source]
 
       @human = args[:human] || :to_s
+      @names = args.slice(*possible_names)
       self.class.all[key] = self
     end
 
@@ -30,6 +31,10 @@ module Support
 
     def type_query(condition)
       send(condition ? :admin_query : :user_query)
+    end
+
+    def possible_names
+      I18n.available_locales.map { |l| :"name_#{l}" }
     end
 
     class << self

@@ -725,7 +725,7 @@ Octoshell::Application.routes.draw do
   #mount Wiki::Engine, :at => "/wiki"
 
   # This line mounts Wiki routes at /wiki by default.
-  mount Wiki::Engine, :at => "/wiki"
+  # mount Wiki::Engine, :at => "/wiki"
   # This line mounts Jobstat routes at /jobstat by default.
   # mount Jobstat::Engine, at: "/jobstat"
 

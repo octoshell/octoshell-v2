@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_15_110709) do
+ActiveRecord::Schema.define(version: 2020_11_01_121819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -358,16 +358,6 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.index ["user_id"], name: "index_core_members_on_user_id"
   end
 
-  create_table "core_notice_show_options", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "notice_id"
-    t.boolean "hidden", default: false, null: false
-    t.boolean "resolved", default: false, null: false
-    t.string "answer"
-    t.index ["notice_id"], name: "index_core_notice_show_options_on_notice_id"
-    t.index ["user_id"], name: "index_core_notice_show_options_on_user_id"
-  end
-
   create_table "core_notices", id: :serial, force: :cascade do |t|
     t.string "sourceable_type"
     t.integer "sourceable_id"
@@ -381,7 +371,7 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.string "kind"
     t.datetime "show_from"
     t.datetime "show_till"
-    t.integer "active"
+    t.boolean "active"
     t.index ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id"
     t.index ["sourceable_type", "sourceable_id"], name: "index_core_notices_on_sourceable_type_and_sourceable_id"
   end
@@ -711,7 +701,6 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.datetime "updated_at", null: false
     t.text "nodelist"
     t.integer "initiator_id"
-    t.index ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true
     t.index ["end_time"], name: "index_jobstat_jobs_on_end_time"
     t.index ["login"], name: "index_jobstat_jobs_on_login"
     t.index ["partition"], name: "index_jobstat_jobs_on_partition"
@@ -844,6 +833,7 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.integer "ticket_id"
     t.text "description_en"
     t.string "name_en"
+    t.boolean "ticket_created"
     t.index ["package_id"], name: "index_pack_versions_on_package_id"
   end
 
@@ -866,6 +856,15 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.text "about"
     t.boolean "receive_info_mails", default: true
     t.boolean "receive_special_mails", default: true
+  end
+
+  create_table "sessions_managers", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "session_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_managers_on_session_id"
+    t.index ["user_id"], name: "index_sessions_managers_on_user_id"
   end
 
   create_table "sessions_projects_in_sessions", id: :serial, force: :cascade do |t|
@@ -1061,6 +1060,7 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.string "hint_en"
     t.string "model_collection"
     t.integer "kind", default: 0
+    t.boolean "search", default: false
   end
 
   create_table "support_replies", id: :serial, force: :cascade do |t|
@@ -1244,8 +1244,7 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.index ["url"], name: "index_wikiplus_pages_on_url", unique: true
   end
 
-
-  add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "core_bot_links", "users"
+  add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"
 end
