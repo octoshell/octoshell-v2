@@ -28,7 +28,6 @@ javascript:
       var v = new_elements[i];
       var html = `<div class="col-md-3 field-container" field-id="${v}"></div>`;
       wrapper.append(html);
-      //var new_object_id = new Date().getTime() ;
       $.ajax({
         dataType: "json",
         url: "#{fields_show_path(admin: admin?)}",

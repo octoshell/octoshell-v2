@@ -3,10 +3,7 @@
     - field = topics_field.field
     - topics_field_id = topics_field.id.to_s
     - ff_options = {}
-    - puts @old_fields.inspect.red
-    - puts topics_field.inspect.green
     - ff_options[:wrapper] =  { class: 'has-warning' } if @ticket_require_edition && @old_fields.include?(topics_field)
-    - puts ff_options.inspect.green
     -if topics_field.field.radio?
       - options = topics_field.field.field_options
       - if options.count > 3
@@ -36,3 +33,8 @@
        = ff.text_field topics_field_id, ff_options.merge(label: field.name,
              required: topics_field.required,
              help: field.hint)
+    -elsif field.markdown?
+      = markdown_area ff, topics_field_id, ff_options.merge(label: field.name,
+            required: topics_field.required,
+            help: field.hint,
+            rows: 5)

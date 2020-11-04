@@ -36,7 +36,7 @@ module Support
                                   admin_fields_path, 'support/admin/fields')
       end
 
-  
+
       # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.tickets_list"),
       #                                   url: [:admin, :tickets],
       #                                   regexp: /tickets/}))
@@ -83,6 +83,8 @@ module Support
         end
       elsif field.field_options.to_a.any?
         field_value.field_option_name
+      elsif field.markdown?
+        markdown field_value.value
       else
         field_value.value
       end

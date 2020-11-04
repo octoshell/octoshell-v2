@@ -17,9 +17,9 @@
   = markdown_area f,:message, rows: 14
 
   = f.file_field :attachment
-  = autocomplete f, name: :project_id, label: Support::Ticket.human_attribute_name(:project), source: core.projects_path, include_blank: true
-  = f.collection_select :cluster_id, Core::Cluster.all, :id, :name, { label: Support::Ticket.human_attribute_name(:cluster), include_blank: true}, {}
-  = f.collection_select :surety_id, Core::Surety.all, :id, :name, label: Support::Ticket.human_attribute_name(:surety), include_blank: true
+  /= autocomplete f, name: :project_id, label: Support::Ticket.human_attribute_name(:project), source: core.projects_path, include_blank: true
+  /= f.collection_select :cluster_id, Core::Cluster.all, :id, :name, { label: Support::Ticket.human_attribute_name(:cluster), include_blank: true}, {}
+  /= f.collection_select :surety_id, Core::Surety.all, :id, :name, label: Support::Ticket.human_attribute_name(:surety), include_blank: true
   = render 'support/tickets/new_field_value_form', f: f, admin: true
   = f.form_group do
     = f.submit t("actions.save")

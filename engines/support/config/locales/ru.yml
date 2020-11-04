@@ -28,6 +28,7 @@ ru:
         url: Содержимое оформить как ссылку
         field_options: Опции поля
         model_collection: Ссылка на объект
+        search: Использовать это поле для поиска в списке билетов
       support/field_option:
         name: Название
       support/reply:
@@ -77,6 +78,9 @@ ru:
         tags: Теги по-умолчанию
         template: Шаблон
         visible_on_create: Видна ли при создании заявки пользователем
+        permissions: Дополнительные права для групп пользователей
+      support/topics_field:
+        required: Обязательно к заполнению
       support/user_topic:
         required: Ответственный по умолчанию
     errors:
@@ -172,6 +176,7 @@ ru:
           updated_before: Обновлён до
         new:
           title: Новая заявка на пользователя
+          choose_topic: Выберите тему
         show:
           accept: Принять в работу
           attach: Приложить файл
@@ -231,6 +236,8 @@ ru:
       test_index:
         ddd: 'TRME '
     tickets:
+      fields_form:
+        contains_all_fields: Содержит следующие поля
       edit:
         title: Редактирование заявки
       index:

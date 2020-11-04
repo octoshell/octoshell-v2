@@ -28,9 +28,7 @@ module Support
   describe TestNotificator do
     it 'creates ticket' do
       user = create(:user)
-      puts User.last.inspect
       access = create(:access, created_by: user, who: user)
-      puts User.last.inspect.green
       TestNotificator._test_with_template('The best user')
       expect(FieldValue.last).to have_attributes(value: access.id.to_s)
       expect(FieldValue.last.ticket.topic.name_en).to eq 'Greetings'

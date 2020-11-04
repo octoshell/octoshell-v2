@@ -9,9 +9,9 @@ module Support
         t_f_id = t_f.id.to_s
         value = send(t_f_id)
         if t_f.field.check_box?
-          errors.add(t_f_id, :invalid) if !value || value.select(&:present?).count.zero?
+          errors.add(t_f_id, :blank) if !value || value.select(&:present?).count.zero?
         elsif value.blank?
-          errors.add(t_f_id, :invalid)
+          errors.add(t_f_id, :blank)
         end
       end
     end

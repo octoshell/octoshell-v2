@@ -280,8 +280,10 @@ module Support
     end
 
     def topics_fields_to_fill
-      topic.parents_with_self.map { |t| t.topics_fields.to_a }.flatten
-           .uniq(&:field_id)
+      (topic.parents_with_self.map { |t| t.topics_fields.to_a } +
+        Support::TopicsField.where(topic_id: nil).joins(:field_values)
+                            .where(support_field_values: { ticket_id: id }).to_a)
+      .flatten.uniq(&:field_id)
     end
 
     def old_fields(topic_id)

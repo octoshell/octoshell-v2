@@ -358,6 +358,16 @@ ActiveRecord::Schema.define(version: 2020_11_01_121819) do
     t.index ["user_id"], name: "index_core_members_on_user_id"
   end
 
+  create_table "core_notice_show_options", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "notice_id"
+    t.boolean "hidden", default: false, null: false
+    t.boolean "resolved", default: false, null: false
+    t.string "answer"
+    t.index ["notice_id"], name: "index_core_notice_show_options_on_notice_id"
+    t.index ["user_id"], name: "index_core_notice_show_options_on_user_id"
+  end
+
   create_table "core_notices", id: :serial, force: :cascade do |t|
     t.string "sourceable_type"
     t.integer "sourceable_id"
@@ -371,7 +381,7 @@ ActiveRecord::Schema.define(version: 2020_11_01_121819) do
     t.string "kind"
     t.datetime "show_from"
     t.datetime "show_till"
-    t.boolean "active"
+    t.integer "active"
     t.index ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id"
     t.index ["sourceable_type", "sourceable_id"], name: "index_core_notices_on_sourceable_type_and_sourceable_id"
   end

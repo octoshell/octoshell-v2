@@ -5,6 +5,7 @@
   = form_group_check_box(f, :required)
   = form_group_check_box(f, :url)
   = form_group_check_box(f, :contains_source_code)
+  = form_group_check_box(f, :search)
   = f.select :model_collection, Support::ModelField.keys, label: t('.model_collection'), include_blank: true
   h3 = Support::Field.human_attribute_name(:field_options)
   div#field_options-container

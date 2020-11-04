@@ -47,10 +47,10 @@ module Support
 
       # init_field_values_form
       # @field_values_form = Support::FieldValuesForm.new(@ticket, params[:ticket][:field_values])
-
+      valid = @field_values_form.valid?
       if ticket_params.keys.count <= 1
         render :new
-      elsif @ticket.valid? && @field_values_form.valid?
+      elsif @ticket.valid? && valid
         @ticket.save!
         @ticket.subscribers << current_user
         redirect_to [:admin, @ticket]
@@ -85,16 +85,6 @@ module Support
       init_field_values_form
     end
 
-    # def change_topic
-    #   @ticket = Ticket.find(params[:id])
-    #   not_authorized_access_to(@ticket)
-    #   init_field_values_form
-    # end
-    #
-    # def update_change_topic
-    #
-    # end
-
     def update
       @ticket = Ticket.find(params[:id])
       not_authorized_access_to(@ticket)
@@ -103,13 +93,13 @@ module Support
           @ticket.assign_attributes(ticket_params)
           init_field_values_form
           @previous_topic_id = params[:ticket].delete(:previous_topic_id)
-          if @ticket.valid? && @field_values_form.valid? && !ticket_require_edition?
+          valid = @field_values_form.valid?
+          if @ticket.valid? && valid && !ticket_require_edition?
             @ticket.save
             @ticket.destroy_stale_fields!
             redirect_to [:admin, @ticket]
           else
             render_edit_in_update
-            # render :edit, alert: @ticket.errors.full_messages.to_sentence
           end
         end
 
@@ -151,7 +141,7 @@ module Support
     end
 
     def setup_default_filter
-      params[:q] ||= { state_in: ["pending", "answered_by_reporter"] }
+      params[:q] ||= { state_in: ["pending", "answered_by_reporter"]}
     end
 
     def init_field_values_form
