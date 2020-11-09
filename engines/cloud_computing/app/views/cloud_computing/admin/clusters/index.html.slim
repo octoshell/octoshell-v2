@@ -1,0 +1,33 @@
+div class="page-header"
+  h1 = t(".title", default: "Clusters")
+
+div class="panel panel-default"
+  div class="panel-heading"
+    = link_to t(".new_cluster"), new_admin_cluster_path, class: "btn btn-default"
+  - if @clusters.any?
+    div class="panel-body"
+      table class="table table-hover"
+        tr
+          th = CloudComputing::Cluster.human_attribute_name("description")
+          th = CloudComputing::Cluster.human_attribute_name("core_cluster")
+
+          th
+        - @clusters.each do |cluster|
+          tr
+            td class="col-xs-3" = link_to cluster.description, admin_cluster_path(cluster)
+            td class="col-xs-3" = link_to cluster.core_cluster, core.admin_cluster_path(cluster.core_cluster)
+
+            td
+              div class="btn-group pull-right"
+                = link_to t(".edit"), edit_admin_cluster_path(cluster), class: "btn btn-default btn-sm"
+                button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                  span class="caret"
+                ul class="dropdown-menu" role="menu"
+                  - name = t(".delete")
+                  - confirm = t(".confirm", default: "Are You sure?")
+                  - data = { method: :delete, confirm: confirm }
+                  li class="text-left"
+                    = link_to name, admin_cluster_path(cluster), data: data
+  - else
+    div class="panel-body"
+      p = t(".no_clusters_found")

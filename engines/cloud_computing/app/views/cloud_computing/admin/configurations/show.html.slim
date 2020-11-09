@@ -1,0 +1,23 @@
+div class="page-header"
+  h1
+    = @configuration.name
+
+div class="panel panel-default"
+  div class="panel-heading"
+    - if can?(:manage, :cloud)
+      = link_to t('actions.edit'), [:edit, :admin, @configuration], class: "btn btn-default"
+
+table class="table table-striped"
+  tr
+    -%i[name description available new_requests position].each do |attr|
+      th = CloudComputing::Configuration.human_attribute_name(attr)
+  tr
+    -%i[name description available new_requests position].each do |attr|
+      td = @configuration.public_send attr
+
+h3 = CloudComputing::Configuration.human_attribute_name(:resources)
+table class="table table-striped"
+  - @configuration.resources.includes(:resource_kind).each do |resource|
+    tr
+      td = resource.resource_kind.name
+      td = resource.value_with_measurement

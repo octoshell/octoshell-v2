@@ -1,0 +1,17 @@
+div class="page-header"
+  h1
+    = @request.configuration.name
+/div class="panel panel-default"
+/  div class="panel-heading"
+/    - if can?(:manage, :cloud)
+/      = link_to t('actions.edit'), [:edit, :admin, @request], class: "btn btn-default"
+
+/table class="table table-striped"
+/  tr
+/    th = CloudComputing::ResourceKind.human_attribute_name(:name)
+/    th = CloudComputing::ResourceKind.human_attribute_name(:description)
+/    th = CloudComputing::ResourceKind.human_attribute_name(:measurement)
+/  tr
+/    td = @resource_kind.name
+/    td = @resource_kind.description
+/    td = @resource_kind.measurement

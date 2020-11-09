@@ -1,0 +1,25 @@
+div class="row"
+  = bootstrap_form_for [:admin, @configuration], layout: :horizontal do |f|
+    - CloudComputing::Configuration.locale_columns(:name,:description).each do |column|
+      = f.text_field column
+    = f.number_field :available
+    = f.number_field :position
+    = form_group_check_box(f, :new_requests)
+    h3 =  CloudComputing::Configuration.human_attribute_name(:resources)
+    = f.fields_for :resources do |ff|
+      div.row
+        div.col-md-3
+          b
+            = ff.object.resource_kind.name_with_measurement
+        div.col-md-3
+          = ff.hidden_field :id
+          = ff.hidden_field :resource_kind_id
+          = ff.number_field :value
+        div.col-md-2
+          = ff.check_box :new_requests, layout: 'form-layout', wrapper: false
+        div.col-md-2
+          = ff.check_box :_destroy, layout: 'form-layout',  wrapper: false
+
+
+    = f.form_group do
+      = f.submit t("buttons.save")

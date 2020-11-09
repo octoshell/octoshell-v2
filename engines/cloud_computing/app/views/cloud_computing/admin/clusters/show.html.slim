@@ -1,0 +1,15 @@
+div class="page-header"
+  h1
+    = @cluster.description
+    - if can?(:manage, :cloud)
+      |
+      = link_to "", [:edit, :admin, @cluster], class: "fa fa-pencil-square"
+
+table class="table table-striped"
+  tr
+    th = CloudComputing::Cluster.human_attribute_name(:core_cluster)
+    th = CloudComputing::Cluster.human_attribute_name(:description)
+
+  tr
+    td = @cluster.core_cluster
+    td = @cluster.description
