@@ -1,6 +1,10 @@
 #!/bin/sh
 
+if [ "x$1" = xfull ]; then
+  rm -f Gemfile.lock engines/*/Gemfile.lock
+fi
+
 bundle install&
-for i in engines/*; do (cd $i; rm Gemfile.lock; bundle install)& done
+for i in engines/*; do (cd $i; bundle install)& done
 wait
 
