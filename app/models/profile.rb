@@ -8,8 +8,8 @@
 #  last_name             :string(255)
 #  middle_name           :string(255)
 #  about                 :text
-#  receive_info_mails    :boolean          default(TRUE)
-#  receive_special_mails :boolean          default(TRUE)
+#  receive_info_mails    :boolean          default("true")
+#  receive_special_mails :boolean          default("true")
 #
 
 class Profile < ApplicationRecord

@@ -18,7 +18,7 @@
 module Support
   class Topic < ApplicationRecord
 
-    
+
 
     translates :name, :template
 
@@ -29,9 +29,16 @@ module Support
     has_and_belongs_to_many :tags, join_table: :support_topics_tags
     has_and_belongs_to_many :responsible_users,class_name: '::User',
                             join_table: :support_user_topics
-
+    has_many :topics_fields, inverse_of: :topic, dependent: :destroy
     has_many :user_topics, dependent: :destroy
-    accepts_nested_attributes_for :user_topics, allow_destroy: true
+    has_many :permissions, lambda { where(available: true, action: 'answer',
+                                          subject_class: 'Support::Topic') },
+                                   foreign_key: :subject_id,
+                                   foreign_type: :subject_class,
+                                   dependent: :destroy,
+                                   class_name: '::Permission'
+
+    accepts_nested_attributes_for :user_topics, :permissions, :topics_fields, allow_destroy: true
     validates_translated :name, presence: true
     validates :parent_id, exclusion: { in: proc { |tq| [tq.id] } }, allow_nil: true
     validate do
@@ -73,6 +80,18 @@ module Support
       name
     end
 
+    def all_subtopics_with_self
+      array = [self]
+      subtopics.each do |topic|
+        array << topic.all_subtopics_with_self
+      end
+      # until subtopics.any?
+      #   array << parent
+      #   parent = parent.parent_topic
+      # end
+      array
+    end
+
     def parents_with_self
       array = [self]
       parent = parent_topic
@@ -81,6 +100,12 @@ module Support
         parent = parent.parent_topic
       end
       array
+    end
+
+    def self.all_fields(topic_id)
+      Support::Topic.find(topic_id)
+                    .parents_with_self.map { |t| t.topics_fields.to_a }.flatten
+                    .uniq(&:field_id)
     end
   end
 end

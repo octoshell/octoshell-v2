@@ -299,10 +299,10 @@ ru:
       site-wide: Для всех
   answers:
     'false': нет
-    noo: TRME false
+    noo: Нет
     other: другое
     'true': да
-    yess: TRME true
+    yess: Да
   change: сменить
   choose_value: Выберите значение
   core:

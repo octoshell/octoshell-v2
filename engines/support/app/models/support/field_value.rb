@@ -16,16 +16,28 @@
 
 module Support
   class FieldValue < ApplicationRecord
-    belongs_to :field
+    # belongs_to :field, through: :topics_field
+    belongs_to :topics_field, inverse_of: :field_values
+
+    belongs_to :_field_option, foreign_key: :value, class_name: FieldOption.to_s
+
+    # belongs_to :field_option, inverse_of: :field_values, foreign_key: :value
     belongs_to :ticket, inverse_of: :field_values
 
-    validates :field, :ticket, presence: true
+    validates :field, :topics_field, presence: true
     validates :value, presence: true, if: :required_value?
 
-    private
-
     def required_value?
-      field.try(:required?)
+      topics_field.required
     end
+
+    def field
+      topics_field.field
+    end
+
+    def field_option_name
+      _field_option.name
+    end
+
   end
 end

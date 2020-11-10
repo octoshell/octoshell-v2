@@ -1,6 +1,7 @@
 module Core
   class Mailer < ActionMailer::Base
-
+    helper ApplicationHelper
+    helper ::ApplicationHelper
     attr_accessor :language
 
     def invitation_to_project(user_id, project_id)

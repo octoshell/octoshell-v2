@@ -1,0 +1,19 @@
+div class="page-header"
+  h1 = @role.role
+- if @role.classes.any?
+  table class="table table-bordered table-striped"
+    tr
+      th class="col-xs-3" #{t '.class'}
+      th class="col-xs-9" #{t '.dependencies'}
+    - @role.classes.each do |key,value|
+      tr
+        td = key
+        td = value.map(&:to_s).join(', ')
+table class="table table-bordered table-striped"
+  - if(hooks = Octoface::Hook.instances[@role.role])
+      th class="col-xs-3" #{t '.name_of_hook'}
+      th class="col-xs-9" #{t '.partials'}
+      - hooks.values.each do |hook|
+        tr
+          td = hook.name
+          td = hook.partials.map{ |k,v| "#{k} (#{v.join(' ')})"  }.join(', ')

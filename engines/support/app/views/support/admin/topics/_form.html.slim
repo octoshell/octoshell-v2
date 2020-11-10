@@ -1,4 +1,4 @@
-= bootstrap_form_for [:admin, @topic], layout: :horizontal do |f|
+= bootstrap_nested_form_for [:admin, @topic], layout: :horizontal do |f|
   -Support::Topic.locale_columns(:name).each do |column|
     = f.text_field column
   -Support::Topic.locale_columns(:template).each do |column|
@@ -6,17 +6,52 @@
   = f.collection_select :parent_id, @topic.available_parents, :id, :name, include_blank: true
   = f.check_box :visible_on_create
   = f.collection_check_boxes :tag_ids, Support::Tag.all, :id, :name
-  = f.collection_check_boxes :field_ids, Support::Field.all, :id, :name
-  h2 = Support::UserTopic.model_name.human
-  = f.form_group(:user_topic_ids) do
-    span.help-block
-  -Support.user_class.support.each do |user|
-    = f.fields_for :user_topics, @topic.user_topics.detect{ |u| u.user_id == user.id}  ||  @topic.user_topics.build(user: user).tap {|user| user.mark_for_destruction} do |ff|
-      h4 = user.full_name
+  - (Support::Field.all - f.object.fields).each{ |field| f.object.topics_fields.new(field: field, required: field.required).mark_for_destruction  }
+  = f.fields_for :topics_fields do |ff|
+    div.row
+      div.col-md-6
+        = ff.hidden_field :id
+        = ff.hidden_field :field_id
+        = ff.check_box :_destroy, {checked: !ff.object.marked_for_destruction? || false,label: ff.object.field.name}, 0, 1
+      div.col-md-6
+        = ff.check_box :required
+
+  - (Group.all - f.object.permissions.map(&:group)).each{ |g| f.object.permissions.new(group: g).mark_for_destruction  }
+  h4 = Support::Topic.human_attribute_name(:permissions)
+  = f.fields_for :permissions do |ff|
       = ff.hidden_field :id
-      = ff.hidden_field :user_id
-      = ff.check_box :_destroy, {label: t('.attach'), checked: !ff.object.marked_for_destruction?}, 0, 1
+      = ff.hidden_field :group_id
+      = ff.check_box :_destroy, {checked: !ff.object.marked_for_destruction?,label: ff.object.group.name}, 0, 1
+  h4 = Support::UserTopic.model_name.human
+  div#user_topics-container
+    = f.fields_for :user_topics, layout: :horizontal do |ff|
+      = ff.autocomplete_field :user_id,{ hide_label: true, source: main_app.users_path} do |id|
+       - -User.find(id).full_name_with_email
       = ff.check_box :required
+      = ff.link_to_remove t(".remove_responsible"), class: "fa fa-times text-danger"
+  = f.link_to_add t(".add_responsible"), :user_topics, {target: 'div#user_topics-container'}
+
+
+  /= f.fields_for :permissions, layout: :horizontal do |ff|
+  /    = ff.check_box :_destroy, {label: t('.attach'), checked: !ff.object.marked_for_destruction?}, 0, 1
+
+  /= f.form_group(:user_topic_ids) do
+  /  span.help-block
+  /-Support.user_class.support.each do |user|
+  /  = f.fields_for :user_topics, @topic.user_topics.detect{ |u| u.user_id == user.id}  ||  @topic.user_topics.build(user: user).tap {|user| user.mark_for_destruction} do |ff|
+  /    h4 = user.full_name
+  /    = ff.hidden_field :id
+  /    = ff.hidden_field :user_id
+  /    = ff.check_box :_destroy, {label: t('.attach'), checked: !ff.object.marked_for_destruction?}, 0, 1
+  /    = ff.check_box :required
 
   = f.form_group do
     = f.submit t("actions.save")
+javascript:
+  $(document).on('nested:fieldAdded', function(event){
+    apply_select();
+  });
+css:
+  div#user_topics-container, #user_topics-container div.fields{
+    padding-bottom:20px;
+  }

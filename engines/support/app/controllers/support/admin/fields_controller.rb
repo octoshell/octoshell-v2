@@ -1,5 +1,6 @@
 module Support
   class Admin::FieldsController < Admin::ApplicationController
+
     def index
       @search = Field.search(params[:q])
       @fields = @search.result(distinct: true).page(params[:page])
@@ -44,7 +45,10 @@ module Support
     private
 
     def field_params
-      params.require(:field).permit(*Field.locale_columns(:name,:hint), :url, :required, :contains_source_code)
+      params.require(:field).permit(*Field.locale_columns(:name, :hint),
+                                    :url, :required, :contains_source_code,
+                                    :model_collection, :kind, :search,
+                                    field_options_attributes: %i[id name_ru name_en _destroy])
     end
   end
 end

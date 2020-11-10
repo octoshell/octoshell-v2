@@ -89,5 +89,11 @@ module Core
 
       "<span class=\"label label-#{label_class} lg\">#{request.human_state_name}</span>".html_safe
     end
+
+    def link_to_support
+      custom_helper(:support, :new_ticket_link)
+    end
+
+
   end
 end

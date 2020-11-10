@@ -1,0 +1,7 @@
+h4 = User.human_attribute_name(:reports)
+= render "sessions/reports/list", reports: user.reports.order(updated_at: :desc).page(1)
+- if User.experts.include?(user) && user.assessing_reports.any?
+  h4 = User.human_attribute_name(:assessing_reports)
+  = render "sessions/reports/list", reports: user.assessing_reports.order(updated_at: :desc).page(1)
+h4 = User.human_attribute_name(:surveys)
+= render "sessions/user_surveys/list", surveys: user.surveys.order(updated_at: :desc).page(1)

@@ -298,11 +298,11 @@ en:
       per-user: TRME Персональное
       site-wide: TRME Для всех
   answers:
-    'false': TRME нет
-    noo: false
+    'false': no
+    noo: no
     other: TRME другое
-    'true': TRME да
-    yess: true
+    'true': no
+    yess: yes
   change: TRME сменить
   choose_value: Choose a value
   core:

@@ -52,6 +52,6 @@ table class="table table-hover"
       td = department.checked ? t('answers.yess') : t('answers.noo')
       td = link_to t(".merge_edit"),merge_edit_admin_organizations_path(id: @organization.id, department_id: department.id), class: "btn btn-default"
 
-=render_attachments @organization,:comments
-=render_attachments @organization,:tags
-=render_attachments @organization,:files
+= custom_helper(:comments, :render_attachments,@organization,:comments)
+= custom_helper(:comments, :render_attachments,@organization,:tags)
+= custom_helper(:comments, :render_attachments,@organization,:files)

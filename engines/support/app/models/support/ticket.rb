@@ -34,7 +34,7 @@
 module Support
   class Ticket < ApplicationRecord
 
-    
+
 
     mount_uploader :attachment, AttachmentUploader
     mount_uploader :export_attachment, TicketAttachmentUploader, mount_on: :attachment_file_name
@@ -48,7 +48,7 @@ module Support
     belongs_to :topic
 
     has_many :replies, inverse_of: :ticket, dependent: :destroy
-    has_many :field_values, inverse_of: :ticket, dependent: :destroy # NOTE: fields are from topic
+    has_many :field_values, inverse_of: :ticket, dependent: :destroy, autosave: true # NOTE: fields are from topic
 
     has_and_belongs_to_many :tags,
                             join_table: :support_tickets_tags, dependent: :destroy
@@ -65,7 +65,7 @@ module Support
       template.present? && template == message && errors.add(:message, :equal_to_template)
     end
 
-    accepts_nested_attributes_for :field_values
+    # accepts_nested_attributes_for :field_values
 
     after_commit :add_reporter_to_subscribers, on: :create
     before_create :add_responsible
@@ -76,9 +76,51 @@ module Support
       left_join(:replies).where("support_replies.message LIKE :q OR support_tickets.message LIKE :q",q: "%#{processed}%")
     end
 
-    def self.ransackable_scopes(_auth_object = nil)
-      %i[find_by_content]
+    after_save do
+      field_values.where(value: ['', nil]).destroy_all
     end
+
+    def field_values_attributes(params)
+
+    end
+
+
+    def self.field_values_with_options(*args)
+      rel = all
+      rel = rel.joins(field_values: :topics_field)
+      counter = 0
+      strings = args.map do |a|
+        first = "support_topics_fields.field_id = #{a.first}"
+        arr = Array(a.second).select(&:present?)
+        if arr.any?
+          second = Array(a.second).select(&:present?).map do |elem|
+            counter += 1
+            "support_field_values.value = '#{elem}'"
+          end.join(' OR ')
+          "#{first} AND (#{second})"
+        else
+          counter += 1
+          first
+        end
+      end
+      rel.where(strings.join(' OR ')).joins(:field_values).group(:id)
+         .having('count(support_field_values.id) = ?', counter)
+    end
+
+    def self.contains_all_fields(*_ids)
+      all
+    end
+
+
+
+    def self.ransackable_scopes(_auth_object = nil)
+      %i[find_by_content field_values_with_options contains_all_fields]
+    end
+
+    def self.ransackable_scopes_skip_sanitize_args
+      ransackable_scopes
+    end
+
     include AASM
     include ::AASM_Additions
     aasm(:state, :column => :state) do
@@ -143,6 +185,13 @@ module Support
     #   aasm(:state).states
     # end
 
+    def select_field_values
+      field_values.select do |f_v|
+        f_v.value.present? && (f_v.field.model_collection.present? ||
+          f_v.field.field_options.any?)
+      end
+    end
+
     def accept(user)
       replies.create! do |reply|
         reply.author = user
@@ -156,11 +205,10 @@ module Support
 
     def topics(for_user = false)
       if topic
-        topic.subtopics
-        for_user ? topic.visible_subtopics : topic.subtopics
+        (for_user ? topic.visible_subtopics : topic.subtopics)
       else
         for_user ? Topic.visible_root : Topic.root
-      end
+      end.order_by_name
     end
 
     def show_questions?
@@ -210,16 +258,46 @@ module Support
 
     def possible_responsibles
       all_user_topics = topic.parents_with_self.map(&:user_topics).flatten
-      User.support.map do |u|
-        user_topics = all_user_topics.select { |user_topic| user_topic.user_id == u.id }
-        [u, user_topics]
+      hash = all_user_topics.group_by(&:user)
+      (User.support.to_a - all_user_topics.map(&:user)).each do |user|
+        hash[user] = []
       end
+      hash
     end
 
     def template
       topic.parents_with_self.detect do |topic|
         topic.template.present?
       end&.template
+    end
+
+    def build_field_values
+      topics_fields_to_fill.each do |topics_field|
+        field_values.build do |value|
+          value.topics_field = topics_field
+        end
+      end
+    end
+
+    def topics_fields_to_fill
+      (topic.parents_with_self.map { |t| t.topics_fields.to_a } +
+        Support::TopicsField.where(topic_id: nil).joins(:field_values)
+                            .where(support_field_values: { ticket_id: id }).to_a)
+      .flatten.uniq(&:field_id)
+    end
+
+    def old_fields(topic_id)
+      Support::Topic.all_fields(topic_id) - topics_fields_to_fill
+    end
+
+    def new_fields(topic_id)
+      topics_fields_to_fill - Support::Topic.all_fields(topic_id)
+    end
+
+    def destroy_stale_fields!
+      field_values.reject do |f_v|
+        topics_fields_to_fill.include?(f_v.topics_field)
+      end.each(&:destroy)
     end
 
     private

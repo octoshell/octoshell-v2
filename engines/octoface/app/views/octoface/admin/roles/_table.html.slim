@@ -1,0 +1,8 @@
+table class="table table-bordered table-striped"
+  tr
+    th class="col-xs-1" #{t '.name'}
+    th class="col-xs-1" #{t '.mod'}
+  - roles.each do |role|
+    tr
+      td = link_to role.role, admin_role_path(role.role)
+      td = role.mod.to_s

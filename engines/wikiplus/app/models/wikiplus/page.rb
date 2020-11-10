@@ -21,7 +21,7 @@
 #  index_wikiplus_pages_on_url          (url) UNIQUE
 #
 module Wikiplus
-  class Page < ActiveRecord::Base
+  class Page < ApplicationRecord
     def test
       return id
     end

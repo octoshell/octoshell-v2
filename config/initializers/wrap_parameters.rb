@@ -14,7 +14,3 @@ end
 # end
 
 Octoface::OctoConfig.finalize!
-# ActiveSupport.on_load(:action_controller) do
-#   puts 'init'.red
-#   Face::MyMenu.validate_keys!
-# end

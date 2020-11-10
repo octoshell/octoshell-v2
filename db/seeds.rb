@@ -3,10 +3,10 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
-  ActiveRecord::Base.connection.tables.each do |table|
-    next if table == 'schema_migrations'
-    ActiveRecord::Base.connection.execute("TRUNCATE #{table} CASCADE")
-  end
+  # ActiveRecord::Base.connection.tables.each do |table|
+  #   next if table == 'schema_migrations'
+  #   ActiveRecord::Base.connection.execute("TRUNCATE #{table} CASCADE")
+  # end
 
 
   puts 'Running seeds'
@@ -100,3 +100,9 @@
   Face::MyMenu.init_menu
   Comments.create_wiki_page
   Comments.create_abilities
+  limited_sup = FactoryBot.create(:user, profile: Profile.new( first_name: 'limited',
+                                                    last_name: 'sup' ),
+                                        email: 'limited_sup@octoshell.ru')
+  ticket = FactoryBot.create(:ticket)
+  FactoryBot.create(:ticket)
+  limited_sup.user_topics.create!(topic: ticket.topic)

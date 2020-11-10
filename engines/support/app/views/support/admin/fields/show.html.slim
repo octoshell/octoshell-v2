@@ -9,6 +9,10 @@ table class="table table-bordered"
     th = Support::Field.human_attribute_name(:name)
     td = @field.name
   tr
+    th = Support::Field.human_attribute_name(:kind)
+    td = @field.kind
+
+  tr
     th = Support::Field.human_attribute_name(:hint)
     td = @field.hint
   tr
@@ -20,3 +24,16 @@ table class="table table-bordered"
   tr
     th = Support::Field.human_attribute_name(:url)
     td = @field.url?
+  tr
+    th = Support::Field.human_attribute_name(:model_collection)
+    td = @field.model_collection
+-if @field.field_options.any?
+  h3 = Support::Field.human_attribute_name(:field_options)
+  table class="table table-bordered"
+    tr
+      th = Support::FieldOption.human_attribute_name(:name_ru)
+      th = Support::FieldOption.human_attribute_name(:name_en)
+    - @field.field_options.each do |option|
+        tr
+          td = option.name_ru
+          td = option.name_en

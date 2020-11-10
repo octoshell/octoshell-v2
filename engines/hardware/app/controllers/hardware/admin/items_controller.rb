@@ -36,7 +36,7 @@ module Hardware
       else
         session.delete(:hardware_max_date)
       end
-      redirect_to :back
+      redirect_back(fallback_location: hardware.admin_root_path)
     end
 
     def show

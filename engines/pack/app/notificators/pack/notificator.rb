@@ -1,24 +1,18 @@
 module Pack
-  class Notificator < ::Support::Notificator
+  if Octoface.role_class?(:support, 'Notificator')
+    class Notificator < Octoface.role_class(:support, 'Notificator')
+      def topic_ru
+        'Версии ПО с истекающей лицензией'
+      end
 
-    def self.name_ru
-      'Версии ПО с истекающей лицензией'
-    end
+      def topic_en
+        'Software versions with expiring license'
+      end
 
-    def self.name_en
-      'Software versions with expiring license'
-    end
-
-    def topic
-      Support::Topic.find_or_create_by!(name_ru: self.class.name_ru,
-                                        name_en: self.class.name_en,
-                                        parent_topic: parent_topic)
-    end
-
-    def notify_about_expiring_versions(versions)
-      @versions = versions.includes(:package)
-      hash = { subject: t('.subject') }
-      hash
+      def notify_about_expiring_versions(versions)
+        @versions = versions.includes(:package)
+        { subject: t('.subject') }
+      end
     end
   end
 end

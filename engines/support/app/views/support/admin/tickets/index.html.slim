@@ -6,15 +6,18 @@ div class="page-header"
   div class="container"
     div class="col-md-3"
       = f.select :state_in, Support::Ticket.human_state_names_with_original, { label: Support::Ticket.human_attribute_name(:state), include_blank: true  }, { multiple: true  }
-      = f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
-      = f.autocomplete_field :reporter_id_eq,{label: Core.user_class.model_name.human ,source:  main_app.users_path},include_blank: true
-      /do |id|
+      /= f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
+      = f.autocomplete_field :reporter_id_eq,{label: Core.user_class.model_name.human ,source:  main_app.users_path},include_blank: true do |id|
         -User.find(id).full_name_with_email
     div class="col-md-3"
-      = f.autocomplete_field :project_id_eq,{label: t('.project') ,source:  core.projects_path},include_blank: true do |id|
-       -Core::Project.find(id).title
+      /= f.autocomplete_field :project_id_eq,{label: t('.project') ,source:  core.projects_path},include_blank: true do |id|
+      / -Core::Project.find(id).title
 
-      = f.collection_select :topic_id_eq, Support::Topic.leaf_topics, :id, :name_with_parents, label: Support::Ticket.human_attribute_name(:topic), include_blank: true
+      = f.collection_select :topic_id_eq,
+                            Support::Topic.accessible_by(current_ability, :access).leaf_topics,
+                            :id, :name_with_parents,
+                            label: Support::Ticket.human_attribute_name(:topic),
+                            include_blank: true
       = f.collection_select :responsible_id_eq, (Support.user_class.support | Support.user_class.superadmins), :id, :full_name, label: Support::Ticket.human_attribute_name(:responsible), include_blank: true
     div class="col-md-3"
       = f.text_field :find_by_content, label: t('.find_by_content')
@@ -24,6 +27,10 @@ div class="page-header"
       = f.collection_select :tags_id_in, Support::Tag.all, :id, :name, { label: Support::Ticket.human_attribute_name(:tags), include_blank: true  }, { multiple: true  }
       = f.text_field :updated_at_gt, options.merge(label: t('.updated_after'))
       = f.text_field :updated_at_lt, options.merge(label: t('.updated_before'))
+  = render partial: 'support/tickets/fields_form', locals: {f: f}
+
+
+
   = f.form_group do
     = f.primary t("actions.find")
     | &nbsp;
@@ -33,3 +40,5 @@ div class="page-header"
 = safe_paginate @tickets
 = render "table", tickets: @tickets
 = safe_paginate @tickets
+
+= render partial: 'support/tickets/fields_viewer'

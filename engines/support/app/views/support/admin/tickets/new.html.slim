@@ -1,4 +1,15 @@
 div class="page-header"
   h1 = t(".title")
 
-= render "form"
+- if @ticket.topic
+  = render "form"
+- else
+  = bootstrap_nested_form_for [:admin, @ticket], layout: :horizontal, multipart: true do |f|
+    = f.collection_select :topic_id, Support::Topic.accessible_by(current_ability, :access).leaf_topics, :id, :name_with_parents
+    = f.form_group do
+      = f.submit t(".choose_topic")
+
+  javascript:
+    $('#ticket_topic_id').change(function(){
+      $('#new_ticket').submit();
+    });

@@ -2,11 +2,16 @@ module Sessions
   class Admin::ReportsController < Admin::ApplicationController
     # before_action { authorize! :manage, :reports }
     before_action :octo_authorize!
+    octo_use(:project_class, :core, 'Project')
+    # octo_use(:group_research_area_class, :core, 'GroupOfResearchArea')
+    # octo_use(:critical_technology_class, :core, 'CriticalTechnology')
+    # octo_use(:direction_of_science_class, :core, 'DirectionOfScience')
+    # octo_use(:research_area_class, :core, 'ResearchArea')
 
     def index
-      @search = Report.includes([{ project: :research_areas },
-                                 { author: :profile },
+      @search = Report.includes([{ author: :profile },
                                  { expert: :profile }, :session])
+                      .for_link(:project) { |r| r.includes(project: :research_areas) }
                       .search(params[:q] || default_index_params)
       @reports = if (User.superadmins | User.reregistrators).include? current_user
                    @search.result(distinct: true)

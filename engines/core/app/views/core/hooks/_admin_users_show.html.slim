@@ -1,0 +1,4 @@
+= render "core/admin/employments/list", employments: user.employments.where(state: :active).order(primary: :desc, created_at: :desc)
+h4 = User.human_attribute_name(:projects)
+= render 'core/projects/projects_list', projects: user.projects.order(created_at: :desc)
+= render "core/admin/credentials/list", credentials: user.credentials.where(state: :active)
