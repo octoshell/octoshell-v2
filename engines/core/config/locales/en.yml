@@ -294,16 +294,16 @@ en:
       core/surety: Surety
   admin:
     notices:
-      other: TRME Другое
-      per-user: TRME Персональное
-      site-wide: TRME Для всех
+      other: Other
+      per-user: Per-user
+      site-wide: Site-wide 
   answers:
     'false': no
     noo: no
-    other: TRME другое
+    other: other
     'true': no
     yess: yes
-  change: TRME сменить
+  change: change
   choose_value: Choose a value
   core:
     admin:
@@ -406,64 +406,64 @@ en:
           title: New group of research areas
       notices:
         create:
-          notice_failed: TRME Не получилось создать уведомление
-          notice_succeed: TRME Уведомление создано успешно
+          notice_failed: Cannot create notice
+          notice_succeed: Notice created
         edit:
           title: 'TRME TRME '
         form:
-          action: TRME Действие
-          active: TRME Активно?
-          category: TRME Категория
-          for_all: 'TRME TRME '
-          message: TRME Сообщение
-          none: TRME Неизвестно
-          personal: 'TRME TRME '
-          show_from: TRME Показ с
-          show_till: TRME Показ до
-          sourceable: TRME Пользователь
-          type: TRME Тип
+          action: Action
+          active: Active?
+          category: Category
+          for_all: For all
+          message: Message
+          none: none
+          personal: Personal
+          show_from: Show from
+          show_till: Show till
+          sourceable: User/other
+          type: Type
         index:
-          active: 'TRME TRME '
-          category: 'TRME TRME '
-          inactive: 'TRME TRME '
-          my_notices: 'TRME TRME '
-          new_notice: TRME Создать уведомление
-          'no': 'TRME TRME '
-          none: TRME отсутствует
-          site_wide_notices: 'TRME TRME '
+          active: active
+          category: category
+          inactive: inactive
+          my_notices: my notices
+          new_notice: Create notice
+          'no': No
+          none: None
+          site_wide_notices: Site-wide notices
           table:
-            action: TRME Действие
-            active: TRME Активно?
-            category: TRME Категория
-            message: TRME Сообщение
-            show_from: TRME Показ с
-            show_till: TRME Показ до
-            sourceable: TRME Пользователь
-            type: TRME Тип
-          title: TRME Уведомления
-          'yes': 'TRME TRME '
+            action: Action
+            active: Active?
+            category: Category
+            message: Message
+            show_from: Show from
+            show_till: Show till
+            sourceable: User/other
+            type: Type
+          title: Notices
+          'yes': yes
         new:
-          title: 'TRME TRME '
-        other: TRME Другое
-        per-user: TRME Персональное
+          title: New notice
+        other: other
+        per-user: Per-user
         show:
-          none: 'TRME TRME '
-          notices: TRME Уведомления
-          other: 'TRME TRME '
-          personal: 'TRME TRME '
-          site-wide: 'TRME TRME '
-        site-wide: TRME Общее
+          none: none
+          notices: notices
+          other: other
+          personal: per-user
+          site-wide: site-wide
+        site-wide: site-wide
         table:
-          action: 'TRME TRME '
-          active: 'TRME TRME '
-          category: 'TRME TRME '
-          kind: 'TRME TRME '
-          message: 'TRME TRME '
-          show_from: 'TRME TRME '
-          show_till: 'TRME TRME '
-          source_name: 'TRME TRME '
-          sourceable: 'TRME TRME '
-          visible: 'TRME TRME '
+          action: action
+          active: active?
+          category: category
+          kind: kind
+          message: message
+          show_from: show from
+          show_till: show till
+          source_name: source name
+          sourceable: sourceable
+          visible: visible
       organization_kinds:
         edit:
           title: Edit organization kind
@@ -681,16 +681,15 @@ en:
           title: Resources user access management
     bot_links:
       list:
-        bot_links: TRME Токен для ботов
+        bot_links: Bot token
         confirm: >-
-          TRME Вы действительно хотите сгенерировать новый токен? Подключенных ботов
-          надо будет снова связать.
-        generate_token: TRME Сгенерировать токен
+          If you generate a new tokel old bots should be updated. Are you sure?
+        generate_token: Generate token
         msg_help_token: >-
-          TRME Токены нужны для связи профиля Octoshell с ботом. Их необходимо ввести
-          в боте, чтобы получить удаленный доступ из бота к функциональности Octoshell.
-        no_bot_links_found: TRME Сгенерируйте токен, если хотите работать в Octoshell
-          из бота.
+          Tokens are used to connect Octoshell profile with bots. You'll need to
+          enter token in the bot interface to be able to interact woth your profile
+          in Octoshell via bot.
+        no_bot_links_found: Create new token to interact with Octoshell via bot.
     credentials:
       list:
         add_credential: Add public key
@@ -853,36 +852,36 @@ en:
       form:
         nothing: Without department
     notice:
-      notices_menu: TRME Уведомления
+      notices_menu: Notices
       notices_menu_count:
-        html: TRME Уведомления <span class="badge info">%{count}</span>
+        html: Notices <span class="badge info">%{count}</span>
     notices:
       create:
-        notice_failed: 'TRME TRME '
-        notice_succeed: 'TRME TRME '
+        notice_failed: Failed to create the notice.
+        notice_succeed: Notice created
       form:
-        for_all: 'TRME TRME '
-        other: 'TRME TRME '
-        personal: 'TRME TRME '
-        show_from: 'TRME TRME '
-        show_till: 'TRME TRME '
-        visible: 'TRME TRME '
+        for_all: site-wide
+        other: other
+        personal: per-user
+        show_from: show from
+        show_till: show till
+        visible: visible
       index:
-        active: TRME Активно
-        category: TRME Категория
-        hidden-by-user: TRME Скрыто пользователем
-        message: TRME Содержание
-        my_notices: TRME Персональные
-        no_notices: TRME Уведомлений нет
-        site_wide_notices: TRME Общие
-        title: TRME Уведомления
-        visible: TRME Показывается
+        active: Active
+        category: Category
+        hidden-by-user: Hidden by user
+        message: Message
+        my_notices: My notices
+        no_notices: No notices
+        site_wide_notices: Site-wide notices
+        title: Notices
+        visible: VBisible
       table:
-        for_all: 'TRME TRME '
-        personal: 'TRME TRME '
-        show_from: 'TRME TRME '
-        show_till: 'TRME TRME '
-        visible: 'TRME TRME '
+        for_all: Site-wide
+        personal: Per-user
+        show_from: show from
+        show_till: Show till
+        visible: Visible
     notificator:
       check:
         show: Show record page
@@ -1061,5 +1060,5 @@ en:
     template_saved: The template has been saved
     you_have_to_fill_departments: You have to fill departments for the organization!
   'no': false
-  none: TRME отсутствует
+  none: none
   'yes': true
