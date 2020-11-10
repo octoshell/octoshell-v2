@@ -1,3 +1,7 @@
+-if @attach_to
+  = stylesheet_link_tag "comments/application"
+  = javascript_include_tag "comments/application"
+
 div attachment_type='comments' attachable_type=@attach_to[:class_name] attachable_ids=@attachable_ids
   h4.page-header #{t('.index.list')}
   -if all?

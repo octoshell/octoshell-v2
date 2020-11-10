@@ -1,18 +1,19 @@
 # == Schema Information
 #
-# Table name: abilities
+# Table name: permissions
 #
-#  id         :integer          not null, primary key
-#  action     :string(255)
-#  available  :boolean          default(FALSE)
-#  subject    :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#  group_id   :integer
+#  id            :integer          not null, primary key
+#  action        :string(255)
+#  subject_class :string(255)
+#  group_id      :integer
+#  available     :boolean          default("false")
+#  created_at    :datetime
+#  updated_at    :datetime
+#  subject_id    :integer
 #
 # Indexes
 #
-#  index_abilities_on_group_id  (group_id)
+#  index_permissions_on_group_id  (group_id)
 #
 
 # Модель доступа к действию для группы пользователей
@@ -26,6 +27,7 @@ class Permission < ApplicationRecord
 
   scope :by_definition, ->(definition) { where(action: definition.action,
                                                subject_class: definition.subject_class) }
+  belongs_to :subject, foreign_key: :subject_id, foreign_type: :subject_class 
 
   class << self
     def definitions

@@ -1,0 +1,15 @@
+---
+ru:
+  octoface:
+    admin:
+      roles:
+        index:
+          title: Модули Octoshell
+        show:
+          class: Класс
+          dependencies: Зависят
+          name_of_hook: Название хука
+          partials: Partials
+        table:
+          mod: Модуль
+          name: Название роли

@@ -1,0 +1,31 @@
+.container
+  .col-md-3
+    = f.collection_select :contains_all_fields, Support::Field.where(search: true),
+                          :id, :name, { label: t('.contains_all_fields')},  multiple: true
+  - fields = Support::Field.searchable_fields(f.object.contains_all_fields)
+  = f.fields_for :field_values_with_options do |ff|
+    - @ff = ff
+    div#fields-wrapper
+      - fields.each do |field|
+        .col-md-3.field-container field-id=field.id
+          -cur =  (f.object.field_values_with_options || {})[field.id.to_s]
+          - if field.usual_choice?
+            /= ff.select field.id, options_for_select(field.field_options.map {|o| [o.name, o.id]}, cur),
+            = ff.collection_select field.id, field.field_options, :id, :name,
+              { label: field.name, include_blank: true, selected: cur}, multiple: field.check_box?
+          -elsif field.text? || field.markdown?
+            = ff.text_field field.id,{ value: cur, label: field.name, include_blank: true }
+          -elsif field.model_collection?
+            -model_field =  Support::ModelField.all[field.model_collection.to_sym]
+            -query = admin? ? :admin_query : :user_query
+            -if model_field.type_source(admin?)
+              - source_path = instance_exec(current_user, &model_field.type_source(admin?))
+              = ff.autocomplete_field field.id,{label: field.name,
+                                                source:  source_path,
+                                                initial_value: cur},include_blank: true do |id|
+               - model_field.model.find(id).send(model_field.human)
+            -else
+              = ff.collection_select field.id, model_field.type_query(admin?).call(current_user), :id, model_field.human,
+                { label: field.name, include_blank: true, selected: cur}
+
+            end

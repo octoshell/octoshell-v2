@@ -54,13 +54,13 @@ gem "mina" #, github: "zhum/mina", require: false
 gem "airbrake"
 gem "foreman"
 gem "puma"
+gem "octoface",       path: "engines/octoface"
 gem "face",           path: "engines/face"
 gem "authentication", path: "engines/authentication"
 gem "core",           path: "engines/core"
 gem "support",        path: "engines/support"
 gem "sessions",       path: "engines/sessions"
 gem "statistics",     path: "engines/statistics"
-gem "wiki",           path: "engines/wiki"
 gem "wikiplus",       path: "engines/wikiplus"
 gem "announcements",  path: "engines/announcements"
 gem "jobstat",        path: 'engines/jobstat'
@@ -75,7 +75,7 @@ gem "jquery-ui-rails"
 gem "jquery-tablesorter"
 
 gem "config", github: 'railsconfig/config'
-gem "decorators", "~> 1.0.0"
+gem "decorators", '~> 2.0.3'
 gem 'active_record_union'
 gem "whenever"
 
@@ -97,3 +97,4 @@ group :test do
   gem "phantomjs", github: "colszowka/phantomjs-gem"
   gem "codeclimate-test-reporter", require: false
 end
+gem 'sprockets-rails', '2.3.3'

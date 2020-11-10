@@ -5,8 +5,9 @@ div class="page-header"
   div class="container"
     div class="col-md-4"
       = f.collection_select :session_id_in, Sessions::Session.all, :id, :description, { label: t('.session'), include_blank: true }, { multiple: true }
-    div class="col-md-4"
-      = f.collection_select :project_id_eq, current_user.projects, :id, :title, label: Sessions::Report.human_attribute_name(:project), include_blank: true
+    -if Sessions.link?(:project)
+      div class="col-md-4"
+        = f.collection_select :project_id_eq, current_user.projects, :id, :title, label: Sessions::Report.human_attribute_name(:project), include_blank: true
     div class="col-md-4"
       = f.select :state_in, Sessions::Report.state_names(:state).map { |n| [Sessions::Report.human_state_name(n), n] }, { label: Sessions::Report.human_attribute_name(:state), include_blank: true }, { multiple: true }
 

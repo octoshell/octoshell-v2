@@ -3,8 +3,8 @@
 # Table name: options
 #
 #  id                  :integer          not null, primary key
-#  owner_id            :integer
 #  owner_type          :string
+#  owner_id            :integer
 #  name_ru             :string
 #  name_en             :string
 #  value_ru            :text
@@ -13,6 +13,7 @@
 #  options_category_id :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  admin               :boolean          default("false")
 #
 
 class Option < ApplicationRecord

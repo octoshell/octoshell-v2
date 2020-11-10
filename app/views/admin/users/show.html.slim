@@ -34,21 +34,22 @@ ul class="list-unstyled"
   - @user.groups.each do |group|
     li = group.name
 
-= render "core/admin/employments/list", employments: @user.employments.where(state: :active).order(primary: :desc, created_at: :desc)
+= register_hook(:main_app,:admin_users_show, { user: @user })
+/= render "core/admin/employments/list", employments: @user.employments.where(state: :active).order(primary: :desc, created_at: :desc)
 
-h4 = User.human_attribute_name(:projects)
-= render "projects_list", projects: @user.projects.order(created_at: :desc)
+/h4 = User.human_attribute_name(:projects)
+/= render "projects_list", projects: @user.projects.order(created_at: :desc)
 
-h4 = User.human_attribute_name(:reports)
-= render "sessions/reports/list", reports: @user.reports.order(updated_at: :desc).page(1)
+/h4 = User.human_attribute_name(:reports)
+/= render "sessions/reports/list", reports: @user.reports.order(updated_at: :desc).page(1)
 
-- if User.experts.include?(@user) && @user.assessing_reports.any?
-  h4 = User.human_attribute_name(:assessing_reports)
-  = render "sessions/reports/list", reports: @user.assessing_reports.order(updated_at: :desc).page(1)
-
-h4 = User.human_attribute_name(:surveys)
-= render "sessions/user_surveys/list", surveys: @user.surveys.order(updated_at: :desc).page(1)
-= render "core/admin/credentials/list", credentials: @user.credentials.where(state: :active)
-= render_attachments(@user,:comments)
-= render_attachments(@user,:tags)
-= render_attachments(@user,:files)
+/- if User.experts.include?(@user) && @user.assessing_reports.any?
+/  h4 = User.human_attribute_name(:assessing_reports)
+/  = render "sessions/reports/list", reports: @user.assessing_reports.order(updated_at: :desc).page(1)
+/
+/h4 = User.human_attribute_name(:surveys)
+/= render "sessions/user_surveys/list", surveys: @user.surveys.order(updated_at: :desc).page(1)
+/= render "core/admin/credentials/list", credentials: @user.credentials.where(state: :active)
+= custom_helper(:comments, :render_attachments,@user,:comments)
+= custom_helper(:comments, :render_attachments,@user,:tags)
+= custom_helper(:comments, :render_attachments,@user,:files)

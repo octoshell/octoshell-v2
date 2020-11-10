@@ -7,16 +7,20 @@ module Core
     def self.notify(subpath, params)
       require 'net/http'
       require 'json'
-
       host = 'localhost' # HOST OF OCTOSHELL BOT APP
       port = '8080' # PORT OF OCTOSHELL BOT APP
 
       path = "/notify" + subpath
       body = params.to_json
 
-      request = Net::HTTP::Post.new(path, initheader = {'Content-Type' =>'application/json'})
+      request = Net::HTTP::Post.new(path, 'Content-Type' => 'application/json')
       request.body = body
-      response = Net::HTTP.new(host, port).start {|http| http.request(request) }
+      begin
+        Net::HTTP.new(host, port).start { |http| http.request(request) }
+      rescue ::Errno::ECONNREFUSED => e
+        Rails.logger.error "Failed to use BotLinksApiHelper: #{e}"
+      end
+      nil
     end
 
     def self.notify_about_ticket(ticket, event)

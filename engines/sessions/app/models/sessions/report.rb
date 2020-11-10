@@ -34,11 +34,13 @@
 module Sessions
   class Report < ApplicationRecord
 
-    
+
+    prepend(ReportProject) if Sessions.link?(:project)
+
 
     POINT_RANGE = (0..5)
     belongs_to :session
-    belongs_to :project, class_name: "Core::Project", foreign_key: :project_id
+    # belongs_to :project, class_name: "Core::Project", foreign_key: :project_id
     belongs_to :author, class_name: "::User", foreign_key: :author_id
     belongs_to :submit_denial_reason, class_name: "Sessions::ReportSubmitDenialReason", foreign_key: :submit_denial_reason_id
     belongs_to :expert, class_name: "::User"
@@ -102,7 +104,7 @@ module Sessions
       end
 
       event :postdate do
-        transitions :from => [:pending, :accepted, :rejected], :to => :exceeded, :after => :block_project
+        transitions :from => [:pending, :accepted, :rejected], :to => :exceeded, :after => :postdate_callback
       end
     end
 
@@ -126,10 +128,10 @@ module Sessions
       ].any? { |point| [1, 2].include? point }
     end
 
-    def close_project!
-      Sessions::MailerWorker.perform_async(:project_failed_session, id)
-      project.block!
-    end
+    # def close_project!
+    #   Sessions::MailerWorker.perform_async(:project_failed_session, id)
+    #   project.block!
+    # end
 
     # def notify_about_new_report
     #   Sessions::MailerWorker.perform_async(:new_report, id)
@@ -145,18 +147,17 @@ module Sessions
 
     def notify_about_assess
       Sessions::MailerWorker.perform_async(:report_assessed, id)
-      if failed?
-        project.block! unless project.blocked?
-      end
     end
 
     def notify_about_resubmit
       Sessions::MailerWorker.perform_async(:report_resubmitted, id)
     end
 
-    def block_project
-      # Sessions::MailerWorker.perform_async(:postdated_report_on_project, id)
-      project.block! unless project.blocked? or project.finished? or project.cancelled?
-    end
+    def postdate_callback; end
+
+    # def block_project
+    #   # Sessions::MailerWorker.perform_async(:postdated_report_on_project, id)
+    #   project.block! unless project.blocked? or project.finished? or project.cancelled?
+    # end
   end
 end

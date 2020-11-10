@@ -34,7 +34,7 @@ table#main-pack
 
   -@version.attributes.except("delete_on_expire","end_lic","lock_col","service",
     "deleted","state","created_at","updated_at",
-    "package_id","id","deleted", 'ticket_id',*Pack::Version.locale_columns(:name,:description).map(&:to_s)).each_key do |key|
+    "package_id","id","deleted", 'ticket_id', 'ticket_created',*Pack::Version.locale_columns(:name,:description).map(&:to_s)).each_key do |key|
     tr
       td class="col-xs-3"
         =Pack::Version.human_attribute_name key

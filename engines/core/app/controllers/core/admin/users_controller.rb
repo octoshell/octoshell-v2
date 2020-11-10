@@ -12,9 +12,6 @@ module Core
 
     def with_owned_projects_finder
       @users = Core.user_class.with_owned_projects_finder(params[:q])
-      puts @users.count.to_s.red
-      puts @users.page(params[:page]).per(params[:per]).to_sql.inspect.red
-      puts @users.page(params[:page]).per(params[:per]).to_a.inspect.red
       render json: { records: @users.page(params[:page]).per(params[:per]),
                      total: @users.count }
     end

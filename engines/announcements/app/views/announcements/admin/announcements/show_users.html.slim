@@ -4,12 +4,28 @@ div class="page-header"
 = bootstrap_form_for @search, url: admin_announcement_show_users_path(@announcement), method: :get, layout: :horizontal do |f|
   = f.autocomplete_field :id_eq, source:  main_app.users_path, label: t('.user') do |id|
     - Announcements.user_class.find(id).full_name_with_email
-  = f.select :owned_projects_state_in, Announcements.project_class.human_state_names_with_original, { label: t('.managed_project_statuses'), include_blank: true }, { multiple: true }
-  = f.select :projects_state_in, Announcements.project_class.human_state_names_with_original, { label: t('.participated_project_statuses'), include_blank: true }, { multiple: true }
-  = f.collection_select :available_projects_available_clusters_id_eq, Announcements.cluster_class.all, :id, :name, label: t('.has_account_on_clusters'), include_blank: true
-  = f.collection_select :sessions_id_in, Announcements.session_class.all, :id, :description, { label: t('.rereg_participated'), include_blank: true }, { multiple: true }
-  = f.select :reports_state_in, Announcements.report_class.human_state_names_with_original, { label: t('.has_rereg_report_statuses'), include_blank: true }, { multiple: true }
-  = f.select :surveys_state_in, Announcements.user_survey_class.human_state_names_with_original, { label: t('.has_survey_statuses'), include_blank: true }, { multiple: true }
+  /= f.select :owned_projects_state_in, Announcements.project_class.human_state_names_with_original, { label: t('.managed_project_statuses'), include_blank: true }, { multiple: true }
+  = custom_helper(:core, 'owned_projects_state_in', f, '',
+                 { label: t('.managed_project_statuses') })
+
+  /= f.select :projects_state_in, Announcements.project_class.human_state_names_with_original, { label: t('.participated_project_statuses'), include_blank: true }, { multiple: true }
+  = custom_helper(:core, 'projects_state_in', f, '',
+                  { label: t('.participated_project_statuses') })
+  /= f.collection_select :available_projects_available_clusters_id_eq, Announcements.cluster_class.all, :id, :name, label: t('.has_account_on_clusters'), include_blank: true
+  = custom_helper(:core, 'available_projects_available_clusters_id_in', f, '',
+                  { label: t('.has_account_on_clusters') })
+  /= f.collection_select :sessions_id_in, Announcements.session_class.all, :id, :description, { label: t('.rereg_participated'), include_blank: true }, { multiple: true }
+  = custom_helper(:sessions, 'sessions_id_in', f, '',
+                  { label: t('.rereg_participated') })
+
+  /= f.select :reports_state_in, Announcements.report_class.human_state_names_with_original, { label: t('.has_rereg_report_statuses'), include_blank: true }, { multiple: true }
+  = custom_helper(:sessions, 'reports_state_in', f, '',
+                  { label: t('.has_rereg_report_statuses') })
+  /= f.select :surveys_state_in, Announcements.user_survey_class.human_state_names_with_original, { label: t('.has_survey_statuses'), include_blank: true }, { multiple: true }
+  = custom_helper(:sessions, 'surveys_state_in', f, '',
+                  { label: t('.has_survey_statuses') })
+
+
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
 

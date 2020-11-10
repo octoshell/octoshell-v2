@@ -29,12 +29,19 @@ Sessions::Engine.routes.draw do
       put :stop
       put :download
 
-      get :show_projects
-      post :select_projects
+      # get :show_projects
+      # post :select_projects
+      get :show_projects, to: 'projects#show_projects'
+      post :select_projects, to: 'projects#select_projects'
 
       resources :stats, expect: [:index, :show]
       resources :surveys, only: [:new, :create, :edit, :update]
     end
+
+    # resources :projects do
+    # get 'sessions/show_projects/:session_id', to: 'projects#show_projects'
+    # post 'sessions/select_projects/:session_id', to: 'projects#select_projects'
+    # end
 
     get "/stats/:stat_id/download" => "stats#download", as: :stat_download
     get "/stats/:stat_id/detail" => "stats#detail", as: :stat_detail

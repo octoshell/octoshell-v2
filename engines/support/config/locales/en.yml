@@ -25,6 +25,8 @@ en:
         name: Name
         required: required
         url: Content as a link
+        search: Ввести поиск по этому полю в списке заявок
+
       support/reply:
         attachment: Attachment
         author: Author
@@ -72,8 +74,13 @@ en:
         tags: Default tags
         template: Template
         visible_on_create: Visible for user when he creates request
+        permissions: Extra permissions for user groups
+
+      support/topics_field:
+        required: Required
       support/user_topic:
         required: Attach automically
+
     errors:
       models:
         support/ticket:
@@ -99,8 +106,11 @@ en:
       size_too_small: File size is too small (must be %{file_size} at least)
       wrong_size: File size is incorrect (must be %{file_size})
   support:
+    open_support: The technical support section.
     admin:
       fields:
+        form:
+          model_collection: This field will contain link to an object of class
         edit:
           title: Edit extra field
         index:
@@ -155,6 +165,8 @@ en:
           updated_before: Updated before
         new:
           title: Create request for user
+          choose_topic: Choose topic
+
         show:
           accept: Accept
           attach: Attach file
@@ -175,6 +187,8 @@ en:
           title: Edit support topic
         form:
           attach: Attach
+          add_responsible: Add responsible
+
         index:
           new_topic: Create topic
           title: Requests topics
@@ -214,6 +228,8 @@ en:
       test_index:
         ddd: 'TRME TRME '
     tickets:
+      fields_form:
+        contains_all_fields: Contains fields
       edit:
         title: Edit request
       index:

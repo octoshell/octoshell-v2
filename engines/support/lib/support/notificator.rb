@@ -1,28 +1,36 @@
 module Support
   class Notificator < AbstractController::Base
-    # def topic_name
-    #   'Уведомления'.freeze
-    # end
 
-    def self.parent_topic
-      Topic.find_or_create_by!(name_ru: 'Уведомления', name_en: 'Notifications', visible_on_create: false)
+    def self.topic_names
+      I18n.available_locales.map { |l| :"topic_#{l}" }.freeze
     end
 
-    def parent_topic
-      self.class.parent_topic
+    def self.parent_topic_names
+      topic_names.map { |l| :"parent_#{l}" }.freeze
     end
-
-    def self.name_ru
-      'Уведомления'
-    end
-
-    def self.name_en
-      'Notifications'
-    end
+    TICKET_ATTRS = %i[subject message attachment reporter responsible].freeze
+    TOPIC_ATTRS = %i[visible_on_create].freeze
 
     def self.email
       'support_bot@octoshell.ru'.freeze
     end
+
+    def parent_topic_ru
+      'Уведомления'
+    end
+
+    def parent_topic_en
+      'Notifications'
+    end
+
+    def topic_ru
+      parent_topic_ru
+    end
+
+    def topic_en
+      parent_topic_en
+    end
+
 
     def translate(key, options = {})
       if key.to_s.first == "."
@@ -39,10 +47,7 @@ module Support
     def process(method = nil, *args)
       @_action_name = method
       attributes = send(method, *args)
-      unless attributes[:message]
-        message = render(method, Hash[collect_assigns])
-        attributes[:message] = message
-      end
+      attributes = {} unless attributes.is_a?(Hash)
       create! attributes
     end
 
@@ -63,16 +68,77 @@ module Support
       @bot ||= Support.user_class.find_by_email!(self.class.email)
     end
 
-    def topic(name_ru = self.class.name_ru, name_en = self.class.name_en)
-      Topic.find_or_create_by!(name_ru: name_ru, name_en: name_en, visible_on_create: false)
+    def process_ticket_attributes(attributes)
+      unless attributes[:message]
+        message = render(@_action_name, Hash[collect_assigns])
+        attributes[:message] = message
+      end
+      attributes[:reporter] ||= bot
+      attributes[:subject] ||= attributes[:topic].name
+    end
+
+
+    def form_topic_attributes(attrs, attributes)
+      topic_names = {}
+      attrs.each do |a|
+        lang = a.to_s.split('_').last
+        topic_names[:"name_#{lang}"] = attributes.delete(a)
+      end
+      topic_names
+    end
+
+    def parent_topic(attributes)
+      p_a = form_topic_attributes(self.class.parent_topic_names, attributes)
+      Support::Topic.find_or_create_by_names(p_a) do |topic|
+        topic.visible_on_create = false
+      end
+    end
+
+    def process_topic_attributes(attributes)
+      t_a = form_topic_attributes(self.class.topic_names, attributes)
+      p_a = form_topic_attributes(self.class.parent_topic_names, attributes)
+
+      attributes[:topic] = Support::Topic.find_or_create_by_names(t_a) do |topic|
+        topic.visible_on_create = attributes[:visible_on_create]
+        topic.parent_topic = p_a
+      end
+    end
+
+    def process_field_value_attributes(attributes)
+      f_v = attributes.delete(:field_value)
+      return unless f_v
+
+      if !f_v[:key] || !f_v[:record_id]
+        raise 'You have to pass :key and :record_id argument to create field_value'
+      end
+
+      model_field = ModelField.all[f_v[:key]]
+      # ticket = Support::Ticket.new(args.except(:topic, :key, :record_id))
+      field = Support::Field.find_or_create_by_names(model_field.names) do |f|
+        f.kind = 'model_collection'
+        f.model_collection =  f_v[:key]
+      end
+
+      topic = attributes[:topic]
+
+      t_f = Support::TopicsField.find_or_create_by(topic: topic, field: field)
+      { topics_field: t_f, value: f_v[:record_id] }
     end
 
     def create!(arg)
       attributes = arg.dup
-      attributes.reverse_merge! topic: topic,
-                                reporter: bot,
-                                subject: topic.name
-      Support::Ticket.create! attributes
+      (TICKET_ATTRS + self.class.topic_names + self.class.parent_topic_names +
+       TOPIC_ATTRS + [:field_value]).each do |a|
+        attributes[a] ||= try a
+      end
+      process_topic_attributes(attributes)
+      process_ticket_attributes(attributes)
+      f_v_attrs = process_field_value_attributes(attributes)
+      attributes.compact!
+      ActiveRecord::Base.transaction do
+        ticket = Support::Ticket.create! attributes
+        ticket.field_values.create!(f_v_attrs) if f_v_attrs.is_a?(Hash)
+      end
     end
 
     def engine

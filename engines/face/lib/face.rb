@@ -1,4 +1,5 @@
 require "face/engine"
+require 'face/settings'
 require "face/custom_autocomplete_field"
 require "face/my_menu"
 require "face/my_menu_item"

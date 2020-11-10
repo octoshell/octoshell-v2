@@ -1,6 +1,6 @@
 div class="page-header"
   h1 = t(".title", default: "New Organization")
-  h4 = display_wiki_link(:create_organization)
+  h4 = custom_helper(:wiki, :display_wiki_link, :create_organization)
 = bootstrap_form_for @organization, layout: :horizontal do |f|
   = f.text_field :name
   = f.text_field :abbreviation

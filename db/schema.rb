@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_15_110709) do
+ActiveRecord::Schema.define(version: 2020_11_01_121819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -369,10 +369,10 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
   end
 
   create_table "core_notices", id: :serial, force: :cascade do |t|
-    t.integer "sourceable_id"
     t.string "sourceable_type"
-    t.integer "linkable_id"
+    t.integer "sourceable_id"
     t.string "linkable_type"
+    t.integer "linkable_id"
     t.text "message"
     t.integer "count"
     t.datetime "created_at", null: false
@@ -694,8 +694,8 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
   end
 
   create_table "jobstat_jobs", id: :serial, force: :cascade do |t|
-    t.string "cluster", limit: 32, null: false
-    t.bigint "drms_job_id", null: false
+    t.string "cluster", limit: 32
+    t.bigint "drms_job_id"
     t.bigint "drms_task_id"
     t.string "login", limit: 32
     t.string "partition", limit: 32
@@ -710,7 +710,7 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "nodelist"
-    t.index ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true
+    t.integer "initiator_id"
     t.index ["end_time"], name: "index_jobstat_jobs_on_end_time"
     t.index ["login"], name: "index_jobstat_jobs_on_login"
     t.index ["partition"], name: "index_jobstat_jobs_on_partition"
@@ -843,6 +843,7 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.integer "ticket_id"
     t.text "description_en"
     t.string "name_en"
+    t.boolean "ticket_created"
     t.index ["package_id"], name: "index_pack_versions_on_package_id"
   end
 
@@ -865,6 +866,15 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.text "about"
     t.boolean "receive_info_mails", default: true
     t.boolean "receive_special_mails", default: true
+  end
+
+  create_table "sessions_managers", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "session_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_managers_on_session_id"
+    t.index ["user_id"], name: "index_sessions_managers_on_user_id"
   end
 
   create_table "sessions_projects_in_sessions", id: :serial, force: :cascade do |t|
@@ -1028,13 +1038,24 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.datetime "updated_at"
   end
 
+  create_table "support_field_options", force: :cascade do |t|
+    t.bigint "field_id"
+    t.text "name_ru"
+    t.text "name_en"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_support_field_options_on_field_id"
+  end
+
   create_table "support_field_values", id: :serial, force: :cascade do |t|
     t.integer "field_id"
     t.integer "ticket_id"
     t.text "value"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.bigint "topics_field_id"
     t.index ["ticket_id"], name: "index_support_field_values_on_ticket_id"
+    t.index ["topics_field_id"], name: "index_support_field_values_on_topics_field_id"
   end
 
   create_table "support_fields", id: :serial, force: :cascade do |t|
@@ -1047,6 +1068,9 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
     t.datetime "updated_at"
     t.string "name_en"
     t.string "hint_en"
+    t.string "model_collection"
+    t.integer "kind", default: 0
+    t.boolean "search", default: false
   end
 
   create_table "support_replies", id: :serial, force: :cascade do |t|
@@ -1133,6 +1157,7 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
   create_table "support_topics_fields", id: :serial, force: :cascade do |t|
     t.integer "topic_id"
     t.integer "field_id"
+    t.boolean "required", default: false
   end
 
   create_table "support_topics_tags", id: :serial, force: :cascade do |t|
@@ -1231,4 +1256,5 @@ ActiveRecord::Schema.define(version: 2020_05_15_110709) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "core_bot_links", "users"
+  add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"
 end

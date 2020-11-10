@@ -68,10 +68,6 @@ module Pack
     belongs_to :allowed_by, class_name: '::User', foreign_key: :allowed_by_id
     belongs_to :who, polymorphic: true
     belongs_to :to, polymorphic: true
-    has_and_belongs_to_many :tickets, join_table: 'pack_access_tickets', class_name: "Support::Ticket",
-                                      foreign_key: "access_id",
-                                      association_foreign_key: "ticket_id"
-
     after_commit :send_email, if: :admin_update?
     after_commit :create_ticket, if: :user_request?
 
@@ -115,8 +111,13 @@ module Pack
       elsif status == 'requested'
         I18n.t('tickets_access.subject.requested', who_name: who_name_with_type, user: created_by.full_name, version_name: to.name)
       end
-      support_access_topic = Pack.support_access_topic
-      tickets.create!(subject: subject, reporter: created_by, message: subject, topic: support_access_topic)
+
+      Support::Notificator.new.create!(subject: subject, reporter: created_by,
+                                      message: subject,
+                                      topic_en: 'Request for package',
+                                      topic_ru: 'Заявка на доступ к пакету',
+                                      field_value: { key: :pack_access,
+                                                     record_id: id })
     end
 
     def self.user_access(user_id)
@@ -303,6 +304,10 @@ module Pack
 
     def who_name_with_type(who_name = self.who_name)
       "#{I18n.t('who_types.' + who_type)} \"#{who_name}\""
+    end
+
+    def to_s
+      who_name_with_type
     end
 
     def who_name

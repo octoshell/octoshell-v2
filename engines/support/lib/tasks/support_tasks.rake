@@ -3,6 +3,77 @@ namespace :support do
     Support::Notificator.new.create_bot(args[:pass])
   end
 
+  task october_migration: :environment do
+    ActiveRecord::Base.transaction do
+      Support::FieldValue.where(value: ['', nil]).destroy_all
+      Support::FieldValue.all.each do |field_value|
+        next unless field_value.field_id
+
+        field = Support::Field.find(field_value.field_id)
+        next unless field
+
+        topics_field = field.topics_fields.find_by(topic: field_value.ticket.topic)
+        next unless topics_field
+        field_value.topics_field = topics_field
+        field_value.save!
+      end
+    end
+    Support::TopicsField.all.includes(:field).each do |t_f|
+      t_f.required = topics_field.field.required
+      t_f.save!
+    end
+
+
+  end
+
+  task convert_fields: :environment do
+    ActiveRecord::Base.transaction do
+      table = Roo::Spreadsheet.open('fields.xlsx')
+      rows = table.sheet(0).to_a
+        rows[1..-1].each do |row|
+          field_id = row[0]
+          type = row[5]
+          # options = row[6]&.split('.')
+          field = Support::Field.find(field_id)
+          if %w[text markdown].include? type
+            field.kind = type
+          elsif %w[model_collection(cluster) radio check_box].include? type
+            attrs = %w[name_ru name_en hint_ru hint_en
+                       required contains_source_code url search]
+            new_field = Support::Field.new field.attributes.slice(*attrs)
+            if type == 'model_collection(cluster)'
+              new_field.kind = 'model_collection'
+              new_field.model_collection = 'cluster'
+            elsif type == 'radio'
+              new_field.kind = type
+              new_field.field_options.new(name_ru: 'Да', name_en: 'Yes')
+              new_field.field_options.new(name_ru: 'Нет', name_en: 'No')
+            else
+              new_field.kind = type
+              new_field.field_options.new(name_ru: 'Да', name_en: 'Yes')
+            end
+            new_field.save!
+            field.name_ru += ' (старое)'
+            field.name_en += ' (old)'
+            field.topics_fields.each do |t_f|
+              attributes = t_f.attributes.slice('topic_id', 'required')
+              new_field.topics_fields.create!(attributes)
+              t_f.topic_id = nil
+              t_f.save!
+            end
+          else
+            raise 'unknown type of field'
+          end
+          field.save!
+        end
+        Support::Field.where(kind: nil).each do |field|
+          field.kind = 'text'
+          field.save!
+        end
+        # raise 'mistake'
+    end
+  end
+
   task fix_topics: :environment do
 
     def merge(source, to)

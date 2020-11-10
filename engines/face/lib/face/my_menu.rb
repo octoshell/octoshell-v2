@@ -94,10 +94,11 @@ module Face
          "Группы доступа", "Причины отказа предоставления отчёта", "Направления исследований",
          "Критические технологии", "Области науки", "Статистика", "Рассылка",
          "Мониторинг очередей выполнения задач", "Страны", "Города", "Комментарии",
-         "Аппаратура", "Emails", "Опции", "Журнал", "Конструктор запросов", "API", "Справка"]
+         "Аппаратура", "Emails", "Опции", "Журнал", "Конструктор запросов", "API",
+         "Справка", "Модули Octoshell"]
          user_menu = ["Профиль", "Поддержка", "Проекты", "Перерегистрации",
                       "Пакеты", "Статистика", "Эффективность", "Комментарии",
-                      "Редактировать распложение элементов меню"]
+                      "Редактировать расположение элементов меню"]
 
          fake_controller = Class.new(::ApplicationController) do
            def current_user
@@ -110,18 +111,18 @@ module Face
          end
          Face::MenuItemPref.destroy_all
          Face::MyMenu.instances.each_value do |value|
-           view_items = value.items(fake_controller.new)
+           view_items = value.items(fake_controller.new).dup
            new_items = []
            if value.name == :admin_submenu
              new_items = find_items(admin_menu, view_items)
            else
              new_items = find_items(user_menu, view_items)
            end
-           #raise 'new_items.count != view_items.count' if new_items.count != view_items.count
+           # raise 'new_items.count != view_items.count' if new_items.count != view_items.count
            conditions = { menu: value.name.to_s, admin: true }
            rel = Face::MenuItemPref.where(conditions)
 
-           new_items.map(&:key).each do |key|
+           (new_items + view_items).map(&:key).each do |key|
              Face::MenuItemPref.create!(conditions.merge(key: key, position: rel.last_position + 1))
            end
          end
@@ -133,6 +134,7 @@ module Face
           item.name[0..(t.length - 1)] == t
         end
         raise "submenu error: #{t.inspect}" unless elem
+        view_items.delete(elem)
         elem
       end
     end

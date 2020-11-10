@@ -1,4 +1,4 @@
 module Wikiplus
-  class Task < ActiveRecord::Base
+  class Task < ApplicationRecord
   end
 end

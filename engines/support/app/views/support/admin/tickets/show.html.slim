@@ -15,7 +15,7 @@ div class="page-header"
             - if @ticket.pending?
               = link_to t(".accept"), [:admin, @ticket, :accept], class: "btn btn-warning", method: :post
             = link_to Support::Ticket.human_state_event_name(:close), admin_ticket_close_path(@ticket), method: :put, class: "btn btn-danger", data: { confirm: t("actions.confirm")}
-            = link_to t("actions.edit_access"), pack.admin_access_path(@ticket.pack_accesses.first), class: "btn btn-default"  if @ticket.pack_accesses.exists?
+            /= link_to t("actions.edit_access"), pack.admin_access_path(@ticket.pack_accesses.first), class: "btn btn-default"  if @ticket.pack_accesses.exists?
 
         div class="col-md-6 col-xs-12"
           h2
@@ -96,7 +96,7 @@ div class="page-header"
             td
               = field_value.field.present? ? field_value.field.name : "N/A"
             td
-              = field_value.value
+              =  field_value.field.present? ? show_field_value(field_value, :admins) : ''
 
     /- if @ticket.has_blank_fields?
       div class="col-xs-12 link"
@@ -142,11 +142,11 @@ div.row
     = t('.tags-etc')
 div.row.bg-info.collapse id="collapse-tags"
   div.col-sm-12.col-md-4
-    = render_attachments(@ticket,:comments)
+    = custom_helper(:comments, :render_attachments,@ticket,:comments)
   div.col-sm-12.col-md-4
-    = render_attachments(@ticket,:tags)
+    = custom_helper(:comments, :render_attachments,@ticket,:tags)
   div.col-sm-12.col-md-4
-    = render_attachments(@ticket,:files)
+    = custom_helper(:comments, :render_attachments,@ticket,:files)
 
 - unless @ticket.resolved? || @ticket.closed?
   legend = t(".new_reply")

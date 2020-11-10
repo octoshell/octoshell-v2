@@ -233,6 +233,7 @@ en:
           start_session: Start
           started_at: started at %{date}
           title: The  "%{name}" re-registration
+      projects:
         show_projects:
           activated_after: Activated after
           activated_before: Activated before

@@ -8,13 +8,10 @@ div class="page-header"
   = markdown_area f, :message, rows: 5
 
   = f.file_field :attachment
-  = f.collection_select :project_id, current_user.projects, :id, :title, label: Support::Ticket.human_attribute_name(:project), include_blank: true
+  /= f.collection_select :project_id, current_user.projects, :id, :title, label: Support::Ticket.human_attribute_name(:project), include_blank: true
   /= autocomplete f, name: 'ticket[project_id]', label: Support::Ticket.human_attribute_name(:project), source: core.projects_path, include_blank: true
-  = f.collection_select :cluster_id, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
-  = f.fields_for :field_values do |fv_f|
-    - value = fv_f.object
-    = fv_f.hidden_field :field_id
-    = fv_f.text_field :value, label: value.field.name, required: value.field.required, help: value.field.hint
+  /= f.collection_select :cluster_id, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
+  = render 'new_field_value_form', f: f, admin: false
 
   = f.form_group do
     = f.submit t("actions.save")

@@ -1,5 +1,4 @@
 # encoding: utf-8
-
 Sessions.user_class.class_eval do
   has_many :surveys, class_name: "Sessions::UserSurvey", dependent: :destroy
   has_many :sessions, class_name: "Sessions::Session", through: :surveys

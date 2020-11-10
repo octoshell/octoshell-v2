@@ -1,5 +1,3 @@
-require_dependency "pack/application_controller"
-
 class Admin::OptionsCategoriesController < Admin::ApplicationController
 
   before_action do

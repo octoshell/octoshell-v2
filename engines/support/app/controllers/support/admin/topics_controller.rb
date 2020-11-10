@@ -10,7 +10,7 @@ module Support
     end
 
     def new
-      @topic = Topic.new() #topic_params)
+      @topic = Topic.new(params[:topic] && topic_params)
     end
 
     def create
@@ -40,7 +40,9 @@ module Support
     def topic_params
       params.require(:topic).permit(*Topic.locale_columns(:name, :template),
                                     :parent_id, :visible_on_create, tag_ids: [],
-                                    field_ids: [], user_topics_attributes: %i[id _destroy required user_id]
+                                    field_ids: [], user_topics_attributes: %i[id _destroy required user_id],
+                                    permissions_attributes: %i[id _destroy group_id],
+                                    topics_fields_attributes: %i[id field_id required _destroy]
                                     )
     end
   end

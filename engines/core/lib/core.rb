@@ -1,8 +1,11 @@
 require "core/engine"
+require 'core/settings'
 require "core/merge_organizations"
 require "core/merge_departments"
 require "core/merge_error"
 require "core/checkable"
+require "core/bootstrap_form_helper"
+
 # require "maymay"
 require "decorators"
 require "aasm"
@@ -20,9 +23,12 @@ require "core/join_orgs"
 require "core/join_orgs/join_row"
 require 'active_record_union'
 require 'core/remove_spaces'
+require 'core/interface'
 
 
 module Core
+  ::Octoface::Hook.add_hook(:core, "core/hooks/admin_users_show",
+                            :main_app, :admin_users_show)
   mattr_accessor :user_class
 
   class UserClassAbsenceError < StandardError; end

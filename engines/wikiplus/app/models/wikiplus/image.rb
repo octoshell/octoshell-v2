@@ -8,7 +8,7 @@
 #  updated_at :datetime         not null
 #
 module Wikiplus
-  class Image < ActiveRecord::Base
+  class Image < ApplicationRecord
   	mount_uploader :image, ImageUploader
   end
 end

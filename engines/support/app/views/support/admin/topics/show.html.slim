@@ -1,3 +1,4 @@
+
 div class="page-header"
   h1 = @topic.name
 
@@ -25,11 +26,11 @@ h3 = Support::Topic.human_attribute_name(:fields)
   table class="table table-bordered"
     tr
       th = Support::Field.human_attribute_name(:name)
-      th = Support::Field.human_attribute_name(:required)
-    - @topic.fields.each do |field|
+      th = Support::TopicsField.human_attribute_name(:required)
+    - @topic.topics_fields.includes(:field).each do |topics_fields|
       tr
-        td = link_to field, [:admin, field]
-        td = field.required
+        td = link_to topics_fields.field, [:admin, topics_fields.field]
+        td = topics_fields.required
 
 h3 = Support::UserTopic.model_name.human
 - if @topic.user_topics.any?
@@ -41,3 +42,12 @@ h3 = Support::UserTopic.model_name.human
       tr
         td = link_to user_topic.user.full_name, main_app.admin_user_path(user_topic.user)
         td = user_topic.required
+
+h3 = Support::Topic.human_attribute_name(:permissions)
+- if @topic.permissions.any?
+  table class="table table-bordered"
+    - @topic.permissions.each do |per|
+      tr
+        td = per.group.name
+/- puts Support::Topic.accessible_by(current_ability, :answer).to_a.inspect.red
+/- puts @topic.all_subtopics_with_self.inspect.red

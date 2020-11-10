@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   # s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "slim"
-  s.add_dependency "decorators"
+  # s.add_dependency "decorators"
 
   # s.add_dependency "bootstrap_form", ">= 4.2.0"
 

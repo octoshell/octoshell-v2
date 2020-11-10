@@ -27,6 +27,8 @@ Support::Engine.routes.draw do
     put :reopen
   end
 
+  get 'fields/show', to: 'fields#show'
+
   resources :replies, only: :create
 
   root "tickets#index"

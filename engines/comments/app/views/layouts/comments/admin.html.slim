@@ -6,6 +6,6 @@
         = link_to item.name, item.url
     li
       /= link_to t('comments.rake.short_name'), Wiki::Engine.routes.url_helpers.page_path(Comments.wiki_id)
-      = display_wiki_link(:comments_guide)
+      = custom_helper(:wiki, :display_wiki_link, :comments_guide)
 
 = render template: "layouts/application"
