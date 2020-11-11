@@ -83,7 +83,7 @@ module Support
     def all_subtopics_with_self
       array = [self]
       subtopics.each do |topic|
-        array << topic.all_subtopics_with_self
+        array += Array(topic.all_subtopics_with_self)
       end
       # until subtopics.any?
       #   array << parent
