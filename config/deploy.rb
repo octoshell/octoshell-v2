@@ -194,7 +194,7 @@ task :deploy => :environment do
 
       invoke :"rails:assets_precompile"
 
-      command %{RAILS_ENV=production bundle exec rails support:october_migration}
+      command %{RAILS_ENV=production bundle exec rails support:required_fields}
 
       # command "sudo apt-get update"
       # command "sudo apt-get install -y nodejs"
