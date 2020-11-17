@@ -1,0 +1,8 @@
+$(document).ready(function(){
+  setup_item_kind_tree();
+  $('button#create_root').click(function () {
+    $("#item_kinds_tree").jstree("create_node", null, null, "last", function (node) {
+      this.edit(node);
+    });
+  });
+});

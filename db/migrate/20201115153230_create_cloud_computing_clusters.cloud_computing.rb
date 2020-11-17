@@ -2,9 +2,9 @@
 class CreateCloudComputingClusters < ActiveRecord::Migration[5.2]
   def change
     create_table :cloud_computing_clusters do |t|
-      t.belongs_to :core_cluster
       t.text :description_ru
       t.text :description_en
+      t.belongs_to :core_cluster
       t.timestamps
     end
   end

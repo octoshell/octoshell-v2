@@ -10,6 +10,12 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require rails-ujs
 //= require activestorage
 //= require_tree .
+function show_flash (type, message) {
+    // alert('aaa');
+  $('.flash-message').empty();
+  flashDiv = $('<div class="alert alert-' + type + '" />')
+  $('.flash-message').prepend(flashDiv)
+  flashDiv.html(message).show()
+}

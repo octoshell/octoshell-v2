@@ -1,11 +1,13 @@
 div class="row"
-  = bootstrap_form_for [:admin, @configuration], layout: :horizontal do |f|
-    - CloudComputing::Configuration.locale_columns(:name,:description).each do |column|
+  = bootstrap_form_for [:admin, @item], layout: :horizontal do |f|
+    = f.select :item_kind_id, nested_set_options(CloudComputing::ItemKind) {|i| "#{'-' * i.level} #{i.name}" }
+    = f.collection_select :cluster_id, CloudComputing::Cluster.all, :id, :description
+    - CloudComputing::Item.locale_columns(:name,:description).each do |column|
       = f.text_field column
     = f.number_field :available
-    = f.number_field :position
+    = f.number_field :max_count
     = form_group_check_box(f, :new_requests)
-    h3 =  CloudComputing::Configuration.human_attribute_name(:resources)
+    h3 =  CloudComputing::Item.human_attribute_name(:resources)
     = f.fields_for :resources do |ff|
       div.row
         div.col-md-3

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module CloudComputing
-  class ConfigurationTest < ActiveSupport::TestCase
+  class PositionTest < ActiveSupport::TestCase
     # test "the truth" do
     #   assert true
     # end

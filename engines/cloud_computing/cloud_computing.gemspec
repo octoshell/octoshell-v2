@@ -34,6 +34,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "kaminari"
   spec.add_dependency "carrierwave"
   spec.add_dependency "mime-types"
+  spec.add_dependency 'awesome_nested_set'
+
   spec.add_development_dependency 'rspec-rails'
   # spec.add_development_dependency 'factory_girl_rails'
   spec.test_files = Dir["spec/**/*"]

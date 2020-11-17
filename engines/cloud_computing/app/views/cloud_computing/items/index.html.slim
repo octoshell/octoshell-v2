@@ -1,0 +1,19 @@
+div class="page-header"
+  h1 = t(".title")
+
+div class="well"
+  /= link_to t(".new_ticket", default: 'New Ticket'), support.new_ticket_path, class: "btn btn-default"
+
+= bootstrap_form_for @search, url: items_path, method: :get, layout: :vertical do |f|
+  div class="container"
+    /div class="col-md-3"
+    /  = f.collection_select :project_id_eq, current_user.projects, :id, :title, label: Support::Ticket.human_attribute_name(:project), include_blank: true
+    /  = f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name, label: Support::Ticket.human_attribute_name(:cluster), include_blank: true
+    div class="col-md-3"
+      = f.select :item_kind_id_in, nested_set_options(CloudComputing::ItemKind) {|i| "#{'-' * i.level} #{i.name}" }, { label: CloudComputing::Item.human_attribute_name(:item_kind) },  multiple:true
+  = f.form_group do
+    = f.primary t("actions.find")
+
+= safe_paginate @items
+= render "table", items: @items
+= safe_paginate @items

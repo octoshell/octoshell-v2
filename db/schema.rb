@@ -10,31 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_01_121819) do
+ActiveRecord::Schema.define(version: 2020_11_15_153238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "active_storage_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
-    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
-  end
-
-  create_table "active_storage_blobs", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
-    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
 
   create_table "announcement_recipients", id: :serial, force: :cascade do |t|
     t.integer "user_id"
@@ -97,6 +76,119 @@ ActiveRecord::Schema.define(version: 2020_11_01_121819) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["options_category_id"], name: "index_category_values_on_options_category_id"
+  end
+
+  create_table "cloud_computing_clusters", force: :cascade do |t|
+    t.text "description_ru"
+    t.text "description_en"
+    t.bigint "core_cluster_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["core_cluster_id"], name: "index_cloud_computing_clusters_on_core_cluster_id"
+  end
+
+  create_table "cloud_computing_conditions", force: :cascade do |t|
+    t.string "from_type"
+    t.bigint "from_id"
+    t.string "to_type"
+    t.bigint "to_id"
+    t.integer "min", default: 0
+    t.string "max", default: "*"
+    t.integer "kind", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_type", "from_id"], name: "index_cloud_computing_conditions_on_from_type_and_from_id"
+    t.index ["to_type", "to_id"], name: "index_cloud_computing_conditions_on_to_type_and_to_id"
+  end
+
+  create_table "cloud_computing_item_kinds", force: :cascade do |t|
+    t.string "name_ru"
+    t.string "name_en"
+    t.text "description_ru"
+    t.text "description_en"
+    t.integer "parent_id"
+    t.integer "lft", null: false
+    t.integer "rgt", null: false
+    t.integer "depth", default: 0, null: false
+    t.integer "children_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lft"], name: "index_cloud_computing_item_kinds_on_lft"
+    t.index ["parent_id"], name: "index_cloud_computing_item_kinds_on_parent_id"
+    t.index ["rgt"], name: "index_cloud_computing_item_kinds_on_rgt"
+  end
+
+  create_table "cloud_computing_items", force: :cascade do |t|
+    t.bigint "cluster_id"
+    t.bigint "item_kind_id"
+    t.string "name_ru"
+    t.string "name_en"
+    t.text "description_ru"
+    t.text "description_en"
+    t.integer "available"
+    t.integer "max_count"
+    t.boolean "new_requests", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cluster_id"], name: "index_cloud_computing_items_on_cluster_id"
+    t.index ["item_kind_id"], name: "index_cloud_computing_items_on_item_kind_id"
+  end
+
+  create_table "cloud_computing_position_links", force: :cascade do |t|
+    t.bigint "from_id"
+    t.bigint "to_id"
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_id"], name: "index_cloud_computing_position_links_on_from_id"
+    t.index ["to_id"], name: "index_cloud_computing_position_links_on_to_id"
+  end
+
+  create_table "cloud_computing_positions", force: :cascade do |t|
+    t.bigint "item_id"
+    t.string "holder_type"
+    t.bigint "holder_id"
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["holder_type", "holder_id"], name: "index_cloud_computing_positions_on_holder_type_and_holder_id"
+    t.index ["item_id"], name: "index_cloud_computing_positions_on_item_id"
+  end
+
+  create_table "cloud_computing_requests", force: :cascade do |t|
+    t.text "comment"
+    t.text "admin_comment"
+    t.date "finish_date"
+    t.bigint "created_by_id"
+    t.string "for_type"
+    t.bigint "for_id"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_cloud_computing_requests_on_created_by_id"
+    t.index ["for_type", "for_id"], name: "index_cloud_computing_requests_on_for_type_and_for_id"
+  end
+
+  create_table "cloud_computing_resource_kinds", force: :cascade do |t|
+    t.string "name_ru"
+    t.string "name_en"
+    t.text "description_en"
+    t.text "description_ru"
+    t.string "measurement_ru"
+    t.string "measurement_en"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cloud_computing_resources", force: :cascade do |t|
+    t.bigint "resource_kind_id"
+    t.bigint "item_id"
+    t.integer "value"
+    t.boolean "new_requests"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_cloud_computing_resources_on_item_id"
+    t.index ["resource_kind_id"], name: "index_cloud_computing_resources_on_resource_kind_id"
   end
 
   create_table "comments_comments", id: :serial, force: :cascade do |t|
@@ -843,7 +935,7 @@ ActiveRecord::Schema.define(version: 2020_11_01_121819) do
     t.integer "ticket_id"
     t.text "description_en"
     t.string "name_en"
-    t.boolean "ticket_created"
+    t.boolean "ticket_created", default: false
     t.index ["package_id"], name: "index_pack_versions_on_package_id"
   end
 
@@ -866,15 +958,6 @@ ActiveRecord::Schema.define(version: 2020_11_01_121819) do
     t.text "about"
     t.boolean "receive_info_mails", default: true
     t.boolean "receive_special_mails", default: true
-  end
-
-  create_table "sessions_managers", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "session_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_sessions_managers_on_session_id"
-    t.index ["user_id"], name: "index_sessions_managers_on_user_id"
   end
 
   create_table "sessions_projects_in_sessions", id: :serial, force: :cascade do |t|
@@ -1070,7 +1153,6 @@ ActiveRecord::Schema.define(version: 2020_11_01_121819) do
     t.string "hint_en"
     t.string "model_collection"
     t.integer "kind", default: 0
-    t.boolean "search", default: false
   end
 
   create_table "support_replies", id: :serial, force: :cascade do |t|
@@ -1254,7 +1336,6 @@ ActiveRecord::Schema.define(version: 2020_11_01_121819) do
     t.index ["url"], name: "index_wikiplus_pages_on_url", unique: true
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "core_bot_links", "users"
   add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"
 end

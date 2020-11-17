@@ -69,6 +69,7 @@ gem "pack",           path: "engines/pack"
 gem "hardware",       path: "engines/hardware"
 gem "reports",       path: "engines/reports"
 gem "api",            path: "engines/api"
+gem 'cloud_computing', path: 'engines/cloud_computing'
 
 gem "jquery-rails"
 gem "jquery-ui-rails"
