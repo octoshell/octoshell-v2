@@ -12,13 +12,18 @@ CloudComputing::Engine.routes.draw do
     end
     resources :resources
   end
-  root 'requests#index'
+  root 'items#index'
   resources :item_kinds
   resources :items do
     member do
       post :update_position
     end
   end
-  resources :requests
+  resources :requests do
+    collection do
+      get :created_request
+    end
+  end
+
 
 end

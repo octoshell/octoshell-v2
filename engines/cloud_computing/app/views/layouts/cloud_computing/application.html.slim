@@ -4,5 +4,6 @@
     - cloud_computing_submenu_items.each do |item|
       li class="#{"active" if item.active?(request.fullpath)}"
         = link_to item.name, item.url
+  = link_to t('.created_request'), created_request_requests_path, class: "btn btn-default", style: 'margin: 15px;'
+
 = render template: "layouts/application"
-= stylesheet_link_tag    "pack/pack", media: "all"

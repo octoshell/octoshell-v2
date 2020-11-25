@@ -9,6 +9,9 @@ module CloudComputing
 
     # validates :amount, presence: true, numericality: { greater_than: 0 }
     validates :for, presence: true, unless: :created?
+    # validates :uniqueness, presence: true, unless: :created?
+    validates :status, uniqueness: { scope: %i[created_by_id] }, if: :created?
+
     validate do
       # if configuration && amount > configuration.available
       #   errors.add :amount, 'error'

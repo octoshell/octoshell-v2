@@ -21,6 +21,10 @@ module CloudComputing
       end
     end
 
+    def created_request
+      @request = Request.find_or_initialize_by(status: 'created', created_by: current_user)
+    end
+
     def show
       @request = Request.find(params[:id])
     end

@@ -18,13 +18,16 @@ namespace :support do
         field_value.save!
       end
     end
+  end
+
+  task required_fields: :environment do
     Support::TopicsField.all.includes(:field).each do |t_f|
-      t_f.required = topics_field.field.required
+      t_f.required = t_f.field.required
       t_f.save!
     end
-
-
   end
+
+
 
   task convert_fields: :environment do
     ActiveRecord::Base.transaction do
