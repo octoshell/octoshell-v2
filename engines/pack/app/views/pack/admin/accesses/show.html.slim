@@ -45,8 +45,8 @@ table
 /-if @access.tickets
 /  -@access.tickets.each do |ticket|
 /      p = link_to ticket,support.admin_ticket_path(ticket)
--else
-  =t 'no_records_found'
+/-else
+/  =t 'no_records_found'
 =javascript_tag do
   -if  %w[expired allowed].include? @access.status
     =render partial: 'allowed_and_expired',formats: [:js]
