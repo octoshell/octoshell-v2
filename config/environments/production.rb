@@ -27,7 +27,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = Uglifier.new() #harmony: true)
+  config.assets.js_compressor = Uglifier.new(harmony: true)
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -112,6 +112,9 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :address => "localhost",
+    :tls => false,
+    :enable_starttls_auto => false,
+    :ssl => false,
     :port => 25
   }
 

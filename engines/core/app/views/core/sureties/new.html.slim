@@ -15,6 +15,6 @@ div class="page-header"
       - @unsured_members.each do |member|
         tr
           td = link_to member.full_name, main_app.user_path(member.user)
-          td = member.organization ? link_to member.organization, core.organization_path(member.organization) : t('not-specified')
+          td = member.organization ? link_to(member.organization, core.organization_path(member.organization)) : t('not-specified')
   = f.form_group do
     = f.submit t("actions.generate")

@@ -7,17 +7,17 @@ ru:
     admin:
       access_keys:
         form:
-          access_key_exports_list: 'TRME '
-          access_key_key: 'TRME '
+          access_key_exports_list: Экспорты
+          access_key_key: Ключ доступа
         index:
-          access_key_exports: 'TRME '
-          access_key_key: 'TRME '
-          new_access_key: 'TRME '
-          sure: 'TRME '
+          access_key_exports: Экспорты
+          access_key_key: Ключ доступа
+          new_access_key: Новый ключ доступа
+          sure: Уверены?
     engine_submenu:
-      access_keys: 'TRME '
-      exports: 'TRME '
-      key_parameters: 'TRME '
+      access_keys: Ключи доступа
+      exports: Экспорты
+      key_parameters: Параметры
   back: Назад
   edit: Редактировать
   edit_export: Редактировать экспорт

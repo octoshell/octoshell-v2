@@ -19,7 +19,7 @@ Requires: Docker and Docker Composer
 
 We assume, that all below is doing as user `octo` (or root, if it is said 'as root'). You can use another user. Please, note, that linux account `octo` and database role `octo` are not connected, but we prefer to use the same name for both cases. You can create user by command like `adduser octo`
 
-1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo yarnpkg`)
+1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo yarnpkg libsqlite3-dev sqlite3`)
 1. install as root redis (under debian/ubuntu: `sudo apt-get install -y redis-server redis-tools`)
 1. install postgresql (under debian/ubuntu: `sudo apt-get install -y postgresql postgresql-server-dev-all`)
 1. as root add database user octo: `sudo -u postgres bash -c "psql -c \"CREATE USER octo WITH PASSWORD 'HERE_COMES_YOUR_DESIRED_PASSWORD';\""`
@@ -41,7 +41,7 @@ We assume, that all below is doing as user `octo` (or root, if it is said 'as ro
 1. execute `gem install bundler --version '< 2.0'`
 1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
 1. go into cloned directory `cd octoshell-v2`
-1. execute `bundle install`
+1. execute `./rebuild_bundles full`
 1. copy `config/database.yml.example` into `config/database.yml`
 1. fill database parameters and password in `config/database.yml`
 1. execute `bundle exec rake db:setup`
@@ -59,7 +59,7 @@ To run in **production** mode:
 1. as root move your app into /var/www: `mkdir /var/www/octoshell2; mv ~octo/octoshell-v2 /var/www/octoshell2/current`)
 1. Start production sidekiq: `./run-sidekiq`
 1. Start production server: `./run`
-1. To add cluster sync you should login to your cluster as root, create new user 'octo'. Login as `admin@octoshell.ru` in web-application. Go to "Admin/Cluster control" and edit "Test cluster". Copy `octo` public key from web to /home/octo/.ssh/authorized_keys.
+1. To add cluster sync you should login to your cluster as root, create new user 'octo'. Login as `admin@octoshell.ru` in web-application. Go to "Admin/Cluster control" and edit "Test cluster". Copy `octo` public key from web to /home/octo/.ssh/authorized\_keys.
 
 Best way is to test in development mode and then do deploy on production (or stage) server. See **Deploy** section for more details.
 
@@ -93,21 +93,21 @@ Example:
 
 ### Notificators
 
-You may need to notify administrators using support tickets (requests). Special class was designed to do it. Its functionality is very similar to ActionMailer::Base class (`engines/support/lib/support/notificator.rb`). Example: `engines/core/app/notificators/core/notificator.rb  engines/core/lib/core/checkable.rb`. Be careful with the `topic_name` method. It must be used only inside "action" method like `Notificator.check`. Pay special attention that the `new` method is not used here explicitly and method_missing is used to set correct options.    
+You may need to notify administrators using support tickets (requests). Special class was designed to do it. Its functionality is very similar to ActionMailer::Base class (`engines/support/lib/support/notificator.rb`). Example: `engines/core/app/notificators/core/notificator.rb  engines/core/lib/core/checkable.rb`. Be careful with the `topic_name` method. It must be used only inside "action" method like `Notificator.check`. Pay special attention that the `new` method is not used here explicitly and method\_missing is used to set correct options.
 
 ### Key-value storage for ApplicationRecord
 
 Use "options" to extend desription  of any model.
 ##### Usage
-1. In model (see app/models/application_record.rb for details):
+1. In model (see app/models/application\_record.rb for details):
         class YourModel < ApplicationRecord
           extend_with_options
         end
-1. In your form use #form_for_options  and    bootstrap_nested_form_for (nested_form_for) methods:
+1. In your form use #form\_for\_options  and    bootstrap\_nested\_form\_for (nested\_form\_for) methods:
         = bootstrap_nested_form_for :@instance do |f|
          # your  fields
         = form_for_options(f)
-1. show_options helper:
+1. show\_options helper:
         = show_options(@instance) do
          - can? :manage, :packages #user will see only options
          with admin boolean attribute set to false if he can't manage packages
@@ -151,15 +151,15 @@ Types:
 
 |Type|Description|
 |---|---|
-|docs 	|Documantation update|
-|uix    |User interface changes|
-|feat 	|New functions and features|
-|fix 	|Bug fixes|
-|perf 	|Performance improvement|
+|docs |Documantation update|
+|uix  |User interface changes|
+|feat |New functions and features|
+|fix |Bug fixes|
+|perf |Performance improvement|
 |refactor |Just refactoring|
 |revert |Back to old code!|
-|style 	|Code style fixes|
-|test 	|Adding and improving tests|
+|style |Code style fixes|
+|test |Adding and improving tests|
 
 Scope: one of engines or 'base' for main app or other files (README, deployment, etc).
 
@@ -183,7 +183,7 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 
 Далее считаем, что установка производится под пользователем `octo` (или `root`, если сказано `под рутом`). Можно использовать другое имя пользователя. Отметим, что имя пользователя и имя роли базы данных не обязаны совпадать, но мы используем одинаковые. Пользователя можно создать, например, командой `adduser octo`
 
-1. под рутом ставим пакеты (debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo yarnpkg`)
+1. под рутом ставим пакеты (debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo yarnpkg libsqlite3-dev sqlite3`)
 1. под рутом ставим redis (debian/ubuntu: `sudo apt-get install -y redis-server redis-tools`)
 1. под рутом ставим postgresql (debian/ubuntu: `sudo apt-get install -y postgresql postgresql-server-dev-all`)
 1. под рутом добавим роль для БД octo: `sudo -u postgres bash -c "psql -c \"CREATE USER octo WITH PASSWORD 'ТУТ_ПАРОЛЬ_ПОЛЬЗОВАТЕЛЯ_БД';\""`
@@ -207,7 +207,7 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 1. выполняем `gem install bundler --version '< 2.0'`
 1. выполняем `git clone https://github.com/octoshell/octoshell-v2.git`
 1. переходим в созданный каталог `cd octoshell-v2`
-1. выполняем `bundle install`
+1. выполняем `./rebuild_bundles`
 1. копируем `config/database.yml.example` в `config/database.yml`
 1. вписываем параметры БД и пароль в `config/database.yml`
 1. выполняем `bundle exec rake db:setup`
@@ -225,7 +225,7 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 1. под рутом перемещаем каталог приложения в /var/www: `mkdir /var/www/octoshell2; mv ~octo/octoshell-v2 /var/www/octoshell2/current`)
 1. запускаем production sidekiq: `./run-sidekiq`
 1. запускаем production server: `./run`
-1. для синхронизации с кластером, заходим как root на кластер, создаём пользователя 'octo'. Входим как `admin@octoshell.ru` в приложение. Идём в "Admin/Cluster control" редактируем "Test cluster" (или новый). Копируем открытый ключ `octo` из web-странички в /home/octo/.ssh/authorized_keys.
+1. для синхронизации с кластером, заходим как root на кластер, создаём пользователя 'octo'. Входим как `admin@octoshell.ru` в приложение. Идём в "Admin/Cluster control" редактируем "Test cluster" (или новый). Копируем открытый ключ `octo` из web-странички в /home/octo/.ssh/authorized\_keys.
 
 Лучше всего потестировать приложение в development режиме, а потом выполнить деплой на рабочий (или тестовый) сервер, см. раздел **Деплой**.
 
@@ -263,14 +263,14 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 
 |Type|Description|
 |---|---|
-|docs 	|Обновление документации|
+|docs |Обновление документации|
 |uix    |Исправления в интерфейсе пользователя|
-|feat 	|Добавление нового функционала|
-|fix 	  |Исправление ошибок|
-|perf 	|Изменения направленные на улучшение производительности|
-|refactor |	Правки кода без исправления ошибок или добавления новых функций|
-|revert |	Откат на предыдущие коммиты|
-|style 	|Правки по кодстайлу (табы, отступы, точки, запятые и т.д.)|
-|test 	|Добавление тестов|
+|feat |Добавление нового функционала|
+|fix   |Исправление ошибок|
+|perf |Изменения направленные на улучшение производительности|
+|refactor |Правки кода без исправления ошибок или добавления новых функций|
+|revert |Откат на предыдущие коммиты|
+|style |Правки по кодстайлу (табы, отступы, точки, запятые и т.д.)|
+|test |Добавление тестов|
 
 Область - один из engines или 'base' для основного приложения или других файлов (типа README, деплоя, и т.п.)
