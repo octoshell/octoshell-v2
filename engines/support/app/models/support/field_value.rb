@@ -28,11 +28,11 @@ module Support
     validates :value, presence: true, if: :required_value?
 
     def required_value?
-      opics_field && topics_field.required
+      topics_field && topics_field.required
     end
 
     def field
-      opics_field && topics_field.field
+      topics_field && topics_field.field
     end
 
     def field_option_name

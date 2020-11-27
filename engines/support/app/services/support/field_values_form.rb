@@ -49,7 +49,16 @@ module Support
 
     def fill_values_for_persisted_ticket
       ticket.field_values.group_by(&:topics_field_id).each do |topics_field_id, field_values|
-        result = field_values.count == 1 ? field_values.first.value.to_i : field_values.map(&:value).map(&:to_i)
+        result = if field_values.count == 1
+          f_v = field_values.first
+          if f_v.field.text? || f_v.field.markdown?
+            f_v.value
+          else
+            f_v.value.to_i
+          end
+        else
+          field_values.map(&:value).map(&:to_i)
+        end
         define_singleton_method(topics_field_id.to_s) do
           result
         end
