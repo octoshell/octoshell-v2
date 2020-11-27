@@ -120,6 +120,7 @@ PLATFORMS
 
 DEPENDENCIES
   octoface!
+  sqlite3
 
 BUNDLED WITH
-   1.17.3
+   2.0.2
