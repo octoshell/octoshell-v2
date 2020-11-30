@@ -1,17 +1,41 @@
-div
- = t('.help')
-= bootstrap_form_for @request  do |f|
-  = f.fields_for :positions do |ff|
-    /= ff.object.amount.times do |i|
-    /  = f.fields_for :positions do |ff|
+div class="page-header"
+  h1 = t(".title", default: "Выберите сеть")
 
-   =
-  = f.collection_select :for_id, current_user.projects, :id, :title
+/= render "form"
+.row
+  -puts  CloudComputing::Item.where(item_kind: CloudComputing::ItemKind.where(name_ru: 'Узел')).to_a.inspect.red
+  .col-md-4
+    - CloudComputing::Item.where(item_kind: CloudComputing::ItemKind.where(name_ru: 'Узел').first.self_and_descendants).each do |i|
+      p
+       = i.name
+      p
+       | Количество: 5(можно будет редактировать здесь)
+       = bootstrap_form_tag do |f|
+          = f.collection_select :fff, [], :first, :first, class: 'addd'
 
-   = f.hidden_field :for_type, value: 'Core::Project'
-   = f.collection_select :for_id, current_user.projects, :id, :title
-   = f.number_field :amount, required: true, min: 1, help: t('.amount_help')
-   = f.text_field :finish_date, class: 'datepicker', help: t('.finish_date_help')
-   = f.text_area :comment, rows: 4
-   = f.form_group do
-     = f.submit t("buttons.save")
+  .col-md-4
+
+  .col-md-4
+      #index
+      - CloudComputing::Item.where(item_kind: CloudComputing::ItemKind.where(name_ru: 'Cеть').first.self_and_descendants).each do |i|
+        p item_id=i.id
+         = i.name
+      #show
+
+javascript:
+  $('div p').click(function(){
+    var item_id = $(this).attr('item_id');
+
+    $.ajax('/cloud_computing/items/' + item_id +'/' + 'simple_show', {
+      type: 'get',
+      dataType: 'html',
+      success : function(html) {
+          $('div#show').html(html);
+          // Insert the html into the page here using ".html(html)"
+          // or a similar method.
+      },
+      error: function() {
+          alert("Error");
+      }
+    });
+  });

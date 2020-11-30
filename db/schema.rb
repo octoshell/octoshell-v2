@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(version: 2020_11_15_153238) do
   create_table "cloud_computing_position_links", force: :cascade do |t|
     t.bigint "from_id"
     t.bigint "to_id"
+    t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["from_id"], name: "index_cloud_computing_position_links_on_from_id"
@@ -147,6 +148,7 @@ ActiveRecord::Schema.define(version: 2020_11_15_153238) do
     t.bigint "item_id"
     t.string "holder_type"
     t.bigint "holder_id"
+    t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["holder_type", "holder_id"], name: "index_cloud_computing_positions_on_holder_type_and_holder_id"

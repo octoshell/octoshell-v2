@@ -17,6 +17,7 @@ CloudComputing::Engine.routes.draw do
   resources :items do
     member do
       post :update_position
+      get :simple_show
     end
   end
   resources :requests do

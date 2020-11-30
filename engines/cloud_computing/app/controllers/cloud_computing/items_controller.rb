@@ -1,7 +1,7 @@
 require_dependency "cloud_computing/application_controller"
-
 module CloudComputing
   class ItemsController < ApplicationController
+    layout false, only: [:simple_show]
 
     def index
       @search = CloudComputing::Item.for_users.search(params[:q])
@@ -22,8 +22,12 @@ module CloudComputing
 
     def show
       @item = CloudComputing::Item.for_users.find(params[:id])
-      puts @item.all_conditions.to_sql.red
       # @positions = @item.find_or_build_for_user(current_user)
+    end
+
+    def simple_show
+      @item = CloudComputing::Item.find(params[:id])
+      render :show
     end
 
     def edit
