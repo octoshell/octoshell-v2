@@ -1,0 +1,13 @@
+h3
+  = '{{name}}'
+- attrs = %i[name description available max_count new_requests]
+
+table class="table table-striped"
+  tr
+    th = CloudComputing::Item.human_attribute_name(:item_kind)
+    -attrs.each do |attr|
+      th = CloudComputing::Item.human_attribute_name(attr)
+  tr
+    td = link_to '{{item_kind_name}}', admin_item_kind_path('{{item_kind_id}}')
+    -attrs.each do |attr|
+      td = "{{#{attr}}}"

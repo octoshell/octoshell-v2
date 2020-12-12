@@ -3,7 +3,7 @@ require_dependency "cloud_computing/application_controller"
 module CloudComputing
   class Admin::ItemKindsController < Admin::ApplicationController
     def index
-      @item_kinds = CloudComputing::ItemKind.order(:position)
+      @item_kinds = ItemKind.order(:lft)
       respond_to do |format|
         format.html
         format.json do
@@ -15,7 +15,7 @@ module CloudComputing
     end
 
     def jstree
-      @item_kinds = ItemKind.order(:parent_id, :lft)
+      @item_kinds = ItemKind.order(:lft)
       a = @item_kinds.map do |k|
         { id: k.id, text: k.name, parent: k.parent_id || '#' }
       end
@@ -55,7 +55,7 @@ module CloudComputing
       respond_to do |format|
         format.html do
           if @item_kind.update(item_kind_params)
-            redirect_to edit_all_admin_item_kinds_path
+            redirect_to [:admin, @item_kind]
           else
             render :edit
           end
@@ -91,7 +91,8 @@ module CloudComputing
       #Order is of params is important
       params.require(:item_kind).permit(*CloudComputing::ItemKind
                                            .locale_columns(:name, :description),
-                                           :parent_id,:id, :name, :child_index, :name,
+                                           :parent_id,:id, :name, :child_index,
+                                           :name, :cloud_type,
                                            conditions_attributes: %i[min max
                                            to_type to_id kind _destroy])
     end

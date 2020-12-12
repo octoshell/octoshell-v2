@@ -1,4 +1,4 @@
-div class="page-header"
-  h1 = t(".title", default: "Edit item kind")
+- content_for :title do
+    - t(".title", item_kind: @item_kind)
 
 = render "form"

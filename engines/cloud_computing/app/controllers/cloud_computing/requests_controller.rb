@@ -2,41 +2,52 @@ require_dependency "cloud_computing/application_controller"
 
 module CloudComputing
   class RequestsController < ApplicationController
+
+    before_action only: %i[created_request edit_created_request update_created_request to_sent] do
+      @request = user_requests.find_or_initialize_by(status: 'created')
+    end
+
     def index
-      @search = Request.search(params[:q])
+      @search = user_requests.search(params[:q])
       @requests = @search.result(distinct: true).includes(:configuration).page(params[:page])
     end
 
-    def new
-      @request = Request.new
+    def edit_created_request
+
     end
 
-    def create
-      @request = Request.new(request_params)
-      @request.created_by = current_user
-      if @request.save
-        redirect_to @request
+    def update_created_request
+      if @request.update(request_params)
+        redirect_to created_request_requests_path, notice: t('.updated_successfully')
       else
-        render :new
+        render :edit_created_request
       end
     end
 
+
     def created_request
-      @request = Request.find_or_initialize_by(status: 'created', created_by: current_user)
+
     end
+
+    def to_sent
+      @request.to_sent!
+      redirect_to @request
+    end
+
 
     def show
-      @request = Request.find(params[:id])
+      @request = user_requests.find(params[:id])
     end
 
-    def destroy
-      @cluster = Cluster.find(params[:id])
-      @cluster.destroy!
-      redirect_to requests_path
+    private
+
+    def user_requests
+      Request.where(created_by: current_user)
     end
+
     def request_params
-      params.require(:request).permit(:comment, :configuration_id, :date,
-                                      :for_id, :for_type, :amount)
+      params.require(:request).permit(:for_id, :for_type, :comment, :finish_date,
+        left_positions_attributes:[:id, :amount, :_destroy, from_links_attributes: %i[id _destroy from_id amount to_item_id]])
     end
   end
 end

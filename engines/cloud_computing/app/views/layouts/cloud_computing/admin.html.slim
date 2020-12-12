@@ -4,5 +4,8 @@
     - cloud_computing_admin_submenu_items.each do |item|
       li class="#{"active" if item.active?(request.fullpath)}"
         = link_to item.name, item.url
+  -if yield(:title).present?
+    div class="page-header"
+      h1 = yield :title
 
 = render template: "layouts/application"

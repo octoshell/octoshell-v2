@@ -4,7 +4,9 @@ div class="row"
       = f.text_field column
     - CloudComputing::ItemKind.locale_columns(:description).each do |column|
       = f.text_area column, rows: 4
-    = f.select :parent_id, nested_set_options(CloudComputing::ItemKind, @item_kind) {|i| "#{'-' * i.level} #{i.name}" }
+    = f.select :parent_id, nested_set_options(CloudComputing::ItemKind,
+      @item_kind) {|i| "#{'-' * i.level} #{i.name}" }, include_blank: true
+    = f.select :cloud_type, CloudComputing::ItemKind.human_cloud_types
     h3 =  CloudComputing::ItemKind.human_attribute_name(:conditions)
     = f.link_to_add t(".add_value"), :conditions
     = f.fields_for :conditions do |ff|

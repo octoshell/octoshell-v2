@@ -9,8 +9,14 @@ module CloudComputing
       Face::MyMenu.items_for(:user_submenu) do
         add_item('cloud_computing', t('user_submenu.cloud_computing'),
                  cloud_computing.root_path, /^cloud_computing/)
+      end
+
+      Face::MyMenu.items_for(:admin_submenu) do
+        add_item('cloud_computing', t('admin_submenu.cloud_computing'),
+                 cloud_computing.admin_root_path, /^cloud_computing\/admin/)
 
       end
+
 
       if Octoface.role_class?(:core, 'Project')
         # define_for(model: 'Core::Project',

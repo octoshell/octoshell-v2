@@ -1,0 +1,170 @@
+
+controller = {
+  data: [],
+  twbs: $('div.pagination'),
+  table: $('table.item-kind-list'),
+  table_template: Handlebars.compile('<tr><td item-id="{{item_id}}">{{name}}</td></tr>'),
+  item_data: [],
+  active: null,
+  searchData: function(item_id){
+    for(var i in controller.data){
+      if(Number(controller.data[i].id) == Number(item_id)){
+        return controller.data[i];
+      }
+    }
+  }
+}
+
+function renderTable(data){
+  console.log(data);
+  controller.item_data = data;
+  for (var i = 0; i < data.length; i++) {
+    controller.table.append(controller.table_template({item_id: data[i].id, name: data[i].name}));
+      //Do something
+  }
+  // controller.table
+}
+
+function ajaxItems(item_kind_id, page){
+  $.ajax('/cloud_computing/items/', {
+    type: 'get',
+    dataType: 'json',
+    data: { item_kind_id: item_kind_id, page: page } ,
+    success : function(data) {
+      renderTable(data.data);
+      $('div.item-container').empty();
+      controller.twbs.twbsPagination('destroy');
+      controller.twbs.ruTwbsPagination({
+        totalPages: data.pages,
+        startPage: data.page,
+        onPageClick: function (event, page) {
+                // console.log(event);
+                // console.log(page);
+          controller.twbs.on('page', function (event, page) {
+            ajaxItems(item_kind_id, page);
+          });
+        }
+      });
+
+
+    },
+    error: function() {
+        alert("Error");
+    }
+  });
+
+}
+
+function getItems(item_kind_id){
+  ajaxItems(item_kind_id,1);
+}
+
+function getPositions(){
+  $.ajax('/cloud_computing/requests/created_request', {
+    type: 'get',
+    dataType: 'json',
+    success : function(data) {
+      $.each(data,function(index, value){
+        controller.data = data;
+        var html = controller.position_template(value);
+        $('div#vm-container').append(html);
+        $("div.position[position-id='" + value.id + "']")
+          .find("select[name='to_item_kinds']")
+          .select2({data: value.to_item_kinds})
+      });
+      console.log(data);
+    },
+    error: function() {
+        alert("Error");
+    }
+  });
+
+}
+
+function compileTemplates(){
+  controller.item_template =  Handlebars.compile($('#item-show').html());
+  //controller.position_template =  Handlebars.compile($('#position-show').html());
+}
+
+$(document).ready(function(){
+  // console.log(controller.item_template());
+  compileTemplates();
+  // getPositions();
+  $('div.position').each(function(){
+    controller.data.push({
+      id: $(this).attr('position-id'),
+      name: $(this).find('.position-name').text()
+    });
+  });
+
+  $(document).on('change',"select[name='to_item_kinds']",function(){
+    var id = $(this).find("option:selected").val();
+    controller.table.empty();
+    if(id == null || id == ''){
+      return;
+    }
+    var position_id = $(this).parents('div.position').attr('position-id');
+    controller.active = controller.searchData(position_id);
+    getItems(id);
+  });
+
+  $(document).on('click',"table td",function(){
+    var item_id = $(this).attr('item-id');
+    var item;
+    for(var i in controller.item_data){
+      if(controller.item_data[i].id == Number(item_id)){
+        item = controller.item_data[i];
+      }
+    }
+    $('div.item-container').html(controller.item_template(item));
+    // $(this).parent().css('background-color', '#337ab7')
+    $(this).parent().css('background-color', '#337ab7');
+    $(this).parent().css('color', 'white');
+
+    $('table tr').not($(this).parent()).css('background-color', '');
+    $('table tr').not($(this).parent()).css('color', '');
+
+
+  });
+
+
+  $(document).on('click', 'button.add-item',function(e){
+    var id = controller.active.id;
+    var item_id = $(this).attr('item-id');
+    var item_name = $(this).attr('item-name');
+
+    var target_position = $('div.position[position-id="'+ id + '"]');
+
+    var found = target_position.find('.target-to-item-id').filter(function(){
+      return this.value == item_id;
+    })
+    if(found.length && found.parents('div.from-link:visible').length){
+      found.parents('div.from-link').find('.target-amount').val(function(index, previous){
+        return Number(previous) + 1;
+      });
+    }else{
+      $(document).one('nested:fieldAdded', function(event){
+        target_position.find('div.from-link').first().find('.target-to-item-id').val(item_id).change();
+        target_position.find('div.from-link').first().find('h5.position-name b').text(item_name);
+
+      })
+      target_position.find('a.add-from-links').click();
+    }
+
+
+
+
+    e.preventDefault();
+    return false;
+  });
+
+
+
+  $(document).on('nested:fieldRemoved', function(event){
+    // this field was just inserted into your form
+    var field = event.field;
+    // it's a jQuery object already! Now you can find date input
+    console.log(field.html());
+  });
+
+});

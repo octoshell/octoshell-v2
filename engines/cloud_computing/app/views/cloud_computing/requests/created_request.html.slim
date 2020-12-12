@@ -1,15 +1,15 @@
-= render 'form'
-/div class="panel panel-default"
-/  div class="panel-heading"
-/    - if can?(:manage, :cloud)
-/      = link_to t('actions.edit'), [:edit, :admin, @request], class: "btn btn-default"
+/= render 'form'
+- content_for :title do
+    - t(".title")
 
-/table class="table table-striped"
-/  tr
-/    th = CloudComputing::ResourceKind.human_attribute_name(:name)
-/    th = CloudComputing::ResourceKind.human_attribute_name(:description)
-/    th = CloudComputing::ResourceKind.human_attribute_name(:measurement)
-/  tr
-/    td = @resource_kind.name
-/    td = @resource_kind.description
-/    td = @resource_kind.measurement
+css:
+  div.well > a{
+    margin-left: 10px;
+  }
+.well
+  = link_to t('.edit_created_request'), edit_created_request_requests_path, class: "btn btn-warning"
+  -if @request.may_to_sent?
+    = link_to t('.to_sent'), to_sent_requests_path, class: "btn btn-info", method: :post
+
+
+= render partial: 'show', locals: { attrs: %i[comment finish_date for] }

@@ -1,0 +1,26 @@
+- content_for :title do
+    - t(".title", item_kind: @item_kind)
+
+- if can?(:manage, :cloud)
+  div class="panel panel-default"
+    div class="panel-heading"
+      = link_to t('actions.edit'), [:edit, :admin, @item_kind], class: "btn btn-default"
+
+div class="row"
+  div class="col-xs-6"
+    blockquote
+      h4
+        b = CloudComputing::Item.human_attribute_name :parent
+      - if @item_kind.parent
+        p
+          = link_to @item_kind.parent, [:admin, @item_kind.parent]
+      - else
+        = t 'no_parent'
+      - %i[name description].each do |a|
+          h4
+            b = CloudComputing::Item.human_attribute_name a
+          p = @item_kind.public_send(a)
+
+      h4
+        b = CloudComputing::Item.human_attribute_name :cloud_type
+      p = @item_kind.human_cloud_type

@@ -17,7 +17,7 @@
           /i class="fa fa-check"
           /i class="fa fa-times"
           td class="col-xs-1" = item.max_count
-          td class="col-xs-1" = @positions[item.id]&.first&.amount
+          td class="col-xs-1" = @positions[item.id]
 - else
   div class="panel-body"
     p = t(".no_items_found")

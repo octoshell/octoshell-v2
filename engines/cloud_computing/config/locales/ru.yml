@@ -1,0 +1,7 @@
+ru:
+  activerecord:
+    attributes:
+      cloud_computing/item_kind:
+        cloud_types:
+          'no': Не имеет значения
+          virtual_machine: Виртуальная машина

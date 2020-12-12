@@ -1,6 +1,6 @@
 CloudComputing::Engine.routes.draw do
   namespace :admin do
-    root 'clusters#index'
+    root 'items#index'
     resources :clusters
     resources :resource_kinds
     resources :items
@@ -23,6 +23,9 @@ CloudComputing::Engine.routes.draw do
   resources :requests do
     collection do
       get :created_request
+      get :edit_created_request
+      patch :update_created_request
+      post :to_sent
     end
   end
 

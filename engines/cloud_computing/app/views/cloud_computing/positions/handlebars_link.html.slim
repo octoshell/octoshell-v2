@@ -1,0 +1,20 @@
+- name_path = 'request[positions_attributes][{{parent_id}}][build_links][{{item_id}}]
+div.position position-id='{{id}}'
+  h5.link-name
+    | {{item_name}} No.{{id}}
+
+  input[type="hidden" value="{{id}}" name="#{name_path}[id]"
+        id="request_positions_attributes_{{id}}_id"]
+  label.control-label style="padding-right:5%"
+    = t('.amount')
+  /= ff.number_field :amount, required: true
+
+
+  input[required="required" type="number" value="{{amount}}"
+    name="request[positions_attributes][{{id}}][amount]"
+    id="request_positions_attributes_{{id}}_amount"
+    style="width:60px;text-align:center;"]
+
+  a.fa.fa-times.text-danger style="padding-left:5%;"
+    = t('.remove_position')
+  = select_tag "to_item_kinds",'',  style: 'width: 100%;', include_blank: true, 'position-id': '{{id}}'

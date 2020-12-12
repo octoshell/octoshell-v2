@@ -1,0 +1,17 @@
+div.position position-id=ff.object.id
+  h3.position-name
+    | #{ff.object.item.name} No.#{ff.object.id}
+  = ff.hidden_field :id
+  label.control-label style="padding-right:5%"
+    = t('.amount')
+  /= ff.number_field :amount, required: true
+
+  input[required="required" type="number" value="#{ff.object.amount}"
+    name="request[positions_attributes][#{ff.object.id}][amount]"
+    id="request_positions_attributes_#{ff.object.id}_amount"
+    style="width:60px;text-align:center;"]
+
+  = ff.link_to_remove t(".remove_position"), class: "fa fa-times text-danger", style: "padding-left:5%;"
+  = select_tag "to_item_kinds",
+    options_from_collection_for_select(ff.object.to_item_kinds, "id", "name"),
+    style: 'width: 100%;', include_blank: true, 'position-id': ff.object.id
