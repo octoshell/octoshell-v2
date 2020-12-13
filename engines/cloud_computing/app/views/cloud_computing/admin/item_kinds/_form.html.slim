@@ -10,6 +10,7 @@ div class="row"
     h3 =  CloudComputing::ItemKind.human_attribute_name(:conditions)
     = f.link_to_add t(".add_value"), :conditions
     = f.fields_for :conditions do |ff|
+      = ff.hidden_field :id
       = ff.hidden_field :to_type, value: 'CloudComputing::ItemKind'
       = ff.select :to_id, nested_set_options(CloudComputing::ItemKind) {|i| "#{'-' * i.level} #{i.name}" }
       /= ff.select :kind, CloudComputing::Condition.kinds

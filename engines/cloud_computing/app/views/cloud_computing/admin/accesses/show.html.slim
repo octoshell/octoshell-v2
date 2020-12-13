@@ -1,0 +1,20 @@
+/= render 'form'
+- content_for :title do
+    - t(".title")
+
+css:
+  div.well > a{
+    margin-left: 10px;
+  }
+.well
+  = link_to t('actions.edit'), edit_admin_access_path(@access), class: 'btn btn-primary'
+  - if @access.created?
+    = link_to t('.edit_links'), edit_links_admin_access_path(@access), class: "btn btn-warning"
+  - if @access.may_pend?
+    = link_to t('.pend'), pend_admin_access_path, class: "btn btn-info", method: :patch
+  - if @access.may_cancel?
+    = link_to t('.cancel'), cancel_admin_access_path, class: "btn btn-danger", method: :patch
+
+
+- attrs = %i[state user finish_date_or_nil allowed_by for]
+= render partial: 'cloud_computing/accesses/show', locals: { attrs: attrs }

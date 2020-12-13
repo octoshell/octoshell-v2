@@ -3,23 +3,19 @@
   .col-md-6
     blockquote
       - attrs.each do |a|
-          - if a == :for && @request.for.class.name == 'Core::Project'
+          - if a == :status
+            = mark_request_state(@request)
+          - elsif a == :for && @request.for.class.name == 'Core::Project'
             h4
-              b = CloudComputing::Item.human_attribute_name :for
+              b = CloudComputing::Request.human_attribute_name :for
             p = @request.for
+          - elsif a == :created_by && @admin
+            h4
+              b = CloudComputing::Request.human_attribute_name :user
+            p = link_to @request.created_by.full_name_with_email,
+                main_app.admin_user_path(@request.created_by_id)
           - else
             h4
-              b = CloudComputing::Item.human_attribute_name a
+              b = CloudComputing::Request.human_attribute_name a
             p = @request.public_send a
-  .col-md-6
-      - @request.left_positions.includes(:item, from_links: {to: :item}).each do |position|
-          div style=" border: 2px solid black; padding: 10px; margin: 10px;"
-            -unless @admin
-              p
-                = t('.you_requested', item_link: link_to(position.item.name,
-                    position.item), amount: position.amount)
-              p
-                b = t('.linked_with')
-              - position.from_links.each do |link|
-                p = t('.you_requested_link', item_link: link_to(link.to.item.name,
-                  link.to.item), amount: link.amount)
+  = render 'cloud_computing/requests/positions', positions: @request.left_positions 

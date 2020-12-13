@@ -70,6 +70,20 @@ PATH
       sorcery
 
 PATH
+  remote: engines/cloud_computing
+  specs:
+    cloud_computing (0.1.0)
+      aasm
+      awesome_nested_set
+      carrierwave
+      kaminari
+      mime-types
+      rails (~> 5.2.3)
+      ransack (= 2.1.1)
+      sidekiq
+      slim
+
+PATH
   remote: engines/comments
   specs:
     comments (0.0.1)
@@ -305,6 +319,8 @@ GEM
     ansi (1.5.0)
     arel (9.0.0)
     ast (2.4.0)
+    awesome_nested_set (3.2.1)
+      activerecord (>= 4.0.0, < 7.0)
     bcrypt (3.1.13)
     better_errors (2.5.1)
       coderay (>= 1.0.0)
@@ -728,6 +744,7 @@ DEPENDENCIES
   bootstrap_form
   cancancan
   capybara
+  cloud_computing!
   codeclimate-test-reporter
   comments!
   config!

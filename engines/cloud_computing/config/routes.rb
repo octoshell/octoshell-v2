@@ -11,7 +11,24 @@ CloudComputing::Engine.routes.draw do
       end
     end
     resources :resources
+    resources :requests do
+      member do
+        patch :refuse
+      end
+    end
+    resources :accesses do
+      member do
+        get :edit_links
+        patch :update_links
+        patch :pend
+        patch :cancel
+      end
+      collection do
+        post :create_from_request
+      end
+    end
   end
+
   root 'items#index'
   resources :item_kinds
   resources :items do
@@ -26,6 +43,7 @@ CloudComputing::Engine.routes.draw do
       get :edit_created_request
       patch :update_created_request
       post :to_sent
+      post :cancel
     end
   end
 

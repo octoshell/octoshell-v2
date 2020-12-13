@@ -2,18 +2,9 @@ module CloudComputing
   class Request < ApplicationRecord
     include AASM
     include ::AASM_Additions
-    # belongs_to :configuration, inverse_of: :requests
-    belongs_to :for, polymorphic: true
+    include Holder
     belongs_to :created_by, class_name: 'User'
-    has_many :positions, as: :holder
-    has_many :left_positions, ->{ left_joins(:to_links).where(cloud_computing_position_links: {id: nil})},
-      as: :holder, class_name: Position.to_s
-
-    accepts_nested_attributes_for :left_positions, allow_destroy: true
-
-    # validates :amount, presence: true, numericality: { greater_than: 0 }
-    validates :for, presence: true, unless: :created?
-    # validates :uniqueness, presence: true, unless: :created?
+    has_one :access, dependent: :destroy, inverse_of: :request
     validates :status, uniqueness: { scope: %i[created_by_id] }, if: :created?
 
     validate do
@@ -34,7 +25,7 @@ module CloudComputing
 
     # scope request ->
 
-    aasm :state, column: :status do
+    aasm(:status, column: :status) do
       state :created, initial: true
       state :sent
       state :approved
@@ -47,11 +38,19 @@ module CloudComputing
           end
         end
       end
-      event :cancel do
-        transitions from: %i[created sent], to: :cancelled
+
+      event :approve do
+        transitions from: :sent, to: :approved
+      end
+
+      event :refuse do
+        transitions from: :sent, to: :refused
       end
 
 
+      event :cancel do
+        transitions from: %i[created sent approved], to: :cancelled
+      end
     end
 
 

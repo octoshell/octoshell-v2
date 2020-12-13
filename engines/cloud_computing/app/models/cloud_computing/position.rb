@@ -2,7 +2,7 @@ module CloudComputing
   class Position < ApplicationRecord
     # cloud_computing_positions
     belongs_to :item, inverse_of: :positions
-    belongs_to :holder, polymorphic: true, autosave: true
+    belongs_to :holder, polymorphic: true, autosave: true, inverse_of: :positions
     # belongs_to :request, -> { where(cloud_computing_positions: { holder_type: 'Request' }) },
     #                    foreign_key: 'holder_id'
     belongs_to :request, -> { where("#{Position.table_name}": { holder_type: Request.to_s }) },
@@ -26,6 +26,10 @@ module CloudComputing
     end)
 
     def to_item_kinds
+      puts ItemKind.joins(:to_conditions)
+          .where(cloud_computing_conditions: { from_id: item.item_kind.self_and_ancestors,
+                                               from_type: ItemKind.to_s }).map(&:name).inspect.red
+
       ItemKind.joins(:to_conditions)
           .where(cloud_computing_conditions: { from_id: item.item_kind.self_and_ancestors,
                                                from_type: ItemKind.to_s })

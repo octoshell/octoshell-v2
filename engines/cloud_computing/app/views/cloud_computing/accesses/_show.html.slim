@@ -1,0 +1,25 @@
+/= render 'form'
+.row
+  .col-md-6
+    blockquote
+      - attrs.each do |a|
+          - if a == :state
+            = mark_access_state(@access)
+          - elsif a == :for
+            h4
+              b = CloudComputing::Access.human_attribute_name :for
+            p = @access.for
+          - elsif a == :user || a == :allowed_by
+            - u = @access.public_send(a)
+            h4
+              b = CloudComputing::Access.human_attribute_name a
+            -if @admin
+              p = link_to u.full_name_with_email,
+                  main_app.admin_user_path(u)
+            -else
+              p = u.full_name_with_email
+          - else
+            h4
+              b = CloudComputing::Item.human_attribute_name a
+            p = @access.public_send a
+  = render 'cloud_computing/requests/positions', positions: @access.left_positions

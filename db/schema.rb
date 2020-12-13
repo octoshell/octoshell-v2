@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_15_153238) do
+ActiveRecord::Schema.define(version: 2020_12_13_094412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,22 @@ ActiveRecord::Schema.define(version: 2020_11_15_153238) do
     t.index ["options_category_id"], name: "index_category_values_on_options_category_id"
   end
 
+  create_table "cloud_computing_accesses", force: :cascade do |t|
+    t.date "finish_date"
+    t.bigint "user_id"
+    t.bigint "allowed_by_id"
+    t.bigint "request_id"
+    t.string "for_type"
+    t.bigint "for_id"
+    t.string "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["allowed_by_id"], name: "index_cloud_computing_accesses_on_allowed_by_id"
+    t.index ["for_type", "for_id"], name: "index_cloud_computing_accesses_on_for_type_and_for_id"
+    t.index ["request_id"], name: "index_cloud_computing_accesses_on_request_id"
+    t.index ["user_id"], name: "index_cloud_computing_accesses_on_user_id"
+  end
+
   create_table "cloud_computing_clusters", force: :cascade do |t|
     t.text "description_ru"
     t.text "description_en"
@@ -106,6 +122,7 @@ ActiveRecord::Schema.define(version: 2020_11_15_153238) do
     t.string "name_en"
     t.text "description_ru"
     t.text "description_en"
+    t.integer "cloud_type", default: 0, null: false
     t.integer "parent_id"
     t.integer "lft", null: false
     t.integer "rgt", null: false

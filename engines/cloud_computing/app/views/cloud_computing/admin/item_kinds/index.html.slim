@@ -14,7 +14,7 @@ div class="panel panel-default"
             th = CloudComputing::ItemKind.human_attribute_name(a)
         - @item_kinds.each do |item_kind|
           tr
-            td class="col-xs-3" = link_to "#{'#' * item_kind.level} #{item_kind.name}", [:admin, item_kind]
+            td class="col-xs-3" = link_to "#{'----' * item_kind.level} #{item_kind.name}", [:admin, item_kind]
             -attrs.each do |key,value|
               td class="col-xs-#{value}" = item_kind.send(key)
   - else

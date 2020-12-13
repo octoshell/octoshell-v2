@@ -46,7 +46,6 @@ module CloudComputing
     end
 
     def edit_all
-      # @item_kind = CloudComputing::ItemKind.all
     end
 
 
@@ -93,7 +92,7 @@ module CloudComputing
                                            .locale_columns(:name, :description),
                                            :parent_id,:id, :name, :child_index,
                                            :name, :cloud_type,
-                                           conditions_attributes: %i[min max
+                                           conditions_attributes: %i[id min max
                                            to_type to_id kind _destroy])
     end
   end

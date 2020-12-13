@@ -9,7 +9,11 @@ module CloudComputing
 
     def index
       @search = user_requests.search(params[:q])
-      @requests = @search.result(distinct: true).includes(:configuration).page(params[:page])
+      @requests = @search.result(distinct: true)
+                         .order(:created_at)
+                         .page(params[:page])
+                         .per(params[:per])
+
     end
 
     def edit_created_request
@@ -31,6 +35,11 @@ module CloudComputing
 
     def to_sent
       @request.to_sent!
+      redirect_to @request
+    end
+
+    def cancel
+      @request.cancel!
       redirect_to @request
     end
 

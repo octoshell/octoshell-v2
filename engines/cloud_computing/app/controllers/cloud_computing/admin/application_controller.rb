@@ -6,6 +6,10 @@ module CloudComputing::Admin
     def check_abilities
       authorize! :manage, :cloud
     end
+    
+    before_action do
+      @admin = true
+    end
 
   end
 end

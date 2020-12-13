@@ -1,0 +1,13 @@
+- if requests.any?
+  div class="panel-body"
+    table class="table table-hover"
+      tr
+        th
+        th = CloudComputing::Request.human_attribute_name(:status)
+      - requests.each do |request|
+        tr
+          td class="col-xs-3" = link_to request.id, request
+          td class="col-xs-3" = request.human_state_name
+- else
+  div class="panel-body"
+    p = t(".no_requests_found")

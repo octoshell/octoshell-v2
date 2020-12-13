@@ -1,0 +1,18 @@
+/= render 'form'
+- content_for :title do
+    - t(".title")
+
+css:
+  div.well > a{
+    margin-left: 10px;
+  }
+.well
+  -if @request.created?
+    = link_to t('.edit_created_request'), edit_created_request_requests_path, class: "btn btn-warning"
+  -if @request.may_to_sent?
+    = link_to t('.to_sent'), to_sent_requests_path, class: "btn btn-info", method: :post
+  -if @request.may_cancel?
+    = link_to t('.cancel'), cancel_requests_path, class: "btn btn-danger", method: :post
+
+
+= render partial: 'show', locals: { attrs: %i[comment admin_comment finish_date for] }

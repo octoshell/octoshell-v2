@@ -16,7 +16,6 @@ controller = {
 }
 
 function renderTable(data){
-  console.log(data);
   controller.item_data = data;
   for (var i = 0; i < data.length; i++) {
     controller.table.append(controller.table_template({item_id: data[i].id, name: data[i].name}));
@@ -59,37 +58,12 @@ function getItems(item_kind_id){
   ajaxItems(item_kind_id,1);
 }
 
-function getPositions(){
-  $.ajax('/cloud_computing/requests/created_request', {
-    type: 'get',
-    dataType: 'json',
-    success : function(data) {
-      $.each(data,function(index, value){
-        controller.data = data;
-        var html = controller.position_template(value);
-        $('div#vm-container').append(html);
-        $("div.position[position-id='" + value.id + "']")
-          .find("select[name='to_item_kinds']")
-          .select2({data: value.to_item_kinds})
-      });
-      console.log(data);
-    },
-    error: function() {
-        alert("Error");
-    }
-  });
-
-}
-
 function compileTemplates(){
   controller.item_template =  Handlebars.compile($('#item-show').html());
-  //controller.position_template =  Handlebars.compile($('#position-show').html());
 }
 
 $(document).ready(function(){
-  // console.log(controller.item_template());
   compileTemplates();
-  // getPositions();
   $('div.position').each(function(){
     controller.data.push({
       id: $(this).attr('position-id'),
@@ -144,10 +118,10 @@ $(document).ready(function(){
       });
     }else{
       $(document).one('nested:fieldAdded', function(event){
-        target_position.find('div.from-link').first().find('.target-to-item-id').val(item_id).change();
-        target_position.find('div.from-link').first().find('h5.position-name b').text(item_name);
+        target_position.find('div.from-link').last().find('.target-to-item-id').val(item_id).change();
+        target_position.find('div.from-link').last().find('h5.position-name b').text(item_name);
 
-      })
+      });
       target_position.find('a.add-from-links').click();
     }
 

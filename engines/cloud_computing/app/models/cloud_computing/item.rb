@@ -39,6 +39,14 @@ module CloudComputing
       %i[item_kind_and_descendants]
     end
 
+    def self.virtual_machine_items
+      item_kind = ItemKind.virtual_machine_cloud_type
+      return none unless item_kind
+
+      item_kinds = item_kind.self_and_descendants
+      where(item_kind: item_kinds)
+    end
+
     def as_json(options = {})
       resources_array = resources.map do |r|
         { name: r.resource_kind.name, value: r.value_with_measurement }

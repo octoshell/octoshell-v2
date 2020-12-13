@@ -1,5 +1,6 @@
 module CloudComputing
   module MassAssignment
+    extend ActiveSupport::Concern
     UNASSIGNABLE_KEYS = %w[id _destroy].freeze
 
     def sentenced_to_death?(attributes)
