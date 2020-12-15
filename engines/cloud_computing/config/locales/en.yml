@@ -1,13 +1,6 @@
 ---
-ru:
+en:
   activerecord:
-    errors:
-      models:
-        cloud_computing/position:
-          attributes:
-            amount:
-              greater_than_max_count: Вы запросили больше единиц, чем доступно для запроса
-
     aasm:
       cloudcomputing/access:
         state:
@@ -67,7 +60,7 @@ ru:
         parent: Отцовский вид
       cloud_computing/position:
         amount: Количество
-      cloud_computing/position_link:
+      cloud_computing/position_link: Cloud computing/position link
       cloud_computing/request:
         admin_comment: Комментарий администратора
         comment: Комментарий пользователя
@@ -212,7 +205,7 @@ ru:
         remove_value: Remove value
         requested: Requested
       show:
-        add_position: Добавить ещё одну позицию
+        add_position: Добавить в заявку
         remove_position: Удалить из заявки
         title: Единица %{item}
       table:
@@ -233,16 +226,6 @@ ru:
       created_request:
         cancel: Отозвать заявку
         edit_created_request: Редактировать новую заявку
-        instruction: >-
-          Ваша заявка состоит из единиц облачного кластера, которые представляют из себя
-          виртуальные машины, подсоединяемые диски и т.д.
-          Добавляйте виртуальные машины на вкладке "Единицы облачного кластера".
-          Там же есть информация и по другим единицам, но добавить Вы их можете
-          только к определённой виртуальной машине через "редактировать новую заявку".
-          Заявку можно отправить на рассмотрение с помощью кнопки на этой странице, но
-          только при заполненных полях проекта и наличии
-          хотя бы одной виртуальной машины в заявке.
-
         title: Новая заявка
         to_sent: Отправить заявку
       edit_created_request:
@@ -284,5 +267,4 @@ ru:
       cloud_computing: Облако
   layouts:
     cloud_computing:
-      application:
-        created_request: Новая заявка
+      created_request: Новая заявка

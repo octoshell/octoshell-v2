@@ -22,7 +22,7 @@ module CloudComputing
 
     def refuse
       @request.refuse!
-      link_to [:admin, @request]
+      redirect_to [:admin, @request]
     end
 
     private

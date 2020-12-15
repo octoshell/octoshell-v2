@@ -13,6 +13,8 @@ css:
       class: "btn btn-success",
       method: :post
   - if @request.may_refuse?
-    = link_to t('.refuse'), refuse_admin_request_path, class: "btn btn-danger"
+    = link_to t('.refuse'), refuse_admin_request_path(@request),
+                            class: "btn btn-danger",
+                            method: :patch
 
 = render partial: 'cloud_computing/requests/show', locals: { attrs: %i[status created_by comment admin_comment finish_date_or_nil for] }

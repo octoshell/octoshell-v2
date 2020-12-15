@@ -3,7 +3,8 @@ require_dependency "cloud_computing/application_controller"
 module CloudComputing
   class RequestsController < ApplicationController
 
-    before_action only: %i[created_request edit_created_request update_created_request to_sent] do
+    before_action only: %i[created_request edit_created_request
+                           update_created_request to_sent cancel] do
       @request = user_requests.find_or_initialize_by(status: 'created')
     end
 

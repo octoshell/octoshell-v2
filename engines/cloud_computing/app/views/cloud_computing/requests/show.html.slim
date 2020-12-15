@@ -15,4 +15,4 @@ css:
     = link_to t('.cancel'), cancel_requests_path, class: "btn btn-danger", method: :post
 
 
-= render partial: 'show', locals: { attrs: %i[comment admin_comment finish_date for] }
+= render partial: 'show', locals: { attrs: %i[status comment admin_comment finish_date_or_nil for] }

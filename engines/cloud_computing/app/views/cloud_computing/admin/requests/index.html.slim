@@ -7,7 +7,8 @@ div class="well"
 = bootstrap_form_for @search, url: admin_requests_path, method: :get, layout: :vertical do |f|
   .row
     .col-md-3
-      = f.select :status_in, CloudComputing::Request.human_state_names_with_original(:status), include_blank: true
+      = f.select :status_in, CloudComputing::Request.human_state_names_with_original(:status),
+          label: CloudComputing::Request.human_attribute_name(:status), include_blank: true
       = f.autocomplete_field :created_by_id_eq,{ label:  CloudComputing::Request.human_attribute_name('created_by'),
         source: main_app.users_path} do |val|
           -User.find(val).full_name_with_email

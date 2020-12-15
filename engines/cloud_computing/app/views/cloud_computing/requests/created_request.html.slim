@@ -10,8 +10,9 @@ css:
   = link_to t('.edit_created_request'), edit_created_request_requests_path, class: "btn btn-warning"
   -if @request.may_to_sent?
     = link_to t('.to_sent'), to_sent_requests_path, class: "btn btn-info", method: :post
-  -if @request.may_cancel?
-    = link_to t('.to_sent'), cancel_requests_path, class: "btn btn-danger", method: :post
+  -if @request.may_cancel? && @request.persisted?
+    = link_to t('.cancel'), cancel_requests_path, class: "btn btn-danger", method: :post
 
+p = t('.instruction')
 
 = render partial: 'show', locals: { attrs: %i[comment finish_date_or_nil for] }

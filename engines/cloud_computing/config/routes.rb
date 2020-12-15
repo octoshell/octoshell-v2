@@ -21,7 +21,7 @@ CloudComputing::Engine.routes.draw do
         get :edit_links
         patch :update_links
         patch :pend
-        patch :cancel
+        patch :refuse
       end
       collection do
         post :create_from_request
@@ -41,7 +41,7 @@ CloudComputing::Engine.routes.draw do
     collection do
       get :created_request
       get :edit_created_request
-      patch :update_created_request
+      post :update_created_request
       post :to_sent
       post :cancel
     end

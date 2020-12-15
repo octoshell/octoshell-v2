@@ -1,5 +1,5 @@
 - content_for :title do
-    - t(".title", item_kind: @item_kind)
+    - t(".title", item_kind: @item_kind.name)
 
 - if can?(:manage, :cloud)
   div class="panel panel-default"

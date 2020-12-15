@@ -1,7 +1,6 @@
 require_dependency "cloud_computing/application_controller"
 module CloudComputing
   class ItemsController < ApplicationController
-    layout false, only: [:simple_show]
 
     def index
       respond_to do |format|
@@ -18,12 +17,16 @@ module CloudComputing
 
         end
         format.html do
+          params[:q] ||= {
+            item_kind_and_descendants: ItemKind.virtual_machine_cloud_type.id
+          }
           @search = CloudComputing::Item.for_users.search(params[:q])
           @items = @search.result(distinct: true)
                           .order_by_name
                           .page(params[:page])
                           .per(params[:per])
           @positions = Position.with_user_requests(current_user.id)
+                               .where(cloud_computing_requests: {status: 'created'})
                                .where(item_id: @items.map(&:id))
                                .group('item_id')
                                .sum('amount')
@@ -37,48 +40,26 @@ module CloudComputing
       @positions = @item.find_or_build_positions_for_user(current_user)
     end
 
-    def simple_show
-      @item = CloudComputing::Item.for_users.find(params[:id])
-      render :show
-    end
-
-    def item_kind
-      @items = Item.where(item_kind: @item_kind.self_and_descendants)
-      respond_to do |format|
-        format.json do
-          render json: @item_kinds.map{ |i_k| { id: i_k.id, text: i_k.name } }
-        end
-      end
-
-    end
-
     def edit
       @item = CloudComputing::Item.for_users.find(params[:id])
       @positions = @item.positions.with_user_requests(current_user)
-
     end
-    # def
 
     def update
       @item = CloudComputing::Item.for_users.find(params[:id])
-      puts position_params.inspect.red
-      # dwadaw
       @positions = @item.assign_positions(current_user, position_params)
-      if @positions.all?(&:valid?)
-        @positions.each(&:save!)
+      if @positions.reject(&:marked_for_destruction?).all?(&:valid?)
+        @positions.each do |pos|
+          if pos.marked_for_destruction?
+            pos.destroy
+          else
+            pos.save!
+          end
+        end
         redirect_to @item, flash: { info: t('.updated_successfully') }
       else
-        @positions.each { |pos|  puts pos.errors.inspect.red }
         render :show, flash: { info: t('.errors') }
       end
-    end
-
-    def destroy
-      @item = CloudComputing::Item.for_users.find(params[:id])
-      @position = @item.find_position_for_user(current_user)
-      @position.destroy
-      redirect_to @item, flash: { info: t('.destroyed_successfully') }
-
     end
 
     def position_params

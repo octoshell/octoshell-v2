@@ -7,7 +7,7 @@
       - requests.each do |request|
         tr
           td class="col-xs-3" = link_to request.id, request
-          td class="col-xs-3" = request.human_state_name
+          td class="col-xs-3" = mark_request_state(request)
 - else
   div class="panel-body"
     p = t(".no_requests_found")

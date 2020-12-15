@@ -24,6 +24,11 @@ module CloudComputing
           guard do
             self.for && positions.exists?
           end
+
+          after do
+            request.approve! if request
+          end
+
         end
       end
 
@@ -35,8 +40,8 @@ module CloudComputing
         transitions from: :running, to: :finished
       end
 
-      event :cancel do
-        transitions from: %i[pending running], to: :cancelled
+      event :deny do
+        transitions from: %i[pending running], to: :denied
       end
     end
 

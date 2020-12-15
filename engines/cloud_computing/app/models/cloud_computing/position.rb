@@ -25,15 +25,33 @@ module CloudComputing
                             })
     end)
 
-    def to_item_kinds
-      puts ItemKind.joins(:to_conditions)
-          .where(cloud_computing_conditions: { from_id: item.item_kind.self_and_ancestors,
-                                               from_type: ItemKind.to_s }).map(&:name).inspect.red
+    validates :amount, numericality: { greater_than: 0 }, presence: true
+    validates :item, :holder, presence: true
 
+    # validate do
+    #   if item && amount.present?
+    #     puts 'AAAAAAA'.red
+    #     sum = holder.left_positions.select { |pos| pos.item_id == item_id }
+    #                 .sum(&:amount)
+    #
+    #     sum = holder.positions.select { |pos| pos.item_id == item_id }
+    #                 .sum(&:amount)
+    #     puts sum.inspect.red
+    #     puts 'BBBBB'.red
+    #
+    #     if sum > item.max_count
+    #       errors.add :amount, :greater_than_max_count
+    #       to_links.each do |link|
+    #         link.errors.add :amount, :greater_than_max_count
+    #       end
+    #     end
+    #   end
+    # end
+
+    def to_item_kinds
       ItemKind.joins(:to_conditions)
           .where(cloud_computing_conditions: { from_id: item.item_kind.self_and_ancestors,
                                                from_type: ItemKind.to_s })
-      # item.item_kind.self_and_ancestors.includes()
     end
 
     def to_item_kinds_hash
@@ -64,13 +82,7 @@ module CloudComputing
     # scope :joins_requests, -> { joins('INNER JOIN cloud_computing_requests AS c_r ON c_r.id = cloud_computing_positions.holder_id AND
     #    cloud_computing_positions.holder_type=\'CloudComputing::Request\' ') }
 
-    validates :item, :holder, presence: true
 
-    validate do
-      if item&.max_count && amount.present? && amount > item.max_count
-        errors.add :amount, 'error'
-      end
-    end
 
     def name
       item.name

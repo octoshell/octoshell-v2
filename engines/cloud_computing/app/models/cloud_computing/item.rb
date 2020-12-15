@@ -11,14 +11,12 @@ module CloudComputing
 
 
     accepts_nested_attributes_for :resources, :positions, allow_destroy: true
-    # accepts_nested_attributes_for :all_conditions, allow_destroy: true
 
     validates_translated :name, :description, presence: true
     validates :item_kind, :cluster, presence: true
 
     validates :available, :max_count, numericality: { greater_than_or_equal_to: 0 },
                                      presence: true
-
     scope :for_users, -> { where(new_requests: true) }
 
     scope :with_user_requests, (lambda do |user|
@@ -45,6 +43,18 @@ module CloudComputing
 
       item_kinds = item_kind.self_and_descendants
       where(item_kind: item_kinds)
+    end
+
+    def fill_positions(user)
+      request = Request.find_or_initialize_by(status: 'created', created_by: user)
+      positions.each do |position|
+        position.holder = request
+      end
+
+    end
+
+    def initial_requests?
+      self.class.virtual_machine_items.where(id: id).exists?
     end
 
     def as_json(options = {})

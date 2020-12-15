@@ -37,8 +37,8 @@ module CloudComputing
       redirect_to [:admin, @access]
     end
 
-    def cancel
-      @access.cancel!
+    def deny
+      @access.deny!
       redirect_to [:admin, @access]
     end
 

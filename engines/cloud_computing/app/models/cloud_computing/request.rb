@@ -8,6 +8,14 @@ module CloudComputing
     validates :status, uniqueness: { scope: %i[created_by_id] }, if: :created?
 
     validate do
+      # puts 'AAA'.green
+      # # puts positions.map(&:item_id).uniq.inspect.red
+      # puts left_positions.sum(&:amount).inspect.red
+      # puts positions.sum(&:amount).inspect.red
+      #
+      # puts 'BBB'.green
+
+      # positions.select(&:)
     end
 
 

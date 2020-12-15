@@ -1,21 +1,26 @@
 .col-md-6
+  h3
+    b
+        = t('.title')
   - positions.includes(:item, from_links: {to: :item}).each do |position|
       div style=" border: 2px solid black; padding: 10px; margin: 10px;"
         - if @admin
           p
             = t('.requested_by_user', item_link: link_to(position.item.name,
-                [:admin, position.item]), amount: position.amount)
-          p
-            b = t('.linked_with')
-          - position.from_links.each do |link|
-            p = t('.requested_link_by_user', item_link: link_to(link.to.item.name,
-              [:admin, link.to.item]), amount: link.amount)
+                [:admin, position.item]), amount: position.amount).html_safe
+          - if position.from_links.any?
+            p
+              b = t('.linked_with')
+            - position.from_links.each do |link|
+              p = t('.requested_link_by_user', item_link: link_to(link.to.item.name,
+                [:admin, link.to.item]), amount: link.amount).html_safe
         - else
           p
             = t('.you_requested', item_link: link_to(position.item.name,
-                position.item), amount: position.amount)
-          p
-            b = t('.linked_with')
-          - position.from_links.each do |link|
-            p = t('.you_requested_link', item_link: link_to(link.to.item.name,
-              link.to.item), amount: link.amount)
+                position.item), amount: position.amount).html_safe
+          - if position.from_links.any?
+            p
+              b = t('.linked_with')
+            - position.from_links.each do |link|
+              p = t('.you_requested_link', item_link: link_to(link.to.item.name,
+                link.to.item), amount: link.amount).html_safe

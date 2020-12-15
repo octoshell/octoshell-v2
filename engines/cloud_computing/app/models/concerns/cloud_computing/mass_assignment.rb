@@ -40,7 +40,6 @@ module CloudComputing
       existing_records = attribute_ids.empty? ? [] : positions.with_user_requests(user).where(id: attribute_ids).to_a
 
       attributes_collection.each do |attributes|
-        puts attributes.inspect.red
         attributes[:holder] = Request.find_or_initialize_by(status: 'created', created_by: user)
         if attributes.respond_to?(:permitted?)
           attributes = attributes.to_h

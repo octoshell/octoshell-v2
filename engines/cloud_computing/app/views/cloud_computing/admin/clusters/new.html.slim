@@ -1,4 +1,4 @@
-div class="page-header"
-  h1 = t(".title", default: "New Cluster")
+-content_for :title
+  - t('.title')
 
 = render "form"
