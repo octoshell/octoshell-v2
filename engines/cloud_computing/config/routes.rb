@@ -1,10 +1,14 @@
 CloudComputing::Engine.routes.draw do
   namespace :admin do
     root 'items#index'
-    resources :clusters
     resources :resource_kinds
     resources :items
     resources :item_kinds do
+      member do
+        post :load_templates
+        post :add_necessary_attributes
+
+      end
       collection do
         get :edit_all
         get :jstree

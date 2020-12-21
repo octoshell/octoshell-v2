@@ -57,7 +57,9 @@ module CloudComputing
 
     def request_params
       params.require(:request).permit(:for_id, :for_type, :comment, :finish_date,
-        left_positions_attributes:[:id, :amount, :_destroy, from_links_attributes: %i[id _destroy from_id amount to_item_id]])
+        left_positions_attributes:[:id, :amount, :_destroy,
+          from_links_attributes: %i[id _destroy from_id amount to_item_id],
+          resource_positions_attributes: %i[id resource_id value]])
     end
   end
 end

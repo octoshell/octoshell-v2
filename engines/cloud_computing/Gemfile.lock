@@ -11,6 +11,7 @@ PATH
       ransack (= 2.1.1)
       sidekiq
       slim
+      xmlrpc
 
 GEM
   remote: https://rubygems.org/
@@ -152,7 +153,7 @@ GEM
       activerecord (>= 5.0)
       activesupport (>= 5.0)
       i18n
-    redis (4.2.2)
+    redis (4.2.5)
     rspec-core (3.10.0)
       rspec-support (~> 3.10.0)
     rspec-expectations (3.10.0)
@@ -196,6 +197,7 @@ GEM
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    xmlrpc (0.3.0)
 
 PLATFORMS
   ruby

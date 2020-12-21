@@ -4,29 +4,52 @@
 # end
 namespace :cloud_computing do
   task create_positions: :environment do
+    # ActiveRecord::Base.transaction do
+    #   pos = CloudComputing::Position.first
+    #   puts 'aaa'.red
+    #   pos.holder.update!(
+    #     positions_attributes:
+    #       {
+    #         '1': {
+    #           id: pos.id,
+    #           from_links_attributes: {
+    #             '1': {
+    #               to_attributes: {
+    #                 item_id: 63
+    #               },
+    #               amount: 4
+    #             }
+    #           }
+    #
+    #         }
+    #       }
+    #   )
+    #
+    #   dqdqwad
+    # end
+  end
+
+  task prod_seed: :environment do
     ActiveRecord::Base.transaction do
-      pos = CloudComputing::Position.first
-      puts 'aaa'.red
-      pos.holder.update!(
-        positions_attributes:
-          {
-            '1': {
-              id: pos.id,
-              from_links_attributes: {
-                '1': {
-                  to_attributes: {
-                    item_id: 63
-                  },
-                  amount: 4
-                }
-              }
+      virtual_kind = CloudComputing::ItemKind.create!(name_ru: 'Виртуальная машина',
+                                                     name_en: 'Virtual machine',
+                                                     cloud_type: 'virtual_machine')
 
-            }
-          }
-      )
+      virtual_kind.resource_kinds.create!(name_ru: 'Оперативная память',
+        name_en: 'Main Memory', measurement_en: 'GB', measurement_ru: 'GB',
+        identity: 'MEMORY')
 
-      dqdqwad
+      virtual_kind.resource_kinds.create!(name_ru: 'Центральные процессоры',
+        name_en: 'CPU', measurement_en: '', measurement_ru: '',
+        identity: 'CPU',
+        help_ru: 'Число процессоров: 0,5 - половина процессора, 2,0 - 2 процессора')
+
+
+      virtual_kind.resource_kinds.create!(name_ru: 'Жёсткий диск',
+        name_en: 'Hard drive', measurement_en: 'GB', measurement_ru: 'GB',
+        identity: 'DISK=>SIZE')
     end
+    # ItemKind.
   end
 
   task seed: :environment do

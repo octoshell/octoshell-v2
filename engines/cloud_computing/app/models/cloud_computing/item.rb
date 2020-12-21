@@ -2,36 +2,39 @@ module CloudComputing
   class Item < ApplicationRecord
     include CloudComputing::MassAssignment
     translates :name, :description
-    belongs_to :cluster, inverse_of: :items
     belongs_to :item_kind, inverse_of: :items
-    has_many :resources, inverse_of: :item
-    has_many :positions, inverse_of: :item
+    has_many :resources, inverse_of: :item, dependent: :destroy
+    has_many :positions, inverse_of: :item, dependent: :destroy
     has_many :conditions, as: :from, dependent: :destroy
-    has_many :from_conditions, as: :to, dependent: :destroy
+    has_many :from_conditions, class_name: Condition.to_s, as: :to, dependent: :destroy
 
 
     accepts_nested_attributes_for :resources, :positions, allow_destroy: true
 
-    validates_translated :name, :description, presence: true
-    validates :item_kind, :cluster, presence: true
+    validates_translated :name, presence: true
 
-    validates :available, :max_count, numericality: { greater_than_or_equal_to: 0 },
-                                     presence: true
+    validates :item_kind, presence: true
+    validates :identity, uniqueness: { scope: :item_kind_id }
+
+    validates :description_ru, :description_en, :identity, presence: true, if: :new_requests
+
     scope :for_users, -> { where(new_requests: true) }
 
     scope :with_user_requests, (lambda do |user|
-      # select('*, positions from (amount)')
       joins(positions: :request).where(cloud_computing_requests: {
                                          status: 'created', created_by_id: user
                                        }).distinct
 
-    end) # joins(positions: :requests)
+    end)
 
     scope :item_kind_and_descendants, (lambda do |*item_kind_ids|
-      # select('*, positions from (amount)')
       where(item_kind: ItemKind.where(id: item_kind_ids).map(&:self_and_descendants).flatten)
 
-    end) # joins(positions: :requests)
+    end)
+
+    def self.ransackable_scopes_skip_sanitize_args
+      ransackable_scopes
+    end
 
     def self.ransackable_scopes(_auth_object = nil)
       %i[item_kind_and_descendants]
@@ -45,12 +48,34 @@ module CloudComputing
       where(item_kind: item_kinds)
     end
 
+    def editable_resources
+      resources.where(editable: true).map do |resource|
+        ResourcePosition.new(resource: resource, value: resource.value)
+      end
+    end
+
+    def fill_resources
+      return unless item_kind
+
+      ResourceKind.where(item_kind_id: item_kind.self_and_ancestors)
+                  .where.not(id: resources.map(&:resource_kind_id)).each do |resource_kind|
+        resource = resources.new(resource_kind: resource_kind)
+        persisted? && resource.mark_for_destruction
+
+      end
+      # CloudComputing::ResourceKind.where(item_kind: @item_kind.)
+
+    end
+
+    def new_requests?
+      new_requests
+    end
+
     def fill_positions(user)
       request = Request.find_or_initialize_by(status: 'created', created_by: user)
       positions.each do |position|
         position.holder = request
       end
-
     end
 
     def initial_requests?
@@ -82,18 +107,26 @@ module CloudComputing
         { created_by_id: user.id, status: 'created' }).first&.amount
     end
 
-    def find_positions_for_user(user)
-      positions.with_user_requests(user)
-    end
 
     # def positions_for_user(user)
     #   positions.joins_requests.where(c_r: { created_by_id: user.id,
     #                                         status: 'created' }).first
     #
     # end
+    def assign_atributes_for_positions(user)
+      positions.each do |position|
+        next if position.persisted?
 
-    def find_or_build_positions_for_user(user)
-      find_positions_for_user(user)
+        position.holder = Request.find_or_initialize_by(status: 'created',
+                                                        created_by: user)
+      end
+    end
+
+    def created_positions(user)
+      not_loaded_positions = positions
+      positions.with_user_requests(user)
+               .where.not(id: not_loaded_positions.map(&:id)) +
+        not_loaded_positions
     end
 
     # def update_or_create_positions(user, params)

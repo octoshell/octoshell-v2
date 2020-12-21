@@ -16,7 +16,10 @@ div class="panel panel-default"
           tr
             td class="col-xs-3" = link_to "#{'----' * item_kind.level} #{item_kind.name}", [:admin, item_kind]
             -attrs.each do |key,value|
-              td class="col-xs-#{value}" = item_kind.send(key)
+              - if key == :cloud_type
+                td class="col-xs-#{value}" = item_kind.human_cloud_type
+              -else
+                td class="col-xs-#{value}" = item_kind.send(key)
   - else
     div class="panel-body"
       p = t(".no_item_kinds_found")

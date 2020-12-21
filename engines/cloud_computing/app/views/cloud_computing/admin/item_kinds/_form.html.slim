@@ -13,9 +13,6 @@ div class="row"
       = ff.hidden_field :id
       = ff.hidden_field :to_type, value: 'CloudComputing::ItemKind'
       = ff.select :to_id, nested_set_options(CloudComputing::ItemKind) {|i| "#{'-' * i.level} #{i.name}" }
-      /= ff.select :kind, CloudComputing::Condition.kinds
-      = ff.collection_select :kind, CloudComputing::Condition.kinds, :first, :first
-
       = ff.number_field :min
       = ff.text_field :max
 

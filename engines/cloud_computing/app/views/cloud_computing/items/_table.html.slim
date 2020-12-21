@@ -4,8 +4,6 @@
       tr
         th = CloudComputing::Item.human_attribute_name("name")
         th = CloudComputing::Item.human_attribute_name("description")
-        th = CloudComputing::Item.human_attribute_name("available")
-        th = CloudComputing::Item.human_attribute_name("max_count")
         th = t('.requested')
 
         th
@@ -13,10 +11,8 @@
         tr
           td class="col-xs-3" = link_to item.name, item_path(item)
           td class="col-xs-3" = item.description
-          td class="col-xs-1" = item.available
           /i class="fa fa-check"
           /i class="fa fa-times"
-          td class="col-xs-1" = item.max_count
           td class="col-xs-1" = @positions[item.id]
 - else
   div class="panel-body"

@@ -6,7 +6,7 @@ div class="panel panel-default"
     - if can?(:manage, :cloud)
       = link_to t('actions.edit'), [:edit, :admin, @item], class: "btn btn-default"
 
-- attrs = %i[name description available max_count new_requests]
+- attrs = %i[name description new_requests identity]
 table class="table table-striped"
   tr
     th = CloudComputing::Item.human_attribute_name(:item_kind)
@@ -23,3 +23,4 @@ table class="table table-striped"
     tr
       td = resource.resource_kind.name
       td = resource.value_with_measurement
+      td = resource.editable

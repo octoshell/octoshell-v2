@@ -29,6 +29,7 @@ module CloudComputing
 
     def create
       @item = CloudComputing::Item.new(item_params)
+      fill_resources
       if @item.save
         redirect_to [:admin, @item]
       else
@@ -43,6 +44,7 @@ module CloudComputing
 
     def update
       @item = CloudComputing::Item.find(params[:id])
+      fill_resources
       if @item.update(item_params)
         redirect_to [:admin, @item]
       else
@@ -63,20 +65,17 @@ module CloudComputing
     # end
 
     def fill_resources
-      (CloudComputing::ResourceKind.all -
-        @item.resources.map(&:resource_kind)).each do |kind|
-        r = @item.resources.new(resource_kind: kind, new_requests: true)
-        r.mark_for_destruction unless @item.new_record?
-      end
+      @item.fill_resources
     end
 
     def item_params
       params.require(:item).permit(*CloudComputing::Item
                                            .locale_columns(:name, :description),
-                                          :available, :max_count, :new_requests,
-                                          :item_kind_id, :cluster_id,
+                                          :identity,
+                                          :item_kind_id,
+                                          :new_requests,
                                           resources_attributes: %i[id value
-                                          resource_kind_id new_requests
+                                          resource_kind_id min max editable
                                           _destroy])
     end
   end

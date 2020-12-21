@@ -7,6 +7,10 @@ ru:
           attributes:
             amount:
               greater_than_max_count: Вы запросили больше единиц, чем доступно для запроса
+        cloud_computing/resource:
+          attributes:
+            _destroy:
+              wrong_item_kind: Этот ресурс не соответствует типу единицы
 
     aasm:
       cloudcomputing/access:
@@ -37,6 +41,7 @@ ru:
         user: Пользователь
       cloud_computing/cluster:
         core_cluster: Кластер из модуля Core
+        core_cluster_id: Кластер из модуля Core
         description: Описание
       cloud_computing/condition:
         from: От
@@ -51,6 +56,7 @@ ru:
         cluster: Кластер
         cluster_id: Кластер
         description: Описание
+        identity: Opennebula id
         item_kind: Вид
         item_kind_id: Вид
         max_count: Максимум для запроса
@@ -59,9 +65,13 @@ ru:
         resources: Ресурсы
       cloud_computing/item_kind:
         cloud_type: Тип на кластере
+        parent_id: Родительский тип
+        parent: Родительский тип
+
         cloud_types:
           'no': Не имеет значения
           virtual_machine: Виртуальная машина
+          disk: Диск
         description: Описание
         name: Название
         parent: Отцовский вид
@@ -80,11 +90,19 @@ ru:
       cloud_computing/resource:
         _destroy: Удалить
         new_requests: Подавать новые заявки
+        editable: Пользователь может редактировать?
+        min: Минимум
+        max: Максимум
         value: Число
       cloud_computing/resource_kind:
+        item_kind_id: Вид единиц облачного кластера
         description: Описание
         measurement: Единица
         name: Название
+        content_type: Тип значения
+        content_types:
+          positive_integer: Натуральное число
+          decimal: Десятичное число
   cloud_computing:
     admin:
       accesses:
@@ -137,12 +155,13 @@ ru:
             новой вершины вы можете указать её название. С помощью зажатой левой кнопки
             мыши можно перемещать вершины.
           loading_tree: Дерево загружается
-          tree: Иерархия единиц обалчного кластера
+          tree: Иерархия единиц облачного кластера
         form:
           add_value: Добавить условие соединения с другими видами
           remove_value: Удалить условие соединения
         index:
           edit_all: Редактировать дерево
+          no_parent: Без родителя (это вершина корневая)
           no_item_kinds_found: Нет видов единиц облачного кластера
           title: Список видов единиц облачного кластера
         show:
@@ -197,24 +216,14 @@ ru:
     items:
       destroy:
         destroyed_successfully: Destroyed successfully
-      form:
-        add_value: Add value
-        confirm: Confirm
-        delete_position: Delete position
-        remove_value: Remove value
-        requested: Requested
       index:
         title: Список единиц облачного кластера
-      old_form:
-        add_value: Add value
-        confirm: Confirm
-        delete_position: Delete position
-        remove_value: Remove value
-        requested: Requested
       show:
         add_position: Добавить ещё одну позицию
         remove_position: Удалить из заявки
         title: Единица %{item}
+      resource_positions_fields:
+        help: Введите значение от <b>%{min}</b> до <b>%{max}</b>. 
       table:
         no_items_found: Нет единиц облачного кластера
         requested: Вы запросили
@@ -237,7 +246,7 @@ ru:
           Ваша заявка состоит из единиц облачного кластера, которые представляют из себя
           виртуальные машины, подсоединяемые диски и т.д.
           Добавляйте виртуальные машины на вкладке "Единицы облачного кластера".
-          Там же есть информация и по другим единицам, но добавить Вы их можете
+          Там же есть информация и по другим дополнительным единицам, но добавить Вы их можете
           только к определённой виртуальной машине через "редактировать новую заявку".
           Заявку можно отправить на рассмотрение с помощью кнопки на этой странице, но
           только при заполненных полях проекта и наличии

@@ -1,7 +1,0 @@
-div class="row"
-  = bootstrap_form_for [:admin, @cluster], layout: :horizontal do |f|
-    = f.collection_select :core_cluster_id, Core::Cluster.all, :id, :name
-    - CloudComputing::Cluster.locale_columns(:description).each do |column|
-      = f.text_field column
-    = f.form_group do
-      = f.submit t("buttons.save")

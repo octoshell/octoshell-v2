@@ -1,6 +1,10 @@
 div class="row"
   = bootstrap_form_for [:admin, @resource_kind], layout: :horizontal do |f|
-    - CloudComputing::ResourceKind.locale_columns(:name, :description, :measurement).each do |column|
+    = f.select :item_kind_id, nested_set_options(CloudComputing::ItemKind) {|i| "#{'-' * i.level} #{i.name}" }
+    = f.select :content_type, CloudComputing::ResourceKind.human_content_types 
+
+    - CloudComputing::ResourceKind.locale_columns(:name, :description,
+        :measurement, :help).each do |column|
       = f.text_field column
     = f.form_group do
       = f.submit t("buttons.save")

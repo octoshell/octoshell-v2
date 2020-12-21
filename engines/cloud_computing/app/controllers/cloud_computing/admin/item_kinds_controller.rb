@@ -45,6 +45,40 @@ module CloudComputing
       @item_kind = CloudComputing::ItemKind.find(params[:id])
     end
 
+    def load_templates
+      load_virtual_machine_item_kind
+
+      results = @item_kind.load_templates
+      unless results[0]
+        redirect_to [:admin, @item_kind], flash: { error: results.slice(1..-1) }
+      end
+
+      strings = t('.added_items')
+      results.slice(1..-1).each do |item|
+        strings += '<br>'
+        string = "id: #{item.id}, name: #{item.name}, nebula_id: #{item.identity}"
+        strings += helpers.link_to(string, [:admin, item])
+      end
+
+      redirect_to [:admin, @item_kind], flash: { info: strings.html_safe }
+    end
+
+    def add_necessary_attributes
+      load_virtual_machine_item_kind
+      message = @item_kind.my_and_descendant_items.where
+                          .not(identity: nil).map do |item|
+        results = CloudComputing::OpennebulaTask.add_necessary_attributes(item.identity)
+        link = helpers.link_to("\##{item.id}", [:admin, item])
+        success = results[0]
+        if success
+          [t('.updated_successfully'), link]
+        else
+          [t('.errors_found'), link, results.slice(1..-1)]
+        end.join(' | ')
+      end.join('<br>')
+      redirect_to [:admin, @item_kind], flash: { info: message.html_safe }
+    end
+
     def edit_all
     end
 
@@ -85,6 +119,16 @@ module CloudComputing
     end
 
     private
+
+    def load_virtual_machine_item_kind
+      @item_kind = CloudComputing::ItemKind.find(params[:id])
+
+      unless @item_kind.virtual_machine?
+        redirect_to [:admin, @item_kind], flash: { error: 'errors' }
+        return
+      end
+    end
+
 
     def item_kind_params
       #Order is of params is important

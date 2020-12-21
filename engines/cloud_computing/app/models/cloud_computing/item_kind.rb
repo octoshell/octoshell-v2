@@ -1,11 +1,14 @@
 module CloudComputing
   class ItemKind < ApplicationRecord
     acts_as_nested_set
-    enum cloud_type: %i[no virtual_machine]
+    enum cloud_type: %i[no virtual_machine disk]
     has_many :conditions, as: :from, dependent: :destroy
     has_many :to_conditions, as: :to, class_name: Condition.to_s, dependent: :destroy
 
     has_many :items, inverse_of: :item_kind, dependent: :destroy
+    has_many :resource_kinds, inverse_of: :item_kind
+    belongs_to :item_kind, inverse_of: :resource_kinds
+
     # has_many :request, -> { where("#{Position.table_name}": { holder_type: Request.to_s }) },
     #                           foreign_key: 'holder_id'
 
@@ -18,14 +21,6 @@ module CloudComputing
 
     validates :cloud_type, uniqueness: true, unless: :no_type?
 
-    # before_save do
-    #   descendants.each do |dec|
-    #     next if dec.cloud_type == cloud_type
-    #
-    #     dec.cloud_type = cloud_type
-    #     dec.save!
-    #   end
-    # end
     def self.virtual_machine_cloud_type
       find_by(cloud_type: 'virtual_machine')
     end
@@ -82,6 +77,35 @@ module CloudComputing
           move_to_left_of(roots[index])
         end
       end
+    end
+
+    def load_templates
+
+      request_details = OpennebulaClient.template_list
+      return requests_details unless request_details[0]
+
+      results = []
+      data = Hash.from_xml(request_details[1])['VMTEMPLATE_POOL']['VMTEMPLATE']
+      data.each do |template|
+        my_and_descendant_items.where(identity: template['ID']).first_or_create! do |record|
+          record.item_kind = self
+          record.name = template['NAME']
+
+          record.resources.build(value: template['TEMPLATE']['CPU'],
+                                 resource_kind: ResourceKind.find_by_identity!('CPU'))
+          record.resources.build(value: template['TEMPLATE']['MEMORY'].to_i / 1024,
+                                 resource_kind: ResourceKind.find_by_identity!('MEMORY'))
+
+          results << record
+        end
+      end
+
+      [true, *results]
+
+    end
+
+    def my_and_descendant_items
+      Item.where(item_kind: self_and_descendants)
     end
 
     def to_s

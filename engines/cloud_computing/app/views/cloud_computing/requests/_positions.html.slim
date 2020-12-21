@@ -18,6 +18,8 @@
           p
             = t('.you_requested', item_link: link_to(position.item.name,
                 position.item), amount: position.amount).html_safe
+            | (#{position.resource_positions.map { |r_p| r_p.name_value }.join(' ').html_safe})
+
           - if position.from_links.any?
             p
               b = t('.linked_with')

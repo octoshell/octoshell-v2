@@ -27,6 +27,7 @@ module CloudComputing
 
           after do
             request.approve! if request
+            instantiate_vm
           end
 
         end
@@ -45,16 +46,23 @@ module CloudComputing
       end
     end
 
+
+    def add_position(position)
+      pos = positions.new(position.slice('item_id', 'amount'))
+      position.resource_positions.each do |r_p|
+        pos.resource_positions
+           .build(r_p.attributes.slice('resource_id', 'value'))
+      end
+      pos
+    end
+
     def copy_from_request
       return unless request
 
       self.for = request.for
       self.user = request.created_by
       pos_hash = Hash[request.positions.map do |position|
-        [
-          position,
-          positions.new(item_id: position.item_id, amount: position.amount)
-        ]
+        [position, add_position(position)]
       end]
 
       request.positions.each do |position|
@@ -65,6 +73,13 @@ module CloudComputing
         end
       end
     end
+
+    def instantiate_vm
+      left_positions.each do |position|
+        OpennebulaTask.instantiate_vm(position)
+      end
+    end
+
 
   end
 end

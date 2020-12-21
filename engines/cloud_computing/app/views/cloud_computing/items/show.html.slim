@@ -5,37 +5,29 @@
   = bootstrap_nested_form_for @item, method: :put, layout: :horizontal do |f|
     = f.link_to_add t(".add_position"), :positions,data: { target: 'div#position-container' }
     div#position-container
-      = f.fields_for :positions, @positions do |ff|
+      = f.fields_for :positions, @item.created_positions(current_user) do |ff|
           = ff.hidden_field :id
-          = ff.form_group :amount, label: {text: CloudComputing::Position.human_attribute_name(:amount)}
-            = ff.number_field_without_bootstrap  :amount, required: true,
-              wrapper: true, style: 'width: 100px; text-align:center;',
-              class: 'margin-container'
-            = ff.link_to_remove t(".remove_position"), class: "fa fa-times text-danger margin-container"
+          = ff.number_field :amount, control_col: 'col-sm-3'
+          = render 'resource_positions_fields', item: @item, ff: ff,
+            options: { control_col: 'col-sm-3' }
+          = ff.link_to_remove t(".remove_position"), class: "fa fa-times text-danger margin-container"
+
     = f.form_group do
       = f.submit t("buttons.save")
 
-  css:
-    .margin-container{
-      margin-right: 5%;
-    }
-
-    div#position-container{
-      margin: 5%;
-    }
 
 
 div class="row"
   div class="col-xs-6"
     blockquote
-      - %i[name item_kind description available max_count].each do |a|
+      - %i[name item_kind description].each do |a|
           h4
             b = CloudComputing::Item.human_attribute_name a
           p = @item.public_send(a)
   div class="col-xs-6"
     h3 = CloudComputing::Item.human_attribute_name(:resources)
     blockquote
-      - @item.resources.includes(:resource_kind).each do |resource|
+      - @item.resources.where(editable: false).includes(:resource_kind).each do |resource|
           h4
             b = resource.resource_kind.name
           p = resource.value_with_measurement

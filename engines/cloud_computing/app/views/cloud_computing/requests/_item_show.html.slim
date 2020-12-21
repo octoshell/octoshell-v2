@@ -9,7 +9,7 @@ button.add-item item-id='{{id}}' item-name='{{name}}'
         b = CloudComputing::Item.human_attribute_name :item_kind
       /= link_to '{{item_kind_name}}', item_kind_path('{{item_kind_id}}')
       a href="/cloud_computing/item_kinds/{{item_kind_id}}" {{item_kind_name}}
-      - %i[name description available max_count new_requests].each do |a|
+      - %i[name description new_requests].each do |a|
           h4
             b = CloudComputing::Item.human_attribute_name a
           p = "{{#{a}}}"

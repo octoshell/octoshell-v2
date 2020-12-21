@@ -59,7 +59,8 @@ module CloudComputing
     def resource_kind_params
       params.require(:resource_kind).permit(*CloudComputing::ResourceKind
                                        .locale_columns(:name, :description,
-                                                       :measurement))
+                                                       :measurement, :help),
+                                        :item_kind_id, :identity, :content_type)
     end
 
   end

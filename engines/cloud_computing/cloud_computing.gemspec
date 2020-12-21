@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "carrierwave"
   spec.add_dependency "mime-types"
   spec.add_dependency 'awesome_nested_set'
+  spec.add_dependency 'xmlrpc'
 
   spec.add_development_dependency 'rspec-rails'
   # spec.add_development_dependency 'factory_girl_rails'

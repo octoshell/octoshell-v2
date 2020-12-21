@@ -3,7 +3,7 @@
     = f.fields_for :left_positions do |ff|
         div.position position-id=ff.object.id style=" border: 2px solid black; padding: 10px; margin: 10px;"
           h3.position-name
-            | #{ff.object.item.name} No.#{ff.object.id}
+            = link_to("#{ff.object.item.name} id=#{ff.object.id}", ff.object.item)
           = ff.link_to_remove t("cloud_computing.requests.links.remove_position"),
             class: "fa fa-times text-danger"
 
@@ -12,6 +12,11 @@
                       control_col: 'col-sm-6',
                       required: true,
                       style: 'padding-right: 5%;'
+
+          = render 'cloud_computing/items/resource_positions_fields',
+            ff: ff, item: ff.object.item, options: { control_col: 'col-sm-6',
+            label_col: 'col-sm-6' }
+
 
           = select_tag "to_item_kinds",
             options_from_collection_for_select(ff.object.to_item_kinds, "id", "name"),
