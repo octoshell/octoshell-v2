@@ -6,20 +6,21 @@ div class="well"
   = link_to t(".new_access"), new_admin_access_path, class: "btn btn-default"
 = bootstrap_form_for @search, url: admin_accesses_path, method: :get, layout: :vertical do |f|
   .row
-    .col-md-3
+    .col-md-4
       = f.select :state_in, CloudComputing::Access.human_state_names_with_original(:state),
         label: CloudComputing::Access.human_attribute_name(:state), include_blank: true
-
-      = f.autocomplete_field :allowed_by_id_in,{ label:  CloudComputing::Access.human_attribute_name('allowed_by'),
-        source: main_app.users_path}, multiple: true do |val|
-          -User.find(val).full_name_with_email
-      = f.autocomplete_field :user_id_eq,{ label:  CloudComputing::Access.human_attribute_name('user'),
-        source: main_app.users_path} do |val|
-          -User.find(val).full_name_with_email
-
       = f.autocomplete_field :for_id_eq,{ label: t('.project'),
         source: core.admin_projects_path} do |val|
         -Core::Project.find(val).title
+
+    .col-md-4
+      = f.autocomplete_field :allowed_by_id_in,{ label:  CloudComputing::Access.human_attribute_name('allowed_by'),
+        source: main_app.users_path}, multiple: true do |val|
+          -User.find(val).full_name_with_email
+    .col-md-4
+      = f.autocomplete_field :user_id_eq,{ label:  CloudComputing::Access.human_attribute_name('user'),
+        source: main_app.users_path} do |val|
+          -User.find(val).full_name_with_email
   = f.primary t("actions.find")
 
 = safe_paginate @accesses

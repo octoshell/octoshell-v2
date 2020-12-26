@@ -27,6 +27,11 @@ module CloudComputing
       xmlrpc_send('template.info', template_id, false, false)
     end
 
+    def self.terminate_vm(vm_id)
+      xmlrpc_send('vm.action', 'terminate', vm_id)
+    end
+#reboot-hard poweroff poweroff-hard найти poweron  найти hard-reset переустановить ОС
+
     def self.update_context_for_template(template_id, context_hash)
       values = context_hash.map { |key, value| "#{key}=\"#{value}\"" }.join(',')
       context_string = "CONTEXT=[#{values}]"
@@ -34,32 +39,12 @@ module CloudComputing
     end
 
     def self.instantiate_vm(template_id, vm_name, value_string)
+      # puts ['template.instantiate', template_id, vm_name, false,
+      #             value_string, true].inspect.red
+
       xmlrpc_send('template.instantiate', template_id, vm_name, false,
-                  value_string, false)
+                  value_string, true)
     end
 
-    def self.updateconf(instance_id)
-      # results = vm_info(instance_id)
-      # Nokogiri::XML(results[1])
-      # string = "CONTEXT=[NAME=root,PASSWORD=bad_pass]"
-      # xmlrpc_send('vm.updateconf', instance_id, string)
-    end
-# CONTEXT=[SSH_PUBLIC_KEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKVpmQDCV15kRkthDQmWntTgxlIkbHg6JS2omdevoy0kr1plXquAQfiiWyYhwwigIF8Mpgk3g0sdtWuAUI3LZZWrzTFkWk3c3B/Anqk3qBaX8JDcVUaUMa
-    # def self.method_missing(method, *args, &block)
-    #   methods = %i[template_list instantiate_vm]
-    #   return super unless methods.include? method
-    #
-    #   @instance ||= new
-    #   method, *args = @instance.public_send(method, *args, &block)
-    #   results = @instance.xmlrpc_send(method, args)
-    #   puts 'aaa'.red
-    #   status = results[0]
-    #   # @instance.xmlrpc_send()
-    #   if status
-    #     Hash.from_xml(results[1])
-    #   else
-    #     results
-    #   end
-    # end
   end
 end

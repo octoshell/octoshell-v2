@@ -22,10 +22,12 @@ CloudComputing::Engine.routes.draw do
     end
     resources :accesses do
       member do
-        get :edit_links
-        patch :update_links
+        get :initial_edit
+        patch :initial_update
+        get :edit_vm
+        patch :update_vm
         patch :pend
-        patch :refuse
+        patch :deny
       end
       collection do
         post :create_from_request
@@ -35,6 +37,8 @@ CloudComputing::Engine.routes.draw do
 
   root 'items#index'
   resources :item_kinds
+  resources :resource_kinds, only: :show
+
   resources :items do
     member do
       post :update_position

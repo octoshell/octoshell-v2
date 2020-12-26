@@ -21,7 +21,6 @@ module CloudComputing
             item_kind_and_descendants: [ItemKind.virtual_machine_cloud_type&.id.to_s]
           }
           @search = CloudComputing::Item.for_users.search(params[:q])
-          puts @search.item_kind_and_descendants.inspect.red
           @items = @search.result(distinct: true)
                           .order_by_name
                           .page(params[:page])
@@ -48,12 +47,24 @@ module CloudComputing
 
     def update
       @item = CloudComputing::Item.for_users.find(params[:id])
+      # puts @item.positions.loaded?.inspect.red
+
       # @positions = @item.assign_positions(current_user, position_params)
+      # puts @item.positions.inspect.yellow
+      puts 'aaa'.yellow
+
       @item.assign_attributes(position_params)
+      # puts @item.positions.inspect.yellow
+      puts 'bbb'.green
+
       @item.assign_atributes_for_positions(current_user)
+      # puts @item.positions.inspect.green
+      puts 'ccc'.red
       if @item.save
         redirect_to @item, flash: { info: t('.updated_successfully') }
       else
+
+        puts @item.positions.inspect.green
         puts @item.errors.to_h.inspect.red
         render :show, flash: { info: t('.errors') }
       end

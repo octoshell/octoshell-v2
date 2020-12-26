@@ -27,6 +27,16 @@ module CloudComputing
       resource_kind.positive_integer?
     end
 
+    def human_min
+      "#{resource_kind.positive_integer? ? min.to_i : min} #{resource_kind.measurement}"
+    end
+
+    def human_max
+      "#{resource_kind.positive_integer? ? max.to_i : max} #{resource_kind.measurement}"
+    end
+
+
+
     def value_with_measurement
       "#{value} #{resource_kind.measurement}"
     end

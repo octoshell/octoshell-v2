@@ -3,10 +3,10 @@
     table class="table table-hover"
       tr
         th
-        th = CloudComputing::Request.human_attribute_name(:status)
-        th = CloudComputing::Request.human_attribute_name(:allowed_by)
-        th = CloudComputing::Request.human_attribute_name(:user)
-        th = CloudComputing::Request.human_attribute_name(:for)
+        th = CloudComputing::Access.human_attribute_name(:state)
+        th = CloudComputing::Access.human_attribute_name(:allowed_by)
+        th = CloudComputing::Access.human_attribute_name(:user)
+        th = CloudComputing::Access.human_attribute_name(:for)
 
       - accesses.each do |access|
         tr

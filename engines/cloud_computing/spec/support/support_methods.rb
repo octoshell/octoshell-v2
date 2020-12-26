@@ -1,6 +1,11 @@
 module CloudComputing
   module SupportMethods
     def self.seed
+      create_virtual_machine
+      create_disk
+    end
+
+    def self.create_virtual_machine
       nebula_id = 71
       virtual_kind = CloudComputing::ItemKind.create!(name_ru: 'Виртуальная машина',
                                                       name_en: 'Virtual machine',
@@ -33,6 +38,30 @@ module CloudComputing
         item.resources.new(resource_kind: cpu, min: 0.5, max: 2.5, value: 1,
                            editable: true)
         item.resources.new(resource_kind: hard, min: 1, max: 200, value: 2,
+                           editable: true)
+        item.resources.new(resource_kind: not_editable, value: 1000)
+      end
+    end
+
+    def self.create_disk
+
+      disk_kind = CloudComputing::ItemKind.create!(name_ru: 'Диск',
+                                                      name_en: 'Disk',
+                                                      cloud_type: 'disk')
+
+      hard = disk_kind.resource_kinds.create!(name_ru: 'Жёсткий диск',
+        name_en: 'Hard drive', measurement_en: 'GB', measurement_ru: 'GB',
+        identity: 'SIZE', content_type: 'positive_integer')
+
+      not_editable = disk_kind.resource_kinds.create!(name: 'not_editable',
+        measurement: 'm', content_type: 'positive_integer')
+
+
+      disk_kind.items.create!(name: 'Disk',
+                                 description_en: 'Disk', new_requests: true,
+                                 description_ru: 'Disk'
+                                 ) do |item|
+        item.resources.new(resource_kind: hard, min: 100, max: 500, value: 10,
                            editable: true)
         item.resources.new(resource_kind: not_editable, value: 1000)
       end

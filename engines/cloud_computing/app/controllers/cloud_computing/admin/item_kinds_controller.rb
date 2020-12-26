@@ -5,7 +5,9 @@ module CloudComputing
     def index
       @item_kinds = ItemKind.order(:lft)
       respond_to do |format|
-        format.html
+        format.html do
+          render 'cloud_computing/item_kinds/index'
+        end
         format.json do
           render json: { records: @item_kinds.page(params[:page])
                                                  .per(params[:per]),
@@ -26,7 +28,9 @@ module CloudComputing
     def show
       @item_kind = CloudComputing::ItemKind.find(params[:id])
       respond_to do |format|
-        format.html
+        format.html do
+          render 'cloud_computing/item_kinds/show'
+        end
         format.json { render json: @item_kind }
       end
     end
@@ -102,15 +106,6 @@ module CloudComputing
         end
       end
     end
-
-    # def update
-    #   @item_kind = CloudComputing::ItemKind.find(params[:id])
-    #   if @item_kind.update(item_kind_params)
-    #     redirect_to [:admin, @item_kind]
-    #   else
-    #     render :edit
-    #   end
-    # end
 
     def destroy
       @item_kind = CloudComputing::ItemKind.find(params[:id])

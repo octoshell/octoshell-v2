@@ -3,7 +3,11 @@ require_dependency "cloud_computing/application_controller"
 module CloudComputing
   class Admin::ItemsController < Admin::ApplicationController
     def index
-      @items = CloudComputing::Item.all
+      @search = CloudComputing::Item.search(params[:q])
+      @items = @search.result(distinct: true)
+                      .order_by_name
+                      .page(params[:page])
+                      .per(params[:per])
       respond_to do |format|
         format.html
         format.json do

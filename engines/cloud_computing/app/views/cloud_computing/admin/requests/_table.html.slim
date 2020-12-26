@@ -4,17 +4,17 @@
       tr
         th
         th = CloudComputing::Request.human_attribute_name(:status)
-        th = CloudComputing::Request.human_attribute_name(:email)
+        th = CloudComputing::Request.human_attribute_name(:created_by)
         th = CloudComputing::Request.human_attribute_name(:for)
 
       - requests.each do |request|
         tr
-          td class="col-xs-3" = link_to request.id, [:admin, request]
-          td class="col-xs-3" = mark_request_state(request)
-          td class="col-xs-3" = link_to request.created_by.email,
+          td = link_to request.id, [:admin, request]
+          td = mark_request_state(request)
+          td = link_to request.created_by.email,
             main_app.admin_users_path(request.created_by_id)
           - if request.for_id
-            td class="col-xs-3" = link_to request.for.title,
+            td  = link_to request.for.title,
               core.admin_projects_path(request.for_id)
 
 

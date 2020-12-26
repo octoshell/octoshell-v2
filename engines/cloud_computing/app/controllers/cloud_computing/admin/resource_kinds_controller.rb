@@ -17,7 +17,9 @@ module CloudComputing
     def show
       @resource_kind = ResourceKind.find(params[:id])
       respond_to do |format|
-        format.html
+        format.html do
+          render 'cloud_computing/resource_kinds/show'
+        end
         format.json { render json: @resource_kind }
       end
     end

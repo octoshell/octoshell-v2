@@ -1,9 +1,9 @@
-- passed_options = options&.dup || {} 
+- passed_options = options&.dup || {}
 - resource_positions = nil
 - if ff.object.resource_positions.any?
   - resource_positions = ff.object.resource_positions
 - else
-  - resource_positions = item.editable_resources
+  - resource_positions = item.new_editable_resources
 = ff.fields_for :resource_positions, resource_positions do |fff|
   = fff.hidden_field :id
   = fff.hidden_field :resource_id

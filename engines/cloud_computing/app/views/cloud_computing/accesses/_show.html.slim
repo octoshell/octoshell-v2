@@ -8,7 +8,7 @@
           - elsif a == :for
             h4
               b = CloudComputing::Access.human_attribute_name :for
-            p = @access.for
+            p = link_to @access.for, core.admin_project_path(@access.for)
           - elsif a == :user || a == :allowed_by
             - u = @access.public_send(a)
             h4
@@ -20,6 +20,6 @@
               p = u.full_name_with_email
           - else
             h4
-              b = CloudComputing::Item.human_attribute_name a
+              b = CloudComputing::Access.human_attribute_name a
             p = @access.public_send a
   = render 'cloud_computing/requests/positions', positions: @access.left_positions

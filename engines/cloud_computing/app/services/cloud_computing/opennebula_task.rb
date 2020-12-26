@@ -12,23 +12,28 @@ module CloudComputing
       OpennebulaClient.update_context_for_template(template_id, context)
     end
 
+    def self.ssh_public_keys(position)
+      Core::Credential.active.where(user_id: position.holder.for.members.allowed
+          .select('user_id')).select('public_key').map(&:public_key)
+    end
+
     def self.instantiate_vm(position)
       template_id = position.item.identity
       results = OpennebulaClient.template_info(template_id)
       return results unless results[0]
 
       hash = {}
-      hash['DISK'] = Hash.from_xml(results[1])['VMTEMPLATE']['TEMPLATE']['DISK']
+      hash['CONTEXT'] = Hash.from_xml(results[1])['VMTEMPLATE']['TEMPLATE']['CONTEXT'] || {}
+      hash['CONTEXT']['SSH_PUBLIC_KEY'] = ssh_public_keys(position).join("\n")
+      hash['USER'] = 'root'
       hash_from_position(hash, position)
       value_string = to_value_string(hash, "\n")
       (1..position.amount).map do
         n_i = position.nebula_identities.create!
-        name = "#{position.holder.id}-#{position.id}-#{n_i.id}"
+        name = "octo-#{position.holder.id}-#{position.id}-#{n_i.id}"
         results = OpennebulaClient.instantiate_vm(template_id, name, value_string)
         if results[0]
-          unless n_i.update(identity: results[1])
-            results << n_i.errors.to_h
-          end
+          !n_i.update(identity: results[1]) && results << n_i.errors.to_h
           n_i.api_logs.create!(log: results, position: n_i.position)
         else
           n_i.destroy
@@ -62,11 +67,11 @@ module CloudComputing
     def self.assign_identity(hash, identity, value)
       if identity == 'MEMORY'
         hash['MEMORY'] = (value * 1024).to_i
-      elsif identity == 'DISK=>SIZE'
-        hash['DISK'] ||= {}
-        hash['DISK']['SIZE'] = value.to_i * 1024
+      # elsif identity == 'DISK=>SIZE'
+      #   hash['DISK'] ||= {}
+      #   hash['DISK']['SIZE'] = value.to_i * 1024
       elsif identity == 'CPU'
-        hash['CPU'] = value.to_i
+        hash['CPU'] = value.to_f
       end
     end
 

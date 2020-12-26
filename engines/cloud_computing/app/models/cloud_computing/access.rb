@@ -10,8 +10,9 @@ module CloudComputing
     belongs_to :request, inverse_of: :access
 
     validates :for, :user, :allowed_by, presence: true
-    validates :request_id, uniqueness: true
-
+    validates :request_id, uniqueness: true, if: :request
+    # has_many :vm_nebula_identities, through: :left_positions, source: :nebula_identities,
+    #   class_name: 'CloudComputing::NebulaIdentity'
     aasm(:state) do
       state :created, initial: true
       state :pending
@@ -43,6 +44,9 @@ module CloudComputing
 
       event :deny do
         transitions from: %i[pending running], to: :denied
+        after do
+          terminate_access
+        end
       end
     end
 
@@ -77,6 +81,14 @@ module CloudComputing
     def instantiate_vm
       left_positions.each do |position|
         OpennebulaTask.instantiate_vm(position)
+      end
+    end
+
+    def terminate_access
+      left_positions.map(&:nebula_identities).flatten.each do |identity|
+        next unless identity.identity
+
+        OpennebulaClient.terminate_vm(identity.identity)
       end
     end
 

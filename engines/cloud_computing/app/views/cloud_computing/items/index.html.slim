@@ -1,8 +1,6 @@
 div class="page-header"
   h1 = t(".title")
 
-div class="well"
-  /= link_to t(".new_ticket", default: 'New Ticket'), support.new_ticket_path, class: "btn btn-default"
 = bootstrap_form_for @search, url: items_path, method: :get, layout: :vertical do |f|
   div class="container"
     div class="col-md-3"

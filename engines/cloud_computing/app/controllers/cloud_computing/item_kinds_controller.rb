@@ -2,15 +2,27 @@ require_dependency "cloud_computing/application_controller"
 
 module CloudComputing
   class ItemKindsController < ApplicationController
-    def show
 
-      @item_kind = ItemKind.find(params[:id])
-      @item_kinds = @item_kind.self_and_descendants
+
+    def index
+      @item_kinds = ItemKind.order(:lft)
       respond_to do |format|
+        format.html
         format.json do
-          render json: @item_kinds.map{ |i_k| { id: i_k.id, text: i_k.name } }
+          render json: { records: @item_kinds.page(params[:page])
+                                                 .per(params[:per]),
+                         total: @item_kinds.count }
         end
       end
     end
+
+    def show
+      @item_kind = CloudComputing::ItemKind.find(params[:id])
+      respond_to do |format|
+        format.html
+        format.json { render json: @item_kind }
+      end
+    end
+
   end
 end

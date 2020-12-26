@@ -4,6 +4,13 @@ module CloudComputing
     translates :name, :description
     belongs_to :item_kind, inverse_of: :items
     has_many :resources, inverse_of: :item, dependent: :destroy
+    has_many :editable_resouces, -> { where(editable: true) },
+             inverse_of: :item, dependent: :destroy, class_name: Resource.to_s
+    has_many :uneditable_resouces, -> { where(editable: false) },
+             inverse_of: :item, dependent: :destroy, class_name: Resource.to_s
+
+    has_many :resources, inverse_of: :item, dependent: :destroy
+
     has_many :positions, inverse_of: :item, dependent: :destroy
     has_many :conditions, as: :from, dependent: :destroy
     has_many :from_conditions, class_name: Condition.to_s, as: :to, dependent: :destroy
@@ -16,7 +23,7 @@ module CloudComputing
     validates :item_kind, presence: true
     validates :identity, uniqueness: { scope: :item_kind_id }
 
-    validates :description_ru, :description_en, :identity, presence: true, if: :new_requests
+    validates :description_ru, :description_en, presence: true, if: :new_requests
 
     scope :for_users, -> { where(new_requests: true) }
 
@@ -48,7 +55,7 @@ module CloudComputing
       where(item_kind: item_kinds)
     end
 
-    def editable_resources
+    def new_editable_resources
       resources.where(editable: true).map do |resource|
         ResourcePosition.new(resource: resource, value: resource.value)
       end
@@ -123,10 +130,11 @@ module CloudComputing
     end
 
     def created_positions(user)
-      not_loaded_positions = positions
-      positions.with_user_requests(user)
-               .where.not(id: not_loaded_positions.map(&:id)) +
-        not_loaded_positions
+      positions.select do |position|
+        position.new_record? || position.holder.is_a?(Request) &&
+          position.holder.created_by_id = user.id &&
+          position.holder.status == 'created'
+      end
     end
 
     # def update_or_create_positions(user, params)

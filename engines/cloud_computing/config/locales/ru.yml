@@ -63,6 +63,9 @@ ru:
         name: Название
         new_requests: Подавать новые заявки
         resources: Ресурсы
+        editable_resources: Редактируемые ресурсы
+        uneditable_resources: Нередактируемые ресурсы
+
       cloud_computing/item_kind:
         cloud_type: Тип на кластере
         parent_id: Родительский тип
@@ -93,9 +96,14 @@ ru:
         editable: Пользователь может редактировать?
         min: Минимум
         max: Максимум
-        value: Число
+        value: Значение
+        default_value: Значение по умолчанию
+        resource_kind: Тип ресурса
       cloud_computing/resource_kind:
         item_kind_id: Вид единиц облачного кластера
+        item_kind: Вид единиц облачного кластера
+        help: Помощь в заполнении
+
         description: Описание
         measurement: Единица
         name: Название
@@ -108,7 +116,7 @@ ru:
       accesses:
         edit:
           title: Редактировать доступ к виртуальной машине
-        edit_links:
+        edit_vm:
           title: Редактировать связи доступ к виртуальной машине
         form:
           finish_date_help: Если это поле пусто, то доступ без даты окончания
@@ -124,7 +132,7 @@ ru:
         show:
           cancel: Cancel
           deny: Отозвать доступ
-          edit_links: Редактировать связи виртуальных машин
+          edit_vm: Редактировать связи виртуальных машин
           pend: Отправить в очередь
           title: Доступ
         table:
@@ -223,7 +231,7 @@ ru:
         remove_position: Удалить из заявки
         title: Единица %{item}
       resource_positions_fields:
-        help: Введите значение от <b>%{min}</b> до <b>%{max}</b>. 
+        help: Введите значение от <b>%{min}</b> до <b>%{max}</b>.
       table:
         no_items_found: Нет единиц облачного кластера
         requested: Вы запросили
