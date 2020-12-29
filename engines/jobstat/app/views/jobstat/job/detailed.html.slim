@@ -17,7 +17,7 @@ p
   /- guid = Base64.encode64(guid)
   - man_list.each do |step|
       br
-      = step
+      = raw step
 - if @detailed_types_count > 0
   p = "После выполнения всех указанных выше шагов необходимо выполнить на кластере команду, указав имя выходного файла анализатора и ID задачи:"
   code
