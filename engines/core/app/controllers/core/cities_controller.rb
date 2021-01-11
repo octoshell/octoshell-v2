@@ -10,7 +10,7 @@ module Core
     end
 
     def index_for_country
-      @cities = City.where(country_id: params[:country_id])
+      @cities = City.where(country_id: params[:country_id]).order(:title_ru)
       @records = @cities.map(&:to_json_with_titles)
       render json: @records
     end
