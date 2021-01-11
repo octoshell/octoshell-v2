@@ -35,7 +35,7 @@ group :development do
   gem "pry-rails"
   gem "rails-erd"
   gem 'railroady'
-  gem "better_errors"
+  #gem "better_errors"
   gem 'rails_db'
   gem 'i18n-tasks', github: 'apaokin/i18n-tasks'
   gem 'minitest-reporters'
