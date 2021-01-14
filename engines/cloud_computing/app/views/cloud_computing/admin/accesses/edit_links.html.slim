@@ -1,0 +1,29 @@
+/= render 'form'
+- content_for :title do
+    - t(".title")
+= bootstrap_nested_form_for @access, url: update_links_admin_access_path,
+    method: :patch, layout: :horizontal do |f|
+      .row
+        = f.fields_for :left_positions do |ff|
+          .col-md-6 style=" border: 2px solid black; padding: 10px; margin: 10px;"
+            h3
+              = link_to("#{ff.object.item.name} id=#{ff.object.id}", ff.object.item)
+            = ff.fields_for :from_positions do |fff|
+              h4
+                = fff.link_to_remove t("cloud_computing.requests.links.remove_position"),style: "margin-right: 5%;",
+                  class: "fa fa-times text-danger"
+                = link_to("#{fff.object.item.name} id=#{fff.object.id}", fff.object.item)
+
+              = fff.hidden_field :id
+              = fff.number_field  :to_link_amount, label_col: 'col-sm-6',
+                          control_col: 'col-sm-6',
+                          required: true,
+                          style: 'padding-right: 5%;',
+                          label: CloudComputing::Position.human_attribute_name(:amount),
+                          help: t('.amount_help')
+
+              = render 'cloud_computing/items/resource_positions_fields',
+                ff: fff, item: fff.object&.item, options: { control_col: 'col-sm-6',
+                label_col: 'col-sm-6' }
+      = f.form_group do
+        = f.submit t("buttons.save")

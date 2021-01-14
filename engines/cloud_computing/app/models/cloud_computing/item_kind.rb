@@ -87,6 +87,8 @@ module CloudComputing
       results = []
       data = Hash.from_xml(request_details[1])['VMTEMPLATE_POOL']['VMTEMPLATE']
       data.each do |template|
+        next if template['TEMPLATE']['OCTOSHELL_BOUND_TO_TEMPLATE']
+        
         my_and_descendant_items.where(identity: template['ID']).first_or_create! do |record|
           record.item_kind = self
           record.name = template['NAME']

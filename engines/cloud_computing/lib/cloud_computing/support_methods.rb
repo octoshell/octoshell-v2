@@ -5,6 +5,19 @@ module CloudComputing
       create_disk
     end
 
+    def self.dev_seed
+      seed
+      project = Core::Project.first
+      access = CloudComputing::Access.create!(for: project,
+                                              user: project.owner,
+                                              allowed_by: User.superadmins.first)
+      template = CloudComputing::ItemKind.virtual_machine.first.items.first
+
+      CloudComputing::SupportMethods.add_positions(access, template)
+
+    end
+
+
     def self.create_virtual_machine
       nebula_id = 71
       virtual_kind = CloudComputing::ItemKind.create!(name_ru: 'Виртуальная машина',
@@ -61,7 +74,7 @@ module CloudComputing
                                  description_en: 'Disk', new_requests: true,
                                  description_ru: 'Disk'
                                  ) do |item|
-        item.resources.new(resource_kind: hard, min: 100, max: 500, value: 10,
+        item.resources.new(resource_kind: hard, min: 100, max: 500, value: 200,
                            editable: true)
         item.resources.new(resource_kind: not_editable, value: 1000)
       end

@@ -8,22 +8,21 @@ module CloudComputing
     belongs_to :user
 
     belongs_to :request, inverse_of: :access
-
+    # has_many :virtual_machines, through: :left_positions,
+    #                             class_name: 'CloudComputing::NebulaIdentity',
+    #                             source: :nebula_identities
     validates :for, :user, :allowed_by, presence: true
     validates :request_id, uniqueness: true, if: :request
-    # has_many :vm_nebula_identities, through: :left_positions, source: :nebula_identities,
-    #   class_name: 'CloudComputing::NebulaIdentity'
     aasm(:state) do
       state :created, initial: true
-      state :pending
-      state :running
+      state :approved
       state :finished
       state :denied
 
-      event :pend do
-        transitions from: :created, to: :pending do
+      event :approve do
+        transitions from: :created, to: :approved do
           guard do
-            self.for && positions.exists?
+            self.for && positions.exists? && positions_filled?
           end
 
           after do
@@ -34,16 +33,15 @@ module CloudComputing
         end
       end
 
-      event :run do
-        transitions from: :pending, to: :running
-      end
-
       event :finish do
-        transitions from: :running, to: :finished
+        transitions from: :approved, to: :finished
+        after do
+          terminate_access
+        end
       end
 
       event :deny do
-        transitions from: %i[pending running], to: :denied
+        transitions from: :approved, to: :denied
         after do
           terminate_access
         end
@@ -58,6 +56,10 @@ module CloudComputing
            .build(r_p.attributes.slice('resource_id', 'value'))
       end
       pos
+    end
+
+    def virtual_machines
+      NebulaIdentity.where(position: left_positions)
     end
 
     def copy_from_request
@@ -79,17 +81,24 @@ module CloudComputing
     end
 
     def instantiate_vm
-      left_positions.each do |position|
-        OpennebulaTask.instantiate_vm(position)
-      end
+      # OpennebulaTask.instantiate_access(id)
+      TaskWorker.perform_async(:instantiate_access, id)
     end
 
     def terminate_access
-      left_positions.map(&:nebula_identities).flatten.each do |identity|
-        next unless identity.identity
+      # OpennebulaTask.terminate_access(id)
+      TaskWorker.perform_async(:terminate_access, id)
+    end
 
-        OpennebulaClient.terminate_vm(identity.identity)
+    def reinstantiate?
+      left_positions.any? do |position|
+        (position.amount - position.nebula_identities.count).positive?
       end
+    end
+
+    def add_keys
+      # OpennebulaTask.add_keys(id)
+      TaskWorker.perform_async(:add_keys, id)
     end
 
 

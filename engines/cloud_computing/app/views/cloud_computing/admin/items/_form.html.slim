@@ -4,7 +4,7 @@ div class="row"
     - CloudComputing::Item.locale_columns(:name).each do |column|
       = f.text_field column
     - CloudComputing::Item.locale_columns(:description).each do |column|
-      = f.text_area column, rows: 4 
+      = f.text_area column, rows: 4
 
     = f.text_field :identity
 
@@ -25,7 +25,7 @@ div class="row"
         div.col-md-3
           = ff.hidden_field :id
           = ff.hidden_field :resource_kind_id
-          = ff.number_field :value, help: t('.value_help')
+          = ff.number_field :value, options.dup.merge(help: t('.value_help'))
         div.col-md-3
           = ff.form_group :_destroy
             = ff.check_box :_destroy, layout: 'form-layout',  wrapper: false

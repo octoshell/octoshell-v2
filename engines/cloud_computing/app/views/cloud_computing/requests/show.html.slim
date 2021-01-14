@@ -6,6 +6,7 @@ css:
   div.well > a{
     margin-left: 10px;
   }
+
 .well
   -if @request.created?
     = link_to t('.edit_created_request'), edit_created_request_requests_path, class: "btn btn-warning"

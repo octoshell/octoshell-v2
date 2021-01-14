@@ -1,19 +1,20 @@
 - passed_options = options&.dup || {}
 - resource_positions = nil
-- if ff.object.resource_positions.any?
-  - resource_positions = ff.object.resource_positions
-- else
-  - resource_positions = item.new_editable_resources
-= ff.fields_for :resource_positions, resource_positions do |fff|
-  = fff.hidden_field :id
-  = fff.hidden_field :resource_id
-  - resource_kind =  fff.object.resource.resource_kind
-  - options = passed_options.merge(label: resource_kind.name_with_measurement)
-  - if resource_kind.positive_integer?
-    - options = options.merge(value: fff.object.value.to_i,
-      help: t('.help', min: fff.object.resource.min.to_i,
-      max: fff.object.resource.max.to_i ).html_safe + ' ' + resource_kind.help)
+- if ff.object
+  - if ff.object.resource_positions.any?
+    - resource_positions = ff.object.resource_positions
   - else
-    - options = options.merge(step: :any, help: t('.help', min: fff.object.resource.min,
-      max: fff.object.resource.max ).html_safe + ' ' + resource_kind.help)
-  = fff.number_field :value, options.dup
+    - resource_positions = item.new_editable_resources
+  = ff.fields_for :resource_positions, resource_positions do |fff|
+    = fff.hidden_field :id
+    = fff.hidden_field :resource_id
+    - resource_kind =  fff.object.resource.resource_kind
+    - options = passed_options.merge(label: resource_kind.name_with_measurement)
+    - if resource_kind.positive_integer?
+      - options = options.merge(value: fff.object.value.to_i,
+        help: t('.help', min: fff.object.resource.min.to_i,
+        max: fff.object.resource.max.to_i ).html_safe + ' ' + resource_kind.help)
+    - else
+      - options = options.merge(step: :any, help: t('.help', min: fff.object.resource.min,
+        max: fff.object.resource.max ).html_safe + ' ' + resource_kind.help)
+    = fff.number_field :value, options.dup

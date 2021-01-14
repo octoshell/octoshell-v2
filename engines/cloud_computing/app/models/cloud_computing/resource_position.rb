@@ -10,6 +10,11 @@ module CloudComputing
         identity: ['', nil] })
     end)
 
+    scope :where_identity, (lambda do |identity|
+      joins(resource: :resource_kind).where(cloud_computing_resource_kinds: {
+        identity: identity })
+    end)
+
     before_validation do
       self.value = value.to_i if only_integer?
     end
@@ -30,7 +35,12 @@ module CloudComputing
     end
 
     def name_value
-      "<b>#{resource.resource_kind.name_with_measurement}:</b> #{human_value}"
+      measurement = resource.resource_kind.measurement
+      if measurement.present?
+        "<b>#{resource.resource_kind.name}:</b> #{human_value} #{measurement}"
+      else
+        "<b>#{resource.resource_kind.name}:</b> #{human_value}"
+      end
     end
 
   end

@@ -6,6 +6,11 @@ css:
   div.well > a{
     margin-left: 10px;
   }
+
+- unless @request.positions_filled?
+  .alert.alert-info role="alert"
+    =t('.fill_positions')
+
 .well
   = link_to t('.edit_created_request'), edit_created_request_requests_path, class: "btn btn-warning"
   -if @request.may_to_sent?

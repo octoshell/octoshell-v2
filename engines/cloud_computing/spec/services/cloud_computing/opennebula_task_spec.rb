@@ -40,7 +40,7 @@ module CloudComputing
 
     describe '::instantiate_vm' do
       it 'instantiates vm' do
-        results = OpennebulaTask.instantiate_vm(@access.positions.first)
+        results = OpennebulaTask.instantiate_vm(@access.positions.first.id)
         puts results.inspect
       end
     end

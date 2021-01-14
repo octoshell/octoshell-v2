@@ -37,7 +37,6 @@ module CloudComputing
 
     def show
       @item = CloudComputing::Item.for_users.find(params[:id])
-      # @positions = @item.find_or_build_positions_for_user(current_user)
     end
 
     def edit
@@ -46,26 +45,13 @@ module CloudComputing
     end
 
     def update
+      authorize! :create, CloudComputing::Request
       @item = CloudComputing::Item.for_users.find(params[:id])
-      # puts @item.positions.loaded?.inspect.red
-
-      # @positions = @item.assign_positions(current_user, position_params)
-      # puts @item.positions.inspect.yellow
-      puts 'aaa'.yellow
-
       @item.assign_attributes(position_params)
-      # puts @item.positions.inspect.yellow
-      puts 'bbb'.green
-
       @item.assign_atributes_for_positions(current_user)
-      # puts @item.positions.inspect.green
-      puts 'ccc'.red
       if @item.save
         redirect_to @item, flash: { info: t('.updated_successfully') }
       else
-
-        puts @item.positions.inspect.green
-        puts @item.errors.to_h.inspect.red
         render :show, flash: { info: t('.errors') }
       end
     end
@@ -73,10 +59,6 @@ module CloudComputing
     def position_params
       params.require(:item).permit(positions_attributes: [:amount, :id,
         :_destroy, resource_positions_attributes: %i[id resource_id value]])
-      # return {} unless params[:item] && params[:item][:positions_attributes]
-      #
-      # params.permit(item: { positions_attributes: %i[amount id _destroy] })[:item][:positions_attributes]
-
     end
   end
 end

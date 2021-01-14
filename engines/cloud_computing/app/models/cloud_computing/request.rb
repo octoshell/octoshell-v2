@@ -42,7 +42,7 @@ module CloudComputing
       event :to_sent do
         transitions from: :created, to: :sent do
           guard do
-            self.for && positions.exists?
+            self.for && positions.exists? && positions_filled?
           end
         end
       end

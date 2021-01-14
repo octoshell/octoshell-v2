@@ -4,6 +4,7 @@ class CreateCloudComputingApiLogs < ActiveRecord::Migration[5.2]
       t.belongs_to :nebula_identity
       t.belongs_to :position
       t.text :log
+      t.string :action
       t.timestamps
     end
   end

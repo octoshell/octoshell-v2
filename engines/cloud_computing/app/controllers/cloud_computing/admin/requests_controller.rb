@@ -1,7 +1,7 @@
 require_dependency "cloud_computing/application_controller"
 
-module CloudComputing
-  class Admin::RequestsController < Admin::ApplicationController
+module CloudComputing::Admin
+  class RequestsController < CloudComputing::Admin::ApplicationController
     before_action only: %i[refuse show] do
       @request = CloudComputing::Request.find params[:id]
     end

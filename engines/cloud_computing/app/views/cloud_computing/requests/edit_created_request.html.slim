@@ -6,7 +6,18 @@
     method: :post, layout: :horizontal do |f|
 
   = f.hidden_field :for_type, value: 'Core::Project'
-  = f.collection_select :for_id, current_user.projects, :id, :title
+  = f.collection_select :for_id, current_user.owned_projects.active, :id, :title
   = f.text_field :finish_date, class: 'datepicker', help: t('.finish_date_help')
   = f.text_area :comment, rows: 4
-  = render 'cloud_computing/requests/links', f: f
+  = f.link_to_add t(".add_positions"), :left_positions,
+    data:  { :target => "#left-position-container" }
+  div#left-position-container
+    = f.fields_for :left_positions do |ff|
+      div style='margin: 5%;'
+      = ff.hidden_field :id
+      = ff.collection_select :item_id, CloudComputing::Item.virtual_machine_items,
+        :id, :name, label: CloudComputing::Position.human_attribute_name(:virtual_machine)
+      = ff.number_field :amount, required: true
+      = ff.link_to_remove t(".remove_position"), class: "fa fa-times text-danger"
+  = f.form_group do
+    = f.submit t("buttons.save")

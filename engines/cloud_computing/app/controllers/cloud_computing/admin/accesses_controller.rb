@@ -1,10 +1,10 @@
 require_dependency "cloud_computing/application_controller"
 
-module CloudComputing
-  class Admin::AccessesController < Admin::ApplicationController
+module CloudComputing::Admin
+  class AccessesController < CloudComputing::Admin::ApplicationController
 
-    before_action only: %i[show edit_vm update_vm pend deny
-      edit_extented_info update_extended_info initial_edit update] do
+    before_action only: %i[show edit_vm update_vm approve deny
+      edit_links update_links initial_edit update reinstantiate] do
       @access = CloudComputing::Access.find(params[:id])
     end
 
@@ -12,7 +12,7 @@ module CloudComputing
       @search = CloudComputing::Access.search(params[:q])
       @accesses = @search.result(distinct: true)
                          .includes(:user, :allowed_by, :for)
-                         .order(:created_at)
+                         .order(created_at: :desc)
                          .page(params[:page])
                          .per(params[:per])
 
@@ -27,14 +27,30 @@ module CloudComputing
 
     def update_vm
       if @access.update(access_params)
-        redirect_to [:admin, @access]
+        redirect_to edit_links_admin_access_path(@access)
       else
         render :edit_vm
       end
     end
 
-    def pend
-      @access.pend!
+    def edit_links
+    end
+
+    def update_links
+      if @access.update(access_params)
+        redirect_to [:admin, @access]
+      else
+        render :edit_links
+      end
+    end
+
+    def approve
+      @access.approve!
+      redirect_to [:admin, @access]
+    end
+
+    def reinstantiate
+      @access.instantiate_vm
       redirect_to [:admin, @access]
     end
 
@@ -55,7 +71,6 @@ module CloudComputing
       if @access.save
         redirect_to_edit_vm
       else
-        puts @access.errors.to_h.inspect.green
         render :new
       end
     end
@@ -100,7 +115,10 @@ module CloudComputing
                     left_positions_attributes:[:id, :amount, :_destroy,
                     :item_id, from_links_attributes: %i[id _destroy from_id
                     amount to_item_id], resource_positions_attributes:
-                    %i[id resource_id value]])
+                    %i[id resource_id value],
+                    from_positions_attributes: [:id, :to_link_amount, :_destroy,
+                      resource_positions_attributes: %i[id resource_id value] ],
+                    ])
     end
   end
 end

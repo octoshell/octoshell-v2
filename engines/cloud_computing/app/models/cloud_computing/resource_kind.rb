@@ -3,7 +3,7 @@ module CloudComputing
     enum content_type: %i[positive_integer decimal]
     translates :name, :description, :measurement, :help
     validates_translated :name, presence: true
-    has_many :resources, inverse_of: :resource_kind
+    has_many :resources, inverse_of: :resource_kind, dependent: :destroy
     belongs_to :item_kind, inverse_of: :resource_kinds
     validates :item_kind, :content_type, presence: true
 

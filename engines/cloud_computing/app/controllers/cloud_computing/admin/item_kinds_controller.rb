@@ -1,9 +1,9 @@
 require_dependency "cloud_computing/application_controller"
 
-module CloudComputing
-  class Admin::ItemKindsController < Admin::ApplicationController
+module CloudComputing::Admin
+  class ItemKindsController < CloudComputing::Admin::ApplicationController
     def index
-      @item_kinds = ItemKind.order(:lft)
+      @item_kinds = CloudComputing::ItemKind.order(:lft)
       respond_to do |format|
         format.html do
           render 'cloud_computing/item_kinds/index'
@@ -17,7 +17,7 @@ module CloudComputing
     end
 
     def jstree
-      @item_kinds = ItemKind.order(:lft)
+      @item_kinds = CloudComputing::ItemKind.order(:lft)
       a = @item_kinds.map do |k|
         { id: k.id, text: k.name, parent: k.parent_id || '#' }
       end

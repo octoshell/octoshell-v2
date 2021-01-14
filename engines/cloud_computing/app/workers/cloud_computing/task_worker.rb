@@ -5,9 +5,7 @@ module CloudComputing
     sidekiq_options retry: 2, queue: :cloud_computing_task_worker
 
     def perform(method, *args)
-      
-      # Pack::Mailer.send(method, *args).deliver_now!
-
+      CloudComputing::OpennebulaTask.send(method, *args)
     end
   end
 end

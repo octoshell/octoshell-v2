@@ -3,30 +3,10 @@
 #   # Task goes here
 # end
 namespace :cloud_computing do
-  task create_positions: :environment do
-    # ActiveRecord::Base.transaction do
-    #   pos = CloudComputing::Position.first
-    #   puts 'aaa'.red
-    #   pos.holder.update!(
-    #     positions_attributes:
-    #       {
-    #         '1': {
-    #           id: pos.id,
-    #           from_links_attributes: {
-    #             '1': {
-    #               to_attributes: {
-    #                 item_id: 63
-    #               },
-    #               amount: 4
-    #             }
-    #           }
-    #
-    #         }
-    #       }
-    #   )
-    #
-    #   dqdqwad
-    # end
+  task free_locks: :environment do
+    CloudComputing::Item.for_users.each do |item|
+      Redis::Semaphore.new(item.id, host: "localhost").delete!
+    end
   end
 
   task prod_seed: :environment do

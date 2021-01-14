@@ -4,9 +4,9 @@ module CloudComputing
     translates :name, :description
     belongs_to :item_kind, inverse_of: :items
     has_many :resources, inverse_of: :item, dependent: :destroy
-    has_many :editable_resouces, -> { where(editable: true) },
+    has_many :editable_resources, -> { where(editable: true) },
              inverse_of: :item, dependent: :destroy, class_name: Resource.to_s
-    has_many :uneditable_resouces, -> { where(editable: false) },
+    has_many :uneditable_resources, -> { where(editable: false) },
              inverse_of: :item, dependent: :destroy, class_name: Resource.to_s
 
     has_many :resources, inverse_of: :item, dependent: :destroy
@@ -39,6 +39,10 @@ module CloudComputing
 
     end)
 
+    before_save do
+      resources.each(&:save!)
+    end
+
     def self.ransackable_scopes_skip_sanitize_args
       ransackable_scopes
     end
@@ -70,8 +74,6 @@ module CloudComputing
         persisted? && resource.mark_for_destruction
 
       end
-      # CloudComputing::ResourceKind.where(item_kind: @item_kind.)
-
     end
 
     def new_requests?
@@ -91,7 +93,11 @@ module CloudComputing
 
     def as_json(options = {})
       resources_array = resources.map do |r|
-        { name: r.resource_kind.name, value: r.value_with_measurement }
+        if r.editable
+          { name: r.resource_kind.name, value: r.human_range }
+        else
+          { name: r.resource_kind.name, value: r.value_with_measurement }
+        end
       end
       super(options).merge(name: name, description: description,
                            item_kind_name: item_kind.name,
@@ -132,7 +138,7 @@ module CloudComputing
     def created_positions(user)
       positions.select do |position|
         position.new_record? || position.holder.is_a?(Request) &&
-          position.holder.created_by_id = user.id &&
+          position.holder.created_by_id == user.id &&
           position.holder.status == 'created'
       end
     end

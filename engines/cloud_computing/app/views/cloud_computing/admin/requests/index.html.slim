@@ -6,12 +6,15 @@
     .col-md-3
       = f.select :status_in, CloudComputing::Request.human_state_names_with_original(:status),
           label: CloudComputing::Request.human_attribute_name(:status), include_blank: true
+
+    .col-md-3
       = f.autocomplete_field :created_by_id_eq,{ label:  CloudComputing::Request.human_attribute_name('created_by'),
         source: main_app.users_path} do |val|
           -User.find(val).full_name_with_email
+    .col-md-3
       = f.autocomplete_field :for_id_eq,{ label: t('.project'),
-        source: core.admin_projects_path} do |val|
-        -Core::Project.find(val).title
+          source: core.admin_projects_path} do |val|
+          -Core::Project.find(val).title
   = f.primary t("actions.find")
 
 = safe_paginate @requests

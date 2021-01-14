@@ -1,0 +1,18 @@
+-content_for :title
+  - t(".title")
+
+= bootstrap_form_for @search, url: @url, method: :get, layout: :horizontal do |f|
+  .row
+    .col-md-4
+      = f.text_field :created_at_gt, include_blank: true, label_col: "col-sm-4",
+          control_col: "col-sm-8", :'data-date-end-date' => '1d', class: "datepicker",
+          label: t('.created_after')
+    .col-md-4
+      = f.text_field :created_at_lt, include_blank: true, label_col: "col-sm-4",
+          control_col: "col-sm-8", :'data-date-end-date' => '1d', class: "datepicker",
+          label: t('.created_before')
+  = f.primary t("actions.find")
+
+= safe_paginate @api_logs
+= render "cloud_computing/api_logs/table", api_logs: @api_logs
+= safe_paginate @api_logs

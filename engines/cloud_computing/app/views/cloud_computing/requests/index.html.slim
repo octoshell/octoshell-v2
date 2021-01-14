@@ -6,7 +6,7 @@ div class="well"
   /= link_to t(".new_ticket", default: 'New Ticket'), support.new_ticket_path, class: "btn btn-default"
 = bootstrap_form_for @search, url: requests_path, method: :get, layout: :vertical do |f|
   = f.select :status_in, CloudComputing::Request.human_state_names_with_original(:status),
-    label: CloudComputing::Request.human_attribute_name(:status)
+    label: CloudComputing::Request.human_attribute_name(:status), include_blank: true
   = f.form_group do
     = f.primary t("actions.find")
 

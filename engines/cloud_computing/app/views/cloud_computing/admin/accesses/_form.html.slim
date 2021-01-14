@@ -17,13 +17,10 @@ div class="row"
           = ff.collection_select :item_id, CloudComputing::Item.virtual_machine_items, :id, :name
           = ff.number_field :amount, required: true
           = ff.link_to_remove t(".remove_position"), class: "fa fa-times text-danger"
-
-
-
-      javascript:
-        $(document).on('nested:fieldAdded', function(event){
-          apply_select();
-        });
-
       = f.form_group do
         = f.submit t("buttons.save")
+
+javascript:
+  $(document).on('nested:fieldAdded', function(event){
+    apply_select();
+  });

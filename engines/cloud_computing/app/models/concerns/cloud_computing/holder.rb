@@ -15,5 +15,13 @@ module CloudComputing
       finish_date || I18n.t('cloud_computing.no_date')
     end
 
+    def positions_filled?
+      positions.all? do |position|
+        position.item.editable_resources.count ==
+          position.resource_positions.count
+      end
+    end
+
+
   end
 end

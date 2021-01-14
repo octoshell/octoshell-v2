@@ -14,13 +14,17 @@ module CloudComputing
 
     # validates :item_id, uniqueness: { scope: %i[holder_id holder_type] }
     has_many :from_links, class_name: 'CloudComputing::PositionLink', inverse_of: :from, dependent: :destroy, foreign_key: :from_id
-    has_many :to_links, class_name: 'CloudComputing::PositionLink', inverse_of: :to, dependent: :destroy, foreign_key: :to_id
+    has_many :to_links, class_name: 'CloudComputing::PositionLink',
+                        inverse_of: :to, dependent: :destroy, foreign_key: :to_id,
+                        autosave: true
+    has_many :from_positions, class_name: Position.to_s,
+                              through: :from_links, source: :to
     has_many :nebula_identities, inverse_of: :position
     has_many :api_logs, inverse_of: :position
 
     has_many :resource_positions, inverse_of: :position, dependent: :destroy
     # has_many :to_positions, class_name: Position.to_s, through: :from_links, source: :to
-    accepts_nested_attributes_for :from_links, :resource_positions, allow_destroy: true
+    accepts_nested_attributes_for :from_links, :resource_positions, :from_positions, allow_destroy: true
 
     validates :amount, numericality: { greater_than: 0 }, presence: true
     validates :item, :holder, presence: true
@@ -41,8 +45,21 @@ module CloudComputing
                                                from_type: ItemKind.to_s })
     end
 
+    def to_link_amount
+      to_links.first.amount
+    end
+
+    def to_link_amount=(value)
+      to_links.to_a.first.assign_attributes(amount: value)
+    end
+
+
     def to_item_kinds_hash
       to_item_kinds.map { |i_k| { id: i_k.id, text: i_k.name } }
+    end
+
+    def human_resources
+      (resource_positions.to_a + item.uneditable_resources.to_a).map(&:name_value)
     end
 
     def as_json(_options = {})
@@ -53,7 +70,6 @@ module CloudComputing
         to_item_kinds: to_item_kinds_hash
       }
     end
-
 
     def name
       item.name

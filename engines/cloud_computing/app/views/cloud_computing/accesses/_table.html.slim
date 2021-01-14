@@ -4,21 +4,17 @@
       tr
         th
         th = CloudComputing::Access.human_attribute_name(:state)
-        th = CloudComputing::Access.human_attribute_name(:allowed_by)
         th = CloudComputing::Access.human_attribute_name(:user)
         th = CloudComputing::Access.human_attribute_name(:for)
 
       - accesses.each do |access|
         tr
-          td class="col-xs-1" = link_to access.id, [:admin, access]
+          td class="col-xs-1" = link_to access.id, access
           td class="col-xs-2" = mark_access_state(access)
-          td class="col-xs-3" = link_to access.allowed_by.email,
-            main_app.admin_users_path(access.allowed_by_id)
-          td class="col-xs-3" = link_to access.user.email,
-            main_app.admin_users_path(access.user_id)
+          td class="col-xs-3" = access.user.email
           - if access.for_id
             td class="col-xs-3" = link_to access.for.title,
-              core.admin_project_path(access.for_id)
+              core.project_path(access.for_id)
 
 
 - else

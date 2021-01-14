@@ -1,18 +1,23 @@
 - content_for :title do
-    - t(".title")
+  - t(".title", id: @access.id)
+
 
 css:
   div.well > a{
     margin-left: 10px;
   }
+
 .well
   = link_to t('actions.edit'), initial_edit_admin_access_path(@access), class: 'btn btn-primary'
   - if @access.created?
     = link_to t('.edit_vm'), edit_vm_admin_access_path(@access), class: "btn btn-warning"
-  - if @access.may_pend?
-    = link_to t('.pend'), pend_admin_access_path, class: "btn btn-info", method: :patch
+  - if @access.may_approve?
+    = link_to t('.approve'), approve_admin_access_path, class: "btn btn-info", method: :patch
   - if @access.may_deny?
-    = link_to t('.deny'), deny_admin_access_path, class: "btn btn-danger", method: :patch
+    = link_to t('.deny'), deny_admin_access_path, class: "btn btn-danger",
+      method: :patch, data: { confirm: t('.deny_confirm') }
+  - if @access.approved? && @access.reinstantiate?
+    = link_to t('.reinstantiate'), reinstantiate_admin_access_path, class: "btn btn-primary", method: :patch
 
 
 - attrs = %i[state user finish_date_or_nil allowed_by for]

@@ -16,8 +16,12 @@
             p
               b = t('.linked_with')
             - position.from_links.each do |link|
-              p = t('.requested_link_by_user', item_link: link_to(link.to.item.name,
+              = t('.requested_link_by_user', item_link: link_to(link.to.item.name,
                 [:admin, link.to.item]), amount: link.amount).html_safe
+              - link.to.resource_positions.map  do |r_p|
+                div
+                  = r_p.name_value.html_safe
+
         - else
           p
             = t('.you_requested', item_link: link_to(position.item.name,
@@ -31,5 +35,8 @@
             p
               b = t('.linked_with')
             - position.from_links.each do |link|
-              p = t('.you_requested_link', item_link: link_to(link.to.item.name,
+              = t('.you_requested_link', item_link: link_to(link.to.item.name,
                 link.to.item), amount: link.amount).html_safe
+              - link.to.resource_positions.map  do |r_p|
+                div
+                  = r_p.name_value.html_safe

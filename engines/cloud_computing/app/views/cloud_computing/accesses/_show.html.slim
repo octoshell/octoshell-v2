@@ -1,4 +1,7 @@
-/= render 'form'
+css:
+  div.action-holder > a{
+    margin: 10px;
+  }
 .row
   .col-md-6
     blockquote
@@ -8,7 +11,11 @@
           - elsif a == :for
             h4
               b = CloudComputing::Access.human_attribute_name :for
-            p = link_to @access.for, core.admin_project_path(@access.for)
+            - if @admin
+              p = link_to @access.for, core.admin_project_path(@access.for)
+            - else
+              p = link_to @access.for, core.project_path(@access.for)
+
           - elsif a == :user || a == :allowed_by
             - u = @access.public_send(a)
             h4
@@ -22,4 +29,66 @@
             h4
               b = CloudComputing::Access.human_attribute_name a
             p = @access.public_send a
-  = render 'cloud_computing/requests/positions', positions: @access.left_positions
+  - unless @access.approved?
+    = render 'cloud_computing/requests/positions', positions: @access.left_positions
+
+-if @access.approved?
+  = t('.help')
+  .container
+    - @access.left_positions.order(:created_at).each do |position|
+      h4 = link_to("#{t('.template')} #{position.item.name}##{position.id}", position.item)
+      - position.human_resources.map  do |name_value|
+        div
+          = name_value.html_safe
+      - if @admin  && position.api_logs.where(nebula_identity_id: nil).exists?
+        div
+          = link_to t('.no_identities_logs'), api_logs_admin_position_path(position)
+
+      - position.nebula_identities.order(:created_at).each do |n_i|
+        .col-md-6
+          .col-md-9
+            table.table.table-hover
+              -%i[id identity address].each do |a|
+                tr
+                  td
+                    = CloudComputing::NebulaIdentity.human_attribute_name(a)
+                  td
+                    = n_i.public_send(a)
+
+              tr
+                td
+                  = CloudComputing::NebulaIdentity.human_attribute_name(:human_state)
+                td
+                  = "#{n_i.human_state} #{vm_human_state(n_i)}"
+              tr
+                td
+                  = CloudComputing::NebulaIdentity.human_attribute_name(:last_info)
+                td
+                  = n_i.last_info
+
+              tr
+                - if @admin
+                  td = link_to t('.vm_info'), vm_info_admin_nebula_identity_path(n_i),
+                    method: :patch, class: 'btn btn-primary'
+                  td = link_to t('.show_logs'), api_logs_admin_nebula_identity_path(n_i), class: 'btn btn-primary'
+
+                - else
+                  td = link_to t('.vm_info'), vm_info_nebula_identity_path(n_i),
+                    method: :patch, class: 'btn btn-primary'
+
+          .col-md-3
+            ul
+              - if n_i.human_possible_actions.any?
+                - n_i.human_possible_actions.each do |a|
+                  li class="text-left"
+                    - if @admin
+                      = link_to a.second, change_state_admin_nebula_identity_path(n_i, params: { vm_action: a.first }),
+                        class: 'dropdown-item',
+                        method: :patch
+                    - else
+                      = link_to a.second, change_state_nebula_identity_path(n_i, params: { vm_action: a.first }),
+                        class: 'dropdown-item',
+                        method: :patch, data: { confirm: CloudComputing::NebulaIdentity.hint_for_action(a.first) }
+              - else
+                = t('.no_actions')
+              span.glyphicon.glyphicon-question-sign  style="margin-top: 10px;" title= t('.hint')

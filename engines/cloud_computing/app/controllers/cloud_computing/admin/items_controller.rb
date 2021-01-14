@@ -1,7 +1,7 @@
 require_dependency "cloud_computing/application_controller"
 
-module CloudComputing
-  class Admin::ItemsController < Admin::ApplicationController
+module CloudComputing::Admin
+  class ItemsController < CloudComputing::Admin::ApplicationController
     def index
       @search = CloudComputing::Item.search(params[:q])
       @items = @search.result(distinct: true)
@@ -34,6 +34,11 @@ module CloudComputing
     def create
       @item = CloudComputing::Item.new(item_params)
       fill_resources
+      @item.resources.each do |resource|
+        if deleted_kinds.include? resource.resource_kind_id
+          resource.mark_for_destruction
+        end
+      end
       if @item.save
         redirect_to [:admin, @item]
       else
@@ -48,10 +53,10 @@ module CloudComputing
 
     def update
       @item = CloudComputing::Item.find(params[:id])
-      fill_resources
       if @item.update(item_params)
         redirect_to [:admin, @item]
       else
+        fill_resources
         render :edit
       end
     end
@@ -64,12 +69,16 @@ module CloudComputing
 
     private
 
-    # def cur_position
-    #   CloudComputing::Item.last_position + 1
-    # end
-
     def fill_resources
       @item.fill_resources
+    end
+
+    def deleted_kinds
+      item_params[:resources_attributes].values.select do |hash|
+        hash[:_destroy] == '1'
+      end.map do |hash|
+        hash[:resource_kind_id].to_i
+      end
     end
 
     def item_params

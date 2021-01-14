@@ -1,9 +1,9 @@
 require_dependency "cloud_computing/application_controller"
 
-module CloudComputing
-  class Admin::ResourceKindsController < Admin::ApplicationController
+module CloudComputing::Admin
+  class ResourceKindsController < CloudComputing::Admin::ApplicationController
     def index
-      @resource_kinds = ResourceKind.all
+      @resource_kinds = CloudComputing::ResourceKind.all
       respond_to do |format|
         format.html
         format.json do
@@ -15,7 +15,7 @@ module CloudComputing
     end
 
     def show
-      @resource_kind = ResourceKind.find(params[:id])
+      @resource_kind = CloudComputing::ResourceKind.find(params[:id])
       respond_to do |format|
         format.html do
           render 'cloud_computing/resource_kinds/show'
@@ -25,11 +25,11 @@ module CloudComputing
     end
 
     def new
-      @resource_kind = ResourceKind.new
+      @resource_kind = CloudComputing::ResourceKind.new
     end
 
     def create
-      @resource_kind = ResourceKind.new(resource_kind_params)
+      @resource_kind = CloudComputing::ResourceKind.new(resource_kind_params)
       if @resource_kind.save
         redirect_to [:admin, @resource_kind]
       else
@@ -38,11 +38,11 @@ module CloudComputing
     end
 
     def edit
-      @resource_kind = ResourceKind.find(params[:id])
+      @resource_kind = CloudComputing::ResourceKind.find(params[:id])
     end
 
     def update
-      @resource_kind = ResourceKind.find(params[:id])
+      @resource_kind = CloudComputing::ResourceKind.find(params[:id])
       if @resource_kind.update(resource_kind_params)
         redirect_to [:admin, @resource_kind]
       else
@@ -51,7 +51,7 @@ module CloudComputing
     end
 
     def destroy
-      @resource_kind = ResourceKind.find(params[:id])
+      @resource_kind = CloudComputing::ResourceKind.find(params[:id])
       @resource_kind.destroy!
       redirect_to admin_resource_kinds_path
     end

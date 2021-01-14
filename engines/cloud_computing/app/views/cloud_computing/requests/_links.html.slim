@@ -1,5 +1,5 @@
 .row
-  .col-md-3
+  .col-md-6
     = f.fields_for :left_positions do |ff|
         div.position position-id=ff.object.id style=" border: 2px solid black; padding: 10px; margin: 10px;"
           h3.position-name
@@ -11,7 +11,8 @@
           = ff.number_field  :amount, label_col: 'col-sm-6',
                       control_col: 'col-sm-6',
                       required: true,
-                      style: 'padding-right: 5%;'
+                      style: 'padding-right: 5%;',
+                      help: t('cloud_computing.requests.links.amount_help')
 
           = render 'cloud_computing/items/resource_positions_fields',
             ff: ff, item: ff.object.item, options: { control_col: 'col-sm-6',
@@ -22,37 +23,40 @@
             options_from_collection_for_select(ff.object.to_item_kinds, "id", "name"),
             style: 'width: 100%;', include_blank: true, 'position-id': ff.object.id
 
-          = ff.link_to_add 'not displayed', :from_links, class: 'add-from-links', style: 'display:none;'
-          = ff.fields_for :from_links do |fff|
-            div.from-link style=" border: 1px solid black; padding: 10px; margin: 10px;"
-              h5.position-name
-                span
-                  |
-                    #{t('cloud_computing.requests.links.added_items') + '  '}
-                b
-                  |
-                    #{fff.object&.to&.name}
+          = ff.link_to_add 'not displayed', :from_links, class: 'add-from-links',
+            style: 'display:none;', data: { target: "div#from-link-container-#{ff.object.id}" }
 
-              = fff.hidden_field :id
-              = fff.hidden_field :from_id, value: ff.object.id
-              = fff.hidden_field :to_item_id,class: 'target-to-item-id'
+          div id= "from-link-container-#{ff.object.id}"
+            = ff.fields_for :from_links do |fff|
+              div.from-link style=" border: 1px solid black; padding: 10px; margin: 10px;"
+                h5.position-name
+                  span
+                    |
+                      #{t('cloud_computing.requests.links.added_items') + '  '}
+                  b
+                    |
+                      #{fff.object&.to&.name}
 
-              = fff.number_field  :amount, label_col: 'col-sm-6',
-                          control_col: 'col-sm-6',
-                          required: true,
-                          label: CloudComputing::Position.human_attribute_name(:amount),
-                          value: fff.object.amount || 1,
-                          style: 'padding-right: 5%;',
-                          class: 'target-amount'
+                = fff.hidden_field :id
+                = fff.hidden_field :from_id, value: ff.object.id
+                = fff.hidden_field :to_item_id,class: 'target-to-item-id'
 
-              br
-              = fff.link_to_remove t("cloud_computing.requests.links.remove_link"), class: "fa fa-times text-danger"
+                = fff.number_field  :amount, label_col: 'col-sm-6',
+                            control_col: 'col-sm-6',
+                            required: true,
+                            label: CloudComputing::Position.human_attribute_name(:amount),
+                            value: fff.object.amount || 1,
+                            style: 'padding-right: 5%;',
+                            class: 'target-amount'
 
-              /= fff.number_field :amount, value: fff.object&.amount || 1, class: 'target-amount'
+                br
+                = fff.link_to_remove t("cloud_computing.requests.links.remove_link"), class: "fa fa-times text-danger"
+
+                /= fff.number_field :amount, value: fff.object&.amount || 1, class: 'target-amount'
     = f.form_group(style: 'padding-top: 10%;') do
       = f.submit t("buttons.save")
 
-  .col-md-9
+  .col-md-6
     .row
       .col-md-4
         table.table.table-striped.item-kind-list
