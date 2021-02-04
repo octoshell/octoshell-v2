@@ -22,7 +22,7 @@
                           label: CloudComputing::Position.human_attribute_name(:amount),
                           help: t('.amount_help')
 
-              = render 'cloud_computing/items/resource_positions_fields',
+              = render 'cloud_computing/items/resource_items_fields',
                 ff: fff, item: fff.object&.item, options: { control_col: 'col-sm-6',
                 label_col: 'col-sm-6' }
       = f.form_group do

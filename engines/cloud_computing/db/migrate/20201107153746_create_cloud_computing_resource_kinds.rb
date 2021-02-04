@@ -11,7 +11,7 @@ class CreateCloudComputingResourceKinds < ActiveRecord::Migration[5.2]
       t.string :measurement_en
       t.string :identity
       t.integer :content_type
-      t.belongs_to :item_kind
+      t.belongs_to :template_kind
       t.timestamps
     end
   end

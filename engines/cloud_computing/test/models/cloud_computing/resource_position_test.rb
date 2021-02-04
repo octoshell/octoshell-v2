@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module CloudComputing
-  class ResourcePositionTest < ActiveSupport::TestCase
+  class ResourceItemTest < ActiveSupport::TestCase
     # test "the truth" do
     #   assert true
     # end

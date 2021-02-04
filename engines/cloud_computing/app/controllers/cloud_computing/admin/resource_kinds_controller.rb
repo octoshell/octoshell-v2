@@ -62,7 +62,7 @@ module CloudComputing::Admin
       params.require(:resource_kind).permit(*CloudComputing::ResourceKind
                                        .locale_columns(:name, :description,
                                                        :measurement, :help),
-                                        :item_kind_id, :identity, :content_type)
+                                        :template_kind_id, :identity, :content_type)
     end
 
   end

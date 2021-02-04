@@ -1,165 +1,88 @@
 module CloudComputing
   class Item < ApplicationRecord
-    include CloudComputing::MassAssignment
-    translates :name, :description
-    belongs_to :item_kind, inverse_of: :items
-    has_many :resources, inverse_of: :item, dependent: :destroy
-    has_many :editable_resources, -> { where(editable: true) },
-             inverse_of: :item, dependent: :destroy, class_name: Resource.to_s
-    has_many :uneditable_resources, -> { where(editable: false) },
-             inverse_of: :item, dependent: :destroy, class_name: Resource.to_s
+    # cloud_computing_items
+    belongs_to :template, inverse_of: :items
+    belongs_to :holder, polymorphic: true, autosave: true, inverse_of: :items
+    # belongs_to :request, -> { where(cloud_computing_items: { holder_type: 'Request' }) },
+    #                    foreign_key: 'holder_id'
+    belongs_to :request, -> { where("#{Item.table_name}": { holder_type: Request.to_s }) },
+                              foreign_key: 'holder_id'
 
-    has_many :resources, inverse_of: :item, dependent: :destroy
-
-    has_many :positions, inverse_of: :item, dependent: :destroy
-    has_many :conditions, as: :from, dependent: :destroy
-    has_many :from_conditions, class_name: Condition.to_s, as: :to, dependent: :destroy
+    belongs_to :access, -> { where("#{Item.table_name}": { holder_type: Access.to_s }) },
+                              foreign_key: 'holder_id'
 
 
-    accepts_nested_attributes_for :resources, :positions, allow_destroy: true
+    # validates :item_id, uniqueness: { scope: %i[holder_id holder_type] }
+    has_many :from_links, class_name: 'CloudComputing::ItemLink', inverse_of: :from, dependent: :destroy, foreign_key: :from_id
+    has_many :to_links, class_name: 'CloudComputing::ItemLink',
+                        inverse_of: :to, dependent: :destroy, foreign_key: :to_id,
+                        autosave: true
+    has_many :from_items, class_name: Item.to_s,
+                              through: :from_links, source: :to
+    has_one :virtual_machine, inverse_of: :item
+    has_many :api_logs, inverse_of: :item
 
-    validates_translated :name, presence: true
+    has_many :resource_items, inverse_of: :item, dependent: :destroy
+    # has_many :to_items, class_name: Item.to_s, through: :from_links, source: :to
+    accepts_nested_attributes_for :from_links, :resource_items, :from_items, allow_destroy: true
 
-    validates :item_kind, presence: true
-    validates :identity, uniqueness: { scope: :item_kind_id }
-
-    validates :description_ru, :description_en, presence: true, if: :new_requests
-
-    scope :for_users, -> { where(new_requests: true) }
+    # validates :amount, numericality: { greater_than: 0 }, presence: true
+    validates :template, :holder, presence: true
 
     scope :with_user_requests, (lambda do |user|
-      joins(positions: :request).where(cloud_computing_requests: {
-                                         status: 'created', created_by_id: user
-                                       }).distinct
-
+      joins(:request).where(cloud_computing_requests: {
+                              status: 'created', created_by_id: user
+                            })
     end)
 
-    scope :item_kind_and_descendants, (lambda do |*item_kind_ids|
-      where(item_kind: ItemKind.where(id: item_kind_ids).map(&:self_and_descendants).flatten)
-
-    end)
-
-    before_save do
-      resources.each(&:save!)
-    end
-
-    def self.ransackable_scopes_skip_sanitize_args
-      ransackable_scopes
-    end
-
-    def self.ransackable_scopes(_auth_object = nil)
-      %i[item_kind_and_descendants]
-    end
-
-    def self.virtual_machine_items
-      item_kind = ItemKind.virtual_machine_cloud_type
-      return none unless item_kind
-
-      item_kinds = item_kind.self_and_descendants
-      where(item_kind: item_kinds)
-    end
-
-    def new_editable_resources
-      resources.where(editable: true).map do |resource|
-        ResourcePosition.new(resource: resource, value: resource.value)
-      end
-    end
-
-    def fill_resources
-      return unless item_kind
-
-      ResourceKind.where(item_kind_id: item_kind.self_and_ancestors)
-                  .where.not(id: resources.map(&:resource_kind_id)).each do |resource_kind|
-        resource = resources.new(resource_kind: resource_kind)
-        persisted? && resource.mark_for_destruction
-
-      end
-    end
-
-    def new_requests?
-      new_requests
-    end
-
-    def fill_positions(user)
-      request = Request.find_or_initialize_by(status: 'created', created_by: user)
-      positions.each do |position|
-        position.holder = request
-      end
-    end
-
-    def initial_requests?
-      self.class.virtual_machine_items.where(id: id).exists?
-    end
-
-    def as_json(options = {})
-      resources_array = resources.map do |r|
-        if r.editable
-          { name: r.resource_kind.name, value: r.human_range }
-        else
-          { name: r.resource_kind.name, value: r.value_with_measurement }
-        end
-      end
-      super(options).merge(name: name, description: description,
-                           item_kind_name: item_kind.name,
-                           resources: resources_array
-                           )
-
-    end
-
-
-    def all_conditions
-      if conditions.any?
-        conditions
-      else
-        Condition.where(from: item_kind.self_and_ancestors)
-      end
-    end
-
-    def requested(user)
-      positions.joins_requests.where(c_r:
-        { created_by_id: user.id, status: 'created' }).first&.amount
-    end
-
-
-    # def positions_for_user(user)
-    #   positions.joins_requests.where(c_r: { created_by_id: user.id,
-    #                                         status: 'created' }).first
-    #
+    # after_initialize do |item|
+    #   puts item.holder.inspect.red
     # end
-    def assign_atributes_for_positions(user)
-      positions.each do |position|
-        next if position.persisted?
 
-        position.holder = Request.find_or_initialize_by(status: 'created',
-                                                        created_by: user)
-      end
+    def to_item_kinds
+      TemplateKind.joins(:to_conditions)
+          .where(cloud_computing_conditions: { from_id: item.item_kind.self_and_ancestors,
+                                               from_type: TemplateKind.to_s })
     end
 
-    def created_positions(user)
-      positions.select do |position|
-        position.new_record? || position.holder.is_a?(Request) &&
-          position.holder.created_by_id == user.id &&
-          position.holder.status == 'created'
-      end
+    def shared_to_item_kinds
+      TemplateKind.joins(:to_conditions)
+          .where(cloud_computing_conditions: { from_id: item.item_kind.self_and_ancestors,
+                                               from_type: TemplateKind.to_s,
+                                               max: 0 })
     end
 
-    # def update_or_create_positions(user, params)
-    #   position = find_positions_for_user(user)
-    #   unless position
-    #     request = Request.find_or_initialize_by(status: 'created', created_by: user)
-    #     position = positions.new(holder: request)
-    #   end
-    #   position.assign_attributes(params)
-    #   position
-    #
-    #     # cloud_computing_positions: { item: item })
-    #   # positions.new(params) do
-    #   #
-    #   # end find_position_for_user(user)
+
+    # def to_link_amount
+    #   to_links.first.amount
     # end
-     # def self.last_position
-     #   order(position: :desc).first&.position || -1
-     # end
+    #
+    # def to_link_amount=(value)
+    #   to_links.to_a.first.assign_attributes(amount: value)
+    # end
+
+
+    def to_item_kinds_hash
+      to_item_kinds.map { |i_k| { id: i_k.id, text: i_k.name } }
+    end
+
+    def human_resources
+      (resource_items.to_a + template.uneditable_resources.to_a).map(&:name_value)
+    end
+
+    def as_json(_options = {})
+      {
+        id: id,
+        item_name: item.name,
+        # amount: amount,
+        to_item_kinds: to_item_kinds_hash
+      }
+    end
+
+    def name
+      item.name
+    end
 
   end
+
 end

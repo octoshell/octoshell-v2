@@ -7,7 +7,7 @@ div#left-position-container
     = ff.collection_select :item_id, CloudComputing::Item.virtual_machine_items.for_users, :id, :name
     = ff.number_field :amount, required: true
     = ff.link_to_remove t(".remove_position"), class: "fa fa-times text-danger"
-    = render 'cloud_computing/items/resource_positions_fields',
+    = render 'cloud_computing/items/resource_items_fields',
       ff: ff, item: ff.object.item, options: { control_col: 'col-sm-6',
       label_col: 'col-sm-6' }
 

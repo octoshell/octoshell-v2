@@ -1,0 +1,23 @@
+div class="row"
+  = bootstrap_nested_form_for [:admin, @template_kind], layout: :horizontal do |f|
+    - CloudComputing::TemplateKind.locale_columns(:name).each do |column|
+      = f.text_field column
+    - CloudComputing::TemplateKind.locale_columns(:description).each do |column|
+      = f.text_area column, rows: 4
+    = f.select :parent_id, nested_set_options(CloudComputing::TemplateKind,
+      @template_kind) {|i| "#{'-' * i.level} #{i.name}" }, include_blank: true
+    = f.select :cloud_class, CloudComputing::TemplateKind.human_cloud_classes
+    h3 =  CloudComputing::TemplateKind.human_attribute_name(:conditions)
+    = f.fields_for :conditions  do |ff|
+      div style="margin: 5%"
+        = ff.hidden_field :id
+        = ff.hidden_field :to_type, value: 'CloudComputing::TemplateKind'
+        = ff.select :to_id, nested_set_options(CloudComputing::TemplateKind) {|i| "#{'-' * i.level} #{i.name}" }
+        = ff.text_field :from_multiplicity
+        = ff.text_field :to_multiplicity
+        = ff.link_to_remove t(".remove_value"), class: "fa fa-times text-danger"
+
+    = f.link_to_add t(".add_value"), :conditions
+
+    = f.form_group do
+      = f.submit t("buttons.save")

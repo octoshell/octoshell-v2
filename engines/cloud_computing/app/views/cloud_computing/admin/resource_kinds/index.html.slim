@@ -9,7 +9,7 @@ div class="panel panel-default"
       table class="table table-hover"
         tr
           th = CloudComputing::ResourceKind.human_attribute_name("name")
-          th = CloudComputing::ResourceKind.human_attribute_name(:item_kind)
+          th = CloudComputing::ResourceKind.human_attribute_name(:template_kind)
           th = CloudComputing::ResourceKind.human_attribute_name(:content_type)
           th = CloudComputing::ResourceKind.human_attribute_name("measurement")
 
@@ -17,7 +17,7 @@ div class="panel panel-default"
         - @resource_kinds.each do |resource_kind|
           tr
             td  = link_to resource_kind.name, admin_resource_kind_path(resource_kind)
-            td  = link_to resource_kind.item_kind.name, [:admin, resource_kind.item_kind]
+            td  = link_to resource_kind.template_kind.name, [:admin, resource_kind.template_kind]
             td  = resource_kind.human_content_type
             td  = resource_kind.measurement
             td

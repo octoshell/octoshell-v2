@@ -11,7 +11,7 @@ module CloudComputing
       access = CloudComputing::Access.create!(for: project,
                                               user: project.owner,
                                               allowed_by: User.superadmins.first)
-      template = CloudComputing::ItemKind.virtual_machine.first.items.first
+      template = CloudComputing::TemplateKind.virtual_machine.first.items.first
 
       CloudComputing::SupportMethods.add_positions(access, template)
 
@@ -20,7 +20,7 @@ module CloudComputing
 
     def self.create_virtual_machine
       nebula_id = 71
-      virtual_kind = CloudComputing::ItemKind.create!(name_ru: 'Виртуальная машина',
+      virtual_kind = CloudComputing::TemplateKind.create!(name_ru: 'Виртуальная машина',
                                                       name_en: 'Virtual machine',
                                                       cloud_type: 'virtual_machine')
 
@@ -58,7 +58,7 @@ module CloudComputing
 
     def self.create_disk
 
-      disk_kind = CloudComputing::ItemKind.create!(name_ru: 'Диск',
+      disk_kind = CloudComputing::TemplateKind.create!(name_ru: 'Диск',
                                                       name_en: 'Disk',
                                                       cloud_type: 'disk')
 
@@ -85,14 +85,14 @@ module CloudComputing
       holder.positions.create!(amount: 2, item: template)
       holder.positions.create!(amount: 1, item: template)
       template.resources.where(editable: true).each do |resource|
-        holder.positions.first.resource_positions.create!(resource: resource,
+        holder.positions.first.resource_items.create!(resource: resource,
                                                           value: resource.value)
         value = if resource.resource_kind.positive_integer?
                   resource.value.to_i + 1
                 else
                   resource.value.to_f + 1
                 end
-        holder.positions.second.resource_positions.create!(resource: resource,
+        holder.positions.second.resource_items.create!(resource: resource,
                                                              value: value)
       end
     end

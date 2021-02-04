@@ -23,7 +23,7 @@ module CloudComputing
       @project.users << user_without_active_key
       @project.users << create(:user)
 
-      @template = CloudComputing::ItemKind.virtual_machine.first.items.first
+      @template = CloudComputing::TemplateKind.virtual_machine.first.items.first
       @access = CloudComputing::Access.create!(for: @project,
                                                user: @project.owner,
                                                allowed_by: create(:admin))

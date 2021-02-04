@@ -1,9 +1,9 @@
 CloudComputing::Engine.routes.draw do
   namespace :admin do
-    root 'items#index'
+    root 'templates#index'
     resources :resource_kinds
-    resources :items
-    resources :item_kinds do
+    resources :templates
+    resources :template_kinds do
       member do
         post :load_templates
         post :add_necessary_attributes
@@ -21,7 +21,7 @@ CloudComputing::Engine.routes.draw do
       end
     end
 
-    resources :positions do
+    resources :items do
       member do
         get :api_logs
       end
@@ -43,7 +43,7 @@ CloudComputing::Engine.routes.draw do
         post :create_from_request
       end
     end
-    resources :nebula_identities do
+    resources :virtual_machines do
       member do
         patch :change_state
         patch :vm_info
@@ -52,11 +52,11 @@ CloudComputing::Engine.routes.draw do
     end
   end
 
-  root 'items#index'
-  resources :item_kinds
+  root 'templates#index'
+  resources :template_kinds
   resources :resource_kinds, only: :show
 
-  resources :items do
+  resources :templates do
     member do
       post :update_position
       get :simple_show
@@ -71,13 +71,13 @@ CloudComputing::Engine.routes.draw do
       post :update_vm
       get :edit_links
       post :update_links
-
+      get :edit_net
       post :to_sent
       post :cancel
     end
   end
 
-  resources :nebula_identities do
+  resources :virtual_machines do
     member do
       patch :change_state
       patch :vm_info

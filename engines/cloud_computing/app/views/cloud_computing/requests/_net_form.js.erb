@@ -1,0 +1,126 @@
+
+controller = {
+  data: [],
+  twbs: $('div.pagination'),
+  table: $('table.item-kind-list'),
+  table_template: Handlebars.compile('<tr><td item-id="{{item_id}}">{{name}}</td></tr>'),
+  item_data: [],
+  active: null,
+  searchData: function(item_id){
+    for(var i in controller.data){
+      if(Number(controller.data[i].id) == Number(item_id)){
+        return controller.data[i];
+      }
+    }
+  }
+}
+
+function renderTable(data){
+  controller.item_data = data;
+  for (var i = 0; i < data.length; i++) {
+    controller.table.append(controller.table_template({item_id: data[i].id, name: data[i].name}));
+      //Do something
+  }
+  // controller.table
+}
+
+function ajaxItems(item_kind_id, page){
+  $.ajax('/cloud_computing/items/', {
+    type: 'get',
+    dataType: 'json',
+    data: { item_kind_id: item_kind_id, page: page } ,
+    success : function(data) {
+      renderTable(data.data);
+      $('div.item-container').empty();
+      controller.twbs.twbsPagination('destroy');
+      controller.twbs.ruTwbsPagination({
+        totalPages: data.pages,
+        startPage: data.page,
+        onPageClick: function (event, page) {
+                // console.log(event);
+                // console.log(page);
+          controller.twbs.on('page', function (event, page) {
+            ajaxItems(item_kind_id, page);
+          });
+        }
+      });
+
+
+    },
+    error: function() {
+        alert("Error");
+    }
+  });
+
+}
+
+function getItems(item_kind_id){
+  ajaxItems(item_kind_id,1);
+}
+
+function compileTemplates(){
+  controller.item_template =  Handlebars.compile($('#item-show').html());
+}
+
+$(document).ready(function(){
+  compileTemplates();
+  $('div.position').each(function(){
+    controller.data.push({
+      id: $(this).attr('position-id'),
+      name: $(this).find('.position-name').text()
+    });
+  });
+
+  $(document).on('change',"select[name='to_item_kinds']",function(){
+    var id = $(this).find("option:selected").val();
+    controller.table.empty();
+    if(id == null || id == ''){
+      return;
+    }
+    var position_id = $(this).parents('div.position').attr('position-id');
+    controller.active = controller.searchData(position_id);
+    getItems(id);
+  });
+
+  $(document).on('click',"table.item-kind-list td",function(){
+    var item_id = $(this).attr('item-id');
+    var item;
+    for(var i in controller.item_data){
+      if(controller.item_data[i].id == Number(item_id)){
+        item = controller.item_data[i];
+      }
+    }
+    $('div.item-container').html(controller.item_template(item));
+    // $(this).parent().css('background-color', '#337ab7')
+    $(this).parent().css('background-color', '#337ab7');
+    $(this).parent().css('color', 'white');
+
+    $('table.item-kind-list tr').not($(this).parent()).css('background-color', '');
+    $('table.item-kind-list tr').not($(this).parent()).css('color', '');
+
+
+  });
+
+
+  $(document).on('click', 'button.add-item',function(e){
+
+    var item_id = $(this).attr('item-id');
+    pos = pos + 1;
+    var item_name = $(this).attr('item-name') + ' ' + pos;
+
+    var target_position = $('.net-list');
+    target_position.append('<tr><td>' + item_name +  '</td> </tr>');
+
+    var newOption = new Option(item_id, item_name, true, true);
+    $('div.position select').append(newOption).trigger('change');
+    $('.ch-list .col-sm-10').append('<div class="checkbox"> <label for="request_left_positions_attributes_0_to_links_3"><input type="checkbox" value="3" name="request[left_positions_attributes][0][to_links][]" id="request_left_positions_attributes_0_to_links_3">'+ item_name + '</label></div>');
+
+
+
+    e.preventDefault();
+    return false;
+  });
+
+});
+
+var pos = 0;

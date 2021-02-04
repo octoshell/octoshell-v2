@@ -1,0 +1,41 @@
+= javascript_tag do
+  = render partial: 'cloud_computing/requests/to_assets', formats: 'js'
+
+script#fields type='text/x-handlebars-template'
+  .fields id="{{id}}"
+      .col-md-6
+        div style='margin: 10%;'
+          .action-panel
+
+            = select_tag 'template_id', options_from_collection_for_select(CloudComputing::Template.virtual_machine_templates.order(:name_ru), "id", "name"),
+              id: '{{id}}'
+            button.copy-item = t('.copy')
+
+          .item-content
+
+script#number-field type='text/x-handlebars-template'
+  .form-group
+    label.control-label.required for="{{id}}"  {{label}}
+    input.form-control step="{{step}}" id="{{id}}" name="{{name}}" type="number" value="{{value}}"
+      span.help-block
+         '{{help}}
+
+
+script#boolean-field type='text/x-handlebars-template'
+  .form-group
+    .checkbox
+      label for="{{id}}"
+        input name="{{name}}" type="hidden" value="0"
+        input id="{{id}}" name="{{name}}" type="checkbox" value="1"
+          '{{label}}
+    span.help-block
+      '{{help}}
+
+
+script#help-message  type='text/x-handlebars-template'
+  = t('.help').html_safe
+
+css:
+   div.action-panel > *{
+     margin: 2%;
+   }

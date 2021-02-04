@@ -1,13 +1,13 @@
-= f.link_to_add t(".add_positions"), :left_positions,
-  data:  { :target => "#left-position-container" }
-div#left-position-container
-  = f.fields_for :left_positions do |ff|
+= f.link_to_add t(".add_items"), :left_items,
+  data:  { :target => "#left-item-container" }
+div#left-item-container
+  = f.fields_for :left_items do |ff|
     div style='margin: 5%;'
     = ff.hidden_field :id
     = ff.collection_select :item_id, CloudComputing::Item.virtual_machine_items.for_users, :id, :name
     = ff.number_field :amount, required: true
-    = ff.link_to_remove t(".remove_position"), class: "fa fa-times text-danger"
-    = render 'cloud_computing/items/resource_positions_fields',
+    = ff.link_to_remove t(".remove_item"), class: "fa fa-times text-danger"
+    = render 'cloud_computing/items/resource_items_fields',
       ff: ff, item: ff.object.item, options: { control_col: 'col-sm-6',
       label_col: 'col-sm-6' }
 

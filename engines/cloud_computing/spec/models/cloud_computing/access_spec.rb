@@ -6,7 +6,7 @@ module CloudComputing
       @project = create(:project)
       @project2 = create(:project)
 
-      @template = CloudComputing::ItemKind.virtual_machine.first.items.first
+      @template = CloudComputing::TemplateKind.virtual_machine.first.items.first
       @request = CloudComputing::Request.create!(for: @project, created_by: @project.owner)
       @access = CloudComputing::Access.create!(for: @project2,
         user: @project2.owner, allowed_by: create(:admin))
@@ -25,11 +25,11 @@ module CloudComputing
         access.copy_from_request
         access.save!
         access_resource_ids = access.positions
-                                    .map(&:resource_positions)
+                                    .map(&:resource_items)
                                     .flatten.map(&:resource_id)
 
         request_resource_ids = @request.positions
-                                       .map(&:resource_positions)
+                                       .map(&:resource_items)
                                        .flatten.map(&:resource_id)
 
         expect(access_resource_ids.sort).to eq request_resource_ids.sort
@@ -40,7 +40,7 @@ module CloudComputing
     describe '#pend!' do
       it 'pends' do
         @access.pend!
-        puts @access.positions&.first&.nebula_identities&.first&.api_logs.inspect
+        puts @access.positions&.first&.virtual_machines&.first&.api_logs.inspect
         puts @access.positions.first.api_logs.first.log.inspect
 
       end

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module CloudComputing
-  class ItemKindTest < ActiveSupport::TestCase
+  class TemplateKindTest < ActiveSupport::TestCase
     # test "the truth" do
     #   assert true
     # end

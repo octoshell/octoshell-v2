@@ -7,7 +7,7 @@ module CloudComputing::Admin
       @url = api_logs_admin_position_path(params[:id])
       @search = CloudComputing::ApiLog.search(params[:q])
       @api_logs = @search.result(distinct: true)
-                         .where(nebula_identity_id: nil,
+                         .where(virtual_machine_id: nil,
                                 position_id: params[:id])
                          .order(created_at: :desc)
                          .page(params[:page])

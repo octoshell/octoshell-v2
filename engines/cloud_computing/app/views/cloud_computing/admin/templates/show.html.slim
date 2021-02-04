@@ -1,0 +1,17 @@
+- content_for :title do
+    - t(".title", template: @template.name)
+
+div class="panel panel-default"
+  div class="panel-heading"
+    - if can?(:manage, :cloud)
+      = link_to t('actions.edit'), [:edit, :admin, @template], class: "btn btn-default"
+.row
+  .col-md-6
+    blockquote
+      - admin_template_show_attrs(@template).each do |key, value|
+          - Array(key).each do |key|
+              h4
+                b = CloudComputing::Template.human_attribute_name key
+              p = value || @template.public_send(key)
+  .col-md-6
+   = render partial: 'cloud_computing/templates/resources'

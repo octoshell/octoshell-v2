@@ -7,12 +7,12 @@ module CloudComputing
     belongs_to :allowed_by, class_name: 'User'
     belongs_to :user
 
-    belongs_to :request, inverse_of: :access
-    # has_many :virtual_machines, through: :left_positions,
+    has_many :requests, inverse_of: :access
+    # has_many :virtual_machines, through: :left_items,
     #                             class_name: 'CloudComputing::NebulaIdentity',
-    #                             source: :nebula_identities
+    #                             source: :virtual_machines
     validates :for, :user, :allowed_by, presence: true
-    validates :request_id, uniqueness: true, if: :request
+    # validates :request_id, uniqueness: true, if: :request
     aasm(:state) do
       state :created, initial: true
       state :approved
@@ -22,11 +22,11 @@ module CloudComputing
       event :approve do
         transitions from: :created, to: :approved do
           guard do
-            self.for && positions.exists? && positions_filled?
+            self.for && items.exists? && items_filled?
           end
 
           after do
-            request.approve! if request
+            requests.each(&:approve!)
             instantiate_vm
           end
 
@@ -49,40 +49,39 @@ module CloudComputing
     end
 
 
-    def add_position(position)
-      pos = positions.new(position.slice('item_id', 'amount'))
-      position.resource_positions.each do |r_p|
-        pos.resource_positions
+    def add_item(item)
+      pos = items.new(item.slice('template_id'))
+      item.resource_items.each do |r_p|
+        pos.resource_items
            .build(r_p.attributes.slice('resource_id', 'value'))
       end
       pos
     end
 
     def virtual_machines
-      NebulaIdentity.where(position: left_positions)
+      VirtualMachine.where(item: left_items)
     end
 
-    def copy_from_request
+    def copy_from_request(request)
       return unless request
 
       self.for = request.for
       self.user = request.created_by
-      pos_hash = Hash[request.positions.map do |position|
-        [position, add_position(position)]
+      pos_hash = Hash[request.items.map do |item|
+        [item, add_item(item)]
       end]
 
-      request.positions.each do |position|
-        from_position = pos_hash[position]
-        position.from_links.each do |link|
-          from_position.from_links.new(to: pos_hash[link.to],
-                                       amount: link.amount)
+      request.items.each do |item|
+        from_item = pos_hash[item]
+        item.from_links.each do |link|
+          from_item.from_links.new(to: pos_hash[link.to])
         end
       end
     end
 
     def instantiate_vm
-      # OpennebulaTask.instantiate_access(id)
-      TaskWorker.perform_async(:instantiate_access, id)
+      OpennebulaTask.instantiate_access(id)
+      # TaskWorker.perform_async(:instantiate_access, id)
     end
 
     def terminate_access
@@ -91,8 +90,8 @@ module CloudComputing
     end
 
     def reinstantiate?
-      left_positions.any? do |position|
-        (position.amount - position.nebula_identities.count).positive?
+      left_items.any? do |item|
+        !item.virtual_machine
       end
     end
 

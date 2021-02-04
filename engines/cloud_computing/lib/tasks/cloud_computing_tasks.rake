@@ -11,25 +11,25 @@ namespace :cloud_computing do
 
   task prod_seed: :environment do
     ActiveRecord::Base.transaction do
-      virtual_kind = CloudComputing::ItemKind.create!(name_ru: 'Виртуальная машина',
+      virtual_kind = CloudComputing::TemplateKind.create!(name_ru: 'Виртуальная машина',
                                                      name_en: 'Virtual machine',
-                                                     cloud_type: 'virtual_machine')
+                                                     cloud_class: CloudComputing::VirtualMachine.to_s)
 
       virtual_kind.resource_kinds.create!(name_ru: 'Оперативная память',
         name_en: 'Main Memory', measurement_en: 'GB', measurement_ru: 'GB',
-        identity: 'MEMORY')
+        identity: 'MEMORY', content_type: 'positive_integer')
 
       virtual_kind.resource_kinds.create!(name_ru: 'Центральные процессоры',
         name_en: 'CPU', measurement_en: '', measurement_ru: '',
-        identity: 'CPU',
+        identity: 'CPU', content_type: 'decimal',
         help_ru: 'Число процессоров: 0,5 - половина процессора, 2,0 - 2 процессора')
 
 
       virtual_kind.resource_kinds.create!(name_ru: 'Жёсткий диск',
         name_en: 'Hard drive', measurement_en: 'GB', measurement_ru: 'GB',
-        identity: 'DISK=>SIZE')
+        identity: 'DISK=>SIZE', content_type: 'positive_integer')
     end
-    # ItemKind.
+    # TemplateKind.
   end
 
   task seed: :environment do

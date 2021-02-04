@@ -5,9 +5,9 @@ module CloudComputing
     def cloud_computing_submenu_items
       menu = Face::MyMenu.new
       menu.add_item_without_key(t("cloud_computing.engine_submenu.item_list"),
-                                items_path, 'cloud_computing/items')
-      menu.add_item_without_key(t("cloud_computing.engine_submenu.item_kind_list"),
-                                item_kinds_path, 'cloud_computing/item_kinds')
+                                templates_path, 'cloud_computing/templates')
+      menu.add_item_without_key(t("cloud_computing.engine_submenu.template_kind_list"),
+                                template_kinds_path, 'cloud_computing/template_kinds')
 
       if can?(:create, CloudComputing::Request)
         menu.add_item_without_key(t("cloud_computing.engine_submenu.request_list"),
@@ -23,10 +23,10 @@ module CloudComputing
       menu = Face::MyMenu.new
       menu.add_item_without_key(t("cloud_computing.engine_submenu.resource_kind_list"),
                                 admin_resource_kinds_path, 'cloud_computing/admin/resource_kinds')
-      menu.add_item_without_key(t("cloud_computing.engine_submenu.item_list"),
-                                admin_items_path, 'cloud_computing/admin/items')
-      menu.add_item_without_key(t("cloud_computing.engine_submenu.item_kind_list"),
-                                admin_item_kinds_path, 'cloud_computing/admin/item_kinds')
+      menu.add_item_without_key(t("cloud_computing.engine_submenu.template_list"),
+                                admin_templates_path, 'cloud_computing/admin/templates')
+      menu.add_item_without_key(t("cloud_computing.engine_submenu.template_kind_list"),
+                                admin_template_kinds_path, 'cloud_computing/admin/template_kinds')
       menu.add_item_without_key(t("cloud_computing.engine_submenu.request_list"),
                                 admin_requests_path, 'cloud_computing/admin/requests')
       menu.add_item_without_key(t("cloud_computing.engine_submenu.access_list"),
@@ -56,7 +56,7 @@ module CloudComputing
     def resource_kind_show_attrs(r_k)
       {
         name: nil,
-        item_kind_id: link_to(r_k.item_kind.name, [:admin, r_k.item_kind]),
+        template_kind_id: link_to(r_k.template_kind.name, [:admin, r_k.template_kind]),
         content_type: r_k.human_content_type,
         %i[measurement help description] => nil
       }
@@ -72,14 +72,54 @@ module CloudComputing
       ''
     end
 
-    def admin_item_show_attrs(item)
+    def admin_template_show_attrs(template)
       {
         name: nil,
-        item_kind_id: link_to(item.item_kind.name, [:admin, item.item_kind]),
+        template_kind_id: link_to(template.template_kind.name, [:admin, template.template_kind]),
         description: nil,
-        new_requests: t(item.new_requests),
+        new_requests: t(template.new_requests),
         identity: nil
       }
     end
+
+    def json_templates
+      CloudComputing::Template.virtual_machine_templates.map { |template|
+        editable_resources = template.editable_resources.order(:resource_kind_id).map do |r|
+          {
+            resource_id: r.id,
+            name: r.resource_kind.name,
+            resource_kind_id: r.resource_kind_id,
+            help: r.resource_kind.help,
+            value: r.value,
+            min: r.processed_min,
+            max: r.processed_max,
+            content_type: r.resource_kind.content_type
+          }
+        end
+        hash = Hash[%i[id name description].map { |a| [a, template.send(a)] }]
+
+        hash.merge(
+          template_kind_name: template.template_kind.name,
+          editable_resources: editable_resources
+        )
+      }.to_json.html_safe
+    end
+
+    def json_items(request)
+      request.items.map do |item|
+        resource_items = item.resource_items.to_a
+                             .sort_by { |r| r.resource.resource_kind_id }
+                             .map(&:attributes)
+        puts resource_items.inspect.green
+        hash = Hash[%i[id template_id].map { |a| [a, item.send(a)] }]
+
+        hash.merge(
+          resource_items: resource_items
+        )
+      end.to_json.html_safe
+
+
+    end
+
   end
 end

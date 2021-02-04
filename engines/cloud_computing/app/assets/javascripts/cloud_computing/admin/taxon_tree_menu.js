@@ -1,13 +1,13 @@
 var root = typeof exports !== 'undefined' && exports !== null ? exports : this
-base_url = '/cloud_computing/admin/item_kinds/';
+base_url = '/cloud_computing/admin/template_kinds/';
 var Translations = {
   'add': 'add',
   'rename': 'rename',
   'remove': 'remove',
   'edit': 'edit'
 }
-root.item_kinds_menu = function (obj, context,p3) {
-  var item_kinds_tree = $('#item_kinds_tree').jstree(true);
+root.template_kinds_menu = function (obj, context,p3) {
+  var template_kinds_tree = $('#template_kinds_tree').jstree(true);
 
   console.log(obj);
   console.log(context);
@@ -18,13 +18,13 @@ root.item_kinds_menu = function (obj, context,p3) {
       label: '<span class="glyphicon glyphicon-plus"></span> ' + Translations.add,
       action: function () {
 
-        // return item_kinds_tree.edit(obj);
-        $("#item_kinds_tree").jstree("create_node", obj, null, "last", function (node) {
+        // return template_kinds_tree.edit(obj);
+        $("#template_kinds_tree").jstree("create_node", obj, null, "last", function (node) {
           this.edit(node);
         });
 
-        // return item_kinds_tree.create_node(obj,null,null,'last', function (node) {
-        //   item_kinds_tree.edit(node);
+        // return template_kinds_tree.create_node(obj,null,null,'last', function (node) {
+        //   template_kinds_tree.edit(node);
         // });
       }
     },
@@ -34,13 +34,13 @@ root.item_kinds_menu = function (obj, context,p3) {
         console.log(obj);
         console.log(this);
 
-        return item_kinds_tree.edit(obj)
+        return template_kinds_tree.edit(obj)
       }
     },
     remove: {
       label: '<span class="glyphicon glyphicon-trash"></span> ' + Translations.remove,
       action: function () {
-        return item_kinds_tree.delete_node(obj)
+        return template_kinds_tree.delete_node(obj)
       }
     },
     edit: {

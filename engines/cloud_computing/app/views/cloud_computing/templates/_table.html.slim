@@ -1,0 +1,19 @@
+- if templates.any?
+  div class="panel-body"
+    table class="table table-hover"
+      tr
+        th = CloudComputing::Item.human_attribute_name("name")
+        th = CloudComputing::Item.human_attribute_name("description")
+        th = t('.requested')
+
+        th
+      - templates.each do |template|
+        tr
+          td class="col-xs-3" = link_to template.name, template_path(template)
+          td class="col-xs-3" = template.description
+          /i class="fa fa-check"
+          /i class="fa fa-times"
+          td class="col-xs-1" = @positions[template.id]
+- else
+  div class="panel-body"
+    p = t(".no_templates_found")

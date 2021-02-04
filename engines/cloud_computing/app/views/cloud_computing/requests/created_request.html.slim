@@ -7,9 +7,9 @@ css:
     margin-left: 10px;
   }
 
-- unless @request.positions_filled?
+- unless @request.items_filled?
   .alert.alert-info role="alert"
-    =t('.fill_positions')
+    =t('.fill_items')
 
 .well
   = link_to t('.edit_created_request'), edit_created_request_requests_path, class: "btn btn-warning"

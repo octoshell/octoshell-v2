@@ -1,13 +1,13 @@
 module CloudComputing
   class Resource < ApplicationRecord
     belongs_to :resource_kind, inverse_of: :resources
-    belongs_to :item, inverse_of: :resources
-    has_many :resource_positions, inverse_of: :position, dependent: :destroy
+    belongs_to :template, inverse_of: :resources
+    has_many :resource_items, inverse_of: :position, dependent: :destroy
 
-    validates :resource_kind, :item, :value, presence: true
+    validates :resource_kind, :template, :value, presence: true
     validates :min, :max, :value, presence: true, numericality: { greater_than_or_equal_to: 0 },
-                          if: :editable
-    validates :min, :max, absence: true, unless: :editable
+                          if: :editable_number?
+    validates :min, :max, absence: true, unless: :editable_number?
 
     validates :value, numericality: { only_integer: true },
                       if: :content_positive_integer?
@@ -16,17 +16,23 @@ module CloudComputing
                       numericality: { greater_than_or_equal_to: 0 }
 
 
+    validates :value, inclusion: { in: ['0', '1'] }, if: proc { |r|
+      r.resource_kind.boolean?
+    }
+
+
 
     validate do
-      if item.item_kind && resource_kind.item_kind &&
-         item.item_kind != resource_kind.item_kind
-        errors.add(:_destroy, :wrong_item_kind)
+      if template.template_kind && resource_kind.template_kind &&
+         template.template_kind != resource_kind.template_kind
+        errors.add(:_destroy, :wrong_template_kind)
       end
 
       if min && max && min > max
         errors.add(:min, :invalid)
       end
     end
+
 
     scope :where_identity, (lambda do |identity|
       joins(:resource_kind).where(cloud_computing_resource_kinds: {
@@ -35,6 +41,15 @@ module CloudComputing
 
     def content_positive_integer?
       resource_kind.positive_integer?
+    end
+
+
+    def processed_min
+      resource_kind.positive_integer? ? min.to_i : min
+    end
+
+    def processed_max
+      resource_kind.positive_integer? ? max.to_i : max
     end
 
     def human_min
@@ -47,6 +62,10 @@ module CloudComputing
 
     def human_range
       "#{human_min} - #{human_max}"
+    end
+
+    def editable_number?
+      editable && !resource_kind.boolean?
     end
 
     # def name_value

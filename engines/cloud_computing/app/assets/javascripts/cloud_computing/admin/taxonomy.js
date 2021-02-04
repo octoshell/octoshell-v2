@@ -1,14 +1,14 @@
 var root = typeof exports !== 'undefined' && exports !== null ? exports : this;
-base_url = '/cloud_computing/admin/item_kinds/';
+base_url = '/cloud_computing/admin/template_kinds/';
 
 function handle_ajax_error(jqXHR, textStatus, errorThrown) {
   show_flash('danger',jqXHR.responseText);
-  $('#item_kinds_tree').jstree("refresh");
+  $('#template_kinds_tree').jstree("refresh");
 }
 
 function handle_ajax_success(data) {
   show_flash('success', data);
-  $('#item_kinds_tree').jstree("refresh");
+  $('#template_kinds_tree').jstree("refresh");
 }
 
 
@@ -32,8 +32,8 @@ function handle_move(e, node_data) {
     url: base_url + '/' + node_data.node.id,
     data: {
       _method: 'put',
-      'item_kind[parent_id]': parent,
-      'item_kind[child_index]': node_data.position,
+      'template_kind[parent_id]': parent,
+      'template_kind[child_index]': node_data.position,
     },
   }).done(handle_ajax_success).fail(handle_ajax_error);
 }
@@ -58,9 +58,9 @@ function handle_create(e,node) {
       dataType: 'text',
       url: base_url.toString(),
       data: {
-        'item_kind[name]': node.text,
-        'item_kind[parent_id]': parent,
-        'item_kind[child_index]': position,
+        'template_kind[name]': node.text,
+        'template_kind[parent_id]': parent,
+        'template_kind[child_index]': position,
       }
     }).done(handle_ajax_success).fail(handle_ajax_error);
   }
@@ -78,7 +78,7 @@ function handle_rename(e, node_data) {
     url: url,
     data: {
       _method: 'put',
-      'item_kind[name]': node_data.text,
+      'template_kind[name]': node_data.text,
     }
   }).success(handle_ajax_success).fail(handle_ajax_error);
 }
@@ -95,14 +95,14 @@ function handle_delete(e, node_data) {
       }
     }).done(handle_ajax_success).fail(handle_ajax_error);
   } else {
-    $('#item_kinds_tree').jstree("refresh");
+    $('#template_kinds_tree').jstree("refresh");
   }
 }
 
 
-root.setup_item_kind_tree = function () {
-  var item_kinds_tree = $('#item_kinds_tree');
-  item_kinds_tree.jstree({ 'core' : {
+root.setup_template_kind_tree = function () {
+  var template_kinds_tree = $('#template_kinds_tree');
+  template_kinds_tree.jstree({ 'core' : {
     'data' : {
       'url' : base_url + 'jstree/'
     },
@@ -113,7 +113,7 @@ root.setup_item_kind_tree = function () {
     }
   },
   'contextmenu':{
-    'items': item_kinds_menu
+    'items': template_kinds_menu
   },
   "plugins" : ["dnd", 'wholerow','state', 'contextmenu']
 }).on('move_node.jstree', handle_move).bind('create_node.jstree', handle_create)
@@ -121,8 +121,8 @@ root.setup_item_kind_tree = function () {
 
 
 
-     // item_kinds_tree.bind("loaded.jstree", function () {
-     //     item_kinds_tree.jstree("open_all");
+     // template_kinds_tree.bind("loaded.jstree", function () {
+     //     template_kinds_tree.jstree("open_all");
      // });
 
 

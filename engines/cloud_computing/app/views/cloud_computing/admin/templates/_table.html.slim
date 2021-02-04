@@ -1,0 +1,31 @@
+- if @templates.any?
+  div class="panel-body"
+    table class="table table-hover"
+      tr
+        th = CloudComputing::Template.human_attribute_name("name")
+        th = CloudComputing::Template.human_attribute_name("description")
+        th = CloudComputing::Template.human_attribute_name("new_requests")
+
+        th
+      - @templates.each do |template|
+        tr
+          td class="col-xs-3" = link_to template.name, admin_template_path(template)
+          td class="col-xs-3" = template.description
+          td class="col-xs-1" = t template.new_requests
+          /i class="fa fa-check"
+          /i class="fa fa-times"
+
+          td
+            div class="btn-group pull-right"
+              = link_to t("actions.edit"), edit_admin_template_path(template), class: "btn btn-default btn-sm"
+              button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                span class="caret"
+              ul class="dropdown-menu" role="menu"
+                - name = t("actions.delete")
+                - confirm = t(".confirm", default: "Are You sure?")
+                - data = { method: :delete, confirm: confirm }
+                li class="text-left"
+                  = link_to name, admin_template_path(template), data: data
+- else
+  div class="panel-body"
+    p = t(".no_templates_found")

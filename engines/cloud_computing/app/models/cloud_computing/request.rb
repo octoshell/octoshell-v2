@@ -4,7 +4,7 @@ module CloudComputing
     include ::AASM_Additions
     include Holder
     belongs_to :created_by, class_name: 'User'
-    has_one :access, dependent: :destroy, inverse_of: :request
+    belongs_to :access, dependent: :destroy, inverse_of: :requests
     validates :status, uniqueness: { scope: %i[created_by_id] }, if: :created?
 
     validate do
@@ -20,9 +20,9 @@ module CloudComputing
 
 
     def linked_item_kinds
-      kinds = ItemKind.virtual_machine_cloud_type&.self_and_descendants || []
+      kinds = TemplateKind.virtual_machine_cloud_type&.self_and_descendants || []
 
-      rel = ItemKind.joins(items: :positions)
+      rel = TemplateKind.joins(items: :positions)
               .where(cloud_computing_positions: { holder_id: id,
                                                   holder_type: Request.to_s  })
               .map(&:self_and_ancestors).flatten.uniq(&:id)
@@ -42,7 +42,7 @@ module CloudComputing
       event :to_sent do
         transitions from: :created, to: :sent do
           guard do
-            self.for && positions.exists? && positions_filled?
+            self.for && items.exists? && items_filled?
           end
         end
       end

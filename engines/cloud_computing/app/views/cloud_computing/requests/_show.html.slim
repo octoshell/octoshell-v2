@@ -18,4 +18,4 @@
             h4
               b = CloudComputing::Request.human_attribute_name a
             p = @request.public_send a
-  = render 'cloud_computing/requests/positions', positions: @request.left_positions 
+  = render 'cloud_computing/requests/items', items: @request.left_items 

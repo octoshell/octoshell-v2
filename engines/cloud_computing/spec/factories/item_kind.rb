@@ -1,5 +1,5 @@
 # FactoryBot.define do
-#   factory :cloud_item_kind, class: "CloudComputing::ItemKind" do
+#   factory :cloud_item_kind, class: "CloudComputing::TemplateKind" do
 #     # association :to, factory: :version, strategy: :create
 #     # association :parent, factory: :cloud_item_kind, strategy: :null
 #

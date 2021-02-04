@@ -67,7 +67,7 @@ en:
         name: TRME Название
         parent: TRME Отцовский вид
         parent_id: TRME Родительский тип
-      cloud_computing/nebula_identity:
+      cloud_computing/virtual_machine:
         actions:
           poweroff: TRME Выключить
           poweroff-hard: TRME Жёстко выключить
@@ -266,7 +266,7 @@ en:
         table:
           confirm: TRME Вы действительно хотите удалить данную единицу?
           no_items_found: 'TRME Не найдено единиц '
-      nebula_identities:
+      virtual_machines:
         change_state:
           success: 'TRME Успешно обновлено '
           wrong_action: TRME  действие не валидно для текущего состояние
@@ -325,7 +325,7 @@ en:
         destroyed_successfully: TRME Успешно удалено
       index:
         title: TRME Список единиц облачного кластера
-      resource_positions_fields:
+      resource_items_fields:
         help: TRME Введите значение от <b>%{min}</b> до <b>%{max}</b>.
       resources:
         no_editable_resources: 'TRME Нет редактируемых ресурсов '
@@ -340,7 +340,7 @@ en:
       update:
         errors: TRME При редактировании были найдены ошибки
         updated_successfully: TRME Успешно обновлено
-    nebula_identities:
+    virtual_machines:
       change_state:
         success: TRME Состояние успешно обновлено
         wrong_action: TRME Неверное действие для данного состояния

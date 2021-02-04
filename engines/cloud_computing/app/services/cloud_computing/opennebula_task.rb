@@ -1,17 +1,6 @@
 module CloudComputing
   class OpennebulaTask
     SLEEP_SECONDS = 10
-    # def self.add_necessary_attributes(template_id)
-    #   results = OpennebulaClient.template_info(template_id)
-    #   return results unless results[0]
-    #
-    #   public_key_path = get_setting(:public_key_path)
-    #   public_key = File.read(public_key_path)
-    #   context = Hash.from_xml(results[1])['VMTEMPLATE']['TEMPLATE']['CONTEXT']
-    #   context = context.merge('USER' => 'root',
-    #                           'SSH_PUBLIC_KEY' => public_key)
-    #   OpennebulaClient.update_context_for_template(template_id, context)
-    # end
 
     def self.ssh_public_keys(access)
       Core::Credential.active.where(user_id: access.for.members.allowed
@@ -45,18 +34,18 @@ module CloudComputing
     def self.instantiate_access(access_id)
       access = Access.find(access_id)
       ssh = ssh_public_keys(access).join("\n")
-      access.left_positions.includes(:item).each do |position|
-        instantiate_vm(position, ssh)
+      access.left_items.includes(:template).each do |item|
+        instantiate_vm(item, ssh)
       end
 
-      NebulaIdentity.where(position: access.left_positions,
+      VirtualMachine.where(item: access.left_items,
                            state: 'initial').each do |n_i|
         wait_for_running_state_vm(n_i)
       end
     end
 
-    def self.instantiate_vm(position, ssh)
-      template_id = position.item.identity
+    def self.instantiate_vm(item, ssh)
+      template_id = item.template.identity
       results = OpennebulaClient.template_info(template_id)
       return results unless results[0]
 
@@ -66,19 +55,18 @@ module CloudComputing
       hash['USER'] = 'root'
       hash['OCTOSHELL_BOUND_TO_TEMPLATE'] = 'OCTOSHELL_BOUND_TO_TEMPLATE'
 
-      hash_from_position(hash, position)
+      hash_from_item(hash, item)
       value_string = to_value_string(hash, "\n")
-      count = position.nebula_identities.count
-      (1..(position.amount - count)).map do
-        n_i = position.nebula_identities.create!(state: 'initial', last_info: DateTime.now)
-        name = "octo-#{position.holder.id}-#{position.id}-#{n_i.id}"
+      unless item.virtual_machine
+        n_i = item.create_virtual_machine!(state: 'initial', last_info: DateTime.now)
+        name = "octo-#{item.holder.id}-#{item.id}-#{n_i.id}"
         results = OpennebulaClient.instantiate_vm(template_id, name, value_string)
         if results[0]
           n_i.update!(identity: results[1]) # && results << n_i.errors.to_h
-          n_i.api_logs.create!(action: 'on_create', log: results, position: n_i.position)
+          n_i.api_logs.create!(action: 'on_create', log: results, item: n_i.item)
         else
           n_i.destroy
-          position.api_logs.create!(log: results, action: 'on_create')
+          item.api_logs.create!(log: results, action: 'on_create')
         end
       end
     end
@@ -101,7 +89,7 @@ module CloudComputing
           run_callbacks(n_i)
           break
         elsif error?(state, lcm_state)
-          n_i.api_logs.create!(position: n_i.position,
+          n_i.api_logs.create!(item: n_i.item,
                               log: "Error: vm in #{state}:#{lcm_state}",
                               action: 'on_create')
           break
@@ -116,7 +104,7 @@ module CloudComputing
     end
 
     def self.error?(state, lcm_state)
-      return false if %w[0 1 6].include?(state)
+      return false if %w[0 1 6 10 11].include?(state)
 
       if state == '3' && %w[0 1 2 4 7 8 9 10 11].include?(lcm_state)
         return false
@@ -127,8 +115,8 @@ module CloudComputing
 
     def self.run_callbacks(n_i)
       n_i.update!(lcm_state: 'RUNNING', state: 'ACTIVE', last_info: DateTime.now)
-      value = n_i.position.resource_positions.where_identity('DISK=>SIZE')
-                 .first&.value || n_i.position.item.resources.where(editable: false)
+      value = n_i.item.resource_items.where_identity('DISK=>SIZE')
+                 .first&.value || n_i.item.template.resources.where(editable: false)
                                           .where_identity('DISK=>SIZE')
                                           .first&.value
 
@@ -136,7 +124,7 @@ module CloudComputing
 
       results = OpennebulaClient.vm_disk_resize(n_i.identity, 0,
                                                 (value.to_i * 1024).to_s)
-      n_i.api_logs.create!(position: n_i.position,
+      n_i.api_logs.create!(item: n_i.item,
                            log: results,
                            action: 'initial_resize')
     end
@@ -178,7 +166,7 @@ module CloudComputing
     def self.terminate_access(access_id)
       access = Access.find(access_id)
 
-      nis = NebulaIdentity.where(position: access.left_positions)
+      nis = VirtualMachine.where(item: access.left_items)
       nis.each do |n_i|
         terminate_vm(n_i.identity)
       end
@@ -202,11 +190,11 @@ module CloudComputing
       end.join(delim)
     end
 
-    def self.hash_from_position(hash, position)
-      position.resource_positions.with_identity.each do |r_p|
+    def self.hash_from_item(hash, item)
+      item.resource_items.with_identity.each do |r_p|
         assign_identity(hash, r_p.resource.resource_kind.identity, r_p.value)
       end
-      position.item.resources.where(editable: false).each do |resource|
+      item.template.resources.where(editable: false).each do |resource|
         assign_identity(hash, resource.resource_kind.identity, resource.value)
       end
       hash
@@ -214,7 +202,7 @@ module CloudComputing
 
     def self.assign_identity(hash, identity, value)
       if identity == 'MEMORY'
-        hash['MEMORY'] = (value * 1024).to_i
+        hash['MEMORY'] = (value.to_i * 1024).to_i
       # elsif identity == 'DISK=>SIZE'
       #   hash['DISK'] ||= {}
       #   hash['DISK']['SIZE'] = value.to_i * 1024
