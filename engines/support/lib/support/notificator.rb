@@ -96,11 +96,10 @@ module Support
 
     def process_topic_attributes(attributes)
       t_a = form_topic_attributes(self.class.topic_names, attributes)
-      p_a = form_topic_attributes(self.class.parent_topic_names, attributes)
-
+      parent_topic = parent_topic(attributes)
       attributes[:topic] = Support::Topic.find_or_create_by_names(t_a) do |topic|
         topic.visible_on_create = attributes[:visible_on_create]
-        topic.parent_topic = p_a
+        topic.parent_topic = parent_topic
       end
     end
 
