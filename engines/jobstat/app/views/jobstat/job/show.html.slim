@@ -231,6 +231,13 @@ table class="table table-bordered table-striped"
 - if rules.length > 0
   h4 = t('.detailed')
   p = "#{t('.descr4_1')} \"#{@detailed_types[0]['type_text']}\" #{t('.descr4_2')} #{@detailed_types[0]['soft_text']}."
+
+  - if @job.initiator != nil
+    p
+      = t('.initiated_by')
+      span = " "
+      a href="#{@job.initiator.id}" ##{@job.initiator.drms_job_id}.
+
   table class="table table-bordered table-striped"
     tr
       th
@@ -303,11 +310,6 @@ div class="detailed-available"
       div = step[1]['type_text']
       small = step[1]['soft_text']
 
-- if @job.initiator != nil
-  p
-    = t('.initiated_by')
-    span = " "
-    a href="#{@job.initiator.id}" ##{@job.initiator.drms_job_id}.
 
 - count_initiatees = @job.initiatees.length
 - if count_initiatees != 0
