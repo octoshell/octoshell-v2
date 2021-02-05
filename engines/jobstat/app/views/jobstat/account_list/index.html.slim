@@ -246,7 +246,7 @@ div class="perf-table"
                   a href="all_rules#go-#{cond}" class="em12 #{@filters.include?(cond) ? 'hidden' : 'visible'} rule-top-container"
                     i class="fa-fw align-left #{icon['icon']} #{icon['color']} inline cond-div" title="#{@rules_plus['rules'].fetch(cond,{}).fetch('description','...')}" data-rule-div="#{cond}"
                   |
-                - if hidden_count>0
+                - if @fake_data != 0 || @jobs_plus[job.drms_job_id]['filtered'] > 0
                   - hidden = @jobs_plus[job.drms_job_id]['filtered']
                   span class="gray-text hidden_rules_count" data-id="#{job.drms_job_id}" title="#{t('.hidden_count')}" +#{@fake_data==0 ? hidden : 2}
               - else
