@@ -73,7 +73,10 @@ module Support
 
     scope :find_by_content, -> (q) do
       processed = q.mb_chars.split(' ').join('%')
-      left_join(:replies).where("support_replies.message LIKE :q OR support_tickets.message LIKE :q",q: "%#{processed}%")
+      #left_join(:replies).where("support_replies.message LIKE :q OR support_tickets.message LIKE :q",q: "%#{processed}%")
+      tickets = where("message ILIKE ? OR subject ILIKE ?", "%#{processed}%" , "%#{processed}%" )
+      replies = ::Support::Reply.where("message LIKE ?", "%#{processed}%" )
+      tickets.or(::Support::Ticket.where(replies: replies))
     end
 
     after_save do
