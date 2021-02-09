@@ -1,61 +1,201 @@
-function render_fields(data){
-  console.log(data.templates);
-  data.number_field = Handlebars.compile(data.number_field.html());
-  data.boolean_field = Handlebars.compile(data.boolean_field.html());
-  data.fields = Handlebars.compile(data.fields.html());
-  data.messages.help = Handlebars.compile(data.messages.help.html());
-  data.button.click(function(e){
-    var values = get_values($(this).parents('div.fields'));
-    add_item();
-    e.preventDefault();
-    return false;
-  });
-
-  data.container.on('click','.copy-item', function(e){
-    add_item();
-    var field_element = $(this).parents('div.fields');
-    var template_id = $(this).parents('div.fields').find("option:selected").val();
-    var values = get_values(field_element);
-    console.log(values);
-    values.id = '';
-    renew(template_id, values, data.container.find('div.fields:last'));
-
-    e.preventDefault();
-    return false;
-  });
-
-  data.container.on('change',"select", change_template);
-
-
-  data.items.forEach(render_item);
-
-  function join_id(path){
+var field_creator = {
+  join_id: function(path){
     return path.join('_');
-  }
-
-  function join_name(path){
+  },
+  join_name: function(path){
     return [path[0]].concat(path.slice(1).map(function(val){
       return '[' + val + ']';
     })).join('');
+  },
+  basic: function(options){
+
+    if(!options.id && options.path)
+      options.id = this.join_id(options.path);
+    if(!options.name && options.path)
+      options.name = this.join_name(options.path);
+
+  },
+  hidden_field: function(options){
+    this.basic(options);
+    return "<input id=\"" + options.id + "\"  name=\"" + options.name + "\" type=\"hidden\" value=\"" + options.value + "\">";
   }
 
-  function add_item(){
-    var id =  new Date().getTime();
-    var new_element = $(data.fields({
-      id: id
-    }));
-    data.container.append(new_element);
-    var select_element = new_element.find('select');
-    select_element.select2();
-    select_element.trigger('change');
-    $(this).parents('div.fields').find('div.item-content').empty();
+
+};
+
+['number_field', 'boolean_field', 'select_field', 'fields'].forEach(function(type){
+  // var name = type + '_template';
+  // console.log('script#' + type);
+  // console.log($('script#' + type).html());
+  var template = Handlebars.compile($('script#' + type).html());
+  field_creator[type] = function(data){
+    this.basic(data);
+    if(data.value == '1')
+      data.checked = true;
+    return template(data);
+  }
+  // field_creator[type] = Handlebars.compile($('script#' + type).html());
+  // console.log(name);
+});
+
+field_creator['help_message'] = Handlebars.compile($('script#help_message').html());
+
+
+
+
+
+
+
+function render_fields(data){
+
+  data.items.forEach(function(item){
+    var element = render_item(item);
+    data.container.append(element);
+  });
+
+  data.container.on('change','select', function(elem){
+    var field_element = $(this).parents('div.fields');
+    var values = get_values(field_element);
+    var template_id = $(this).find("option:selected").val();
+    var template = data.templates.find(function(element){
+        return element.id == template_id;
+    });
+    var element = render_item({
+      id: values.id || '',
+      template_id: template_id,
+      resource_items: template.editable_resources.map(function(resource){
+        return {
+          resource_id: resource.resource_id,
+          resource_kind_id: resource.resource_kind_id,
+          value: values[resource.resource_kind_id]
+        }
+      })
+    });
+    field_element.replaceWith(element);
+  });
+
+  data.container.on('click','.copy-item', function(e){
+    e.preventDefault();
+    var field_element = $(this).parents('div.fields');
+    var template_id = $(this).parents('div.fields').find("option:selected").val();
+    var values = get_values(field_element);
+    var template = data.templates.find(function(element){
+        return element.id == template_id;
+    });
+    var element = render_item({
+      template_id: template_id,
+      resource_items: template.editable_resources.map(function(resource){
+        return {
+          resource_id: resource.resource_id,
+          resource_kind_id: resource.resource_kind_id,
+          value: values[resource.resource_kind_id]
+        }
+      })
+    });
+    data.container.append(element);
+    return false;
+  });
+
+
+  $('button#add').click(function(e){
+    e.preventDefault();
+    if(data.templates.length == 0)
+      return false;
+    var element = render_item({
+      template_id: data.templates[0].id,
+      resource_items: data.templates[0].editable_resources.map(function(resource){
+        return {
+          resource_kind_id: resource.resource_kind_id
+        };
+      })
+    });
+    data.container.append(element);
+    return false;
+  })
+  function render_item(item){
+      var id = item.id;
+      var form_id = id || new Date().getTime();
+      var template_id = item.template_id;
+      var template = data.templates.find(function(element){
+        return element.id == template_id;
+      });
+      var html = '';
+      var path = data.path.concat(form_id);
+      html+=(field_creator.select_field({
+        path: path.concat(['template_id']),
+        label: '<%=CloudComputing::Item.human_attribute_name(:template)%>',
+        options: data.templates.map(function(template){
+          return {
+            value: template.id,
+            text: template.name,
+            selected: template.id == template_id
+          }
+        })
+      }));
+
+      item.resource_items.map(function(resource_item){
+        var resource = template.editable_resources.find(function(resource){
+          return resource_item.resource_id == resource.resource_id;
+        });
+
+        var resource_path = path.concat(['resource_items_attributes',
+                                          resource.resource_kind_id]);
+        ['resource_kind_id', 'resource_id'].forEach(function(attr){
+          html += field_creator.hidden_field({
+            path: resource_path.concat([attr]),
+            value: resource[attr] || ''
+          });
+        });
+        html += field_creator.hidden_field({
+          path: resource_path.concat(['id']),
+          value: resource_item.id || ''
+        });
+
+        if(resource.content_type == 'boolean'){
+          html += field_creator.boolean_field({
+            path: resource_path.concat(['value']),
+            label: resource.name,
+            help: resource.help,
+            value: resource_item.value || resource.value
+          });
+        }else{
+          html += field_creator.number_field({
+            path: resource_path.concat(['value']),
+            label: resource.name,
+            help: field_creator.help_message(resource),
+            value: resource_item.value || resource.value,
+            step: 'any'
+          });
+        }
+      });
+
+      html += field_creator.boolean_field({
+        path: path.concat(['_destroy']),
+        label: '<%=t('.destroy')%>',
+        value: item._destroy
+      });
+
+      if(id){
+        html += field_creator.hidden_field({
+          path: path.concat(['id']),
+          value: id
+        });
+      }
+
+      var field_element = $(field_creator.fields({
+        id: id,
+        form_id: form_id,
+        fields: html
+      }));
+
+      return field_element;
   }
 
   function get_values(field_element){
     var values = {};
-    var id = field_element.attr('id');
-    var template_name = join_name(data.path.concat([id, 'template_id']));
-    var template_id = field_element.find('input[name="' + template_name + '"]').val();
+    var id = field_element.attr('form_id');
+    var template_name = field_creator.join_name(data.path.concat([id, 'template_id']));
+    var template_id = field_element.find("option:selected").val();
     if(!template_id){
       return {};
     }
@@ -63,14 +203,14 @@ function render_fields(data){
       return element.id == template_id;
     });
     var path = data.path.concat([id,'id']);
-    var name = join_name(path);
+    var name = field_creator.join_name(path);
     var value = field_element.find('input[name="' + name + '"]').val();
     if(value){
       values['id'] = value;
     }
     template.editable_resources.map(function(resource){
       var path = data.path.concat([id,'resource_items_attributes', resource.resource_kind_id]);
-      var name = join_name(path.concat(['value']));
+      var name = field_creator.join_name(path.concat(['value']));
       var elem = field_element.find('input[name="' + name + '"]:last');
       var value;
       if(elem.attr('type') == 'checkbox'){
@@ -86,139 +226,6 @@ function render_fields(data){
 
   }
 
-  function renew(template_id, input_values, field_element){
-    var values = input_values;
-    var template = data.templates.find(function(element){
-      return element.id == template_id;
-    });
-    field_element.find('div.item-content').empty();
-    var id = field_element.attr('id');
-    var hidden_html;
-
-    if(values.id){
-      id = values.id;
-      field_element.attr('id',id);
-      hidden_html = render_hidden_field(join_name(data.path.concat([id, 'id'])), values.id);
-      field_element.find('div.item-content').append(hidden_html);
-    }
-
-    hidden_html = render_hidden_field(join_name(data.path.concat([id, 'template_id'])), template_id);
-    field_element.find('div.item-content').append(hidden_html);
-
-    var path = data.path.concat([id,'resource_items_attributes']);
-    template.editable_resources.map(function(resource){
-      render_resource_field(field_element.find('div.item-content'), path, resource, {
-        value: values[resource.resource_kind_id]
-      });
-    });
-
-    var destroy_element = render_boolean_field({
-      id: join_id(data.path.concat([id,'_destroy'])),
-      name: join_name(data.path.concat([id,'_destroy'])),
-      label: '<%=t('.destroy')%>',
-    });
-
-    field_element.find('div.item-content').append(destroy_element);
-
-  }
-
-  function change_template(){
-    var template_id = $(this).find("option:selected").val();
-    var field_element = $(this).parents('div.fields');
-    var values = get_values(field_element);
-
-    renew(template_id, values, field_element);
-
-  }
-
-  function render_item(item){
-
-    var record_id =  item.id;
-
-    var id =  item.id || new Date().getTime();
-    var field_element = $(data.fields({
-      id: id
-    }));
-    // data.container.append(new_element);
-    var select_element = field_element.find('select');
-    var template_id = item.template_id;
-    select_element.select2();
-    select_element.val(template_id);
-    select_element.trigger('change');
-
-    var template = data.templates.find(function(element){
-      return element.id == template_id;
-    });
 
 
-    var path = data.path.concat([id,'resource_items_attributes']);
-    item.resource_items.map(function(resource_item){
-      var resource = template.editable_resources.find(function(resource){
-        return resource_item.resource_id == resource.resource_id;
-      });
-      render_resource_field(field_element.find('div.item-content'), path, resource, resource_item);
-    });
-
-    var destroy_element = render_boolean_field({
-      id: join_id(data.path.concat([id,'_destroy'])),
-      name: join_name(data.path.concat([id,'_destroy'])),
-      label: '<%=t('.destroy')%>',
-      value: item._destroy
-    });
-
-    field_element.find('div.item-content').append(destroy_element);
-
-    var hidden_html = render_hidden_field(join_name(data.path.concat([id, 'template_id'])), template_id);
-    field_element.find('div.item-content').append(hidden_html);
-    if(record_id){
-      hidden_html = render_hidden_field(join_name(data.path.concat([id, 'id'])), record_id);
-      field_element.find('div.item-content').append(hidden_html);
-    }
-    data.container.append(field_element);
-
-
-  }
-
-  function render_resource_field(field_element, path, resource, resource_item){
-    var resource_kind_id = resource.resource_kind_id;
-    var resource_path = path.concat([resource_kind_id]);
-    ['resource_kind_id', 'resource_id'].forEach(function(attr){
-      var hidden_html = render_hidden_field(join_name(resource_path.concat([attr])), resource[attr]);
-      field_element.append(hidden_html);
-    });
-    var hidden_html = render_hidden_field(join_name(resource_path.concat(['resource_kind_id'])), resource_kind_id);
-    field_element.append(hidden_html);
-    hidden_html = render_hidden_field(join_name(resource_path.concat(['id'])), resource_item.id || '');
-    field_element.append(hidden_html);
-
-    if(resource.content_type == 'boolean'){
-      field_element.append(render_boolean_field({
-        id: join_id(resource_path.concat(['value'])),
-        name: join_name(resource_path.concat(['value'])),
-        label: resource.name,
-        help: resource.help,
-        value: resource_item.value || resource.value
-      }));
-    }else{
-      field_element.append(data.number_field({
-        id: join_id(resource_path.concat(['value'])),
-        name: join_name(resource_path.concat(['value'])),
-        label: resource.name,
-        help: data.messages.help(resource),
-        value: resource_item.value || resource.value,
-        step: 'any'
-      }));
-    }
-
-  }
-
-  function render_hidden_field(name, value){
-    return "<input name=\"" + name + "\" type=\"hidden\" value=\"" + value + "\">";
-  }
-
-  function render_boolean_field(values){
-      var field = $(data.boolean_field(values));
-      field.find('input:last-child').prop('checked', values.value == '1');
-      return field;
-  }
 }

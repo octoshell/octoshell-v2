@@ -27,9 +27,10 @@ module CloudComputing
     validate do
       next if resource_kind.boolean?
 
-      if resource.min >= value.to_f && value.to_f >= resource.max &&
+      if (resource.min >= value.to_f || value.to_f >= resource.max) &&
          item.holder.is_a?(CloudComputing::Request)
-        errors.add(:value)
+        puts 'WRONG'.red
+        errors.add(:value, :incorrect)
       end
     end
 

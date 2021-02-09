@@ -18,6 +18,11 @@ module CloudComputing
       # positions.select(&:)
     end
 
+    # def left_items_attributes=(args)
+    #   puts args.inspect.red
+    #   super(args)
+    # end
+
 
     def linked_item_kinds
       kinds = TemplateKind.virtual_machine_cloud_type&.self_and_descendants || []

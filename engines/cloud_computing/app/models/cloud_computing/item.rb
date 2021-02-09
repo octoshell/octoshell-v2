@@ -24,10 +24,13 @@ module CloudComputing
 
     has_many :resource_items, inverse_of: :item, dependent: :destroy
     # has_many :to_items, class_name: Item.to_s, through: :from_links, source: :to
+
     accepts_nested_attributes_for :from_links, :resource_items, :from_items, allow_destroy: true
 
     # validates :amount, numericality: { greater_than: 0 }, presence: true
     validates :template, :holder, presence: true
+    validates_associated :resource_items
+
 
     scope :with_user_requests, (lambda do |user|
       joins(:request).where(cloud_computing_requests: {

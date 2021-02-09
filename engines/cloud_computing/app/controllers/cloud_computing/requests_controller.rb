@@ -32,6 +32,9 @@ module CloudComputing
     end
 
     def update_created_request
+      puts 'starssssssst'.red
+      # @request = user_requests.find_or_initialize_by(status: 'created')
+      puts @request.left_items.includes(:resource_items).to_a.inspect.red
       if @request.update(request_params)
         @request.left_items.each do |item|
           item.resource_items.each do |r_i|
@@ -45,6 +48,11 @@ module CloudComputing
           redirect_to created_request_requests_path, notice: t('.updated_successfully')
         # end
       else
+        puts @request.left_items.includes(:resource_items).to_a.inspect.red
+        puts 'start'.red
+        puts @request.left_items.includes(:resource_items).to_a.inspect.red
+        puts 'finish'.red
+
         render :edit_created_request
       end
     end

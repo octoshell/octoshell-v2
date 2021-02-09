@@ -1,19 +1,32 @@
-= javascript_tag do
-  = render partial: 'cloud_computing/requests/to_assets', formats: 'js'
-
 script#fields type='text/x-handlebars-template'
-  .fields id="{{id}}"
+  .fields id="{{id}}" form_id="{{form_id}}"
       .col-md-6
         div style='margin: 10%;'
           .action-panel
 
-            = select_tag 'template_id', options_from_collection_for_select(CloudComputing::Template.virtual_machine_templates.order(:name_ru), "id", "name"),
-              id: '{{id}}'
+            /= select_tag 'template_id', options_from_collection_for_select(CloudComputing::Template.virtual_machine_templates.order(:name_ru), "id", "name"),
+            /  id: '{{id}}'
             button.copy-item = t('.copy')
 
           .item-content
+            '{{{fields}}}
 
-script#number-field type='text/x-handlebars-template'
+
+script#select_field type='text/x-handlebars-template'
+  .form-group
+    label.control-label.required for="{{id}}"  {{label}}
+    select.form-control id="{{id}}" name="{{name}}"
+      |{{#each options}}
+        {{#if selected}}
+          <option selected='selected' value='{{value}}'>{{text}}</option>
+        {{else}}
+          <option value='{{value}}'>{{text}}</option>
+        {{/if}}
+      |{{/each}}
+
+
+
+script#number_field type='text/x-handlebars-template'
   .form-group
     label.control-label.required for="{{id}}"  {{label}}
     input.form-control step="{{step}}" id="{{id}}" name="{{name}}" type="number" value="{{value}}"
@@ -21,20 +34,26 @@ script#number-field type='text/x-handlebars-template'
          '{{help}}
 
 
-script#boolean-field type='text/x-handlebars-template'
+script#boolean_field type='text/x-handlebars-template'
   .form-group
     .checkbox
       label for="{{id}}"
         input name="{{name}}" type="hidden" value="0"
+        |{{#if checked}}
+        input id="{{id}}" checked="checked" name="{{name}}" type="checkbox" value="1"
+        |{{else}}
         input id="{{id}}" name="{{name}}" type="checkbox" value="1"
-          '{{label}}
+        |{{/if}}
+          {{label}}
     span.help-block
-      '{{help}}
+      |{{{help}}}
 
 
-script#help-message  type='text/x-handlebars-template'
+script#help_message  type='text/x-handlebars-template'
   = t('.help').html_safe
 
+= javascript_tag do
+  = render partial: 'cloud_computing/requests/to_assets', formats: 'js'
 css:
    div.action-panel > *{
      margin: 2%;
