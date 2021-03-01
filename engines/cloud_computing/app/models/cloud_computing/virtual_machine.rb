@@ -128,5 +128,18 @@ module CloudComputing
       end
     end
 
+    def name
+      "octo-#{item.holder.id}-#{item.id}-#{id}"
+    end
+
+    def resource_or_resource_item_by_identity(identity)
+      resource_item = item.resource_items.where_identity(identity).first
+      if resource_item && resource_item.request_resource_item
+        resource_item = resource_item.request_resource_item
+      end
+      resource_item ||
+        item.template.resources.where(editable: false).where_identity(identity)
+            .first
+    end
   end
 end

@@ -8,6 +8,10 @@ module CloudComputing
     belongs_to :user
 
     has_many :requests, inverse_of: :access
+
+    accepts_nested_attributes_for :new_left_items, :old_left_items,
+                                  allow_destroy: true
+
     # has_many :virtual_machines, through: :left_items,
     #                             class_name: 'CloudComputing::NebulaIdentity',
     #                             source: :virtual_machines
@@ -16,9 +20,10 @@ module CloudComputing
     aasm(:state) do
       state :created, initial: true
       state :approved
-      state :finished
+      state :prepared_to_finish
+      state :prepared_to_deny
       state :denied
-
+      state :finished
       event :approve do
         transitions from: :created, to: :approved do
           guard do
@@ -33,15 +38,31 @@ module CloudComputing
         end
       end
 
+      event :prepare_to_finish do
+        transitions from: :approved, to: :prepared_to_finish
+        after do
+          finish_access
+        end
+      end
+
+      event :prepare_to_deny do
+        transitions from: :approved, to: :prepared_to_deny
+        after do
+          finish_access
+        end
+      end
+
+
+
       event :finish do
-        transitions from: :approved, to: :finished
+        transitions from: :prepared_to_finish, to: :finished
         after do
           terminate_access
         end
       end
 
       event :deny do
-        transitions from: :approved, to: :denied
+        transitions from: :prepared_to_deny, to: :denied
         after do
           terminate_access
         end
@@ -50,7 +71,12 @@ module CloudComputing
 
 
     def add_item(item)
-      pos = items.new(item.slice('template_id'))
+      pos = if item.item_in_access
+        old_left_items.new(item.slice('template_id', 'item_id'))
+      else
+        new_left_items.new(item.slice('template_id', 'item_id'))
+      end
+
       item.resource_items.each do |r_p|
         pos.resource_items
            .build(r_p.attributes.slice('resource_id', 'value'))
@@ -61,6 +87,7 @@ module CloudComputing
     def virtual_machines
       VirtualMachine.where(item: left_items)
     end
+
 
     def copy_from_request(request)
       return unless request
@@ -85,14 +112,19 @@ module CloudComputing
     end
 
     def terminate_access
-      # OpennebulaTask.terminate_access(id)
-      TaskWorker.perform_async(:terminate_access, id)
+      OpennebulaTask.terminate_access(id)
+      # TaskWorker.perform_async(:terminate_access, id)
+    end
+
+    def finish_access
+      OpennebulaTask.finish_access(id)
+      # TaskWorker.perform_async(:finish_access, id)
     end
 
     def reinstantiate?
-      left_items.any? do |item|
+      new_left_items.any? do |item|
         !item.virtual_machine
-      end
+      end || old_left_items.any?
     end
 
     def add_keys

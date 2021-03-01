@@ -1,7 +1,0 @@
-/= render 'form'
-- content_for :title do
-    - t(".title")
-
-= bootstrap_nested_form_for @request, url: update_vm_requests_path,
-    method: :post, layout: :horizontal do |f|
-  = render 'cloud_computing/requests/links', f: f

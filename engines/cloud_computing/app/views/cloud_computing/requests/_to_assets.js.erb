@@ -48,6 +48,7 @@ field_creator['help_message'] = Handlebars.compile($('script#help_message').html
 
 function render_fields(data){
 
+  console.log(data.items);
   data.items.forEach(function(item){
     var element = render_item(item);
     data.container.append(element);
@@ -164,7 +165,9 @@ function render_fields(data){
             label: resource.name,
             help: field_creator.help_message(resource),
             value: resource_item.value || resource.value,
-            step: 'any'
+            step: 'any',
+            error: resource_item.error
+
           });
         }
       });

@@ -4,10 +4,10 @@ module CloudComputing
   class AccessesController < ApplicationController
 
 
-    def finish
+    def prepare_to_finish
       @access = project_accesses.find(params[:id])
       authorize! :update, @access
-      @access.finish!
+      @access.prepare_to_finish!
       redirect_to @access
     end
 
@@ -19,7 +19,6 @@ module CloudComputing
                          .order(:created_at)
                          .page(params[:page])
                          .per(params[:per])
-
     end
 
 

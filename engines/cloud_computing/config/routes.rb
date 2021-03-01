@@ -29,15 +29,11 @@ CloudComputing::Engine.routes.draw do
 
     resources :accesses do
       member do
-        get :initial_edit
-        patch :initial_update
-        get :edit_vm
-        patch :update_vm
-        get :edit_links
-        patch :update_links
         patch :approve
         patch :deny
+        patch :finish
         patch :reinstantiate
+        patch :prepare_to_deny
       end
       collection do
         post :create_from_request
@@ -64,14 +60,10 @@ CloudComputing::Engine.routes.draw do
   end
   resources :requests do
     collection do
+      put :add_item_from_access
       get :created_request
       get :edit_created_request
       post :update_created_request
-      get :edit_vm
-      post :update_vm
-      get :edit_links
-      post :update_links
-      get :edit_net
       post :to_sent
       post :cancel
     end
@@ -86,8 +78,8 @@ CloudComputing::Engine.routes.draw do
 
   resources :accesses do
     member do
-      patch :finish
       patch :add_keys
+      patch :prepare_to_finish
     end
   end
 

@@ -4,7 +4,7 @@ module CloudComputing
   class VirtualMachinesController < ApplicationController
 
     before_action do
-      @virtual_machine = CloudComputing::NebulaIdentity.joins(:position)
+      @virtual_machine = CloudComputing::VirtualMachine.joins(:position)
         .where(cloud_computing_positions: { holder_id: CloudComputing::Access.accessible_by(current_ability, :read) } )
         .find(params[:id])
     end

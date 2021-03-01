@@ -28,8 +28,18 @@ namespace :cloud_computing do
       virtual_kind.resource_kinds.create!(name_ru: 'Жёсткий диск',
         name_en: 'Hard drive', measurement_en: 'GB', measurement_ru: 'GB',
         identity: 'DISK=>SIZE', content_type: 'positive_integer')
+
+      virtual_kind.resource_kinds.create!(name_ru: 'Доступ в Nнтернет',
+        name_en: 'Internet access', measurement_en: 'GB', measurement_ru: 'GB',
+        identity: 'DISK=>SIZE', content_type: 'positive_integer')
+
     end
     # TemplateKind.
+  end
+
+  task aaaa: :environment do
+    pp Hash.from_xml(CloudComputing::OpennebulaClient.vm_info(518)[1])['VM']
+
   end
 
   task seed: :environment do

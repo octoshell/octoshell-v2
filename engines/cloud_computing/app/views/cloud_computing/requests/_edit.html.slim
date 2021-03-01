@@ -27,7 +27,7 @@ script#select_field type='text/x-handlebars-template'
 
 
 script#number_field type='text/x-handlebars-template'
-  .form-group
+  div class="form-group {{#if error}} has-error {{/if}}"
     label.control-label.required for="{{id}}"  {{label}}
     input.form-control step="{{step}}" id="{{id}}" name="{{name}}" type="number" value="{{value}}"
       span.help-block

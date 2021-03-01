@@ -5,6 +5,12 @@ module CloudComputing
     include Holder
     belongs_to :created_by, class_name: 'User'
     belongs_to :access, dependent: :destroy, inverse_of: :requests
+
+
+    accepts_nested_attributes_for :left_items, :new_left_items, :old_left_items,
+                                  allow_destroy: true
+
+
     validates :status, uniqueness: { scope: %i[created_by_id] }, if: :created?
 
     validate do

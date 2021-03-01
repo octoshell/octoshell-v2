@@ -9,12 +9,39 @@ module CloudComputing
 
     before_action only: %i[created_request edit_created_request
                            update_created_request edit_vm update_vm
-                           edit_links update_links edit_net] do
+                           edit_links update_links edit_net add_item_from_access] do
       @request = user_requests.find_or_initialize_by(status: 'created')
     end
 
     before_action only: %i[to_sent cancel edit_vm update_vm] do
       @request = user_requests.find_by_status('created')
+    end
+
+    def add_item_from_access
+      @item = CloudComputing::Item.find(params[:item_id])
+
+      if @item.item_in_request
+        redirect_back fallback_location: @item.holder, flash: flash
+        return
+      end
+
+      @new_item = @request.left_items.new(item_in_access: @item,
+                                          template: @item.template)
+      @item.resource_items.each do |resource_item|
+        attrs = resource_item.attributes.slice('value', 'resource_id')
+        @new_item.resource_items << CloudComputing::ResourceItem.new(attrs)
+      end
+      if @new_item.save
+        flash = {
+          notice: t('.added')
+        }
+      else
+        flash = {
+          error: @new_item.errors.to_h
+        }
+      end
+      redirect_back fallback_location: @item.holder, flash: flash
+
     end
 
 
@@ -32,61 +59,17 @@ module CloudComputing
     end
 
     def update_created_request
-      puts 'starssssssst'.red
-      # @request = user_requests.find_or_initialize_by(status: 'created')
-      puts @request.left_items.includes(:resource_items).to_a.inspect.red
       if @request.update(request_params)
         @request.left_items.each do |item|
           item.resource_items.each do |r_i|
             r_i.destroy if r_i.item.template_id != r_i.resource.template_id
           end
         end
-
-        # if @request.items.any?
-        #   redirect_to edit_vm_requests_path
-        # else
-          redirect_to created_request_requests_path, notice: t('.updated_successfully')
-        # end
+        redirect_to created_request_requests_path, notice: t('.updated_successfully')
       else
-        puts @request.left_items.includes(:resource_items).to_a.inspect.red
-        puts 'start'.red
-        puts @request.left_items.includes(:resource_items).to_a.inspect.red
-        puts 'finish'.red
-
         render :edit_created_request
       end
     end
-
-    def edit_vm
-
-    end
-
-    def update_vm
-      if @request.update(request_params)
-        redirect_to edit_links_requests_path
-      else
-        render :edit_vm
-      end
-    end
-
-
-    def edit_links
-
-    end
-
-    def edit_net
-    end
-
-    def update_links
-      if @request.update(request_params)
-        redirect_to created_request_requests_path, notice: t('.updated_successfully')
-      else
-        render :edit_links
-      end
-    end
-
-
-
 
     def created_request
 
@@ -119,12 +102,15 @@ module CloudComputing
     end
 
     def request_params
+      left_items_attributes = [:id, :amount, :_destroy, :template_id,
+        from_links_attributes: [:id, :_destroy, :from_id, :amount, :to_item_id],
+        from_items_attributes: [:id, :to_link_amount, :_destroy,
+          resource_items_attributes: %i[id resource_id value] ],
+        resource_items_attributes: %i[id resource_id value]]
+
       params.require(:request).permit(:for_id, :for_type, :comment, :finish_date,
-        left_items_attributes:[:id, :amount, :_destroy, :template_id,
-          from_links_attributes: [:id, :_destroy, :from_id, :amount, :to_item_id],
-          from_items_attributes: [:id, :to_link_amount, :_destroy,
-            resource_items_attributes: %i[id resource_id value] ],
-          resource_items_attributes: %i[id resource_id value]])
+                              old_left_items_attributes: left_items_attributes,
+                              new_left_items_attributes: left_items_attributes)
     end
   end
 end

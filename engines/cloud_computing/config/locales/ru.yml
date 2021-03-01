@@ -11,6 +11,9 @@ ru:
             created: новый
             denied: отказано в доступе
             finished: завершён
+            prepared_to_finish: подготовлен к завершению
+            prepared_to_deny: подготовлен к завершению администратором
+
       cloudcomputing/request:
         status:
           states:
@@ -130,6 +133,10 @@ ru:
         name: Название
     errors:
       models:
+        cloud_computing/resource_item:
+          attributes:
+            value:
+              range: Значение должно быть в интервале [%{min},%{max}]
         cloud_computing/position:
           attributes:
             amount:
@@ -147,8 +154,9 @@ ru:
         title: Доступы
       show:
         add_keys: 'Обновить ключи участников проекта'
-        finish: Завершить
-        finish_confirm:
+        add_to_request: Запросить изменение ресурсов
+        prepare_to_finish: Завершить
+        prepare_to_finish_confirm:
           Вы уверены, что хотите завершить работу с данным доступом?
           Виртуальные машины будут недоступны, а данные внутри  них -- стёрты.
         help: |-
@@ -196,10 +204,13 @@ ru:
           title: Создание нового доступа
         show:
           approve: Одобрить
+          prepare_to_deny: Отозвать доступ
+          finish: Завершить удаление
+          finish_confirm: "Данное действие сотрёт данные пользователя
+          на жестких дисках виртуальных машин данного доступа. Вы уверены?"
           deny: Отозвать доступ
           deny_confirm: "Вы уверены, что хотите отозвать доступ?
-          Виртуальные машины будут недоступны, а данные внутри  них -- стёрты."
-          edit_vm: Редактировать связи виртуальных машин
+          Виртуальные машины будут недоступны. Данные на жёстких дисках будут сохранены, их потом можно будет удалить."
           reinstantiate: Попытаться создать виртуальные машины
           title: Доступ#%{id}
         table:
@@ -351,6 +362,9 @@ ru:
         success: Состояние успешно обновлено
     no_date: Без даты окончания
     requests:
+      resource_item_fields:
+        help: "Введите значение от <b>%{min}</b> до <b>%{max}</b>."
+
       created_request:
         cancel: Отозвать заявку
         edit_created_request: Редактировать новую заявку
@@ -371,6 +385,9 @@ ru:
         add_positions: Добавить позицию
         finish_date_help: Если это поле пусто, то доступ без даты окончания
         remove_position: Удалить из заявки
+        old_left_items: Запрос на изменение существующих единиц
+        new_left_items: Новые единицы
+
         title: Редактировать новую заявку
         help: "Введите значение от {{min}} до {{max}}. {{help}}"
       edit_links:
@@ -394,14 +411,30 @@ ru:
         remove_link: Удалить
         remove_position: Удалить
       items:
+        title: "В заявке присутствуют"
+      new_items:
         linked_with: 'Связи:'
-        requested_by_user: Виртуальная машина %{item_link} в количестве <b> %{amount}
+        requested_by_user: Виртуальная машина %{item_link}
           </b>
         requested_link_by_user: >-
           Связано с единицей %{item_link} по <b> %{amount} </b> штук для каждой виртуальной
           машины
-        title: 'В заявке присутствуют:'
-        you_requested: Виртуальная машина %{item_link} в количестве <b> %{amount}
+        title: 'Новые экземпляры единиц:'
+        you_requested: Виртуальная машина %{item_link}
+          </b>
+        you_requested_link: >-
+          Связано с единицей %{item_link} по <b> %{amount} </b>  штук для каждой виртуальной
+          машины
+
+      old_items:
+        linked_with: 'Связи:'
+        requested_by_user: Виртуальная машина %{item_link}
+          </b>
+        requested_link_by_user: >-
+          Связано с единицей %{item_link} по <b> %{amount} </b> штук для каждой виртуальной
+          машины
+        title: 'Старые единицы для редактирования:'
+        you_requested: Виртуальная машина %{item_link}
           </b>
         you_requested_link: >-
           Связано с единицей %{item_link} по <b> %{amount} </b>  штук для каждой виртуальной

@@ -29,67 +29,77 @@ css:
             h4
               b = CloudComputing::Access.human_attribute_name a
             p = @access.public_send a
-  - unless @access.approved?
+  - unless @access.approved? || @access.prepared_to_deny? || @access.prepared_to_finish?
     = render 'cloud_computing/requests/items', items: @access.left_items
 
--if @access.approved?
+-if @access.approved? || @access.prepared_to_deny? || @access.prepared_to_finish?
   = t('.help')
   .container
-    - @access.left_items.order(:created_at).each do |item|
-      h4 = link_to("#{t('.template')} #{item.template.name}##{item.id}", item.template)
-      - item.human_resources.map  do |name_value|
-        div
-          = name_value.html_safe
-      - if @admin  && item.api_logs.where(virtual_machine_id: nil).exists?
-        div
-          = link_to t('.no_identities_logs'), api_logs_admin_item_path(item)
+    - @access.new_left_items.order(:created_at).each do |item|
+      .col-md-6
+        h4 = link_to("#{t('.template')} #{item.template.name}##{item.id}", item.template)
+        - item.all_resources.map  do |resource|
+          - resource.is_a?(CloudComputing::ResourceItem) && puts(resource.request_resource_item.inspect.yellow) 
+          - if resource.is_a?(CloudComputing::ResourceItem) && resource.request_resource_item
+            div
+              = resource_item_and_old(resource.request_resource_item)
+          - else
+            div
+              = resource.name_value.html_safe
+        -if can?(:update, @access) && !item.item_in_request
+          div
+            = link_to t('.add_to_request'),
+                      add_item_from_access_requests_url(item_id: item),
+                      method: :put
 
-      - n_i = item.virtual_machine
-      -if n_i
-        .col-md-6
-          .col-md-9
-            table.table.table-hover
-              -%i[id identity address].each do |a|
-                tr
-                  td
-                    = CloudComputing::VirtualMachine.human_attribute_name(a)
-                  td
-                    = n_i.public_send(a)
+        - if @admin
+            div
+              = link_to t('.show_logs'), api_logs_admin_item_path(item)
 
-              tr
-                td
-                  = CloudComputing::VirtualMachine.human_attribute_name(:human_state)
-                td
-                  = "#{n_i.human_state} #{vm_human_state(n_i)}"
-              tr
-                td
-                  = CloudComputing::VirtualMachine.human_attribute_name(:last_info)
-                td
-                  = n_i.last_info
+        - n_i = item.virtual_machine
+        - if n_i
+              .col-md-9
+                table.table.table-hover
+                  -%i[id name identity inner_address internet_address].each do |a|
+                    - if @admin || a != :name
+                      tr
+                        td
+                          = CloudComputing::VirtualMachine.human_attribute_name(a)
+                        td
+                          = n_i.public_send(a)
 
-              tr
-                - if @admin
-                  td = link_to t('.vm_info'), vm_info_admin_virtual_machine_path(n_i),
-                    method: :patch, class: 'btn btn-primary'
-                  td = link_to t('.show_logs'), api_logs_admin_virtual_machine_path(n_i), class: 'btn btn-primary'
+                  tr
+                    td
+                      = CloudComputing::VirtualMachine.human_attribute_name(:human_state)
+                    td
+                      = "#{n_i.human_state} #{vm_human_state(n_i)}"
+                  tr
+                    td
+                      = CloudComputing::VirtualMachine.human_attribute_name(:last_info)
+                    td
+                      = n_i.last_info
 
-                - else
-                  td = link_to t('.vm_info'), vm_info_virtual_machine_path(n_i),
-                    method: :patch, class: 'btn btn-primary'
-
-          .col-md-3
-            ul
-              - if n_i.human_possible_actions.any?
-                - n_i.human_possible_actions.each do |a|
-                  li class="text-left"
+                  tr
                     - if @admin
-                      = link_to a.second, change_state_admin_virtual_machine_path(n_i, params: { vm_action: a.first }),
-                        class: 'dropdown-item',
-                        method: :patch
+                      td = link_to t('.vm_info'), vm_info_admin_virtual_machine_path(n_i),
+                        method: :patch, class: 'btn btn-primary'
                     - else
-                      = link_to a.second, change_state_virtual_machine_path(n_i, params: { vm_action: a.first }),
-                        class: 'dropdown-item',
-                        method: :patch, data: { confirm: CloudComputing::VirtualMachine.hint_for_action(a.first) }
-              - else
-                = t('.no_actions')
-              span.glyphicon.glyphicon-question-sign  style="margin-top: 10px;" title= t('.hint')
+                      td = link_to t('.vm_info'), vm_info_virtual_machine_path(n_i),
+                        method: :patch, class: 'btn btn-primary'
+
+              .col-md-3
+                ul
+                  - if n_i.human_possible_actions.any?
+                    - n_i.human_possible_actions.each do |a|
+                      li class="text-left"
+                        - if @admin
+                          = link_to a.second, change_state_admin_virtual_machine_path(n_i, params: { vm_action: a.first }),
+                            class: 'dropdown-item',
+                            method: :patch
+                        - else
+                          = link_to a.second, change_state_virtual_machine_path(n_i, params: { vm_action: a.first }),
+                            class: 'dropdown-item',
+                            method: :patch, data: { confirm: CloudComputing::VirtualMachine.hint_for_action(a.first) }
+                  - else
+                    = t('.no_actions')
+                  span.glyphicon.glyphicon-question-sign  style="margin-top: 10px;" title= t('.hint')

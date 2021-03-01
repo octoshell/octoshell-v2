@@ -8,6 +8,7 @@ module CloudComputing
     validates :min, :max, :value, presence: true, numericality: { greater_than_or_equal_to: 0 },
                           if: :editable_number?
     validates :min, :max, absence: true, unless: :editable_number?
+    # validates :max, inclusion: 1..2
 
     validates :value, numericality: { only_integer: true },
                       if: :content_positive_integer?
@@ -23,6 +24,8 @@ module CloudComputing
 
 
     validate do
+      # validates :max, inclusion: 1..2
+      # errors.add(:max, :less_than_or_equal_to, count: 1..3)
       if template.template_kind && resource_kind.template_kind &&
          template.template_kind != resource_kind.template_kind
         errors.add(:_destroy, :wrong_template_kind)
@@ -81,7 +84,6 @@ module CloudComputing
       end
     end
 
-
     def human_value
       only_integer? ? value.to_i : value
     end
@@ -89,11 +91,6 @@ module CloudComputing
     def only_integer?
       resource_kind.positive_integer?
     end
-
-
-
-
-
 
     def value_with_measurement
       "#{value} #{resource_kind.measurement}"

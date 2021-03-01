@@ -27,10 +27,10 @@ module CloudComputing
     validate do
       next if resource_kind.boolean?
 
-      if (resource.min >= value.to_f || value.to_f >= resource.max) &&
+      if (resource.min > value.to_f || value.to_f > resource.max) &&
          item.holder.is_a?(CloudComputing::Request)
-        puts 'WRONG'.red
-        errors.add(:value, :incorrect)
+        errors.add(:value, :range, min: resource.processed_min,
+                                   max: resource.processed_max)
       end
     end
 
@@ -39,8 +39,33 @@ module CloudComputing
     end
 
     def human_value
-      only_integer? ? value.to_i : value
+      if resource_kind.positive_integer?
+        value.to_i
+
+      elsif resource_kind.boolean?
+        I18n.t(value == '1')
+      else
+        value
+      end
     end
+
+    def editable_in_access?
+      resource_kind.identity == 'internet'
+    end
+
+    def access_resource_item
+      return nil unless item.item_in_access
+
+      item.item_in_access.resource_items.where(resource: resource).first
+    end
+
+    def request_resource_item
+      return nil unless item.item_in_request
+
+      item.item_in_request.resource_items.where(resource: resource).first
+    end
+
+
 
     def name_value
       measurement = resource.resource_kind.measurement
@@ -49,6 +74,11 @@ module CloudComputing
       else
         "<b>#{resource.resource_kind.name}:</b> #{human_value}"
       end
+    end
+
+    def human_value_and_measurement
+      measurement = resource.resource_kind.measurement
+      "#{human_value} #{measurement}"
     end
 
   end

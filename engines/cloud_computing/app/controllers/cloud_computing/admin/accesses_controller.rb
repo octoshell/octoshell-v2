@@ -3,8 +3,8 @@ require_dependency "cloud_computing/application_controller"
 module CloudComputing::Admin
   class AccessesController < CloudComputing::Admin::ApplicationController
 
-    before_action only: %i[show edit_vm update_vm approve deny
-      edit_links update_links initial_edit update reinstantiate] do
+    before_action only: %i[show finish approve deny
+      edit update reinstantiate] do
       @access = CloudComputing::Access.find(params[:id])
     end
 
@@ -22,28 +22,6 @@ module CloudComputing::Admin
     def show
     end
 
-    def edit_vm
-    end
-
-    def update_vm
-      if @access.update(access_params)
-        redirect_to edit_links_admin_access_path(@access)
-      else
-        render :edit_vm
-      end
-    end
-
-    def edit_links
-    end
-
-    def update_links
-      if @access.update(access_params)
-        redirect_to [:admin, @access]
-      else
-        render :edit_links
-      end
-    end
-
     def approve
       @access.approve!
       redirect_to [:admin, @access]
@@ -58,6 +36,17 @@ module CloudComputing::Admin
       @access.deny!
       redirect_to [:admin, @access]
     end
+
+    def finish
+      @access.finish!
+      redirect_to [:admin, @access]
+    end
+
+    def prepare_to_deny
+      @access.prepare_to_deny!
+      redirect_to [:admin, @access]
+    end
+
 
 
 
@@ -75,15 +64,14 @@ module CloudComputing::Admin
       end
     end
 
-    def initial_edit
-      render :initial_edit
-    end
+    def edit; end
+
 
     def update
       if @access.update(access_params)
         redirect_to [:admin, @access]
       else
-        render :initial_edit
+        render :_new
       end
     end
 
@@ -92,21 +80,16 @@ module CloudComputing::Admin
     def create_from_request
 
       @request = CloudComputing::Request.find(params[:request_id])
-
-      @access = CloudComputing::Access.new
-      @access.allowed_by = current_user
+      @access = CloudComputing::Access.approved.where(for: @request.for).first
+      unless @access
+        @access = CloudComputing::Access.new
+        @access.allowed_by = current_user
+      end
       @access.copy_from_request(@request)
-      render :_new
+      # render :_new
       # redirect_to [:admin, @access]
     end
 
-
-
-    def edit_extented_info; end
-
-    def update_extended_info
-
-    end
 
     private
 
@@ -115,15 +98,17 @@ module CloudComputing::Admin
     end
 
     def access_params
+
+      left_items_attributes = [:id, :amount, :_destroy, :template_id, :item_id,
+        from_links_attributes: [:id, :_destroy, :from_id, :amount, :to_item_id],
+        from_items_attributes: [:id, :to_link_amount, :_destroy,
+          resource_items_attributes: %i[id resource_id value] ],
+        resource_items_attributes: %i[id resource_id value]]
+
       params.require(:access)
             .permit(:for_id, :for_type, :user_id, :finish_date,
-                    left_items_attributes:[:id, :amount, :_destroy,
-                    :template_id, from_links_attributes: %i[id _destroy from_id
-                    amount to_item_id], resource_items_attributes:
-                    %i[id resource_id value],
-                    from_items_attributes: [:id, :to_link_amount, :_destroy,
-                      resource_items_attributes: %i[id resource_id value] ],
-                    ])
+                    old_left_items_attributes: left_items_attributes,
+                    new_left_items_attributes: left_items_attributes)
     end
   end
 end

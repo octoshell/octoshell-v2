@@ -1,6 +1,6 @@
 module CloudComputing
   class OpennebulaClient
-
+    #Hash.from_xml(CloudComputing::OpennebulaClient.vm_info(498)[1])['VM']['TEMPLATE']['NIC']
     def self.init
       settings_hash = Rails.application.secrets.cloud_computing || {}
       uri = settings_hash[:opennebula_api_uri]
@@ -35,6 +35,15 @@ module CloudComputing
       xmlrpc_send('vm.action', state, vm_id)
     end
 
+    def self.vm_attachnic(vm_id, nic_id)
+      str = "NIC = [ NETWORK_ID = #{nic_id} ]"
+      xmlrpc_send('vm.attachnic', vm_id, str)
+    end
+
+    def self.vm_detachnic(vm_id, nic_id)
+      xmlrpc_send('vm.detachnic', vm_id, nic_id.to_i)
+    end
+
     def self.vm_updateconf(vm_id, string)
       xmlrpc_send('vm.updateconf', vm_id, string)
     end
@@ -67,6 +76,11 @@ module CloudComputing
     def self.vm_disk_resize(vm_id, disk_id, size)
       xmlrpc_send('vm.diskresize', vm_id, disk_id, size)
     end
+
+    def self.vm_resize(vm_id, str)
+      xmlrpc_send('vm.resize', vm_id, str, false)
+    end
+
 
   end
 end

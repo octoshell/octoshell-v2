@@ -46,8 +46,10 @@ module CloudComputing
 
     def mark_access_state(access)
       labels = { 'created' => 'primary', 'approved' => 'success',
-                 'finished' => 'secondary', 'denied' => 'danger' }
-      label_class = labels[access.state]
+                 'finished' => 'danger', 'denied' => 'danger',
+                 'prepared_to_deny' => 'warning',
+                 'prepared_to_finish' => 'warning' }
+      label_class = labels[access.state] || 'primary'
       content_tag(:span, class: "label label-#{label_class} lg") do
         access.human_state_name
       end
@@ -105,12 +107,20 @@ module CloudComputing
       }.to_json.html_safe
     end
 
-    def json_items(request)
-      request.items.map do |item|
+    def json_items(request, only_new_records = false)
+      request.new_left_items
+             .select { |i| only_new_records ? i.new_record? : true }
+             .map do |item|
         resource_items = item.resource_items.to_a
                              .sort_by { |r| r.resource.resource_kind_id }
-                             .map(&:attributes)
-        puts resource_items.inspect.green
+                             .map do |resource_item|
+          hash = resource_item.attributes
+          if resource_item.errors[:value].any?
+            hash.merge(error: resource_item.errors.messages[:value].join(' '))
+          else
+            hash
+          end
+        end
         hash = Hash[%i[id template_id].map { |a| [a, item.send(a)] }]
 
         hash.merge(
@@ -118,7 +128,20 @@ module CloudComputing
         )
       end.to_json.html_safe
 
+    end
 
+    def resource_item_and_old(resource_item)
+      access_resource_item = resource_item.access_resource_item
+
+      value = if access_resource_item && access_resource_item.value != resource_item.value
+        content_tag(:font, resource_item.human_value_and_measurement, color: 'green') +
+        ' ' +
+        content_tag(:font, access_resource_item.human_value_and_measurement, color: 'red')
+      else
+        resource_item.human_value_and_measurement
+      end
+
+      "<b>#{resource_item.resource_kind.name}:</b> #{value}".html_safe
     end
 
   end

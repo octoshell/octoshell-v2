@@ -2,41 +2,6 @@
   h3
     b
         = t('.title')
-  - items.includes(:template, from_links: {to: :template}).each do |item|
-      div style=" border: 2px solid black; padding: 10px; margin: 10px;"
-        - if @admin
-          p
-            = t('.requested_by_user', item_link: link_to(item.template.name,
-                [:admin, item.template]), amount: '1').html_safe
-            - item.resource_items.map  do |r_p|
-              div
-                = r_p.name_value.html_safe
-
-          - if item.from_links.any?
-            p
-              b = t('.linked_with')
-            - item.from_links.each do |link|
-              = t('.requested_link_by_user', item_link: link_to(link.to.item.name,
-                [:admin, link.to.item]), amount: link.amount).html_safe
-              - link.to.resource_items.map  do |r_p|
-                div
-                  = r_p.name_value.html_safe
-
-        - else
-          p
-            = t('.you_requested', item_link: link_to(item.template.name,
-                item.template), amount: 1).html_safe
-            - item.resource_items.map  do |r_p|
-              div
-                = r_p.name_value.html_safe
-
-
-          - if item.from_links.any?
-            p
-              b = t('.linked_with')
-            - item.from_links.each do |link|
-              = t('.you_requested_link', item_link: link_to(link.to.item.name,
-                link.to.item), amount: link.amount).html_safe
-              - link.to.resource_items.map  do |r_p|
-                div
-                  = r_p.name_value.html_safe
+  -items = items.includes(:template, from_links: {to: :template})
+  = render 'cloud_computing/requests/new_items', items: items.where(item_id: nil)
+  = render 'cloud_computing/requests/old_items', items: items.where.not(item_id: nil)

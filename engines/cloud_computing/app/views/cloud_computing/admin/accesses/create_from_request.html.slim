@@ -8,9 +8,18 @@ div class="row"
       = f.autocomplete_field :for_id, { source: core.admin_projects_path } do |val|
         - Core::Project.find(val).title
       = f.text_field :finish_date, class: 'datepicker', help: t('.finish_date_help')
+      div style="margin-bottom:5%;"
+        .row
+          h3 = t('.old_left_items')
+          = f.fields_for :old_left_items do |ff|
+            .col-md-6
+              h4 = "#{ff.object.template.name}\##{ff.object.item_id}"
+              = ff.hidden_field :id
+              = ff.hidden_field :item_id
+              = ff.hidden_field :template_id
+              = render 'cloud_computing/requests/resource_item_fields', ff: ff
 
-      /= f.link_to_add t(".add_items"), :left_items,
-      /  data:  { :target => "#left-item-container" }
+      h3 = t('.new_left_items')
       button#add
         = t('.add_items')
       .row
@@ -21,17 +30,9 @@ div class="row"
 = render partial: 'cloud_computing/requests/edit'
 
 javascript:
-  console.log(#{json_items(@access)});
   render_fields({
-    path: ['access', 'left_items_attributes'],
+    path: ['access', 'new_left_items_attributes'],
     templates:  #{json_templates},
-    items: #{json_items(@access)},
-    container: $('div#item-container'),
-    button: $('button#add'),
-    number_field: $('script#number-field'),
-    boolean_field: $('script#boolean-field'),
-    fields: $('script#fields'),
-    messages: {
-      help: $('script#help-message')
-    }
+    items: #{json_items(@access, true)},
+    container: $('div#item-container')
  });
