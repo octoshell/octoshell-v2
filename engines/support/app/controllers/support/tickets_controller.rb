@@ -5,7 +5,6 @@ module Support
     before_action :setup_default_filter, only: :index
 
     def index
-      qqqaaa
       @search = current_user.tickets.search(params[:q])
       @tickets = @search.result(distinct: true)
                         .order("updated_at DESC, id DESC")
