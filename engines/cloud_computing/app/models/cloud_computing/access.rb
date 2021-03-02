@@ -16,7 +16,16 @@ module CloudComputing
     #                             class_name: 'CloudComputing::NebulaIdentity',
     #                             source: :virtual_machines
     validates :for, :user, :allowed_by, presence: true
+    validates :state, uniqueness: { scope: [:for_id, :for_type] }, if: :approved?
     # validates :request_id, uniqueness: true, if: :request
+
+    # pessimistic locking
+    # Оживление виртуалок
+    # прокси для отправки
+    # результаты логгирования
+    # vcpu
+    # RESCUE
+
     aasm(:state) do
       state :created, initial: true
       state :approved
@@ -27,7 +36,8 @@ module CloudComputing
       event :approve do
         transitions from: :created, to: :approved do
           guard do
-            self.for && items.exists? && items_filled?
+            self.for && items.exists? && items_filled? &&
+              Access.where(for: self.for).approved.empty?
           end
 
           after do

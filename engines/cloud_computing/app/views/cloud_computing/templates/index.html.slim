@@ -4,7 +4,7 @@ div class="page-header"
 = bootstrap_form_for @search, url: templates_path, method: :get, layout: :vertical do |f|
   div class="container"
     div class="col-md-3"
-      = f.select :template_kind_and_descendants, nested_set_options(CloudComputing::TemplateKind) {|i| "#{'-' * i.level} #{i.name}" }, { label: CloudComputing::Item.human_attribute_name(:template_kind) },  multiple:true
+      = f.select :template_kind_and_descendants, nested_set_options(CloudComputing::TemplateKind) {|i| "#{'-' * i.level} #{i.name}" }, { label: CloudComputing::Template.human_attribute_name(:template_kind) },  multiple:true
   = f.form_group do
     = f.primary t("actions.find")
 

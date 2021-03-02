@@ -55,7 +55,16 @@ module CloudComputing
     end
 
     def edit_created_request
+      if params[:template_id]
+        template = CloudComputing::Template.find(params[:template_id])
+        if template.initial_requests?
+          item = @request.new_left_items.new(template: template)
 
+          template.editable_resources.each do |r|
+            item.resource_items.new(resource: r, value: r.value)
+          end
+        end
+      end
     end
 
     def update_created_request

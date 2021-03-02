@@ -35,10 +35,13 @@ module CloudComputing
         unless result
           @access.api_logs.create!(log: arr.inspect, action: 'updateconf_error')
         end
-
-
       end
+    end
 
+    def self.each_vm(access)
+      VirtualMachine.where(item: access.new_left_items).each do |n_i|
+        yield(n_i)
+      end
     end
 
     def self.instantiate_access(access_id)
@@ -47,30 +50,31 @@ module CloudComputing
       access.new_left_items.includes(:template).each do |item|
         instantiate_vm(item, ssh)
       end
+      begin
+        each_vm(access) do |n_i|
+          OpennebulaCallback.new(n_i, :resize_disk)
+        end
 
-      VirtualMachine.where(item: access.new_left_items).each do |n_i|
-        OpennebulaCallback.new(n_i, :resize_disk)
+        each_vm(access) do |n_i|
+          OpennebulaCallback.new(n_i, :attach_internet)
+        end
+
+        each_vm(access) do |n_i|
+          OpennebulaCallback.new(n_i, :poweroff_hard)
+        end
+
+        each_vm(access) do |n_i|
+          OpennebulaCallback.new(n_i, :resize, true)
+        end
+
+        each_vm(access) do |n_i|
+          OpennebulaCallback.new(n_i, :resume)
+        end
+      ensure
+        access.old_left_items.each do |item|
+          item.destroy if item.resource_items.empty?
+        end
       end
-
-      VirtualMachine.where(item: access.new_left_items).each do |n_i|
-        OpennebulaCallback.new(n_i, :attach_internet)
-      end
-
-      VirtualMachine.where(item: access.new_left_items).each do |n_i|
-        results = OpennebulaClient.vm_action(n_i.identity, 'poweroff-hard')
-        n_i.api_logs.create!(log: results, action: 'change state before resize', item: n_i.item)
-
-        OpennebulaCallback.new(n_i, :resize, true)
-
-        results = OpennebulaClient.vm_action(n_i.identity, 'resume')
-        n_i.api_logs.create!(log: results, action: 'change state after resize', item: n_i.item)
-
-      end
-      access.old_left_items.each do |item|
-        item.destroy if item.resource_items.empty?
-      end
-
-
     end
 
     def self.instantiate_vm(item, ssh)

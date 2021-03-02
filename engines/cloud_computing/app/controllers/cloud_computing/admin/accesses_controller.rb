@@ -60,7 +60,7 @@ module CloudComputing::Admin
       if @access.save
         redirect_to [:admin, @access]
       else
-        render :_new
+        render :new
       end
     end
 
@@ -71,14 +71,13 @@ module CloudComputing::Admin
       if @access.update(access_params)
         redirect_to [:admin, @access]
       else
-        render :_new
+        render :edit
       end
     end
 
 
 
     def create_from_request
-
       @request = CloudComputing::Request.find(params[:request_id])
       @access = CloudComputing::Access.approved.where(for: @request.for).first
       unless @access
@@ -86,8 +85,18 @@ module CloudComputing::Admin
         @access.allowed_by = current_user
       end
       @access.copy_from_request(@request)
-      # render :_new
-      # redirect_to [:admin, @access]
+    end
+
+    def save_from_request
+      @access = CloudComputing::Access.where(id: params[:id]).first ||
+       CloudComputing::Access.new
+
+      if @access.update(access_params)
+        CloudComputing::Request.find(params[:request_id]).approve!
+        redirect_to [:admin, @access]
+      else
+        render 'create_from_request'
+      end
     end
 
 

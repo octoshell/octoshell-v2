@@ -48,7 +48,7 @@ ru:
         min: Минимум
         to: Из
         to_id: К
-      cloud_computing/item:
+      cloud_computing/template:
         available: Доступно
         cluster: Кластер
         cluster_id: Кластер
@@ -97,8 +97,10 @@ ru:
         identity: Opennebula id
         last_info: Состояние обновлено
         state: Состояние
-      cloud_computing/position:
-        amount: Количество
+        name: Название
+        inner_address: Адрес во внутренней сети
+        internet_address: Интернет адрес
+      cloud_computing/item:
         virtual_machine: Виртуальная машина
       cloud_computing/request:
         admin_comment: Комментарий администратора
@@ -259,9 +261,9 @@ ru:
           title: "%{template_kind} - вид единиц облачного кластера"
         update:
           updated_successfully: Вид успешно отредактирован
-      items:
+      templates:
         edit:
-          title: Редактировать единицу %{item}
+          title: Редактировать единицу %{template}
         form:
           value_help: >-
             Если ресурс редактируемый, то значение будет трактоваться как значение
@@ -270,7 +272,7 @@ ru:
           confirm: Вы действительно хотите удалить эту единицу?
           delete: Удалить
           edit: Редактировать
-          new_item: Новая единица
+          new_template: Новая единица
           no_items_found: Нет единиц
           title: Список единиц облачного кластера
         new:
@@ -321,7 +323,7 @@ ru:
       access_list: Доступы
       cluster_list: Кластеры
       template_kind_list: Виды единиц
-      item_list: Единицы облачного кластера
+      template_list: Единицы облачного кластера
       request_list: Заявки
       resource_kind_list: Виды ресурсов
     template_kinds:
@@ -334,7 +336,7 @@ ru:
         load_templates: 'Обновить шаблоны из OpeNNebula '
         no_parent: Без родителя (это вершина корневая)
         title: Вид единиц
-    items:
+    templates:
       destroy:
         destroyed_successfully: Успешно удалено
       index:
@@ -347,7 +349,7 @@ ru:
       show:
         add_position: Добавить ещё одну позицию
         remove_position: Удалить из заявки
-        title: Единица %{item}
+        title: Единица %{template}
       table:
         no_items_found: Нет единиц облачного кластера
         requested: Вы запросили

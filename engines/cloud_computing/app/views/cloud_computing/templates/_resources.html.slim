@@ -1,4 +1,4 @@
-h3 = CloudComputing::Item.human_attribute_name(:uneditable_resources)
+h3 = CloudComputing::Template.human_attribute_name(:uneditable_resources)
 - if @template.uneditable_resources.any?
   table.table.table-striped
     tr
@@ -14,7 +14,7 @@ h3 = CloudComputing::Item.human_attribute_name(:uneditable_resources)
         td = resource.value_with_measurement
 - else
   = t('.no_uneditable_resources')
-h3 = CloudComputing::Item.human_attribute_name(:editable_resources)
+h3 = CloudComputing::Template.human_attribute_name(:editable_resources)
 - if @template.editable_resources.any?
   table.table.table-striped
     tr

@@ -19,7 +19,7 @@ module CloudComputing
 
     def log
       return unless @results
-      
+
       @vm.api_logs.create!(item: @vm.item,
                            log: @results,
                            action: callback)
@@ -30,8 +30,12 @@ module CloudComputing
       @results.first
     end
 
+    def remove?
+      !@results || success?
+    end
+
     def remove_access_resource_item
-      return unless @results && success?
+      return unless remove?
 
       if @generic_resource.is_a?(ResourceItem) && @generic_resource.item.item_in_access
         @generic_resource.access_resource_item.update!(value: @generic_resource.value)

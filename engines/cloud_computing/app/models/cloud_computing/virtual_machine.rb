@@ -132,6 +132,10 @@ module CloudComputing
       "octo-#{item.holder.id}-#{item.id}-#{id}"
     end
 
+    def create_log!(results:, action:)
+      api_logs.create!(log: results, action: action, item: item)
+    end
+
     def resource_or_resource_item_by_identity(identity)
       resource_item = item.resource_items.where_identity(identity).first
       if resource_item && resource_item.request_resource_item

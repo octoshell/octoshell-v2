@@ -28,15 +28,8 @@ div class="row"
 
 javascript:
   render_fields({
-    path: ['access', 'left_items_attributes'],
+    path: ['access', 'new_left_items_attributes'],
     templates:  #{json_templates},
     items: #{json_items(@access)},
-    container: $('div#item-container'),
-    button: $('button#add'),
-    number_field: $('script#number-field'),
-    boolean_field: $('script#boolean-field'),
-    fields: $('script#fields'),
-    messages: {
-      help: $('script#help-message')
-    }
+    container: $('div#item-container')
  });

@@ -4,7 +4,7 @@ module CloudComputing
 
     def cloud_computing_submenu_items
       menu = Face::MyMenu.new
-      menu.add_item_without_key(t("cloud_computing.engine_submenu.item_list"),
+      menu.add_item_without_key(t("cloud_computing.engine_submenu.template_list"),
                                 templates_path, 'cloud_computing/templates')
       menu.add_item_without_key(t("cloud_computing.engine_submenu.template_kind_list"),
                                 template_kinds_path, 'cloud_computing/template_kinds')

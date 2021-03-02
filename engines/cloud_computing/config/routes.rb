@@ -34,7 +34,9 @@ CloudComputing::Engine.routes.draw do
         patch :finish
         patch :reinstantiate
         patch :prepare_to_deny
+        patch :save_from_request
       end
+
       collection do
         post :create_from_request
       end
@@ -66,6 +68,7 @@ CloudComputing::Engine.routes.draw do
       post :update_created_request
       post :to_sent
       post :cancel
+      patch :add_to_request
     end
   end
 

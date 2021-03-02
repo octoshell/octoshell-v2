@@ -2,18 +2,17 @@ module CloudComputing
   extend Octoface
   octo_configure :cloud_computing do
     add_ability(:manage, :cloud, 'superadmins')
+    add_ability(:test, :cloud, 'superadmins')
+
     add_ability do |user|
+      if can?(:test, :cloud)
+        can :read, CloudComputing::Access, for: user.projects
+        can :update, CloudComputing::Access, for: user.owned_projects
 
-      # Core::Credential.active.where(user_id: access.for.members.allowed
-      #     .select('user_id')).select('public_key').map(&:public_key)
-      #
-      can :read, CloudComputing::Access, for: user.projects
-      can :update, CloudComputing::Access, for: user.owned_projects
-
-      if user.owned_projects.active.any?
-        can :create, CloudComputing::Request
+        if user.owned_projects.active.any?
+          can :create, CloudComputing::Request
+        end
       end
-
     end
 
     add_routes do

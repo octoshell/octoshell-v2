@@ -94,6 +94,19 @@ module CloudComputing
       OpennebulaResizeModifier.new(@vm, @vm_data).perform
     end
 
+    def poweroff_hard
+      change_state('poweroff-hard', 'change state before resize')
+    end
+
+    def resume
+      change_state('resume', 'change state after resize')
+    end
+
+    def change_state(state, action)
+      results = OpennebulaClient.vm_action(@vm.identity, state)
+      @vm.create_log!(results: results, action: action)
+    end
+
     def assign_internet_ip
       nics = @vm_data['TEMPLATE']['NIC']
       if nics.is_a?(Hash)

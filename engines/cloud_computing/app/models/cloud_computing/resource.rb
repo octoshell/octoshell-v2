@@ -93,7 +93,11 @@ module CloudComputing
     end
 
     def value_with_measurement
-      "#{value} #{resource_kind.measurement}"
+      if resource_kind.boolean?
+        I18n.t(value == '1')
+      else
+        "#{value} #{resource_kind.measurement}"
+      end
     end
   end
 end
