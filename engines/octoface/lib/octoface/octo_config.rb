@@ -36,6 +36,10 @@ module Octoface
 
     def finish_intialization
       instance_eval(&@init_block) if @init_block
+      return if %w[FakeMainApp Octoface].include? mod.to_s
+
+      app_helper = eval("#{mod}::ApplicationHelper")
+      ::ApplicationHelper.include app_helper
     end
 
     def add(name)

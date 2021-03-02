@@ -137,13 +137,22 @@ module Jobstat
           @total_count = @jobs.count
           @jobs = @jobs.offset(params[:offset].to_i).limit(@PER_PAGE)
 
+
+          filters = Job::get_filters(@current_user)
+          if filters.length > 0
+            filters = filters[-1]["filters"] || []
+          end
+
           @jobs.each{|j|
             rules=j.get_rules(@current_user)
             @jobs_plus[j.drms_job_id]={'rules'=>{},'filtered' => 0,'detailed'=>(j.get_detailed.length > 0)}
             rules.each{|r|
               @jobs_plus[j.drms_job_id]['rules'][r['name']] = r['description']
-              @jobs_plus[j.drms_job_id]['filtered']+=1 if @filters.include? r['name']
             }
+            # calculate filtered count
+            logger.info "LEFTOUT RULES: #{j.get_primary_names & filters}"
+            logger.info "ALL RULES: #{j.get_primary_names}"
+            @jobs_plus[j.drms_job_id]['filtered'] = (j.get_primary_names & filters).length
           }
         end
         @shown = @jobs.length
@@ -395,6 +404,7 @@ module Jobstat
       end
       if params[:only_with_data].to_i == 1
         jobs = jobs.joins("inner join jobstat_float_data on jobstat_float_data.job_id=jobstat_jobs.id").where "jobstat_float_data.name='cpu_user'"
+        jobs = jobs.where("jobstat_float_data.value is not null")
       end
 
       jobs.where(login: query_logins, cluster: params[:cluster])

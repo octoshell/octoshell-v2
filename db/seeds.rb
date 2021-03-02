@@ -106,3 +106,4 @@
   ticket = FactoryBot.create(:ticket)
   FactoryBot.create(:ticket)
   limited_sup.user_topics.create!(topic: ticket.topic)
+  Octoface::OctoConfig.create_abilities!

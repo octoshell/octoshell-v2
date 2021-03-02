@@ -989,7 +989,7 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
     t.integer "ticket_id"
     t.text "description_en"
     t.string "name_en"
-    t.boolean "ticket_created", default: false
+    t.boolean "ticket_created"
     t.index ["package_id"], name: "index_pack_versions_on_package_id"
   end
 
@@ -1012,6 +1012,15 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
     t.text "about"
     t.boolean "receive_info_mails", default: true
     t.boolean "receive_special_mails", default: true
+  end
+
+  create_table "sessions_managers", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "session_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_managers_on_session_id"
+    t.index ["user_id"], name: "index_sessions_managers_on_user_id"
   end
 
   create_table "sessions_projects_in_sessions", id: :serial, force: :cascade do |t|
@@ -1207,6 +1216,7 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
     t.string "hint_en"
     t.string "model_collection"
     t.integer "kind", default: 0
+    t.boolean "search", default: false
   end
 
   create_table "support_replies", id: :serial, force: :cascade do |t|

@@ -7,7 +7,8 @@ table class="table table-condensed"
           - if employment.primary?
             i class="fa fa-flag"
         td class="col-xs-6"
-          strong = employment.full_name
+          = link_to employment.full_name, core.employment_path(employment)
+
           br
           - employment.position_info.each do |p|
             ul class="list-unstyled"
