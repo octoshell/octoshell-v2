@@ -55,7 +55,7 @@ module CloudComputing
     end
 
     def error?(state, lcm_state)
-      return false if %w[0 1 6 10 11].include?(state)
+      return false if %w[0 1 6 8 10 11].include?(state)
 
       if state == '3' && !error_lcm_states.include?(lcm_state)
         return false
@@ -69,7 +69,8 @@ module CloudComputing
       state = @vm_data['STATE']
       lcm_state = @vm_data['LCM_STATE']
       if needed_state?(state, lcm_state)
-        @vm.update!(lcm_state: 'RUNNING', state: 'ACTIVE', last_info: DateTime.now)
+        @vm.update!(state_from_code: state, lcm_state_from_code: lcm_state,
+                    last_info: DateTime.now)
         send(@callback)
         true
       elsif error?(state, lcm_state)
@@ -100,6 +101,8 @@ module CloudComputing
 
     def resume
       change_state('resume', 'change state after resize')
+      @vm.update!(state_from_code: '3', lcm_state_from_code: '3',
+                  last_info: DateTime.now)
     end
 
     def change_state(state, action)

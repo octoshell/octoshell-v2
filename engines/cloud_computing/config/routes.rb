@@ -34,11 +34,11 @@ CloudComputing::Engine.routes.draw do
         patch :finish
         patch :reinstantiate
         patch :prepare_to_deny
-        patch :save_from_request
       end
 
       collection do
         post :create_from_request
+        post :save_from_request
       end
     end
     resources :virtual_machines do

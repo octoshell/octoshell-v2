@@ -21,14 +21,14 @@ ru:
     attributes:
       support/field:
         contains_source_code: Поле будет содержать исходный код (логи)
+        field_options: Опции поля
         hint: 'Подсказка пользователю: что вводить в качестве значения поля'
         kind: Вид
+        model_collection: Ссылка на объект
         name: Название
         required: Обязательное поле
-        url: Содержимое оформить как ссылку
-        field_options: Опции поля
-        model_collection: Ссылка на объект
         search: Использовать это поле для поиска в списке билетов
+        url: Содержимое оформить как ссылку
       support/field_option:
         name: Название
       support/reply:
@@ -74,29 +74,31 @@ ru:
         name: Наименование
         parent: Родительская тема
         parent_id: Родительская тема
+        permissions: Дополнительные права для групп пользователей
         tag_ids: Теги по-умолчанию
         tags: Теги по-умолчанию
         template: Шаблон
         visible_on_create: Видна ли при создании заявки пользователем
-        permissions: Дополнительные права для групп пользователей
       support/topics_field:
         required: Обязательно к заполнению
       support/user_topic:
         required: Ответственный по умолчанию
     errors:
       models:
-        support/ticket:
-          equal_to_template: Измените описание проблемы (сейчас там шаблон)
         support/field:
           attributes:
             kind:
-              collection_present: Нельзя выбрать такой вид поля при условии существования ссылки на объект класса в данном поле.
-              field_options_present: Нельзя выбрать такой вид поля при условии существования опций поля для данного класса.
-
+              collection_present: >-
+                Нельзя выбрать такой вид поля при условии существования ссылки на
+                объект класса в данном поле.
+              field_options_present: >-
+                Нельзя выбрать такой вид поля при условии существования опций поля
+                для данного класса.
+        support/ticket:
+          equal_to_template: Измените описание проблемы (сейчас там шаблон)
     models:
       support/field: Дополнительное поле
       support/field_option: Опция поля
-
       support/reply: Ответ
       support/reply_template: Шаблон ответа
       support/tag: Тег
@@ -115,15 +117,14 @@ ru:
       size_too_small: файл слишком малого размера (должен быть как минимум %{file_size})
       wrong_size: размер файла некорректен (должен быть %{file_size})
   support:
-    open_support: Открыть раздел техподдержки.
     admin:
       fields:
-        form:
-          model_collection: Поле будет содержать ссылку на объект класса
-          remove_option: Удалить опцию
-          add_option: Добавить опцию
         edit:
           title: Редактирование доп. поля
+        form:
+          add_option: Добавить опцию
+          model_collection: Поле будет содержать ссылку на объект класса
+          remove_option: Удалить опцию
         index:
           new_field: Создать дополнительное поле
           title: Дополнительные поля для заявок
@@ -175,8 +176,8 @@ ru:
           updated_after: Обновлён после
           updated_before: Обновлён до
         new:
-          title: Новая заявка на пользователя
           choose_topic: Выберите тему
+          title: Новая заявка на пользователя
         show:
           accept: Принять в работу
           attach: Приложить файл
@@ -196,8 +197,8 @@ ru:
         edit:
           title: Редактирование темы заявок
         form:
-          attach: Прикрепить
           add_responsible: Добавить ответственного
+          attach: Прикрепить
         index:
           new_topic: Создать тему
           title: Темы заявок
@@ -235,11 +236,12 @@ ru:
     notificator:
       test_index:
         ddd: 'TRME '
+    open_support: Открыть раздел техподдержки.
     tickets:
-      fields_form:
-        contains_all_fields: Содержит следующие поля
       edit:
         title: Редактирование заявки
+      fields_form:
+        contains_all_fields: Содержит следующие поля
       index:
         created_after: Создан после
         created_before: Создан до

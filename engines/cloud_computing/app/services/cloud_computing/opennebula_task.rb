@@ -50,6 +50,7 @@ module CloudComputing
       access.new_left_items.includes(:template).each do |item|
         instantiate_vm(item, ssh)
       end
+
       begin
         each_vm(access) do |n_i|
           OpennebulaCallback.new(n_i, :resize_disk)
@@ -68,7 +69,7 @@ module CloudComputing
         end
 
         each_vm(access) do |n_i|
-          OpennebulaCallback.new(n_i, :resume)
+          OpennebulaCallback.new(n_i, :resume, true)
         end
       ensure
         access.old_left_items.each do |item|
@@ -176,6 +177,7 @@ module CloudComputing
         hash['MEMORY'] = (value.to_i * 1024).to_i
       elsif identity == 'CPU'
         hash['CPU'] = value.to_f
+        hash['VCPU'] = value.to_i
       end
     end
 

@@ -88,8 +88,11 @@ module CloudComputing::Admin
     end
 
     def save_from_request
-      @access = CloudComputing::Access.where(id: params[:id]).first ||
-       CloudComputing::Access.new
+      if params[:access_id]
+        @access = CloudComputing::Access.where(id: params[:access_id]).first
+      end
+      @access ||= CloudComputing::Access.new
+      @access.allowed_by ||= current_user
 
       if @access.update(access_params)
         CloudComputing::Request.find(params[:request_id]).approve!

@@ -2,7 +2,7 @@ module CloudComputing
   class Resource < ApplicationRecord
     belongs_to :resource_kind, inverse_of: :resources
     belongs_to :template, inverse_of: :resources
-    has_many :resource_items, inverse_of: :position, dependent: :destroy
+    has_many :resource_items, inverse_of: :resource, dependent: :destroy
 
     validates :resource_kind, :template, :value, presence: true
     validates :min, :max, :value, presence: true, numericality: { greater_than_or_equal_to: 0 },

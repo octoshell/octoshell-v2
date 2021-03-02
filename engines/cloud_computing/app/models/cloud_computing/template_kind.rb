@@ -18,7 +18,7 @@ module CloudComputing
     translates :name, :description
     validates_translated :name, presence: true, uniqueness: { scope: :parent_id }
 
-    validates :cloud_class, uniqueness: true, unless: :no_type?
+    validates :cloud_class, uniqueness: true, if: :validate_cloud_class?
 
     def self.virtual_machine_cloud_class
       find_by(cloud_class: CloudComputing::VirtualMachine.to_s)
@@ -62,6 +62,10 @@ module CloudComputing
 
 
     def no_type?
+      cloud_class.present?
+    end
+
+    def validate_cloud_class?
       cloud_class.present?
     end
 

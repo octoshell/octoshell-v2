@@ -7,6 +7,7 @@ div class="row"
     = f.select :parent_id, nested_set_options(CloudComputing::TemplateKind,
       @template_kind) {|i| "#{'-' * i.level} #{i.name}" }, include_blank: true
     = f.select :cloud_class, CloudComputing::TemplateKind.human_cloud_classes
+
     h3 =  CloudComputing::TemplateKind.human_attribute_name(:conditions)
     = f.fields_for :conditions  do |ff|
       div style="margin: 5%"
@@ -17,7 +18,7 @@ div class="row"
         = ff.text_field :to_multiplicity
         = ff.link_to_remove t(".remove_value"), class: "fa fa-times text-danger"
 
-    = f.link_to_add t(".add_value"), :conditions
+    /= f.link_to_add t(".add_value"), :conditions
 
     = f.form_group do
       = f.submit t("buttons.save")

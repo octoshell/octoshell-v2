@@ -29,8 +29,7 @@ module CloudComputing
 
       cpu = virtual_kind.resource_kinds.create!(name_ru: 'Центральные процессоры',
         name_en: 'CPU', measurement_en: '', measurement_ru: '',
-        identity: 'CPU', content_type: 'decimal',
-        help_ru: 'Число процессоров: 0,5 - половина процессора, 2,0 - 2 процессора')
+        identity: 'CPU', content_type: 'positive_integer')
 
 
       hard = virtual_kind.resource_kinds.create!(name_ru: 'Жёсткий диск',

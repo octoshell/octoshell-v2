@@ -82,6 +82,7 @@ PATH
       ransack (= 2.1.1)
       sidekiq
       slim
+      xmlrpc
 
 PATH
   remote: engines/comments
@@ -319,7 +320,7 @@ GEM
     ansi (1.5.0)
     arel (9.0.0)
     ast (2.4.0)
-    awesome_nested_set (3.2.1)
+    awesome_nested_set (3.3.1)
       activerecord (>= 4.0.0, < 7.0)
     bcrypt (3.1.13)
     better_errors (2.5.1)
@@ -714,6 +715,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     underscore-rails (1.8.3)
     unicode-display_width (1.6.0)
+    webrick (1.7.0)
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
@@ -722,6 +724,8 @@ GEM
     write_xlsx (0.85.7)
       rubyzip (>= 1.0.0)
       zip-zip
+    xmlrpc (0.3.2)
+      webrick
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zip-zip (0.3)

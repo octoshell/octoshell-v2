@@ -57,9 +57,9 @@ data:
 search:
   ## Paths or `File.find` patterns to search in:
   paths:
-   - app/
-   - engines/*
-   # - engines/wikiplus
+   # - app/
+   # - engines/*
+   - engines/cloud_computing
 
    # - engines/core
    # - engines/support

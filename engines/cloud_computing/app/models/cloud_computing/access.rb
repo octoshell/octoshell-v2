@@ -117,18 +117,18 @@ module CloudComputing
     end
 
     def instantiate_vm
-      OpennebulaTask.instantiate_access(id)
-      # TaskWorker.perform_async(:instantiate_access, id)
+      # OpennebulaTask.instantiate_access(id)
+      TaskWorker.perform_async(:instantiate_access, id)
     end
 
     def terminate_access
-      OpennebulaTask.terminate_access(id)
-      # TaskWorker.perform_async(:terminate_access, id)
+      # OpennebulaTask.terminate_access(id)
+      TaskWorker.perform_async(:terminate_access, id)
     end
 
     def finish_access
-      OpennebulaTask.finish_access(id)
-      # TaskWorker.perform_async(:finish_access, id)
+      # OpennebulaTask.finish_access(id)
+      TaskWorker.perform_async(:finish_access, id)
     end
 
     def reinstantiate?
