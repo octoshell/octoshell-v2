@@ -39,7 +39,6 @@ css:
       .col-md-6
         h4 = link_to("#{t('.template')} #{item.template.name}##{item.id}", item.template)
         - item.all_resources.map  do |resource|
-          - resource.is_a?(CloudComputing::ResourceItem) && puts(resource.request_resource_item.inspect.yellow) 
           - if resource.is_a?(CloudComputing::ResourceItem) && resource.request_resource_item
             div
               = resource_item_and_old(resource.request_resource_item)

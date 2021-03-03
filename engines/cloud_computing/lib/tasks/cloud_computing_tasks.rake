@@ -28,6 +28,11 @@ namespace :cloud_computing do
         name_en: 'Hard drive', measurement_en: 'GB', measurement_ru: 'GB',
         identity: 'DISK=>SIZE', content_type: 'positive_integer',
         help_ru: 'При изменении объёма существующего диска следует указывать значение больше предыдущего.')
+
+      virtual_kind.resource_kinds.create!(name_ru: 'Доступ в интернет',
+          name_en: 'Internet access',
+          identity: 'internet', content_type: 'boolean')
+
     end
     # TemplateKind.
   end

@@ -4,7 +4,7 @@ module CloudComputing::Admin
   class AccessesController < CloudComputing::Admin::ApplicationController
 
     before_action only: %i[show finish approve deny
-      edit update reinstantiate] do
+      edit update reinstantiate prepare_to_deny] do
       @access = CloudComputing::Access.find(params[:id])
     end
 
