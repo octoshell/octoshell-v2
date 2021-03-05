@@ -1,0 +1,18 @@
+## [2.11.0] - 2021-03-05
+
+### Added
+
+- Changelog !!!
+- cloud platform initial support (opennebula)
+- intermodular octo
+- bootstrap form helpers, intermodular sessions
+
+### Deleted
+
+- support-pack associations
+
+### Fixed
+
+- tonns of them
+
+
