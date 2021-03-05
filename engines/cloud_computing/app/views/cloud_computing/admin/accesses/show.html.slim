@@ -1,0 +1,28 @@
+- content_for :title do
+  - t(".title", id: @access.id)
+
+
+css:
+  div.well > a{
+    margin-left: 10px;
+  }
+
+.well
+  = link_to t('actions.edit'), edit_admin_access_path(@access), class: 'btn btn-primary'
+  - if @access.may_approve?
+    = link_to t('.approve'), approve_admin_access_path, class: "btn btn-info", method: :patch
+  - if @access.may_prepare_to_deny?
+    = link_to t('.prepare_to_deny'), prepare_to_deny_admin_access_path, class: "btn btn-danger",
+      method: :patch, data: { confirm: t('.prepare_to_deny_confirm') }
+  - if @access.may_finish?
+    = link_to t('.finish'), finish_admin_access_path, class: "btn btn-danger",
+      method: :patch, data: { confirm: t('.finish_confirm') }
+  - if @access.may_deny?
+    = link_to t('.finish'), deny_admin_access_path, class: "btn btn-danger",
+      method: :patch, data: { confirm: t('.finish_confirm') }
+  - if @access.approved? && @access.reinstantiate?
+    = link_to t('.reinstantiate'), reinstantiate_admin_access_path, class: "btn btn-primary", method: :patch
+
+
+- attrs = %i[state user finish_date_or_nil allowed_by for]
+= render partial: 'cloud_computing/accesses/show', locals: { attrs: attrs }

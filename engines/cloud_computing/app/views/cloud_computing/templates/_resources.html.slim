@@ -1,0 +1,36 @@
+h3 = CloudComputing::Template.human_attribute_name(:uneditable_resources)
+- if @template.uneditable_resources.any?
+  table.table.table-striped
+    tr
+      th = CloudComputing::Resource.human_attribute_name(:resource_kind)
+      th = CloudComputing::Resource.human_attribute_name(:value)
+    - @template.uneditable_resources.includes(:resource_kind).each do |resource|
+      tr
+        -if @admin
+          td = link_to resource.resource_kind.name, [:admin, resource.resource_kind]
+        -else
+          td = link_to resource.resource_kind.name, resource.resource_kind
+
+        td = resource.value_with_measurement
+- else
+  = t('.no_uneditable_resources')
+h3 = CloudComputing::Template.human_attribute_name(:editable_resources)
+- if @template.editable_resources.any?
+  table.table.table-striped
+    tr
+      th = CloudComputing::Resource.human_attribute_name(:resource_kind)
+      th = CloudComputing::Resource.human_attribute_name(:default_value)
+      th = CloudComputing::Resource.human_attribute_name(:min)
+      th = CloudComputing::Resource.human_attribute_name(:max)
+    - @template.editable_resources.includes(:resource_kind).each do |resource|
+      tr
+        - if @admin
+          td = link_to resource.resource_kind.name, [:admin, resource.resource_kind]
+        - else
+          td = link_to resource.resource_kind.name, resource.resource_kind
+
+        td = resource.value_with_measurement
+        td = resource.human_min
+        td = resource.human_max
+- else
+  = t('.no_editable_resources')

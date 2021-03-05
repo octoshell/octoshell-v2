@@ -1,0 +1,14 @@
+div class="page-header"
+  h1
+    = @resource_kind.name
+div class="panel panel-default"
+  div class="panel-heading"
+    - if can?(:manage, :cloud)
+      = link_to t('actions.edit'), [:edit, :admin, @resource_kind], class: "btn btn-default"
+
+blockquote
+  - resource_kind_show_attrs(@resource_kind).each do |key, value|
+      - Array(key).each do |key|
+          h4
+            b = CloudComputing::ResourceKind.human_attribute_name key
+          p = value || @resource_kind.public_send(key)

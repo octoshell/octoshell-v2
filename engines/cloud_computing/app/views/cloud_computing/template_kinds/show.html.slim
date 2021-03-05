@@ -1,0 +1,36 @@
+- content_for :title do
+    - t(".title", template_kind: @template_kind.name)
+
+- if can?(:manage, :cloud)
+  div class="panel panel-default"
+    div class="panel-heading"
+      = link_to t('actions.edit'), [:edit, :admin, @template_kind], class: "btn btn-default"
+      -if @template_kind.virtual_machine?
+        = link_to t('.load_templates'), [:load_templates, :admin, @template_kind],
+          class: "btn btn-warning", method: :post
+        /= link_to t('.add_necessary_attributes'), [:add_necessary_attributes, :admin, @template_kind],
+        /  class: "btn btn-danger", method: :post
+
+
+div class="row"
+  div class="col-xs-6"
+    blockquote
+      h4
+        b = CloudComputing::TemplateKind.human_attribute_name :parent
+      - if @template_kind.parent
+        p
+          -if @admin
+            = link_to @template_kind.parent, [:admin, @template_kind.parent]
+          - else
+            = link_to @template_kind.parent, @template_kind.parent
+
+      - else
+        = t '.no_parent'
+      - %i[name description].each do |a|
+          h4
+            b = CloudComputing::TemplateKind.human_attribute_name a
+          p = @template_kind.public_send(a)
+
+      h4
+        b = CloudComputing::TemplateKind.human_attribute_name :cloud_type
+      p = @template_kind.human_cloud_class

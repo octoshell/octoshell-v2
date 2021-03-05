@@ -1,6 +1,5 @@
 ---
 ru:
-  not-specified: Не указано
   actions:
     confirm: Вы уверены?
     delete: Удалить
@@ -221,5 +220,6 @@ ru:
     face:
       application:
         maintaining_organization: НИВЦ МГУ имени М.В. Ломоносова
+  not-specified: Не указано
   util:
     number: "№"

@@ -1,0 +1,21 @@
+/= render 'form'
+.row
+  .col-md-6
+    blockquote
+      - attrs.each do |a|
+          - if a == :status
+            = mark_request_state(@request)
+          - elsif a == :for && @request.for.class.name == 'Core::Project'
+            h4
+              b = CloudComputing::Request.human_attribute_name :for
+            p = @request.for
+          - elsif a == :created_by && @admin
+            h4
+              b = CloudComputing::Request.human_attribute_name :user
+            p = link_to @request.created_by.full_name_with_email,
+                main_app.admin_user_path(@request.created_by_id)
+          - else
+            h4
+              b = CloudComputing::Request.human_attribute_name a
+            p = @request.public_send a
+  = render 'cloud_computing/requests/items', items: @request.left_items 

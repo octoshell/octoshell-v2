@@ -1,0 +1,477 @@
+---
+ru:
+  activerecord:
+    aasm:
+      cloudcomputing/access:
+        state:
+          states:
+            approved: доступ одобрен
+            created: новый
+            denied: отказано в доступе
+            finished: завершён
+            prepared_to_deny: подготовлен к завершению администратором
+            prepared_to_finish: подготовлен к завершению
+      cloudcomputing/request:
+        status:
+          states:
+            approved: одобрено
+            cancelled: отозвано пользоватлем
+            created: новая
+            refused: отказано
+            sent: отправлено на рассмотрение
+    attributes:
+      cloud_computing/access:
+        allowed_by: Создан администратором
+        finish_date: Дата окончания
+        finish_date_or_nil: Дата окончания
+        for: Проект
+        for_id: Проект
+        request: Заявка
+        state: Состояние
+        user: Пользователь
+      cloud_computing/api_log:
+        action: Действие
+        created_at: Создано
+        log: Текст лога
+      cloud_computing/cluster:
+        core_cluster: Кластер из модуля Core
+        core_cluster_id: Кластер из модуля Core
+        description: Описание
+      cloud_computing/condition:
+        from: От
+        from_id: От
+        kind: Вид
+        max: Максимум
+        min: Минимум
+        to: Из
+        to_id: К
+      cloud_computing/item:
+        virtual_machine: Виртуальная машина
+      cloud_computing/request:
+        admin_comment: Комментарий администратора
+        comment: Комментарий пользователя
+        created_by: Пользователь
+        finish_date: Дата окончания
+        finish_date_or_nil: Дата окончания
+        for: Проект
+        for_id: Проект
+        status: Состояние
+        user: Пользователь
+      cloud_computing/resource:
+        _destroy: Удалить
+        default_value: Значение по умолчанию
+        editable: Пользователь может редактировать?
+        max: Максимум
+        min: Минимум
+        new_requests: Подавать новые заявки
+        resource_kind: Тип ресурса
+        value: Значение
+      cloud_computing/resource_kind:
+        content_type: Тип значения
+        content_types:
+          boolean: Двоичное число
+          decimal: Десятичное число
+          positive_integer: Натуральное число
+        description: Описание
+        help: Помощь в заполнении
+        measurement: Единица
+        name: Название
+        template_kind: Вид единиц облачного кластера
+        template_kind_id: Вид единиц облачного кластера
+      cloud_computing/template:
+        available: Доступно
+        cluster: Кластер
+        cluster_id: Кластер
+        description: Описание
+        editable_resources: Редактируемые ресурсы
+        identity: Opennebula id
+        max_count: Максимум для запроса
+        name: Название
+        new_requests: Подавать новые заявки
+        resources: Ресурсы
+        template_kind: Вид
+        template_kind_id: Вид
+        uneditable_resources: Нередактируемые ресурсы
+      cloud_computing/template_kind:
+        cloud_type: Тип на кластере
+        cloud_types:
+          disk: Диск
+          'no': Не имеет значения
+          virtual_machine: Виртуальная машина
+        description: Описание
+        name: Название
+        parent: Отцовский вид
+        parent_id: Родительский тип
+      cloud_computing/virtual_machine:
+        actions:
+          poweroff: Выключить
+          poweroff-hard: Жёстко выключить
+          poweroff-hard-hint: >-
+            Жёсткое выключение небезопасно, может повлечь потерю данных и должно использоваться
+            только в исключительных случаях, например, при недостаточной поддержке
+            сигналов ACPI в ОС. Попробуйте нежёсткий вариант. Вы хотите продолжить?
+          reboot: Перезагрузить
+          reboot-hard: Жёстко перезагрузить
+          reboot-hard-hint: >-
+            Жёсткая перезагрузка небезопасна, может повлечь потерю данных и должна
+            использоваться только в исключительных случаях, например, при недостаточной
+            поддержке сигналов ACPI в ОС. Попробуйте нежёсткий вариант. Вы хотите
+            продолжить?
+          reinstall: Переустановить ОС
+          reinstall-hint: Переустановка ОС сотрёт все данные на данной виртуальной
+            машине. Вы уверены?
+          resume: Включить
+          undeploy-hard: Undeploy
+        address: Адрес
+        human_state: Состояние
+        identity: Opennebula id
+        inner_address: Адрес во внутренней сети
+        internet_address: Интернет адрес
+        last_info: Состояние обновлено
+        name: Название
+        state: Состояние
+    errors:
+      models:
+        cloud_computing/position:
+          attributes:
+            amount:
+              greater_than_max_count: Вы запросили больше единиц, чем доступно для
+                запроса
+        cloud_computing/resource:
+          attributes:
+            _destroy:
+              wrong_template_kind: Этот ресурс не соответствует типу единицы
+        cloud_computing/resource_item:
+          attributes:
+            value:
+              range: Значение должно быть в интервале [%{min},%{max}]
+    models:
+      cloud_computing/virtual_machine: Виртуальная машина
+  cloud_computing:
+    accesses:
+      add_keys:
+        updated: Новые ключи успешно добавлены
+      index:
+        title: Доступы
+      show:
+        add_keys: Обновить ключи участников проекта
+        add_to_request: Запросить изменение ресурсов
+        help: |-
+          Вы можете заходить на каждую виртуальную машину под логином root.
+           Например, ssh root@<ip> -i <path/to/private_key>.
+           В качестве ключей могут использоваться все активные ключи
+           участников проекта с одобренным доступом.
+        hint: >-
+          Используйте жёсткие варианты действий только в крайних случаях. При выборе
+          действия, сильно влияющего на состояние виртуальной машины, Octoshell попросит
+          у Вас подтверждения.
+        no_actions: Для данного состояния нет возможных действий. Может стоит обновить
+          состояние?
+        no_identities_logs: Нет логов без виртуальной машины
+        prepare_to_finish: Завершить
+        prepare_to_finish_confirm: >-
+          Вы уверены, что хотите завершить работу с данным доступом? Виртуальные машины
+          будут недоступны, а данные внутри  них -- стёрты.
+        show_logs: Логи
+        template: 'Шаблон: '
+        title: Доступ#%{id}
+        vm_info: Обновить состояние
+      table:
+        no_accesses_found: Не найдено доступов
+    admin:
+      accesses:
+        create_from_request:
+          add_items: 'Добавить'
+          finish_date_help: Если это поле пусто, то доступ без даты окончания
+          new_left_items: Новые единицы
+          old_left_items: Запрос на изменение существующих единиц
+          title: 'Добавить к доступу'
+        edit:
+          title: Редактировать доступ к виртуальной машине
+        edit_links:
+          amount_help: Введите количество единиц, приходящееся на одну виртуальную
+            машину
+          title: Добавить единицы к виртуальной машине
+        edit_vm:
+          title: Редактировать связи доступа к виртуальной машине
+        form:
+          add_items: 'Добавить'
+          add_positions: Добавить позицию
+          finish_date_help: Если это поле пусто, то доступ без даты окончания
+          new_left_items: Новые единицы
+          old_left_items: Запрос на изменение существующих единиц
+          remove_position: Удалить позицию
+        index:
+          new_access: Новый доступ
+          project: Проект
+          title: Список доступов
+        initial_edit:
+          title: Редактирование доступа
+        left_position_fields:
+          add_positions: Добавить виртуальную машину
+          remove_position: Удалить виртуальную машину
+        new:
+          title: Создание нового доступа
+        show:
+          approve: Одобрить
+          deny: Отозвать доступ
+          deny_confirm: >-
+            Вы уверены, что хотите отозвать доступ? Виртуальные машины будут недоступны.
+            Данные на жёстких дисках будут сохранены, их потом можно будет удалить.
+          finish: Завершить удаление
+          finish_confirm: >-
+            Данное действие сотрёт данные пользователя на жестких дисках виртуальных
+            машин данного доступа после одобрения администратором. Вы уверены?
+          prepare_to_deny: Отозвать доступ
+          prepare_to_deny_confirm: >-
+            Данное действие сотрёт данные пользователя на жестких дисках виртуальных
+            машин данного доступа после одобрения администратором. Вы уверены?
+
+          reinstantiate: Попытаться создать виртуальные машины
+          title: Доступ#%{id}
+        table:
+          no_accesses_found: Доступов не найдено
+      clusters:
+        edit:
+          title: Редактировать кластер
+        index:
+          confirm: Вы действительно хотите удалить кластер
+          delete: Удалить
+          edit: Редактировать
+          new_cluster: Новый кластер
+          no_clusters_found: Кластеров не найдено
+          title: Список кластеров
+        new:
+          title: Новый кластер
+      requests:
+        index:
+          project: Проект
+          title: Список заявок
+        show:
+          create_access: Создать доступ из заявки
+          refuse: Отказать в заявке
+          title: Заявка
+        table:
+          no_requests_found: Нет заявок
+      resource_kinds:
+        edit:
+          title: Редактировать тип ресурсов
+        index:
+          confirm: Вы действительно хотите удалить?
+          delete: Удалить
+          edit: Редактировать
+          new_resource_kind: Новый тип ресурсов
+          no_resource_kinds_found: Нет типов ресурсов
+          title: Список типов ресурсов
+        new:
+          title: Новый тип ресурсов
+      template_kinds:
+        add_necessary_attributes:
+          errors_found: Введены неверные данные
+          updated_successfully: Усешно обновлено
+        create:
+          added_successfully: Вид единицы облачного кластера добавлен!
+        destroy:
+          destroyed_successfully: Вид единицы облачного кластера удалён!
+        edit:
+          title: Редактировать вид c названием %{template_kind}
+        edit_all:
+          create_root: Создать корневую вершину
+          instruction: >-
+            Нажмите правой кнопкой мыши на вершину для доступа к действиям. При добавлении
+            новой вершины вы можете указать её название. С помощью зажатой левой кнопки
+            мыши можно перемещать вершины.
+          loading_tree: Дерево загружается
+          tree: Иерархия единиц облачного кластера
+        form:
+          add_value: Добавить условие соединения с другими видами
+          remove_value: Удалить условие соединения
+        index:
+          edit_all: Редактировать дерево
+          no_parent: Без родителя (это вершина корневая)
+          no_template_kinds_found: Нет видов единиц облачного кластера
+          title: Список видов единиц облачного кластера
+        load_templates:
+          added_templates: Добавленные единицы
+        show:
+          title: "%{template_kind} - вид единиц облачного кластера"
+        update:
+          updated_successfully: Вид успешно отредактирован
+      templates:
+        edit:
+          title: Редактировать единицу %{template}
+        form:
+          value_help: >-
+            Если ресурс редактируемый, то значение будет трактоваться как значение
+            по-умолчанию.
+        index:
+          confirm: Вы действительно хотите удалить эту единицу?
+          delete: Удалить
+          edit: Редактировать
+          new_template: Новая единица
+          no_items_found: Нет единиц
+          title: Список единиц облачного кластера
+        new:
+          title: Новая единица
+        show:
+          title: Единица облачного кластера
+        table:
+          confirm: Вы действительно хотите удалить данную единицу?
+          no_templates_found: 'Не найдено единиц'
+      virtual_machines:
+        change_state:
+          success: 'Успешно обновлено '
+          wrong_action: " действие не валидно для текущего состояние"
+        vm_info:
+          success: Состояние успешно обновлено
+    admin_submenu:
+      cloud_computing: Облако
+    api_logs:
+      index:
+        created_after: Создано после
+        created_before: Создано до
+        title: Логи виртуальной машины
+      table:
+        no_api_logs_found: Не найдено логов
+    engine_submenu:
+      access_list: Доступы
+      cluster_list: Кластеры
+      request_list: Заявки
+      resource_kind_list: Виды ресурсов
+      template_kind_list: Виды единиц
+      template_list: Единицы облачного кластера
+    no_date: Без даты окончания
+    requests:
+      add_item_from_access:
+        added: >-
+          Виртуальная машина успешно добавлена в заявку на изменение.
+          Отредактировать заявку вы можете на странице "Новая заявка"
+      created_request:
+        cancel: Отозвать заявку
+        edit_created_request: Редактировать новую заявку
+        fill_items: Заполните поля заявки.
+        fill_positions: Не введены нередактируемые ресурсы
+        instruction: >-
+          Ваша заявка состоит из единиц облачного кластера, которые представляют из
+          себя виртуальные машины, подсоединяемые диски и т.д. Добавляйте виртуальные
+          машины на вкладке "Единицы облачного кластера". Там же есть информация и
+          по другим дополнительным единицам, но добавить Вы их можете только к определённой
+          виртуальной машине через "редактировать новую заявку". Заявку можно отправить
+          на рассмотрение с помощью кнопки на этой странице, но только при заполненных
+          полях проекта и наличии хотя бы одной виртуальной машины в заявке.
+        title: Новая заявка
+        to_sent: Отправить заявку
+      edit:
+        copy: 'Копировать'
+        help: Введите значение от {{min}} до {{max}}. {{help}}
+      edit_created_request:
+        add_items: 'Добавить'
+        add_positions: Добавить позицию
+        finish_date_help: Если это поле пусто, то доступ без даты окончания
+        help: Введите значение от {{min}} до {{max}}. {{help}}
+        new_left_items: Новые единицы
+        old_left_items: Запрос на изменение существующих единиц
+        remove_position: Удалить из заявки
+        title: Редактировать новую заявку
+      edit_links:
+        amount_help: Введите количество данной единицы для каждой экземпляра виртуальной
+          машины
+        title: Редактировать связи виртуальных машин
+      edit_vm:
+        title: Редактировать новую заявку
+      index:
+        title: Список заявок
+      item_show:
+        add_item: Добавить к заявке
+      items:
+        title: В заявке присутствуют
+      links:
+        add_from_links: Add from links
+        added_items: Связь с
+        amount: Количество
+        amount_help: Введите количество экземпляров виртуальной машины в данной конфигурации
+        remove_link: Удалить
+        remove_position: Удалить
+      new_items:
+        linked_with: 'Связи:'
+        requested_by_user: Виртуальная машина %{item_link} </b>
+        requested_link_by_user: >-
+          Связано с единицей %{item_link} по <b> %{amount} </b> штук для каждой виртуальной
+          машины
+        title: 'Новые экземпляры единиц:'
+        you_requested: Виртуальная машина %{item_link} </b>
+        you_requested_link: >-
+          Связано с единицей %{item_link} по <b> %{amount} </b>  штук для каждой виртуальной
+          машины
+      old_items:
+        linked_with: 'Связи:'
+        requested_by_user: Виртуальная машина %{item_link} </b>
+        requested_link_by_user: >-
+          Связано с единицей %{item_link} по <b> %{amount} </b> штук для каждой виртуальной
+          машины
+        title: 'Старые единицы для редактирования:'
+        you_requested: Виртуальная машина %{item_link} </b>
+        you_requested_link: >-
+          Связано с единицей %{item_link} по <b> %{amount} </b>  штук для каждой виртуальной
+          машины
+      resource_item_fields:
+        help: Введите значение от <b>%{min}</b> до <b>%{max}</b>.
+      show:
+        cancel: Отозвать
+        edit_created_request: Редактировать новую заявку
+        title: Завка
+        to_sent: Отправить на рассмотрение
+      table:
+        no_requests_found: Нет заявок
+      to_assets:
+        destroy: 'Удалить?'
+      update_created_request:
+        updated_successfully: Заявка обновлена
+      update_links:
+        updated_successfully: Успешно обновлено
+    template_kinds:
+      index:
+        edit_all: Редактировать дерево
+        no_parent: Без родителя (это вершина корневая)
+        no_template_kinds_found: Нет видов единиц облачного кластера
+        title: Список видов единиц облачного кластера
+      show:
+        load_templates: 'Обновить шаблоны из OpeNNebula '
+        no_parent: Без родителя (это вершина корневая)
+        title: Вид единиц
+    templates:
+      destroy:
+        destroyed_successfully: Успешно удалено
+      index:
+        title: Список единиц облачного кластера
+      resource_items_fields:
+        help: Введите значение от <b>{{min}}</b> до <b>%{{max}}</b>.
+      resources:
+        no_editable_resources: 'Нет редактируемых ресурсов '
+        no_uneditable_resources: Нет Нередактируемых ресурсов
+      show:
+        add: 'Добавить в заявку'
+        add_position: Добавить ещё одну позицию
+        remove_position: Удалить из заявки
+        title: Единица %{template}
+      table:
+        no_templates_found: Нет единиц облачного кластера
+        requested: Вы запросили
+      update:
+        errors: При редактировании были найдены ошибки
+        updated_successfully: Успешно обновлено
+    user_submenu:
+      cloud_computing: Облако
+    virtual_machines:
+      change_state:
+        success: Состояние успешно обновлено
+        wrong_action: Неверное действие для данного состояния
+      vm_info:
+        success: Состояние успешно обновлено
+    vm_human_state:
+      running: Запущена
+  layouts:
+    cloud_computing:
+      application:
+        created_request: Новая заявка
+      created_request: Новая заявка

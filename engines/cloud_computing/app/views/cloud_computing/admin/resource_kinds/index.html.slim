@@ -1,0 +1,36 @@
+div class="page-header"
+  h1 = t(".title", default: "Resource kinds")
+
+div class="panel panel-default"
+  div class="panel-heading"
+    = link_to t(".new_resource_kind"), new_admin_resource_kind_path, class: "btn btn-default"
+  - if @resource_kinds.any?
+    div class="panel-body"
+      table class="table table-hover"
+        tr
+          th = CloudComputing::ResourceKind.human_attribute_name("name")
+          th = CloudComputing::ResourceKind.human_attribute_name(:template_kind)
+          th = CloudComputing::ResourceKind.human_attribute_name(:content_type)
+          th = CloudComputing::ResourceKind.human_attribute_name("measurement")
+
+          th
+        - @resource_kinds.each do |resource_kind|
+          tr
+            td  = link_to resource_kind.name, admin_resource_kind_path(resource_kind)
+            td  = link_to resource_kind.template_kind.name, [:admin, resource_kind.template_kind]
+            td  = resource_kind.human_content_type
+            td  = resource_kind.measurement
+            td
+              div class="btn-group pull-right"
+                = link_to t(".edit"), edit_admin_resource_kind_path(resource_kind), class: "btn btn-default btn-sm"
+                button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                  span class="caret"
+                ul class="dropdown-menu" role="menu"
+                  - name = t(".delete")
+                  - confirm = t(".confirm", default: "Are You sure?")
+                  - data = { method: :delete, confirm: confirm }
+                  li class="text-left"
+                    = link_to name, admin_resource_kind_path(resource_kind), data: data
+  - else
+    div class="panel-body"
+      p = t(".no_resource_kinds_found")

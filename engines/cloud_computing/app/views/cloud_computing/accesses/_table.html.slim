@@ -1,0 +1,22 @@
+- if accesses.any?
+  div class="panel-body"
+    table class="table table-hover"
+      tr
+        th
+        th = CloudComputing::Access.human_attribute_name(:state)
+        th = CloudComputing::Access.human_attribute_name(:user)
+        th = CloudComputing::Access.human_attribute_name(:for)
+
+      - accesses.each do |access|
+        tr
+          td class="col-xs-1" = link_to access.id, access
+          td class="col-xs-2" = mark_access_state(access)
+          td class="col-xs-3" = access.user.email
+          - if access.for_id
+            td class="col-xs-3" = link_to access.for.title,
+              core.project_path(access.for_id)
+
+
+- else
+  div class="panel-body"
+    p = t(".no_accesses_found")

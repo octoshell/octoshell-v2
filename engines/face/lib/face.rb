@@ -1,3 +1,4 @@
+require 'octoface'
 require "face/engine"
 require 'face/settings'
 require "face/custom_autocomplete_field"

@@ -1,0 +1,52 @@
+div class="row"
+  = bootstrap_form_for [:admin, @template], layout: :horizontal do |f|
+    = f.select :template_kind_id, nested_set_options(CloudComputing::TemplateKind) {|i| "#{'-' * i.level} #{i.name}" }
+    - CloudComputing::Template.locale_columns(:name).each do |column|
+      = f.text_field column
+    - CloudComputing::Template.locale_columns(:description).each do |column|
+      = f.text_area column, rows: 4
+
+    = f.text_field :identity
+
+    = form_group_check_box(f, :new_requests)
+    h3 =  CloudComputing::Template.human_attribute_name(:resources)
+    = f.fields_for :resources do |ff|
+      div style=" border: 2px solid black;"
+        - if ff.object.resource_kind.positive_integer?
+          - options = { control_col: 'col-sm-6', label_col: 'col-sm-6'}
+        - else
+          - options = { control_col: 'col-sm-6', label_col: 'col-sm-6', step: :any}
+        div.row style='margin: 5%;'
+          div.col-md-3
+            b
+              = ff.object.resource_kind.name_with_measurement
+              br
+              = ff.object.resource_kind.human_content_type
+
+          div.col-md-3
+            = ff.hidden_field :id
+            = ff.hidden_field :resource_kind_id
+            - if ff.object.resource_kind.boolean?
+              = ff.form_group :value, help: t('.value_help')
+                = ff.check_box :value, {}, '1', '0'
+            - else
+              = ff.number_field :value, options.dup.merge(help: t('.value_help'))
+          div.col-md-3
+            = ff.form_group :_destroy
+              = ff.check_box :_destroy, layout: 'form-layout',  wrapper: false
+        div.row
+          - if ff.object.resource_kind.boolean?
+            .col-md-3
+            .col-md-3
+          - else
+            div.col-md-3
+              = ff.number_field :min, options.dup
+            div.col-md-3
+              = ff.number_field :max, options.dup
+          div.col-md-3
+            = ff.form_group :editable
+              = ff.check_box :editable
+
+
+    = f.form_group do
+      = f.submit t("buttons.save")

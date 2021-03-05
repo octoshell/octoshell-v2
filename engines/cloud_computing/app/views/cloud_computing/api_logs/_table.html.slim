@@ -1,0 +1,17 @@
+- if api_logs.any?
+  div class="panel-body"
+    table class="table table-hover"
+      tr
+        th = CloudComputing::ApiLog.human_attribute_name(:action)
+        th = CloudComputing::ApiLog.human_attribute_name(:log)
+        th = CloudComputing::ApiLog.human_attribute_name(:created_at)
+
+      - api_logs.each do |api_log|
+        tr
+          td class="col-md-3" = api_log.action
+          td class="col-md-6" = api_log.log
+          td class="col-md-3" = api_log.created_at
+
+- else
+  div class="panel-body"
+    p = t(".no_api_logs_found")
