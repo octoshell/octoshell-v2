@@ -17,6 +17,8 @@ div class="row"
             h4 = "#{ff.object.template.name}\##{ff.object.item_id}"
             = ff.hidden_field :id
             = render 'cloud_computing/requests/resource_item_fields', ff: ff
+
+    h3 = t('.new_left_items')
     button#add
       = t('.add_items')
     .row

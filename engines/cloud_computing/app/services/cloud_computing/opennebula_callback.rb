@@ -55,7 +55,7 @@ module CloudComputing
     end
 
     def error?(state, lcm_state)
-      return false if %w[0 1 6 8 10 11].include?(state)
+      return false if %w[0 1 6 8 9 10 11].include?(state)
 
       if state == '3' && !error_lcm_states.include?(lcm_state)
         return false
@@ -68,7 +68,9 @@ module CloudComputing
     def check_state
       state = @vm_data['STATE']
       lcm_state = @vm_data['LCM_STATE']
-      if needed_state?(state, lcm_state)
+      if @callback.to_sym == :run_if_not && state == '3' && lcm_state == '3'
+        true
+      elsif needed_state?(state, lcm_state)
         @vm.update!(state_from_code: state, lcm_state_from_code: lcm_state,
                     last_info: DateTime.now)
         send(@callback)
@@ -95,8 +97,22 @@ module CloudComputing
       OpennebulaResizeModifier.new(@vm, @vm_data).perform
     end
 
+    def detach_internet
+      OpennebulaInternetModifier.new(@vm, @vm_data).detach_internet
+    end
+
+    def terminate_vm
+      result, *arr = OpennebulaClient.terminate_vm(@vm.identity)
+      return 'terminate_vm_error', arr unless result
+    end
+
+
     def poweroff_hard
       change_state('poweroff-hard', 'change state before resize')
+    end
+
+    def run_if_not
+      change_state('resume', 'run before any actions')
     end
 
     def resume

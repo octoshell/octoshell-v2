@@ -52,6 +52,11 @@ module CloudComputing
       end
 
       begin
+
+        each_vm(access) do |n_i|
+          OpennebulaCallback.new(n_i, :run_if_not)
+        end
+
         each_vm(access) do |n_i|
           OpennebulaCallback.new(n_i, :resize_disk)
         end
@@ -105,8 +110,8 @@ module CloudComputing
       end
     end
 
-    def self.terminate_vm(instance_id)
-      result, *arr = OpennebulaClient.terminate_vm(instance_id)
+    def self.terminate_vm(vm)
+      result, *arr = OpennebulaClient.terminate_vm(vm.identity)
       return 'terminate_vm_error', arr unless result
     end
 
@@ -138,15 +143,25 @@ module CloudComputing
 
     def self.finish_access(access_id)
       access = Access.find(access_id)
-      nis = VirtualMachine.where(item: access.left_items)
+      nis = VirtualMachine.where(item: access.new_left_items)
+
       nis.each do |n_i|
-        terminate_vm(n_i.identity)
+        OpennebulaCallback.new(n_i, :run_if_not)
       end
+
+      nis.each do |n_i|
+        OpennebulaCallback.new(n_i, :detach_internet)
+      end
+
+      nis.each do |n_i|
+        OpennebulaCallback.new(n_i, :terminate_vm)
+      end
+
     end
 
     def self.terminate_access(access_id)
       access = Access.find(access_id)
-      VirtualMachine.where(item: access.left_items).each do |n_i|
+      VirtualMachine.where(item: access.new_left_items).each do |n_i|
         terminate_template(n_i)
       end
     end

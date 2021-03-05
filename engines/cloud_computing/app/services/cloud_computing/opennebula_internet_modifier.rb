@@ -43,10 +43,6 @@ module CloudComputing
       @vm.update!(internet_address: nil)
     end
 
-    def value
-      (@generic_resource.value.to_i * 1024).to_s
-    end
-
     def perform
       attach? ? attach_internet : detach_internet
       log
