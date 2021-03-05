@@ -113,6 +113,7 @@ module CloudComputing
       data = Hash.from_xml(request_details[1])['VMTEMPLATE_POOL']['VMTEMPLATE']
       data.each do |template|
         next if template['TEMPLATE']['OCTOSHELL_BOUND_TO_TEMPLATE']
+        next if template['TEMPLATE']['VROUTER'] == 'yes'
 
         my_and_descendant_templates.where(identity: template['ID']).first_or_create! do |record|
           record.template_kind = self
