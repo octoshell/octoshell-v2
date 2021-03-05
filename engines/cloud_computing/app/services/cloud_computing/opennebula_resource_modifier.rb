@@ -14,7 +14,14 @@ module CloudComputing
 
     def initialize(vm, vm_data)
       @vm = vm
-      @vm_data = vm_data
+      if vm_data
+        @vm_data = vm_data
+      else
+        vm_id = @vm.identity
+        results = OpennebulaClient.vm_info(vm_id)
+        raise "Error getting vm_info for  #{vm_id}" unless results[0]
+        @vm_data = Hash.from_xml(results[1])['VM']
+      end
     end
 
     def log
