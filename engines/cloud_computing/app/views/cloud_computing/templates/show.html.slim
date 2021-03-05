@@ -1,0 +1,16 @@
+- content_for :title do
+    - t(".title", template: @template.name)
+-if @template.initial_requests? && can?(:create, CloudComputing::Request)
+  = link_to t('.add'), edit_created_request_requests_path(template_id: @template),
+    class: 'btn btn-primary'
+
+.row
+  .col-md-6
+    blockquote
+      - admin_template_show_attrs(@template).each do |key, value|
+          - Array(key).each do |key|
+              h4
+                b = CloudComputing::Template.human_attribute_name key
+              p = value || @template.public_send(key)
+  .col-md-6
+    = render partial: 'cloud_computing/templates/resources'

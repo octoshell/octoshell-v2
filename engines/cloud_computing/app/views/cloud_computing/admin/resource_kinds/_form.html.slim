@@ -1,0 +1,13 @@
+  = bootstrap_form_for [:admin, @resource_kind], layout: :horizontal,
+    label_col: "col-xs-4", control_col: 'col-xs-8' do |f|
+    = f.select :template_kind_id, nested_set_options(CloudComputing::TemplateKind) { |i| "#{'-' * i.level} #{i.name}" }
+    = f.select :content_type, CloudComputing::ResourceKind.human_content_types
+
+    - CloudComputing::ResourceKind.locale_columns(:name,
+        :measurement, :help).each do |column|
+      = f.text_field column
+    - CloudComputing::ResourceKind.locale_columns(:description).each do |column|
+      = f.text_area column, rows: 5
+
+    = f.form_group do
+      = f.submit t("buttons.save")

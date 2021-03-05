@@ -145,6 +145,14 @@ ru:
   reports_draft_saved: Черновик отчета сохранен
   sessions:
     admin:
+      projects:
+        show_projects:
+          activated_after: Активирован после
+          activated_before: Активирован до
+          created_after: Создан после
+          created_before: Создан до
+          no_projects_found: Не найдено проектов
+          title: Выбор проектов-участников перерегистрации
       report_submit_denial_reasons:
         edit:
           title: Редактирование причины отказа предоставления отчета

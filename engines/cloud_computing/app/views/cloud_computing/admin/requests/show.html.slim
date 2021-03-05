@@ -1,0 +1,20 @@
+/= render 'form'
+- content_for :title do
+    - t(".title")
+
+css:
+  div.well > a{
+    margin-left: 10px;
+  }
+.well
+  - if @request.may_approve? && !@request.access
+    = link_to t('.create_access'),
+      create_from_request_admin_accesses_path(request_id: @request.id),
+      class: "btn btn-success",
+      method: :post
+  - if @request.may_refuse?
+    = link_to t('.refuse'), refuse_admin_request_path(@request),
+                            class: "btn btn-danger",
+                            method: :patch
+
+= render partial: 'cloud_computing/requests/show', locals: { attrs: %i[status created_by comment admin_comment finish_date_or_nil for] }

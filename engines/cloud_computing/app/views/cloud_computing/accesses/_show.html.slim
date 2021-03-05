@@ -1,0 +1,104 @@
+css:
+  div.action-holder > a{
+    margin: 10px;
+  }
+.row
+  .col-md-6
+    blockquote
+      - attrs.each do |a|
+          - if a == :state
+            = mark_access_state(@access)
+          - elsif a == :for
+            h4
+              b = CloudComputing::Access.human_attribute_name :for
+            - if @admin
+              p = link_to @access.for, core.admin_project_path(@access.for)
+            - else
+              p = link_to @access.for, core.project_path(@access.for)
+
+          - elsif a == :user || a == :allowed_by
+            - u = @access.public_send(a)
+            h4
+              b = CloudComputing::Access.human_attribute_name a
+            -if @admin
+              p = link_to u.full_name_with_email,
+                  main_app.admin_user_path(u)
+            -else
+              p = u.full_name_with_email
+          - else
+            h4
+              b = CloudComputing::Access.human_attribute_name a
+            p = @access.public_send a
+  - unless @access.approved? || @access.prepared_to_deny? || @access.prepared_to_finish?
+    = render 'cloud_computing/requests/items', items: @access.left_items
+
+-if @access.approved? || @access.prepared_to_deny? || @access.prepared_to_finish?
+  = t('.help')
+  .container
+    - @access.new_left_items.order(:created_at).each do |item|
+      .col-md-6
+        h4 = link_to("#{t('.template')} #{item.template.name}##{item.id}", item.template)
+        - item.all_resources.map  do |resource|
+          - if resource.is_a?(CloudComputing::ResourceItem) && resource.request_resource_item
+            div
+              = resource_item_and_old(resource.request_resource_item)
+          - else
+            div
+              = resource.name_value.html_safe
+        -if can?(:update, @access) && !item.item_in_request
+          div
+            = link_to t('.add_to_request'),
+                      add_item_from_access_requests_url(item_id: item),
+                      method: :put
+
+        - if @admin
+            div
+              = link_to t('.show_logs'), api_logs_admin_item_path(item)
+
+        - n_i = item.virtual_machine
+        - if n_i
+              .col-md-9
+                table.table.table-hover
+                  -%i[id name identity inner_address internet_address].each do |a|
+                    - if @admin || a != :name
+                      tr
+                        td
+                          = CloudComputing::VirtualMachine.human_attribute_name(a)
+                        td
+                          = n_i.public_send(a)
+
+                  tr
+                    td
+                      = CloudComputing::VirtualMachine.human_attribute_name(:human_state)
+                    td
+                      = "#{n_i.human_state} #{vm_human_state(n_i)}"
+                  tr
+                    td
+                      = CloudComputing::VirtualMachine.human_attribute_name(:last_info)
+                    td
+                      = n_i.last_info
+
+                  tr
+                    - if @admin
+                      td = link_to t('.vm_info'), vm_info_admin_virtual_machine_path(n_i),
+                        method: :patch, class: 'btn btn-primary'
+                    - else
+                      td = link_to t('.vm_info'), vm_info_virtual_machine_path(n_i),
+                        method: :patch, class: 'btn btn-primary'
+
+              .col-md-3
+                ul
+                  - if n_i.human_possible_actions.any?
+                    - n_i.human_possible_actions.each do |a|
+                      li class="text-left"
+                        - if @admin
+                          = link_to a.second, change_state_admin_virtual_machine_path(n_i, params: { vm_action: a.first }),
+                            class: 'dropdown-item',
+                            method: :patch
+                        - else
+                          = link_to a.second, change_state_virtual_machine_path(n_i, params: { vm_action: a.first }),
+                            class: 'dropdown-item',
+                            method: :patch, data: { confirm: CloudComputing::VirtualMachine.hint_for_action(a.first) }
+                  - else
+                    = t('.no_actions')
+                  span.glyphicon.glyphicon-question-sign  style="margin-top: 10px;" title= t('.hint')

@@ -1,0 +1,35 @@
+div class="row"
+  = bootstrap_nested_form_for [:admin, @access], layout: :horizontal do |f|
+    = f.hidden_field :for_type, value: 'Core::Project'
+    = f.autocomplete_field :user_id, { source: main_app.users_path } do |val|
+      - User.find(val).full_name_with_email
+    = f.autocomplete_field :for_id, { source: core.admin_projects_path } do |val|
+      - Core::Project.find(val).title
+    = f.text_field :finish_date, class: 'datepicker', help: t('.finish_date_help')
+    div style="margin-bottom:5%;"
+      .row
+        h3 = t('.old_left_items')
+        = f.fields_for :old_left_items do |ff|
+          = ff.hidden_field :id
+          = ff.hidden_field :item_id
+          = ff.hidden_field :template_id
+          .col-md-6
+            h4 = "#{ff.object.template.name}\##{ff.object.item_id}"
+            = ff.hidden_field :id
+            = render 'cloud_computing/requests/resource_item_fields', ff: ff
+    button#add
+      = t('.add_items')
+    .row
+      div#item-container
+    = f.form_group do
+      = f.submit t("buttons.save")
+
+= render partial: 'cloud_computing/requests/edit'
+
+javascript:
+  render_fields({
+    path: ['access', 'new_left_items_attributes'],
+    templates:  #{json_templates},
+    items: #{json_items(@access)},
+    container: $('div#item-container')
+ });

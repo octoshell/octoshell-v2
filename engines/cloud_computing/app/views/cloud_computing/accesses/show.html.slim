@@ -1,0 +1,19 @@
+- content_for :title do
+    - t(".title", id: @access.id)
+
+css:
+  div.well > a{
+    margin-left: 10px;
+  }
+
+.well
+  - if  can?(:update, @access)
+    - if @access.may_prepare_to_finish?
+      = link_to t('.prepare_to_finish'), prepare_to_finish_access_path(@access), class: "btn btn-danger",
+        method: :patch, data: { confirm: t('.prepare_to_finish_confirm') }
+
+  = link_to t('.add_keys'), add_keys_access_path(@access), class: "btn btn-primary",
+    method: :patch
+
+- attrs = %i[state user finish_date_or_nil allowed_by for]
+= render partial: 'cloud_computing/accesses/show', locals: { attrs: attrs }

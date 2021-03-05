@@ -15,7 +15,7 @@ module AASM_Additions
 
     def state_key
       array = AASM::StateMachineStore[name].keys
-      raise "Don't use AASM_Additions with >1 aasm columns" if array.count > 1
+      # raise "Don't use AASM_Additions with >1 aasm columns" if array.count > 1
       array.first
     end
 

@@ -1,0 +1,17 @@
+= ff.fields_for :resource_items do |fff|
+  - resource_kind = fff.object.resource.resource_kind
+  = fff.hidden_field :id
+  = fff.hidden_field :resource_id
+  - if resource_kind.boolean?
+    = fff.check_box :value, label: resource_kind.name_with_measurement,
+      help: resource_kind.help
+  - elsif resource_kind.positive_integer?
+    = fff.number_field :value, label: resource_kind.name_with_measurement,
+      help: t('.help', min: fff.object.resource.min.to_i,
+        max: fff.object.resource.max.to_i ).html_safe + ' ' + resource_kind.help
+  - elsif resource_kind.decimal?
+    = fff.number_field :value, step: :any, label: resource_kind.name_with_measurement,
+      help: t('.help', min: fff.object.resource.min,
+      max: fff.object.resource.max ).html_safe + ' ' + resource_kind.help
+  - else
+    = fff.hidden_field :value

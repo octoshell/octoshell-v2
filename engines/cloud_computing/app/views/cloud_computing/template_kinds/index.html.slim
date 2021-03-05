@@ -1,0 +1,30 @@
+- content_for :title do
+    - t(".title")
+
+-if @admin
+  div class="panel panel-default"
+    div class="panel-heading"
+      = link_to t(".edit_all"), edit_all_admin_template_kinds_path, class: "btn btn-default"
+- if @template_kinds.any?
+  div class="panel-body"
+    table class="table table-hover"
+      - attrs = { description: 3, cloud_type: 3 }
+      tr
+        th = CloudComputing::TemplateKind.human_attribute_name(:name)
+        - attrs.keys.each do |a|
+          th = CloudComputing::TemplateKind.human_attribute_name(a)
+      - @template_kinds.each do |template_kind|
+        tr
+          - if @admin
+            td class="col-xs-3" = link_to "#{'----' * template_kind.level} #{template_kind.name}", [:admin, template_kind]
+          - else
+            td class="col-xs-3" = link_to "#{'----' * template_kind.level} #{template_kind.name}", template_kind
+
+          -attrs.each do |key,value|
+            - if key == :cloud_type
+              td class="col-xs-#{value}" = template_kind.human_cloud_class
+            -else
+              td class="col-xs-#{value}" = template_kind.send(key)
+- else
+  div class="panel-body"
+    p = t(".no_template_kinds_found")

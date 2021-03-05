@@ -1,0 +1,21 @@
+div class="page-header"
+  h1 = t(".title")
+div class="well"
+  = link_to t(".new_template"), new_admin_template_path, class: "btn btn-default"
+= bootstrap_form_for @search, url: admin_templates_path, method: :get, layout: :vertical do |f|
+  div class="container"
+    div class="col-md-3"
+      = f.select :template_kind_and_descendants,
+        nested_set_options(CloudComputing::TemplateKind) {|i| "#{'-' * i.level} #{i.name}" },
+        { label: CloudComputing::Template.human_attribute_name(:template_kind) },  multiple:true
+    div class="col-md-3"
+      = f.select :identity_eq, CloudComputing::Template.all.map(&:identity),
+        { label: CloudComputing::Template.human_attribute_name(:identity),
+        include_blank: true }
+
+  = f.form_group do
+    = f.primary t("actions.find")
+
+= safe_paginate @templates
+= render "table", templates: @templates
+= safe_paginate @templates
