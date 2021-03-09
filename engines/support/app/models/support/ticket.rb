@@ -190,7 +190,7 @@ module Support
 
     def select_field_values
       field_values.select do |f_v|
-        f_v.value.present? && (f_v.field.model_collection.present? ||
+        f_v.field && f_v.value.present? && (f_v.field.model_collection.present? ||
           f_v.field.field_options.any?)
       end
     end
