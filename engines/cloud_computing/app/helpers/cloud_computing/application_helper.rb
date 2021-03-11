@@ -34,7 +34,7 @@ module CloudComputing
       menu.items(self)
     end
 
-    def mark_request_state(request)
+    def mark_cloud_computing_request_state(request)
       labels = { 'created' => 'primary', 'sent' => 'info',
                  'approved' => 'success',
                  'refused' => 'danger', 'cancelled' => 'warning' }

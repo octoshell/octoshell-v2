@@ -10,7 +10,7 @@
       - requests.each do |request|
         tr
           td = link_to request.id, [:admin, request]
-          td = mark_request_state(request)
+          td = mark_cloud_computing_request_state(request)
           td = link_to request.created_by.email,
             main_app.admin_users_path(request.created_by_id)
           - if request.for_id
