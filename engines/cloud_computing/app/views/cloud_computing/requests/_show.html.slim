@@ -4,7 +4,7 @@
     blockquote
       - attrs.each do |a|
           - if a == :status
-            = mark_request_state(@request)
+            = mark_cloud_computing_request_state(@request)
           - elsif a == :for && @request.for.class.name == 'Core::Project'
             h4
               b = CloudComputing::Request.human_attribute_name :for
