@@ -106,7 +106,6 @@ module CloudComputing
       return 'terminate_vm_error', arr unless result
     end
 
-
     def poweroff_hard
       change_state('poweroff-hard', 'change state before resize')
     end
