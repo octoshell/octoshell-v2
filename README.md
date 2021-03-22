@@ -2,9 +2,8 @@
 For russian version see below.
 
 # README
-Octoshell - access management system for HPC centers. This project is based on Ruby on Rails framework(4.2)
-https://users.parallel.ru/
-
+Octoshell - access management system for HPC centers. This project is based on Ruby on Rails framework(5.0)
+Working production: https://users.parallel.ru/
 
 ## Running in docker for quick evaluation (NOT for production)
 
@@ -64,6 +63,13 @@ To run in **production** mode:
 Best way is to test in development mode and then do deploy on production (or stage) server. See **Deploy** section for more details.
 
 ## Notes
+
+### Errors tracking
+
+If you want add errors report via Airbrake or Honeybadger protocols, export any nonempty content in environment
+variable AIRBRAKE or HONEYBADGER respectively. For Airbrake use first tune config/initializers/airbrake.rb file as you want.
+For Honeybadger after `bundle install` execute `bundle exec honeybadger install YOUR_API_KEY` and optionally tune
+config/honeybadger.yaml.
 
 ### Wikiplus module
 

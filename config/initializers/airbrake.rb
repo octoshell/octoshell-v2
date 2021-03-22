@@ -9,7 +9,7 @@
 #
 # Configuration details:
 # https://github.com/airbrake/airbrake-ruby#configuration
-if ENV['ERRBIT_ENABLED'].to_s == 'true'
+if ENV['AIRBRAKE'] and ENV['ERRBIT_ENABLED'].to_s == 'true'
   Airbrake.configure do |c|
     c.host = ENV['ERRBIT_HOST']
     # You must set both project_id & project_key. To find your project_id and

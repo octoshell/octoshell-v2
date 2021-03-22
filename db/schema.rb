@@ -15,6 +15,27 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
   create_table "announcement_recipients", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.integer "announcement_id"
@@ -178,14 +199,6 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["template_kind_id"], name: "index_cloud_computing_resource_kinds_on_template_kind_id"
-  end
-
-  create_table "cloud_computing_resource_requests", force: :cascade do |t|
-    t.bigint "resource_id"
-    t.integer "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["resource_id"], name: "index_cloud_computing_resource_requests_on_resource_id"
   end
 
   create_table "cloud_computing_resources", force: :cascade do |t|
@@ -857,6 +870,7 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
     t.datetime "updated_at", null: false
     t.text "nodelist"
     t.integer "initiator_id"
+    t.index ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true
     t.index ["end_time"], name: "index_jobstat_jobs_on_end_time"
     t.index ["login"], name: "index_jobstat_jobs_on_login"
     t.index ["partition"], name: "index_jobstat_jobs_on_partition"
@@ -1400,6 +1414,7 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
     t.index ["url"], name: "index_wikiplus_pages_on_url", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "core_bot_links", "users"
   add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"
 end

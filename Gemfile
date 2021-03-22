@@ -1,6 +1,14 @@
 source "https://rubygems.org"
 gem "rake"
 gem "rails", "~> 5.0"
+#-----------------------------------------
+if ENV['HONEYBADGER'].to_s != ''
+  gem "honeybadger", "~> 4.0"
+end
+if ENV['AIRBRAKE'].to_s != ''
+  gem "airbrake"
+end
+#-----------------------------------------
 gem 'bootsnap'
 gem 'listen'
 platforms :jruby do
@@ -51,7 +59,6 @@ gem "mina" #, github: "zhum/mina", require: false
 #gem "mina-git"
 
 #gem "rollbar"
-gem "airbrake"
 gem "foreman"
 gem "puma"
 gem "octoface",       path: "engines/octoface"
