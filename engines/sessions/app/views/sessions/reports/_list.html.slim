@@ -22,8 +22,10 @@
             = link_to report.project.title, core.admin_project_path(report.project) if report.project
           td
             ul class="list-unstyled"
-              - report.project.research_areas.each do |area|
+              - list = report.project.nil? ? [] : report.project.research_areas
+              - list.each do |area|
                 li = area.name
+              /- report.project.research_areas.each do |area|
         td
           label class="label label-#{report_status_label(report)}" = report.human_state_name
         td

@@ -432,6 +432,7 @@ GEM
     groupdate (5.2.2)
       activesupport (>= 5)
     highline (2.0.3)
+    honeybadger (4.8.0)
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     i18n-js (3.8.1)
@@ -766,6 +767,7 @@ DEPENDENCIES
   foreman
   groupdate
   hardware!
+  honeybadger (~> 4.0)
   i18n-js
   i18n-tasks!
   jobstat!
