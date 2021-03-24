@@ -18,6 +18,8 @@ branch=ENV['DEPLOY_BRANCH'] || "rails4_2_jruby_9000"
 dbuser=ENV['DEPLOY_DBUSER'] || "octo"
 dbpass=ENV['DEPLOY_DBPASS'] || "octopass"
 sshport=ENV['DEPLOY_PORT'] || 22
+honeybadger=ENV['HONEYBADGER']
+
 set :domain, domain
 set :forward_agent, true
 set :application, "octoshell2"
@@ -39,6 +41,8 @@ set :shared_files, %w(config/puma.rb config/secrets.yml config/settings.yml conf
 #set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log)
 set :force_asset_precompile, true
 set :rails_env, 'production'
+
+set :bundle_bin, %{HONEYBADGER="$ENV['HONEYBADGER']"}
 
 task :environment do
   invoke :"rbenv:load"
