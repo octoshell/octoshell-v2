@@ -318,3 +318,7 @@ task :export_foreman do
 
   }
 end
+
+task :env do
+   queue! %[HONEYBADGER="$ENV['HONEYBADGER']"]
+end
