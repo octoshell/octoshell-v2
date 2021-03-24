@@ -190,7 +190,7 @@ task :deploy => :environment do
       invoke :"deploy:link_shared_paths"
       command %{rm Gemfile.lock}
       command %{rbenv local 2.5.1}
-      command %{bundle install}
+      command %{HONEYBADGER=#{ENV['HONEYBADGER']} bundle install}
 
       # invoke :"bundle:install"
       invoke :"rails:db_migrate"
@@ -320,5 +320,5 @@ task :export_foreman do
 end
 
 task :env do
-   queue! %[HONEYBADGER="$ENV['HONEYBADGER']"]
+   queue! %[HONEYBADGER="#{ENV['HONEYBADGER']}"]
 end
