@@ -3,7 +3,7 @@ gem "rake"
 gem "rails", "~> 5.0"
 #-----------------------------------------
 if ENV['HONEYBADGER'].to_s != ''
-  gem "honeybadger", "~> 4.0"
+  gem "honeybadger", "~> 4.8"
 end
 if ENV['AIRBRAKE'].to_s != ''
   gem "airbrake"
