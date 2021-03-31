@@ -13,9 +13,9 @@
           td class="col-xs-1" = link_to access.id, [:admin, access]
           td class="col-xs-2" = mark_access_state(access)
           td class="col-xs-3" = link_to access.allowed_by.email,
-            main_app.admin_users_path(access.allowed_by_id)
+            main_app.admin_user_path(access.allowed_by_id)
           td class="col-xs-3" = link_to access.user.email,
-            main_app.admin_users_path(access.user_id)
+            main_app.admin_user_path(access.user_id)
           - if access.for_id
             td class="col-xs-3" = link_to access.for.title,
               core.admin_project_path(access.for_id)

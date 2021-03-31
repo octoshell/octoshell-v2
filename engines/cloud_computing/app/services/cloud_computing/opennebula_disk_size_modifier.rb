@@ -20,6 +20,8 @@ module CloudComputing
     end
 
     def to_change?
+      return false unless @generic_resource
+      
       @vm_data['TEMPLATE']['DISK']['SIZE'] != value
     end
 

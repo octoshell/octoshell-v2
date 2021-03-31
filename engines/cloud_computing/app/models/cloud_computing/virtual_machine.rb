@@ -21,7 +21,7 @@ module CloudComputing
     belongs_to :item, inverse_of: :virtual_machine
     has_many :api_logs, inverse_of: :virtual_machine
 
-    validates :identity, uniqueness: true
+    validates :identity, uniqueness: true, if: proc { |v| v.identity.present? }
 
     def self.human_action(action)
       I18n.t("activerecord.attributes.#{model_name.i18n_key}.actions.#{action}")
