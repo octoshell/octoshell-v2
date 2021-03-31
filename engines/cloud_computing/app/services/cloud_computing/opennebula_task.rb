@@ -1,5 +1,6 @@
 module CloudComputing
   class OpennebulaTask
+    SLEEP_SECONDS = 10
 
     def self.internet_network_id
       settings_hash = Rails.application.secrets.cloud_computing || {}
