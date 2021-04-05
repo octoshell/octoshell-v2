@@ -4,8 +4,8 @@ module CloudComputing
   class VirtualMachinesController < ApplicationController
 
     before_action do
-      @virtual_machine = CloudComputing::VirtualMachine.joins(:position)
-        .where(cloud_computing_positions: { holder_id: CloudComputing::Access.accessible_by(current_ability, :read) } )
+      @virtual_machine = CloudComputing::VirtualMachine.joins(:item)
+        .where(cloud_computing_items: { holder_id: CloudComputing::Access.accessible_by(current_ability, :read) } )
         .find(params[:id])
     end
 
@@ -13,10 +13,10 @@ module CloudComputing
       result, message = @virtual_machine.change_vm_state(params[:vm_action])
       message = t('.wrong_action') if message == 'wrong action'
       if result
-        redirect_to access_path(@virtual_machine.position.holder),
+        redirect_to access_path(@virtual_machine.item.holder),
                     flash: { info:  t('.success') }
       else
-        redirect_to access_path(@virtual_machine.position.holder),
+        redirect_to access_path(@virtual_machine.item.holder),
                     flash: { error: message.inspect }
 
       end
@@ -25,10 +25,10 @@ module CloudComputing
     def vm_info
       result, data = @virtual_machine.vm_info
       if result
-        redirect_to access_path(@virtual_machine.position.holder),
+        redirect_to access_path(@virtual_machine.item.holder),
                     flash: { info: t('.success') }
       else
-        redirect_to access_path(@virtual_machine.position.holder),
+        redirect_to access_path(@virtual_machine.item.holder),
                     flash: { error: data.inspect }
 
       end
