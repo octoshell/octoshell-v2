@@ -1,3 +1,15 @@
+## [2.11.2] - 2021-04-06
+
+### Fixed 
+
+Many fixes at cloud_computing module
+
+- fix(cloud_computing): user links and uniqueness of validation
+- fix(cloud_computing): fix #terminate_access and DiskSizeModifier
+- fix(cloud_computing): fix errors in ordinary user virtual machine controller
+- fix(cloud_computing): user links and uniqueness of validation (#201)
+- fix(cloud_computing): user links and uniqueness of validation, fix #terminate_access and DiskSizeModifier
+
 ## [2.11.1] - 2021-03-12
 
 ### Fixed

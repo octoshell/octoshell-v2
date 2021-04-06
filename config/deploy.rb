@@ -37,7 +37,7 @@ set :keep_releases, 5
 #set :foreman_app, 'octoshell3'
 #old set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)
 set :shared_dirs, %w(public/uploads log secured_uploads public/images)
-set :shared_files, %w(config/puma.rb config/secrets.yml config/settings.yml config/database.yml database.yml to_translate_data-2.ods config/honeybadger.yml)
+set :shared_files, %w(config/puma.rb config/secrets.yml config/settings.yml config/database.yml database.yml config/honeybadger.yml)
 #set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log)
 set :force_asset_precompile, true
 set :rails_env, 'production'
