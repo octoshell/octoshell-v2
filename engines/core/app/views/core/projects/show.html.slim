@@ -4,10 +4,6 @@ div class="page-header"
     - if @user_can_manage_project
       = link_to "", edit_project_path(@project), class: "fa fa-pencil-square"
   h3 = mark_project_state(@project)
-  <i class="fa fa-pencil-square" aria-hidden="true"></i>
-  <i class="far fa-edit"></i>
-  <i class="far fa-edit"></i>
-  <i class="fa fa-pencil"></i>
 - if @user_can_manage_project
   div class="row well btn-toolbar"
     = link_to Core::Project.human_state_event_name(:cancel), cancel_project_path(@project), class: "btn btn-danger" if @project.pending? || @project.active?
