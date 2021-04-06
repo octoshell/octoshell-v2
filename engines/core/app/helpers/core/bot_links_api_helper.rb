@@ -25,8 +25,16 @@ module Core
 
     def self.notify_about_ticket(ticket, event)
       params = Hash.new
+
+      user = User.find(ticket.reporter_id)
+
+      bot_links = user.bot_links.where(active: true)
+      if bot_links.size > 0
+        params["token"] = bot_links[0].token
+      end
+
       params["subject"] = ticket.subject
-      params["email"] = User.find(ticket.reporter_id).email
+      params["email"] = user.email
       params["event"] = event
       self.notify('/ticket', params)
     end
