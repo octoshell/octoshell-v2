@@ -39,6 +39,23 @@ module Core
       self.notify('/ticket', params)
     end
 
+    def self.notify_about_announcement(recipients)
+      users = []
+      recipients.each do |recipient|
+        user = recipient.user
+        bot_link = user.bot_links.first
+
+        user_info = {}
+        user_info["token"] = bot_link.token unless bot_link.nil?
+        user_info["email"] = user.email
+        users << user_info
+      end
+      notify("/announcement", {
+        "users" => users,
+        "announcement" => recipients.first.announcement.attributes
+      })
+    end
+
     def self.auth(params)
       email = params[:email]
       token = params[:token]
