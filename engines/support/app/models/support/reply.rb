@@ -62,6 +62,7 @@ module Support
     end
 
     def notify_subscribers
+      Core::BotLinksApiHelper.notify_about_ticket(ticket, 'update')
       (ticket.subscribers - [author]).each do |user|
         Support::MailerWorker.perform_async(:new_ticket_reply, [ticket_id, user.id])
       end
