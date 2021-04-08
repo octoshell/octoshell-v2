@@ -173,6 +173,22 @@ module Core
       end
     end
 
+    def self.user_jobs(params)
+      auth_info = self.auth(params)
+      if auth_info["status"] == 0
+        user = auth_info["user"]
+        logins = Core::Member.where(user_id: user.id).map(&:login)
+        jobs = Jobstat::Job.where(login: logins).order(:drms_job_id).map(&:attributes)
+
+        res = Hash.new
+        res["status"] = "ok"
+        res["jobs"] = jobs
+        return res
+      else
+        return Hash["status", "fail"]
+      end
+    end
+
     def self.fill_ticket_data(ticket, who)
       data = Hash.new
 
