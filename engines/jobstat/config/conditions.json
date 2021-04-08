@@ -1362,7 +1362,7 @@
             "type_name": "tracing",
             "soft_text": "Intel ITAC",
             "soft_name": "itac",
-            "manual": "1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды (да, команду source надо выполнить дважды):\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n    module add openmpi\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n3. Скомпилировать свою программу с mpicc/mpicxx\n4. создать файл run.sbatch с содержимым(без кавычек):\n    #!/bin/bash\n    mpirun -trace <вызов программы>\n5. Запустить программу:\n    sbatch <slurm параметры> run.sbatch\n6. В папке появится трасса запуска, можно посмотреть её, выполнив:\n    traceanalyzer <имя трассы>.stf\n\nПодробную инструкцию по работе с Intel ITAC и анализу полученных результатов можно прочитать <a href=\"https://software.intel.com/en-us/ita-user-and-reference-guide\">по этой ссылке</a>."
+            "manual": "1. Зайти на Ломоносов-2 с пробросом X-server (ssh -X ...)\n2. Выполнить команды (да, команду source надо выполнить дважды):\n    module add slurm\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n    module add openmpi\n    source /opt/intel/parallel_studio_xe_2019.5.075/bin/psxevars.sh\n3. Скомпилировать свою программу с mpicc/mpicxx\n4. Создать файл run.sbatch с содержимым:\n    #!/bin/bash\n    mpirun -trace <вызов программы>\n5. Запустить программу:\n    sbatch <slurm параметры> run.sbatch\n6. В папке появится трасса запуска, можно посмотреть её, выполнив:\n    traceanalyzer <имя трассы>.stf\n\nПодробную инструкцию по работе с Intel ITAC и анализу полученных результатов можно прочитать <a href=\"https://software.intel.com/en-us/ita-user-and-reference-guide\">по этой ссылке</a>."
         },
         "thread-vtune": {
             "index": 3,
@@ -1380,7 +1380,7 @@
             "type_name": "mem_eff",
             "soft_text": "Valgrind (Callgrind)",
             "soft_name": "valgrind",
-            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm valgrind/3.12.0\n3. Запустить анализируемую программу с помощью команды:\n    sbatch <slurm параметры> valgrind --tool=callgrind --cacheuse=yes --trace-children=yes --callgrind-out-file=\"callgrind_perf_%p\" <вызов программы>\n4. В папке появятся файлы \"valgrind_perf_%p\", по одному на каждый процесс.\n5. Запустить команду:\n    callgrind_annotate callgrind_perf_<выбранный процесс> > callgrind_output\n6. Файл callgrind_output является текстовым, можно посмотреть его в обычном редакторе.\n\nПодробную инструкцию по анализу полученных результатов Callgrind можно прочитать <a href=\"https://valgrind.org/docs/manual/cg-manual.html#cg-manual.the-output-preamble\">по этой ссылке</a>. Callgrind использует в работе Cachegrind, поэтому приведена ссылка на его инструкцию."
+            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm valgrind/3.12.0\n3. Запустить анализируемую программу с помощью команды:\n    sbatch <slurm параметры и нужный скрипт запуска> valgrind --tool=callgrind --cacheuse=yes --trace-children=yes --callgrind-out-file=\"callgrind_perf_%p\" <вызов программы>\n4. В папке появятся файлы \"valgrind_perf_%p\", по одному на каждый процесс.\n5. Запустить команду:\n    callgrind_annotate callgrind_perf_<выбранный процесс> > callgrind_output\n6. Файл callgrind_output является текстовым, можно посмотреть его в обычном редакторе.\n\nПодробную инструкцию по анализу полученных результатов Callgrind можно прочитать <a href=\"https://valgrind.org/docs/manual/cg-manual.html#cg-manual.the-output-preamble\">по этой ссылке</a>. Callgrind использует в работе Cachegrind, поэтому приведена ссылка на его инструкцию."
         },
         "mem_corr-valgrind": {
             "index": 5,
@@ -1389,7 +1389,7 @@
             "type_name": "mem_corr",
             "soft_text": "Valgrind (Memcheck)",
             "soft_name": "valgrind",
-            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm valgrind/3.12.0\n3. Запустить анализируемую программу с помощью команды:\n    sbatch <slurm параметры> valgrind --log-file=\"valgrind_check_%p\"  --trace-children=yes --tool=memcheck --leak-check=full --show-leak-kinds=all <вызов программы>\n4. В папке появятся файлы \"valgrind_check_%p\", по одному на каждый процесс, можно посмотреть их в обычном редакторе.\n\nПодробную инструкцию по анализу полученных результатов Memcheck можно прочитать <a href=\"https://www.valgrind.org/docs/manual/mc-manual.html#mc-manual.errormsgs\">по этой ссылке</a>."
+            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm valgrind/3.12.0\n3. Запустить анализируемую программу с помощью команды:\n   sbatch <slurm параметры и нужный скрипт запуска> valgrind --log-file=\"valgrind_check_%p\"  --trace-children=yes --tool=memcheck --leak-check=full --show-leak-kinds=all <вызов программы>\n4. В папке появятся файлы \"valgrind_check_%p\", по одному на каждый процесс, можно посмотреть их в обычном редакторе.\n\nПодробную инструкцию по анализу полученных результатов Memcheck можно прочитать <a href=\"https://www.valgrind.org/docs/manual/mc-manual.html#mc-manual.errormsgs\">по этой ссылке</a>."
         },
         "io-vtune": {
             "index": 6,
@@ -1416,7 +1416,7 @@
             "type_name": "gpu",
             "soft_text": "nvprof",
             "soft_name": "nvprof_basic",
-            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm cuda\n3. Запустить программу с помощью nvprof:\n    sbatch ... nvprof --csv --log-file \"nvprof_%p\" <вызов программы>\n4. Запустить команду для объединения файлов выдачи (убедитесь, что не будут использованы файлы от предыдущих запусков):\n    cat nvprof_*  > nvprof_all\n\nПолную инструкцию по анализу приложений с помощью nvprof можно прочитать <a href=\"https://docs.nvidia.com/cuda/profiler-users-guide/index.html#nvprof-overview\">по этой ссылке</a>."
+            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm cuda\n3. Запустить программу с помощью nvprof:\n    sbatch <slurm параметры и нужный скрипт запуска> nvprof --csv --log-file \"nvprof_%p\" <вызов программы>\n4. Запустить команду для объединения файлов выдачи (убедитесь, что не будут использованы файлы от предыдущих запусков):\n    cat nvprof_*  > nvprof_all\n\nПолную инструкцию по анализу приложений с помощью nvprof можно прочитать <a href=\"https://docs.nvidia.com/cuda/profiler-users-guide/index.html#nvprof-overview\">по этой ссылке</a>."
         },
         "gpu-nvprof": {
             "index": 9,
@@ -1425,7 +1425,7 @@
             "type_name": "gpu",
             "soft_text": "nvprof",
             "soft_name": "nvprof",
-            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm cuda\n3. Запустить программу с помощью nvprof:\n    sbatch ... nvprof --log-file \"nvprof_%p\" --csv --metrics sm_efficiency,sm_activity,executed_ipc,ipc,achieved_occupancy,dram_utilization,l2_utilization,flop_sp_efficiency,flop_dp_efficiency,gst_efficiency,gld_efficiency,shared_efficiency,shared_utilization,warp_execution_efficiency <вызов программы>\n4. Запустить команду для объединения файлов выдачи (убедитесь, что не будут использованы файлы от предыдущих запусков):\n    cat nvprof_*  > nvprof_all\n\nПолную инструкцию по анализу приложений с помощью nvprof можно прочитать <a href=\"https://docs.nvidia.com/cuda/profiler-users-guide/index.html#nvprof-overview\">по этой ссылке</a>."
+            "manual": "1. Зайти на Ломоносов-2 \n2. Загрузить нужные модули:\n    module add slurm cuda\n3. Запустить программу с помощью nvprof:\n    sbatch <slurm параметры и нужный скрипт запуска> nvprof --log-file \"nvprof_%p\" --csv --metrics sm_efficiency,sm_activity,executed_ipc,ipc,achieved_occupancy,dram_utilization,l2_utilization,flop_sp_efficiency,flop_dp_efficiency,gst_efficiency,gld_efficiency,shared_efficiency,shared_utilization,warp_execution_efficiency <вызов программы>\n4. Запустить команду для объединения файлов выдачи (убедитесь, что не будут использованы файлы от предыдущих запусков):\n    cat nvprof_*  > nvprof_all\n\nПолную инструкцию по анализу приложений с помощью nvprof можно прочитать <a href=\"https://docs.nvidia.com/cuda/profiler-users-guide/index.html#nvprof-overview\">по этой ссылке</a>."
         },
         "general-aps": {
             "index": 10,
