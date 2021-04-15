@@ -27,16 +27,18 @@ We assume, that all below is doing as user `octo` (or root, if it is said 'as ro
 1. check if your postgresql is listening 127.0.0.1 port 5432 (e.g. `ss -lpn |grep 5432`). If it is not, check postgresql config files (in debian/ubuntu - /etc/postgresql/VERSION/main/postgresql.conf, 'port' parameter)
 1. as user install rbenv (e.g. `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
 1. make sure rbenv is loaded automatically, by adding to ~/.bashrc these lines:
-```
-  export PATH=~/.rbenv/bin:$PATH
-  eval "$(rbenv init -)"
-```
+
+    ```
+      export PATH=~/.rbenv/bin:$PATH
+      eval "$(rbenv init -)"
+    ```
 1. reopen your terminal session or execute lines from point above in console
 1. install ruby:
-```
-  rbenv install 2.5.1
-  rbenv global 2.5.1
-```
+
+    ```
+      rbenv install 2.5.1
+      rbenv global 2.5.1
+    ```
 1. execute `gem install bundler --version '< 2.0'`
 1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
 1. go into cloned directory `cd octoshell-v2`
@@ -198,18 +200,18 @@ Scope: one of engines or 'base' for main app or other files (README, deployment,
 1. проверяем, что postgresql слушает на 127.0.0.1 порт 5432 (например `ss -lpn |grep 5432`). Если нет, проверяем настройки postgresql (в debian/ubuntu - /etc/postgresql/VERSION/main/postgresql.conf, строчка 'port')
 1. под пользователем ставим rbenv (проще всего так: `curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash`)
 1. в ~/.bashrc пользователя должны быть добавлены эти строки, чтобы работал rbenv:
-```
-  export PATH=~/.rbenv/bin:$PATH
-  eval "$(rbenv init -)"
-```
+
+    ```
+      export PATH=~/.rbenv/bin:$PATH
+      eval "$(rbenv init -)"
+    ```
 1. запускаем новое окно терминала или терминальную сессию или просто выполняем в консоли строки из предыдущего пункта.
 1. ставим ruby:
 
-```
-  rbenv install 2.5.1
-  rbenv global 2.5.1
-```
-
+    ```
+      rbenv install 2.5.1
+      rbenv global 2.5.1
+    ```
 1. выполняем `gem install bundler --version '< 2.0'`
 1. выполняем `git clone https://github.com/octoshell/octoshell-v2.git`
 1. переходим в созданный каталог `cd octoshell-v2`
