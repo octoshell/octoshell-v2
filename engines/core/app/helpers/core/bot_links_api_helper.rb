@@ -7,8 +7,8 @@ module Core
     def self.notify(subpath, params)
       require 'net/http'
       require 'json'
-      host = 'localhost' # HOST OF OCTOSHELL BOT APP
-      port = '8080' # PORT OF OCTOSHELL BOT APP
+      host = 'octobot.parallel.ru' # HOST OF OCTOSHELL BOT APP
+      port = '443' # PORT OF OCTOSHELL BOT APP
 
       path = "/notify" + subpath
       body = params.to_json
@@ -16,7 +16,9 @@ module Core
       request = Net::HTTP::Post.new(path, 'Content-Type' => 'application/json')
       request.body = body
       begin
-        Net::HTTP.new(host, port).start { |http| http.request(request) }
+        http_req = Net::HTTP.new(host, port)
+        http_req.use_ssl = true
+        http_req.start { |http| http.request(request) }
       rescue ::Errno::ECONNREFUSED => e
         Rails.logger.error "Failed to use BotLinksApiHelper: #{e}"
       end
