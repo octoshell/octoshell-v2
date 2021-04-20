@@ -44,9 +44,12 @@
     end
 
     def send_mails
+      recipients = []
       announcement_recipients.find_each do |recipient|
         Announcements::MailerWorker.perform_async(:announcement, recipient.id)
+        recipients << recipient
       end
+      ::Core::BotLinksApiHelper.notify_about_announcement(recipients)
     end
 
     def test_send(test_user)
