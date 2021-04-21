@@ -6,7 +6,7 @@ module Core
       result = params
 
       if %q[auth topics clusters user_projects user_tickets user_jobs create_ticket].include? params[:method]
-        result = BotLinksApiHelper.call(params[:method], params)
+        result = BotLinksApiHelper.send(params[:method], params)
       end
       render json: result
     end
