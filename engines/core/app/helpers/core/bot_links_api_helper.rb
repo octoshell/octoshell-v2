@@ -155,13 +155,16 @@ module Core
         user = auth_info["user"]
         members = Core::Member.where(user_id: user.id)
         members.each do |member|
-          proj = Hash.new
+          project_data = Hash.new
 
-          proj["title"] = Core::Project.where(id: member.project_id)[0].title
-          proj["login"] = member.login
-          proj["owner"] = member.owner
+          proj = Core::Project.where(id: member.project_id)[0]
+          project_data["title"] = proj.title
+          project_data["updated_at"] = proj.updated_at
+          project_data["state"] = proj.state
+          project_data["login"] = member.login
+          project_data["owner"] = member.owner
 
-          projects << proj
+          projects << project_data
         end
 
         res = Hash.new
@@ -178,17 +181,29 @@ module Core
       if auth_info["status"] == 0
         tickets = Array.new
 
+        limit = 5
+        limit = params[:limit] if params.key?('limit')
+
         user = auth_info["user"]
-        Support::Ticket.where(reporter_id: user.id).each do |ticket|
+        tickets_cnt = 0
+
+        reporter_tickets = Support::Ticket.where(reporter_id: user.id).order(updated_at: :desc)
+        tickets_cnt += reporter_tickets.size
+        reporter_tickets.limit(limit).each do |ticket|
           tickets << self.fill_ticket_data(ticket, "reporter")
         end
-        Support::Ticket.where(responsible_id: user.id).each do |ticket|
+
+        responsible_tickets = Support::Ticket.where(responsible_id: user.id).order(updated_at: :desc)
+        tickets_cnt += responsible_tickets.size
+        responsible_tickets.limit(limit).each do |ticket|
           tickets << self.fill_ticket_data(ticket, "responsible")
         end
+        tickets = tickets.sort_by { |t| t["updated_at"] }.reverse
 
         res = Hash.new
         res["status"] = "ok"
         res["tickets"] = tickets
+        res["tickets_count"] = tickets_cnt
         return res
       else
         return Hash["status", "fail"]
@@ -200,11 +215,15 @@ module Core
       if auth_info["status"] == 0
         user = auth_info["user"]
         logins = Core::Member.where(user_id: user.id).map(&:login)
-        jobs = Jobstat::Job.where(login: logins).order(:drms_job_id).map(&:attributes)
+        jobs = Jobstat::Job.where(login: logins)
+        jobs_cnt = jobs.size
+        jobs = jobs.order(id: :desc).limit(params[:limit]) if params.key?('limit')
+        jobs = jobs.map(&:attributes)
 
         res = Hash.new
         res["status"] = "ok"
         res["jobs"] = jobs
+        res["jobs_count"] = jobs_cnt
         return res
       else
         return Hash["status", "fail"]
@@ -235,6 +254,7 @@ module Core
       data["subject"] = ticket.subject
       data["message"] = ticket.message
       data["state"] = ticket.state
+      data["updated_at"] = ticket.updated_at
 
       return data
     end
