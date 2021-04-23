@@ -14,7 +14,7 @@ module Core
     end
 
     def filter_blocked_users
-      redirect_to projects_path if current_user.closed?
+      redirect_to projects_path if current_user && current_user.closed?
     end
 
 #    before_action :journal_user
