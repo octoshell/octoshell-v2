@@ -3,8 +3,12 @@ module Sessions
     layout "layouts/sessions/user"
 
     def index
-      @search = current_user.reports.search(params[:q] || default_index_params)
-      @reports = @search.result(distinct: true).page(params[:page])
+      if current_user
+        @search = current_user.reports.search(params[:q] || default_index_params)
+        @reports = @search.result(distinct: true).page(params[:page])
+      else
+        @reports = []
+      end
     end
 
     def accept
