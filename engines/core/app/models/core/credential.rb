@@ -45,6 +45,7 @@ module Core
     def activate_or_create
       if credential = user.credentials.find_by_public_key(public_key)
         credential.active? || credential.reactivate
+        credential.save
       else
         save
       end
