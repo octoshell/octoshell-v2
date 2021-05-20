@@ -7,6 +7,7 @@ module Sessions
         @search = current_user.reports.search(params[:q] || default_index_params)
         @reports = @search.result(distinct: true).page(params[:page])
       else
+        @search = Report.none
         @reports = []
       end
     end
