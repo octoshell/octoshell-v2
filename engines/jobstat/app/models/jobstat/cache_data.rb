@@ -17,11 +17,13 @@ module Jobstat
   def get data
     Rails.cache.fetch(data) do
       result=yield if block_given?
-      cache_db.transaction do
-        if result
-          cache_db[data]=result
-        else
-          result=cache_db[data]
+      if ! cache_db.transaction_open?
+        cache_db.transaction do
+          if result
+            cache_db[data]=result
+          else
+            result=cache_db[data]
+          end
         end
       end
       result
