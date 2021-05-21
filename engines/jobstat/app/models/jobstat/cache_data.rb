@@ -1,7 +1,7 @@
 module Jobstat
   class CacheData
 
-  
+  @@in_transaction = false
 
   include Singleton
 
@@ -14,16 +14,26 @@ module Jobstat
     end
   end
 
+  def do_transaction &block
+    if @@in_transaction
+      yield block
+    else
+      @@in_transaction = true
+      cache_db.transaction do
+        yield block
+      end
+      @@in_transaction = false
+    end
+  end
+
   def get data
     Rails.cache.fetch(data) do
       result=yield if block_given?
-      if ! cache_db.transaction_open?
-        cache_db.transaction do
-          if result
-            cache_db[data]=result
-          else
-            result=cache_db[data]
-          end
+      do_transaction do
+        if result
+          cache_db[data]=result
+        else
+          result=cache_db[data]
         end
       end
       result
