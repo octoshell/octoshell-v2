@@ -401,7 +401,7 @@ javascript:
   var filters=#{{@filters.to_json}};
   var emails=#{{@emails.to_json}};
   var intro_finished=false;
-  var feedback_url='#{{url_for ["account_list","feedback"]}}';
+  var feedback_url='#{{url_for [:account_list,:feedback]}}';
 
   var rule_pic_other = '<i class="fas fa-fw fa-exclamation-triangle" title="......"></i>'
   var intro_js_object;
