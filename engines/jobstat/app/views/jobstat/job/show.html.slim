@@ -477,7 +477,7 @@ javascript:
   var current_user=#{{@current_user.id}};
   var jobs=#{{@jobs_plus.to_json}};
   var jobs_feedback=#{{@jobs_feedback.to_json}};
-  var feedback_url='#{{url_for ["account_list","feedback"]}}';
+  var feedback_url='#{{url_for [:account_list,:feedback]}}';
   var agree_flags=#{{@agree_flags.to_json}};
 
   function DrawSingleGraph(target, sensor_data, max)
