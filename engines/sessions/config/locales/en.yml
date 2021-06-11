@@ -440,6 +440,7 @@ en:
       index:
         session: Reregistration
         title: Projects reports list
+        nothing_found: Nothing found
       list:
         complete_by: Must be submitted before
         no_reports: No reports

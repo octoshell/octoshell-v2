@@ -443,6 +443,7 @@ ru:
       index:
         session: Перерегистрация
         title: Список отчетов по проектам
+        nothing_found: Ничего не найдено
       list:
         complete_by: Сдать до
         no_reports: Нет отчетов
