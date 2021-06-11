@@ -26,7 +26,10 @@ module Jobstat
     def check_job(job)
 #      logger.info "#{CHECKER_PREFIX}: checking job #{job.id}: state = #{job.state}, end_time = #{job.end_time}"
 
-      user = Core::Member.where(login: job.login).take.user
+      member = Core::Member.where(login: job.login).take
+      return unless member
+
+      user = member.user
       remove_notice(job, user)
 
       if group_match(job, user) && job.end_time > Time.new && job.state == 'RUNNING'
