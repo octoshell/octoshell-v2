@@ -1,7 +1,7 @@
 div class="page-header"
   h1 = t(".title", default: "Projects")
 
-- if current_user.prepared_to_join_projects?
+- if current_user && current_user.prepared_to_join_projects?
 
   - if @projects_with_invitation.any?
     div class="panel panel-info"
@@ -25,7 +25,7 @@ div class="page-header"
 - else
   div class="panel panel-danger"
     div class="panel-heading"
-      - if current_user.closed?
+      - if current_user && current_user.closed?
         p
           = t(".your_access_is_closed.html")
       - else
