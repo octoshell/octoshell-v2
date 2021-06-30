@@ -1,11 +1,13 @@
 module Sessions
   module StatOrganization
     extend ActiveSupport::Concern
-    included do
-      octo_use(:organization_class, :core, 'Organization')
-      belongs_to :organization, class_name: organization_class_to_s
-      validates :organization, presence: true, if: proc { |s| s.group_by == 'subdivisions' }
+
+    def self.prepended(base)
+      base.octo_use(:organization_class, :core, 'Organization')
+      base.belongs_to :organization, class_name: base.organization_class_to_s
+      base.validates :organization, presence: true, if: proc { |s| s.group_by == 'subdivisions' }
     end
+
 
     def graph_data
       if group_by == "subdivisions"
