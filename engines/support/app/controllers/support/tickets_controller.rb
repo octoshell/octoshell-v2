@@ -46,35 +46,47 @@ module Support
 
     def close
       @ticket = find_ticket(params[:ticket_id])
-      if @ticket.close
-        @ticket.save
-        redirect_to @ticket
-        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'close')
-      else
-        redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
+      begin
+        if @ticket.close
+          @ticket.save
+          redirect_to @ticket
+          Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'close')
+        else
+          redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
+        end
+      rescue => e
+        redirect_to @ticket, alert: []@ticket.errors.full_messages,e.message].flatten.join(', ')
       end
     end
 
     def resolve
       @ticket = find_ticket(params[:ticket_id])
-      if @ticket.resolve
-        @ticket.save
-        redirect_to @ticket
-        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'resolve')
-      else
-        @ticket.save
-        redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
+      begin
+        if @ticket.resolve
+          @ticket.save
+          redirect_to @ticket
+          Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'resolve')
+        else
+          @ticket.save
+          redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
+        end
+      rescue => e
+        redirect_to @ticket, alert: [@ticket.errors.full_messages,e.message].flatten.join(', ')
       end
     end
 
     def reopen
       @ticket = find_ticket(params[:ticket_id])
-      if @ticket.reopen
-        @ticket.save
-        redirect_to @ticket
-        Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'reopen')
-      else
-        redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
+      begin
+        if @ticket.reopen
+          @ticket.save
+          redirect_to @ticket
+          Core::BotLinksApiHelper.notify_about_ticket(@ticket, 'reopen')
+        else
+          redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
+        end
+      rescue => e
+        redirect_to @ticket, alert: [@ticket.errors.full_messages, e.message].flatten.join(', ')
       end
     end
 
