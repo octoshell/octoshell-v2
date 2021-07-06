@@ -91,7 +91,7 @@ module Sessions
     end
 
     def get_report(id)
-      current_user.reports.find(id)
+      current_user ? current_user.reports.find(id) : Sessions::Report.none
     end
 
     def reply_params
