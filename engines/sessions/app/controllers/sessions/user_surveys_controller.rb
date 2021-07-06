@@ -3,7 +3,11 @@ module Sessions
     layout "layouts/sessions/user"
 
     def index
-      @search = current_user.surveys.search(params[:q] || default_index_params)
+      if current_user
+        @search = current_user.surveys.search(params[:q] || default_index_params)
+      else
+        @search = Sessions::UserSurvey.null
+      end
       @surveys = @search.result(distinct: true).page(params[:page])
     end
 
@@ -53,7 +57,7 @@ module Sessions
     private
 
     def get_survey(id)
-      current_user.surveys.find(id)
+      current_user ? current_user.surveys.find(id) : Sessions::UserSurvey.null
     end
 
     def survey_fields
