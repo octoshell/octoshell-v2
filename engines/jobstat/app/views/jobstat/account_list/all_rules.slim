@@ -87,7 +87,7 @@ javascript:
   var filters=#{{@filters.to_json}}
   var emails=#{{@emails.to_json}}
   var current_user=#{{@current_user.id}};
-  var feedback_url='#{{url_for ["account_list","feedback"]}}';
+  var feedback_url='#{{url_for [:account_list,:feedback]}}';
 
   
   $(function(){

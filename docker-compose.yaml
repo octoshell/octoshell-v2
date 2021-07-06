@@ -16,3 +16,11 @@ services:
 
     restart: always
 
+    #  postgresql:
+    #image: postgresql----
+    #volumes:
+    #  - 
+    #
+    #redis:
+    #image: redis-----
+
