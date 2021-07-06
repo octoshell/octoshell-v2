@@ -77,7 +77,7 @@ module Wikiplus
           result += "Error: #{e.message}\n"
         end
       }
-      render text: result ? result : 'ok'
+      render plain: (result ||  'ok')
     end
 
 
