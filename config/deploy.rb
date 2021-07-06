@@ -44,11 +44,11 @@ set :rails_env, 'production'
 
 set :bundle_bin, %{HONEYBADGER="$ENV['HONEYBADGER']"}
 
-task :environment do
+task :remote_environment do
   invoke :"rbenv:load"
 end
 
-task setup: :environment do
+task setup: :remote_environment do
   command %[mkdir -p "#{fetch(:deploy_to)}/shared/log"]
   command %[chmod g+rx,u+rwx "#{fetch(:deploy_to)}/shared/log"]
 
@@ -70,7 +70,7 @@ end
 #  queue  %[echo "-----> Be sure to edit 'shared/config/database.yml'."]
 #end
 
-task :setup_database => :environment do
+task :setup_database => :remote_environment do
   database_yml = <<-DATABASE.dedent
 development: &def
   adapter: postgresql
@@ -96,7 +96,7 @@ production:
   comment "-----> Database configured."
 end
 
-task :setup_runner => :environment do
+task :setup_runner => :remote_environment do
   run_file = <<-RUN.dedent
   #!/bin/bash
 
@@ -179,7 +179,7 @@ desc "Deploys the current version to the server."
 #   end
 # end
 
-task :deploy => :environment do
+task :deploy => :remote_environment do
   deploy do
 #    run(:remote) do
 #    in_path(fetch(:current_path)) do
@@ -248,7 +248,7 @@ task :deploy_1 do
   end
 end
 
-task :make_seed => :environment do
+task :make_seed => :remote_environment do
   in_path(fetch(:current_path)) do
     comment "Seed database..."
     command %{pwd; RACK_ENV=production rbenv exec bundle exec rake db:migrate}
@@ -259,7 +259,7 @@ task :make_seed => :environment do
 end
 
 desc "Update bundles"
-task :update_bundles => :environment do
+task :update_bundles => :remote_environment do
   in_path(fetch(:current_path)) do
     comment "Rebuild bundles..."
     command %{for i in engines/*; do (cd $i; rm Gemfile.lock; RACK_ENV=production rbenv exec bundle install); done}

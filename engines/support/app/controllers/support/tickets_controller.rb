@@ -55,7 +55,7 @@ module Support
           redirect_to @ticket, alert: @ticket.errors.full_messages.join(', ')
         end
       rescue => e
-        redirect_to @ticket, alert: []@ticket.errors.full_messages,e.message].flatten.join(', ')
+        redirect_to @ticket, alert: [@ticket.errors.full_messages,e.message].flatten.join(', ')
       end
     end
 
