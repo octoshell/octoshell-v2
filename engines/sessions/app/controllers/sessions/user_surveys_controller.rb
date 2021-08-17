@@ -6,7 +6,7 @@ module Sessions
       if current_user
         @search = current_user.surveys.search(params[:q] || default_index_params)
       else
-        @search = Sessions::UserSurvey.null
+        @search = Sessions::UserSurvey.none
       end
       @surveys = @search.result(distinct: true).page(params[:page])
     end
