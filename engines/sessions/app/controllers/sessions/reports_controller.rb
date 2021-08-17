@@ -42,8 +42,12 @@ module Sessions
 
     def show
       @report = get_report(params[:id])
-      @reply = @report.replies.build do |reply|
-        reply.user = current_user
+      if @report.empty?
+        @reply = Sessions::ReportReply.none
+      else
+        @reply = @report.replies.build do |reply|
+          reply.user = current_user
+        end
       end
     end
 
