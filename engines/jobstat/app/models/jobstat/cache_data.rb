@@ -50,7 +50,8 @@ module Jobstat
 private
   def cache_db
     # FIXME! change path...
-    @@cache_db_singleton ||= YAML::Store.new(Rails.root + '/engines/jobstat/cache.yaml')
+    #@@cache_db_singleton ||= YAML::Store.new(Rails.root + '/engines/jobstat/cache.yaml')
+    @@cache_db_singleton ||= YAML::Store.new(File.expand_path('../../cache.yaml', __FILE__))
   end
 
 end
