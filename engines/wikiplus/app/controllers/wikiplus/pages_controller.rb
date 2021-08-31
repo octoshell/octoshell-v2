@@ -8,7 +8,12 @@ module Wikiplus
     end
 
     def show
-      @page = Page.find(params[:id])
+      @page = nil
+      begin
+        @page = Page.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+      end
+      redirect_to pages_path, notice: t('wikiplus.not_found_page') unless @page
     end
 
     private
