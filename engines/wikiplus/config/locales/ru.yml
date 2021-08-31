@@ -10,6 +10,7 @@ ru:
     models:
       wikiplus/page: Страница wiki
   wikiplus:
+    not_found_page: Нет такой странички...
     admin:
       images:
         index:
