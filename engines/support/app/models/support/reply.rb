@@ -53,6 +53,7 @@ module Support
     end
 
     def attach_answered_by_flag
+      return if ticket.closed?
       if author_id == ticket.reporter_id
         ticket.attach_reporter_reply!
       else
