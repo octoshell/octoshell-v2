@@ -78,7 +78,10 @@ class User < ApplicationRecord
       email.downcase!
       #email.gsub!(/\(.*\)/){|comment| ''}
       #email.tr! "a-zA-Z0-9!\#$%&*+-\/=?^_\`\{\}~.@|\'", ''
-      email.tr! "!\#$%&*\/=?^_\`\{\}~|\'", ''
+      (mail, domain) = email.split('@')
+      mail.tr! "!\#$%&*\/=?^\`\{\}~|+", ''
+      domain.tr! "!\#$%&*\/=?^_\`\{\}~|\'+", ''
+      email = "#{mail}@#{domain}"
     end
   end
 
