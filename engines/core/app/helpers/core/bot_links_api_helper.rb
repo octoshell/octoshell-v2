@@ -19,7 +19,7 @@ module Core
         http_req = Net::HTTP.new(host, port)
         http_req.use_ssl = true
         http_req.start { |http| http.request(request) }
-      rescue #::Errno::ECONNREFUSED => e
+      rescue => e #::Errno::ECONNREFUSED => e
         Rails.logger.error "Failed to use BotLinksApiHelper: #{e}"
       end
       nil
