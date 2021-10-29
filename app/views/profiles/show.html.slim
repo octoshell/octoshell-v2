@@ -3,7 +3,7 @@ div class="page-header"
 
 = render "form", profile: @profile
 
-= render "core/employments/list", employments: @profile.user.employments.reject(nil).where(state: :active).order( primary: :desc, created_at: :desc )
+= render "core/employments/list", employments: @profile.user.employments.where(state: :active).order( primary: :desc, created_at: :desc )
 = render "core/credentials/list", credentials: @profile.user.credentials.where(state: :active)
 = render "core/bot_links/list", bot_links: @profile.user.bot_links.where(active: true)
 
