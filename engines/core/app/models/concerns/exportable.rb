@@ -4,7 +4,7 @@ module Exportable
   extend ActiveSupport::Concern
 
   def generate_rtf
-    font = ::RTF::Font.new(::RTF::Font::ROMAN, "Arial")
+    font = ::RTF::Font.new(::RTF::Font::ROMAN, "Times New ROMAN")
 
     styles = {}
 
@@ -47,7 +47,7 @@ module Exportable
       text.gsub! %r{\{\{ id \}\}}, id.to_s
       text.gsub! %r{\{\{ organization_name \}\}},     full_organization_name
       text.gsub! %r{\{\{ boss_full_name \}\}},        boss_full_name || ""
-      text.gsub! %r{\{\{ boss_position \}\}},         boss_position || ""
+      text.gsub! %r{\{\{ boss_position \}\}},         (boss_position || "").capitalize
       text.gsub! %r{\{\{ members \}\}},               surety_members.where.not(user_id: nil).map(&:full_name).join("\\line")
       text.gsub! %r{\{\{ other_organizations \}\}},   surety_members.map(&:organization).compact.uniq.map(&:name).join("\\line")
       text.gsub! %r{\{\{ project_name \}\}},          project.try(:title) || "Не указан"
