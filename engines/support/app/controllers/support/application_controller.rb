@@ -2,6 +2,7 @@ module Support
   class ApplicationController < ::ApplicationController #ActionController::Base
     #
     layout "layouts/application"
+    before_action :require_login
 
 #    before_action :journal_user
 

@@ -1,21 +1,17 @@
 div class="page-header"
   h1 = t(".title")
 
-- if @search && @search.size > 0
-  = bootstrap_form_for @search, method: :get, url: reports_path, layout: :vertical do |f|
-    div class="container"
-      div class="col-md-4"
-        = f.collection_select :session_id_in, Sessions::Session.all, :id, :description, { label: t('.session'), include_blank: true }, { multiple: true }
-      - if Sessions.link?(:project)
-        div class="col-md-4"
-          = f.collection_select :project_id_eq, current_user.projects, :id, :title, label: Sessions::Report.human_attribute_name(:project), include_blank: true
-      div class="col-md-4"
-        = f.select :state_in, Sessions::Report.state_names(:state).map { |n| [Sessions::Report.human_state_name(n), n] }, { label: Sessions::Report.human_attribute_name(:state), include_blank: true }, { multiple: true }
-    = f.form_group do
-      = f.primary t("actions.find")
-
-- else
+= bootstrap_form_for @search, method: :get, url: reports_path, layout: :vertical do |f|
   div class="container"
-    = t('.nothing_found')
+    div class="col-md-4"
+      = f.collection_select :session_id_in, Sessions::Session.all, :id, :description, { label: t('.session'), include_blank: true }, { multiple: true }
+    - if Sessions.link?(:project)
+      div class="col-md-4"
+        = f.collection_select :project_id_eq, current_user.projects, :id, :title, label: Sessions::Report.human_attribute_name(:project), include_blank: true
+    div class="col-md-4"
+      = f.select :state_in, Sessions::Report.state_names(:state).map { |n| [Sessions::Report.human_state_name(n), n] }, { label: Sessions::Report.human_attribute_name(:state), include_blank: true }, { multiple: true }
+  = f.form_group do
+    = f.primary t("actions.find")
+
 
 = render "table", reports: @reports

@@ -2,6 +2,7 @@ require_dependency "core/application_controller"
 
 module Core
   class BotLinksApiController < ApplicationController
+    skip_before_action :require_login
     def index
       result = params
 

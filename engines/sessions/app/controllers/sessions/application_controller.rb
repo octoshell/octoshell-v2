@@ -1,7 +1,7 @@
 module Sessions
   class ApplicationController < ::ApplicationController
     helper Face::ApplicationHelper
-    #ActionController::Base
+    before_action :require_login
     layout "layouts/application"
     #before_action :journal_user
 
