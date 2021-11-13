@@ -1,7 +1,8 @@
 h4 = t(".employments")
 table class="table table-condensed"
-  - if employments.any?
-    - employments.each do |employment|
+  - elist = employments.reject{|e| e.nil? || e.organization.nil?}
+  - if elist.any?
+    - elist.each do |employment|
       tr
         td class="col-xs-1"
           - if employment.primary?

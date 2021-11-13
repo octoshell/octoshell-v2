@@ -10,6 +10,7 @@ en:
     models:
       wikiplus/page: Wiki page
   wikiplus:
+    not_found_page: No such page...
     admin:
       images:
         index:
