@@ -4,16 +4,10 @@ module Core
     def index
       respond_to do |format|
         format.html do
-          if current_user
-            @owned_projects = current_user.owned_projects.order(:id)
-            @projects_with_invitation = current_user.projects_with_invitation.order(:id)
-            @projects_with_participation = current_user.projects.where.not(id: (@owned_projects.pluck(:id) |
-                                                                                @projects_with_invitation.pluck(:id)))
-          else
-            @owned_projects = Core::Project.none
-            @projects_with_invitation = Core::Project.none
-            @projects_with_participation = Core::Project.none
-          end
+          @owned_projects = current_user.owned_projects.order(:id)
+          @projects_with_invitation = current_user.projects_with_invitation.order(:id)
+          @projects_with_participation = current_user.projects.where.not(id: (@owned_projects.pluck(:id) |
+                                                                              @projects_with_invitation.pluck(:id)))
         end
         format.json do
           @projects = Project.finder(params[:q]).order(:title)
