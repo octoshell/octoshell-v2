@@ -1,5 +1,6 @@
 module Statistics
   class ApplicationController < ::ApplicationController
+    before_action :require_login
     #ActionController::Base
     layout "layouts/statistics/admin"
 

@@ -3,13 +3,8 @@ module Sessions
     layout "layouts/sessions/user"
 
     def index
-      if current_user
-        @search = current_user.reports.search(params[:q] || default_index_params)
-        @reports = @search.result(distinct: true).page(params[:page])
-      else
-        @search = Report.none
-        @reports = []
-      end
+      @search = current_user.reports.search(params[:q] || default_index_params)
+      @reports = @search.result(distinct: true).page(params[:page])
     end
 
     def accept
@@ -33,7 +28,6 @@ module Sessions
     def update
       @report = get_report(params[:id])
       if @report.update(report_params)
-        @report.save
         redirect_to reports_path
       else
         render :edit, alert: @report.errors.full_messages
@@ -42,12 +36,8 @@ module Sessions
 
     def show
       @report = get_report(params[:id])
-      if @report.empty?
-        @reply = Sessions::ReportReply.none
-      else
-        @reply = @report.replies.build do |reply|
-          reply.user = current_user
-        end
+      @reply = @report.replies.build do |reply|
+        reply.user = current_user
       end
     end
 
@@ -95,7 +85,7 @@ module Sessions
     end
 
     def get_report(id)
-      current_user ? current_user.reports.find(id) : Sessions::Report.none
+      current_user.reports.find(id)
     end
 
     def reply_params

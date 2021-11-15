@@ -1,8 +1,9 @@
 require_dependency "core/application_controller"
 
-  module Core
-    class BotLinksController < ApplicationController
-      before_action :set_bot_link, only: [:show, :edit, :update, :destroy]
+module Core
+  class BotLinksController < ApplicationController
+    skip_before_action :require_login
+    before_action :set_bot_link, only: [:show, :edit, :update, :destroy]
 
     # GET /bot_links
     def index
