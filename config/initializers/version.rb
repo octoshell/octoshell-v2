@@ -2,7 +2,7 @@ module Octoshell
   class Version
     class <<self
       RAILS_ENV = Rails.env
-      VER = '2.11.6'
+      VER = '2.11.7'
       GIT_VER = `git describe --tags --long`.chomp
       GIT_BRANCH = `git name-rev --name-only HEAD`.chomp
 
