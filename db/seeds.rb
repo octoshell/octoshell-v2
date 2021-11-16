@@ -27,9 +27,9 @@
   #
 
   users = 3.times.map do
-    FactoryBot.create(:user)
+    FactoryBot.create(:user, password: '123456')
   end
-  admin = FactoryBot.create(:admin, email: 'admin@octoshell.ru')
+  admin = FactoryBot.create(:admin, email: 'admin@octoshell.ru', password: '123456')
 
   country = Core::Country.create!(title_en: 'Russia', title_ru: 'Россия', checked: true)
   city = Core::City.create!(title_en: 'Moscow', title_ru: "Москва", country: country, checked: true)
