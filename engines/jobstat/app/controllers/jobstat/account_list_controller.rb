@@ -36,8 +36,8 @@ module Jobstat
       @jobs=[]
       @jobs_plus={}
 
-      states=@params[:states].reject{|x| x==''}
-      partitions=@params[:partitions].reject{|x| x==''}
+      states=[@params[:states]].flatten.reject{|x| x==''}
+      partitions=[@params[:partitions]].flatten.reject{|x| x==''}
       @params[:states]='ALL' if states.length==0
       @params[:partitions]='ALL' if partitions.length==0
 
