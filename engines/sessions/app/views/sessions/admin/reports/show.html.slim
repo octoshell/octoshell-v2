@@ -77,6 +77,7 @@ legend = link_to t('.open_report_author_profile'), main_app.admin_user_path(@rep
           tr
             td colspan="2" = link_to t("actions.edit"), [:admin, @report, :edit], method: :put, class: "muted"
 
+
   - if @reports_for_other_sessions.present?
     div class="panel"
       h3 #{t('.previous_sessions_reports')}
@@ -85,6 +86,8 @@ legend = link_to t('.open_report_author_profile'), main_app.admin_user_path(@rep
           li class="list-group-item"
             h4 = link_to t(".other_report_title", id: other_report.id, session_name: other_report.session.description), [:admin, other_report]
 
+.panel
+  = register_hook(:sessions, :admin_reports_show, { report: @report })
 div class="panel"
   h3 #{t('.conversation')}
 

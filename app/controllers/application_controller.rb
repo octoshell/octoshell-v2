@@ -1,4 +1,12 @@
 class ApplicationController < ActionController::Base
+  before_action do
+    Octoface::OctoConfig.instances.values.each do |instance|
+      next if %w[FakeMainApp Octoface].include? instance.mod.to_s
+
+      app_helper = eval("#{instance.mod}::ApplicationHelper")
+      ActionView::Base.include app_helper
+    end
+  end
 
   before_action :set_paper_trail_whodunnit
 

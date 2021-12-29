@@ -1,0 +1,104 @@
+h1  = t('.header', project_title: @project.title, session_title: @session.description).html_safe
+.row
+  .col-md-6
+    div class="alert alert-info" role="alert"
+      = t('.rating_info').html_safe
+    = bootstrap_form_tag method: :get, url: admin_expert_path(@project), layout: :vertical do |f|
+      = f.select :state,  ["COMPLETED", "NODE_FAIL", "TIMEOUT", "FAILED", "CANCELLED"],
+        { selected: params[:state], label: t('.form.state') }, { multiple: true }
+      = f.select :order, %w[node_hours share_node_hours jobs share_jobs].map { |k| [t(".form.#{k}"), k]  },
+        { include_blank: false, selected: params[:order], label: t('.form.order') },
+        {class: 'select2-custom'}
+      = f.form_group do
+        = f.primary t("actions.find")
+
+    table class="table table-bordered"
+      -order = params[:order] || ''
+      tr
+        th = t('.place')
+        th = t('.project')
+        th = order.include?('jobs') ? t('.jobs') : t('.node_hours')
+        th = t('.percent')
+
+      - @records.each do |project|
+        tr style=(project['id'] == @project.id ? 'background-color:#F4A460' : '')
+          td = link_to project[@place], perf.admin_expert_path(project['id'])
+          td = link_to project['name'], core.admin_project_path(project['id'])
+          td = project[order.include?('jobs') ? 's_jobs' : 's_node_hours']
+          td = project[order.include?('jobs') ? 's_share_jobs' : 's_share_node_hours']
+  .col-md-6
+    - if @brief_table
+      div class="alert alert-info" role="alert"
+        = t('.brief_info', count: @brief_table['ALL']['count']).html_safe
+      = render partial: 'perf/admin/experts/project_stat_table', locals: { hash: @brief_table }
+
+h3 Распределение количества задач по дням
+div class="alert alert-info" role="alert"
+  | Нажмите на состояние, чтобы скрыть/показать его на графике
+
+.col-md-12
+  canvas#my-chart
+script src="https://cdn.jsdelivr.net/npm/chart.js"
+javascript:
+
+  var states = #{@states.to_json.html_safe};
+
+  var colors = {
+    COMPLETED: 'green',
+    ALL:  'blue',
+    FAILED: 'red',
+    CANCELLED: 'yellow',
+    TIMEOUT: 'black',
+    NODE_FAIL: 'grey'
+  };
+
+  var datasets = Object.entries(states).map(function(item){
+    return {
+      label: item[0],
+      data: item[1],
+      fill: false,
+      borderColor: colors[item[0]],
+
+      //borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    };
+  });
+
+
+  const data = {
+    labels: #{@states['ALL'].map { |s| s['submit_date']  }.to_json.html_safe},
+    datasets: datasets
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {
+        parsing: {
+          xAxisKey: 'submit_date',
+          yAxisKey: 'jobs'
+        },
+        scales: {
+            x: {
+                ticks: {
+                    // Include a dollar sign in the ticks
+                    callbsssack: function(value, index, values) {
+                        var cur = new Date(labels[index]);
+                        var cur_months = cur.toLocaleString('default', { month: 'long' });
+                        var prev = new Date(labels[index-1]);
+                        var prev_months = prev.toLocaleString('default', { month: 'long' });
+                        var output = null;
+                        if(index == 0 ||  prev_months != cur_months){
+                          output = cur_months;
+                        }
+                        return output;
+                    }
+                }
+            }
+        }
+    }
+  };
+  const myChart = new Chart(
+      document.getElementById('my-chart'),
+      config
+  );

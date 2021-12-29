@@ -1,0 +1,7 @@
+- content_for :user_engine_submenu do
+  br
+  ul class="nav nav-pills"
+    - perf_submenu_items.each do |item|
+      li class="#{"active" if item.active?(request.fullpath)}"
+        = link_to item.name, item.url
+= render template: "layouts/application"
