@@ -134,8 +134,8 @@ GEM
       activerecord (>= 5.0)
       activesupport (>= 5.0)
       i18n
-    redis (4.2.5)
-    sidekiq (6.2.1)
+    redis (4.5.1)
+    sidekiq (6.4.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
