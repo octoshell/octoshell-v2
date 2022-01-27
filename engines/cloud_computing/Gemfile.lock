@@ -152,7 +152,7 @@ GEM
       activerecord (>= 5.0)
       activesupport (>= 5.0)
       i18n
-    redis (4.2.5)
+    redis (4.5.1)
     rspec-core (3.10.1)
       rspec-support (~> 3.10.0)
     rspec-expectations (3.10.1)
@@ -172,7 +172,7 @@ GEM
     rspec-support (3.10.2)
     ruby-vips (2.1.2)
       ffi (~> 1.12)
-    sidekiq (6.2.1)
+    sidekiq (6.4.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
