@@ -22,7 +22,7 @@ table class="table table-striped"
         = export.key_parameters.map{|k| link_to k.name, edit_admin_key_parameter_path(k)}.join(' | ').html_safe
       td
         - port = request.port==80 ? '' : ":#{request.port}"
-        = "curl -H X-OctoAPI-Auth:\\ #{export.access_keys[0]} https://#{request.host}#{port}/api/req/#{export.request}"
+        = "curl -H X-OctoAPI-Auth:\\ #{export.access_keys[0].key} https://#{request.host}#{port}/api/req/#{export.request}"
       td
         - if export.safe
           i class="fa fa-check-circle alert alert-success"
