@@ -28,7 +28,7 @@ module Core
         redirect_to main_app.profile_path
       else
         flash.now[:alert] = @credential.errors.full_messages.join(', ')
-        render :show
+        redirect_to main_app.profile_path
       end
     end
 
