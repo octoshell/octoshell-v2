@@ -1,0 +1,27 @@
+table class="table table-bordered"
+  tr
+    th = t('.state_header')
+    th = t('.param_header')
+    th = t('.value_header')
+    th = t('.value_place_header')
+    th = t('.percent_header')
+    th = t('.percent_place_header')
+
+  - hash.keys.sort.each do |key|
+    - cur = hash[key]
+    tr
+      td rowspan='2' =  key == 'ALL' ? t('.all') : key
+      td =  t('.jobs')
+      td =  cur['jobs']['value']
+      td =  t('.place', place: cur['jobs']['place'])
+      - if key != 'ALL'
+        td   #{cur['jobs']['share_value']}%
+        td =  t('.place', place: cur['jobs']['share_place'])
+
+    tr
+      td = t('.node_hours')
+      td = cur['node_hours']['value']
+      td = t('.place', place: cur['node_hours']['place'])
+      - if key != 'ALL'
+        td   #{cur['node_hours']['share_value']}%
+        td  =  t('.place', place: cur['node_hours']['share_place'])

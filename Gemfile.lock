@@ -197,6 +197,12 @@ PATH
       slim
 
 PATH
+  remote: engines/perf
+  specs:
+    perf (0.1.0)
+      rails (~> 5.2.6)
+
+PATH
   remote: engines/reports
   specs:
     reports (0.0.1)
@@ -783,6 +789,7 @@ DEPENDENCIES
   octoface!
   pack!
   paper_trail
+  perf!
   pg (~> 0.18)
   phantomjs!
   pry-rails

@@ -1,0 +1,20 @@
+---
+en:
+  perf:
+    engine_submenu:
+      experienced_users: С опытными пользователями
+      packages: По пакетам
+      research_areas: По областям исследований
+    hooks:
+      sessions_admin_reports_show:
+        all: Всего
+        header: Краткая статистика использования ресурсов
+        jobs: Jobs
+        node_hours: Node hours
+        param: Param
+        percent: Percent
+        percent_place: Percent place
+        place: 'Число задач: %{value} № %{place} из %{count}'
+        state: Состояние
+        value: Значение
+        value_place: Value place

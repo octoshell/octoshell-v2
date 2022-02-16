@@ -77,6 +77,7 @@ gem "hardware",       path: "engines/hardware"
 gem "reports",       path: "engines/reports"
 gem "api",            path: "engines/api"
 gem 'cloud_computing', path: 'engines/cloud_computing'
+gem 'perf', path: 'engines/perf'
 
 gem "jquery-rails"
 gem "jquery-ui-rails"
