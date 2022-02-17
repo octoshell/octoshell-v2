@@ -442,7 +442,6 @@ GEM
     groupdate (5.2.2)
       activesupport (>= 5)
     highline (2.0.3)
-    honeybadger (4.9.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     i18n-js (3.8.3)
@@ -606,7 +605,7 @@ GEM
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    redis (4.2.5)
+    redis (4.6.0)
     ref (2.0.0)
     regexp_parser (2.1.1)
     request_store (1.5.0)
@@ -668,7 +667,7 @@ GEM
       rubyzip (>= 1.2.2)
     shoulda-matchers (4.5.1)
       activesupport (>= 4.2.0)
-    sidekiq (6.2.1)
+    sidekiq (6.4.1)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
@@ -771,7 +770,6 @@ DEPENDENCIES
   foreman
   groupdate
   hardware!
-  honeybadger (~> 4.8)
   i18n-js
   i18n-tasks!
   jobstat!
