@@ -316,6 +316,9 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    after_commit_everywhere (1.1.0)
+      activerecord (>= 4.2)
+      activesupport
     annotate (3.1.1)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 14.0)
@@ -442,7 +445,6 @@ GEM
     groupdate (5.2.2)
       activesupport (>= 5)
     highline (2.0.3)
-    honeybadger (4.9.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     i18n-js (3.8.3)
@@ -751,6 +753,7 @@ DEPENDENCIES
   active_record_union
   activerecord-import (>= 0.2.0)
   activerecord-jdbcpostgresql-adapter (~> 1.3.21)
+  after_commit_everywhere (~> 1.0)
   annotate
   announcements!
   api!
@@ -771,7 +774,6 @@ DEPENDENCIES
   foreman
   groupdate
   hardware!
-  honeybadger (~> 4.8)
   i18n-js
   i18n-tasks!
   jobstat!

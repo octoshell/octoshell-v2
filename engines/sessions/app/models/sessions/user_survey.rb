@@ -24,7 +24,7 @@
 module Sessions
   class UserSurvey < ApplicationRecord
 
-    
+
 
     belongs_to :session
     belongs_to :user, class_name: Sessions.user_class.to_s, inverse_of: :surveys
@@ -60,8 +60,8 @@ module Sessions
         transitions :from => :postdated, :to => :postfilling
       end
 
-      event :postdate do
-        transitions :from => [:pending, :filling], :to => :exceeded, :after => :block_user
+      event :postdate, after_commit: :block_user do
+        transitions :from => [:pending, :filling], :to => :exceeded
       end
     end
 
