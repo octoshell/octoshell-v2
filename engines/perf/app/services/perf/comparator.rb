@@ -34,10 +34,12 @@ module Perf
       finish_date = Sessions::Session.find(session_id).started_at
       # finish_date = Job.order(id: :desc).first.submit_time
       # finish_date = DateTime.now
+      if finish_date
+        start_date = finish_date - 1.year
+        @relation.where(JOBS[:submit_time].between(start_date..finish_date))
+      end
+      @relation.where(PROJECTS[:session_id].eq(session_id))
 
-      start_date = finish_date - 1.year
-      @relation.where(JOBS[:submit_time].between(start_date..finish_date))
-               .where(PROJECTS[:session_id].eq(session_id))
     end
 
     def by_jobs_in_days(id)
