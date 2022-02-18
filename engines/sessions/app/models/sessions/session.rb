@@ -53,7 +53,7 @@ module Sessions
 
       event :start do
         transitions :from => :pending, :to => :active
-        after do
+        after_commit do
           enqueue_session_start
           touch :started_at
         end
@@ -61,7 +61,7 @@ module Sessions
 
       event :stop do
         transitions :from => :active, :to => :ended
-        after do
+        after_commit do
           enqueue_session_validation
           touch :ended_at
         end

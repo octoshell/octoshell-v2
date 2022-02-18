@@ -92,12 +92,12 @@ Core.user_class.class_eval do
     state :active, :initial => true
     state :closed
 
-    event :block do
-      transitions :from => :active, :to => :closed, :after => :suspend_all_accounts
+    event :block, after_commit: :suspend_all_accounts do
+      transitions :from => :active, :to => :closed
     end
 
-    event :reactivate do
-      transitions :from => :closed, :to => :active, :after => :activate_suspended_accounts
+    event :reactivate, after_commit: :activate_suspended_accounts do
+      transitions :from => :closed, :to => :active
     end
 
     #inside_transition on: :block, &:suspend_all_accounts

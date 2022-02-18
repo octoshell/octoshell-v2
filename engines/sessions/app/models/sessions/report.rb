@@ -83,28 +83,28 @@ module Sessions
         transitions :from => [:exceeded, :accepted], :to => :submitted
       end
 
-      event :pick do
-        transitions :from => [:pending, :accepted, :submitted, :exceeded, :rejected], :to => :assessing, :after => :notify_about_pick
+      event :pick, after_commit: :notify_about_pick do
+        transitions :from => [:pending, :accepted, :submitted, :exceeded, :rejected], :to => :assessing
       end
 
-      event :assess do
-        transitions :from => [:assessed, :assessing], :to => :assessed, :after => :notify_about_assess
+      event :assess, after_commit: :notify_about_assess do
+        transitions :from => [:assessed, :assessing], :to => :assessed
       end
 
-      event :reject do
-        transitions :from => [:can_not_be_submitted, :submitted, :assessing], :to => :rejected, :after => :notify_about_reject
+      event :reject,  after_commit: :notify_about_reject do
+        transitions :from => [:can_not_be_submitted, :submitted, :assessing], :to => :rejected
       end
 
       event :edit do
         transitions :from => :assessed, :to => :assessing
       end
 
-      event :resubmit do
-        transitions :from => :rejected, :to => :assessing, after: :notify_about_resubmit
+      event :resubmit, after_commit: :notify_about_resubmit do
+        transitions :from => :rejected, :to => :assessing
       end
 
-      event :postdate do
-        transitions :from => [:pending, :accepted, :rejected], :to => :exceeded, :after => :postdate_callback
+      event :postdate, after_commit: :postdate_callback do
+        transitions :from => [:pending, :accepted, :rejected], :to => :exceeded
       end
     end
 

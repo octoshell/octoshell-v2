@@ -9,6 +9,7 @@ if ENV['AIRBRAKE'].to_s != ''
   gem "airbrake"
 end
 #-----------------------------------------
+gem 'after_commit_everywhere', '~> 1.0'
 gem 'bootsnap'
 gem 'listen'
 platforms :jruby do
