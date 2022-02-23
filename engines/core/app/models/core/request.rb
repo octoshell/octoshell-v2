@@ -52,7 +52,7 @@ module Core
 
       event :approve do
         transitions :from => :pending, :to => :active
-        after do
+        after_commit do
           ::Core::MailerWorker.perform_async(:request_accepted, id)
           Request.create_access_for(self)
           if project.members.where(:project_access_state=>:allowed).any? && project.pending?
@@ -63,7 +63,7 @@ module Core
 
       event :reject do
         transitions :from => :pending, :to => :closed
-        after do
+        after_commit do
           ::Core::MailerWorker.perform_async(:request_rejected, id)
         end
       end
