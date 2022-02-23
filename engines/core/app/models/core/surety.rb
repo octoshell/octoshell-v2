@@ -58,19 +58,19 @@ module Core
       state :active
       state :closed
 
-      event :confirm, after_commit: :prepare_for_approvement do
+      event :confirm, after: :prepare_for_approvement do
         transitions :from => [:generated, :rejected], :to => :confirmed
       end
 
-      event :reject, after_commit: :notify_onwer_about_rejection do
+      event :reject, after: :notify_onwer_about_rejection do
         transitions :from => :confirmed, :to => :rejected
       end
 
-      event :activate, after_commit: :activate_project_accounts do
+      event :activate, after: :activate_project_accounts do
         transitions :from => [:confirmed, :generated], :to => :active
       end
 
-      event :close, after_commit: :substract_project_accounts do
+      event :close, after: :substract_project_accounts do
         transitions :from => [:generated, :confirmed, :rejected, :active], :to => :closed
       end
 
