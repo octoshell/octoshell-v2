@@ -36,20 +36,22 @@
       state :pending, :initial => true
       state :delivered
 
-      event :deliver do
-        transitions :from => :pending, :to => :delivered, :after => :send_mails
+      event :deliver, after_commit: :send_announcement do
+        transitions :from => :pending, :to => :delivered
       end
 
       #after_transition on: :deliver, &:send_mails #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FIX
     end
 
-    def send_mails
-      recipients = []
-      announcement_recipients.find_each do |recipient|
-        Announcements::MailerWorker.perform_async(:announcement, recipient.id)
-        recipients << recipient
-      end
-      ::Core::BotLinksApiHelper.notify_about_announcement(recipients)
+    def send_announcement
+      Announcements::MailerWorker.perform_async(:send_announcement, id)
+
+      # recipients = []
+      # announcement_recipients.find_each do |recipient|
+      #   Announcements::MailerWorker.perform_async(:announcement, recipient.id)
+      #   recipients << recipient
+      # end
+      # ::Core::BotLinksApiHelper.notify_about_announcement(recipients)
     end
 
     def test_send(test_user)

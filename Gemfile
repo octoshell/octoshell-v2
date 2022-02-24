@@ -40,7 +40,6 @@ gem "mini_magick", ">= 4.9.4"
 group :development do
   gem "annotate"
   gem "sqlite3"
-  gem "letter_opener"
   gem "pry-rails"
   gem "rails-erd"
   gem 'railroady'
@@ -91,10 +90,10 @@ gem "whenever"
 
 group :test, :development do
   gem "factory_bot_rails"
+  gem "letter_opener"
 end
 
 group :test do
-  gem "letter_opener"
   gem "rspec-rails"
   gem "activerecord-import", ">= 0.2.0"
   gem 'selenium-webdriver'

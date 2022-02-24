@@ -49,8 +49,7 @@ module Announcements::Admin
 
     def deliver
       @announcement = Announcement.find(params[:announcement_id])
-      @announcement.deliver
-      @announcement.save
+      @announcement.deliver!
       redirect_to admin_announcements_path
     end
 
