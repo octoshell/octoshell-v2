@@ -80,8 +80,12 @@ class User < ApplicationRecord
       #email.tr! "a-zA-Z0-9!\#$%&*+-\/=?^_\`\{\}~.@|\'", ''
       (mail, domain) = email.split('@')
       mail.tr! "!\#$%&*\/=?^\`\{\}~|+", ''
-      domain.tr! "!\#$%&*\/=?^_\`\{\}~|\'+", ''
-      email = "#{mail}@#{domain}"
+      if domain
+        email = "#{mail}@#{domain.tr("!\#$%&*\/=?^_\`\{\}~|\'+", '')}"
+      else
+        email = mail
+      end
+      email
     end
   end
 
