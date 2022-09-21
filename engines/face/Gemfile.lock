@@ -94,9 +94,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    commonmarker (0.21.2)
-      ruby-enum (~> 0.5)
-    concurrent-ruby (1.1.9)
+    commonmarker (0.23.6)
+    concurrent-ruby (1.1.10)
     crass (1.0.6)
     diff-lcs (1.4.4)
     erubi (1.10.0)
@@ -104,7 +103,7 @@ GEM
     ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    i18n (1.10.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     jquery-fileupload-rails (1.0.0)
       actionpack (>= 3.1)
@@ -181,8 +180,6 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.2)
-    ruby-enum (0.9.0)
-      i18n
     russian (0.6.0)
       i18n (>= 0.5.0)
     sassc (2.4.0)
