@@ -1,5 +1,5 @@
 require "sessions/engine"
-require "sessions/settings"
+require "sessions/settings" if defined?(Octoface)
 require "sessions/external_link"
 
 module Sessions
