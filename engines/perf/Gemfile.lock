@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    reports (0.0.1)
-      rails (~> 5.0)
+    perf (0.1.0)
+      rails (~> 5.2.6)
 
 GEM
   remote: https://rubygems.org/
@@ -119,7 +119,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  reports!
+  perf!
 
 BUNDLED WITH
    2.1.4
