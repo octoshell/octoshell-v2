@@ -90,6 +90,19 @@ module Core
     #   name.to_s
     # end
 
+    scope :hide_with_zero_impact, (lambda do |project|
+      joins("INNER JOIN 
+        (SELECT project_id FROM core_members INNER JOIN jobstat_jobs 
+        ON core_members.login = jobstat_jobs.login) AS jobs
+        ON id = jobs.project_id")
+    end)
+
+    scope :hide_with_zero_impact_considering_deleted_members, (lambda do |project|
+      joins("INNER JOIN (SELECT object FROM versions INNER JOIN jobstat_jobs ON 
+        versions.object LIKE CONCAT('%login: ', jobstat_jobs.login, '%')) AS objects
+        ON objects.object LIKE CONCAT('%project_id: ', core_projects.id, '%')")
+    end)
+
     def on_deactivate
       #!!! after_transition :active => [:cancelled, :blocked, :finished] do |project, transition|
       # Core::MailerWorker.perform_async(:project_suspended, project.id)
@@ -120,7 +133,7 @@ module Core
 
     def drop_member(user_id)
       user = ::Core.user_class.find(user_id)
-      users.delete(user)
+      users.destroy(user)
     end
 
     def spare_clusters
@@ -149,6 +162,14 @@ module Core
       member_owner.organization = organization
       member_owner.organization_department = organization_department
       member_owner.accept_invitation!
+    end
+
+    def self.ransackable_scopes_skip_sanitize_args
+      ransackable_scopes
+    end
+
+    def self.ransackable_scopes(_auth_object = nil)
+      [:hide_with_zero_impact, :hide_with_zero_impact_considering_deleted_members]
     end
 
     def project_is_not_closing?

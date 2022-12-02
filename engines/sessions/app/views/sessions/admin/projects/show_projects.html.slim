@@ -18,9 +18,11 @@ div class="page-header"
   div class="col-md-6"
     = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
     = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
+    = f.check_box :hide_with_zero_impact, label: "hide with zero impact", checked_value: "1"
   div class="col-md-6"
     = f.text_field :first_activation_at_gt, options.merge(label: t('.activated_after'))
     = f.text_field :first_activation_at_lt, options.merge(label: t('.activated_before'))
+    = f.check_box :hide_with_zero_impact_considering_deleted_members, label: "consider deleted members"
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
 
