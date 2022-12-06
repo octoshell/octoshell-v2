@@ -235,6 +235,9 @@ en:
           title: The  "%{name}" re-registration
       projects:
         show_projects:
+          hide_with_zero_impact: Hide projects with zero impact
+          hide_with_zero: Hide projects with zero impact
+          consider_deleted_members: Hide projects with zero impact considering deleted members
           activated_after: Activated after
           activated_before: Activated before
           created_after: Created after

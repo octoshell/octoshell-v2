@@ -90,17 +90,22 @@ module Core
     #   name.to_s
     # end
 
-    scope :hide_with_zero_impact, (lambda do |project|
-      joins("INNER JOIN 
-        (SELECT project_id FROM core_members INNER JOIN jobstat_jobs 
-        ON core_members.login = jobstat_jobs.login) AS jobs
-        ON id = jobs.project_id")
+    scope :choose_to_hide, (lambda do |type|
+      if type == "1"
+        hide_with_zero_impact
+      elsif type == "2"
+        hide_with_zero_impact_considering_deleted_members
+      end
     end)
 
-    scope :hide_with_zero_impact_considering_deleted_members, (lambda do |project|
-      joins("INNER JOIN (SELECT object FROM versions INNER JOIN jobstat_jobs ON 
-        versions.object LIKE CONCAT('%login: ', jobstat_jobs.login, '%')) AS objects
-        ON objects.object LIKE CONCAT('%project_id: ', core_projects.id, '%')")
+    scope :hide_with_zero_impact, (lambda do
+      joins(members: :jobs)
+    end)
+
+    scope :hide_with_zero_impact_considering_deleted_members, (lambda do
+      joins("INNER JOIN versions ON versions.item_type = 'Core::Member' AND 
+      versions.object LIKE CONCAT('%project_id: ', core_projects.id, '%')
+      INNER JOIN jobstat_jobs ON versions.object LIKE CONCAT('%login: ', jobstat_jobs.login, '%')")
     end)
 
     def on_deactivate
@@ -169,7 +174,7 @@ module Core
     end
 
     def self.ransackable_scopes(_auth_object = nil)
-      [:hide_with_zero_impact, :hide_with_zero_impact_considering_deleted_members]
+      [:choose_to_hide]
     end
 
     def project_is_not_closing?
