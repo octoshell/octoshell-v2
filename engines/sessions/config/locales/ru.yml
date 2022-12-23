@@ -239,9 +239,11 @@ ru:
           title: Перерегистрация «%{name}»
       projects:
         show_projects:
-          hide_with_zero_impact: Спрятать проекты с нулевой работой
-          hide_with_zero: Спрятать проекты с нулевой работой
-          consider_deleted_members: Спрятать проекты с нулевой работой, учитывая удалённых участников
+          hide_with_zero_impact: Спрятать проекты без запущенных задач
+          hide_with_zero: Спрятать проекты без запущенных задач
+          consider_impact_after: Учитывать задачи, запущенные после
+          consider_impact_before: Учитывать задачи, запущенные до
+          consider_deleted_members: Спрятать проекты без запущенных задач, учитывая удалённых участников
           activated_after: Активирован после
           activated_before: Активирован до
           created_after: Создан после

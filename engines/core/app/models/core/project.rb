@@ -90,12 +90,28 @@ module Core
     #   name.to_s
     # end
 
-    scope :choose_to_hide, (lambda do |type|
+    scope :choose_to_hide, (lambda do |type, date_after, date_before|
       if type == "1"
-        hide_with_zero_impact
+        hide_with_zero_impact.consider_dates(date_after, date_before)
       elsif type == "2"
-        hide_with_zero_impact_considering_deleted_members
+        hide_with_zero_impact_considering_deleted_members.consider_dates(date_after, date_before)
       end
+    end)
+
+    scope :consider_dates, (lambda do |date_after, date_before|
+      if !date_after.empty? && !date_before.empty?
+        where("jobstat_jobs.created_at >= '#{date_after}' AND jobstat_jobs.created_at <= '#{date_before}'")
+      elsif !date_after.empty?
+        where("jobstat_jobs.created_at >= '#{date_after}'")
+      elsif !date_before.empty?
+        where("jobstat_jobs.created_at <= '#{date_before}'")
+      end
+    end)
+
+    scope :hide_options_after, (lambda do |date|
+    end)
+
+    scope :hide_options_before, (lambda do |date|
     end)
 
     scope :hide_with_zero_impact, (lambda do
@@ -174,7 +190,7 @@ module Core
     end
 
     def self.ransackable_scopes(_auth_object = nil)
-      [:choose_to_hide]
+      [:choose_to_hide, :hide_options_before, :hide_options_after]
     end
 
     def project_is_not_closing?

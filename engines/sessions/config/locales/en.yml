@@ -237,6 +237,8 @@ en:
         show_projects:
           hide_with_zero_impact: Hide projects with zero impact
           hide_with_zero: Hide projects with zero impact
+          consider_impact_after: Consider impact after
+          consider_impact_before: Consider impact before
           consider_deleted_members: Hide projects with zero impact considering deleted members
           activated_after: Activated after
           activated_before: Activated before
