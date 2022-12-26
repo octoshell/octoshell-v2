@@ -108,12 +108,6 @@ module Core
       end
     end)
 
-    scope :hide_options_after, (lambda do |date|
-    end)
-
-    scope :hide_options_before, (lambda do |date|
-    end)
-
     scope :hide_with_zero_impact, (lambda do
       joins(members: :jobs)
     end)
@@ -190,7 +184,7 @@ module Core
     end
 
     def self.ransackable_scopes(_auth_object = nil)
-      [:choose_to_hide, :hide_options_before, :hide_options_after]
+      [:choose_to_hide]
     end
 
     def project_is_not_closing?
