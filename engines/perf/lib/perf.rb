@@ -1,5 +1,5 @@
 require "perf/engine"
-require "perf/settings"
+require "perf/settings" if defined?(Octoface)
 
 module Perf
   # Your code goes here...

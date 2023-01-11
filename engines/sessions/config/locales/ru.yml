@@ -239,6 +239,15 @@ ru:
           title: Перерегистрация «%{name}»
       projects:
         show_projects:
+          consumed_resources_after: Ресурсы потреблялись после
+          consumed_resources_before: Ресурсы потреблялись до
+          consumed_min_resources: Было потрачено ресурсов (ядра*часы) не менее чем
+          consumed_max_resources: Было потрачено ресурсов (ядра*часы) не более чем
+          hide_with_zero_impact: Спрятать проекты без запущенных задач
+          hide_with_zero: Спрятать проекты без запущенных задач
+          consider_impact_after: Учитывать задачи, запущенные после
+          consider_impact_before: Учитывать задачи, запущенные до
+          consider_deleted_members: Спрятать проекты без запущенных задач, учитывая удалённых участников
           activated_after: Активирован после
           activated_before: Активирован до
           created_after: Создан после

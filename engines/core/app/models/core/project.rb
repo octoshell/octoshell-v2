@@ -90,6 +90,50 @@ module Core
     #   name.to_s
     # end
 
+    scope :choose_to_hide, (lambda do |type, date_after, date_before|
+      if type == "1"
+        hide_with_zero_impact.consider_dates(date_after, date_before, "created_at")
+      elsif type == "2"
+        hide_with_zero_impact_considering_deleted_members.consider_dates(date_after, date_before, "created_at")
+      end
+    end)
+
+    scope :consumed_resources, (lambda do |min_resources, max_resources, date_after, date_before|
+      if !min_resources.empty? && !max_resources.empty? 
+        joins(members: :jobs).where("EXTRACT(EPOCH FROM jobstat_jobs.end_time - jobstat_jobs.start_time) 
+        / 3600 * jobstat_jobs.num_cores <= '#{max_resources}' AND 
+        EXTRACT(EPOCH FROM jobstat_jobs.end_time - jobstat_jobs.start_time) 
+        / 3600 * jobstat_jobs.num_cores >= '#{min_resources}'").consider_dates(date_after, date_before, 'start_time')
+      elsif !min_resources.empty?
+        joins(members: :jobs).where("EXTRACT(EPOCH FROM jobstat_jobs.end_time - jobstat_jobs.start_time) 
+        / 3600 * jobstat_jobs.num_cores >= '#{min_resources}'").consider_dates(date_after, date_before, 'start_time')
+      elsif !max_resources.empty?
+        joins(members: :jobs).where("EXTRACT(EPOCH FROM jobstat_jobs.end_time - jobstat_jobs.start_time) 
+        / 3600 * jobstat_jobs.num_cores <= '#{max_resources}'").consider_dates(date_after, date_before, 'start_time')
+      end
+    end)  
+
+    scope :consider_dates, (lambda do |date_after, date_before, column_name|
+      if !date_after.empty? && !date_before.empty?
+        where("jobstat_jobs.#{column_name} >= '#{date_after}' 
+              AND jobstat_jobs.#{column_name} <= '#{date_before}'")
+      elsif !date_after.empty?
+        where("jobstat_jobs.#{column_name} >= '#{date_after}'")
+      elsif !date_before.empty?
+        where("jobstat_jobs.#{column_name} <= '#{date_before}'")
+      end
+    end)
+
+    scope :hide_with_zero_impact, (lambda do
+      joins(members: :jobs)
+    end)
+
+    scope :hide_with_zero_impact_considering_deleted_members, (lambda do
+      joins("INNER JOIN versions ON versions.item_type = 'Core::Member' AND 
+      versions.object LIKE CONCAT('%project_id: ', core_projects.id, '%')
+      INNER JOIN jobstat_jobs ON versions.object LIKE CONCAT('%login: ', jobstat_jobs.login, '%')")
+    end)
+
     def on_deactivate
       #!!! after_transition :active => [:cancelled, :blocked, :finished] do |project, transition|
       # Core::MailerWorker.perform_async(:project_suspended, project.id)
@@ -120,7 +164,7 @@ module Core
 
     def drop_member(user_id)
       user = ::Core.user_class.find(user_id)
-      users.delete(user)
+      users.destroy(user)
     end
 
     def spare_clusters
@@ -149,6 +193,14 @@ module Core
       member_owner.organization = organization
       member_owner.organization_department = organization_department
       member_owner.accept_invitation!
+    end
+
+    def self.ransackable_scopes_skip_sanitize_args
+      ransackable_scopes
+    end
+
+    def self.ransackable_scopes(_auth_object = nil)
+      [:choose_to_hide, :consumed_resources]
     end
 
     def project_is_not_closing?

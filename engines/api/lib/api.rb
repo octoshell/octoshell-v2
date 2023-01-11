@@ -1,5 +1,5 @@
 require "api/engine"
-require "api/settings"
+require "api/settings" if defined?(Octoface)
 
 module Api
 end

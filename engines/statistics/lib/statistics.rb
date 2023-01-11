@@ -1,5 +1,5 @@
 require "statistics/engine"
-require "statistics/settings"
+require "statistics/settings" if defined?(Octoface)
 
 require "sidekiq"
 # require "maymay"

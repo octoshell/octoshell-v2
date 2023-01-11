@@ -1,5 +1,5 @@
 require "announcements/engine"
-require "announcements/settings"
+require "announcements/settings" if defined?(Octoface)
 
 # require "maymay"
 require "decorators"

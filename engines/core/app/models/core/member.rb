@@ -33,6 +33,8 @@ module Core
     belongs_to :organization_department
     delegate :full_name, :email, :credentials, :sured?, to: :user
 
+    has_many :jobs, class_name: "Perf::Job", foreign_key: :login, primary_key: :login
+
     scope :finder, (lambda do |q|
       where("lower(login) like :q", q: "%#{q}%").order(:login)
     end)

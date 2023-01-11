@@ -1,5 +1,5 @@
 require "comments/engine"
-require 'comments/settings'
+require 'comments/settings' if defined?(Octoface)
 require "comments/attachable"
 require "comments/integration/attr_renderer"
 require "comments/integration/custom_view"

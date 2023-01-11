@@ -1,5 +1,5 @@
 require "support/engine"
-require "support/settings"
+require "support/settings" if defined?(Octoface)
 require "support/notificator"
 require "support/markdown_handler"
 require "support/interface"
