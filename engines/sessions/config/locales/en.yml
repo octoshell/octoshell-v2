@@ -235,6 +235,10 @@ en:
           title: The  "%{name}" re-registration
       projects:
         show_projects:
+          consumed_resources_after: Consumed resources after
+          consumed_resources_before: Consumed resources before
+          consumed_min_resources: Consumed resources (cores * hours) more than
+          consumed_max_resources: Consumed resources (cores * hours) less than
           hide_with_zero_impact: Hide projects with zero impact
           hide_with_zero: Hide projects with zero impact
           consider_impact_after: Consider impact after

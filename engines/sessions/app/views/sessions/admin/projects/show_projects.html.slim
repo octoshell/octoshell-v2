@@ -16,23 +16,37 @@ div class="page-header"
   /= f.select :state_in, project_class.human_state_names_with_original, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
 
   - name_choose ='q[choose_to_hide][]'
+  - name_resources = 'q[consumed_resources][]'
   = f.collection_select :choose_to_hide,
                         [[t('.hide_with_zero'), 1],
                         [t('.consider_deleted_members'), 2]],
                         :second, :first,
                         {include_blank: true, label: t('.hide_with_zero_impact')},
                         {selected: @choose_to_hide[0], name: name_choose}
+      
+  = f.text_field :consumed_resources, label: t('.consumed_min_resources'), 
+                                      name: name_resources,
+                                      value: @consumed_resources[0]
+  = f.text_field :consumed_resources, label: t('.consumed_max_resources'), 
+                                       name: name_resources,
+                                       value: @consumed_resources[1]
   - options = common_datepicker_options
   div class="col-md-6"
     = f.text_field :choose_to_hide, options.merge(label: t('.consider_impact_after'),
                                                   name: name_choose,
                                                   value: @choose_to_hide[1] )
+    = f.text_field :consumed_resources, options.merge(label: t('.consumed_resources_after'),
+                                                  name: name_resources,
+                                                  value: @consumed_resources[2] )
     = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
     = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
   div class="col-md-6"
     = f.text_field :choose_to_hide, options.merge(label: t('.consider_impact_before'),
                                                   name: name_choose,
                                                   value: @choose_to_hide[2])
+    = f.text_field :consumed_resources, options.merge(label: t('.consumed_resources_before'),
+                                                  name: name_resources,
+                                                  value: @consumed_resources[3] )
     = f.text_field :first_activation_at_gt, options.merge(label: t('.activated_after'))
     = f.text_field :first_activation_at_lt, options.merge(label: t('.activated_before'))
   = f.form_group do

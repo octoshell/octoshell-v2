@@ -92,19 +92,35 @@ module Core
 
     scope :choose_to_hide, (lambda do |type, date_after, date_before|
       if type == "1"
-        hide_with_zero_impact.consider_dates(date_after, date_before)
+        hide_with_zero_impact.consider_dates(date_after, date_before, "created_at")
       elsif type == "2"
-        hide_with_zero_impact_considering_deleted_members.consider_dates(date_after, date_before)
+        hide_with_zero_impact_considering_deleted_members.consider_dates(date_after, date_before, "created_at")
       end
     end)
 
-    scope :consider_dates, (lambda do |date_after, date_before|
+    scope :consumed_resources, (lambda do |min_resources, max_resources, date_after, date_before|
+      if !min_resources.empty? && !max_resources.empty? 
+        joins(members: :jobs).where("EXTRACT(EPOCH FROM jobstat_jobs.end_time - jobstat_jobs.start_time) 
+        / 3600 * jobstat_jobs.num_cores <= '#{max_resources}' AND 
+        EXTRACT(EPOCH FROM jobstat_jobs.end_time - jobstat_jobs.start_time) 
+        / 3600 * jobstat_jobs.num_cores >= '#{min_resources}'").consider_dates(date_after, date_before, 'start_time')
+      elsif !min_resources.empty?
+        joins(members: :jobs).where("EXTRACT(EPOCH FROM jobstat_jobs.end_time - jobstat_jobs.start_time) 
+        / 3600 * jobstat_jobs.num_cores >= '#{min_resources}'").consider_dates(date_after, date_before, 'start_time')
+      elsif !max_resources.empty?
+        joins(members: :jobs).where("EXTRACT(EPOCH FROM jobstat_jobs.end_time - jobstat_jobs.start_time) 
+        / 3600 * jobstat_jobs.num_cores <= '#{max_resources}'").consider_dates(date_after, date_before, 'start_time')
+      end
+    end)  
+
+    scope :consider_dates, (lambda do |date_after, date_before, column_name|
       if !date_after.empty? && !date_before.empty?
-        where("jobstat_jobs.created_at >= '#{date_after}' AND jobstat_jobs.created_at <= '#{date_before}'")
+        where("jobstat_jobs.#{column_name} >= '#{date_after}' 
+              AND jobstat_jobs.#{column_name} <= '#{date_before}'")
       elsif !date_after.empty?
-        where("jobstat_jobs.created_at >= '#{date_after}'")
+        where("jobstat_jobs.#{column_name} >= '#{date_after}'")
       elsif !date_before.empty?
-        where("jobstat_jobs.created_at <= '#{date_before}'")
+        where("jobstat_jobs.#{column_name} <= '#{date_before}'")
       end
     end)
 
@@ -184,7 +200,7 @@ module Core
     end
 
     def self.ransackable_scopes(_auth_object = nil)
-      [:choose_to_hide]
+      [:choose_to_hide, :consumed_resources]
     end
 
     def project_is_not_closing?

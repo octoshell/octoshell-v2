@@ -10,6 +10,7 @@ module Sessions
         params[:q] ||= { state_in: ["active"] }
         @search = project_class.search(params[:q])
         @choose_to_hide = @search.choose_to_hide || []
+        @consumed_resources = @search.consumed_resources || []
         @projects = @search.result(distinct: true).preload(owner: [:profile]).preload(:organization).order(id: :desc)
         @projects_involved_in_session_ids = @session.involved_project_ids
       end
