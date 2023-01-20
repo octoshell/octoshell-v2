@@ -8,6 +8,9 @@ module Sessions
       def show_projects
         @session = Session.find(params[:session_id])
         params[:q] ||= { state_in: ["active"] }
+        if params[:q][:choose_to_hide] && !params[:q][:choose_to_hide][0].present?
+          params[:q].delete(:choose_to_hide)
+        end
         @search = project_class.search(params[:q])
         @choose_to_hide = @search.choose_to_hide || []
         @projects = @search.result(distinct: true).preload(owner: [:profile]).preload(:organization).order(id: :desc)

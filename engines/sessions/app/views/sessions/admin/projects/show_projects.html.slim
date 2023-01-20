@@ -15,27 +15,39 @@ div class="page-header"
   = custom_helper(:core, 'project_state_in', f)
   /= f.select :state_in, project_class.human_state_names_with_original, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
 
-
   - name_choose ='q[choose_to_hide][]'
-  = f.collection_select :choose_to_hide,
-                        [[t('.hide_with_zero'), 1],
-                        [t('.consider_deleted_members'), 2]],
-                        :second, :first,
-                        {include_blank: true, label: t('.hide_with_zero_impact')},
-                        {selected: @choose_to_hide[0],
-                         name: name_choose}
   - options = common_datepicker_options
-  div class="col-md-6"
-    = f.text_field :choose_to_hide, options.merge(label: t('.consider_impact_after'),
-                                                  name: name_choose,
-                                                  value: @choose_to_hide[1] )
-
+  div.col-md-12 style="border:solid;"
+      = f.collection_select :choose_to_hide,
+                            [[t('.launched'), 1],
+                            [t('.launched_including_deleted'), 2]],
+                            :second, :first,
+                            {include_blank: true, label: t('.filter_by_resource')},
+                            {selected: @choose_to_hide[0],
+                            name: name_choose}
+      .col-sm-2
+      .col-sm-10
+        p = t('.hide_hint')
+      div class="col-md-6"
+        = f.text_field :choose_to_hide, options.merge(label: t('.filter_by_resource_after'),
+                                                      name: name_choose,
+                                                      value: @choose_to_hide[1] )
+        = f.number_field :choose_to_hide, label: t('.consumed_min_resources'),
+                                              name: name_choose,
+                                              value: @choose_to_hide[2],
+                                              label_col: "col-sm-4", control_col: "col-sm-8"
+      div class="col-md-6"
+        = f.text_field :choose_to_hide, options.merge(label: t('.filter_by_resource_before'),
+                                                      name: name_choose,
+                                                      value: @choose_to_hide[3])
+        = f.number_field :choose_to_hide, label: t('.consumed_max_resources'),
+                                              name: name_choose,
+                                              value: @choose_to_hide[4],
+                                              label_col: "col-sm-4", control_col: "col-sm-8"
+  .col-md-6
     = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
     = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
-  div class="col-md-6"
-    = f.text_field :choose_to_hide, options.merge(label: t('.consider_impact_before'),
-                                                  name: name_choose,
-                                                  value: @choose_to_hide[2])
+  .col-md-6
     = f.text_field :first_activation_at_gt, options.merge(label: t('.activated_after'))
     = f.text_field :first_activation_at_lt, options.merge(label: t('.activated_before'))
   = f.form_group do

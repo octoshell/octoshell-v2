@@ -90,38 +90,46 @@ module Core
     #   name.to_s
     # end
 
-    scope :choose_to_hide, (lambda do |type, date_after, date_before|
-      if type == "1"
-        hide_with_zero_impact.consider_dates(date_after, date_before)
-      elsif type == "2"
-        hide_with_zero_impact_considering_deleted_members.consider_dates(date_after, date_before)
+    scope :choose_to_hide, (lambda do |type, date_after, core_hours_gt, date_before, core_hours_lt|
+      type = type.to_i
+      return self if type != 1 && type != 2
+
+      scope = if type == 2
+        Perf::Job.project_id_in_period
+      else
+        Perf::Job.joins(:member)
+                 .select('DISTINCT core_members.project_id as p_id')
       end
-    end)
-
-    scope :consider_dates, (lambda do |date_after, date_before|
-      if !date_after.empty? && !date_before.empty?
-        where("jobstat_jobs.created_at >= '#{date_after}' AND jobstat_jobs.created_at <= '#{date_before}'")
-      elsif !date_after.empty?
-        where("jobstat_jobs.created_at >= '#{date_after}'")
-      elsif !date_before.empty?
-        where("jobstat_jobs.created_at <= '#{date_before}'")
+      if date_after.present?
+        scope = scope.where("jobstat_jobs.submit_time >= '#{date_after}'")
       end
-    end)
+      if date_before.present?
+        scope = scope.where("jobstat_jobs.submit_time <= '#{date_before}'")
+      end
+      if core_hours_gt.present?
+        scope = scope.merge(Perf::Job.having_core_hours('>=', core_hours_gt))
+      end
+      if type == 1
+        scope = scope.group('core_members.project_id')
+      end
+      if type == 2
+        scope = scope.group(Perf::Job.coalesce_project)
+      end
+      if core_hours_lt.present?
+        if !core_hours_gt.present? || core_hours_gt.to_i.zero?
+          scope = scope.merge(Perf::Job.having_core_hours('>', core_hours_lt))
+          scope = joins("LEFT JOIN (#{scope.to_sql})
+                        AS j ON core_projects.id = j.p_id")
+                        .where('j.p_id IS NULL')
+          return scope
+        else
+          scope = scope.merge(Perf::Job.having_core_hours('<=', core_hours_lt))
+        end
+      end
 
-    scope :hide_options_after, (lambda do |date|
-    end)
-
-    scope :hide_options_before, (lambda do |date|
-    end)
-
-    scope :hide_with_zero_impact, (lambda do
-      joins(members: :jobs)
-    end)
-
-    scope :hide_with_zero_impact_considering_deleted_members, (lambda do
-      joins("INNER JOIN versions ON versions.item_type = 'Core::Member' AND 
-      versions.object LIKE CONCAT('%project_id: ', core_projects.id, '%')
-      INNER JOIN jobstat_jobs ON versions.object LIKE CONCAT('%login: ', jobstat_jobs.login, '%')")
+      scope = joins("INNER JOIN (#{scope.to_sql})
+                    AS j ON core_projects.id = j.p_id ")
+      scope
     end)
 
     def on_deactivate
