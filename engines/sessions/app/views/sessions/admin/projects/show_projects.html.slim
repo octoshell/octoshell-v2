@@ -52,8 +52,8 @@ div class="page-header"
     = f.text_field :first_activation_at_lt, options.merge(label: t('.activated_before'))
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
-
 = form_tag admin_session_select_projects_path(@session) do
+  = hidden_field_tag 'project_ids', @projects.ids
   - if @projects.any?
     div class="panel-body"
       table class="table table-hover"

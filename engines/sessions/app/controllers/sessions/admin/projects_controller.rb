@@ -19,9 +19,19 @@ module Sessions
 
       def select_projects
         @session = Session.find(params[:session_id])
-        @session.moderate_included_projects((params[:selected_project_ids] || []).map(&:to_i))
+        remain_ids = to_i_from_params(:selected_project_ids) +
+        (@session.involved_project_ids -
+          params[:project_ids].split(' ').map(&:to_i)).uniq
+        @session.moderate_included_projects(remain_ids)
         redirect_to [:admin, @session]
       end
+
+      private
+
+      def to_i_from_params(key)
+        (params[key] || []).map(&:to_i)
+      end
+
     end
   end
 end
