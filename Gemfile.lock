@@ -368,9 +368,8 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     colorize (0.8.1)
-    commonmarker (0.21.2)
-      ruby-enum (~> 0.5)
-    concurrent-ruby (1.1.9)
+    commonmarker (0.23.7)
+    concurrent-ruby (1.2.0)
     connection_pool (2.2.5)
     crass (1.0.6)
     database_cleaner (2.0.1)
@@ -445,8 +444,7 @@ GEM
     groupdate (5.2.2)
       activesupport (>= 5)
     highline (2.0.3)
-    honeybadger (4.11.0)
-    i18n (1.8.10)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     i18n-js (3.8.3)
       i18n (>= 0.6.6)
@@ -641,8 +639,6 @@ GEM
       rspec-core (~> 3.0, >= 3.0.0)
       sidekiq (>= 2.4.0)
     rspec-support (3.10.2)
-    ruby-enum (0.9.0)
-      i18n
     ruby-graphviz (1.2.5)
       rexml
     ruby-progressbar (1.11.0)
