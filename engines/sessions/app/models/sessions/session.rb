@@ -156,7 +156,7 @@ module Sessions
 
     def notify_experts_about_assessing_reports
       Sessions.user_class.experts.each do |expert|
-        if expert.assesing_reports.any?
+        if expert.assessing_reports.any?
           Sessions::MailerWorker.perform_async(:notify_expert_about_assessing_reports, expert.id)
         end
       end

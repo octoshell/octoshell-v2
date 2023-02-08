@@ -366,7 +366,7 @@ ru:
         subject: У вас %{count} неоцененных отчетов
       notify_experts_about_submitted_reports:
         msg_num_reports: >-
-          Перерегистрация «%{session}» близится к завершению, но %{reports} отчетов
+          Перерегистрация «%{session}» близится к завершению, но %{untaken_reports} отчетов
           еще не взяты на оценку и ожидают рассмотрения.
         msg_speedup_assessment: Пожалуйста, оцените их как можно быстрее.
         subject: В рамках перерегистрации %{count} отчетов ожидают оценки

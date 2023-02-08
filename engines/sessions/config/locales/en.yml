@@ -350,7 +350,7 @@ en:
         subject: You have %{count} unrated reports
       notify_experts_about_submitted_reports:
         msg_num_reports: >-
-          The "%{session}" Reregistration is nearing completion, but %{reports} reports
+          The "%{session}" Reregistration is nearing completion, but %{untaken_reports} reports
           have not taken for evaluation yet and are awaiting consideration.
         msg_speedup_assessment: Please rate them as quickly as possible.
         subject: " %{count} reports are awaiting evaluation"
