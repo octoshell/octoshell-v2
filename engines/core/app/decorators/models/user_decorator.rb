@@ -105,8 +105,9 @@ Core.user_class.class_eval do
   end
 
   def suspend_all_accounts
-    accounts.where(:project_access_state=>:allowed).map(&:suspend!)
-    available_projects.each(&:synchronize!)
+    accounts = active_accounts
+    accounts.each(&:suspend!)
+    accounts.map(&:project).each(&:synchronize!)
   end
 
   def activate_suspended_accounts

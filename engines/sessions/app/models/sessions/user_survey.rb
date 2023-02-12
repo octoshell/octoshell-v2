@@ -71,7 +71,7 @@ module Sessions
 
     def fill_fields
       survey.fields.each do |field|
-        self.values.create!(field: field)
+        values.find_or_create_by!(field: field)
       end
     end
 
