@@ -221,6 +221,7 @@ ru:
         new:
           title: Создание перерегистрации
         show:
+          assessing_reports: отчёты на оценке
           edit_projects: Отобрать проекты-участники
           end_session: Закончить
           ended_at: Закончилась %{date}
@@ -230,12 +231,14 @@ ru:
               время. Ваш браузер может выдать сообщение о слишком долгой работе скрипта.
               Пожалуйста, не прерывайте работу скрипта. Иначе, графики не будут отображены.</p>
           new_survey: Добавить опросник
+          notify_experts: Напомнить экспертам об отчётах
           session_archive_create: Создать архив
           session_archive_link_msg: Ссылка на загрузку придет по email.
           session_arcvhive: Архив данных перерегистрации
           show_graphs: Показать статистику
           start_session: Начать
           started_at: Началась %{date}
+          submitted_reports: отчёты, не взятые на оценку
           title: Перерегистрация «%{name}»
       projects:
         show_projects:

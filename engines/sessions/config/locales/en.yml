@@ -216,6 +216,7 @@ en:
         new:
           title: Reregistration creation
         show:
+          assessing_reports: assessing reports
           edit_projects: Edit participating projects
           end_session: Finish
           ended_at: ended at %{date}
@@ -226,12 +227,14 @@ en:
               been working too long. Please do not interrupt the script. Otherwise
               the graphs will not be displayed.</p>
           new_survey: New survey
+          notify_experts: Remind experts about reports
           session_archive_create: Create archive
           session_archive_link_msg: Download_link will be sent by email.
           session_arcvhive: Reregistration data archive
           show_graphs: Show stats
           start_session: Start
           started_at: started at %{date}
+          submitted_reports: submitted reports
           title: The  "%{name}" re-registration
       projects:
         show_projects:

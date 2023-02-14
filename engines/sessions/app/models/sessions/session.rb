@@ -145,9 +145,12 @@ module Sessions
 
     def validate_reports_and_surveys
       reports.where(:state=>[:pending, :accepted, :rejected]).map(&:postdate!)
-      notify_experts_about_submitted_reports if reports.where(:state=>:submitted).any?
-      notify_experts_about_assessing_reports if reports.where(:state=>:assessing).any?
       user_surveys.where(:state=>[:pending, :filling, :postfilling]).map(&:postdate!)
+    end
+
+    def notify_experts
+      notify_experts_about_submitted_reports if reports.submitted.any?
+      notify_experts_about_assessing_reports if reports.assessing.any?
     end
 
     def notify_experts_about_submitted_reports

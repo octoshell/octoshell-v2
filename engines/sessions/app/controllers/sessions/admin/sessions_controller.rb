@@ -54,6 +54,14 @@ module Sessions
       end
     end
 
+    def notify_experts
+      @session = Session.find(params[:session_id])
+      puts @session.inspect.red
+      @session.notify_experts
+      redirect_to [:admin, @session]
+    end
+
+
     def stop
       @session = get_session(params[:session_id])
       if @session.stop!
