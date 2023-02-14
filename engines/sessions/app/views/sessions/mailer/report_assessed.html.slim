@@ -2,20 +2,7 @@
 
 p #{t('.msg_report_assessed', id: @report.id, pid: @report.project.id, title: @report.project.title, session: @report.session.description)}
 br
-p #{t('.assessment')}
-table border="1" cellpadding="20" cellspacing="0" width="300"
-  tr
-    td align="center" #{t('.illustration_points')}
-    td align="center"
-      strong = report_points(@report,:illustration_points)
-  tr
-    td align="center" #{t('.statement_points')}
-    td align="center"
-      strong = report_points(@report,:statement_points)
-  tr
-    td align="center" #{t('.summary_points')}
-    td align="center"
-      strong = report_points(@report,:summary_points)
+
 
 - if @report.failed?
   h5 #{t('.assessment_bad')}
