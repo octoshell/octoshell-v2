@@ -25,7 +25,7 @@ module Sessions
 
     def edit
       @report = Report.find(params[:report_id])
-      @report.edit
+      @report.edit!
       redirect_to [:admin, @report]
     end
 
