@@ -20,7 +20,7 @@ module Sessions
                      where(expert_id: [nil, current_user.id])
 
                  end
-    without_pagination :reports
+      without_pagination :reports
     end
 
     def edit

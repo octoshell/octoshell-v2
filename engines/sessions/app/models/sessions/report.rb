@@ -108,6 +108,21 @@ module Sessions
       end
     end
 
+    %w[illustration_points statement_points summary_points].each do |type|
+      @ransackable_scopes ||= []
+      name = "#{type}_in_with_null"
+      @ransackable_scopes << name
+      define_singleton_method(name) do |*points|
+        where("#{type}": points.select(&:present?).map { |a| a == 'not_evaluated' ? nil : a })
+      end
+    end
+
+    def self.ransackable_scopes(_auth_object = nil)
+      @ransackable_scopes || []
+    end
+
+
+
     def report_material=(hash)
       report_materials.new hash
     end

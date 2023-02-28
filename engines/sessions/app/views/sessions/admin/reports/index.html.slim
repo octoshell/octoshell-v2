@@ -21,7 +21,6 @@ div class="page-header"
         /= f.grouped_collection_select :project_research_areas_id_in, group_research_area_class.order_by_name_with_areas,
         /                              :research_areas, :name, :id, :name,
         /                              {label: t('.research_areas_id_in'),  include_blank: true}, multiple: true
-
     div class="col-md-6"
       -if Sessions.link?(:project)
         = f.autocomplete_field :author_id_eq,{ label: Sessions::Report.human_attribute_name(:author), source: core.with_owned_projects_finder_admin_users_path} do |val|
@@ -37,6 +36,15 @@ div class="page-header"
         /  {label: t('.critical_technologies_id_in'),  include_blank: true}, multiple: true
         = custom_helper(:core, 'project_direction_of_sciences_id_in', f, '',
                                 label: t('.direction_of_sciences_id_in') )
+      = f.collection_select :summary_points_in_with_null, possible_report_points, :first, :second,
+                               {label: t('.summary_points_in')},
+                               multiple: true
+      = f.collection_select :statement_points_in_with_null, possible_report_points, :first, :second,
+                              {label: t('.statement_points_in')},
+                              multiple: true
+      = f.collection_select :illustration_points_in_with_null, possible_report_points, :first, :second,
+                            {label: t('.illustration_points_in')}, multiple: true
+
 
       /= f.collection_select :project_direction_of_sciences_id_in, direction_of_science_class.order_by_name, :id, :name,
       /  {label: t('.direction_of_sciences_id_in'),  include_blank: true}, multiple: true

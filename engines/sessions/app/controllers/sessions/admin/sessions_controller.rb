@@ -56,7 +56,6 @@ module Sessions
 
     def notify_experts
       @session = Session.find(params[:session_id])
-      puts @session.inspect.red
       @session.notify_experts
       redirect_to [:admin, @session]
     end
