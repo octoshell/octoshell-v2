@@ -44,19 +44,13 @@ div class="page-header"
                               multiple: true
       = f.collection_select :illustration_points_in_with_null, possible_report_points, :first, :second,
                             {label: t('.illustration_points_in')}, multiple: true
-
-
-      /= f.collection_select :project_direction_of_sciences_id_in, direction_of_science_class.order_by_name, :id, :name,
-      /  {label: t('.direction_of_sciences_id_in'),  include_blank: true}, multiple: true
-
-
-  /* = search_check_boxes(f, :illustration_points_in, t('.figures')) */
-  /* = search_check_boxes(f, :statement_points_in, t('presentation')) */
-  /* = search_check_boxes(f, :summary_points_in, t('.overall_assessment')) */
-
+  css:
+    .left-margin { margin: 20px };
   = f.form_group do
     = display_all_tag
     = f.primary t("actions.find")
+
+    = f.submit "CSV", name: 'csv', class: "btn btn-success left-margin"
 
 = safe_paginate @reports
 = render "table"

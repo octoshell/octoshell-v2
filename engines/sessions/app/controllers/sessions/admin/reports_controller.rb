@@ -20,7 +20,31 @@ module Sessions
                      where(expert_id: [nil, current_user.id])
 
                  end
+      if params[:csv]
+        send_csv
+        return
+      end
       without_pagination :reports
+    end
+
+    def send_csv
+      headers = ['project_owner', 'project_id', 'project_title', 'link', '
+        summary_points', 'illustration_points', 'statement_points'  ]
+      csv_string = CSV.generate do |csv|
+        csv << headers
+        @reports.each do |report|
+          csv << [
+            report.project.owner.full_name,
+            report.project_id,
+            report.project.title,
+            admin_report_url(report),
+            report.summary_points,
+            report.illustration_points,
+            report.statement_points
+          ]
+        end
+      end
+      send_data csv_string, filename: "reports-#{Date.today.to_s}.csv", disposition: :attachment
     end
 
     def edit
