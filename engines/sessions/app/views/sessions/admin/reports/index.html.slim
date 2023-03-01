@@ -21,6 +21,8 @@ div class="page-header"
         /= f.grouped_collection_select :project_research_areas_id_in, group_research_area_class.order_by_name_with_areas,
         /                              :research_areas, :name, :id, :name,
         /                              {label: t('.research_areas_id_in'),  include_blank: true}, multiple: true
+        = f.check_box :five_exists, label: 'Есть пятёрка'  
+
     div class="col-md-6"
       -if Sessions.link?(:project)
         = f.autocomplete_field :author_id_eq,{ label: Sessions::Report.human_attribute_name(:author), source: core.with_owned_projects_finder_admin_users_path} do |val|

@@ -117,8 +117,15 @@ module Sessions
       end
     end
 
+    def self.five_exists()
+      str =%w[illustration_points statement_points summary_points].map do |type|
+        "(sessions_reports.#{type} = 5)"
+      end.join(' OR ')
+      where(str)
+    end
+
     def self.ransackable_scopes(_auth_object = nil)
-      @ransackable_scopes || []
+      (@ransackable_scopes || []) + ['five_exists']
     end
 
 
