@@ -4,11 +4,11 @@ class Authentication::UsersController < Authentication::ApplicationController
   end
 
   def create
-    if cond_params[:cond_accepted].to_i!=1
+    if !params[:cond] || cond_params[:cond_accepted].to_i != 1
       flash_message :notice, t("authentication.flash.conditions_must_be_accepted")
       redirect_back_or_to(root_url)
     else
-      @user = User.new(user_params)
+      @user = User.new(params[:user] ? user_params : {})
       @user.language = session[:locale]
       if @user.save
         redirect_to confirmation_users_path(email: @user.email)
