@@ -11,7 +11,9 @@
 
 module Core
   class CriticalTechnology < ApplicationRecord
-    has_and_belongs_to_many :projects, join_table: "projects_critical_technologies_per_projects"
+    has_many :project_critical_technologies, inverse_of: :critical_technology
+    has_many :projects, through: :project_critical_technologies, inverse_of: :critical_technologies
+
     translates :name
     validates_translated :name, presence: true
     def to_s

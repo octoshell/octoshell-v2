@@ -11,7 +11,8 @@
 
 module Core
   class DirectionOfScience < ApplicationRecord
-    has_and_belongs_to_many :projects, join_table: "core_direction_of_sciences_per_projects"
+    has_many :project_direction_of_sciences, inverse_of: :direction_of_science
+    has_many :projects, through: :project_direction_of_sciences, inverse_of: :direction_of_sciences
 
     translates :name
     validates_translated :name, presence: true

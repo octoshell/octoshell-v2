@@ -32,9 +32,13 @@ module Core
     has_one :card, class_name: "Core::ProjectCard", dependent: :destroy,
                    inverse_of: :project, validate: true
 
-    has_and_belongs_to_many :critical_technologies, join_table: "core_critical_technologies_per_projects"
-    has_and_belongs_to_many :direction_of_sciences, join_table: "core_direction_of_sciences_per_projects"
-    has_and_belongs_to_many :research_areas, join_table: "core_research_areas_per_projects"
+    has_many :project_critical_technologies, inverse_of: :project
+    has_many :project_direction_of_sciences, inverse_of: :project
+    has_many :project_research_areas, inverse_of: :project
+
+    has_many :critical_technologies, through: :project_critical_technologies, inverse_of: :projects
+    has_many :direction_of_sciences, through: :project_direction_of_sciences, inverse_of: :projects
+    has_many :research_areas, through: :project_research_areas, inverse_of: :projects
     has_many :group_of_research_areas, through: :research_areas,
                                        class_name: GroupOfResearchArea.to_s,
                                        source: :group
@@ -62,13 +66,17 @@ module Core
     has_many :sureties, inverse_of: :project
 
     has_many :invitations, class_name: "Core::ProjectInvitation"
-
+    has_many :project_versions, inverse_of: :project
 
     accepts_nested_attributes_for :card, :sureties
-
+    accepts_nested_attributes_for :project_critical_technologies,
+                                  :project_direction_of_sciences,
+                                  :project_research_areas,
+                                  allow_destroy: true
     validates :card, :title, :organization, :kind, presence: true, if: :project_is_not_closing?
-    validates :direction_of_science_ids, :critical_technology_ids,
-      :research_area_ids, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }, if: :project_is_not_closing?
+    validates :project_direction_of_sciences, :project_critical_technologies,
+      :project_research_areas, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }, if: :project_is_not_closing?
+
     validate do
       errors.add(:organization_department, :dif) if organization_department && organization_department.organization != organization
     end

@@ -185,11 +185,15 @@ ru:
         organization_department_id: Подразделение организации
         organization_id: Организация
         owner: Руководитель
+        project_critical_technologies: Критические технологии
+        project_direction_of_sciences: Направление исследований
+        project_research_areas: Области науки
         research_area_ids: Область науки
         research_areas: Область науки
         state: Статус
         sureties: Поручительства
         title: Наименование
+        project_versions: Изменения описания проекта
       core/project_card:
         driver: Задача
         en_driver: Driver
@@ -210,6 +214,9 @@ ru:
         user_fio: Инициалы
       core/project_kind:
         name: Наименование
+      core/project_version:
+        created_at: Дата изменения
+        object_changes: Изменения
       core/quota_kind:
         measurement: Единица измерения
         name: Наименование
@@ -599,12 +606,30 @@ ru:
           reactivate: Активировать
           suspend: Приостановить
           synchronize_project: Синхронизовать с кластерами
+          details: "Последнее изменение: %{date}. <a href=\"%{url}\">Посмотреть детали</a>"
+          no_records: нет записей
         sureties:
           title: Поручительства
         table:
           no_organization:
             html: <span class="fa fa-exclamation-triangle text-danger"> не заполнена</span>
           no_projects_found: Нет проектов
+      project_versions:
+          index:
+            created_after: Изменено не ранее
+            created_before: Изменено не позднее
+            info: >-
+              Ниже Вы можете посмотреть некоторые изменения описания проекта пользователем.
+              Журналируются изменения, сделанные на странице после нажатия на кнопку "карандаш",
+              явные изменения состояния пользователем (по кнопке на странице проекта), также журналируется создание проекта.
+              Представлены в следующем формате (YAML): <br>
+                Название атрибута: <br>
+                - Значение до <br>
+                - Значение после <br>
+              Журналирование начато <b> %{date} </b>
+            title: Пользовательские изменения проекта %{title}
+
+
       quota_kinds:
         edit:
           title: Редактирование квоты на ресурсы

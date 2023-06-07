@@ -1,0 +1,9 @@
+
+table class="table table-hover"
+  tr
+    th = Core::ProjectVersion.human_attribute_name(:created_at)
+    th = Core::ProjectVersion.human_attribute_name(:object_changes)
+  - @versions.each do |version|
+    tr
+      td  = version.created_at
+      td  = object_changes(version.object_changes)
