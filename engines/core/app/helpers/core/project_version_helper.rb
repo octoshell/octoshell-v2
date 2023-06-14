@@ -18,7 +18,10 @@ module Core
         end
         [new_key, new_value]
       end.to_h
-      simple_format res.to_yaml.gsub(' ', '&nbsp;')
+      space = '&nbsp;'
+      k = 9
+      simple_format res.to_yaml(indentation: k).gsub(' ', space)
+
     end
 
 
