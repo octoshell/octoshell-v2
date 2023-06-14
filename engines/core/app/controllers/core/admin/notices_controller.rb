@@ -15,20 +15,11 @@ module Core
       #   redirect_to '/core'
       # else
         #logger.warn "============ #{params.inspect}"
-        par = notice_params.to_hash
-        par['notice'] ||= {}
         respond_to do |format|
-          category = params[:category] ? params[:category] : 0
-          par['notice'][:category] = category
-          if par['notice'][:sourceable_id_enotice]
-            par['notice'][:sourceable] = User.find_by_id par['notice'][:sourceable_id_enotice]
-          end
           format.html do
-            @search = Notice.search(par['notice'])
-            search_result = @search.result()#distinct: true).order(:id)
-            @notices = search_result
+            @search = Notice.ransack(params[:q])
+            @notices = @search.result(distinct: true)#distinct: true).order(:id)
             #logger.warn  "------------------------------\n #{par['notice'].inspect}\n#{@notices.inspect}"
-            without_pagination :notices
           end
           format.json do
             # @notices = Notice.search(par['notice']).includes(:notice_show_options)
@@ -52,6 +43,7 @@ module Core
       @notice.category = npar[:category].to_i
       @notice.message = npar[:message]
       @notice.count = npar[:count].to_i if npar[:count]
+      @notice.active = false
     end
 
     def create
@@ -99,8 +91,7 @@ module Core
     end
 
     def edit
-      par = notice_params
-      @notice = Notice.find(par[:id])
+      @notice = Notice.find(params[:id])
     end
 
     def update
@@ -125,12 +116,11 @@ module Core
     end
 
     def destroy
-      par = notice_params
-      @notice = Notice.find_by_id(par[:id])
+      @notice = Notice.find_by_id(params[:id])
       if @notice
         @notice.destroy
       end
-      if par[:retpath]
+      if params[:retpath]
         redirect_to par[:retpath]
       else
         redirect_to [:admin, Notice]
@@ -139,9 +129,8 @@ module Core
 
 
     def hide
-      par = notice_params
       #logger.warn "=== #{params.inspect}"
-      @notice = Notice.find_by_id(par[:notice_id])
+      @notice = Notice.find_by_id(params[:notice_id])
       if @notice
         # if can?(:manage, :notices) or (@notice.category==0 && @notice.sourceable==current_user)
         #   # logger.warn "==================================== No destroy #{@notice.id} (#{par[:retpath]})"
@@ -152,24 +141,28 @@ module Core
         opt.hidden = true
         opt.save
       end
-      if par[:retpath]
+      if params[:retpath]
         redirect_to par[:retpath]
       else
         redirect_to [:admin, Notice]
       end
     end
 
+    def deleted  
+      @notices = PaperTrail::Version.where(item_type: "Core::Notice", event: "destroy") 
+    end
+
     private
 
     def notice_params
 
-      params.permit(:id, :notice_id, :category,
+      params.permit(:id, :notice_id,
         :sourceable_id, :sourceable_type,
         :sourceable_id_eq, :sourceable_type_eq,
         :linkable_id, :linkable_type,
         :type, :message, :count, :retpath,
         :show_till, :show_from,
-        :category_alt, :visible,
+        :category_alt, :visible, :active,
         :notice => [:id, :category,
           :category_alt, :kind,
           :visible,
