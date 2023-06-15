@@ -10,31 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_20_233725) do
+ActiveRecord::Schema.define(version: 2023_06_14_104504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "active_storage_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
-    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
-  end
-
-  create_table "active_storage_blobs", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
-    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
 
   create_table "announcement_recipients", id: :serial, force: :cascade do |t|
     t.integer "user_id"
@@ -528,10 +507,10 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
   end
 
   create_table "core_notices", id: :serial, force: :cascade do |t|
-    t.string "sourceable_type"
     t.integer "sourceable_id"
-    t.string "linkable_type"
+    t.string "sourceable_type"
     t.integer "linkable_id"
+    t.string "linkable_type"
     t.text "message"
     t.integer "count"
     t.datetime "created_at", null: false
@@ -540,7 +519,8 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
     t.string "kind"
     t.datetime "show_from"
     t.datetime "show_till"
-    t.integer "active"
+    t.integer "active_legacy"
+    t.boolean "active", default: false
     t.index ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id"
     t.index ["sourceable_type", "sourceable_id"], name: "index_core_notices_on_sourceable_type_and_sourceable_id"
   end
@@ -613,6 +593,14 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
   create_table "core_project_kinds", id: :serial, force: :cascade do |t|
     t.string "name_ru", limit: 255
     t.string "name_en"
+  end
+
+  create_table "core_project_versions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "project_id", null: false
+    t.text "object"
+    t.text "object_changes"
+    t.index ["project_id"], name: "index_core_project_versions_on_project_id"
   end
 
   create_table "core_projects", id: :serial, force: :cascade do |t|
@@ -853,8 +841,8 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
   end
 
   create_table "jobstat_jobs", id: :serial, force: :cascade do |t|
-    t.string "cluster", limit: 32
-    t.bigint "drms_job_id"
+    t.string "cluster", limit: 32, null: false
+    t.bigint "drms_job_id", null: false
     t.bigint "drms_task_id"
     t.string "login", limit: 32
     t.string "partition", limit: 32
@@ -1003,7 +991,7 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
     t.integer "ticket_id"
     t.text "description_en"
     t.string "name_en"
-    t.boolean "ticket_created"
+    t.boolean "ticket_created", default: false
     t.index ["package_id"], name: "index_pack_versions_on_package_id"
   end
 
@@ -1026,15 +1014,6 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
     t.text "about"
     t.boolean "receive_info_mails", default: true
     t.boolean "receive_special_mails", default: true
-  end
-
-  create_table "sessions_managers", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "session_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_sessions_managers_on_session_id"
-    t.index ["user_id"], name: "index_sessions_managers_on_user_id"
   end
 
   create_table "sessions_projects_in_sessions", id: :serial, force: :cascade do |t|
@@ -1414,7 +1393,6 @@ ActiveRecord::Schema.define(version: 2020_12_20_233725) do
     t.index ["url"], name: "index_wikiplus_pages_on_url", unique: true
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "core_bot_links", "users"
   add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"
 end
