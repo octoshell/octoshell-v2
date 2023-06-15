@@ -181,11 +181,11 @@ ru:
     admin:
       accesses:
         create_from_request:
-          add_items: 'Добавить'
+          add_items: Добавить
           finish_date_help: Если это поле пусто, то доступ без даты окончания
           new_left_items: Новые единицы
           old_left_items: Запрос на изменение существующих единиц
-          title: 'Добавить к доступу'
+          title: Добавить к доступу
         edit:
           title: Редактировать доступ к виртуальной машине
         edit_links:
@@ -195,7 +195,7 @@ ru:
         edit_vm:
           title: Редактировать связи доступа к виртуальной машине
         form:
-          add_items: 'Добавить'
+          add_items: Добавить
           add_positions: Добавить позицию
           finish_date_help: Если это поле пусто, то доступ без даты окончания
           new_left_items: Новые единицы
@@ -226,7 +226,6 @@ ru:
           prepare_to_deny_confirm: >-
             Данное действие сотрёт данные пользователя на жестких дисках виртуальных
             машин данного доступа после одобрения администратором. Вы уверены?
-
           reinstantiate: Попытаться создать виртуальные машины
           title: Доступ#%{id}
         table:
@@ -317,7 +316,7 @@ ru:
           title: Единица облачного кластера
         table:
           confirm: Вы действительно хотите удалить данную единицу?
-          no_templates_found: 'Не найдено единиц'
+          no_templates_found: Не найдено единиц
       virtual_machines:
         change_state:
           success: 'Успешно обновлено '
@@ -344,8 +343,8 @@ ru:
     requests:
       add_item_from_access:
         added: >-
-          Виртуальная машина успешно добавлена в заявку на изменение.
-          Отредактировать заявку вы можете на странице "Новая заявка"
+          Виртуальная машина успешно добавлена в заявку на изменение. Отредактировать
+          заявку вы можете на странице "Новая заявка"
       created_request:
         cancel: Отозвать заявку
         edit_created_request: Редактировать новую заявку
@@ -362,10 +361,10 @@ ru:
         title: Новая заявка
         to_sent: Отправить заявку
       edit:
-        copy: 'Копировать'
+        copy: Копировать
         help: Введите значение от {{min}} до {{max}}. {{help}}
       edit_created_request:
-        add_items: 'Добавить'
+        add_items: Добавить
         add_positions: Добавить позицию
         finish_date_help: Если это поле пусто, то доступ без даты окончания
         help: Введите значение от {{min}} до {{max}}. {{help}}
@@ -424,7 +423,7 @@ ru:
       table:
         no_requests_found: Нет заявок
       to_assets:
-        destroy: 'Удалить?'
+        destroy: Удалить?
       update_created_request:
         updated_successfully: Заявка обновлена
       update_links:
@@ -450,7 +449,7 @@ ru:
         no_editable_resources: 'Нет редактируемых ресурсов '
         no_uneditable_resources: Нет Нередактируемых ресурсов
       show:
-        add: 'Добавить в заявку'
+        add: Добавить в заявку
         add_position: Добавить ещё одну позицию
         remove_position: Удалить из заявки
         title: Единица %{template}

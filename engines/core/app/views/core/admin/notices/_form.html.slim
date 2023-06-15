@@ -1,65 +1,31 @@
 - options = {class: "datepicker",:'data-date-end-date' => "+1000d", :'data-date-start-date' => "+0d", :'data-date-today-btn' => true, format: 'yyyy.mm.dd'}
-- def_user = @notice.sourceable ? @notice.sourceable.id : nil
-- from = @notice.show_from ? @notice.show_from.strftime("%Y.%m.%d") : nil
-- till = @notice.show_till ? @notice.show_till.strftime("%Y.%m.%d") : nil
+= bootstrap_form_for [:admin, @notice], layout: :horizontal,
+                                        label_col: "col-sm-2",
+                                        control_col: "col-sm-10" do |f|
+  = f.text_field :message
+  - select_enabled = [0,1,-1, nil].include?(@notice.category)
+  = f.select :category, options_for_select([[t('.for_all'), 0],
+    [t('.personal'), 1],[t('.other'), -1]], @notice.category),
+    {prompt: true, include_blank: true}
+  p = t('.category_help')
+  = f.number_field :category, name: 'notice[category_alt]',
+                              id: 'notice_category_alt',
+                              value: select_enabled ? nil : @notice.category
+  = f.text_field :show_from, options.merge(label: t('.show_from'),
+                                        :'data-date-start-date' => '01.01.1900')
+  = f.text_field :show_till, options.merge(label: t('.show_till'),
+                                              :'data-date-end-date' => '+3650d')
+  = f.autocomplete_field :sourceable_id, {label: Core.user_class.model_name.human,
+                                          source:  main_app.users_path},
+                                          include_blank: true do |val|
+                                            - User.find(val).full_name
 
-= form_for [:admin, @notice], html:{class: :vertical} do |f|
-  /= bootstrap_form_for [:admin, @notice], layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10" do |f|
-  = f.hidden_field :id
-  div.form-group.col-sm-12
-    = f.label :message, class: 'control-label col-sm-2'
-    = f.text_field :message, class: 'col-sm-10'
-  div.form-group.col-sm-12
-    = f.label :category, class: 'control-label col-sm-2'
-    = f.select :category, options_for_select([[t('.for_all'), 0],[t('.personal'), 1],[t('other'), -1]], @notice.category), {prompt: true, class: 'col-sm-10'}
-  div.form-group.col-sm-12
-    = f.label :category_alt, class: 'control-label col-sm-2'
-    = text_field_tag 'notice[category_alt]', nil, {class: 'col-sm-10'}
-  div.form-group.col-sm-12
-    = f.label :kind, class: 'control-label col-sm-2'
-    = f.text_field :kind, class: 'col-sm-10'
-
-    /= f.autocomplete_field :id_in,{ label: User.model_name.human, source: main_app.users_path, include_blank: true}, 'redirect-url': "/admin/users/{{id}}" do |val|
-
-    / = f.autocomplete_field :sourceable_id, {source: main_app.admin_users_path}, {class: 'col-sm-6', selected: def_user, label: t('user')} do |x|
-    /   - User.find_by_id(x).email
-    /, label: t('user')
-    /= f.autocomplete_field :sourceable_id, label: t("user"), source:  main_app.users_path
-    /= f.autocomplete_field_tag :sourceable_id, @notice.sourceable_id, source:  main_app.users_path
-  div.form-group.col-sm-12
-    = f.label :linkable_id, class: 'control-label col-sm-2'
-    = f.text_field :linkable_id, class: 'col-sm-10'
-  div.form-group.col-sm-12
-    = f.label :linkable_type, class: 'control-label col-sm-2'
-    = f.text_field :linkable_type, class: 'col-sm-10'
-  div.form-group.col-sm-12
-    = f.label :count, class: 'control-label col-sm-2'
-    = f.text_field :count, class: 'col-sm-10'
-  /= f.form_group :active, label: {text: t('.active')} do
-    = f.radio_button :active, true, label: t('yes'), value: :true, inline: true
-    = f.radio_button :active, false, label: t('no'), value: :false, inline: true
-    = f.radio_button :active, nil, label: 'none', value: :nil, inline: true
-  div.form-group.col-sm-12
-    = f.label :show_from, class: 'control-label col-sm-2'
-    = f.text_field :show_from, options.merge(value: from, label: t('.show_from'), class: 'col-sm-10 datepicker', :'data-date-start-date' => '01.01.1900')
-  div.form-group.col-sm-12
-    = f.label :show_till, class: 'control-label col-sm-2'
-    = f.text_field :show_till, options.merge(value: till, label: t('.show_till'), class: 'col-sm-10 datepicker', :'data-date-end-date' => '+3650d')
-
-  / div.form-group.col-sm-4
-    = f.label :visible, class: 'control-label col-sm-4'
-    = f.check_box :visible, options.merge(class: 'col-sm-8')
-
-  div.form-group.col-sm-12
-    = f.label :active, class: 'control-label col-sm-2'
-    = f.check_box :active, options.merge(class: 'col-sm-10')
-
-  / = f.form_group :checked,label:{text: '.checked')} do
-  /   = f.check_box :checked,label: ''
-  /= f.form_group do
-
-  div.form-group.col-sm-12
-    = f.label :sourceable_id, class: 'control-label col-sm-2'
-    = f.autocomplete_field :sourceable_id, {label: Core.user_class.model_name.human, source:  main_app.users_path}, include_blank: true, class: 'col-sm-10'
+  = f.form_group :active do
+    = f.check_box :active
+  h3 = t('.developer_fields')
+  = f.text_field :kind
+  = f.text_field :linkable_id
+  = f.text_field :linkable_type
+  = f.text_field :count
 
   = f.submit t("actions.save")

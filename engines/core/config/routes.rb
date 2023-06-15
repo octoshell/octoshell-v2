@@ -95,8 +95,10 @@ Core::Engine.routes.draw do
   end
 
   resources :notices do
-    post :visible
-    get :hide
+    member do
+      post :change_visibility
+      post :hide
+    end
   end
 
   resources :credentials, only: [:new, :create] do

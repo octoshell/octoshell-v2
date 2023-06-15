@@ -13,7 +13,7 @@ module Jobstat
     end
 
     def remove_notice(job, user)
-      Core::Notice.where(sourceable: user, linkable: job, category: 1).destroy_all
+      Core::Notice.where(sourceable: user, linkable: job, category: 1).each(&:destroy)
     end
 
     def group_match(job, user)

@@ -6,25 +6,28 @@ div class='well'
 
 div class='text-left'
   = bootstrap_form_for @search, url: admin_notices_path , method: :get, layout: :vertical do |f|
-    div.col-md-12
-      div.col-md-6
+    .row
+      - options = {class: "datepicker",:'data-date-end-date' => "+1000d", :'data-date-start-date' => "+0d", :'data-date-today-btn' => true, format: 'yyyy.mm.dd'}
+      .col-md-3
+        = f.select :category_in, [[t('.site_wide_notices'),0],[t('.my_notices'),1],[t('.other'),-1]], {label: t('.category')}, { multiple: true }
         = f.autocomplete_field :sourceable_id_eq, {label: Core.user_class.model_name.human, source: main_app.users_path}, include_blank: true do |id|
           - User.find(id).full_name_with_email
-        = f.select :category_in, [[t('.site_wide_notices'),0],[t('.my_notices'),1],[t('.other'),-1]], {label: t('.category')}, { multiple: true }
-        /= f.check_box :active_eq, 
+      .col-md-3
         = f.select :active_eq, [[t('.inactive'), false],[t('.active'), true]], {label: t('.active'), include_blank: true}
-        / = f.label :show_from, class: 'control-label col-sm-4'
-        = display_all_tag :notice
-      div.col-md-6
-        - options = {class: "datepicker",:'data-date-end-date' => "+1000d", :'data-date-start-date' => "+0d", :'data-date-today-btn' => true, format: 'yyyy.mm.dd'}
-        / = f.label :show_till, class: 'control-label col-sm-4'
-        = f.text_field :show_from_gt, options.merge(class: 'col-md-7 datepicker', :'data-date-start-date' => '01.01.1900')
-        = f.text_field :show_till_lt, options.merge(class: 'col-md-7 datepicker', :'data-date-end-date' => '+3650d')
-      div.col-md-12
-        = f.form_group do
-          = f.submit t('actions.find'), class: 'btn btn-primary'  
-      
- 
+        = f.text_field :message_cont, label: t('.message_cont')
+      .col-md-3
+        = f.text_field :show_from_gteq, options.merge(:'data-date-start-date' => '01.01.1900',
+                                                      label: t('.show_from_gteq'))
+        = f.text_field :show_till_lteq, options.merge(:'data-date-end-date' => '+3650d',
+                                                      label: t('.show_till_lteq'))
+      .col-md-3
+        = f.text_field :created_at_gteq, options.merge(label: t('.created_at_gteq'))
+        = f.text_field :created_at_lteq, options.merge(label: t('.created_at_lteq'))
+
+    = f.form_group do
+      = f.submit t('actions.find'), class: 'btn btn-primary'
+
+
 
 = safe_paginate @notices
 = render 'table', notices: @notices
