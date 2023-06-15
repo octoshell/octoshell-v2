@@ -27,7 +27,7 @@ module Core
   class Notice < ApplicationRecord
     belongs_to :sourceable, polymorphic: true # user or object to be noticed
     belongs_to :linkable, polymorphic: true   # extra data
-    has_many :notice_show_options
+    has_many :notice_show_options, dependent: :destroy
 
     SITE_WIDE = 0
     PER_USER = 1
@@ -42,9 +42,9 @@ module Core
     # show_from: date   = when start to show (nil=now)
     # show_till: date   = when stop to show  (nil=forever)
     # active:   integer = 1(or nil) = is active now (for use in handler only)
+    validates :category, :message, presence: true
 
     def visible?(user = nil)
-      # user ||= current_user
       opt = notice_show_options.where(user: user).take
       !opt&.hidden
     end
@@ -52,14 +52,13 @@ module Core
     def self.register_kind(k, &block)
       @notice_handlers ||= {}
       @notice_handlers[k] = block
-      # logger.warn "::: @handlers= #{@notice_handlers.inspect}"
     end
 
     def self.handle(notice, user, params, request)
       return nil unless @notice_handlers
 
       handler = @notice_handlers[notice.kind.to_s]
-      handler.nil? ? nil : handler.call(notice, user, params, request)
+      handler&.call(notice, user, params, request)
     end
 
     def source_name
@@ -86,28 +85,17 @@ module Core
         end
       end
     end
+    Core::NoticeHandlers.call
 
-    # def self.register_def_worldwide_handler
-    #   Core::Notice.register_kind nil.to_s do |notice, user, params, request|
-    #     # logger.warn "-> #{notice.id}/#{notice.kind}/#{notice.category}"
-    #     [
-    #       :info,
-    #       "#{notice.message} #{notice.add_close(request)}".html_safe
-    #     ]
-    #   end
-    # end
-
-    include Rails.application.routes.url_helpers
+    include Core::Engine.routes.url_helpers
     include ActionView::Helpers::UrlHelper
 
     def add_close(request)
-      # FIXME!!!! [:admin, :core, self] does not work :(((((
-      link = link_to(
-        '<i class="fas fa-bell-slash close"></i>'.html_safe,
-        "/core/notices/#{id}/hide?retpath=#{request.fullpath}",
-        data: { retpath: request.fullpath }
+      link_to(
+        "<i title='#{I18n.t('core.notices.hide', default: 'hide')}' \
+        class='fas fa-bell-slash close'></i>".html_safe,
+        hide_notice_path(id, retpath: request.fullpath), method: :post
       )
-      link
     end
 
     def category_str
@@ -120,56 +108,37 @@ module Core
       end
     end
 
-    def self.show_notices(current_user, params, request)
-      # per-user: show only if sourceable is current user
-      data = []
-      # ----------------- PER USER -----------------------
-      Core::Notice
-        .where('category > 0')
-        .where(sourceable: current_user, active: 1)
-        .includes(:notice_show_options)
-        .each do |note|
-
-        user_option = note.notice_show_options.where(user: current_user).take
-        next if user_option&.hidden
-
-        data << conditional_show_notice(note, current_user, params, request)
-      end
-
-      # others: show for all (if handler returns not nil)
-      # ----------------- SITE WIDE (0) & OTHERS -----------------------
-      Core::Notice
-        .where('category < 1')
-        .where(active: 1)
-        .includes(:notice_show_options)
-        .each do |note|
-
-        user_option = note.notice_show_options.where(user: current_user).take
-        next if user_option&.hidden
-
-        data << conditional_show_notice(note, current_user, params, request)
-      end
-      data.reject(&:nil?)
+    def self.notices_for_user(user)
+      Core::Notice.where('category > 0').where(sourceable: user)
+                  .or(Core::Notice.where('category < 1'))
+                  .where(active: true).distinct
+                  .joins(<<-SQL
+        LEFT JOIN core_notice_show_options AS o ON
+        core_notices.id = o.notice_id AND o.user_id = #{user.id}
+      SQL
+                        ).where('o.hidden IS NULL OR o.hidden = false')
+                  .where('core_notices.show_from IS NULL
+                    OR core_notices.show_from <= ?', DateTime.now)
+                  .where('core_notices.show_till IS NULL
+                    OR core_notices.show_till >= ?', DateTime.now)
     end
 
-    def self.conditional_show_notice(note, current_user, params, request)
-      n = Time.current
-      return nil if note.show_from && (note.show_from > n)
-      return nil if note.show_till && (note.show_till < n)
-      ret = Core::Notice.handle(note, current_user, params, request)
-      ret
+    def self.show_notices(current_user, params, request)
+      notices_for_user(current_user).map do |notice|
+        Core::Notice.handle(notice, current_user, params, request)
+      end.reject(&:nil?)
     end
 
     def self.get_count_for_user(user)
       peruser =
         Core::Notice
         .where('category > 0')
-        .where(sourceable: user, active: 1)
+        .where(sourceable: user, active: true)
         .count
       sitewide =
         Core::Notice
         .where('category < 1')
-        .where(active: 1).count
+        .where(active: true).count
       peruser + sitewide
     end
   end

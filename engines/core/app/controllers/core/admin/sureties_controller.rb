@@ -30,8 +30,7 @@ module Core
 
     def activate
       @surety = find_surety(params[:surety_id])
-      if @surety.activate
-        # @surety.save
+      if @surety.activate!
         redirect_to_surety @surety
       else
         redirect_to_surety_with_alert @surety
@@ -46,9 +45,9 @@ module Core
         return
       end
       if params[:commit] == Core::Surety.human_state_event_name(:activate)
-        @surety.activate
+        @surety.activate!
       else
-        @surety.reject
+        @surety.reject!
       end
       @surety.reason = params[:surety][:reason]
       @surety.changed_by = current_user
@@ -58,7 +57,7 @@ module Core
 
     def close
       @surety = find_surety(params[:surety_id])
-      if @surety.close
+      if @surety.close!
         @surety.save
         redirect_to_surety @surety
       else
@@ -68,8 +67,7 @@ module Core
 
     def confirm
       @surety = find_surety(params[:surety_id])
-      if @surety.confirm
-        @surety.save
+      if @surety.confirm!
         redirect_to_surety(@surety)
       else
         redirect_to_surety_with_alert(@surety)
@@ -78,8 +76,7 @@ module Core
 
     def reject
       @surety = find_surety(params[:surety_id])
-      if @surety.reject
-        @surety.save
+      if @surety.reject!
         redirect_to_surety(@surety)
       else
         redirect_to_surety_with_alert(@surety)

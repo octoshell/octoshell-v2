@@ -17,7 +17,8 @@
 
 module Core
   class ResearchArea < ApplicationRecord
-    has_and_belongs_to_many :projects, join_table: "core_research_areas_per_projects"
+    has_many :project_research_areas, inverse_of: :research_area
+    has_many :projects, through: :project_research_areas, inverse_of: :research_areas
     belongs_to :group, class_name: GroupOfResearchArea.to_s, inverse_of: :research_areas
     translates :name
     validates_translated :name, presence: true

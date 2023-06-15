@@ -1,6 +1,6 @@
 require 'octoface'
 require "face/engine"
-require 'face/settings'
+require 'face/settings' if defined?(Octoface)
 require "face/custom_autocomplete_field"
 require "face/my_menu"
 require "face/my_menu_item"

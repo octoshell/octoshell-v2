@@ -147,6 +147,39 @@ en:
   reports_draft_saved: The draft report has been saved
   sessions:
     admin:
+      projects:
+        show_projects:
+          activated_after: Activated after
+          activated_before: Activated before
+          consider_deleted_members: Hide projects with zero impact considering deleted
+            members
+          consider_impact_after: Consider impact after
+          consider_impact_before: Consider impact before
+          consumed_max_resources: Consumed corehours not more than
+          consumed_min_resources: Consumed corehours not less than
+          created_after: Created after
+          created_before: Created before
+          filter_by_resource:  Resource usage condition
+          filter_by_resource_after: Consider only jobs, placed in queue not earlier than
+          filter_by_resource_before: Consider only jobs, placed in queue not later than
+          hide_hint: >-
+            TRME Фильтрация "Включая исключённых участников проекта" может выполняться
+            долго. Если указать в поле ниже интервал размером в один год, то такой
+            запрос может выполняться около 15 секунд, а за всё время может выполняться
+            около 4 минут, поэтому лучше всегда указывайте даты. Если в полях ядрочасов
+            ничего не указывать, то будут найдены проекты, которые запустились хотя
+            бы один раз. Имейте в виду, что некоторые задачи могли выполняться меньше
+            секунды, и проекты в принципе могут иметь 0 ядрочасов, при этом запустившись
+            хотя бы раз.
+          hide_with_zero: Hide projects with zero impact
+          hide_with_zero_impact: Hide projects with zero impact
+          launched: Do not include excluded members
+          launched_including_deleted: Include excluded members
+          no_projects_found: No projects found
+          sum_core_hours: There are launched jobs and core hours were consumed
+          sum_core_hours_including_deleted: >-
+            There are launched jobs and core hours were consumed including excluded members
+          title: Edit participating projects in re-registration
       report_submit_denial_reasons:
         edit:
           title: Report submit denial reason edition
@@ -162,10 +195,13 @@ en:
           expert: Expert
           figures: Illustrations
           group_of_research_areas_id_in: project has one of research area groups
+          illustration_points_in: Illustration points are in
           overall_assessment: Overall mark
           presentation: Statement
           research_areas_id_in: project has one of research areas
           session: Reregistration
+          statement_points_in: Statement points are in
+          summary_points_in: Summary points are in
           title: List of project reports
         show:
           are_you_sure: Are you sure?
@@ -216,6 +252,7 @@ en:
         new:
           title: Reregistration creation
         show:
+          assessing_reports: assessing reports
           edit_projects: Edit participating projects
           end_session: Finish
           ended_at: ended at %{date}
@@ -226,21 +263,15 @@ en:
               been working too long. Please do not interrupt the script. Otherwise
               the graphs will not be displayed.</p>
           new_survey: New survey
+          notify_experts: Remind experts about reports
           session_archive_create: Create archive
           session_archive_link_msg: Download_link will be sent by email.
           session_arcvhive: Reregistration data archive
           show_graphs: Show stats
           start_session: Start
           started_at: started at %{date}
+          submitted_reports: submitted reports
           title: The  "%{name}" re-registration
-      projects:
-        show_projects:
-          activated_after: Activated after
-          activated_before: Activated before
-          created_after: Created after
-          created_before: Created before
-          no_projects_found: No projects found
-          title: Edit participating projects in re-registration
       stats:
         index:
           add_graph: Add chart
@@ -345,8 +376,8 @@ en:
         subject: You have %{count} unrated reports
       notify_experts_about_submitted_reports:
         msg_num_reports: >-
-          The "%{session}" Reregistration is nearing completion, but %{reports} reports
-          have not taken for evaluation yet and are awaiting consideration.
+          The "%{session}" Reregistration is nearing completion, but %{untaken_reports}
+          reports have not taken for evaluation yet and are awaiting consideration.
         msg_speedup_assessment: Please rate them as quickly as possible.
         subject: " %{count} reports are awaiting evaluation"
       postdated_report_on_project:
@@ -438,9 +469,9 @@ en:
       edit:
         title: Edit report
       index:
+        nothing_found: Nothing found
         session: Reregistration
         title: Projects reports list
-        nothing_found: Nothing found
       list:
         complete_by: Must be submitted before
         no_reports: No reports

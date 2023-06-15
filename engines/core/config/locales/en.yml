@@ -298,11 +298,11 @@ en:
       per-user: Per-user
       site-wide: Site-wide
   answers:
-    'false': no
-    noo: no
+    'false': false
+    noo: false
     other: other
-    'true': no
-    yess: yes
+    'true': false
+    yess: true
   change: change
   choose_value: Choose a value
   core:
@@ -428,7 +428,7 @@ en:
           inactive: inactive
           my_notices: my notices
           new_notice: Create notice
-          'no': No
+          'no': false
           none: None
           site_wide_notices: Site-wide notices
           table:
@@ -441,7 +441,7 @@ en:
             sourceable: User/other
             type: Type
           title: Notices
-          'yes': yes
+          'yes': true
         new:
           title: New notice
         other: other
@@ -682,13 +682,12 @@ en:
     bot_links:
       list:
         bot_links: Bot token
-        confirm: >-
-          If you generate a new tokel old bots should be updated. Are you sure?
+        confirm: If you generate a new tokel old bots should be updated. Are you sure?
         generate_token: Generate token
         msg_help_token: >-
-          Tokens are used to connect Octoshell profile with bots. You'll need to
-          enter token in the bot interface to be able to interact woth your profile
-          in Octoshell via bot.
+          Tokens are used to connect Octoshell profile with bots. You'll need to enter
+          token in the bot interface to be able to interact woth your profile in Octoshell
+          via bot.
         no_bot_links_found: Create new token to interact with Octoshell via bot.
     credentials:
       list:
@@ -935,7 +934,7 @@ en:
             profile and fill required fields.</p>
         your_access_is_closed:
           html: >-
-            Based on the results of the analysis of the work reports for 2014, it
+            Based on the results of the analysis of the work reports, it
             was found that you did not complete the surveys (for each project - for
             project managers, personal - for each  SCC user). This action is required
             by the MSU SCC rules (http://parallel.ru/cluster/reregistration).<br />

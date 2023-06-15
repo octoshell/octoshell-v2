@@ -29,7 +29,7 @@ module Sessions
           where(survey_field_id: survey_field_id).
           map(&:value).flatten.find_all(&:present?)
 
-        group = values.group_by{|v| v.to_s.downcase}.map { |k, v| [k, v.size] }.
+        group = values.group_by{|v| v.to_s}.map { |k, v| [k, v.size] }.
           sort_by(&:last).reverse
 
         hash[department.name] = group

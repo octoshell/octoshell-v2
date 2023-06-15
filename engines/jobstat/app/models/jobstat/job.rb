@@ -42,6 +42,8 @@ module Jobstat
     has_many :initiatees, class_name: "Job", foreign_key: "initiator_id"
     belongs_to :initiator, class_name: "Job"
 
+    belongs_to :member, class_name: "Core::Member", primary_key: :login
+
     def get_duration_hours
       (end_time - start_time) / 3600
     end

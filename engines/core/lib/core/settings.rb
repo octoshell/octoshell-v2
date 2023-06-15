@@ -22,11 +22,17 @@ module Core
     add_routes do
       mount Core::Engine, :at => "/core"
     end
-
+    module ::Core::NoticeHandlers
+      def self.call
+        Core::Notice.register_def_nil_kind_handler
+        Core::Notice.register_kind 'jobstat' do |notice, user, params, request|
+          nil
+        end
+      end
+    end
 
     after_init do
       Core.user_class = '::User'
-
       Face::MyMenu.items_for(:user_submenu) do
         add_item('projects', t('user_submenu.projects'), core.projects_path, 'core/projects')
         notices_count = Core::Notice.get_count_for_user current_user
@@ -42,8 +48,6 @@ module Core
         end
 
       end
-
-
       Face::MyMenu.items_for(:admin_submenu) do
         if can? :manage, :projects
           add_item('projects', t('admin_submenu.projects'),
@@ -99,14 +103,6 @@ module Core
               add_item('notices', t('core.notice.notices_menu'),
                        core.admin_notices_path,'core/admin/notices')
             end
-
-          Core::Notice.register_def_nil_kind_handler
-
-          Core::Notice.register_kind 'jobstat' do |notice, user, params, request|
-            nil
-          end
-
-
 
       end
       set :support do

@@ -10,11 +10,9 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require i18n.js
-//= require i18n/translations
 //= require marked.min
-//= require face/application
-//= require core/application
-//= require sessions/application
-//= require announcements/application
+// = require face/application
+// = require core/application
+// = require sessions/application
+// = require announcements/application
 //= require_tree ./site-wide

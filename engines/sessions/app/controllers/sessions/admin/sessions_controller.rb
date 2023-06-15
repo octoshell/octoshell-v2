@@ -47,18 +47,23 @@ module Sessions
 
     def start
       @session = get_session(params[:session_id])
-      if @session.start
-        @session.save
+      if @session.start!
         redirect_to [:admin, @session]
       else
         redirect_to [:admin, @session], alert: @session.errors.full_messages.to_sentence
       end
     end
 
+    def notify_experts
+      @session = Session.find(params[:session_id])
+      @session.notify_experts
+      redirect_to [:admin, @session]
+    end
+
+
     def stop
       @session = get_session(params[:session_id])
-      if @session.stop
-        @session.save
+      if @session.stop!
         redirect_to [:admin, @session]
       else
         redirect_to [:admin, @session], alert: @session.errors.full_messages.to_sentence

@@ -1,5 +1,5 @@
 require "pack/engine"
-require "pack/settings"
+require "pack/settings" if defined?(Octoface)
 require "pack/pack_search"
 require "decorators"
 require "aasm"

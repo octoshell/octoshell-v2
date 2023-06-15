@@ -7,7 +7,8 @@ class Admin::JournalController < Admin::ApplicationController
     end
 
     def journal
-      @search = PaperTrail::Version.ransack(params[:q])
+      @search = PaperTrail::Version.ransack(params[:q] ||
+        { item_type_in: ['Sessions::Session'] })
       @versions = @search.result(distinct: true).includes(:user).order(id: :desc)
       if params[:chain_id].present?
         chain_id = params[:chain_id].to_i

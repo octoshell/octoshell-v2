@@ -36,7 +36,7 @@ class SessionsPreview
   end
 
   def notify_expert_about_assessing_reports
-    ::Sessions::Mailer.notify_expert_about_assessing_reports(Sessions::Session.first.id)
+    ::Sessions::Mailer.notify_expert_about_assessing_reports(Sessions.user_class.experts.first.id)
   end
 
   def postdated_report_on_project

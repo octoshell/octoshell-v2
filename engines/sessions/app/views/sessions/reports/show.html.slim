@@ -43,17 +43,6 @@ div class="page-header"
           = f.form_group do
             = f.submit t("actions.send")
 
-  legend #{t('.report_evaluation')}
-  table class="table table-striped"
-    tr
-      th class="col-xs-3" = Sessions::Report.human_attribute_name(:illustration_points)
-      td = report_points(@report,:illustration_points)
-    tr
-      th class="col-xs-3" = Sessions::Report.human_attribute_name(:statement_points)
-      td = report_points(@report,:statement_points)
-    tr
-      th class="col-xs-3" = Sessions::Report.human_attribute_name(:summary_points)
-      td = report_points(@report,:summary_points)
 
 
 

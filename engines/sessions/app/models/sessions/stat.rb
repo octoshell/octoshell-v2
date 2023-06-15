@@ -49,7 +49,7 @@ module Sessions
           [type, raw_survey_values.map { |value| value.value? ? value.value[i].to_i : 0}.sum]
         end
       else
-        survey_values.group_by{|v| v.to_s.downcase}.map { |k, v| [k, v.size] }.
+        survey_values.group_by{|v| v.to_s}.map { |k, v| [k, v.size] }.
           sort_by(&:last).reverse
       end
     end
@@ -66,7 +66,8 @@ module Sessions
 
     def raw_survey_values
       @raw_survey_values ||= begin
-                               user_survey_ids = UserSurvey.where(:state=>:submitted).where(session_id: session.id).pluck(:id)
+                               user_survey_ids = UserSurvey.where(state: %i[submitted postdated])
+                                                           .where(session_id: session.id).pluck(:id)
                                SurveyValue.where(user_survey_id: user_survey_ids, survey_field_id: survey_field_id).distinct
                              end
     end

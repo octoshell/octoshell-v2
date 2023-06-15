@@ -33,6 +33,14 @@ module Sessions
       result
     end
 
+    def possible_report_points
+      [
+        ['not_evaluated', t('sessions.evaluate_helper.not_evaluated')],
+        [0, t('sessions.evaluate_helper.without_mark')],
+        *(1..5).map { |n| [n, n.to_s] }
+      ]
+    end
+
     def form_report_points
       [[0, t('sessions.evaluate_helper.without_mark')]] +
         (1..5).map { |n| [n, n.to_s] }
