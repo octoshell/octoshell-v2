@@ -6,6 +6,7 @@ module Core
   # @author [serg@parallel.ru]
   #
   class NoticesController < ApplicationController
+    before_action :require_login
     def index
       respond_to do |format|
         format.html do
@@ -37,7 +38,7 @@ module Core
         user: current_user,
         notice_id: params[:id]
       )
-      option.hidden = !option.hidden
+      option.hidden = true
       option.save!
       redirect_to(params[:retpath] || [:admin, Notice])
     end
