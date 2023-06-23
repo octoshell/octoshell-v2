@@ -47,6 +47,8 @@ class ApplicationController < ActionController::Base
     elsif User.support.include?(current_user) ||
           current_user.available_topics.any?
       support.admin_tickets_path
+    elsif can?(:access, :admin)
+      main_app.admin_users_path
     else
       core.projects_path
     end
@@ -77,7 +79,7 @@ class ApplicationController < ActionController::Base
     return unless current_user
     #return if request[:controller] =~ /\/admin\//
     Core::Notice.show_notices(current_user, params, request).each do |data|
-      flash_now_message(data[0],data[1])
+      flash_now_message(data[0], data[1])
     end
   end
 end

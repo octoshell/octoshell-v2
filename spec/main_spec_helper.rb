@@ -11,7 +11,6 @@ require "database_cleaner"
 require "factory_bot_rails"
 require "capybara/rspec"
 require "sidekiq/testing"
-require "contexts/user_abilities"
 require "common_helper"
 
 Sidekiq::Testing.inline!

@@ -1,7 +1,7 @@
 require "ostruct"
 module Core
   class ProjectsController < Core::ApplicationController
-    before_action :filter_blocked_users, except: :index
+    before_action :filter_blocked_users, except: %i[index show edit update]
     def index
       respond_to do |format|
         format.html do
@@ -20,6 +20,7 @@ module Core
     def show
       @project = current_user.projects.find(params[:id])
       @user_can_manage_project = (@project.owner.id == current_user.id) # TODO: d'uh... workaround maymay...
+      filter_blocked_users if current_user.closed? && !@user_can_manage_project
     end
 
     def new
@@ -88,6 +89,10 @@ module Core
 
     def toggle_member_access_state
       member = Member.find(params[:member_id])
+      unless member.project.member_owner.user_id == current_user.id
+        head :forbidden
+        return
+      end
       member.toggle_project_access_state!
       member.save
 
@@ -147,12 +152,9 @@ module Core
         join_assoc.each do |j|
           j.mark_for_destruction unless ids.delete(j.send(singular_id))
         end
-        # ids.dadwwdaawd
         ids.each do |id|
           join_assoc.build(singular_id => id)
         end
-        # pp @project.send("project_#{type}").to_a
-        # @project.send("project_#{type}").to_a.dwawdawadwda
       end
       prepare_categories
     end
@@ -174,9 +176,6 @@ module Core
                                       :organization_department_id,
                                       :kind_id,
                                       :estimated_finish_date,
-                                      # :research_area_ids,
-                                      # direction_of_science_ids: [],
-                                      # critical_technology_ids: [],
                                       card_attributes: ProjectCard::ALL_FIELDS + [:id])
     end
   end
