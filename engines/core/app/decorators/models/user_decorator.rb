@@ -116,9 +116,9 @@ Core.user_class.class_eval do
   end
 
   def prepared_to_join_projects?
-    b=credentials.where(:state => :active).any?
-    c=employments.any?
-    a=(self.aasm(:access_state).current_state == :active)
+    b = credentials.where(state: :active).any?
+    c = employments.any?
+    a = aasm(:access_state).current_state == :active
     a && b && c
   end
 

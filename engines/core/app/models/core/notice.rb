@@ -75,14 +75,10 @@ module Core
 
     def self.register_def_nil_kind_handler
       Core::Notice.register_kind nil.to_s do |notice, user, _, request|
-        if notice.visible? user
-          [
-            :info,
-            "#{notice.message} #{notice.add_close(request)}".html_safe
-          ]
-        else
-          nil
-        end
+        [
+          :info,
+          "#{notice.message} #{notice.add_close(request)}".html_safe
+        ]
       end
     end
     Core::NoticeHandlers.call

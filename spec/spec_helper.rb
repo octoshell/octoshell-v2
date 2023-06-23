@@ -12,7 +12,6 @@ require "factory_bot_rails"
 require "capybara/rspec"
 require "capybara/poltergeist"
 require "sidekiq/testing"
-require "contexts/user_abilities"
 require "common_helper"
   Sidekiq::Testing.inline!
 # Requires supporting ruby files with custom matchers and macros, etc,
