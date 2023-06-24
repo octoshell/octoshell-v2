@@ -1,6 +1,5 @@
 class Admin::UsersController < Admin::ApplicationController
   before_action :setup_default_filter, only: :index
-  # before_action :check_authorization, except: :show
   before_action :octo_authorize!, except: %i[show index]
 
   def index
@@ -8,9 +7,6 @@ class Admin::UsersController < Admin::ApplicationController
       format.html do
         @search = User.includes({employments:[:organization,:organization_department]}, :profile).ransack(params[:q])
         @users = @search.result(distinct: true).order(id: :desc)
-        # unless display_all_applied?
-        #   @users = @users.page(params[:page])
-        # end
         without_pagination(:users)
       end
       format.json do

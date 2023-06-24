@@ -21,6 +21,9 @@ Core::Engine.routes.draw do
         get :synchronize_with_clusters
         get 'versions', to: 'project_versions#index'
       end
+      collection do
+        get :finder
+      end
 
       resources :requests, only: [:new, :create]
     end

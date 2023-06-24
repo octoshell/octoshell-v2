@@ -8,7 +8,7 @@ div class="page-header"
       - f.object.who.full_name_with_email if f.object.who.is_a? ::User
   br
     =f.radio_button  "who_type", "Core::Project",label: t("project"),class: 'hid-decision'
-    = f.autocomplete_field :who_id, label: t("project"), source:  core.projects_path do
+    = f.autocomplete_field :who_id, label: t("project"), source:  core.finder_admin_projects_path do
       - f.object.who.title if f.object.who.is_a? Core::Project
   br
     =f.radio_button  "who_type", "Group", label: t("group"),class: 'hid-decision'

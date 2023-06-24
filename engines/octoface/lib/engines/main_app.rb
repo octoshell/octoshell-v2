@@ -14,9 +14,9 @@ module FakeMainApp
       end
 
       Face::MyMenu.items_for(:admin_submenu) do
-        add_item_if_may('users', t('admin_submenu.users'),
-                        main_app.admin_users_path,
-                        'admin/users')
+        add_item('users', t('admin_submenu.users'),
+                 main_app.admin_users_path,
+                 'admin/users')
 
         add_item_if_may('groups', t('admin_submenu.groups'),
                         main_app.admin_groups_path,

@@ -7,6 +7,5 @@ private
 
   def authorize_admins!
     authorize! :access, :admin
-    #true
   end
 end

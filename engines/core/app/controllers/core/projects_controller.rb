@@ -10,10 +10,12 @@ module Core
           @projects_with_participation = current_user.projects.where.not(id: (@owned_projects.pluck(:id) |
                                                                               @projects_with_invitation.pluck(:id)))
         end
-        format.json do
-          @projects = Project.finder(params[:q]).order(:title)
-          render json: { records: @projects.page(params[:page]).per(params[:per]), total: @projects.count }
-        end
+        # format.json do
+        #   @projects = Project.finder(params[:q]).order(:title)
+        #   render json: { records: @projects.page(params[:page])
+        #                                    .per(params[:per]),
+        #                  total: @projects.count }
+        # end
       end
     end
 

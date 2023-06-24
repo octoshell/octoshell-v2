@@ -123,7 +123,7 @@ module Core
                      # Запрос для админки(это можно будет убрать, так как есть admin_source)
                      admin_query: proc { Core::Project.all },
                      # Поиск по аяксу в админке
-                     admin_source: proc { core.projects_path })
+                     admin_source: proc { core.finder_admin_projects_path })
 
 
       end
