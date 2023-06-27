@@ -10,8 +10,6 @@ div class="page-header"
       - if Sessions.link?(:project)
         = custom_helper(:core, 'autocomplete_project_id_eq', f, '',
                         label: Sessions::Report.human_attribute_name(:project) )
-        /= f.autocomplete_field :project_id_eq,{ label: Sessions::Report.human_attribute_name(:project), source: core.projects_path} do |val|
-        /  -project_class.find(val).title
         = custom_helper(:core, 'project_group_of_research_areas_id_in', f, '',
                         label: t('.group_of_research_areas_id_in') )
         /= f.collection_select :project_group_of_research_areas_id_in, group_research_area_class.order_by_name, :id, :name,
@@ -21,7 +19,7 @@ div class="page-header"
         /= f.grouped_collection_select :project_research_areas_id_in, group_research_area_class.order_by_name_with_areas,
         /                              :research_areas, :name, :id, :name,
         /                              {label: t('.research_areas_id_in'),  include_blank: true}, multiple: true
-        = f.check_box :five_exists, label: 'Есть пятёрка'  
+        = f.check_box :five_exists, label: 'Есть пятёрка'
 
     div class="col-md-6"
       -if Sessions.link?(:project)
@@ -50,9 +48,9 @@ div class="page-header"
     .left-margin { margin: 20px };
   = f.form_group do
     = display_all_tag
-    = f.primary t("actions.find")
-
-    = f.submit "CSV", name: 'csv', class: "btn btn-success left-margin"
+    = f.primary t("actions.find"), data: { disable_with: false }
+    = f.submit "CSV", name: 'csv', class: "btn btn-success left-margin",
+                      data: { disable_with: false }
 
 = safe_paginate @reports
 = render "table"

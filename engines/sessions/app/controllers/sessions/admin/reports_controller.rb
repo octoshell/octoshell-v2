@@ -29,10 +29,10 @@ module Sessions
 
     def send_csv
       headers = ['project_owner', 'project_id', 'project_title', 'link', '
-        summary_points', 'illustration_points', 'statement_points'  ]
+        summary_points', 'illustration_points', 'statement_points']
       csv_string = CSV.generate do |csv|
         csv << headers
-        @reports.each do |report|
+        @reports.includes(project: {owner: :profile}).each do |report|
           csv << [
             report.project.owner.full_name,
             report.project_id,
@@ -44,7 +44,8 @@ module Sessions
           ]
         end
       end
-      send_data csv_string, filename: "reports-#{Date.today.to_s}.csv", disposition: :attachment
+      send_data csv_string, filename: "reports-#{Date.today}.csv",
+                            disposition: :attachment
     end
 
     def edit
