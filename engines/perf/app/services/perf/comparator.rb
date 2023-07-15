@@ -29,11 +29,10 @@ module Perf
 
     def initialize(session_id)
       @relation = JOBS.where(JOBS[:state].not_in(%w[COMPLETETED RUNNING unknown]))
+                      .where(JOBS[:cluster].eq('lomonosov-2'))
       join_members(@relation)
       join_sessions(@relation)
       finish_date = Sessions::Session.find(session_id).started_at
-      # finish_date = Job.order(id: :desc).first.submit_time
-      # finish_date = DateTime.now
       if finish_date
         start_date = finish_date - 1.year
         @relation.where(JOBS[:submit_time].between(start_date..finish_date))

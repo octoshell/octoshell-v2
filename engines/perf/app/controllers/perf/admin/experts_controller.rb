@@ -24,9 +24,10 @@ module Perf::Admin
     private
 
     def set_brief_table
-      states = Perf::Comparator.new(@session.id).brief_project_stat.id_eq(@project.id)
-                         .execute
-      @brief_table = brief_table(@session.id, states)
+    @brief_table = Rails.cache.read("project_stat_#{@session.id}")
+    return if @brief_table
+
+    Perf::Worker.perform_async(:count_project_stats, @session.id)
     end
 
     def set_place

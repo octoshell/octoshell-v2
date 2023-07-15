@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_14_104504) do
+ActiveRecord::Schema.define(version: 2023_06_23_182842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -519,7 +519,6 @@ ActiveRecord::Schema.define(version: 2023_06_14_104504) do
     t.string "kind"
     t.datetime "show_from"
     t.datetime "show_till"
-    t.integer "active_legacy"
     t.boolean "active", default: false
     t.index ["linkable_type", "linkable_id"], name: "index_core_notices_on_linkable_type_and_linkable_id"
     t.index ["sourceable_type", "sourceable_id"], name: "index_core_notices_on_sourceable_type_and_sourceable_id"
