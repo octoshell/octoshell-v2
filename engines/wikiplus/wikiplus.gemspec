@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   #  s.add_dependency "activerecord-jdbcpostgresql-adapter"
   # s.add_dependency "bootstrap_form"
   # s.add_dependency "maymay"
-  s.add_dependency "sqlite3", "~> 1.3.6"
+  # s.add_dependency "sqlite3", "~> 1.3.6"
   s.add_dependency "carrierwave"
 
   s.add_dependency "nokogiri", ">= 1.10.4"

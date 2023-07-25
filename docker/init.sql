@@ -1,0 +1,2 @@
+CREATE USER octo WITH PASSWORD 'octo_password';
+ALTER USER octo WITH SUPERUSER;

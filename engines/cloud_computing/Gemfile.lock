@@ -190,8 +190,6 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.5.4)
-      mini_portile2 (~> 2.8.0)
     ssrf_filter (1.1.1)
     temple (0.8.2)
     thor (1.2.1)
@@ -213,7 +211,6 @@ DEPENDENCIES
   annotate
   cloud_computing!
   rspec-rails
-  sqlite3
 
 BUNDLED WITH
    2.1.4

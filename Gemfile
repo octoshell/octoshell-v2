@@ -38,8 +38,6 @@ gem "mini_magick", ">= 4.9.4"
 
 group :development do
   gem "annotate"
-  gem "sqlite3"
-  gem "letter_opener"
   gem "pry-rails"
   gem "rails-erd"
   gem 'railroady'
@@ -47,6 +45,7 @@ group :development do
   gem 'rails_db'
   gem 'i18n-tasks', github: 'apaokin/i18n-tasks'
   gem 'minitest-reporters'
+  gem 'letter_opener_web', '~> 2.0'
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil
@@ -90,10 +89,10 @@ gem "whenever"
 
 group :test, :development do
   gem "factory_bot_rails"
+  gem "letter_opener"
 end
 
 group :test do
-  gem "letter_opener"
   gem "rspec-rails"
   gem "activerecord-import", ">= 0.2.0"
   gem 'selenium-webdriver'

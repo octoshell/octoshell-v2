@@ -33,6 +33,11 @@ module FakeMainApp
                               main_app.admin_options_categories_path,
                               %r{admin/options})
         end
+
+        if Rails.env.development?
+          add_item('letter_opener', 'Letter opener',
+                    main_app.admin_letter_opener_web_path)
+        end
       end
     end
   end

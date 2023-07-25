@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - database
+      - redis
+    ports:
+      - "3000:3000"
+    volumes:
+      - ..:/app
+      - gem_cache:/usr/local/bundle/gems
+      - node_modules:/app/node_modules
+    env_file: .env
+    environment:
+      RAILS_ENV: development
+    entrypoint: ./docker/entrypoints/docker-entrypoint.sh
+  database:
+    image: postgres:12.1
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  redis:
+    image: redis:5.0.7
+
+  sidekiq:
+    image: docker_app
+    depends_on:
+        - app
+        - database
+        - redis
+    volumes:
+        - ..:/app
+        - gem_cache:/usr/local/bundle/gems
+        - node_modules:/app/node_modules
+    env_file: .env
+    entrypoint: ./docker/dev-sidekiq.sh
+volumes:
+  gem_cache:
+  db_data:
+  node_modules:

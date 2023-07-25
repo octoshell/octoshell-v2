@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title = yield(:title).present? ? "Octoshell: #{yield(:title)}" : 'Octoshell'
+    title = yield(:title).present? ? yield(:title) : 'Octoshell'
     /title = yield :title
     = favicon_link_tag 'favicon.ico'
     = favicon_link_tag 'apple-touch-icon-precomposed.png', type: 'image/png'
