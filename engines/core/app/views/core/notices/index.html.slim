@@ -17,9 +17,10 @@ div class="page-header"
   = render 'table', notices: @site_wide_notices
 
 script
-  -{yes: t('yes', default: 'yes'), no: t('no', default: 'no'),
+  -{yes: t('yes', default: 'yes'),
+    no: t('no', default: 'no'),
     hide: t('core.notices.hide', default: 'hide'),
-     show:  t('core.notices.show', default: 'show')}.each do |k, v|
+    show:  t('core.notices.show', default: 'show')}.each do |k, v|
     = (k.to_s + '=' + "'" + v + "';").html_safe
 javascript:
   $(document).ready(function() {

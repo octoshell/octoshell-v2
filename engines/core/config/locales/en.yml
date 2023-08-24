@@ -428,7 +428,7 @@ en:
           inactive: inactive
           my_notices: my notices
           new_notice: Create notice
-          'no': false
+          'no': no
           none: None
           site_wide_notices: Site-wide notices
           table:
@@ -1058,6 +1058,6 @@ en:
     template_recreated_from_default: The template has been recreated
     template_saved: The template has been saved
     you_have_to_fill_departments: You have to fill departments for the organization!
-  'no': false
+  'no': 'no'
   none: none
-  'yes': true
+  'yes': 'yes'
