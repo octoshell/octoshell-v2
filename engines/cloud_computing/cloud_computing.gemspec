@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aasm"
   spec.add_dependency "sidekiq"
   # s.add_dependency "maymay"
-  spec.add_dependency "ransack", "2.1.1"
+  spec.add_dependency "ransack"
   spec.add_dependency "kaminari"
   spec.add_dependency "carrierwave"
   spec.add_dependency "mime-types"
