@@ -30,6 +30,7 @@ gem 'therubyracer' # for execjs
 gem 'i18n-js'
 gem 'groupdate'
 gem 'cancancan'
+gem "ransack"
 
 # security reasons
 gem "nokogiri", ">= 1.10.4"
