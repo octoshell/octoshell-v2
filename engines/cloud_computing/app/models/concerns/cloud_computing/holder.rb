@@ -8,17 +8,17 @@ module CloudComputing
       has_many :items, as: :holder, inverse_of: :holder
 
       has_many :new_left_items, -> {
-        left_joins(:to_links).where(item_id: nil,
+        left_outer_joins(:to_links).where(item_id: nil,
                                     cloud_computing_item_links: { id: nil })
       }, as: :holder, class_name: Item.to_s, inverse_of: :holder
 
 
       has_many :old_left_items, -> {
-        left_joins(:to_links).where(cloud_computing_item_links: { id: nil })
+        left_outer_joins(:to_links).where(cloud_computing_item_links: { id: nil })
                              .where.not(item_id: nil)
       }, as: :holder, class_name: Item.to_s, inverse_of: :holder
 
-      has_many :left_items, ->{ left_joins(:to_links).where(cloud_computing_item_links: {id: nil})},
+      has_many :left_items, ->{ left_outer_joins(:to_links).where(cloud_computing_item_links: {id: nil})},
         as: :holder, class_name: Item.to_s, inverse_of: :holder
 
       accepts_nested_attributes_for :new_left_items, :old_left_items, allow_destroy: true

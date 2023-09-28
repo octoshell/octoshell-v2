@@ -1,7 +1,7 @@
 puts 'Rebuilding positions'
 
 ActiveRecord::Base.transaction do
-  Core::EmploymentPosition.left_join(:employment)
+  Core::EmploymentPosition.left_outer_joins(:employment)
                           .where(core_employments: { id: nil }).destroy_all
 
   Core::EmploymentPositionName.all.each do |position_name|
