@@ -51,8 +51,8 @@ We assume, that all below is doing as user `octo` (or root, if it is said 'as ro
 1. install ruby:
 
     ```
-      rbenv install 2.5.1
-      rbenv global 2.5.1
+      rbenv install 2.7.6
+      rbenv global 2.7.6
     ```
 1. execute `gem install bundler --version '< 2.0'`
 1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
