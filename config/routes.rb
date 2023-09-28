@@ -795,6 +795,9 @@ Octoshell::Application.routes.draw do
         post :block_access
         post :unblock_access
       end
+      collection do
+        get :id_finder
+      end
     end
 
     resources :groups do

@@ -1,6 +1,6 @@
 class Admin::UsersController < Admin::ApplicationController
   before_action :setup_default_filter, only: :index
-  before_action :octo_authorize!, except: %i[show index]
+  before_action :octo_authorize!, except: %i[show index id_finder]
 
   def index
     respond_to do |format|
@@ -16,6 +16,18 @@ class Admin::UsersController < Admin::ApplicationController
       end
     end
 
+  def id_finder
+    authorize! :access, :admin
+    respond_to do |format|
+      format.json do
+        @users = User.id_finder(params[:q])
+
+        @user_hash = @users.page(params[:page]).per(params[:per])
+                           .map { |p| { id: p.id, text: "#{p.id}|#{p.full_name}" } }
+        render json: { records: @user_hash, total: @users.count }
+      end
+    end
+  end
 
 
   end

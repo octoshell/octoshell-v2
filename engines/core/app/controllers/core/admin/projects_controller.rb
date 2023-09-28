@@ -37,6 +37,18 @@ module Core
       end
     end
 
+    def id_finder
+      authorize! :access, :admin
+      respond_to do |format|
+        format.json do
+          @projects = Project.id_finder(params[:q]).order(:title)
+          @project_hash = @projects.page(params[:page]).per(params[:per])
+                                   .map { |p| { id: p.id, text: "#{p.id}|#{p.title}" } }
+          render json: { records: @project_hash, total: @projects.count }
+        end
+      end
+    end
+
     def show
       @project = Project.find(params[:id])
       respond_to do |format|
