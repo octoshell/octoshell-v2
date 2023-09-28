@@ -1,6 +1,6 @@
 module Core
   class Admin::ProjectsController < Admin::ApplicationController
-    before_action :octo_authorize!, except: %i[show finder]
+    before_action :octo_authorize!, except: %i[show finder id_finder]
     def index
       respond_to do |format|
         format.html do
