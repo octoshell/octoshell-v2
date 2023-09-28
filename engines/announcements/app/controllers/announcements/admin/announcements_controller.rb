@@ -94,7 +94,7 @@ module Announcements::Admin
       q = params[:q]
       return unless q
 
-      sep = /[\s,;]/
+      sep = /[\s,;]+/
       %w[projects_id_in projects_id_not_in].each do |key|
         next unless key
 

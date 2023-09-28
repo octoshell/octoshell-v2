@@ -20,7 +20,6 @@ gem "uglifier", ">= 1.3.0"
 gem "sassc-rails"
 gem "bootstrap_form"
 gem 'rails_email_preview', '~> 2.0.6'
-gem 'left_join'
 gem 'traco'
 gem 'lmtp', github: 'apaokin/ruby-lmtp', require: false
 gem 'rubyzip', '>= 1.0.0', require: false

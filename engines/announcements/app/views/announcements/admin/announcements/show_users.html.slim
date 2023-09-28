@@ -25,8 +25,8 @@ div class="page-header"
   = custom_helper(:sessions, 'surveys_state_in', f, '',
                   { label: t('.has_survey_statuses') })
 
-  = f.text_field :projects_id_in,label: t('.projects_id_in'), include_blank: true
-  = f.text_field :projects_id_not_in,label: t('.projects_id_not_in'), include_blank: true
+  = f.text_field :projects_id_in,label: t('.projects_id_in'), placeholder: t('.id_placeholder')
+  = f.text_field :projects_id_not_in,label: t('.projects_id_not_in'), placeholder: t('.id_placeholder')
 
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
