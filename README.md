@@ -186,7 +186,7 @@ Types:
 
 Scope: one of engines or 'base' for main app or other files (README, deployment, etc).
 
-# README
+# README(Русская версия устарела, смотрите документацию на английском)
 
 Базовое приложение для модульной версии octoshell.
 
