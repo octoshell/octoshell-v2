@@ -30,7 +30,7 @@ gem 'i18n-js'
 gem 'groupdate'
 gem 'cancancan'
 gem "ransack"
-
+gem 'mail', '2.7.1' # smtp localhost does not work in 2.8.1
 # security reasons
 gem "nokogiri", ">= 1.10.4"
 gem "mini_magick", ">= 4.9.4"
