@@ -1,6 +1,6 @@
 class ProjectSynchronizer
   include Sidekiq::Worker
-  sidekiq_options queue: :synchronizer
+  sidekiq_options queue: :default
 
   def perform(project_id)
     project = Core::Project.find(project_id)
