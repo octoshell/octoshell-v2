@@ -11,9 +11,9 @@ Requires: Docker and Docker Composer
 
 1. copy repo `git clone https://github.com/octoshell/octoshell-v2.git`
 1. execute `cd docker`
-1. build and run containers `docker-compose up`. Add `-d` flag for detached mode: run containers in background.
+1. build and run containers `docker-compose up`. Add `-d` flag for detached mode: run containers in background. Now your containers are launched, you can press  ctrl + c to turn them off.
 1. check status of containers `docker-compose ps`
-1. install database and run seeds rb: `docker-compose exec app bundle exec rake db:setup`
+1. install database and run seeds.rb while your containers are running: `docker-compose exec app bundle exec rake db:setup`
 1. visit `http://localhost:3000/` (login: `admin@octoshell.ru`, password: `123456`)
 ### Usage
 

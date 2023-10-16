@@ -1,7 +1,7 @@
 module Perf
   class Worker
     include Sidekiq::Worker
-    sidekiq_options retry: 2, queue: :perf_queue
+    sidekiq_options retry: 2, queue: :low
 
     def perform(method, args)
       return unless method.to_s == 'count_project_stats'
