@@ -1,5 +1,5 @@
 ---
-:concurrency: 10
+:concurrency: 30
 :queues:
-  - default,3
-  - low,1
+  - [default,3]
+  - [low,1]
