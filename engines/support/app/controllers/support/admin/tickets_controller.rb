@@ -140,8 +140,8 @@ module Support
     end
 
     def setup_default_filter
-      params[:q] ||= { state_in: ["pending", "answered_by_reporter"],
-                      s: 'updated_at desc' }
+      params[:q] ||= { state_in: ["pending", "answered_by_reporter"]}
+      params[:q][:s] ||= 'updated_at desc'
     end
 
     def init_field_values_form

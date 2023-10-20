@@ -1,6 +1,6 @@
 class ProjectStatsCollectorWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :stats_collector
+  sidekiq_options queue: :low
 
   def perform
     Statistics::ProjectStat.calculate_stats

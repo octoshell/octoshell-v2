@@ -1,7 +1,7 @@
 module Sessions
   class StarterWorker
     include Sidekiq::Worker
-    sidekiq_options queue: :sessions_starter
+    sidekiq_options queue: :low
 
     def perform(session_id)
       session = Sessions::Session.find(session_id)
