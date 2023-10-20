@@ -55,9 +55,19 @@ module Core
         user_info["email"] = user.email
         users << user_info
       end
+      announcement = recipients.first.announcement
+      attributes = announcement.attributes
+
+      announcement.class.translatable_attributes.each do |a|
+        announcement.class.locale_columns(a).each do |col|
+          next if attributes[col.to_s].present?
+
+          attributes[col.to_s] = announcement.send(a)
+        end
+      end
       notify("/announcement", {
         "users" => users,
-        "announcement" => recipients.first.announcement.attributes
+        "announcement" => attributes
       })
     end
 
