@@ -43,6 +43,18 @@ module Jobstat
     belongs_to :initiator, class_name: "Job"
 
     belongs_to :member, class_name: "Core::Member", primary_key: :login
+    NOTIFY_FINAL_STATES = %w[COMPLETED FAILED
+                             NODE_FAIL TIMEOUT].freeze
+    NOTIFY_PREVIOUS_STATES = (%w[CONFIGURING RESIZING RUNNING] + [nil]).freeze
+
+    def notify_when_finished
+      return unless state_previously_changed? &&
+                    NOTIFY_PREVIOUS_STATES.include?(state_previous_change[0]) &&
+                    NOTIFY_FINAL_STATES.include?(state_previous_change[1])
+
+      Jobstat::Worker.perform_async(id)
+
+    end
 
     def get_duration_hours
       (end_time - start_time) / 3600

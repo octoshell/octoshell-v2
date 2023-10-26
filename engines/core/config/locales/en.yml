@@ -685,9 +685,9 @@ en:
         confirm: If you generate a new tokel old bots should be updated. Are you sure?
         generate_token: Generate token
         msg_help_token: >-
-          Tokens are used to connect Octoshell profile with bots. You'll need to enter
-          token in the bot interface to be able to interact woth your profile in Octoshell
-          via bot.
+          Tokens are used to connect Octoshell profile with bots. You'll need to fill
+          token in the bot interface ( https://t.me/OctoshellBot) to be able to
+          interact woth your profile in Octoshell via bot.
         no_bot_links_found: Create new token to interact with Octoshell via bot.
     credentials:
       list:

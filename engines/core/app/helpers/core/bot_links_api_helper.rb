@@ -71,6 +71,20 @@ module Core
       })
     end
 
+    def self.job_finished(job_id)
+      job = Jobstat::Job.find(job_id)
+      member = Core::Member.find_by_login(job.login)
+      return unless member&.user&.profile&.notify_about_jobs
+
+      link = member.user.bot_links.find_by_active true
+      return unless link
+
+      notify('/job_finished', job.attributes.merge(token: link.token,
+                                                   email: member.user.email))
+    end
+
+
+
     def self.auth(params)
       email = params[:email]
       token = params[:token]

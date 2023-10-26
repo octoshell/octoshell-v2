@@ -11,8 +11,8 @@ module Jobstat
       drms_task_id = @json.fetch('task_id', 0)
 
       Job.where(cluster: @json['cluster'], drms_job_id: drms_job_id, drms_task_id: drms_task_id)
-        .first_or_create
-        .update({login: @json['account'],
+         .first_or_create
+         .update(login: @json['account'],
                  partition: @json['partition'],
                  submit_time: Time.at(@json['t_submit']).utc.to_datetime,
                  start_time: Time.at(@json['t_start']).utc.to_datetime,
@@ -22,8 +22,8 @@ module Jobstat
                  command: @json['command'],
                  state: @json['state'],
                  num_cores: @json['num_cores'],
-                 num_nodes: @json['num_nodes'],
-                })
+                 num_nodes: @json['num_nodes'])
+         .notify_when_finished()
     end
 
     def fetch_job_or_404(params)
@@ -123,7 +123,7 @@ module Jobstat
 
       head 200
     end
-    
+
     def post_digest
       return unless params.key?('data')
       return if params['data'].nil?
