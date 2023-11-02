@@ -15,10 +15,12 @@ module ReceiveEmails
 
     def call
       @imap.select('INBOX')
-      ids = @imap.uid_search(['UNSEEN'])
-      ids.each do |uid|
+      @imap.uid_search(['UNFLAGGED']).each do |uid|
         raw_message = @imap.uid_fetch(uid, 'RFC822').first.attr['RFC822']
-        EmailProccessor.new(raw_message).process
+        ActiveRecord::Base.transaction do
+          EmailProccessor.new(raw_message).process
+          @imap.uid_store(uid, '+FLAGS', [:Flagged])
+        end
       end
     end
   end

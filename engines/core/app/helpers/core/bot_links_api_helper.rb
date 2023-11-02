@@ -48,7 +48,7 @@ module Core
       users = []
       recipients.each do |recipient|
         user = recipient.user
-        bot_link = user.bot_links.first
+        bot_link = user.bot_links.find_by_active true
 
         user_info = {}
         user_info["token"] = bot_link.token unless bot_link.nil?
