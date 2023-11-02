@@ -43,8 +43,8 @@ module Jobstat
     belongs_to :initiator, class_name: "Job"
 
     belongs_to :member, class_name: "Core::Member", primary_key: :login
-    NOTIFY_FINAL_STATES = %w[COMPLETED FAILED
-                             NODE_FAIL TIMEOUT].freeze
+    NOTIFY_FINAL_STATES = %w[COMPLETED CANCELLED FAILED
+                             NODE_FAIL TIMEOUT unknown].freeze
     NOTIFY_PREVIOUS_STATES = (%w[CONFIGURING RESIZING RUNNING] + [nil]).freeze
 
     def notify_when_finished
