@@ -53,7 +53,26 @@ module Jobstat
                     NOTIFY_FINAL_STATES.include?(state_previous_change[1])
 
       Jobstat::Worker.perform_async(id)
+    end
 
+    def self.update_job(attributes)
+      _update_job(attributes)
+    rescue ActiveRecord::RecordNotUnique
+      retry
+    end
+
+    def self._update_job(attributes)
+      find_or_create_by(
+        drms_job_id: attributes['job_id'],
+        cluster: attributes['cluster'],
+        drms_task_id: attributes.fetch('task_id', 0)
+      ).update!({ login: attributes['account'],
+                  submit_time: Time.at(attributes['t_submit']).utc.to_datetime,
+                  start_time: Time.at(attributes['t_start']).utc.to_datetime,
+                  end_time: Time.at(attributes['t_end']).utc.to_datetime }
+                  .merge(attributes.slice(*%w[partition timelimit nodelist
+                                              command state num_cores
+                                              num_nodes])))
     end
 
     def get_duration_hours
