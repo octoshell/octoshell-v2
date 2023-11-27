@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_26_074732) do
+ActiveRecord::Schema.define(version: 2023_11_14_163724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -857,6 +857,7 @@ ActiveRecord::Schema.define(version: 2023_10_26_074732) do
     t.datetime "updated_at", null: false
     t.text "nodelist"
     t.integer "initiator_id"
+    t.index ["cluster", "drms_task_id", "drms_job_id"], name: "uniq_jobs", unique: true
     t.index ["end_time"], name: "index_jobstat_jobs_on_end_time"
     t.index ["login"], name: "index_jobstat_jobs_on_login"
     t.index ["partition"], name: "index_jobstat_jobs_on_partition"
