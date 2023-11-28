@@ -31,6 +31,7 @@ module Jobstat
           2.times.map do |i|
             Thread.new do
               Job._update_job({ 'cluster' => 'cluster',
+                                'state' => 'RUNNING',
                                 'job_id' => 1,
                                 'task_id' => 1,
                                 'account' => "account_#{i}",
@@ -43,7 +44,75 @@ module Jobstat
       end
     end
 
-    describe "update_job" do
+    describe "::update_job" do
+
+      it "does not overwrite final state with initial state" do
+        Job.update_job({ 'cluster' => 'cluster',
+                          'state' => 'COMPLETED',
+                         'job_id' => 1,
+                         'task_id' => 1,
+                         'account' => "account",
+                         'partition' => 'compute' }
+                         .merge(%w[t_submit t_end t_start]
+                              .map { |a| [a, Time.now] }.to_h))
+
+        Job.update_job({ 'cluster' => 'cluster',
+                         'state' => 'RUNNING',
+                         'job_id' => 1,
+                         'task_id' => 1,
+                         'account' => "account",
+                         'partition' => 'compute' }
+                         .merge(%w[t_submit t_end t_start]
+                              .map { |a| [a, Time.now] }.to_h))
+
+        expect(Job.find_by(drms_job_id: 1, drms_task_id: 1).state).to eq 'COMPLETED'
+      end
+
+      it "overwrites final state with final state" do
+        Job.update_job({ 'cluster' => 'cluster',
+                         'state' => 'COMPLETED',
+                         'job_id' => 1,
+                         'task_id' => 1,
+                         'account' => "account",
+                         'partition' => 'compute' }
+                         .merge(%w[t_submit t_end t_start]
+                              .map { |a| [a, Time.now] }.to_h))
+
+        Job.update_job({ 'cluster' => 'cluster',
+                         'state' => 'NODE_FAIL',
+                         'job_id' => 1,
+                         'task_id' => 1,
+                         'account' => "account",
+                         'partition' => 'compute' }
+                         .merge(%w[t_submit t_end t_start]
+                              .map { |a| [a, Time.now] }.to_h))
+
+        expect(Job.find_by(drms_job_id: 1, drms_task_id: 1).state).to eq 'NODE_FAIL'
+      end
+
+      it "overwrites initial state with initial state" do
+        Job.update_job({ 'cluster' => 'cluster',
+                         'state' => 'RESIZING',
+                         'job_id' => 1,
+                         'task_id' => 1,
+                         'account' => "account",
+                         'partition' => 'compute' }
+                         .merge(%w[t_submit t_end t_start]
+                              .map { |a| [a, Time.now] }.to_h))
+
+        Job.update_job({ 'cluster' => 'cluster',
+                         'state' => 'RUNNING',
+                         'job_id' => 1,
+                         'task_id' => 1,
+                         'account' => "account",
+                         'partition' => 'compute' }
+                         .merge(%w[t_submit t_end t_start]
+                              .map { |a| [a, Time.now] }.to_h))
+
+        expect(Job.find_by(drms_job_id: 1, drms_task_id: 1).state).to eq 'RUNNING'
+      end
+
+
       it "works with 2 threads" do
         2.times.map do |i|
           Thread.new do
