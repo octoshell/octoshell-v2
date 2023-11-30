@@ -128,7 +128,7 @@ ru:
         middle_name: Отчество
         receive_info_mails: Использовать мой email для информационных рассылок
         receive_special_mails: Использовать мой email для служебных рассылок
-        notify_about_jobs: Оповещать о завершении задач через Telegram
+        notify_about_jobs: "[Скоро будет внедрено] Оповещать о завершении задач через Telegram"
       user:
         full_name: ФИО
         group_ids: Группы

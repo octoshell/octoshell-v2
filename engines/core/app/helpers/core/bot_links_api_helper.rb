@@ -4,12 +4,9 @@ module Core
       BotLink.all
     end
 
-    def self.notify(subpath, params)
+    def self.notify(subpath, params, host = 'octobot.parallel.ru', port = '443')
       require 'net/http'
       require 'json'
-      host = 'octobot.parallel.ru' # HOST OF OCTOSHELL BOT APP
-      port = '443' # PORT OF OCTOSHELL BOT APP
-
       path = "/notify" + subpath
       body = params.to_json
 
@@ -80,7 +77,8 @@ module Core
       return unless link
 
       notify('/job_finished', job.attributes.merge(token: link.token,
-                                                   email: member.user.email))
+                                                   email: member.user.email),
+             'teaching-kitten-on.ngrok-free.app')
     end
 
 
