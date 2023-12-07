@@ -1,12 +1,22 @@
+require 'net/http'
+require 'json'
 module Core
   module BotLinksApiHelper
     def self.load_bot_links
       BotLink.all
     end
 
-    def self.notify(subpath, params, host = 'octobot.parallel.ru', port = '443')
-      require 'net/http'
-      require 'json'
+    def self.notify(subpath, params)
+      %w[octobot.parallel.ru teaching-kitten-on.ngrok-free.app].each do |host|
+        _notify(subpath, params, host)
+      end
+    end
+
+    def self.notify_test_bot(subpath, params)
+      _notify(subpath, params, 'teaching-kitten-on.ngrok-free.app')
+    end
+
+    def self._notify(subpath, params, host = 'octobot.parallel.ru', port = '443')
       path = "/notify" + subpath
       body = params.to_json
 
@@ -76,9 +86,8 @@ module Core
       link = member.user.bot_links.find_by_active true
       return unless link
 
-      notify('/job_finished', job.attributes.merge(token: link.token,
-                                                   email: member.user.email),
-             'teaching-kitten-on.ngrok-free.app')
+      notify_test_bot('/job_finished', job.attributes.merge(token: link.token,
+                                                            email: member.user.email))
     end
 
 
