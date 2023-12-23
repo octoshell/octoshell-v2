@@ -3,7 +3,16 @@ module Jobstat
     include AbnormalJobChecker
 
     before_action :parse_request
-    #before_action :parse_request, :authenticate_from_token!, only: [:push]
+    before_action do
+      unless authenticate_with_http_basic do |user, password|
+               secret_user = Rails.application.secrets.jobstat[:user]
+               secret_password = Rails.application.secrets.jobstat[:password]
+               secret_user && secret_password && user == secret_user &&
+               password == secret_password
+             end
+        raise 'jobstat: invalid authenticate'
+      end
+    end
 
     def post_info
       Job.update_job(@json).notify_when_finished
