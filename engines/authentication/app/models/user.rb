@@ -35,6 +35,7 @@
 
 class User < ApplicationRecord
   authenticates_with_sorcery!
+  has_one :profile, class_name: Profile.to_s
   validates :password, confirmation: true, length: { minimum: 6 }, on: :create
   validates :password, confirmation: true, length: { minimum: 6 }, on: :update, if: :password?
   validates :email, presence: true, uniqueness: true

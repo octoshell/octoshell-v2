@@ -5,6 +5,9 @@ div class="page-header"
 
 div class="well btn-toolbar"
   = link_to t("actions.edit"), [:edit, :admin, @request], class: "btn btn-default" unless @request.closed?
+  = link_to t("Проекты от этой организации"), [:find_similar, :admin, @request], class: "btn btn-default"
+  = link_to t("Проекты от тех же пользователей"), [:find_similar_by_members, :admin, @request], class: "btn btn-default"
+
   /- if @request.may_approve?
   /  = link_to Core::Request.human_state_event_name(:approve), approve_admin_request_path(@request), class: "btn btn-success"
   /- if @request.may_reject?

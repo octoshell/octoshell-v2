@@ -1,0 +1,80 @@
+style
+  | ul.no-bullet {
+      list-style-type: none;
+      padding-left: 0;
+    }
+  | ul.my-list {
+      list-style-type: disc;
+      padding-left: 1;
+    }
+  
+table class="table table-bordered"
+  thead
+    tr
+      th = t("Название проекта")
+      th = t("Статус")
+      th = t("Организация")
+      th = t("Участники")
+      th = t("Запрошенные ресурсы")
+      th = t("Оценки за отчёты")
+      th = t("Критические технологии")
+      th = t("Направления исследований")
+      th = t("Область науки")
+  tbody
+    - @project_wth_members.each do |title, project|
+      tr
+        td = link_to project.title, core.admin_project_path(project.project_id)
+
+
+        td = mark_project_state(project)
+        td = link_to project.organization, core.admin_project_path(project.organization_id)
+  
+        td 
+          ul.no-bullet 
+            - project.logins.each do |login|
+              li = login
+        td 
+          ul.no-bullet
+            - Time.now.year.downto(2000) do |year|
+              - has_requests_this_year = false
+              - project.resources.each do |resource|
+                - if resource.time.year == year
+                  - unless has_requests_this_year
+                    - has_requests_this_year = true
+                    li = "Запросы за #{year.to_s} год:"
+                    ul.no-bullet
+                      
+  
+                  - if has_requests_this_year
+                      li = resource.name + " " + resource.value.to_s + " " + resource.measurement
+        td
+          ul.no-bullet
+            - Time.now.year.downto(2000) do |year|
+                - has_requests_this_year = false
+                - project.report_marks.each do |resource|
+                  - if resource.time.year == year && resource.summary_points
+                    - unless has_requests_this_year
+                      - has_requests_this_year = true
+                      li = "Отчёты за #{year.to_s} год:"
+                    - if has_requests_this_year 
+                      ul.my-list
+                        li
+                          a href=sessions.admin_report_path(resource.report_id) Отчёт 
+                          | Иллюстрации: #{resource.illustration_points} Изложение: #{resource.statement_points} Общая оценка: #{resource.summary_points}
+                
+        td
+          ul.no-bullet 
+            - project.critical_technologies.each do |resource|
+              li = resource
+        td
+          ul.no-bullet 
+            - project.direction_of_sciences.each do |resource|
+              li = resource
+        td
+          ul.no-bullet 
+            - project.research_areas.each do |resource|
+              li = resource
+          
+        
+
+

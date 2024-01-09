@@ -14,6 +14,8 @@ Sessions::Engine.routes.draw do
 
   namespace :admin do
     resources :reports, only: [:show, :index] do
+      get :find_similar, on: :member
+      get :find_similar_by_members, on: :member
       patch :pick
       patch :assess
       patch :reject
