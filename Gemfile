@@ -2,9 +2,8 @@ source "https://rubygems.org"
 gem "rake"
 gem "rails", "~> 5.0"
 #-----------------------------------------
-if ENV['HONEYBADGER'].to_s != ''
-  gem "honeybadger", "~> 4.8"
-end
+gem "honeybadger", "~> 4.8"
+
 if ENV['AIRBRAKE'].to_s != ''
   gem "airbrake"
 end
@@ -21,7 +20,6 @@ gem "uglifier", ">= 1.3.0"
 gem "sassc-rails"
 gem "bootstrap_form"
 gem 'rails_email_preview', '~> 2.0.6'
-gem 'left_join'
 gem 'traco'
 gem 'lmtp', github: 'apaokin/ruby-lmtp', require: false
 gem 'rubyzip', '>= 1.0.0', require: false
@@ -31,7 +29,8 @@ gem 'therubyracer' # for execjs
 gem 'i18n-js'
 gem 'groupdate'
 gem 'cancancan'
-
+gem "ransack"
+gem 'mail', '2.7.1' # smtp localhost does not work in 2.8.1
 # security reasons
 gem "nokogiri", ">= 1.10.4"
 gem "mini_magick", ">= 4.9.4"
@@ -39,8 +38,6 @@ gem "mini_magick", ">= 4.9.4"
 
 group :development do
   gem "annotate"
-  gem "sqlite3"
-  gem "letter_opener"
   gem "pry-rails"
   gem "rails-erd"
   gem 'railroady'
@@ -48,6 +45,7 @@ group :development do
   gem 'rails_db'
   gem 'i18n-tasks', github: 'apaokin/i18n-tasks'
   gem 'minitest-reporters'
+  gem 'letter_opener_web', '~> 2.0'
 end
 
 gem "sinatra", ">= 1.3.0", :require => nil
@@ -91,10 +89,10 @@ gem "whenever"
 
 group :test, :development do
   gem "factory_bot_rails"
+  gem "letter_opener"
 end
 
 group :test do
-  gem "letter_opener"
   gem "rspec-rails"
   gem "activerecord-import", ">= 0.2.0"
   gem 'selenium-webdriver'

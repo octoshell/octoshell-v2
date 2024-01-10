@@ -8,6 +8,22 @@ RSpec.describe User, type: :model do
 
     describe "validations" do
       it { should validate_presence_of(:email) }
+      it 'does not create users with invalid email' do
+        invalid_emails = ['s.s', '', 'A@b@c@example.com', 'just"not"right@example.com']
+        invalid_emails.each do |email|
+          expect(User.new(email: email, password: "123456").save).to eq false
+        end
+      end
+
+      it 'creates users with valid email' do
+        emails = ['simple@example.com', 'admin@mailserver1']
+        emails.each do |email|
+          expect(User.new(email: email, password: "123456").save).to eq true
+        end
+      end
+
+
+
       # it { should validate_uniqueness_of(:email) }
 
       # it { should ensure_length_of(:password).is_at_least(6) }

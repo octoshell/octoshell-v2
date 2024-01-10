@@ -24,7 +24,8 @@ module Core
   class NoticeShowOption < ApplicationRecord
     belongs_to :user
     belongs_to :notice
-
+    validates_uniqueness_of :user_id, scope: :notice_id
+    validates :user, :notice, presence: true
     # hidden:   boolean = is hidden by user
     # resolved: boolean = optional (mark as resolved)
     # answer:   string  = optional (user answer)

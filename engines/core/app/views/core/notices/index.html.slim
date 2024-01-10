@@ -1,0 +1,49 @@
+div class="page-header"
+  h1 = t(".title", default: "Notices")
+
+- any_my = @my_notices.any?
+- any_site = @site_wide_notices.any?
+
+- if ! (any_my || any_site)
+  div.text-center.text-success
+    b = t('.no_notices')
+
+- if any_my
+  h3 = t('.my_notices')
+  = render 'table', notices: @my_notices
+
+- if any_site
+  h3 = t('.site_wide_notices')
+  = render 'table', notices: @site_wide_notices
+
+script
+  -{yes: t('yes', default: 'yes'),
+    no: t('no', default: 'no'),
+    hide: t('core.notices.hide', default: 'hide'),
+    show:  t('core.notices.show', default: 'show')}.each do |k, v|
+    = (k.to_s + '=' + "'" + v + "';").html_safe
+javascript:
+  $(document).ready(function() {
+    $(".hide-notice").click(function(event) {
+      event.preventDefault();
+      var cur = $(this);
+      var hidden = cur.is("[data-hidden]");
+      var id = cur.attr('data-id');
+      var url = '#{change_visibility_notice_path(':id')}'.replace(':id', id);
+      $.post(url).done(function(){
+        if(hidden){
+          cur.removeAttr('data-hidden');
+          cur.parents('tr').find('.visible').html(no);
+          cur.html(hide);
+        }
+        else{
+          cur.attr('data-hidden', '1');
+          cur.parents('tr').find('.visible').html(yes);
+          cur.html(show);
+        }
+      }).fail(function(){
+        alert('ERROR, contact administrators');
+      });
+    });
+
+  });

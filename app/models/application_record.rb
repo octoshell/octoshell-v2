@@ -54,4 +54,9 @@ class ApplicationRecord < ActiveRecord::Base
     record
   end
 
+  scope :id_finder, (lambda do |id|
+    where('CAST(id AS varchar) LIKE ?', "%#{id}%")
+  end)
+
+
 end

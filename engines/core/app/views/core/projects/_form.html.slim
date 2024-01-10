@@ -22,12 +22,10 @@ div class="row"
       /= f.collection_select :organization_department_id,[],:id,:name
       = f.form_group :organization_department,label:{text: Core::OrganizationDepartment.model_name.human} do
         select#project_2organization_department_id.form-control name="project[organization_department_id]"
-
-      /= autocomplete f, name: :organization_department_id, label: Core::Project.human_attribute_name("organization_department"), layout: :regular, source: organization_organization_departments_path(primary_organization)
-
       = f.text_field :estimated_finish_date, 'data-date-start-date': '0d', class: "datepicker"
 
       = f.fields_for :card do |card_form|
+        = card_form.hidden_field :id
         legend = t(".card")
         h5 = t(".card_help.html")
         table class="vtop"
@@ -49,10 +47,22 @@ div class="row"
           tr
             td class="col-xs-6" = card_form.text_area :usage,        rows: 3, help: t(".card_usage_help")
             td class="col-xs-6" = card_form.text_area :en_usage,     rows: 3
+      = f.collection_check_boxes :meta_direction_of_science_ids,
+                                 Core::DirectionOfScience.all, :id, :name,
+                                 label: Core::Project.human_attribute_name(:direction_of_science_ids)
+      = f.collection_check_boxes :meta_critical_technology_ids, Core::CriticalTechnology.all, :id, :name,
+                                 label: Core::Project.human_attribute_name(:critical_technology_ids)
 
-      = f.collection_check_boxes :direction_of_science_ids, Core::DirectionOfScience.all, :id, :name
-      = f.collection_check_boxes :critical_technology_ids, Core::CriticalTechnology.all, :id, :name
-      = f.grouped_collection_select :research_area_ids, Core::ResearchArea.all.group_by(&:group), :last, :first, :id, :name
+      = f.grouped_collection_select :meta_research_area_ids,
+                                    Core::ResearchArea.all.group_by(&:group),
+                                    :last, :first, :id, :name,
+                                    label: Core::Project.human_attribute_name(:research_area_ids)
+
+
+
+      /= f.collection_check_boxes :direction_of_science_ids, Core::DirectionOfScience.all, :id, :name
+      /= f.collection_check_boxes :critical_technology_ids, Core::CriticalTechnology.all, :id, :name
+      /= f.grouped_collection_select :research_area_ids, Core::ResearchArea.all.group_by(&:group), :last, :first, :id, :name
 
       = f.form_group do
         = f.submit t("buttons.save")

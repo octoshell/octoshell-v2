@@ -3,7 +3,9 @@ div class="page-header"
 
 = bootstrap_form_for @search, url: admin_cluster_logs_path, method: :get, layout: :horizontal do |f|
   = f.collection_select :cluster_id_eq, Core::Cluster.all, :id, :name,  label: Core::ClusterLog.human_attribute_name(:cluster)
-  = autocomplete f, name: :project_id_eq, label: Core::ClusterLog.human_attribute_name(:project), source: core.projects_path
+  = f.autocomplete_field :project_id_eq,{ label: Core::ClusterLog.human_attribute_name(:project),
+                                          source: core.finder_admin_projects_path} do |val|
+    -Core::Project.find(val).title
   - options = common_datepicker_options
   div class="col-md-6"
     = f.text_field :created_at_gt, options.merge(label: t('.created_after'))

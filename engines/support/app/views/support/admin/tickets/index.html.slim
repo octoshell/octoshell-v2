@@ -18,7 +18,11 @@ div class="page-header"
                             :id, :name_with_parents,
                             label: Support::Ticket.human_attribute_name(:topic),
                             include_blank: true
-      = f.collection_select :responsible_id_eq, (Support.user_class.support | Support.user_class.superadmins), :id, :full_name, label: Support::Ticket.human_attribute_name(:responsible), include_blank: true
+      = f.collection_select :responsible_id_eq,
+                             Support.user_class.inside_groups('support', 'superadmins'),
+                            :id, :full_name,
+                            label: Support::Ticket.human_attribute_name(:responsible),
+                            include_blank: true
     div class="col-md-3"
       = f.text_field :find_by_content, label: t('.find_by_content')
       = f.text_field :created_at_gt, options.merge(label: t('.created_after'))

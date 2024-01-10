@@ -1,3 +1,5 @@
+require 'net/http'
+require 'json'
 module Core
   module BotLinksApiHelper
     def self.load_bot_links
@@ -5,11 +7,16 @@ module Core
     end
 
     def self.notify(subpath, params)
-      require 'net/http'
-      require 'json'
-      host = 'octobot.parallel.ru' # HOST OF OCTOSHELL BOT APP
-      port = '443' # PORT OF OCTOSHELL BOT APP
+      %w[octobot.parallel.ru teaching-kitten-on.ngrok-free.app].each do |host|
+        _notify(subpath, params, host)
+      end
+    end
 
+    def self.notify_test_bot(subpath, params)
+      _notify(subpath, params, 'teaching-kitten-on.ngrok-free.app')
+    end
+
+    def self._notify(subpath, params, host = 'octobot.parallel.ru', port = '443')
       path = "/notify" + subpath
       body = params.to_json
 
@@ -48,18 +55,42 @@ module Core
       users = []
       recipients.each do |recipient|
         user = recipient.user
-        bot_link = user.bot_links.first
+        bot_link = user.bot_links.find_by_active true
 
         user_info = {}
         user_info["token"] = bot_link.token unless bot_link.nil?
         user_info["email"] = user.email
         users << user_info
       end
+      announcement = recipients.first.announcement
+      attributes = announcement.attributes
+
+      announcement.class.translatable_attributes.each do |a|
+        announcement.class.locale_columns(a).each do |col|
+          next if attributes[col.to_s].present?
+
+          attributes[col.to_s] = announcement.send(a)
+        end
+      end
       notify("/announcement", {
         "users" => users,
-        "announcement" => recipients.first.announcement.attributes
+        "announcement" => attributes
       })
     end
+
+    def self.job_finished(job_id)
+      job = Jobstat::Job.find(job_id)
+      member = Core::Member.find_by_login(job.login)
+      return unless member&.user&.profile&.notify_about_jobs
+
+      link = member.user.bot_links.find_by_active true
+      return unless link
+
+      notify_test_bot('/job_finished', job.attributes.merge(token: link.token,
+                                                            email: member.user.email))
+    end
+
+
 
     def self.auth(params)
       email = params[:email]

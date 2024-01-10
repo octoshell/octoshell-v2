@@ -22,6 +22,7 @@ class ProfilesController < ApplicationController
 
   def profile_params
     params.require(:profile).permit(:first_name, :middle_name, :last_name, :about,
-                                   :receive_info_mails, :receive_special_mails)
+                                    :receive_info_mails, :receive_special_mails,
+                                    :notify_about_jobs)
   end
 end

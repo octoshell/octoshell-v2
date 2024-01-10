@@ -27,10 +27,10 @@ h1  = t('.header', project_title: @project.title, session_title: @session.descri
           td = project[order.include?('jobs') ? 's_jobs' : 's_node_hours']
           td = project[order.include?('jobs') ? 's_share_jobs' : 's_share_node_hours']
   .col-md-6
-    - if @brief_table
+    - if @brief_table && @brief_table.any?
       div class="alert alert-info" role="alert"
-        = t('.brief_info', count: @brief_table['ALL']['count']).html_safe
-      = render partial: 'perf/admin/experts/project_stat_table', locals: { hash: @brief_table }
+        = t('.brief_info', count: @brief_table.count).html_safe
+      = render partial: 'perf/admin/experts/project_stat_table', locals: { hash: @brief_table[@project.id] }
 
 h3 Распределение количества задач по дням
 div class="alert alert-info" role="alert"

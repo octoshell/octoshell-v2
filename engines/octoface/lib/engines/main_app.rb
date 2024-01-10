@@ -14,9 +14,9 @@ module FakeMainApp
       end
 
       Face::MyMenu.items_for(:admin_submenu) do
-        add_item_if_may('users', t('admin_submenu.users'),
-                        main_app.admin_users_path,
-                        'admin/users')
+        add_item('users', t('admin_submenu.users'),
+                 main_app.admin_users_path,
+                 'admin/users')
 
         add_item_if_may('groups', t('admin_submenu.groups'),
                         main_app.admin_groups_path,
@@ -32,6 +32,11 @@ module FakeMainApp
           add_item('options', t("admin_submenu.options"),
                               main_app.admin_options_categories_path,
                               %r{admin/options})
+        end
+
+        if Rails.env.development?
+          add_item('letter_opener', 'Letter opener',
+                    main_app.admin_letter_opener_web_path)
         end
       end
     end

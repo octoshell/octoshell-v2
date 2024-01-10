@@ -33,10 +33,10 @@ div.row
           td class='col-xs-6'
             h4 = @notice.count
       tr
-          td class='col-xs-6' 
+          td class='col-xs-6'
             h4 = Core::Notice.human_attribute_name :category
           td class='col-xs-6'
-            h4 
+            h4
               = @notice.category > 0 ? t('.personal') : @notice.category == 0 ? t('.site-wide') : t('.other')
               | (
               = @notice.category
@@ -62,10 +62,3 @@ div.row
               | (
               = @notice.active
               |)
-      tr
-          td class='col-xs-6'
-            h4
-              = t('hidden')
-              |?
-          td class='col-xs-6'
-            h4 = @notice.visible? ? t('visible') : t('hidden')

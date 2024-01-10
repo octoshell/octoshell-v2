@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency "mime-types"
 
   # s.add_dependency "maymay"
-  s.add_dependency "ransack", "2.1.1"
+  s.add_dependency "ransack"
   s.add_dependency "kaminari"
   s.add_dependency "mini_magick", ">= 4.9.4"
   s.add_dependency "carrierwave"
@@ -39,5 +39,4 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "annotate"
-  s.add_development_dependency "sqlite3"
 end

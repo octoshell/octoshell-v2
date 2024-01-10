@@ -6,7 +6,7 @@ class Authentication::SessionsController < Authentication::ApplicationController
   end
 
   def create
-    email, password, remember = fetch_user(params[:user])
+    email, password, remember = fetch_user(params[:user] || {})
     if @user = login(email, password, remember)
       redirect_back_or_to(root_url)
     else

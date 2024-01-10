@@ -30,7 +30,7 @@ Sessions::Engine.routes.draw do
       put :start
       put :stop
       put :download
-
+      put :notify_experts
       # get :show_projects
       # post :select_projects
       get :show_projects, to: 'projects#show_projects'

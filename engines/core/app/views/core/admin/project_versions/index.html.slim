@@ -1,0 +1,18 @@
+div class="page-header"
+  -link = link_to @project.title, admin_project_path(@project)
+  h1 = t(".title", title: link).html_safe
+= t('.info', date: Core::PROJECT_VERSION_START_DATE).html_safe
+br
+br
+= bootstrap_form_for @search, url: versions_admin_project_path(@project), method: :get, layout: :vertical do |f|
+  -options = common_datepicker_options
+  .row
+    .col-md-3
+      = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
+    .col-md-3
+      = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
+  = f.form_group do
+    = f.submit t("actions.find"), class: "btn btn-primary"
+= safe_paginate @versions
+= render "table", versions: @versions
+= safe_paginate @versions

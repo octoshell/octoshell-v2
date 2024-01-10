@@ -17,10 +17,16 @@ div class="well"
       class: "btn btn-large btn-danger",
       method: :put, data: { confirm: t("actions.confirm") },
       disabled: !@session.may_stop?
+    = link_to t('.notify_experts'), [:admin, @session, :notify_experts],
+      class: "btn btn-large btn-info",
+      method: :put,
+      disabled: !@session.reports.where(state: %w[assessing submitted]).any?
 
 blockquote class="lead"
   h4 = t(".started_at", date: @session.started_at || "--")
   h4 = t(".ended_at", date: @session.ended_at || "--")
+  h4  #{t(".assessing_reports")} #{@session.reports.submitted.count }
+  h4  #{t(".submitted_reports")} #{@session.reports.assessing.count }
 
 /* h3 #{t('.session_archive')} */
 

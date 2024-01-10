@@ -10,7 +10,7 @@ module Core
 
     def project_id_eq
       autocomplete f, name: prefix + 'id_eq', label: Core::Project.human_attribute_name(:title),
-                      source: core.projects_path
+                      source: core.finder_admin_projects_path
     end
 
     def organization_kind_id_eq
@@ -44,7 +44,7 @@ module Core
     end
 
     def autocomplete_project_id_eq
-      options[:source] ||= core.projects_path
+      options[:source] ||= core.finder_admin_projects_path
       f.autocomplete_field prefix + 'project_id_eq', options do |val|
         Core::Project.find(val).title
       end

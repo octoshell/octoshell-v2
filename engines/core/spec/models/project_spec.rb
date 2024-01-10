@@ -24,5 +24,18 @@ module Core
       # @project.save!
       # puts @project.inspect
     end
+
+    it 'saves project' do
+      project = create_project
+      new_tech = create(:critical_technology)
+      expect { project.update!(title: 'new_title') }.to change{ PaperTrail::Version.count }.by(1)
+
+      expect {
+        project.critical_technology_ids = [new_tech.id]
+        project.save!
+      }.to change { PaperTrail::Version.count }.by(1)
+
+    end
+
   end
 end

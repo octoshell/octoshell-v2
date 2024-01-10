@@ -19,6 +19,11 @@ Core::Engine.routes.draw do
         get :finish
         get :resurrect
         get :synchronize_with_clusters
+        get 'versions', to: 'project_versions#index'
+      end
+      collection do
+        get :finder
+        get :id_finder
       end
 
       resources :requests, only: [:new, :create]
@@ -96,8 +101,10 @@ Core::Engine.routes.draw do
   end
 
   resources :notices do
-    post :visible
-    get :hide
+    member do
+      post :change_visibility
+      post :hide
+    end
   end
 
   resources :credentials, only: [:new, :create] do
@@ -120,6 +127,7 @@ Core::Engine.routes.draw do
       post :resend_invitations
       put :drop_member
     end
+
 
     post :sureties
     put :toggle_member_access_state, on: :collection

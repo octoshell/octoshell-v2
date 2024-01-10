@@ -32,9 +32,13 @@ module Core
     has_one :card, class_name: "Core::ProjectCard", dependent: :destroy,
                    inverse_of: :project, validate: true
 
-    has_and_belongs_to_many :critical_technologies, join_table: "core_critical_technologies_per_projects"
-    has_and_belongs_to_many :direction_of_sciences, join_table: "core_direction_of_sciences_per_projects"
-    has_and_belongs_to_many :research_areas, join_table: "core_research_areas_per_projects"
+    has_many :project_critical_technologies, inverse_of: :project
+    has_many :project_direction_of_sciences, inverse_of: :project
+    has_many :project_research_areas, inverse_of: :project
+
+    has_many :critical_technologies, through: :project_critical_technologies, inverse_of: :projects
+    has_many :direction_of_sciences, through: :project_direction_of_sciences, inverse_of: :projects
+    has_many :research_areas, through: :project_research_areas, inverse_of: :projects
     has_many :group_of_research_areas, through: :research_areas,
                                        class_name: GroupOfResearchArea.to_s,
                                        source: :group
@@ -62,13 +66,17 @@ module Core
     has_many :sureties, inverse_of: :project
 
     has_many :invitations, class_name: "Core::ProjectInvitation"
-
+    has_many :project_versions, inverse_of: :project
 
     accepts_nested_attributes_for :card, :sureties
-
+    accepts_nested_attributes_for :project_critical_technologies,
+                                  :project_direction_of_sciences,
+                                  :project_research_areas,
+                                  allow_destroy: true
     validates :card, :title, :organization, :kind, presence: true, if: :project_is_not_closing?
-    validates :direction_of_science_ids, :critical_technology_ids,
-      :research_area_ids, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }, if: :project_is_not_closing?
+    validates :project_direction_of_sciences, :project_critical_technologies,
+      :project_research_areas, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }, if: :project_is_not_closing?
+
     validate do
       errors.add(:organization_department, :dif) if organization_department && organization_department.organization != organization
     end
@@ -89,6 +97,48 @@ module Core
     # def self.human_state_event_name name
     #   name.to_s
     # end
+
+    scope :choose_to_hide, (lambda do |type, date_after, core_hours_gt, date_before, core_hours_lt|
+      type = type.to_i
+      return self if type != 1 && type != 2
+
+      scope = if type == 2
+        Perf::Job.project_id_in_period
+      else
+        Perf::Job.joins(:member)
+                 .select('DISTINCT core_members.project_id as p_id')
+      end
+      if date_after.present?
+        scope = scope.where("jobstat_jobs.submit_time >= '#{date_after}'")
+      end
+      if date_before.present?
+        scope = scope.where("jobstat_jobs.submit_time <= '#{date_before}'")
+      end
+      if core_hours_gt.present?
+        scope = scope.merge(Perf::Job.having_core_hours('>=', core_hours_gt))
+      end
+      if type == 1
+        scope = scope.group('core_members.project_id')
+      end
+      if type == 2
+        scope = scope.group(Perf::Job.coalesce_project)
+      end
+      if core_hours_lt.present?
+        if !core_hours_gt.present? || core_hours_gt.to_i.zero?
+          scope = scope.merge(Perf::Job.having_core_hours('>', core_hours_lt))
+          scope = joins("LEFT JOIN (#{scope.to_sql})
+                        AS j ON core_projects.id = j.p_id")
+                        .where('j.p_id IS NULL')
+          return scope
+        else
+          scope = scope.merge(Perf::Job.having_core_hours('<=', core_hours_lt))
+        end
+      end
+
+      scope = joins("INNER JOIN (#{scope.to_sql})
+                    AS j ON core_projects.id = j.p_id ")
+      scope
+    end)
 
     def on_deactivate
       #!!! after_transition :active => [:cancelled, :blocked, :finished] do |project, transition|
@@ -120,7 +170,7 @@ module Core
 
     def drop_member(user_id)
       user = ::Core.user_class.find(user_id)
-      users.delete(user)
+      users.destroy(user)
     end
 
     def spare_clusters
@@ -149,6 +199,14 @@ module Core
       member_owner.organization = organization
       member_owner.organization_department = organization_department
       member_owner.accept_invitation!
+    end
+
+    def self.ransackable_scopes_skip_sanitize_args
+      ransackable_scopes
+    end
+
+    def self.ransackable_scopes(_auth_object = nil)
+      [:choose_to_hide, :hide_options_before, :hide_options_after]
     end
 
     def project_is_not_closing?

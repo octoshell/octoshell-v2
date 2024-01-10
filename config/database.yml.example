@@ -1,26 +1,16 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  database: <%= ENV['DATABASE_NAME'] %>
+  username: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  port: <%= ENV['DATABASE_PORT'] || '5432' %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 development:
-  adapter: postgresql
-  encoding: unicode
-  database: new_octoshell
-  user: octo
-  host: localhost
-  password: 'octopass'
-
+  <<: *default
 test:
-  adapter: postgresql
-  encoding: unicode
-  database: new_octoshell_test
-  user: octo
-  host: localhost
-  password: 'octopass'
-
+  <<: *default
 production:
-  adapter: postgresql
-  encoding: unicode
-  database: new_octoshell
-  host: localhost
-  pool: 10
-  min_messages: warning
-  user: octo
-  host: localhost
-  password: 'octopass'
+  <<: *default

@@ -185,11 +185,15 @@ ru:
         organization_department_id: Подразделение организации
         organization_id: Организация
         owner: Руководитель
+        project_critical_technologies: Критические технологии
+        project_direction_of_sciences: Направление исследований
+        project_research_areas: Области науки
         research_area_ids: Область науки
         research_areas: Область науки
         state: Статус
         sureties: Поручительства
         title: Наименование
+        project_versions: Изменения описания проекта
       core/project_card:
         driver: Задача
         en_driver: Driver
@@ -210,6 +214,9 @@ ru:
         user_fio: Инициалы
       core/project_kind:
         name: Наименование
+      core/project_version:
+        created_at: Дата изменения
+        object_changes: Изменения
       core/quota_kind:
         measurement: Единица измерения
         name: Наименование
@@ -247,6 +254,11 @@ ru:
       core/surety_member:
         full_name: ФИО
         organization: Организация
+      core/notice:
+        active: Активно
+        message: Сообщение
+        category: Категория
+        Kind: Тип обработчика
       user:
         access_state: Доступ
         credentials: ssh *.pub ключи для доступа на кластеры
@@ -419,10 +431,13 @@ ru:
           message: Сообщение
           none: Неизвестно
           personal: Персональное
+          other: Другое
           show_from: Показ с
           show_till: Показ до
           sourceable: Пользователь
           type: Тип
+          category_help: Если в следующее поле для категории ввести значение, то именно оно и будет записано.
+          developer_fields: Поля для разработчиков Octoshell
         index:
           active: Активно
           category: Категория
@@ -432,6 +447,12 @@ ru:
           'no': нет
           none: отсутствует
           site_wide_notices: Общие уведомления
+          created_at_lteq: Создан с
+          created_at_gteq: Создан до
+          message_cont: Сообщение содержит
+          show_from_gteq: "\"Показывать с\" с"
+          show_till_lteq: "\"Показывать до\" до"
+
           table:
             action: Действие
             active: Активно?
@@ -599,12 +620,30 @@ ru:
           reactivate: Активировать
           suspend: Приостановить
           synchronize_project: Синхронизовать с кластерами
+          details: "Последнее изменение: %{date}. <a href=\"%{url}\">Посмотреть детали</a>"
+          no_records: нет записей
         sureties:
           title: Поручительства
         table:
           no_organization:
             html: <span class="fa fa-exclamation-triangle text-danger"> не заполнена</span>
           no_projects_found: Нет проектов
+      project_versions:
+          index:
+            created_after: Изменено не ранее
+            created_before: Изменено не позднее
+            info: >-
+              Ниже Вы можете посмотреть некоторые изменения описания проекта пользователем.
+              Журналируются изменения, сделанные на странице после нажатия на кнопку "карандаш",
+              явные изменения состояния пользователем (по кнопке на странице проекта), также журналируется создание проекта.
+              Представлены в следующем формате (YAML): <br>
+                Название атрибута: <br>
+                - Значение до <br>
+                - Значение после <br>
+              Журналирование начато <b> %{date} </b>
+            title: Пользовательские изменения проекта %{title}
+
+
       quota_kinds:
         edit:
           title: Редактирование квоты на ресурсы
@@ -692,7 +731,7 @@ ru:
         generate_token: Сгенерировать токен
         msg_help_token: >-
           Токены нужны для связи профиля Octoshell с ботом. Их необходимо ввести в
-          боте, чтобы получить удаленный доступ из бота к функциональности Octoshell.
+          боте ( https://t.me/OctoshellBot ), чтобы получить удаленный доступ из бота к функциональности Octoshell.
         no_bot_links_found: Сгенерируйте токен, если хотите работать в Octoshell из
           бота.
     credentials:
@@ -864,6 +903,8 @@ ru:
       notices_menu_count:
         html: Уведомления <span class="badge info">%{count}</span>
     notices:
+      hide: Скрыть
+      show: Показать
       create:
         notice_failed: Уведомление создано
         notice_succeed: Не удалось создать уведомление
@@ -885,6 +926,7 @@ ru:
         title: Уведомления
         visible: Показывается
       table:
+        hidden_by_user: Скрыто мной
         for_all: Для всех
         personal: Персональное
         show_from: Показ с
@@ -949,7 +991,7 @@ ru:
             является обязательным.<br /> <br />До заполнения этих форм Ваш доступ
             заблокирован. <br /><br />Формы опросов доступны в Вашем личном кабинете
             (http://users.parallel.ru). Вкладка "Перерегистрация", подраздел "Опросы".
-            После заполнения опросов и отчётов свяжитесь с нами через квладку "Поддержка".
+            После заполнения опросов и отчётов свяжитесь с нами через вкладку "Поддержка".
       invited_users:
         invitation_csv_file: Файл формата .csv в кодировке UTF-8.
         invitation_upload: Загрузить

@@ -3,27 +3,19 @@ module Jobstat
     include AbnormalJobChecker
 
     before_action :parse_request
-    #before_action :parse_request, :authenticate_from_token!, only: [:push]
+    before_action do
+      unless authenticate_with_http_basic do |user, password|
+               secret_user = Rails.application.secrets.jobstat[:user]
+               secret_password = Rails.application.secrets.jobstat[:password]
+               secret_user && secret_password && user == secret_user &&
+               password == secret_password
+             end
+        raise 'jobstat: invalid authenticate'
+      end
+    end
 
     def post_info
-      cluster = @json['cluster']
-      drms_job_id = @json['job_id']
-      drms_task_id = @json.fetch('task_id', 0)
-
-      Job.where(cluster: @json['cluster'], drms_job_id: drms_job_id, drms_task_id: drms_task_id)
-        .first_or_create
-        .update({login: @json['account'],
-                 partition: @json['partition'],
-                 submit_time: Time.at(@json['t_submit']).utc.to_datetime,
-                 start_time: Time.at(@json['t_start']).utc.to_datetime,
-                 end_time: Time.at(@json['t_end']).utc.to_datetime,
-                 timelimit: @json['timelimit'],
-                 nodelist: @json['nodelist'],
-                 command: @json['command'],
-                 state: @json['state'],
-                 num_cores: @json['num_cores'],
-                 num_nodes: @json['num_nodes'],
-                })
+      Job.update_job(@json).notify_when_finished
     end
 
     def fetch_job_or_404(params)
@@ -123,7 +115,7 @@ module Jobstat
 
       head 200
     end
-    
+
     def post_digest
       return unless params.key?('data')
       return if params['data'].nil?

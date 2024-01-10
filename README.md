@@ -2,23 +2,38 @@
 For russian version see below.
 
 # README
-Octoshell - access management system for HPC centers. This project is based on Ruby on Rails framework(5.0)
+Octoshell - access management system for HPC centers. This project is based on Ruby on Rails framework(5.2)
 Working production: https://users.parallel.ru/
 
-## Running in docker for quick evaluation (NOT for production)
-
-Important: all data is lost if you delete the container.
+## Install Octoshell inside  docker container (NOT for production)
 Requires: Docker and Docker Composer
+### Installation
 
-1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
-1. execute `docker-compose up -d --build`
-1. visit `127.0.0.1:35000` (login: `admin@octoshell.ru`, password: `123456`)
+1. copy repo `git clone https://github.com/octoshell/octoshell-v2.git`
+1. execute `cd docker`
+1. build and run containers `docker-compose up`. Add `-d` flag for detached mode: run containers in background. Now your containers are launched, you can press  ctrl + c to turn them off.
+1. check status of containers `docker-compose ps`
+1. install database and run seeds.rb while your containers are running: `docker-compose exec app bundle exec rake db:setup`
+1. visit `http://localhost:3000/` (login: `admin@octoshell.ru`, password: `123456`)
+### Usage
+
+Here Octoshell is run inside isolated container. This introduces difficulties, espcially for inexperienced developers, and can overwhelm advantages of fast and easy installation compared to direct installation. When you run rails server in development environment, you expect some code changes to take effect after next request is sent (F5 driven development). It works here too, thanks to bind mounts: octoshell-v2 directory on the host machine is mounted into a container. Postgres database is saved inside volume, so you can stop and start containers as much as you like without data loss.
+
+But still sometimes you have to run commands inside container. These commands have to be started with `docker-compose exec app` or you can run bash
+`docker-compose exec app bash` when the containers are running. But it can not help when you have to bundle and the app container is turned off. Just write `bundle install` in `docker/entrypoints/docker-entrypoint.sh` instead of `rails server` command.
+
+The Letter-opener gem opens for you sent emails via browser. It is not possible for docker, but you can read all sent emails here `http://localhost:3000/admin/letter_opener`  
+
+- Start the containers: `docker-compose up`
+- Stop the containers: `docker-compose down`
+- Read stdout of containers, when in detached mode: `docker-compose logs`
+- Reinstall container: `docker-compose build` (you might need to remove volumes sometimes)
 
 ## Installation and starting
 
 We assume, that all below is doing as user `octo` (or root, if it is said 'as root'). You can use another user. Please, note, that linux account `octo` and database role `octo` are not connected, but we prefer to use the same name for both cases. You can create user by command like `adduser octo`
 
-1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo yarnpkg libsqlite3-dev sqlite3`)
+1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo yarnpkg pg-dev`)
 1. install as root redis (under debian/ubuntu: `sudo apt-get install -y redis-server redis-tools`)
 1. install postgresql (under debian/ubuntu: `sudo apt-get install -y postgresql postgresql-server-dev-all`)
 1. as root add database user octo: `sudo -u postgres bash -c "psql -c \"CREATE USER octo WITH PASSWORD 'HERE_COMES_YOUR_DESIRED_PASSWORD';\""`
@@ -36,8 +51,8 @@ We assume, that all below is doing as user `octo` (or root, if it is said 'as ro
 1. install ruby:
 
     ```
-      rbenv install 2.5.1
-      rbenv global 2.5.1
+      rbenv install 2.7.6
+      rbenv global 2.7.6
     ```
 1. execute `gem install bundler --version '< 2.0'`
 1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
@@ -171,7 +186,7 @@ Types:
 
 Scope: one of engines or 'base' for main app or other files (README, deployment, etc).
 
-# README
+# README(Русская версия устарела, смотрите документацию на английском)
 
 Базовое приложение для модульной версии octoshell.
 

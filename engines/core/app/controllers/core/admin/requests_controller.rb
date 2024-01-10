@@ -46,9 +46,9 @@ module Core
         return
       end
       if params[:commit] == Core::Request.human_state_event_name(:approve)
-        @request.approve
+        @request.approve!
       else
-        @request.reject
+        @request.reject!
       end
       @request.reason = params[:request][:reason]
       @request.changed_by = current_user

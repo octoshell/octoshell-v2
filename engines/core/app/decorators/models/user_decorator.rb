@@ -105,8 +105,9 @@ Core.user_class.class_eval do
   end
 
   def suspend_all_accounts
-    accounts.where(:project_access_state=>:allowed).map(&:suspend!)
-    available_projects.each(&:synchronize!)
+    accounts = active_accounts
+    accounts.each(&:suspend!)
+    accounts.map(&:project).each(&:synchronize!)
   end
 
   def activate_suspended_accounts
@@ -115,9 +116,9 @@ Core.user_class.class_eval do
   end
 
   def prepared_to_join_projects?
-    b=credentials.where(:state => :active).any?
-    c=employments.any?
-    a=(self.aasm(:access_state).current_state == :active)
+    b = credentials.where(state: :active).any?
+    c = employments.any?
+    a = aasm(:access_state).current_state == :active
     a && b && c
   end
 

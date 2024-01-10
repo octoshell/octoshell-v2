@@ -38,11 +38,15 @@ class User < ApplicationRecord
   has_one :profile, class_name: Profile.to_s
   validates :password, confirmation: true, length: { minimum: 6 }, on: :create
   validates :password, confirmation: true, length: { minimum: 6 }, on: :update, if: :password?
-  validates :email, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true,
+                    format: { with: URI::MailTo::EMAIL_REGEXP }
+
   validate do
     errors.add(:email, :postmaster) if email && email[/postmaster/]
   end
-  before_validation :downcase_email
+  before_validation do
+    self.email = email.downcase if email.present?
+  end
 
   def activated?
     activation_state == "active"
@@ -72,22 +76,6 @@ class User < ApplicationRecord
 
   def last_login_from_ip_address=(arg)
     # stub
-  end
-
-  def downcase_email
-    unless self.email.nil?
-      email.downcase!
-      #email.gsub!(/\(.*\)/){|comment| ''}
-      #email.tr! "a-zA-Z0-9!\#$%&*+-\/=?^_\`\{\}~.@|\'", ''
-      (mail, domain) = email.split('@')
-      mail.tr! "!\#$%&*\/=?^\`\{\}~|+", ''
-      if domain
-        email = "#{mail}@#{domain.tr("!\#$%&*\/=?^_\`\{\}~|\'+", '')}"
-      else
-        email = mail
-      end
-      email
-    end
   end
 
   def self.delete_pending_users

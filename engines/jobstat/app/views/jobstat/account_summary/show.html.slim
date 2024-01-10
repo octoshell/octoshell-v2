@@ -1,5 +1,5 @@
 link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/css/theme.blue.min.css"
-script type="text/javascript" src="https://d3js.org/d3.v5.min.js"
+/script type="text/javascript" src="https://d3js.org/d3.v5.min.js"
 
 div
   h1 = "Statistics on all submitted jobs"
@@ -418,7 +418,7 @@ div
     width = 1150;
     radius = width / 16;
     format = d3.format(",d");
-    arc = d3.arc()
+    arc = d3.svg.arc()
             .startAngle(d => d.x0)
             .endAngle(d => d.x1)
             .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.02))
@@ -442,10 +442,10 @@ div
 
     // functions
     function partition(data, labels) {
-        const root = d3.hierarchy(data)
-                      .sum(d => d.size)
+        const root = d3.layout.hierarchy(data)
+                      //.sum(d => d.size)
                       .sort((a, b) => b.value - a.value);
-        return d3.partition().size([2 * Math.PI, root.height + 1])(root);
+        return d3.layoutpartition().size([2 * Math.PI, root.height + 1])(root);
     }
 
     function arcVisible(d) {
@@ -511,10 +511,10 @@ div
               return COLORS[d.data.name];
             }
             if (d.depth >= bord) {
-              while (d.depth > bord) d = d.parent; 
+              while (d.depth > bord) d = d.parent;
               return external_color(d.data.name);
             }
-            while (d.depth > 1) d = d.parent; 
+            while (d.depth > 1) d = d.parent;
             return color(d.data.name);
           })
           .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
@@ -610,12 +610,13 @@ div
     }
 
     window.onload = function() {
+        return; //TEMP SOLUTION
         buttons = d3.selectAll("div")
                 .filter(function() {
                   return d3.select(this).attr("id") == "svg";
                 })
                 .append("g");
-        
+
         buttons.append("div")
               .text("Internal labels")
               .attr("label", "label1")
@@ -662,7 +663,7 @@ div
         // data3
         draw(svg, data3, ["core hours", "by status"], 3 * width / 4, 3 * width / 4);
 
-        
+
 
         return svg.node();
     };

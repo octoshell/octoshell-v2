@@ -35,6 +35,11 @@ User.class_eval do
     Core::Member.where("login ILIKE ?","%#{q}%").map{|a| {id: a.user_id, login: a.login}}
   end)
 
+  scope :inside_groups, (lambda do |*groups|
+    User.joins(:groups).where('groups.name IN (?)', groups).distinct
+        .includes(:profile).order('profiles.last_name')
+  end)
+
   def as_json(_options)
     { id: id, text: full_name_with_email }
   end

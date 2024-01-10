@@ -1,6 +1,7 @@
+require "ostruct"
 module Core
   class ProjectsController < Core::ApplicationController
-    before_action :filter_blocked_users, except: :index
+    before_action :filter_blocked_users, except: %i[index show edit update]
     def index
       respond_to do |format|
         format.html do
@@ -9,26 +10,31 @@ module Core
           @projects_with_participation = current_user.projects.where.not(id: (@owned_projects.pluck(:id) |
                                                                               @projects_with_invitation.pluck(:id)))
         end
-        format.json do
-          @projects = Project.finder(params[:q]).order(:title)
-          render json: { records: @projects.page(params[:page]).per(params[:per]), total: @projects.count }
-        end
+        # format.json do
+        #   @projects = Project.finder(params[:q]).order(:title)
+        #   render json: { records: @projects.page(params[:page])
+        #                                    .per(params[:per]),
+        #                  total: @projects.count }
+        # end
       end
     end
 
     def show
       @project = current_user.projects.find(params[:id])
       @user_can_manage_project = (@project.owner.id == current_user.id) # TODO: d'uh... workaround maymay...
+      filter_blocked_users if current_user.closed? && !@user_can_manage_project
     end
 
     def new
       @project = current_user.owned_projects.build
       @project.build_card
+      prepare_categories
     end
 
     def create
       @project = current_user.owned_projects.build(project_params)
-      if @project.save
+      assign_categories
+      if ProjectVersion.user_update(@project)
         redirect_to @project, notice: t("flash.project_created")
       else
         render :new
@@ -37,50 +43,26 @@ module Core
 
     def edit
       @project = current_user.owned_projects.find(params[:id])
+      prepare_categories
     end
 
     def update
       @project = current_user.owned_projects.find(params[:id])
-      if @project.update(project_params)
-        @project.save
+      @project.assign_attributes(project_params)
+      assign_categories
+      if ProjectVersion.user_update(@project)
         redirect_to @project, notice: t("flash.project_updated")
       else
         render :edit
       end
     end
 
-    def suspend
-      @project = current_user.owned_projects.find(params[:id])
-      @project.suspend!
-      @project.save
-      redirect_to @project
-    end
-
-    def reactivate
-      @project = current_user.owned_projects.find(params[:id])
-      @project.reactivate!
-      @project.save
-      redirect_to @project
-    end
-
-    def cancel
-      @project = current_user.owned_projects.find(params[:id])
-      @project.cancel!
-      redirect_to @project
-    end
-
-    def resurrect
-      @project = current_user.owned_projects.find(params[:id])
-      @project.resurrect!
-      @project.save
-      redirect_to @project
-    end
-
-    def finish
-      @project = current_user.owned_projects.find(params[:id])
-      @project.finish!
-      @project.save
-      redirect_to @project
+    %i[suspend reactivate cancel resurrect finish].each do |name|
+      define_method(name) do
+        @project = current_user.owned_projects.find(params[:id])
+        ProjectVersion.trigger_event(@project, name)
+        redirect_to @project
+      end
     end
 
     def invite_member
@@ -109,6 +91,10 @@ module Core
 
     def toggle_member_access_state
       member = Member.find(params[:member_id])
+      unless member.project.member_owner.user_id == current_user.id
+        head :forbidden
+        return
+      end
       member.toggle_project_access_state!
       member.save
 
@@ -158,15 +144,41 @@ module Core
 
     private
 
+    def assign_categories
+      %i[direction_of_sciences critical_technologies research_areas].each do |type|
+        join_assoc = @project.send("project_#{type}")
+        singular_id = "#{type.to_s.singularize}_id"
+        ids = Array(params[:project]["meta_#{type.to_s.singularize}_ids"])
+
+        ids = ids.select(&:present?).map(&:to_i).uniq
+        join_assoc.each do |j|
+          j.mark_for_destruction unless ids.delete(j.send(singular_id))
+        end
+        ids.each do |id|
+          join_assoc.build(singular_id => id)
+        end
+      end
+      prepare_categories
+    end
+
+    def prepare_categories
+      %i[direction_of_sciences critical_technologies research_areas].each do |type|
+        @project.define_singleton_method("meta_#{type.to_s.singularize}_ids") do
+          join_assoc = send("project_#{type}")
+          join_assoc.reject(&:marked_for_destruction?).map do |j|
+            j.send("#{type.to_s.singularize}_id")
+          end
+        end
+      end
+    end
+
+
     def project_params
       params.require(:project).permit(:title, :organization_id,
                                       :organization_department_id,
                                       :kind_id,
                                       :estimated_finish_date,
-                                      :research_area_ids,
-                                      direction_of_science_ids: [],
-                                      critical_technology_ids: [],
-                                      card_attributes: ProjectCard::ALL_FIELDS)
+                                      card_attributes: ProjectCard::ALL_FIELDS + [:id])
     end
   end
 end

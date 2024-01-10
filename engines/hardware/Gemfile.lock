@@ -10,7 +10,7 @@ PATH
       mini_magick (>= 4.9.4)
       nokogiri (>= 1.10.4)
       rails (~> 5.0)
-      ransack (= 2.1.1)
+      ransack
       slim
 
 GEM

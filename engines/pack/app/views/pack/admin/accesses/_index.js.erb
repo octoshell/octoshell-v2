@@ -9,7 +9,7 @@ function renderWhoId(){
    }
    if(temp.val()=='Core::Project')
    {
-     $('#who_type_aim').html("<%=j f.autocomplete_field :who_id_eq,label: t('project'), source:  core.projects_path %>");
+     $('#who_type_aim').html("<%=j f.autocomplete_field :who_id_eq,label: t('project'), source:  core.finder_admin_projects_path %>");
    }
    if(temp.val()=='Group')
    {

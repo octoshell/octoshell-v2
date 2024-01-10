@@ -67,19 +67,7 @@ module Announcements::Admin
     end
 
     def show_users
-      @announcement = Announcement.find(params[:announcement_id])
-      @search = Announcements.user_class.search(params[:q])
-      #@users = @search.result(distinct: true).where(:access_state=>:active).includes(:profile).order(:id)
-      @users = @search.result(distinct: true).includes(:profile).order(:id)
-      @users = if @announcement.is_special?
-                 @users.where(profiles: {receive_special_mails: true})
-               else
-                 @users.where(profiles: {receive_info_mails: true})
-               end
-      @recipient_ids = @announcement.recipient_ids
-    end
-
-    def show_recipients
+      process_ransack_params
       @announcement = Announcement.find(params[:announcement_id])
       @search = Announcements.user_class.search(params[:q])
       @users = @search.result(distinct: true).includes(:profile).order(:id)
@@ -89,7 +77,6 @@ module Announcements::Admin
                  @users.where(profiles: {receive_info_mails: true})
                end
       @recipient_ids = @announcement.recipient_ids
-      render 'show_users'
     end
 
     def select_recipients
@@ -102,6 +89,24 @@ module Announcements::Admin
     end
 
     private
+
+    def process_ransack_params
+      q = params[:q]
+      return unless q
+
+      sep = /[\s,;]+/
+      %w[projects_id_in projects_id_not_in].each do |key|
+        next unless key
+
+        value = q[key]
+        if value =~ /^(\d+#{sep})*\d*$/
+          q[key] = value.split(sep)
+        else
+          flash_message('error', t(".#{key}_error"))
+        end
+      end
+    end
+
 
     def announcement_params
       params.require(:announcement).permit!

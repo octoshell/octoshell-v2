@@ -13,8 +13,7 @@
       th = t('.action')
     - notices.each do |c|
       tr
-        //td = link_to no_name_c(c), [:admin, c]
-        td = c.message
+        td = link_to c.message, [:admin, c]
         td = "#{c.category} (#{c.category_str})"
         td = c.kind
         td = c.sourceable.class

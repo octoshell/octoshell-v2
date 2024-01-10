@@ -25,7 +25,7 @@ div class="row" id="sureties"
             - else
               i class="fa fa-times"
           td = l surety.created_at.to_date
-      - if @user_can_manage_project
+      - if @user_can_manage_project && current_user.active?
         - if @project.sureties.where.not(state: :closed).empty?
           tr class="warning"
             td colspan="5" = t(".no_active_sureties_found")
@@ -40,4 +40,3 @@ div class="row" id="sureties"
             td colspan="5"
               strong
                 small = link_to t(".add_surety"), new_surety_path(project_id: @project.id)
-

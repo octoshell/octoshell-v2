@@ -145,7 +145,7 @@ module Reports
 
     def base_relation
       rel = @activerecord_class.order(@order).group(@group)
-                               .joins(inner_join).left_join(left_join)
+                               .joins(inner_join).left_outer_joins(left_join)
                                .having(@having).where(@where).select(@select)
       custom_join_strings.each do |s|
         rel = rel.joins(s)

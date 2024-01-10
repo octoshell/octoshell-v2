@@ -22,7 +22,6 @@ module Support
                         .preload({ reporter: :profile}, { responsible: :profile },
                                   { field_values: {topics_field: {field: :field_options } }},
                                  :topic)
-                        .order("support_tickets.id DESC, support_tickets.updated_at DESC")
                         .where(topic: [Topic.accessible_by(current_ability, :access)])
       without_pagination(:tickets)
       # записываем отрисованные тикеты в куки, для перехода к следующему тикету после ответа
@@ -142,6 +141,7 @@ module Support
 
     def setup_default_filter
       params[:q] ||= { state_in: ["pending", "answered_by_reporter"]}
+      params[:q][:s] ||= 'updated_at desc'
     end
 
     def init_field_values_form

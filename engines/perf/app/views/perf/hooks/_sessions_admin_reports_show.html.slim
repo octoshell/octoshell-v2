@@ -2,16 +2,18 @@ css:
   div.action-holder > a{
     margin: 20px;
   }
--if report.session_id ==  Sessions::Session.order(id: :desc).first&.id
-  .panel
-    h3 #{t('.header')}
-    /- self.extend Perf::ApplicationHelper
-    - if hash = expert_project_brief_stat(report)
-        - count = hash['ALL']['count']
-        div class="alert alert-info" role="alert"
-          = t('.info', count: count).html_safe
-        .action-holder
-          = link_to t('.details'), perf.admin_expert_path(@report.project)
-        = render partial: 'perf/admin/experts/project_stat_table', locals: { hash: hash }
-    - else
-      h4 = t('.no_jobs')
+.panel
+  h3 #{t('.header')}
+  - hash =  Rails.cache.read("project_stat_#{@report.session_id}")
+  - if hash
+      div class="alert alert-info" role="alert"
+        = t('.info', count: hash.count).html_safe
+      .action-holder
+        = link_to t('.details'), perf.admin_expert_path(@report.project)
+      - if project_hash = hash[@report.project_id]
+        = render partial: 'perf/admin/experts/project_stat_table', locals: { hash: project_hash }
+      - else
+        h4 = t('.no_jobs')
+  - else
+    - Perf::Worker.perform_async(:count_project_stats, @report.session_id)
+    h4 = t('.wait')

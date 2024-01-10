@@ -149,9 +149,33 @@ ru:
         show_projects:
           activated_after: Активирован после
           activated_before: Активирован до
+          consider_deleted_members: Спрятать проекты без запущенных задач, учитывая
+            удалённых участников
+          consumed_max_resources: Потребили ядрочасов не более, чем
+          consumed_min_resources: Потребили ядрочасов не менее, чем
           created_after: Создан после
           created_before: Создан до
+          filter_by_resource: Условие использования ресурсов
+          filter_by_resource_after: Учитывать только задачи, поставленные в очередь
+            не ранее
+          filter_by_resource_before: Учитывать только задачи, поставленные в очередь
+            не позднее
+          hide_hint: >-
+            Фильтрация "Включая исключённых участников проекта" может выполняться
+            долго. Если указать в поле ниже интервал размером в один год, то такой
+            запрос может выполняться около 15 секунд, а за всё время может выполняться
+            около 4 минут, поэтому лучше всегда указывайте даты. Если в полях ядрочасов
+            ничего не указывать, то будут найдены проекты, которые запустились хотя
+            бы один раз. Имейте в виду, что некоторые задачи могли выполняться меньше
+            секунды, и проекты в принципе могут иметь 0 ядрочасов, при этом запустившись
+            хотя бы раз.
+          launched: Не включая исключённых участников
+          launched_including_deleted: Включая исключённых участников проекта
           no_projects_found: Не найдено проектов
+          sum_core_hours: Запускались и потребили столько-то ядрочасов
+          sum_core_hours_including_deleted: >-
+            Запускались и потребили столько-то ядрочасов, включая исключённых участников
+            проекта
           title: Выбор проектов-участников перерегистрации
       report_submit_denial_reasons:
         edit:
@@ -168,10 +192,13 @@ ru:
           expert: Эксперт
           figures: Иллюстрации
           group_of_research_areas_id_in: Проект в одной из групп областей науки
+          illustration_points_in: Оценка за иллюстрации
           overall_assessment: Общая оценка
           presentation: Изложение
           research_areas_id_in: Проект в одной из областей науки
           session: Перерегистрация
+          statement_points_in: Оценка за изложение
+          summary_points_in: Общая оценка
           title: Список отчетов по проектам
         show:
           are_you_sure: Вы уверены?
@@ -221,6 +248,7 @@ ru:
         new:
           title: Создание перерегистрации
         show:
+          assessing_reports: отчёты на оценке
           edit_projects: Отобрать проекты-участники
           end_session: Закончить
           ended_at: Закончилась %{date}
@@ -230,21 +258,22 @@ ru:
               время. Ваш браузер может выдать сообщение о слишком долгой работе скрипта.
               Пожалуйста, не прерывайте работу скрипта. Иначе, графики не будут отображены.</p>
           new_survey: Добавить опросник
+          notify_experts: Напомнить экспертам об отчётах
           session_archive_create: Создать архив
           session_archive_link_msg: Ссылка на загрузку придет по email.
           session_arcvhive: Архив данных перерегистрации
           show_graphs: Показать статистику
           start_session: Начать
           started_at: Началась %{date}
+          submitted_reports: отчёты, не взятые на оценку
           title: Перерегистрация «%{name}»
-      projects:
         show_projects:
-          activated_after: Активирован после
-          activated_before: Активирован до
-          created_after: Создан после
-          created_before: Создан до
-          no_projects_found: Не найдено проектов
-          title: Выбор проектов-участников перерегистрации
+          activated_after: 'TRME '
+          activated_before: 'TRME '
+          created_after: 'TRME '
+          created_before: 'TRME '
+          no_projects_found: 'TRME '
+          title: 'TRME '
       stats:
         index:
           add_graph: Добавить график
@@ -349,8 +378,8 @@ ru:
         subject: У вас %{count} неоцененных отчетов
       notify_experts_about_submitted_reports:
         msg_num_reports: >-
-          Перерегистрация «%{session}» близится к завершению, но %{reports} отчетов
-          еще не взяты на оценку и ожидают рассмотрения.
+          Перерегистрация «%{session}» близится к завершению, но %{untaken_reports}
+          отчетов еще не взяты на оценку и ожидают рассмотрения.
         msg_speedup_assessment: Пожалуйста, оцените их как можно быстрее.
         subject: В рамках перерегистрации %{count} отчетов ожидают оценки
       postdated_report_on_project:
@@ -441,9 +470,9 @@ ru:
       edit:
         title: Редактировать отчет
       index:
+        nothing_found: Ничего не найдено
         session: Перерегистрация
         title: Список отчетов по проектам
-        nothing_found: Ничего не найдено
       list:
         complete_by: Сдать до
         no_reports: Нет отчетов

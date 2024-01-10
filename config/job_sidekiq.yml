@@ -1,0 +1,6 @@
+---
+:concurrency: 30
+:queues:
+  - [job,10]
+  - [default,3]
+  - [low,1]

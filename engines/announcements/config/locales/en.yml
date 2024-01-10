@@ -53,6 +53,15 @@ en:
           title: Choose announcement recipients
           user: User
           users_found: Users have been found
+          projects_id_in: Participating in projects with ID
+          projects_id_not_in: Not participating in projects with ID
+          projects_id_in_error: >-
+            The "Project ID in" field can only include numbers seperated by
+            colon, semicolon and spaces
+          projects_id_not_in_error: >-
+            The "Project ID  not in" field can only include numbers seperated by
+            colons, semicolons and spaces
+          id_placeholder: IDs delimited by colon(,), semicolon(;) or space 
     mailer:
       announcement:
         hello_known_name: Good afternoon, %{name}!

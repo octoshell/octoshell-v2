@@ -1,6 +1,6 @@
 class SessionStatsCollectorWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :stats_collector
+  sidekiq_options queue: :low
 
   def perform
     Statistics::SessionStat.calculate_stats

@@ -1,16 +1,12 @@
 class Admin::UsersController < Admin::ApplicationController
   before_action :setup_default_filter, only: :index
-  # before_action :check_authorization, except: :show
-  before_action :octo_authorize!, except: %i[show index]
+  before_action :octo_authorize!, except: %i[show index id_finder]
 
   def index
     respond_to do |format|
       format.html do
         @search = User.includes({employments:[:organization,:organization_department]}, :profile).ransack(params[:q])
         @users = @search.result(distinct: true).order(id: :desc)
-        # unless display_all_applied?
-        #   @users = @users.page(params[:page])
-        # end
         without_pagination(:users)
       end
       format.json do
@@ -20,6 +16,18 @@ class Admin::UsersController < Admin::ApplicationController
       end
     end
 
+  def id_finder
+    authorize! :access, :admin
+    respond_to do |format|
+      format.json do
+        @users = User.id_finder(params[:q])
+
+        @user_hash = @users.page(params[:page]).per(params[:per])
+                           .map { |p| { id: p.id, text: "#{p.id}|#{p.full_name}" } }
+        render json: { records: @user_hash, total: @users.count }
+      end
+    end
+  end
 
 
   end

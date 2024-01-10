@@ -20,12 +20,11 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.0"
 
-  s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
-  s.add_dependency "activerecord-jdbcpostgresql-adapter"
+  # s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "slim"
   s.add_dependency "sidekiq"
   # s.add_dependency "maymay"
-  s.add_dependency "ransack", "2.1.1"
+  s.add_dependency "ransack"
   s.add_dependency "kaminari"
 
   s.add_dependency "nokogiri", ">= 1.10.4"
