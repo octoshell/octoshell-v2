@@ -61,80 +61,93 @@ module Core
       cur_project = request.project
       @project_name = cur_project.title
       @project_org = cur_project.organization
-      similar_projects = Project
-        .where("core_projects.organization_id = ? AND core_projects.id != ?", 
+
+      res = {}
+      similar_projects = Project.where("core_projects.organization_id = ? AND core_projects.id != ?", 
           cur_project.organization_id,
           cur_project.id)
-        .joins(:users)
-        .joins(users: :profile)
-        .joins(:organization)
-        .joins(requests: {fields: :quota_kind})
-        .joins(:critical_technologies)
-        .joins(:direction_of_sciences)
-        .joins(:research_areas)
+      
+      similar_projects.each do |project|
+        new_project = ProjectWithInfo.new()
+        new_project.title = project.title
+        new_project.human_state_name = project.state
+        new_project.state = project.state
+        new_project.organization_id = project.organization_id
+        new_project.logins = Set.new([])
+        new_project.critical_technologies = Set.new([])
+        new_project.direction_of_sciences = Set.new([])
+        new_project.research_areas = Set.new([])
+        new_project.report_marks = Set.new([])
+        new_project.resources = Set.new([])
+        res[project.id] = new_project
+      end
+
+      with_organization = similar_projects.includes(:organization)
+      with_organization.each do |project|
+        res[project.id].organization = project.organization.name
+      end
+
+      with_ct = similar_projects.includes(:critical_technologies)
+      with_ct.each do |project|
+        project.critical_technologies.each do |ct|
+          res[project.id].critical_technologies.add(ct.name_ru)
+        end
+      end
+
+      with_ds = similar_projects.includes(:direction_of_sciences)
+      with_ds.each do |project|
+        project.direction_of_sciences.each do |ct|
+          res[project.id].direction_of_sciences.add(ct.name_ru)
+        end
+      end
+
+      with_ra = similar_projects.includes(:research_areas)
+      with_ra.each do |project|
+        project.research_areas.each do |ct|
+          res[project.id].research_areas.add(ct.name_ru)
+        end
+      end
+
+      with_users = similar_projects.includes(users: :profile)
+      with_users.each do |project|
+        project.users.each do |c|
+          user_info = c.profile.first_name + " " + c.profile.last_name + " " + c.email
+          res[project.id].logins.add(user_info)
+        end
+      end
+  
+      with_requests = similar_projects.includes(requests: {fields: :quota_kind})
+      with_requests.each do |project|
+        project.requests.each do |req|
+          req.fields.each do |field|
+            cur_resources_info = ResourcesInfo.new(
+              field.quota_kind.name_ru, 
+              field.value, 
+              field.quota_kind.measurement_ru, 
+              project.created_at)
+            res[project.id].resources.add(cur_resources_info)
+          end
+        end
+      end
+
+      with_sessions = similar_projects
         .joins('INNER JOIN "sessions_reports" ON "core_projects"."id"="sessions_reports"."project_id"')
-        .select("title, core_projects.state, email, name, value, 
-          core_quota_kinds.name_ru as qname, 
-          measurement_ru,
-          core_critical_technologies.name_ru as ctname,
-          core_direction_of_sciences.name_ru as dsname,
-          core_research_areas.name_ru as raname,
+        .select("
           illustration_points,
           summary_points,
-          core_requests.created_at as request_time,
-          core_projects.id as project_id,
-          core_organizations.id as organization_id,
+          core_projects.id as id,
           sessions_reports.id as report_id,
           sessions_reports.updated_at as report_time,
-          statement_points,
-          first_name,
-          last_name
+          statement_points
         ")
-      res = {}
-
-
-      similar_projects.each do |project|
-        user_info = project.first_name + " " + project.last_name + " " + project.email
-        cur_resources_info = ResourcesInfo.new(project.qname, project.value, project.measurement_ru, project.request_time)
-        cur_marks_info = SessionsMarks.new(project.illustration_points, project.statement_points, project.summary_points,
-          project.report_id, project.report_time)
-        if res.has_key?(project.title)
-          prev_project = res[project.title]
-          if !prev_project.logins.include?(user_info)
-            prev_project.logins.add(user_info)
-          end
-          if !prev_project.resources.include?(cur_resources_info)
-            prev_project.resources.add(cur_resources_info)
-          end
-          if !prev_project.critical_technologies.include?(project.ctname)
-            prev_project.critical_technologies.add(project.ctname)
-          end
-          if !prev_project.direction_of_sciences.include?(project.dsname)
-            prev_project.direction_of_sciences.add(project.dsname)
-          end
-          if !prev_project.research_areas.include?(project.raname)
-            prev_project.research_areas.add(project.raname)
-          end
-          if !prev_project.report_marks.include?(cur_marks_info)
-            prev_project.report_marks.add(cur_marks_info)
-          end
-        else
-          project_with_info = ProjectWithInfo.new(
-            project.title,
-            project.state,
-            project.name,
-            Set.new([user_info]),
-            Set.new([cur_resources_info]),
-            Set.new([project.ctname]),
-            Set.new([project.dsname]),
-            Set.new([project.raname]),
-            Set.new([cur_marks_info]),
-            project.project_id,
-            project.organization_id,
-            project.state,
-          )
-          res[project.title] = project_with_info
-        end
+      with_sessions.each do |project|
+        cur_marks_info = SessionsMarks.new(
+          project.illustration_points, 
+          project.statement_points, 
+          project.summary_points, 
+          project.report_id, 
+          project.report_time)
+        res[project.id].report_marks.add(cur_marks_info)
       end
       @project_wth_members = res
     end
@@ -145,86 +158,97 @@ module Core
       cur_project = request.project
       @project_name = cur_project.title
       user_ids = cur_project.users.pluck(:id)
-      similar_projects = Project
-        .joins(:users)
-        .joins(users: :profile)
-        .where(users: { id: user_ids }).distinct
-        .joins(:organization)
-        .joins(requests: {fields: :quota_kind})
-        .joins(:critical_technologies)
-        .joins(:direction_of_sciences)
-        .joins(:research_areas)
+      res = {}
+      similar_projects = Project.joins(:users).where(users: { id: user_ids }).distinct
+      
+      similar_projects.each do |project|
+        new_project = ProjectWithInfo.new()
+        new_project.title = project.title
+        new_project.human_state_name = project.state
+        new_project.state = project.state
+        new_project.organization_id = project.organization_id
+        new_project.logins = Set.new([])
+        new_project.critical_technologies = Set.new([])
+        new_project.direction_of_sciences = Set.new([])
+        new_project.research_areas = Set.new([])
+        new_project.report_marks = Set.new([])
+        new_project.resources = Set.new([])
+        res[project.id] = new_project
+      end
+
+      with_organization = similar_projects.includes(:organization)
+      with_organization.each do |project|
+        res[project.id].organization = project.organization.name
+      end
+
+      with_ct = similar_projects.includes(:critical_technologies)
+      with_ct.each do |project|
+        project.critical_technologies.each do |ct|
+          res[project.id].critical_technologies.add(ct.name_ru)
+        end
+      end
+
+      with_ds = similar_projects.includes(:direction_of_sciences)
+      with_ds.each do |project|
+        project.direction_of_sciences.each do |ct|
+          res[project.id].direction_of_sciences.add(ct.name_ru)
+        end
+      end
+
+      with_ra = similar_projects.includes(:research_areas)
+      with_ra.each do |project|
+        project.research_areas.each do |ct|
+          res[project.id].research_areas.add(ct.name_ru)
+        end
+      end
+
+      with_users = similar_projects.includes(users: :profile)
+      with_users.each do |project|
+        project.users.each do |c|
+          user_info = c.profile.first_name + " " + c.profile.last_name + " " + c.email
+          res[project.id].logins.add(user_info)
+        end
+      end
+  
+      with_requests = similar_projects.includes(requests: {fields: :quota_kind})
+      with_requests.each do |project|
+        project.requests.each do |req|
+          req.fields.each do |field|
+            cur_resources_info = ResourcesInfo.new(
+              field.quota_kind.name_ru, 
+              field.value, 
+              field.quota_kind.measurement_ru, 
+              project.created_at)
+            res[project.id].resources.add(cur_resources_info)
+          end
+        end
+      end
+
+      with_sessions = similar_projects
         .joins('INNER JOIN "sessions_reports" ON "core_projects"."id"="sessions_reports"."project_id"')
-        .select("title, core_projects.state, email, name, value, 
-          core_quota_kinds.name_ru as qname, 
-          measurement_ru,
-          core_critical_technologies.name_ru as ctname,
-          core_direction_of_sciences.name_ru as dsname,
-          core_research_areas.name_ru as raname,
-          core_projects.id as project_id,
-          core_organizations.id as organization_id,
-          core_requests.created_at as request_time,
-          sessions_reports.updated_at as report_time,
-          sessions_reports.id as report_id,
+        .select("
           illustration_points,
           summary_points,
-          statement_points,
-          last_name,
-          first_name
+          core_projects.id as id,
+          sessions_reports.id as report_id,
+          sessions_reports.updated_at as report_time,
+          statement_points
         ")
-      res = {}
-
-
-      similar_projects.each do |project|
-        user_info = project.first_name + " " + project.last_name + " " + project.email
-        cur_resources_info = ResourcesInfo.new(project.qname, project.value, project.measurement_ru, project.request_time)
-        cur_marks_info = SessionsMarks.new(project.illustration_points, project.statement_points, project.summary_points, 
-          project.report_id, project.report_time)
-        if res.has_key?(project.title)
-          prev_project = res[project.title]
-          if !prev_project.logins.include?(user_info)
-            prev_project.logins.add(user_info)
-          end
-          if !prev_project.resources.include?(cur_resources_info)
-            prev_project.resources.add(cur_resources_info)
-          end
-          if !prev_project.critical_technologies.include?(project.ctname)
-            prev_project.critical_technologies.add(project.ctname)
-          end
-          if !prev_project.direction_of_sciences.include?(project.dsname)
-            prev_project.direction_of_sciences.add(project.dsname)
-          end
-          if !prev_project.research_areas.include?(project.raname)
-            prev_project.research_areas.add(project.raname)
-          end
-          if !prev_project.report_marks.include?(cur_marks_info)
-            prev_project.report_marks.add(cur_marks_info)
-          end
-
-        else
-          project_with_info = ProjectWithInfo.new(
-            project.title,
-            project.state,
-            project.name,
-            Set.new([user_info]),
-            Set.new([cur_resources_info]),
-            Set.new([project.ctname]),
-            Set.new([project.dsname]),
-            Set.new([project.raname]),
-            Set.new([cur_marks_info]),
-            project.project_id,
-            project.organization_id,
-            project.state,
-          )
-          res[project.title] = project_with_info
-        end
+      with_sessions.each do |project|
+        cur_marks_info = SessionsMarks.new(
+          project.illustration_points, 
+          project.statement_points, 
+          project.summary_points, 
+          project.report_id, 
+          project.report_time)
+        res[project.id].report_marks.add(cur_marks_info)
       end
       @project_wth_members = res
     end
 
 
     private
-    ProjectWithInfo = Struct.new(:title, :state,  :organization, :logins, 
+    ProjectWithInfo = Struct.new(:title, :state, :organization, :logins, 
       :resources, :critical_technologies,
       :direction_of_sciences, :research_areas, :report_marks, :project_id, :organization_id, :human_state_name)
 
