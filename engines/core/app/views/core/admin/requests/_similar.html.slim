@@ -21,10 +21,9 @@ table class="table table-bordered"
       th = t("Направления исследований")
       th = t("Область науки")
   tbody
-    - @project_wth_members.each do |title, project|
+    - @project_wth_members.each do |id, project|
       tr
-        td = link_to project.title, admin_project_path(project.project_id)
-
+        td = link_to project.title, admin_project_path(id)
 
         td = mark_project_state(project)
         td = link_to project.organization, admin_project_path(project.organization_id)
