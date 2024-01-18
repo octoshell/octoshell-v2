@@ -63,10 +63,10 @@ module Core
       @project_org = cur_project.organization
 
       res = {}
-      similar_projects = Project.where("core_projects.organization_id = ? AND core_projects.id != ?", 
+      similar_projects = Project.where("core_projects.organization_id = ? AND core_projects.id != ?",
           cur_project.organization_id,
           cur_project.id)
-      
+
       similar_projects.each do |project|
         new_project = ProjectWithInfo.new()
         new_project.title = project.title
@@ -111,19 +111,19 @@ module Core
       with_users = similar_projects.includes(users: :profile)
       with_users.each do |project|
         project.users.each do |c|
-          user_info = c.profile.first_name + " " + c.profile.last_name + " " + c.email
+          user_info = "#{c.profile.first_name} #{c.profile.last_name} #{c.email}}"
           res[project.id].logins.add(user_info)
         end
       end
-  
+
       with_requests = similar_projects.includes(requests: {fields: :quota_kind})
       with_requests.each do |project|
         project.requests.each do |req|
           req.fields.each do |field|
             cur_resources_info = ResourcesInfo.new(
-              field.quota_kind.name_ru, 
-              field.value, 
-              field.quota_kind.measurement_ru, 
+              field.quota_kind.name_ru,
+              field.value,
+              field.quota_kind.measurement_ru,
               project.created_at)
             res[project.id].resources.add(cur_resources_info)
           end
@@ -142,10 +142,10 @@ module Core
         ")
       with_sessions.each do |project|
         cur_marks_info = SessionsMarks.new(
-          project.illustration_points, 
-          project.statement_points, 
-          project.summary_points, 
-          project.report_id, 
+          project.illustration_points,
+          project.statement_points,
+          project.summary_points,
+          project.report_id,
           project.report_time)
         res[project.id].report_marks.add(cur_marks_info)
       end
@@ -160,7 +160,7 @@ module Core
       user_ids = cur_project.users.pluck(:id)
       res = {}
       similar_projects = Project.joins(:users).where(users: { id: user_ids }).distinct
-      
+
       similar_projects.each do |project|
         new_project = ProjectWithInfo.new()
         new_project.title = project.title
@@ -205,19 +205,19 @@ module Core
       with_users = similar_projects.includes(users: :profile)
       with_users.each do |project|
         project.users.each do |c|
-          user_info = c.profile.first_name + " " + c.profile.last_name + " " + c.email
+          user_info = "#{c.profile.first_name} #{c.profile.last_name} #{c.email}}"
           res[project.id].logins.add(user_info)
         end
       end
-  
+
       with_requests = similar_projects.includes(requests: {fields: :quota_kind})
       with_requests.each do |project|
         project.requests.each do |req|
           req.fields.each do |field|
             cur_resources_info = ResourcesInfo.new(
-              field.quota_kind.name_ru, 
-              field.value, 
-              field.quota_kind.measurement_ru, 
+              field.quota_kind.name_ru,
+              field.value,
+              field.quota_kind.measurement_ru,
               project.created_at)
             res[project.id].resources.add(cur_resources_info)
           end
@@ -236,10 +236,10 @@ module Core
         ")
       with_sessions.each do |project|
         cur_marks_info = SessionsMarks.new(
-          project.illustration_points, 
-          project.statement_points, 
-          project.summary_points, 
-          project.report_id, 
+          project.illustration_points,
+          project.statement_points,
+          project.summary_points,
+          project.report_id,
           project.report_time)
         res[project.id].report_marks.add(cur_marks_info)
       end
@@ -248,7 +248,7 @@ module Core
 
 
     private
-    ProjectWithInfo = Struct.new(:title, :state, :organization, :logins, 
+    ProjectWithInfo = Struct.new(:title, :state, :organization, :logins,
       :resources, :critical_technologies,
       :direction_of_sciences, :research_areas, :report_marks, :project_id, :organization_id, :human_state_name)
 
