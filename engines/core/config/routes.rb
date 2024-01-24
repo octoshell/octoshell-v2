@@ -20,6 +20,9 @@ Core::Engine.routes.draw do
         get :resurrect
         get :synchronize_with_clusters
         get 'versions', to: 'project_versions#index'
+        get :find_similar
+        get :find_similar_by_members
+
       end
       collection do
         get :finder
@@ -78,8 +81,6 @@ Core::Engine.routes.draw do
     resources :group_of_research_areas, except: :index
 
     resources :requests, only: [:index, :show, :edit, :update] do
-      get :find_similar, on: :member
-      get :find_similar_by_members, on: :member
       get :approve, on: :member
       get :reject, on: :member
       put :activate_or_reject, on: :member

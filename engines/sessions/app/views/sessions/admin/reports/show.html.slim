@@ -5,11 +5,10 @@ div class="page-header"
 
       label class="label label-#{report_status_label(@report)}" = @report.human_state_name
 
-
-      = link_to "Проекты от этой организации", [:find_similar, :admin, @report], class: "btn btn-default"
-      = link_to "Проекты от тех же пользователей", [:find_similar_by_members, :admin, @report], class: "btn btn-default"
-
-
+      = link_to t(".similar_project"), core.find_similar_admin_project_path(@report.project),
+                class: "btn btn-default"
+      = link_to t(".similar_project_by_members"), core.find_similar_by_members_admin_project_path(@report.project),
+                class: "btn btn-default"
 
 - if @report.rejected? && @report.expert == current_user
   div class="well"

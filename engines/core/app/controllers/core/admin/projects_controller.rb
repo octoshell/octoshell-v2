@@ -120,7 +120,28 @@ module Core
       head :ok
     end
 
+    def find_similar
+      @project = Project.find(params[:id])
+      @projects = projects(@project.organization.projects)
+    end
+
+    def find_similar_by_members
+      @project = Project.find(params[:id])
+      @projects = projects(Project.joins(:users)
+                                  .where(users: { id: @project.users }))
+    end
+
     private
+
+    def projects(relation)
+      relation.preload([:organization, :critical_technologies,
+                        :direction_of_sciences, :research_areas,
+                        {
+                          users: :profile, requests: { fields: :quota_kind },
+                          sessions: { reports: :submit_denial_reason }
+                        }]).distinct
+    end
+
 
     def project_params
       params.require(:project).permit(:title, :organization_id,
