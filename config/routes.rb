@@ -403,6 +403,7 @@
 #          activate_or_reject_admin_request PUT    /admin/requests/:id/activate_or_reject(.:format)                     core/admin/requests#activate_or_reject
 #                            admin_requests GET    /admin/requests(.:format)                                            core/admin/requests#index
 #                        edit_admin_request GET    /admin/requests/:id/edit(.:format)                                   core/admin/requests#edit
+#                findsimilar_admin_request GET    /admin/requests/:id/findsimilar(.:format)                           core/admin/requests#findsimilar
 #                             admin_request GET    /admin/requests/:id(.:format)                                        core/admin/requests#show
 #                                           PATCH  /admin/requests/:id(.:format)                                        core/admin/requests#update
 #                                           PUT    /admin/requests/:id(.:format)                                        core/admin/requests#update

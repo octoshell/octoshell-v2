@@ -1,7 +1,14 @@
 div class="page-header"
   h1 = t(".title", id: @report.id, project_title: @report.project.title, session_name: @report.session.description)
   h3
-    label class="label label-#{report_status_label(@report)}" = @report.human_state_name
+    div class="well btn-toolbar"
+
+      label class="label label-#{report_status_label(@report)}" = @report.human_state_name
+
+      = link_to t(".similar_project"), core.find_similar_admin_project_path(@report.project),
+                class: "btn btn-default"
+      = link_to t(".similar_project_by_members"), core.find_similar_by_members_admin_project_path(@report.project),
+                class: "btn btn-default"
 
 - if @report.rejected? && @report.expert == current_user
   div class="well"

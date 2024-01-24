@@ -141,6 +141,11 @@ ru:
         project: Проект
         project_access_state: Статус доступа к проекту
         project_id: Проект
+      core/notice:
+        Kind: Тип обработчика
+        active: Активно
+        category: Категория
+        message: Сообщение
       core/organization:
         abbreviation: Аббревиатура
         checked: Проверена
@@ -188,12 +193,12 @@ ru:
         project_critical_technologies: Критические технологии
         project_direction_of_sciences: Направление исследований
         project_research_areas: Области науки
+        project_versions: Изменения описания проекта
         research_area_ids: Область науки
         research_areas: Область науки
         state: Статус
         sureties: Поручительства
         title: Наименование
-        project_versions: Изменения описания проекта
       core/project_card:
         driver: Задача
         en_driver: Driver
@@ -254,11 +259,6 @@ ru:
       core/surety_member:
         full_name: ФИО
         organization: Организация
-      core/notice:
-        active: Активно
-        message: Сообщение
-        category: Категория
-        Kind: Тип обработчика
       user:
         access_state: Доступ
         credentials: ssh *.pub ключи для доступа на кластеры
@@ -427,32 +427,33 @@ ru:
           action: Действие
           active: Активно?
           category: Категория
+          category_help: >-
+            Если в следующее поле для категории ввести значение, то именно оно и будет
+            записано.
+          developer_fields: Поля для разработчиков Octoshell
           for_all: Для всех
           message: Сообщение
           none: Неизвестно
-          personal: Персональное
           other: Другое
+          personal: Персональное
           show_from: Показ с
           show_till: Показ до
           sourceable: Пользователь
           type: Тип
-          category_help: Если в следующее поле для категории ввести значение, то именно оно и будет записано.
-          developer_fields: Поля для разработчиков Octoshell
         index:
           active: Активно
           category: Категория
+          created_at_gteq: Создан до
+          created_at_lteq: Создан с
           inactive: Не активно
+          message_cont: Сообщение содержит
           my_notices: Персональные уведомления
           new_notice: Создать уведомление
           'no': нет
           none: отсутствует
+          show_from_gteq: '"Показывать с" с'
+          show_till_lteq: '"Показывать до" до'
           site_wide_notices: Общие уведомления
-          created_at_lteq: Создан с
-          created_at_gteq: Создан до
-          message_cont: Сообщение содержит
-          show_from_gteq: "\"Показывать с\" с"
-          show_till_lteq: "\"Показывать до\" до"
-
           table:
             action: Действие
             active: Активно?
@@ -590,7 +591,22 @@ ru:
           title: Новый тип проектов
         table:
           no_project_types: Нет типов проектов
+      project_versions:
+        index:
+          created_after: Изменено не ранее
+          created_before: Изменено не позднее
+          info: |-
+            Ниже Вы можете посмотреть некоторые изменения описания проекта пользователем. Журналируются изменения, сделанные на странице после нажатия на кнопку "карандаш", явные изменения состояния пользователем (по кнопке на странице проекта), также журналируется создание проекта. Представлены в следующем формате (YAML): <br>
+              Название атрибута: <br>
+              - Значение до <br>
+              - Значение после <br>
+            Журналирование начато <b> %{date} </b>
+          title: Пользовательские изменения проекта %{title}
       projects:
+        find_similar:
+          title: Проекты от организации "%{name}"
+        find_similar_by_members:
+          title: Проекты от участников проекта "%{title}"
         index:
           activated_after: Активирован после
           activated_before: Активирован до
@@ -617,33 +633,24 @@ ru:
         show:
           close: Закрыть
           description: Описание
+          details: 'Последнее изменение: %{date}. <a href="%{url}">Посмотреть детали</a>'
+          no_records: нет записей
           reactivate: Активировать
           suspend: Приостановить
           synchronize_project: Синхронизовать с кластерами
-          details: "Последнее изменение: %{date}. <a href=\"%{url}\">Посмотреть детали</a>"
-          no_records: нет записей
+        similar:
+          denial: Отказ
+          info: Зелёным цветом помечены совпадающие участники
+          marks: Оценки за отчёты (иллюстрации, изложение, общая оценка)
+          name: Название
+          requests: Запросы на ресурсы
+          year: "%{year} год: "
         sureties:
           title: Поручительства
         table:
           no_organization:
             html: <span class="fa fa-exclamation-triangle text-danger"> не заполнена</span>
           no_projects_found: Нет проектов
-      project_versions:
-          index:
-            created_after: Изменено не ранее
-            created_before: Изменено не позднее
-            info: >-
-              Ниже Вы можете посмотреть некоторые изменения описания проекта пользователем.
-              Журналируются изменения, сделанные на странице после нажатия на кнопку "карандаш",
-              явные изменения состояния пользователем (по кнопке на странице проекта), также журналируется создание проекта.
-              Представлены в следующем формате (YAML): <br>
-                Название атрибута: <br>
-                - Значение до <br>
-                - Значение после <br>
-              Журналирование начато <b> %{date} </b>
-            title: Пользовательские изменения проекта %{title}
-
-
       quota_kinds:
         edit:
           title: Редактирование квоты на ресурсы
@@ -677,6 +684,8 @@ ru:
           projects_num: Проектов
           quotas_ammount: Общий объем квот
           reg_date: Дата регистрации
+          similar_project: Проекты той же организации
+          similar_project_by_members: Проекты с теми же участниками
           surety: Поручительство
           surety_text: Текст поручительства
           title: Заявка на ресурсы №%{id} в рамках проекта «%{title}» (%{pid})
@@ -731,7 +740,8 @@ ru:
         generate_token: Сгенерировать токен
         msg_help_token: >-
           Токены нужны для связи профиля Octoshell с ботом. Их необходимо ввести в
-          боте ( https://t.me/OctoshellBot ), чтобы получить удаленный доступ из бота к функциональности Octoshell.
+          боте ( https://t.me/OctoshellBot ), чтобы получить удаленный доступ из бота
+          к функциональности Octoshell.
         no_bot_links_found: Сгенерируйте токен, если хотите работать в Octoshell из
           бота.
     credentials:
@@ -903,18 +913,15 @@ ru:
       notices_menu_count:
         html: Уведомления <span class="badge info">%{count}</span>
     notices:
-      hide: Скрыть
-      show: Показать
       create:
         notice_failed: Уведомление создано
         notice_succeed: Не удалось создать уведомление
       form:
         for_all: Для всех
-        other: 'TRME '
         personal: Персональные
         show_from: Показ с
         show_till: Показ до
-        visible: 'TRME '
+      hide: Скрыть
       index:
         active: Активно
         category: Категория
@@ -925,13 +932,13 @@ ru:
         site_wide_notices: Общие
         title: Уведомления
         visible: Показывается
+      show: Показать
       table:
-        hidden_by_user: Скрыто мной
         for_all: Для всех
+        hidden_by_user: Скрыто мной
         personal: Персональное
         show_from: Показ с
         show_till: Показ до
-        visible: 'TRME '
     notificator:
       check:
         show: Перейти на страницу записи
@@ -1025,6 +1032,8 @@ ru:
       new_member_form:
         new_member_email: введите email нового участника
         submit: Добавить участника
+      projects_list:
+        no_projects_found: Нет проектов
       projects_with_invitation:
         join_project: Принять приглашение
       requests:
