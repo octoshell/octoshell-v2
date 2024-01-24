@@ -15,7 +15,7 @@ module Jobstat
       drms_task_id = params.fetch('task_id', 0)
 
       job = Job.where(cluster: cluster, drms_job_id: drms_job_id,
-                      drms_task_id: drms_task_id)
+                      drms_task_id: drms_task_id).first
 
       if job.nil?
         logger.error "ERROR(jobstat): Basic job info not found: #{cluster} #{drms_job_id}"
