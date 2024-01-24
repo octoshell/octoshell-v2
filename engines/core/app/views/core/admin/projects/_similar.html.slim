@@ -8,7 +8,12 @@ style
       padding-left: 1;
     }
 p
-  = t('.info')
+  = t('.info', title: @project.title)
+
+= safe_paginate @projects
+
+h4 = page_entries_info @projects
+
 table class="table table-bordered"
   thead
     tr
@@ -32,7 +37,7 @@ table class="table table-bordered"
         td
           ul.no-bullet
             - project.users.each do |u|
-              - color = @project.users.include?(u) ?  'green' : 'black'
+              - color = @project.users.to_a.include?(u) ?  'green' : 'black'
               li
                 font color=color
                   = "#{u.profile.first_name} #{u.profile.last_name} #{u.email}"
@@ -74,3 +79,4 @@ table class="table table-bordered"
           ul.no-bullet
             - project.research_areas.each do |r|
               li = r.name
+= safe_paginate @projects
