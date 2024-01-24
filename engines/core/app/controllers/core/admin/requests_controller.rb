@@ -1,5 +1,3 @@
-require 'set'
-
 module Core
   class Admin::RequestsController < Admin::ApplicationController
     before_action :setup_default_filter, only: :index
