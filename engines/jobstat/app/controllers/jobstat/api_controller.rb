@@ -3,17 +3,8 @@ module Jobstat
     include AbnormalJobChecker
 
     before_action :parse_request
-    before_action do
-      unless authenticate_with_http_basic do |user, password|
-               secret_user = Rails.application.secrets.jobstat[:user]
-               secret_password = Rails.application.secrets.jobstat[:password]
-               secret_user && secret_password && user == secret_user &&
-               password == secret_password
-             end
-        raise 'jobstat: invalid authenticate'
-      end
-    end
-
+    http_basic_authenticate_with name: Rails.application.secrets.jobstat[:user],
+                                 password: Rails.application.secrets.jobstat[:password]
     def post_info
       Job.update_job(@json).notify_when_finished
     end
@@ -23,7 +14,8 @@ module Jobstat
       drms_job_id = params['job_id']
       drms_task_id = params.fetch('task_id', 0)
 
-      job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+      job = Job.where(cluster: cluster, drms_job_id: drms_job_id,
+                      drms_task_id: drms_task_id)
 
       if job.nil?
         logger.error "ERROR(jobstat): Basic job info not found: #{cluster} #{drms_job_id}"

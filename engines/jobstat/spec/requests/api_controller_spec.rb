@@ -12,16 +12,16 @@ module Jobstat
     end
 
     it 'fails to update job when no password is given' do
-      expect { post '/jobstat/job/info', params: job_attrs.to_json }.to raise_error('jobstat: invalid authenticate')
+      post '/jobstat/job/info', params: job_attrs.to_json
+      expect(response).to have_http_status(401)
     end
 
     it 'updates job when password is given' do
       user = 'test'
       password = 'password'
       string = ActionController::HttpAuthentication::Basic.encode_credentials(user, password)
-      Rails.application.secrets[:jobstat] = { user: user, password: password }
-      expect { post '/jobstat/job/info', headers: { HTTP_AUTHORIZATION: string },
-               params: job_attrs.to_json }.not_to raise_error
+      post '/jobstat/job/info', params: job_attrs.to_json, headers: { HTTP_AUTHORIZATION: string }
+      expect(response).to have_http_status(204)
     end
   end
 end
