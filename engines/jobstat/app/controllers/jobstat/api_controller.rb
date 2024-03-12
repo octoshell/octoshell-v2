@@ -3,27 +3,10 @@ module Jobstat
     include AbnormalJobChecker
 
     before_action :parse_request
-    #before_action :parse_request, :authenticate_from_token!, only: [:push]
-
+    http_basic_authenticate_with name: Rails.application.secrets.jobstat[:user],
+                                 password: Rails.application.secrets.jobstat[:password]
     def post_info
-      cluster = @json['cluster']
-      drms_job_id = @json['job_id']
-      drms_task_id = @json.fetch('task_id', 0)
-
-      Job.where(cluster: @json['cluster'], drms_job_id: drms_job_id, drms_task_id: drms_task_id)
-        .first_or_create
-        .update({login: @json['account'],
-                 partition: @json['partition'],
-                 submit_time: Time.at(@json['t_submit']).utc.to_datetime,
-                 start_time: Time.at(@json['t_start']).utc.to_datetime,
-                 end_time: Time.at(@json['t_end']).utc.to_datetime,
-                 timelimit: @json['timelimit'],
-                 nodelist: @json['nodelist'],
-                 command: @json['command'],
-                 state: @json['state'],
-                 num_cores: @json['num_cores'],
-                 num_nodes: @json['num_nodes'],
-                })
+      Job.update_job(@json).notify_when_finished
     end
 
     def fetch_job_or_404(params)
@@ -31,7 +14,8 @@ module Jobstat
       drms_job_id = params['job_id']
       drms_task_id = params.fetch('task_id', 0)
 
-      job = Job.where(cluster: cluster, drms_job_id: drms_job_id, drms_task_id: drms_task_id).first()
+      job = Job.where(cluster: cluster, drms_job_id: drms_job_id,
+                      drms_task_id: drms_task_id).first
 
       if job.nil?
         logger.error "ERROR(jobstat): Basic job info not found: #{cluster} #{drms_job_id}"
@@ -123,7 +107,7 @@ module Jobstat
 
       head 200
     end
-    
+
     def post_digest
       return unless params.key?('data')
       return if params['data'].nil?

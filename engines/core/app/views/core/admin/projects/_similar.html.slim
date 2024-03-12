@@ -1,0 +1,82 @@
+style
+  | ul.no-bullet {
+      list-style-type: none;
+      padding-left: 0;
+    }
+  | ul.my-list {
+      list-style-type: disc;
+      padding-left: 1;
+    }
+p
+  = t('.info', title: @project.title)
+
+= safe_paginate @projects
+
+h4 = page_entries_info @projects
+
+table class="table table-bordered"
+  thead
+    tr
+      th = t(".name")
+      th = Core::Project.human_attribute_name :state
+      th =  Core::Project.human_attribute_name :organization
+      th = t '.name'
+      th = t '.requests'
+      th = t '.marks'
+      th = Core::Project.human_attribute_name :project_critical_technologies
+      th = Core::Project.human_attribute_name :project_direction_of_sciences
+      th = Core::Project.human_attribute_name :research_areas
+  tbody
+    - @projects.each do |project|
+      tr
+        td = link_to project.title, admin_project_path(project)
+
+        td = mark_project_state(project)
+        td = link_to project.organization, admin_organization_path(project.organization_id)
+
+        td
+          ul.no-bullet
+            - project.users.each do |u|
+              - color = @project.users.to_a.include?(u) ?  'green' : 'black'
+              li
+                font color=color
+                  = "#{u.profile.first_name} #{u.profile.last_name} #{u.email}"
+        td
+          ul.no-bullet
+            - project.requests.group_by { |r| r.created_at.year }.sort.reverse.each do |y,requests|
+              li
+                b =  t('.year', year: y)
+              ul.no-bullet
+                - requests.each_with_index do |r,i|
+                  - if requests.count > 1
+                    li
+                      b = "No. #{i}"
+                  -r.fields.map do |f|
+                    li = f.quota_kind.name + " " + f.value.to_s + " " + f.quota_kind.measurement
+        td
+          ul.no-bullet
+            - project.reports.sort_by { |r| -r.session.started_at.year }.each do |r|
+              li
+                a href=sessions.admin_report_path(r) #{r.session.started_at.year}
+                br
+                - if r.submit_denial_reason
+                  = t('.denial')
+                - elsif r.illustration_points
+                  = "#{r.illustration_points} #{r.statement_points} #{r.summary_points}"
+                - else
+                  = r.human_state_name
+
+
+        td
+          ul.no-bullet
+            - project.critical_technologies.each do |c|
+              li = c.name
+        td
+          ul.no-bullet
+            - project.direction_of_sciences.each do |d|
+              li = d.name
+        td
+          ul.no-bullet
+            - project.research_areas.each do |r|
+              li = r.name
+= safe_paginate @projects

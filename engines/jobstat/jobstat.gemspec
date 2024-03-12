@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "sidekiq"
   # s.add_dependency "maymay"
   s.add_dependency "ransack"
+
   s.add_dependency "kaminari"
   s.add_dependency "jquery-tablesorter"
   #s.add_dependency "rails-i18n", "~> 4.0"

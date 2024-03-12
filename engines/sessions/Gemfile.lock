@@ -9,7 +9,7 @@ PATH
       nokogiri (>= 1.10.4)
       pg (~> 0.18)
       rails (~> 5.0)
-      ransack (= 2.1.1)
+      ransack
       sidekiq
       slim
 

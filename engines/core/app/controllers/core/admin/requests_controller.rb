@@ -54,7 +54,6 @@ module Core
       redirect_to [:admin, @request]
     end
 
-
     private
 
     def setup_default_filter

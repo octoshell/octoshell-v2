@@ -1,3 +1,4 @@
+require 'zip'
 module ReceiveEmails
   class EmailProccessor
 
@@ -5,7 +6,7 @@ module ReceiveEmails
     delegate :to, :from, to: :message
 
     def ticket_creation_allowed?
-      CONFIG[:ticket_creation_allowed?]
+      true
     end
 
     def initialize(email_string)
@@ -14,7 +15,8 @@ module ReceiveEmails
     end
 
     def continue_processing?
-      user # && (!message.header['Auto-Submitted'] || message.header['Auto-Submitted'].to_s == 'no')
+      user && (!message.header['Auto-Submitted'] ||
+               message.header['Auto-Submitted'].to_s == 'no')
     end
 
     def topic
@@ -52,13 +54,14 @@ module ReceiveEmails
     def add_attachment(model_instance, content, name)
       file = Tempfile.new(name)
       begin
-        file.puts content
+        file.puts content.force_encoding("UTF-8")
         model_instance.attachment = ActionDispatch::Http::UploadedFile.new(filename: Translit.convert(file_parts.first.filename, :english), tempfile: file)
         model_instance.save!
       ensure
         file.close
         file.unlink
       end
+
     end
 
     def zip_and_add_attachments(model_instance)
@@ -67,10 +70,10 @@ module ReceiveEmails
         content = Zip::OutputStream.write_buffer do |stream|
           file_parts.each do |file_part|
             stream.put_next_entry Translit.convert(file_part.filename, :english)
-            stream.write file_part.body.to_s
+            stream.write file_part.body.to_s.force_encoding("UTF-8")
           end
         end
-        file.puts content.string
+        file.puts content.string.force_encoding("UTF-8")
         model_instance.attachment = ActionDispatch::Http::UploadedFile.new(filename: 'attachments.zip', tempfile: file)
         model_instance.save!
       ensure
@@ -115,6 +118,7 @@ module ReceiveEmails
 
     def process
       return unless continue_processing?
+
       begin
         ticket_string = text_part&.body.to_s[/ticket_id:\d+.*-{#{Support.dash_number}}/]
         if ticket_string
@@ -126,12 +130,9 @@ module ReceiveEmails
         else
           create_ticket
         end
-      rescue StandardError => e
-        if e.is_a? ActiveRecord::RecordInvalid
-          Support::MailerWorker.perform_async(:reply_error, [e.record.ticket_id, user.id, e])
-        else
-          puts e.inspect.red
-        end
+      rescue ActiveRecord::RecordInvalid => e
+        Support::MailerWorker.perform_async(:reply_error, [e.record.ticket_id,
+                                                           user.id, e])
       end
     end
   end

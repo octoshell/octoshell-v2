@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.0"
 
-  # s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
   # s.add_dependency "activerecord-jdbcpostgresql-adapter"
   s.add_dependency "slim"
   s.add_dependency "sidekiq"

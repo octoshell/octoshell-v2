@@ -1,0 +1,4 @@
+div class="page-header"
+  h1 = t(".title", title: link_to(@project.title, admin_project_path(@project))).html_safe
+
+= render "similar"

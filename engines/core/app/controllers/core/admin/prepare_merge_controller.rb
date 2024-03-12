@@ -39,23 +39,23 @@ module Core
     end
 
     def update
-      @merger = DepartmentMerger.find(params[:id])
+      @merger = DepartmentMerger.find(permitted_params[:id])
       projects_ids = []
       surety_members_ids = []
       core_members = []
 
-      if params[:merger][:projects]
-        projects_ids = params[:merger][:projects].select do |key, value|
+      if permitted_params[:merger][:projects]
+        projects_ids = permitted_params[:merger][:projects].select do |key, value|
           value[:merge] == '1'
         end.map(&:first)
       end
-      if params[:merger][:surety_members]
-        surety_members_ids = params[:merger][:surety_members].select do |key, value|
+      if permitted_params[:merger][:surety_members]
+        surety_members_ids = permitted_params[:merger][:surety_members].select do |key, value|
           value[:merge] == '1'
         end.map(&:first)
       end
-      if params[:merger][:core_members]
-        core_members = params[:merger][:core_members].select do |key, value|
+      if permitted_params[:merger][:core_members]
+        core_members = permitted_params[:merger][:core_members].select do |key, value|
           value[:merge] == '1'
         end.map do |a|
           if a.second[:surety_member_id]
@@ -67,7 +67,7 @@ module Core
       end
       @res = @merger.complete_merge!(projects_ids, surety_members_ids, core_members)
       if @res.instance_of? String
-        @res.each {|res| flash_message :alert, res}
+        @res.each { |res| flash_message :alert, res }
         edit
         render :edit
       else
@@ -80,5 +80,12 @@ module Core
       @merger.destroy
       redirect_to admin_prepare_merge_index_path
     end
+
+    private
+
+    def permitted_params
+      params.permit!.to_h
+    end
+
   end
 end

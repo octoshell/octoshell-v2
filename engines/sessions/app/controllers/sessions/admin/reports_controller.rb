@@ -93,6 +93,7 @@ module Sessions
       end
     end
 
+
     def show
       @report = Report.find(params[:id])
       @reply = @report.replies.build do |reply|

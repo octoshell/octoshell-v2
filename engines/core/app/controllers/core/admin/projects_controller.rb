@@ -1,6 +1,7 @@
 module Core
   class Admin::ProjectsController < Admin::ApplicationController
-    before_action :octo_authorize!, except: %i[show finder id_finder]
+    before_action :octo_authorize!, except: %i[show finder id_finder
+          find_similar find_similar_by_members]
     def index
       respond_to do |format|
         format.html do
@@ -120,7 +121,28 @@ module Core
       head :ok
     end
 
+    def find_similar
+      @project = Project.find(params[:id])
+      @projects = projects(@project.organization.projects).page(params[:page])
+    end
+
+    def find_similar_by_members
+      @project = Project.find(params[:id])
+      @projects = projects(Project.joins(:users)
+                                  .where(users: { id: @project.users })).page(params[:page])
+    end
+
     private
+
+    def projects(relation)
+      relation.preload([:organization, :critical_technologies,
+                        :direction_of_sciences, :research_areas,
+                        {
+                          users: :profile, requests: { fields: :quota_kind },
+                          reports: %i[session submit_denial_reason]
+                        }]).distinct
+    end
+
 
     def project_params
       params.require(:project).permit(:title, :organization_id,

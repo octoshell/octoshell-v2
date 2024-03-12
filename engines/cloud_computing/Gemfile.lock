@@ -8,7 +8,7 @@ PATH
       kaminari
       mime-types
       rails (~> 5.2.3)
-      ransack (= 2.1.1)
+      ransack
       sidekiq
       slim
       xmlrpc

@@ -12,6 +12,9 @@ div class="row"
             span class="text-muted" = t(".info_mails_help")
             = f.check_box :receive_special_mails
             span class="text-muted" = t(".special_mails_help")
+            = f.check_box :notify_about_jobs
+            span class="text-muted" = t(".notify_about_jobs_help")
+
 
       = f.form_group do
         = f.submit t(".save")

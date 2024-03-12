@@ -20,6 +20,9 @@ Core::Engine.routes.draw do
         get :resurrect
         get :synchronize_with_clusters
         get 'versions', to: 'project_versions#index'
+        get :find_similar
+        get :find_similar_by_members
+
       end
       collection do
         get :finder
