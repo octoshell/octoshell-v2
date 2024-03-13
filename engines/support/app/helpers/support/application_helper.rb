@@ -68,7 +68,7 @@ module Support
       field = field_value.field
       if field.model_collection.present?
         model_field = ModelField.all[field.model_collection.to_sym]
-        instance = model_field.model.find(field_value.value)
+        instance = model_field.model.find_by_id(field_value.value)
         return unless instance
 
         human = instance.public_send(model_field.human)
