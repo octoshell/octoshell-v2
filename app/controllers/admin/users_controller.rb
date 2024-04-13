@@ -1,6 +1,12 @@
 class Admin::UsersController < Admin::ApplicationController
   before_action :setup_default_filter, only: :index
-  before_action :octo_authorize!, except: %i[show index id_finder]
+  before_action :octo_authorize!, except: %i[show index id_finder find_similar]
+
+  def find_similar
+    @user = User.find(params[:id])
+    @users = users(User.joins(:profile).where("users.id != ? AND (email = ? or CONCAT(last_name, ' ', first_name, ' ', middle_name) = ?)", 
+    @user.id, @user.email, @user.full_name).page(params[:page]))
+  end
 
   def index
     respond_to do |format|
@@ -82,6 +88,10 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
 private
+
+  def users(relation)
+    relation.preload([ :profile]).distinct
+  end
 
   def check_authorization
     authorize! :manage, :users

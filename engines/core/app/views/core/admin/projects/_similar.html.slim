@@ -55,16 +55,17 @@ table class="table table-bordered"
                     li = f.quota_kind.name + " " + f.value.to_s + " " + f.quota_kind.measurement
         td
           ul.no-bullet
-            - project.reports.sort_by { |r| -r.session.started_at.year }.each do |r|
-              li
-                a href=sessions.admin_report_path(r) #{r.session.started_at.year}
-                br
+            - project.reports.sort_by { |r| r.session.started_at&.year || 0 }.reverse.each do |r|
+              li 
                 - if r.submit_denial_reason
                   = t('.denial')
                 - elsif r.illustration_points
                   = "#{r.illustration_points} #{r.statement_points} #{r.summary_points}"
                 - else
                   = r.human_state_name
+                - if r.session.started_at
+                  = link_to t(".start", date: r.session.started_at.strftime("%d/%m/%Y")), sessions.admin_report_path(r)
+              br
 
 
         td

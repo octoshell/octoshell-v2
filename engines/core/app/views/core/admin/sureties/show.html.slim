@@ -46,3 +46,9 @@ table class="table table-bordered"
     - @surety.scans.each do |scan|
       div class="col-xs-4"
         = link_to image_tag(scan.image.path), scan.image.url, target: :blank, class: "thumbnail"
+
+h2 = t(".title_similar", name: @project.organization)
+= render "core/admin/projects/similar"
+- @projects = @projects_by_members
+h2 = t(".title_similar_by_members", title: @project.title)
+= render "core/admin/projects/similar"

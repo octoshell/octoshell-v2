@@ -1,3 +1,8 @@
+style
+  | ul.no-bullet {
+      list-style-type: none;
+    }
+
 div class="page-header"
   h1 = @project.title
   h3 = mark_project_state(@project)
@@ -15,6 +20,8 @@ div class="page-header"
     = link_to Core::Project.human_state_event_name(:unblock), unblock_admin_project_path(@project), class: "btn btn-success" if @project.blocked?
     = link_to Core::Project.human_state_event_name(:finish), finish_admin_project_path(@project), class: "btn btn-danger" unless @project.finished?
     = link_to Core::Project.human_state_event_name(:resurrect), resurrect_admin_project_path(@project), class: "btn btn-info" if @project.finished? || @project.cancelled?
+    = link_to t(".similar_project"), find_similar_admin_project_path(@project), class: "btn btn-default"
+    = link_to t(".similar_project_by_members"), find_similar_by_members_admin_project_path(@project), class: "btn btn-default"
 
 legend = Core::Project.human_attribute_name :card
 = render "core/projects/card", project: @project
@@ -33,6 +40,35 @@ div class="row"
 
 = render "core/admin/projects/members"
 = render "core/admin/projects/sureties"
+
+h4 = "Заявки на ресурсы"
+- @project.requests.group_by { |r| r.created_at.year }.sort.reverse.each do |y,requests|
+  li
+    b =  t('.year', year: y)
+  ul.no-bullet
+    - requests.each_with_index do |r,i|
+      - if requests.count > 1
+        li
+          b = "No. #{i}"
+      -r.fields.map do |f|
+        li = f.quota_kind.name + " " + f.value.to_s + " " + f.quota_kind.measurement
+
+h4 = t(".marks_title")
+- @project.reports.sort_by { |r| r.session.started_at&.year || 0 }.reverse.each do |r|
+  li
+    = link_to t(".session", session_name: r.session.description_ru), sessions.admin_report_path(r)
+    - if r.session.ended_at
+      = t(".end", date: r.session.ended_at)
+    = t(".marks")
+    - if r.submit_denial_reason
+      = t('.denial')
+    - elsif r.illustration_points
+      = "#{r.illustration_points} #{r.statement_points} #{r.summary_points}"
+    - else
+      = r.human_state_name
+    - if r.session.started_at
+      = t(".start", date: r.session.started_at.strftime("%d/%m/%Y")) 
+    br
 
 = custom_helper(:comments, :render_attachments,@project,:comments)
 = custom_helper(:comments, :render_attachments,@project,:tags)

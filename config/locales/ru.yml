@@ -187,6 +187,10 @@ ru:
         confirm: Вы действительно хотите удалить эту категорию опций?
         no_found: Нет категорий для опцийW
     users:
+      find_similar:
+        title: "Похожие пользователи на пользователя %{name}(%{email})"
+        full_name: "ФИО"
+        email: Email
       edit:
         title: Участие пользователя в группах доступа
       index:
@@ -211,6 +215,7 @@ ru:
         present: есть
         reg_date: Дата регистрации
         unblock_user: Возобновить доступ
+        show_similar: Показать похожих пользователей
       table:
         no_employment:
           html: >-

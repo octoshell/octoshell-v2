@@ -638,6 +638,14 @@ ru:
           reactivate: Активировать
           suspend: Приостановить
           synchronize_project: Синхронизовать с кластерами
+          similar_project: Проекты той же организации
+          similar_project_by_members: Проекты с теми же участниками
+          denial: Отказ
+          year: "%{year} год: "
+          session: "Перерегистрация %{session_name}\n"
+          start: " Дата перерегистрации: %{date}"
+          marks_title: Оценки за отчёты (иллюстрации, изложение, общая оценка)
+          marks: "Оценки: " 
         similar:
           denial: Отказ
           info: Зелёным цветом помечены участники проекта "%{title}"
@@ -645,6 +653,7 @@ ru:
           name: Название
           requests: Запросы на ресурсы
           year: "%{year} год: "
+          start: " %{date}"
         sureties:
           title: Поручительства
         table:
@@ -703,6 +712,9 @@ ru:
         new:
           title: Добавление новой области науки
       sureties:
+        show:
+          title_similar: Проекты от организации "%{name}"
+          title_similar_by_members: Проекты от участников проекта "%{title}"
         activate_or_reject:
           reason_empty: Пустая причина одобрения/ отклонения
         edit_template:

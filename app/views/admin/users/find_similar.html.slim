@@ -1,0 +1,19 @@
+div class="page-header"
+  h1 = t(".title", name: @user.full_name, email: @user.email )
+
+= safe_paginate @users
+
+h4 = page_entries_info @users
+
+table class="table table-bordered"
+  thead
+    tr
+      th = t(".full_name")
+      th = t(".email")
+  tbody
+    - @users.each do |user|
+      tr
+        td = user.full_name
+        td = user.email
+
+= safe_paginate @users
