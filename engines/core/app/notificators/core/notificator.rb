@@ -19,9 +19,9 @@ module Core
           id = @object.id
         end
         @url = "/core/admin/#{name}/#{id}"
-        hash = { subject: t('.subject', model_name: @object.model_name.human, to_s: @object.to_s) }
-        hash[:reporter] = current_user
-        hash
+        { subject: t('.subject', model_name: @object.model_name.human,
+                                 to_s: @object.to_s),
+          reporter: current_user }
       end
     end
   end

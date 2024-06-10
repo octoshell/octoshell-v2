@@ -94,6 +94,7 @@ end
 
 group :test do
   gem "rspec-rails"
+  gem 'rspec-its'
   gem "activerecord-import", ">= 0.2.0"
   gem 'selenium-webdriver'
   gem "rspec-sidekiq"

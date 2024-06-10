@@ -1,36 +1,20 @@
 module Support
   class Notificator < AbstractController::Base
 
-    def self.topic_names
-      I18n.available_locales.map { |l| :"topic_#{l}" }.freeze
+    EMAIL = 'support_bot@octoshell.ru'.freeze
+
+
+    def default_options
+      {
+        parent_topic: { name_ru: 'Уведомления', name_en: 'Notifications' },
+        topic: { name_ru: 'Уведомления', name_en: 'Notifications' },
+        reporter: Support.user_class.find_by_email!(EMAIL)
+      }
     end
 
-    def self.parent_topic_names
-      topic_names.map { |l| :"parent_#{l}" }.freeze
+    def options
+      {}
     end
-    TICKET_ATTRS = %i[subject message attachment reporter responsible].freeze
-    TOPIC_ATTRS = %i[visible_on_create].freeze
-
-    def self.email
-      'support_bot@octoshell.ru'.freeze
-    end
-
-    def parent_topic_ru
-      'Уведомления'
-    end
-
-    def parent_topic_en
-      'Notifications'
-    end
-
-    def topic_ru
-      parent_topic_ru
-    end
-
-    def topic_en
-      parent_topic_en
-    end
-
 
     def translate(key, options = {})
       if key.to_s.first == "."
@@ -57,86 +41,59 @@ module Support
 
     def create_bot(password)
       ActiveRecord::Base.transaction do
-        bot = Support.user_class.create! email: self.class.email,
+        bot = Support.user_class.create! email: EMAIL,
                                          password: password,
                                          activation_state: 'active'
         bot.create_profile! first_name: 'Bot', last_name: 'Botov'
       end
     end
 
-    def bot
-      @bot ||= Support.user_class.find_by_email!(self.class.email)
-    end
-
-    def process_ticket_attributes(attributes)
-      unless attributes[:message]
-        message = render(@_action_name, Hash[collect_assigns])
-        attributes[:message] = message
-      end
-      attributes[:reporter] ||= bot
-      attributes[:subject] ||= attributes[:topic].name
-    end
-
-
-    def form_topic_attributes(attrs, attributes)
-      topic_names = {}
-      attrs.each do |a|
-        lang = a.to_s.split('_').last
-        topic_names[:"name_#{lang}"] = attributes.delete(a)
-      end
-      topic_names
-    end
-
     def parent_topic(attributes)
-      p_a = form_topic_attributes(self.class.parent_topic_names, attributes)
-      Support::Topic.find_or_create_by_names(p_a) do |topic|
-        topic.visible_on_create = false
-      end
+      Support::Topic.create_with(visible_on_create: false)
+                    .find_or_create_by(attributes)
     end
 
-    def process_topic_attributes(attributes)
-      t_a = form_topic_attributes(self.class.topic_names, attributes)
-      parent_topic = parent_topic(attributes)
-      attributes[:topic] = Support::Topic.find_or_create_by_names(t_a) do |topic|
-        topic.visible_on_create = attributes[:visible_on_create]
-        topic.parent_topic = parent_topic
-      end
+    def topic(attributes)
+      name_attribute_names = (Support::Topic.attribute_names &
+                              I18n.available_locales.map { |l| "name_#{l}" })
+                             .map(&:to_sym)
+      Support::Topic.find_or_create_by(attributes.slice(*name_attribute_names))
+                    .create_with({ visible_on_create: false }
+                                  .merge(attributes.except(*name_attribute_names)))
     end
 
-    def process_field_value_attributes(attributes)
-      f_v = attributes.delete(:field_value)
-      return unless f_v
+    def create_field_value(attributes, ticket)
+      return unless attributes
 
-      if !f_v[:key] || !f_v[:record_id]
+      if !attributes[:key] || !attributes[:record_id]
         raise 'You have to pass :key and :record_id argument to create field_value'
       end
 
-      model_field = ModelField.all[f_v[:key]]
-      # ticket = Support::Ticket.new(args.except(:topic, :key, :record_id))
+      model_field = ModelField.all[attributes[:key]]
       field = Support::Field.find_or_create_by_names(model_field.names) do |f|
         f.kind = 'model_collection'
-        f.model_collection =  f_v[:key]
+        f.model_collection = attributes[:key]
       end
 
-      topic = attributes[:topic]
-
-      t_f = Support::TopicsField.find_or_create_by(topic: topic, field: field)
-      { topics_field: t_f, value: f_v[:record_id] }
+      ticket.field_values.create!(topics_field: Support::TopicsField.find_or_create_by(topic: ticket.topic,
+                                                                                       field: field),
+                                  value: attributes[:record_id])
     end
 
-    def create!(arg)
-      attributes = arg.dup
-      (TICKET_ATTRS + self.class.topic_names + self.class.parent_topic_names +
-       TOPIC_ATTRS + [:field_value]).each do |a|
-        attributes[a] ||= try a
-      end
-      process_topic_attributes(attributes)
-      process_ticket_attributes(attributes)
-      f_v_attrs = process_field_value_attributes(attributes)
-      attributes.compact!
+    def create!(options)
+      attributes = default_options.merge(options).merge options
+      topic = topic(attributes[:topic]
+              .merge(parent_topic: parent_topic(attributes[:parent_topic])))
       ActiveRecord::Base.transaction do
-        ticket = Support::Ticket.create! attributes
-        ticket.field_values.create!(f_v_attrs) if f_v_attrs.is_a?(Hash)
+        create_field_value(
+          attributes[:field_value],
+          Support::Ticket.create!(attributes.except(:parent_topic, :topic,
+                                                    :field_value)) do |ticket|
+            ticket.message ||= render(@_action_name, Hash[collect_assigns])
+            ticket.subject ||= ticket.topic.name
+            ticket.topic = topic
+          end
+        )
       end
     end
 
