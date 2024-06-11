@@ -2,36 +2,30 @@ require 'main_spec_helper'
 module Support
   class TestNotificator < Notificator
 
-    def subject
-      'Subject in method'
-    end
-
-    def topic_en
-      'NOT USED because hash contains :topic_en key'
-    end
-
-    def field_value
-      { key: :pack_access, record_id: Pack::Access.last.id }
-    end
-
-    def reporter
-      User.last
+    def options
+      {
+        topic: { name_en: 'NOT USED because overriden in method' },
+        field_value: { key: :pack_access, record_id: Pack::Access.last.id },
+        subject: 'Subject in method',
+        reporter: User.last
+      }
     end
 
     def _test_with_template(name)
       @name = name
-      { topic_en: 'Greetings' }
+      { topic: { name_en: 'Greetings' } }
     end
 
   end
 
   describe TestNotificator do
     it 'creates ticket' do
+      Support::Notificator.new.create_bot 'strong_password'
       user = create(:user)
       access = create(:access, created_by: user, who: user)
       TestNotificator._test_with_template('The best user')
       expect(FieldValue.last).to have_attributes(value: access.id.to_s)
-      expect(FieldValue.last.ticket.topic.name_en).to eq 'Greetings'
+      expect(Ticket.last.topic).to have_attributes(name_en: 'Greetings', name_ru: 'Greetings')
       expect(Ticket.last).to have_attributes(subject: 'Subject in method', reporter: user)
 
     end
@@ -70,11 +64,12 @@ module Support
     # end
 
     it 'creates ticket' do
+      Support::Notificator.new.create_bot 'strong_password'
       user = create(:user)
       access = create(:access, created_by: user)
       Notificator.new.create!(subject: 'subject', reporter: user,
                               message: 'Interface really works!!!!',
-                              topic_en: 'test',
+                              topic: { name_en: 'test' },
                               field_value: { key: :pack_access,
                                              record_id: access.id })
 

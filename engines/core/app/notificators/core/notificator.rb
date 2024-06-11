@@ -1,12 +1,9 @@
 module Core
   if Octoface.role_class?(:support, 'Notificator')
     class Notificator < Octoface.role_class(:support, 'Notificator')
-      def self.topic_ru
-        'Проверить новую запись'
-      end
-
-      def self.topic_en
-        'Check new record'
+      def options
+        { topic: { name_ru: 'Проверить новую запись',
+                   name_en: 'Check new record' } }
       end
 
       def check(object, current_user)

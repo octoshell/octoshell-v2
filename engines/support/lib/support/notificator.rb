@@ -3,6 +3,9 @@ module Support
 
     EMAIL = 'support_bot@octoshell.ru'.freeze
 
+    def options
+      {}
+    end
 
     def default_options
       {
@@ -10,10 +13,6 @@ module Support
         topic: { name_ru: 'Уведомления', name_en: 'Notifications' },
         reporter: Support.user_class.find_by_email!(EMAIL)
       }
-    end
-
-    def options
-      {}
     end
 
     def translate(key, options = {})
@@ -26,7 +25,7 @@ module Support
       end
       I18n.translate(key, options)
     end
-    alias :t :translate
+    alias t translate
 
     def process(method = nil, *args)
       @_action_name = method
@@ -48,18 +47,25 @@ module Support
       end
     end
 
+    def name_attribute_names
+      (Support::Topic.attribute_names &
+                                I18n.available_locales.map { |l| "name_#{l}" })
+        .map(&:to_sym)
+    end
+
     def parent_topic(attributes)
       Support::Topic.create_with(visible_on_create: false)
-                    .find_or_create_by(attributes)
+                    .find_or_create_by(attributes) do |t|
+                      t.name = attributes.slice(*name_attribute_names).values.first
+                    end
     end
 
     def topic(attributes)
-      name_attribute_names = (Support::Topic.attribute_names &
-                              I18n.available_locales.map { |l| "name_#{l}" })
-                             .map(&:to_sym)
-      Support::Topic.find_or_create_by(attributes.slice(*name_attribute_names))
-                    .create_with({ visible_on_create: false }
-                                  .merge(attributes.except(*name_attribute_names)))
+      Support::Topic.create_with({ visible_on_create: false }
+                              .merge(attributes.except(*name_attribute_names)))
+                    .find_or_create_by!(attributes.slice(*name_attribute_names)) do |t|
+                      t.name = attributes.slice(*name_attribute_names).values.first
+                    end
     end
 
     def create_field_value(attributes, ticket)
@@ -81,7 +87,7 @@ module Support
     end
 
     def create!(options)
-      attributes = default_options.merge(options).merge options
+      attributes = default_options.merge(self.options).merge options
       topic = topic(attributes[:topic]
               .merge(parent_topic: parent_topic(attributes[:parent_topic])))
       ActiveRecord::Base.transaction do
@@ -102,7 +108,7 @@ module Support
     end
 
     def render(file, assigns = {})
-      path = "#{engine.const_get("Engine").root}/app/views"
+      path = "#{engine.const_get('Engine').root}/app/views"
       ActionView::Base.new(path, assigns).render file: "#{engine.to_s.downcase}/notificator/#{file}"
     end
 
