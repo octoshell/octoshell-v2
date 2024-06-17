@@ -1,4 +1,3 @@
-require_dependency "pack/application_controller"
 require 'json'
 
 module Pack

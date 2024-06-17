@@ -73,7 +73,7 @@ If you want to add pages for administrators, you need to:
   - 'engines/foo/app/views/foo/admin'
 
 ### Create admin controller(s):
-Create engines/foo/app/controllers/foo/admin/application_controller.rb 
+Create engines/foo/app/controllers/foo/admin/application_controller.rb
 
     module Foo
       class Admin::ApplicationController < Api::ApplicationController
@@ -82,9 +82,8 @@ Create engines/foo/app/controllers/foo/admin/application_controller.rb
     end
 
 
-In engines/foo/app/controllers/foo/admin/bar_controller.rb 
+In engines/foo/app/controllers/foo/admin/bar_controller.rb
 
-    require_dependency "api/admin/application_controller"
     module Api
       class Admin::AccessKeysController < Admin::ApplicationController
       ...

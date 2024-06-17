@@ -1,4 +1,3 @@
-# require_dependency "pack/application_controller"
 
 module Pack
   class Admin::PackagesController < Admin::ApplicationController

@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 gem "rake"
-gem "rails", "~> 5.0"
+gem "rails", "~> 7.1"
 #-----------------------------------------
 gem "honeybadger", "~> 4.8"
 
@@ -14,7 +14,8 @@ gem 'listen'
 platforms :jruby do
   gem "activerecord-jdbcpostgresql-adapter", "~> 1.3.21"
 end
-gem "pg", "~> 0.18", platform: :ruby
+# gem "pg", "~> 0.18", platform: :ruby
+gem "pg"
 gem "responders"
 gem "uglifier", ">= 1.3.0"
 gem "sassc-rails"
@@ -30,7 +31,7 @@ gem 'i18n-js'
 gem 'groupdate'
 gem 'cancancan'
 gem "ransack"
-gem 'mail', '2.7.1' # smtp localhost does not work in 2.8.1
+# gem 'mail', '2.7.1' # smtp localhost does not work in 2.8.1
 # security reasons
 gem "nokogiri", ">= 1.10.4"
 gem "mini_magick", ">= 4.9.4"
@@ -73,17 +74,17 @@ gem "jobstat",        path: 'engines/jobstat'
 gem "comments",       path: 'engines/comments'
 gem "pack",           path: "engines/pack"
 gem "hardware",       path: "engines/hardware"
-gem "reports",       path: "engines/reports"
+gem "reports",        path: "engines/reports"
 gem "api",            path: "engines/api"
-gem 'cloud_computing', path: 'engines/cloud_computing'
-gem 'perf', path: 'engines/perf'
+gem 'cloud_computing',path: 'engines/cloud_computing'
+gem 'perf',           path: 'engines/perf'
 
 gem "jquery-rails"
 gem "jquery-ui-rails"
 gem "jquery-tablesorter"
 
 gem "config", github: 'railsconfig/config'
-gem "decorators", '~> 2.0.3'
+gem "decorators"#, '~> 2.0.3'
 gem 'active_record_union'
 gem "whenever"
 
@@ -98,7 +99,8 @@ group :test do
   gem "activerecord-import", ">= 0.2.0"
   gem 'selenium-webdriver'
   gem "rspec-sidekiq"
-  gem 'shoulda-matchers', '~> 4.0'
+  gem 'shoulda-matchers'#, '~> 6.0'
+  # gem 'shoulda-matchers', '~> 4.0'
   # gem "test_after_commit"
   gem "database_cleaner"
   # gem "factory_bot_rails"
@@ -106,4 +108,5 @@ group :test do
   gem "phantomjs", github: "colszowka/phantomjs-gem"
   gem "codeclimate-test-reporter", require: false
 end
-gem 'sprockets-rails', '2.3.3'
+# gem 'sprockets-rails', '2.3.3'
+ gem 'ffi', '1.16.3' 

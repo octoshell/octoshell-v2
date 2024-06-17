@@ -1,5 +1,3 @@
-require_dependency "api/admin/application_controller"
-
 module Api::Admin
   class ExportsController < Api::Admin::ApplicationController
     before_action :set_export, only: [:show, :edit, :update, :destroy]

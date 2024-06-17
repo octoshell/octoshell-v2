@@ -1,4 +1,3 @@
-require_dependency 'comments/application_controller'
 
 module Comments
   class AttachedController < ApplicationController

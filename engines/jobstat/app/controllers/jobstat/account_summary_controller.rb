@@ -1,4 +1,3 @@
-require_dependency "jobstat/application_controller"
 require "groupdate"
 
 module Jobstat

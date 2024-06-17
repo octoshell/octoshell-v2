@@ -1,4 +1,3 @@
-require_dependency "jobstat/application_controller"
 
 module Jobstat
   class AccountListController < ApplicationController

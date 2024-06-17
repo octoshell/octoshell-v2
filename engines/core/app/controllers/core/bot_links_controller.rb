@@ -1,4 +1,3 @@
-require_dependency "core/application_controller"
 
 module Core
   class BotLinksController < ApplicationController

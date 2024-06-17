@@ -1,4 +1,3 @@
-require_dependency "wikiplus/application_controller"
 
 module Wikiplus
   class PagesController < ApplicationController

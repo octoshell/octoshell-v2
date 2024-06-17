@@ -1,5 +1,3 @@
-require_dependency "cloud_computing/application_controller"
-
 module CloudComputing::Admin
   class RequestsController < CloudComputing::Admin::ApplicationController
     before_action only: %i[refuse show] do
