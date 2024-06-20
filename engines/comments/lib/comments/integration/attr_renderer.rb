@@ -3,7 +3,8 @@ module Comments
     class AttRenderer
       include ActionView::Helpers
       A_TYPES = %w[Comment Tag File].freeze
-      def initialize(attachment_type, user, attach_to = :all)
+      def initialize(view, attachment_type, user, attach_to = :all)
+        @view = view
         @user = user
         @attachment_type = attachment_type
         @attach_to = hash_attach_to attach_to
@@ -11,8 +12,15 @@ module Comments
       end
 
       def render
-        view = CustomView.new(att_view_paths, @attach_to, @attachment_type,@user)
-        res = view.render(file: 'from_view')
+        puts ActionController::Base.view_paths.inspect.red
+        view = CustomView.with_empty_template_cache
+                         .new(att_view_paths, @attach_to, @attachment_type, @user)
+        res = view.render(template: 'from_view')
+        # ApplicationController.render
+        # res = @view.render({template: "comments/#{@attachment_type}/from_view"}.merge assigns(@attach_to, @attachment_type, @user))
+        # res = Comments::AttachedController.render(template: "comments/#{@attachment_type}/from_view",
+        #   assigns: assigns(@attach_to, @attachment_type, @user))
+
         content_tag(:div, res, id: 'res_values_att')
       end
 
@@ -20,8 +28,8 @@ module Comments
       private
 
       def att_view_paths
-        ActionController::Base.view_paths +
-          [Comments::Engine.root + "app/views/comments/#{@attachment_type}"]
+        ActionView::LookupContext.new(ActionController::Base.view_paths +
+          [Comments::Engine.root + "app/views/comments/#{@attachment_type}"])
       end
 
       def hash_attach_to(arg)
@@ -42,6 +50,38 @@ module Comments
           raise ArgumentError, 'Invalid type'
         end
       end
+
+      def assigns(attach_to, attachment_type, current_user)
+        model_obj = case @attachment_type
+        when 'files'
+          Comments::FileAttachment
+        when 'comments'
+          Comments::Comment
+        when 'tags'
+          Comments::Tagging
+        else
+          raise ArgumentError, 'atttachment_type is incorrect'
+        end
+
+
+        if attach_to[:class_name] == 'all'
+          records, pages = model_obj.all_records_to_json_view(user_id: current_user.id)
+        else
+          records, pages = model_obj.to_json_view(attach_to: @attach_to, user_id: current_user.id)
+          unless attach_to[:ids] == 'all'
+            with_context = Comments::Permissions
+                            .create_permissions(@attach_to.merge(user: current_user))
+          end
+        end
+        { attach_to: attach_to,
+          attachment_type: attachment_type,
+          with_context: with_context,
+          records: records,
+          pages: pages,
+          attachable_ids: attach_to[:ids] == 'all' ? 'all' : attach_to[:ids].join(','),
+          contexts: Comments::Context.allow(current_user.id) }
+      end
+
     end
   end
 end

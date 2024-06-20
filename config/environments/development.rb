@@ -1,14 +1,13 @@
+require "active_support/core_ext/integer/time"
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
   config.octo_feedback_host = 'http://188.44.52.38:28082'
   config.octo_jd_host = 'http://188.44.52.38:28081'
 
-  # In the development environment your application's code is reloaded on
-  # every request. This slows down response time but is perfect for development
+  # In the development environment your application's code is reloaded any time
+  # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  #config.active_record.raise_in_transactional_callbacks = true
-
   config.cache_classes = false
 
   # Do not eager load code on boot.
@@ -17,78 +16,91 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
+  # Enable server timing
+  config.server_timing = true
+
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+  if Rails.root.join("tmp/caching-dev.txt").exist?
     config.action_controller.perform_caching = true
+    config.action_controller.enable_fragment_cache_logging = true
 
-    # config.cache_store = :memory_store
+    config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => "public, max-age=#{2.days.to_i}"
+      "Cache-Control" => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
-
-    # config.cache_store = :null_store
   end
 
-  config.cache_store = :redis_cache_store, {
-    host: ENV['REDIS_HOST'],
-    port: ENV['REDIS_PORT'] || '6379'
-                                           }
+  # config.cache_store = :redis_cache_store, {
+  #   host: ENV['REDIS_HOST'],
+  #   port: ENV['REDIS_PORT'] || '6379'
+  # }
+  config.cache_store = :null_store
 
-  # Store uploaded files on the local file system (see config/storage.yml for options)
+
+  # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
+
   config.action_mailer.delivery_method = :letter_opener
+
   config.base_host = "localhost"
+
   config.action_mailer.default_options = { from: "info@localhost" }
-  config.action_mailer.default_url_options = { host: "localhost:9000" }
-  config.serve_static_files = true
-  config.assets.compile = true
-  config.assets.compress = true
 
-  # Compress JavaScripts and CSS.
-  #! ATTENTION! May break assets:precompile!    config.assets.js_compressor = Uglifier.new(:output => {:beautify => true, :indent_level => 2}, :mangle => false ,:harmony => true)
 
+  config.action_mailer.perform_caching = false
+
+  #nginx is for serving files, but rails -- for authorization
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
+  config.middleware.insert(0, Rack::Sendfile, config.action_dispatch.x_sendfile_header)
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
-  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
-  config.middleware.insert(0, Rack::Sendfile, config.action_dispatch.x_sendfile_header)
 
   config.logger = Logger.new(config.paths['log'].first, 'weekly', 5.megabytes)
   config.logger.level = Logger::DEBUG
   config.log_tags = [:remote_ip, lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
   config.colorize_logging = true
 
-  # Raise an error on page load if there are pending migrations
+  # Raise exceptions for disallowed deprecations.
+  config.active_support.disallowed_deprecation = :raise
+
+  # Tell Active Support which deprecation messages to disallow.
+  config.active_support.disallowed_deprecation_warnings = []
+
+  # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
-  # Debug mode disables concatenation and preprocessing of assets.
-  # This option may cause significant delays in view rendering with a large
-  # number of complex assets.
-  config.assets.debug = true
-
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
-  #config.assets.js_compressor = Uglifier.new(harmony: true)
-  config.assets.css_compressor = :sass
 
-  # Use an evented file watcher to asynchronously detect changes in source code,
-  # routes, locales, etc. This feature depends on the listen gem.
-  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
-   # += ["engines/core/spec/factories"]
-  config.factory_bot.definition_file_paths += Dir[Rails.root.join('engines/*/spec/factories')]
+  config.assets.debug = true
 
-  config.i18n.fallbacks = [I18n.default_locale]
-  logger           = ActiveSupport::Logger.new(STDOUT)
-  logger.formatter = config.log_formatter
-  config.logger = ActiveSupport::TaggedLogging.new(logger)
+
+  # Raises error for missing translations.
+  # config.i18n.raise_on_missing_translations = true
+
+  # Annotate rendered view with file names.
+  # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # Uncomment if you wish to allow Action Cable access from any origin.
+  # config.action_cable.disable_request_forgery_protection = true
+  #
+  # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  # config.factory_bot.definition_file_paths += Dir[Rails.root.join('engines/*/spec/factories')]
+  #
+  # config.i18n.fallbacks = [I18n.default_locale]
+  # logger           = ActiveSupport::Logger.new(STDOUT)
+  # logger.formatter = config.log_formatter
+  # config.logger = ActiveSupport::TaggedLogging.new(logger)
+
 end

@@ -184,7 +184,8 @@ module Face
     end
 
     def page_entries_info(collection, options = {})
-      return t 'without_pagination.displaying_all_records'  unless collection.arel.ast.cores.any? { |item| item.public_send(:top) }
+      return t 'without_pagination.displaying_all_records'  unless collection.arel.ast.cores.any? { |item| item.respond_to?(:top) }
+
       super
     end
 

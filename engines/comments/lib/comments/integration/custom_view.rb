@@ -3,8 +3,9 @@ module Comments
     class CustomView < ActionView::Base
       include Engine.routes.url_helpers
       attr_reader :current_user
+
       def initialize(path, attach_to, attachment_type, user)
-        super(path)
+        super(path, {}, nil)
         @attach_to = attach_to
         @attachment_type = attachment_type
         @current_user = user

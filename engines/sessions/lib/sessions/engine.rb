@@ -16,7 +16,7 @@ module Sessions
       ActiveSupport.on_load :action_controller do
         # ActionController::Base.send
         # helper Sessions::ApplicationHelper
-        ::ApplicationController.send(:helper, Sessions::ApplicationHelper)
+        # ::ApplicationController.send(:helper, Sessions::ApplicationHelper)
       end
     end
   end

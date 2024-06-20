@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 gem "rake"
-gem "rails", "~> 7.1"
+gem "rails", "~> 7.0.0"
 #-----------------------------------------
 gem "honeybadger", "~> 4.8"
 
@@ -109,4 +109,4 @@ group :test do
   gem "codeclimate-test-reporter", require: false
 end
 # gem 'sprockets-rails', '2.3.3'
- gem 'ffi', '1.16.3' 
+ gem 'ffi', '1.16.3'

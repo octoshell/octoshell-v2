@@ -36,9 +36,19 @@ class ApplicationRecord < ActiveRecord::Base
     yield(self)
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    column_names + _ransackers.keys
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    reflect_on_all_associations.map { |a| a.name.to_s } + _ransackers.keys
+  end
+
   scope :id_finder, (lambda do |id|
     where('CAST(id AS varchar) LIKE ?', "%#{id}%")
   end)
+
+
 
 
 end

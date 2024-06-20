@@ -34,6 +34,7 @@
 #
 
 class User < ApplicationRecord
+  include UserDecorator
   authenticates_with_sorcery!
   validates :password, confirmation: true, length: { minimum: 6 }, on: :create
   validates :password, confirmation: true, length: { minimum: 6 }, on: :update, if: :password?
