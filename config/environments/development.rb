@@ -2,8 +2,6 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.octo_feedback_host = 'http://188.44.52.38:28082'
-  config.octo_jd_host = 'http://188.44.52.38:28081'
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
@@ -33,12 +31,10 @@ Rails.application.configure do
     config.action_controller.perform_caching = false
   end
 
-  # config.cache_store = :redis_cache_store, {
-  #   host: ENV['REDIS_HOST'],
-  #   port: ENV['REDIS_PORT'] || '6379'
-  # }
-  config.cache_store = :null_store
-
+  config.cache_store = :redis_cache_store, {
+    host: ENV['REDIS_HOST'],
+    port: ENV['REDIS_PORT'] || '6379'
+  }
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
@@ -51,11 +47,12 @@ Rails.application.configure do
   config.base_host = "localhost"
 
   config.action_mailer.default_options = { from: "info@localhost" }
+  config.action_mailer.default_url_options = { host: "localhost" }
 
 
   config.action_mailer.perform_caching = false
 
-  #nginx is for serving files, but rails -- for authorization
+  #nginx is for serving files, and rails -- for authorization
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
   config.middleware.insert(0, Rack::Sendfile, config.action_dispatch.x_sendfile_header)
 
@@ -64,7 +61,7 @@ Rails.application.configure do
 
   config.logger = Logger.new(config.paths['log'].first, 'weekly', 5.megabytes)
   config.logger.level = Logger::DEBUG
-  config.log_tags = [:remote_ip, lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
+  config.log_tags = [:remote_ip, :request_method,  lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
   config.colorize_logging = true
 
   # Raise exceptions for disallowed deprecations.

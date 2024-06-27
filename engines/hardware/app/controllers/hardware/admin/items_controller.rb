@@ -10,7 +10,7 @@ module Hardware
     # skip_before_action :check_abilities, only: :json_update
 
     def index
-      @search = Item.search(params_q)
+      @search = Item.ransack(params_q)
       @items = @search.result(distinct: true)
                       .page(params[:page])
                       .preload(:kind)

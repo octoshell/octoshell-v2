@@ -21,8 +21,8 @@ module Core
         user.profile.update!(notify_about_jobs: true)
         project = create(:project, owner: user)
         user.bot_links.create!(active: true, token: 'very_secret')
-        expect(@api).to receive(:notify)
-        @api.job_finished(Core.create_job(login: project.member_owner.login).id)
+        expect(BotLinksApiHelper).to receive(:notify_test_bot)
+        BotLinksApiHelper.job_finished(Core.create_job(login: project.member_owner.login).id)
       end
 
 

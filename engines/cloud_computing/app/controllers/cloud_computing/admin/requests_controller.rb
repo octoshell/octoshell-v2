@@ -5,7 +5,7 @@ module CloudComputing::Admin
     end
 
     def index
-      @search = CloudComputing::Request.search(params[:q])
+      @search = CloudComputing::Request.ransack(params[:q])
       @requests = @search.result(distinct: true)
                          .includes(:created_by, :for)
                          .order(:created_at)

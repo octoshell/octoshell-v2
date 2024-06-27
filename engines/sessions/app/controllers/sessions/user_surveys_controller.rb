@@ -4,7 +4,7 @@ module Sessions
 
     def index
       if current_user
-        @search = current_user.surveys.search(params[:q] || default_index_params)
+        @search = current_user.surveys.ransack(params[:q] || default_index_params)
       else
         @search = Sessions::UserSurvey.none
       end

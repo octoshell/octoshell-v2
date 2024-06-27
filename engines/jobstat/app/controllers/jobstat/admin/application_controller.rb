@@ -1,12 +1,14 @@
 module Jobstat
-  class AdminApplicationController < ActionController::Base
-    protect_from_forgery with: :null_session
-    layout "layouts/jobstat/admin"
+  module Admin
+    class ApplicationController < ActionController::Base
+      protect_from_forgery with: :null_session
+      layout "layouts/jobstat/admin"
 
-    before_action :authorize_admins
+      before_action :authorize_admins
 
-    def authorize_admins
-      authorize!(:access, :admin)
+      def authorize_admins
+        authorize!(:access, :admin)
+      end
     end
   end
 end

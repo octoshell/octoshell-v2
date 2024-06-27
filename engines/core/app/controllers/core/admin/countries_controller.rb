@@ -4,7 +4,7 @@ module Core
     def index
       respond_to do |format|
         format.html do
-          @search = Country.search(params[:q])
+          @search = Country.ransack(params[:q])
           search_result = @search.result(distinct: true).order(id: :desc)
           @countries = search_result
           without_pagination :countries

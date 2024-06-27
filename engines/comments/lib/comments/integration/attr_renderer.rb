@@ -3,8 +3,7 @@ module Comments
     class AttRenderer
       include ActionView::Helpers
       A_TYPES = %w[Comment Tag File].freeze
-      def initialize(view, attachment_type, user, attach_to = :all)
-        @view = view
+      def initialize(attachment_type, user, attach_to = :all)
         @user = user
         @attachment_type = attachment_type
         @attach_to = hash_attach_to attach_to
@@ -16,11 +15,6 @@ module Comments
         view = CustomView.with_empty_template_cache
                          .new(att_view_paths, @attach_to, @attachment_type, @user)
         res = view.render(template: 'from_view')
-        # ApplicationController.render
-        # res = @view.render({template: "comments/#{@attachment_type}/from_view"}.merge assigns(@attach_to, @attachment_type, @user))
-        # res = Comments::AttachedController.render(template: "comments/#{@attachment_type}/from_view",
-        #   assigns: assigns(@attach_to, @attachment_type, @user))
-
         content_tag(:div, res, id: 'res_values_att')
       end
 

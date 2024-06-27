@@ -5,7 +5,7 @@ module Core
     def index
       respond_to do |format|
         format.html do
-          @search = ClusterLog.search(params[:q])
+          @search = ClusterLog.ransack(params[:q])
           @logs = @search.result(distinct: true).order(:created_at)
         end
         format.json do

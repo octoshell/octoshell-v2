@@ -19,7 +19,7 @@ module CloudComputing
           params[:q] ||= {
             template_kind_and_descendants: [TemplateKind.virtual_machine_cloud_class&.id.to_s]
           }
-          @search = CloudComputing::Template.for_users.search(params[:q])
+          @search = CloudComputing::Template.for_users.ransack(params[:q])
           @templates = @search.result(distinct: true)
                           .order_by_name
                           .page(params[:page])

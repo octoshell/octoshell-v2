@@ -3,7 +3,7 @@ module Sessions
     layout "layouts/sessions/user"
 
     def index
-      @search = current_user.reports.search(params[:q] || default_index_params)
+      @search = current_user.reports.ransack(params[:q] || default_index_params)
       @reports = @search.result(distinct: true).page(params[:page])
     end
 

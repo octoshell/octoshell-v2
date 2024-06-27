@@ -11,7 +11,7 @@ module CloudComputing
 
 
     def index
-      @search = project_accesses.search(params[:q])
+      @search = project_accesses.ransack(params[:q])
       @accesses = @search.result(distinct: true)
                          .includes(:user, :allowed_by, :for)
                          .order(:created_at)

@@ -48,12 +48,25 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
+  # Specifies the header that your server uses for sending files.
+  # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
+  config.middleware.insert(0, Rack::Sendfile, config.action_dispatch.x_sendfile_header)
+
+
+
   # Include generic and useful information about system operation, but avoid logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII).
+  config.logger = Logger.new(config.paths['log'].first, 'weekly', 5.megabytes)
+  config.log_tags = [:remote_ip, lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
+  config.logger.level = Logger::DEBUG
+  config.colorize_logging = false
+  # Set to :debug to see everything in the log.
   config.log_level = :info
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [ lambda{|r| Rime.now}, :remote_ip ]
+
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -78,6 +91,8 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
+  config.cache_store = :redis_cache_store
+
   # Use a different logger for distributed setups.
   # require "syslog/logger"
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
@@ -90,4 +105,13 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address => "smtp.parallel.ru",
+    :port => 25
+  }
+
+  config.i18n.fallbacks = [I18n.default_locale]
+
+
 end

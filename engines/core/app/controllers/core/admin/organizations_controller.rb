@@ -7,7 +7,7 @@ module Core
       respond_to do |format|
         format.html do
           provide_cities_hash
-          @search = Organization.search(params[:q])
+          @search = Organization.ransack(params[:q])
           search_result = @search.result(distinct: true).includes(:kind, :city, :country).order(id: :desc)
           @organizations = search_result
           without_pagination :organizations

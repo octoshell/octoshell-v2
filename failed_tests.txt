@@ -1,0 +1,32 @@
+rspec ./engines/pack/spec/models/versions_spec.rb:15 # Pack::Version #notify_about_expiring_versions
+rspec ./engines/cloud_computing/spec/services/cloud_computing/opennebula_task_spec.rb:49 # CloudComputing::OpennebulaTask::ssh_public_keys gets all keys associated with project of @access
+rspec ./engines/cloud_computing/spec/services/cloud_computing/opennebula_task_spec.rb:35 # CloudComputing::OpennebulaTask::hash_from_position forms hash from position
+rspec ./engines/cloud_computing/spec/services/cloud_computing/opennebula_task_spec.rb:42 # CloudComputing::OpennebulaTask::instantiate_vm instantiates vm
+rspec ./engines/support/spec/poro/not_spec.rb:22 # Support::TestNotificator creates ticket
+rspec ./engines/jobstat/spec/models/job_spec.rb:116 # Jobstat::Job::update_job works with 2 threads
+rspec ./engines/pack/spec/models/requested_access_spec.rb:42 # Pack::Access requested access changes status to denied
+rspec ./engines/pack/spec/models/requested_access_spec.rb:59 # Pack::Access requested access creates new requested access spec without date
+rspec ./engines/pack/spec/models/requested_access_spec.rb:82 # Pack::Access requested access creates new requested access spec with expired date
+rspec ./engines/pack/spec/models/requested_access_spec.rb:20 # Pack::Access requested access creates new requested access spec with date
+rspec ./engines/perf/spec/models/job_spec.rb:31 # Perf::Job::projects_by_node_hours shows place correctly
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:60 # Reports::ConstructorService group by select
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:81 # Reports::ConstructorService queries with joins
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:19 # Reports::ConstructorService usual select
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:50 # Reports::ConstructorService #to_csv
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:121 # Reports::ConstructorService performs custom inner join with base table
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:33 # Reports::ConstructorService order by query
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:163 # Reports::ConstructorService rewrites for db
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:180 # Reports::ConstructorService gets users who use gpu
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:41 # Reports::ConstructorService selects count
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:141 # Reports::ConstructorService rewrites having for db
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:171 # Reports::ConstructorService rewrites for db2
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:9 # Reports::ConstructorService usual select
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:152 # Reports::ConstructorService rewrites on for db
+rspec ./engines/reports/spec/service/constructor_service_spec.rb:99 # Reports::ConstructorService group by with assocations
+rspec ./engines/cloud_computing/spec/models/cloud_computing/access_spec.rb:41 # CloudComputing::Access#pend! pends
+rspec ./engines/cloud_computing/spec/models/cloud_computing/access_spec.rb:20 # CloudComputing::Access#copy_from_request copies from request
+rspec ./engines/pack/spec/features/user_access_spec.rb:30 # user_access request access with end_lic
+rspec ./engines/pack/spec/features/user_access_spec.rb:42 # user_access request access without end_lic
+rspec ./engines/cloud_computing/spec/services/cloud_computing/opennebula_resize_modifier_spec.rb:33 # CloudComputing::OpennebulaResizeModifier does not change vm
+rspec ./engines/cloud_computing/spec/services/cloud_computing/opennebula_resize_modifier_spec.rb:52 # CloudComputing::OpennebulaResizeModifier changes cpu and memory with request
+rspec ./engines/support/spec/poro/not_spec.rb:66 # Support::Notificator creates ticket

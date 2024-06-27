@@ -44,7 +44,7 @@ module CloudComputing
 
 
     def index
-      @search = user_requests.search(params[:q])
+      @search = user_requests.ransack(params[:q])
       @requests = @search.result(distinct: true)
                          .order(:created_at)
                          .page(params[:page])

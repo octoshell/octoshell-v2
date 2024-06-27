@@ -19,6 +19,8 @@ module Octoshell
     config.i18n.default_locale = :ru
     config.assets.initialize_on_precompile = false
     config.jd_systems = {}
+    config.octo_feedback_host = 'http://188.44.52.38:28082'
+    config.octo_jd_host = 'http://188.44.52.38:28081'
 
 
     config.cache_store = :memory_store, { size: 128.megabytes, expires_in: 600 }

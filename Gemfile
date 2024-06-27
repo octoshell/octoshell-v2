@@ -87,6 +87,8 @@ gem "config", github: 'railsconfig/config'
 gem "decorators"#, '~> 2.0.3'
 gem 'active_record_union'
 gem "whenever"
+gem "redis"
+
 
 group :test, :development do
   gem "factory_bot_rails"

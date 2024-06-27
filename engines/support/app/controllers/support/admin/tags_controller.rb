@@ -1,7 +1,7 @@
 module Support
   class Admin::TagsController < Admin::ApplicationController
     def index
-      @search = Tag.search(params[:q])
+      @search = Tag.ransack(params[:q])
       @tags = @search.result(distinct: true).page(params[:page])
     end
 

@@ -1,10 +1,14 @@
 module Jobstat
   class ApiController < ActionController::Base
     include AbnormalJobChecker
-
     before_action :parse_request
-    http_basic_authenticate_with name: Rails.application.secrets.jobstat[:user],
-                                 password: Rails.application.secrets.jobstat[:password]
+    if Rails.env.production? || Rails.application.secrets.jobstat
+      raise 'Provide password for Jobstat API Conntroller' unless Rails.application.secrets.jobstat
+
+      http_basic_authenticate_with name: Rails.application.secrets.jobstat[:user],
+                                   password: Rails.application.secrets.jobstat[:password]
+    end
+
     def post_info
       Job.update_job(@json).notify_when_finished
     end

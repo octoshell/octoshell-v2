@@ -11,7 +11,7 @@ module Sessions
         if params[:q][:choose_to_hide] && !params[:q][:choose_to_hide][0].present?
           params[:q].delete(:choose_to_hide)
         end
-        @search = project_class.search(params[:q])
+        @search = project_class.ransack(params[:q])
         @choose_to_hide = @search.choose_to_hide || []
         @projects = @search.result(distinct: true).preload(owner: [:profile]).preload(:organization).order(id: :desc)
         @projects_involved_in_session_ids = @session.involved_project_ids

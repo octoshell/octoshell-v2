@@ -5,7 +5,7 @@ module Core
     def index
       respond_to do |format|
         format.html do
-          @search = Project.search(params[:q])
+          @search = Project.ransack(params[:q])
           @projects = @search.result(distinct: true).preload(owner: [:profile])
                              .preload(:organization).order(created_at: :desc)
           @count_all_members = Member.group(:project_id)
