@@ -42,7 +42,7 @@ module Jobstat
     has_many :initiatees, class_name: "Job", foreign_key: "initiator_id"
     belongs_to :initiator, class_name: "Job"
 
-    belongs_to :member, class_name: "Core::Member", primary_key: :login
+    belongs_to :member, class_name: "Core::Member", foreign_key: :login, primary_key: :login
     FINAL_STATES = %w[COMPLETED CANCELLED FAILED AUTOCOMPLETED
                       NODE_FAIL TIMEOUT unknown].freeze
     INITIAL_STATES = (%w[CONFIGURING RESIZING RUNNING] + [nil]).freeze
