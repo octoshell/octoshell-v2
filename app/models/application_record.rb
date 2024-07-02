@@ -44,6 +44,24 @@ class ApplicationRecord < ActiveRecord::Base
     reflect_on_all_associations.map { |a| a.name.to_s } + _ransackers.keys
   end
 
+  def self.find_or_create_by_names(names)
+    record = nil
+    names.keys.each do |name|
+      record ||= find_by("#{name}": names[name])
+    end
+
+    return record if record
+
+    record = new(names)
+    main_name = "name_#{I18n.locale}"
+    unless record.public_send(main_name)
+      record.public_send("#{main_name}=", names.values.compact.first)
+    end
+    yield(record) if block_given?
+    record.save!
+    record
+  end
+
   scope :id_finder, (lambda do |id|
     where('CAST(id AS varchar) LIKE ?', "%#{id}%")
   end)

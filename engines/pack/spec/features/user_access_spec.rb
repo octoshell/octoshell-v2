@@ -32,6 +32,7 @@ module Pack
       page.find("tbody[package_id='#{@package.id}'] button").click
       select2 'alpaca1', "Проект #{@project.title}"
       to_date = (Date.today + 7).to_s
+      sleep(1)
       fill_in 'alpaca23', with: to_date
       click_button 'Сохранить'
       expect(page).to have_content('Заявка успешно отправлена')

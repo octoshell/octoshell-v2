@@ -11,7 +11,7 @@ module Support
       {
         parent_topic: { name_ru: 'Уведомления', name_en: 'Notifications' },
         topic: { name_ru: 'Уведомления', name_en: 'Notifications' },
-        reporter: Support.user_class.find_by_email!(EMAIL)
+        reporter: Support.user_class.find_by_email(EMAIL)
       }
     end
 
@@ -108,8 +108,10 @@ module Support
     end
 
     def render(file, assigns = {})
-      path = "#{engine.const_get('Engine').root}/app/views"
-      ActionView::Base.new(path, assigns).render file: "#{engine.to_s.downcase}/notificator/#{file}"
+      path = ActionView::LookupContext.new("#{engine.const_get('Engine').root}/app/views")
+      ActionView::Base.with_empty_template_cache
+                      .new(path, assigns, nil)
+                      .render template: "#{engine.to_s.downcase}/notificator/#{file}"
     end
 
     def self.method_missing(method_name, *args)

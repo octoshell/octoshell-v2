@@ -32,7 +32,7 @@ module Perf
         rows = Comparator.new(@session.id).brief_project_stat.execute
         expect(rows).to include(include('id'=> @projects.last.id,
                                        's_place_node_hours' => 1,
-                                       's_node_hours' => (3 * 2 * 2 * 2 * 2).to_s))
+                                       's_node_hours' => (3 * 2 * 2 * 2 * 2)))
         # pp Comparator.new(@session.id).brief_project_stat.execute.group_by { |e| e['id']  }
         # pp Comparator.new(@session.id).show_project_stat(['FAILED'], 's_share_node_hours').execute
       end

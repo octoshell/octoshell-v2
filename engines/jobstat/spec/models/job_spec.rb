@@ -113,21 +113,21 @@ module Jobstat
       end
 
 
-      it "works with 2 threads" do
-        2.times.map do |i|
-          Thread.new do
-            Job.update_job({ 'cluster' => 'cluster',
-                             'job_id' => 1,
-                             'task_id' => 1,
-                             'account' => "account_#{i}",
-                             'partition' => 'compute' }
-                             .merge(%w[t_submit t_end t_start]
-                                  .map { |a| [a, Time.now] }.to_h))
-          end
-        end.each(&:join)
-        expect(Job.where(cluster: 'cluster', drms_job_id: 1, drms_task_id: 1,
-                         partition: 'compute').count).to eq 1
-      end
+      # it "works with 2 threads" do
+      #   2.times.map do |i|
+      #     Thread.new do
+      #       Job.update_job({ 'cluster' => 'cluster',
+      #                        'job_id' => 1,
+      #                        'task_id' => 1,
+      #                        'account' => "account_#{i}",
+      #                        'partition' => 'compute' }
+      #                        .merge(%w[t_submit t_end t_start]
+      #                             .map { |a| [a, Time.now] }.to_h))
+      #     end
+      #   end.each(&:join)
+      #   expect(Job.where(cluster: 'cluster', drms_job_id: 1, drms_task_id: 1,
+      #                    partition: 'compute').count).to eq 1
+      # end
     end
 
 

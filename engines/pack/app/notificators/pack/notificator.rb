@@ -3,10 +3,10 @@ module Pack
     class Notificator < Octoface.role_class(:support, 'Notificator')
 
       def options
-        {
+        { topic: {
           name_en: 'Software versions with expiring license',
           name_ru: 'Версии ПО с истекающей лицензией'
-        }
+        } }
       end
 
       def notify_about_expiring_versions(versions)
