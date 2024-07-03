@@ -99,6 +99,9 @@ class Synchronizer
         elsif member.denied?
           cluster.log("\t Access for #{member.login} is denied", project)
           deactivate_member(member, member_state_on_cluster)
+        elsif member.engaged?
+          cluster.log("\t Access for #{member.login} is engaged", project)
+          block_member(member) if member_state_on_cluster == 'active'
         end
       end
     elsif project.blocked? || project.suspended?
@@ -112,6 +115,12 @@ class Synchronizer
         drop_member(member, member_state_on_cluster)
       end
     end
+    project.removed_members.each do |removed_member|
+      member_state_on_cluster = check_member_state_on_cluster(removed_member)
+      drop_member(member, member_state_on_cluster)
+    end
+
+
   end
 
   def activate_member(member, state)

@@ -62,7 +62,7 @@ module Core
       end
 
       event :substract_from_surety do
-        transitions :from => [:allowed, :unsured], :to => :engaged
+        transitions from: %i[allowed unsured denied suspended], to: :engaged
       end
 
       event :activate do
