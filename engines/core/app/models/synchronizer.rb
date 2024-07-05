@@ -117,7 +117,7 @@ class Synchronizer
     end
     project.removed_members.each do |removed_member|
       member_state_on_cluster = check_member_state_on_cluster(removed_member)
-      drop_member(member, member_state_on_cluster)
+      block_member(removed_member) if member_state_on_cluster == 'active'
     end
 
 
