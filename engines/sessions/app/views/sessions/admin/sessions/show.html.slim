@@ -25,8 +25,8 @@ div class="well"
 blockquote class="lead"
   h4 = t(".started_at", date: @session.started_at || "--")
   h4 = t(".ended_at", date: @session.ended_at || "--")
-  h4  #{t(".assessing_reports")} #{@session.reports.submitted.count }
-  h4  #{t(".submitted_reports")} #{@session.reports.assessing.count }
+  h4  #{t(".assessing_reports")} #{@session.reports.assessing.count }
+  h4  #{t(".submitted_reports")} #{@session.reports.submitted.count }
 
 /* h3 #{t('.session_archive')} */
 
