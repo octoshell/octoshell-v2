@@ -1,0 +1,11 @@
+div class="page-header"
+  h1 = t(".title")
+  = bootstrap_form_for @search, url: admin_stats_by_project_path, method: :get, layout: :vertical do |f|
+    .row
+      .col-md-6
+          = f.autocomplete_field :id_eq,{ label: Core::Project.human_attribute_name(:id), source: core.id_finder_admin_projects_path},'redirect-url': '/core/admin/projects/{{id}}'
+      .col-md-6
+          = f.text_field :members_jobstat_jobs_submit_time_gt
+= safe_paginate @projects
+= render 'project_table', projects: @projects
+= safe_paginate @projects

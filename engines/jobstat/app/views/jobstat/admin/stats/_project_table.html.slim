@@ -1,0 +1,41 @@
+- if projects.any?
+  h4= page_entries_info projects
+  div class="panel-body"
+    table class="table table-hover"
+      tr
+        th
+        th  = Core::Project.human_attribute_name(:title)
+        th class = Core::Project.human_attribute_name(:state)
+        th  = Core::Project.human_attribute_name(:owner)
+        th  = Core::Project.human_attribute_name(:organization)
+        th
+          - th_title = Core::Project.human_attribute_name(:created_at)
+          - if @search
+            = sort_link @search, :created_at, th_title, default_order: :desc
+          - else
+            = th_title
+        th =  t('.node_hours')
+        th =  t('.node_hours')
+      - projects.each do |project|
+        tr
+          td = project.id
+          td = link_to project.title, core.admin_project_path(project)
+          td = mark_project_state(project)
+          td
+            - owner = project.owner
+            ul class="list-unstyled"
+              li = link_to owner.full_name, main_app.admin_user_path(owner)
+              li = owner.email
+          td
+            - organization = project.organization
+            = organization.present? ? organization.name : t(".no_organization.html")
+            - if project.organization_department.present?
+              | (
+              = project.organization_department.name
+              | )
+          td  = l project.created_at.to_date
+          td  = project.n_h
+          td = project.count
+- else
+  div class="panel-body"
+    p = t(".no_projects_found", default: "No Projects Found")
