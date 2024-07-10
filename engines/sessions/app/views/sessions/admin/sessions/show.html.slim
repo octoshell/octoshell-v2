@@ -25,6 +25,7 @@ div class="well"
 blockquote class="lead"
   h4 = t(".started_at", date: @session.started_at || "--")
   h4 = t(".ended_at", date: @session.ended_at || "--")
+<<<<<<< HEAD
   h4  #{t(".assessing_reports")} #{@session.reports.assessing.count}
   h4  #{t(".submitted_reports")} #{@session.reports.submitted.count}
 
@@ -46,6 +47,10 @@ table class="table table-striped"
     - Sessions::Report.aasm(:state).states.select{|state| state.name == :assessing || state.name == :assessed || state.name == :rejected}.map(&:name).each do |state|
       td = link_to @session.reports.where(state: state).count, admin_reports_path(q: {session_id_in: @session.id, state_in: 'state'})  
 
+=======
+  h4  #{t(".assessing_reports")} #{@session.reports.submitted.count }
+  h4  #{t(".submitted_reports")} #{@session.reports.assessing.count }
+>>>>>>> parent of 8967b959 (changes)
 
 /* h3 #{t('.session_archive')} */
 

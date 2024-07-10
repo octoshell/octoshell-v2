@@ -267,18 +267,6 @@ ru:
           started_at: Началась %{date}
           submitted_reports: отчёты, не взятые на оценку
           title: Перерегистрация «%{name}»
-          accepted: Не прислан
-          assessed: Оценен
-          assessing: Оценивается
-          can_not_be_submitted: Отказ предоставления отчета
-          exceeded: Просрочен
-          pending: Не начат
-          postdated: Отправлен с опозданием
-          postfilling: Заполняется с опознанием
-          rejected: Отклонен
-          submitted: Отправлен
-          expert: Эксперт
-          summ: Сумма
         show_projects:
           activated_after: 'TRME '
           activated_before: 'TRME '

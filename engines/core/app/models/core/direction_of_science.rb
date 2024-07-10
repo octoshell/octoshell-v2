@@ -1,8 +1,8 @@
-#Schema Information
+# == Schema Information
 #
 # Table name: core_direction_of_sciences
 #
-#  id         :integer   
+#  id         :integer          not null, primary key
 #  name_ru    :string(255)
 #  created_at :datetime
 #  updated_at :datetime

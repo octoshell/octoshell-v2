@@ -18,8 +18,7 @@ class Ability
         instance_exec user, &b
       end
     end
-can :manage, :reports
-#can? 
+
     # if Octoface::OctoConfig.find_by_role(:support)
     # end
 
