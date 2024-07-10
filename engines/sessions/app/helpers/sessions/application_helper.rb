@@ -69,5 +69,18 @@ module Sessions
         :danger
       end
     end
+
+    #colouring cells for expert's table
+    def cell_colour(cnt, cnt_all)
+      if cnt <= cnt_all / 8
+        "#98FB98;"
+      elsif cnt <= cnt_all / 4
+        "#00FA9A;"
+      elsif cnt <= cnt_all / 2
+        "#3CB371;"
+      else
+        "#2E8B57;"
+      end
+    end
   end
 end
