@@ -26,7 +26,7 @@ div class="page-header"
       = f.text_field :first_activation_at_gt, options.merge(label: t('.activated_after'))
       = f.text_field :updated_at_gt, options.merge(label: t('.updated_after'))
   div.col-md-12
-    .col-md-3
+    .col-md-
       = f.collection_select :critical_technologies_id_in, Core::CriticalTechnology.order_by_name, :id, :name,
         {label: t('.critical_technologies_id_in'),  include_blank: true}, multiple: true
 

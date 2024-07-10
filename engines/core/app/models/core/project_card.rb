@@ -3,7 +3,7 @@
 #
 # Table name: core_project_cards
 #
-#  id           :integer          not null, primary key
+#  id           :integer        
 #  driver       :text
 #  en_driver    :text
 #  en_impact    :text
@@ -24,8 +24,6 @@
 #
 #  index_core_project_cards_on_project_id  (project_id)
 #
-
-# Карточка проекта
 module Core
   class ProjectCard < ApplicationRecord
     RU_FIELDS = [:name, :driver, :strategy, :objective, :impact, :usage]

@@ -21,7 +21,7 @@
       - projects.each do |project|
         tr
           td = project.id
-          td = link_to project.title, admin_project_path(project)
+          td = link_to project.title + '123', admin_project_path(project)
           td = mark_project_state(project)
           td
             - owner = project.owner
