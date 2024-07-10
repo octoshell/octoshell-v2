@@ -72,14 +72,11 @@ module Sessions
 
     #colouring cells for expert's table
     def cell_colour(cnt, cnt_all)
-      if cnt <= cnt_all / 8
-        "#98FB98;"
-      elsif cnt <= cnt_all / 4
-        "#00FA9A;"
-      elsif cnt <= cnt_all / 2
-        "#3CB371;"
-      else
-        "#2E8B57;"
+      case
+      when cnt <= cnt_all / 8 then "#98FB98"
+      when cnt <= cnt_all / 4 then "#00FA9A"
+      when cnt <= cnt_all / 2 then "#3CB371"
+      else "#2E8B57"
       end
     end
   end
