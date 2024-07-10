@@ -32,18 +32,18 @@ blockquote class="lead"
 table class="table table-striped"
     tr
     th = t(".expert")
-    - Sessions::Report.aasm(:state).states.select{|state| state.name == :assessing || state.name == :assessed || state.name == :rejected}.map(&:name).each do |state|
+    - [:assessing, :assessed, :rejected].each do |state|
       th = Sessions::Report.human_state_name(state)
     th
     - Sessions.user_class.experts.each do |expert|
       -if(@session.reports.where(expert_id: expert.id).count != 0)
         tr
           td = link_to expert.profile.full_name, octo_url_for(:admin, expert)
-          - Sessions::Report.aasm(:state).states.select{|state| state.name == :assessing || state.name == :assessed || state.name == :rejected}.map(&:name).each do |state|
+          - [:assessing, :assessed, :rejected].each do |state|
               td = @session.reports.where(expert_id: expert.id, state: state).count
     tr
     td = t(".summ")
-    - Sessions::Report.aasm(:state).states.select{|state| state.name == :assessing || state.name == :assessed || state.name == :rejected}.map(&:name).each do |state|
+    - [:assessing, :assessed, :rejected].each do |state|
       td = link_to @session.reports.where(state: state).count, admin_reports_path(q: {session_id_in: @session.id, state_in: 'state'})
     
 
