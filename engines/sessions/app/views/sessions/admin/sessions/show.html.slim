@@ -44,7 +44,7 @@ table class="table table-striped"
     tr
     td = t(".summ")
     - [:assessing, :assessed, :rejected].each do |state|
-      td = link_to @session.reports.where(state: state).count, admin_reports_path(q: {session_id_in: @session.id, state_in: 'state'})
+      td = link_to @session.reports.where(state: state).count, admin_reports_path(q: {session_id_in: @session.id, state_in: state})
     
 
 
