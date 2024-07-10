@@ -20,3 +20,25 @@ table class="table table-striped"
         span class="label label-#{session_state_label(session)}" = session.human_state_name
       td = session.started_at || "--"
       td = session.ended_at || "--"
+
+div class="page-header"
+  h1 = t("Список экспертов")
+
+table class="table table-striped"
+  tr
+    th class="col-xs-1" 
+    - @sessions.each do |session|
+      td = link_to session.description, [:admin, session]
+  - Sessions.user_class.experts.each do |expert|
+    tr
+      td = link_to expert.profile.full_name, octo_url_for(:admin, expert)
+      - @sessions.each do |session|
+        - if(session.reports.where(expert_id: expert.id).count <= session.reports.where(expert_id: expert.id).count/8)
+          td style="background-color: #98FB98;" = session.reports.where(expert_id: expert.id).count
+        - elsif(session.reports.where(expert_id: expert.id).count <= session.reports.where(expert_id: expert.id).count/4)
+          td style="background-color: #00FA9A;" = session.reports.where(expert_id: expert.id).count
+        - elsif(session.reports.where(expert_id: expert.id).count <= session.reports.where(expert_id: expert.id).count/2)
+          td style="background-color: #3CB371;" = session.reports.where(expert_id: expert.id).count
+        -else
+          td style="background-color: #2E8B57;" = session.reports.where(expert_id: expert.id).count
+
