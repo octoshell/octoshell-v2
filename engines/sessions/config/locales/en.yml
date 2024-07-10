@@ -249,6 +249,7 @@ en:
         index:
           new_session: Create re-registration
           title: Reregistrations list
+          list: List of experts
         new:
           title: Reregistration creation
         show:
