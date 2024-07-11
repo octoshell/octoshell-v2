@@ -126,9 +126,9 @@ en:
         first_name: Name
         last_name: Surname
         middle_name: Middle name
+        notify_about_jobs: Notify me about job finish in Telegram
         receive_info_mails: Use my email for info newsletters
         receive_special_mails: Use my email for service newsletters
-        notify_about_jobs: Notify me about job finish in Telegram
       user:
         full_name: Initials
         group_ids: Groups
@@ -314,14 +314,13 @@ en:
       info_mails_help: >-
         Tick if you agree to receive newsletters about future seminars and other useful
         information.
+      notify_about_jobs_help: >-
+        Tick if you want to be notified about computational job completion in Telegram.
+        Fill in required fields for bot at the bottom of page.
       save: Save
       special_mails_help: >-
         Tick if you agree to receive a newsletter about the status of clusters, preventive
         works and other service information.
-      notify_about_jobs_help: >-
-        Tick if you want to be notified about computational
-        job completion in Telegram. Fill in required fields for bot at the bottom
-        of page.
     show:
       change_password: Change password
       is_admin: Administator
