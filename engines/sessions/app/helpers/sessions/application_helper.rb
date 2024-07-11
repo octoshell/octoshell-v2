@@ -73,11 +73,16 @@ module Sessions
     #colouring cells for expert's table
     def cell_colour(cnt, cnt_all)
       case
-      when cnt <= cnt_all / 8 then "#98FB98"
-      when cnt <= cnt_all / 4 then "#00FA9A"
-      when cnt <= cnt_all / 2 then "#3CB371"
+      when cnt <= cnt_all / 14 then "#FFFF99"
+      when cnt <= cnt_all / 10 then "#98FB98"
+      when cnt <= cnt_all / 8 then "#00FA9A"
+      when cnt <= cnt_all / 4 then "#3CB371"
       else "#2E8B57"
       end
+    end
+    #checking if expert has any reports
+    def has_reports?(sessions, expert)
+      sessions.any? { |session| session.reports.where(expert_id: expert.id).exists? }
     end
   end
 end

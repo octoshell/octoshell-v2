@@ -30,10 +30,11 @@ table class="table table-striped"
     - @sessions.each do |session|
       td = link_to session.description, [:admin, session]
   - Sessions.user_class.experts.each do |expert|
-    tr
-      td = link_to expert.profile.full_name, octo_url_for(:admin, expert)
-      - @sessions.each do |session|
-        -cnt = session.reports.where(expert_id: expert.id).count
-        -cnt_all = session.reports.count
-        td style="background-color: #{cell_colour(cnt, cnt_all)}" = cnt
+    - if has_reports?(@sessions, expert)
+      tr
+        td = link_to expert.profile.full_name, octo_url_for(:admin, expert)
+        - @sessions.each do |session|
+          -cnt = session.reports.where(expert_id: expert.id).count
+          -cnt_all = session.reports.count
+          td style="background-color: #{cell_colour(cnt, cnt_all)}" = cnt
 
