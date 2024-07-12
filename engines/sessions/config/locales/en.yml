@@ -250,6 +250,7 @@ en:
           new_session: Create re-registration
           title: Reregistrations list
           list: List of experts
+          summ: sum
         new:
           title: Reregistration creation
         show:

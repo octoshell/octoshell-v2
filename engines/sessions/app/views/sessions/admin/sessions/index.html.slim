@@ -37,4 +37,8 @@ table class="table table-striped"
           -cnt = session.reports.where(expert_id: expert.id).count
           -cnt_all = session.reports.count
           td style="background-color: #{cell_colour(cnt, cnt_all)}" = cnt
+  tr
+    td = t(".summ")
+    - @sessions.each do |session|
+      td = session.reports.count
 
