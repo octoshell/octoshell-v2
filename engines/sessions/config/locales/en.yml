@@ -249,6 +249,8 @@ en:
         index:
           new_session: Create re-registration
           title: Reregistrations list
+          list: List of experts
+          summ: sum
         new:
           title: Reregistration creation
         show:
@@ -272,6 +274,18 @@ en:
           started_at: started at %{date}
           submitted_reports: submitted reports
           title: The  "%{name}" re-registration
+          accepted: Not accepted
+          assessed: Is rated
+          assessing: Is being rated
+          can_not_be_submitted: Refusal to report
+          exceeded: Exceeded
+          pending: Not started
+          postdated: Late submitted
+          postfilling: Filling late
+          rejected: Rejected
+          submitted: Submitted
+          expert: Expert
+          summ: Sum
       stats:
         index:
           add_graph: Add chart

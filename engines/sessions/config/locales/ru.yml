@@ -151,8 +151,6 @@ ru:
           activated_before: Активирован до
           consider_deleted_members: Спрятать проекты без запущенных задач, учитывая
             удалённых участников
-          consider_impact_after: TRME Consider impact after
-          consider_impact_before: TRME Consider impact before
           consumed_max_resources: Потребили ядрочасов не более, чем
           consumed_min_resources: Потребили ядрочасов не менее, чем
           created_after: Создан после
@@ -171,8 +169,6 @@ ru:
             бы один раз. Имейте в виду, что некоторые задачи могли выполняться меньше
             секунды, и проекты в принципе могут иметь 0 ядрочасов, при этом запустившись
             хотя бы раз.
-          hide_with_zero: TRME Hide projects with zero impact
-          hide_with_zero_impact: TRME Hide projects with zero impact
           launched: Не включая исключённых участников
           launched_including_deleted: Включая исключённых участников проекта
           no_projects_found: Не найдено проектов
@@ -213,8 +209,6 @@ ru:
           evaluate: Оценить
           expert: Эксперт
           expert_assignment: Назначение эксперта
-          similar_project: Проекты той же организации
-          similar_project_by_members: Проекты с теми же участниками
           message: Сообщение
           motivation_to_keep_the_project: Обоснование сохранения проекта
           no_completed_surveys: Нет присланных опросов
@@ -251,6 +245,8 @@ ru:
         index:
           new_session: Создать перерегистрацию
           title: Список перерегистраций
+          list: Список экспертов
+          summ: Сумма
         new:
           title: Создание перерегистрации
         show:
@@ -273,6 +269,18 @@ ru:
           started_at: Началась %{date}
           submitted_reports: отчёты, не взятые на оценку
           title: Перерегистрация «%{name}»
+          accepted: Не прислан
+          assessed: Оценен
+          assessing: Оценивается
+          can_not_be_submitted: Отказ предоставления отчета
+          exceeded: Просрочен
+          pending: Не начат
+          postdated: Отправлен с опозданием
+          postfilling: Заполняется с опознанием
+          rejected: Отклонен
+          submitted: Отправлен
+          expert: Эксперт
+          summ: Сумма
         show_projects:
           activated_after: 'TRME '
           activated_before: 'TRME '
