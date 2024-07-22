@@ -47,6 +47,8 @@ module Jobstat
                       NODE_FAIL TIMEOUT unknown].freeze
     INITIAL_STATES = (%w[CONFIGURING RESIZING RUNNING] + [nil]).freeze
 
+    scope :finished, -> { where(state: FINAL_STATES) }
+
     def notify_when_finished
       return unless state_previously_changed? &&
                     INITIAL_STATES.include?(state_previous_change[0]) &&

@@ -252,7 +252,7 @@ ru:
             html: 'TRME TRME TRME '
           no_projects_found: Не найдено проектов
           node_hours: Узлочасы
-          partitions: Есть задачи в разделах
+          partitions: Узлочасы в разделах
     common:
       agree_button: Согласен с оценкой
       agree_rule: Да.

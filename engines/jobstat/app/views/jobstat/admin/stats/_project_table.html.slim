@@ -15,8 +15,8 @@
             = sort_link @search, :created_at, th_title, default_order: :desc
           - else
             = th_title
+            th =  t('.job_count')
         th =  t('.node_hours')
-        th =  t('.job_count')
         th =  t('.partitions')
 
       - projects.each do |project|
@@ -37,9 +37,9 @@
               = project.organization_department.name
               | )
           td = l project.created_at.to_date
-          td = project.node_hours
           td = project.job_count
-          td = project.partitions
+          td = project.node_hours&.round
+          td = (@project_partitions[project.id] || []).map { |row| "#{row.partition}: #{row.node_hours.round}"  }.join(', ')
 - else
   div class="panel-body"
     p = t(".no_projects_found", default: "No Projects Found")
