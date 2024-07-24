@@ -35,8 +35,7 @@ gem "ransack"
 # security reasons
 gem "nokogiri", ">= 1.10.4"
 gem "mini_magick", ">= 4.9.4"
-
-
+gem 'sidekiq', '< 7'
 group :development do
   gem "annotate"
   gem "pry-rails"

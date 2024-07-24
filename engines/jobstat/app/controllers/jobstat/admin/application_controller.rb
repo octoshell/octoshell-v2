@@ -8,6 +8,5 @@ module Jobstat
       def authorize_admins
         authorize!(:access, :admin)
       end
-    end
   end
 end

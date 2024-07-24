@@ -28,6 +28,9 @@ module Octoshell
     config.action_controller.include_all_helpers = true
     config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone]
 
+    config.factory_bot.definition_file_paths +=
+           Dir.glob('engines/*/spec/factories') if defined?(FactoryBotRails)
+
 
     # Configuration for the application, engines, and railties goes here.
     #

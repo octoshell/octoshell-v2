@@ -16,3 +16,4 @@
 // = require sessions/application
 // = require announcements/application
 //= require_tree ./site-wide
+// = require jquery_nested_form
