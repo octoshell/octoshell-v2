@@ -39,6 +39,7 @@ div class="row"
   = render "requests", requests: @project.requests.where(:state=>[:pending, :closed])
 
 = render "core/admin/projects/members"
+/= render "core/admin/projects/removed_members"
 = render "core/admin/projects/sureties"
 
 h4 = "Заявки на ресурсы"

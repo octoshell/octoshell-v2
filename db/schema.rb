@@ -22,10 +22,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "announcements", id: :serial, force: :cascade do |t|
-    t.string "title_ru"
-    t.string "reply_to"
+    t.string "title_ru", limit: 255
+    t.string "reply_to", limit: 255
     t.text "body_ru"
-    t.string "attachment"
+    t.string "attachment", limit: 255
     t.boolean "is_special"
     t.string "state"
     t.datetime "created_at", precision: nil
@@ -238,8 +238,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
 
   create_table "comments_comments", id: :serial, force: :cascade do |t|
     t.text "text"
-    t.string "attachable_type", null: false
     t.integer "attachable_id", null: false
+    t.string "attachable_type", null: false
     t.integer "user_id", null: false
     t.integer "context_id"
     t.datetime "created_at", precision: nil, null: false
@@ -269,8 +269,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   create_table "comments_file_attachments", id: :serial, force: :cascade do |t|
     t.string "file"
     t.text "description"
-    t.string "attachable_type", null: false
     t.integer "attachable_id", null: false
+    t.string "attachable_type", null: false
     t.integer "user_id", null: false
     t.integer "context_id"
     t.datetime "created_at", precision: nil, null: false
@@ -293,8 +293,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
 
   create_table "comments_taggings", id: :serial, force: :cascade do |t|
     t.integer "tag_id"
-    t.string "attachable_type", null: false
     t.integer "attachable_id", null: false
+    t.string "attachable_type", null: false
     t.integer "user_id"
     t.integer "context_id"
     t.datetime "created_at", precision: nil, null: false
@@ -340,8 +340,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
 
   create_table "core_cities", id: :serial, force: :cascade do |t|
     t.integer "country_id"
-    t.string "title_ru"
-    t.string "title_en"
+    t.string "title_ru", limit: 255
+    t.string "title_en", limit: 255
     t.boolean "checked", default: false
     t.index ["country_id"], name: "index_core_cities_on_country_id"
     t.index ["title_ru"], name: "index_core_cities_on_title_ru"
@@ -365,8 +365,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "core_clusters", id: :serial, force: :cascade do |t|
-    t.string "name_ru", null: false
-    t.string "host", null: false
+    t.string "name_ru", limit: 255, null: false
+    t.string "host", limit: 255, null: false
     t.text "description"
     t.text "public_key"
     t.text "private_key"
@@ -380,15 +380,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "core_countries", id: :serial, force: :cascade do |t|
-    t.string "title_ru"
-    t.string "title_en"
+    t.string "title_ru", limit: 255
+    t.string "title_en", limit: 255
     t.boolean "checked", default: false
   end
 
   create_table "core_credentials", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
-    t.string "state"
-    t.string "name", null: false
+    t.string "state", limit: 255
+    t.string "name", limit: 255, null: false
     t.text "public_key", null: false
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
@@ -440,7 +440,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "core_employment_position_names", id: :serial, force: :cascade do |t|
-    t.string "name_ru"
+    t.string "name_ru", limit: 255
     t.text "autocomplete"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
@@ -506,10 +506,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "core_notices", id: :serial, force: :cascade do |t|
-    t.string "sourceable_type"
     t.integer "sourceable_id"
-    t.string "linkable_type"
+    t.string "sourceable_type"
     t.integer "linkable_id"
+    t.string "linkable_type"
     t.text "message"
     t.integer "count"
     t.datetime "created_at", precision: nil, null: false
@@ -525,13 +525,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
 
   create_table "core_organization_departments", id: :serial, force: :cascade do |t|
     t.integer "organization_id"
-    t.string "name"
+    t.string "name", limit: 255
     t.boolean "checked", default: false
     t.index ["organization_id"], name: "index_core_organization_departments_on_organization_id"
   end
 
   create_table "core_organization_kinds", id: :serial, force: :cascade do |t|
-    t.string "name_ru"
+    t.string "name_ru", limit: 255
     t.boolean "departments_required", default: false
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
@@ -539,8 +539,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "core_organizations", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "abbreviation"
+    t.string "name", limit: 255
+    t.string "abbreviation", limit: 255
     t.integer "kind_id"
     t.integer "country_id"
     t.integer "city_id"
@@ -589,7 +589,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "core_project_kinds", id: :serial, force: :cascade do |t|
-    t.string "name_ru"
+    t.string "name_ru", limit: 255
     t.string "name_en"
   end
 
@@ -619,10 +619,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "core_quota_kinds", id: :serial, force: :cascade do |t|
-    t.string "name_ru"
-    t.string "measurement_ru"
+    t.string "name_ru", limit: 255
+    t.string "measurement_ru", limit: 255
     t.string "name_en"
     t.string "measurement_en"
+  end
+
+  create_table "core_removed_members", force: :cascade do |t|
+    t.bigint "project_id"
+    t.bigint "user_id"
+    t.string "login"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_core_removed_members_on_project_id"
+    t.index ["user_id"], name: "index_core_removed_members_on_user_id"
   end
 
   create_table "core_request_fields", id: :serial, force: :cascade do |t|
@@ -641,7 +651,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
     t.integer "cpu_hours"
     t.integer "gpu_hours"
     t.integer "hdd_size"
-    t.string "group_name"
+    t.string "group_name", limit: 255
     t.integer "creator_id"
     t.text "comment"
     t.text "reason"
@@ -698,7 +708,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
 
   create_table "core_surety_scans", id: :serial, force: :cascade do |t|
     t.integer "surety_id"
-    t.string "image"
+    t.string "image", limit: 255
     t.index ["surety_id"], name: "index_core_surety_scans_on_surety_id"
   end
 
@@ -740,7 +750,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "groups", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.integer "weight"
     t.boolean "system"
     t.datetime "created_at", precision: nil
@@ -839,8 +849,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "jobstat_jobs", id: :serial, force: :cascade do |t|
-    t.string "cluster", limit: 32
-    t.bigint "drms_job_id"
+    t.string "cluster", limit: 32, null: false
+    t.bigint "drms_job_id", null: false
     t.bigint "drms_task_id"
     t.string "login", limit: 32
     t.string "partition", limit: 32
@@ -856,7 +866,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
     t.datetime "updated_at", precision: nil, null: false
     t.text "nodelist"
     t.integer "initiator_id"
-    t.index ["cluster", "drms_task_id", "drms_job_id"], name: "uniq_jobs", unique: true
+    t.index ["cluster", "drms_job_id", "drms_task_id"], name: "uniq_jobs", unique: true
     t.index ["end_time"], name: "index_jobstat_jobs_on_end_time"
     t.index ["login"], name: "index_jobstat_jobs_on_login"
     t.index ["partition"], name: "index_jobstat_jobs_on_partition"
@@ -875,8 +885,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "options", id: :serial, force: :cascade do |t|
-    t.string "owner_type"
     t.integer "owner_id"
+    t.string "owner_type"
     t.string "name_ru"
     t.string "name_en"
     t.text "value_ru"
@@ -994,8 +1004,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "permissions", id: :serial, force: :cascade do |t|
-    t.string "action"
-    t.string "subject_class"
+    t.string "action", limit: 255
+    t.string "subject_class", limit: 255
     t.integer "group_id"
     t.boolean "available", default: false
     t.datetime "created_at", precision: nil
@@ -1006,9 +1016,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
 
   create_table "profiles", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
-    t.string "first_name"
-    t.string "last_name"
-    t.string "middle_name"
+    t.string "first_name", limit: 255
+    t.string "last_name", limit: 255
+    t.string "middle_name", limit: 255
     t.text "about"
     t.boolean "receive_info_mails", default: true
     t.boolean "receive_special_mails", default: true
@@ -1042,7 +1052,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "sessions_report_submit_denial_reasons", id: :serial, force: :cascade do |t|
-    t.string "name_ru"
+    t.string "name_ru", limit: 255
     t.string "name_en"
   end
 
@@ -1051,10 +1061,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
     t.integer "project_id"
     t.integer "author_id"
     t.integer "expert_id"
-    t.string "state"
-    t.string "materials"
-    t.string "materials_file_name"
-    t.string "materials_content_type"
+    t.string "state", limit: 255
+    t.string "materials", limit: 255
+    t.string "materials_file_name", limit: 255
+    t.string "materials_content_type", limit: 255
     t.integer "materials_file_size"
     t.datetime "materials_updated_at", precision: nil
     t.integer "illustration_points"
@@ -1071,7 +1081,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "sessions_sessions", id: :serial, force: :cascade do |t|
-    t.string "state"
+    t.string "state", limit: 255
     t.text "description_ru"
     t.text "motivation_ru"
     t.datetime "started_at", precision: nil
@@ -1084,7 +1094,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   create_table "sessions_stats", id: :serial, force: :cascade do |t|
     t.integer "session_id"
     t.integer "survey_field_id"
-    t.string "group_by", default: "count"
+    t.string "group_by", limit: 255, default: "count"
     t.integer "weight", default: 0
     t.integer "organization_id"
     t.text "cache"
@@ -1095,24 +1105,24 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
 
   create_table "sessions_survey_fields", id: :serial, force: :cascade do |t|
     t.integer "survey_id"
-    t.string "kind"
+    t.string "kind", limit: 255
     t.text "collection"
     t.integer "max_values", default: 1
     t.integer "weight", default: 0
     t.text "name_ru"
     t.boolean "required", default: false
-    t.string "entity"
+    t.string "entity", limit: 255
     t.boolean "strict_collection", default: false
-    t.string "hint_ru"
-    t.string "reference_type"
-    t.string "regexp"
+    t.string "hint_ru", limit: 255
+    t.string "reference_type", limit: 255
+    t.string "regexp", limit: 255
     t.string "hint_en"
     t.string "name_en"
     t.index ["survey_id"], name: "index_sessions_survey_fields_on_survey_id"
   end
 
   create_table "sessions_survey_kinds", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
   end
 
   create_table "sessions_survey_values", id: :serial, force: :cascade do |t|
@@ -1127,7 +1137,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   create_table "sessions_surveys", id: :serial, force: :cascade do |t|
     t.integer "session_id"
     t.integer "kind_id"
-    t.string "name_ru"
+    t.string "name_ru", limit: 255
     t.boolean "only_for_project_owners"
     t.string "name_en"
     t.index ["kind_id"], name: "index_sessions_surveys_on_kind_id"
@@ -1149,28 +1159,28 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "statistics_organization_stats", id: :serial, force: :cascade do |t|
-    t.string "kind"
+    t.string "kind", limit: 255
     t.text "data"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
   end
 
   create_table "statistics_project_stats", id: :serial, force: :cascade do |t|
-    t.string "kind"
+    t.string "kind", limit: 255
     t.text "data"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
   end
 
   create_table "statistics_session_stats", id: :serial, force: :cascade do |t|
-    t.string "kind"
+    t.string "kind", limit: 255
     t.text "data"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
   end
 
   create_table "statistics_user_stats", id: :serial, force: :cascade do |t|
-    t.string "kind"
+    t.string "kind", limit: 255
     t.text "data"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
@@ -1197,8 +1207,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "support_fields", id: :serial, force: :cascade do |t|
-    t.string "name_ru"
-    t.string "hint_ru"
+    t.string "name_ru", limit: 255
+    t.string "hint_ru", limit: 255
     t.boolean "required", default: false
     t.boolean "contains_source_code", default: false
     t.boolean "url", default: false
@@ -1227,7 +1237,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "support_reply_templates", id: :serial, force: :cascade do |t|
-    t.string "subject_ru"
+    t.string "subject_ru", limit: 255
     t.text "message_ru"
     t.string "subject_en"
     t.text "message_en"
@@ -1246,7 +1256,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
     t.integer "cluster_id"
     t.integer "surety_id"
     t.integer "reporter_id"
-    t.string "subject"
+    t.string "subject", limit: 255
     t.text "message"
     t.string "state"
     t.string "url"
@@ -1254,8 +1264,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.integer "responsible_id"
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
+    t.string "attachment_file_name", limit: 255
+    t.string "attachment_content_type", limit: 255
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at", precision: nil
     t.index ["cluster_id"], name: "index_support_tickets_on_cluster_id"
@@ -1282,7 +1292,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "support_topics", id: :serial, force: :cascade do |t|
-    t.string "name_ru"
+    t.string "name_ru", limit: 255
     t.integer "parent_id"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
@@ -1360,7 +1370,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_112347) do
   end
 
   create_table "wiki_pages", id: :serial, force: :cascade do |t|
-    t.string "name_ru"
+    t.string "name_ru", limit: 255
     t.text "content_ru"
     t.string "url"
     t.datetime "created_at", precision: nil

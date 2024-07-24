@@ -23,4 +23,7 @@ Jobstat::Engine.routes.draw do
   post 'job/digest' => "api#post_digest"
   post 'job/tags' => "api#post_tags"
   post 'job/detailed' => "api#post_detailed"
+  namespace :admin do
+    get 'stats/by_project' => 'stats#by_project'
+  end
 end

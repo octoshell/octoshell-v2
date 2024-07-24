@@ -7,18 +7,18 @@ module Jobstat
     def jobstat_admin_submenu_items
       menu = Face::Menu.new
       menu.items.clear
-      menu.add_item(Face::MenuItem.new({name: t("engine_submenu.jobs_total"),
-                                        url: [:admin, :tickets],
-                                        regexp: /tickets/}))
-      menu.add_item(Face::MenuItem.new({name: t("engine_submenu.jobs_by_users"),
-                                        url: [:admin, :reply_templates],
-                                        regexp: /reply_templates/}))
-      menu.add_item(Face::MenuItem.new({name: t("engine_submenu.jobs_by_tags"),
-                                        url: [:admin, :tags],
-                                        regexp: /tags/}))
-      menu.add_item(Face::MenuItem.new({name: t("engine_submenu.jobs_by_projects"),
-                                        url: [:admin, :topics],
-                                        regexp: /topics/}))
+      # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.jobs_total"),
+      #                                   url: [:admin, :tickets],
+      #                                   regexp: /tickets/}))
+      # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.jobs_by_users"),
+      #                                   url: [:admin, :reply_templates],
+      #                                   regexp: /reply_templates/}))
+      # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.jobs_by_tags"),
+      #                                   url: [:admin, :tags],
+      #                                   regexp: /tags/}))
+      # menu.add_item(Face::MenuItem.new({name: t("engine_submenu.jobs_by_projects"),
+      #                                   url: [:admin, :topics],
+      #                                   regexp: /topics/}))
       menu.items
     end
 

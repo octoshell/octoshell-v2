@@ -630,6 +630,11 @@ ru:
         requests:
           access_request: Заявки на доступ к ресурсам СКЦ МГУ
           resources_requested: Запрошено ресурсов
+        removed_members:
+          title: Удаленные участники
+          email: Email
+          login: Логин
+          remove_date: Дата удаления
         show:
           close: Закрыть
           description: Описание
