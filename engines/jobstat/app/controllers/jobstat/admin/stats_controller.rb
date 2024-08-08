@@ -107,9 +107,9 @@ module Jobstat
 
       sep = /[\s,;]+/
       %w[id_in id_not_in].each do |key|
-        next unless key
-
         value = q[key]
+        next unless value.present?
+
         if value =~ /^(\d+#{sep})*\d*$/
           q[key] = value.split(sep)
         else

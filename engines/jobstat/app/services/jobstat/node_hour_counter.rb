@@ -20,7 +20,7 @@ module Jobstat
                   SUM(#{node_hours}) AS node_hours,
                   COUNT(jobstat_jobs.id) AS jobs,
                   partition")
-          .where("#{coalesce_project} IN (#{project_relation.ids.join(',')}) ")
+          .where("#{coalesce_project} IN (#{(project_relation.ids | [0]).join(',')}) ")
       end
 
       private
