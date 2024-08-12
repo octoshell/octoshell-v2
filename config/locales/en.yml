@@ -1,5 +1,9 @@
 ---
 en:
+  mailer:
+    footer:
+      octo_regards: Yours faithfully, Octoshell.
+
   '':
     core:
       admin:

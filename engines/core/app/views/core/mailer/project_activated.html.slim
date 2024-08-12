@@ -15,4 +15,4 @@ p
     - @project.members.where(:project_access_state=>:allowed).each do |member|
       li = member.login
 
-= render "footer"
+= render "mailer/footer"

@@ -1,5 +1,8 @@
 ---
 ru:
+  mailer:
+    footer:
+      octo_regards: С уважением, Octoshell.
   date:
     formats:
       default: "%d/%m/%Y"

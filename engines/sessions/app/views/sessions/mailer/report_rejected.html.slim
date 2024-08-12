@@ -4,4 +4,4 @@ p #{t('.msg_report_rejected', id: @report.id, pid: @report.project.id, title: @r
 p #{t('.msg_report_update')}
 p = link_to t('.proceed_to_report'), sessions.report_url(@report)
 
-= render "footer"
+= render "mailer/footer"
