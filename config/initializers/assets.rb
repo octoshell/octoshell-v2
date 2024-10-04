@@ -30,28 +30,35 @@ Rails.application.config.assets.precompile += %w( apple-touch-icon-precomposed.p
 Rails.application.config.assets.precompile += %w( *.png )
 Rails.application.config.assets.precompile += %w( catch_all.css )
 
-Rails.root.join('/app/assets/stylesheets').glob('*.css').each{|d|
-  Rails.application.config.assets.precompile += [d.to_s]
-}
+# Rails.root.join('/app/assets/stylesheets').glob('*.css').each{|d|
+#   Rails.application.config.assets.precompile += [d.to_s]
+# }
+#
+# Rails.root.join('app/assets/javascripts').glob('*.js').each{|d|
+# #  warn "JS+ #{d}"
+#   Rails.application.config.assets.precompile += [d.to_s]
+# }
+#
+# Rails.root.glob('engines/*/app/assets/javascripts/*').each{|dir|
+#   dir.glob('*.js').each{|f|
+#     Rails.application.config.assets.precompile += [f.to_s]
+#   }
+#   dir.glob('*.coffee').each{|f|
+#     Rails.application.config.assets.precompile += [f.to_s]
+#   }
+# }
+# Rails.root.glob('engines/*/app/assets/stylesheets/*').each{|dir|
+#   dir.glob('*.css').each{|f|
+#     Rails.application.config.assets.precompile += [f.to_s]
+#   }
+#   dir.glob('*.scss').each{|f|
+#     Rails.application.config.assets.precompile += [f.to_s]
+#   }
+# }
 
-Rails.root.join('app/assets/javascripts').glob('*.js').each{|d|
-#  warn "JS+ #{d}"
-  Rails.application.config.assets.precompile += [d.to_s]
-}
+dirs = Rails.root.glob('engines/*/app/assets/config/*/manifest.js').map do |dir|
+   "//=link #{dir.to_s.split('/')[-2]}/manifest.js"
+end.join("\n")
 
-Rails.root.glob('engines/*/app/assets/javascripts/*').each{|dir|
-  dir.glob('*.js').each{|f|
-    Rails.application.config.assets.precompile += [f.to_s]
-  }
-  dir.glob('*.coffee').each{|f|
-    Rails.application.config.assets.precompile += [f.to_s]
-  }
-}
-Rails.root.glob('engines/*/app/assets/stylesheets/*').each{|dir|
-  dir.glob('*.css').each{|f|
-    Rails.application.config.assets.precompile += [f.to_s]
-  }
-  dir.glob('*.scss').each{|f|
-    Rails.application.config.assets.precompile += [f.to_s]
-  }
-}
+File.write("#{Rails.root}/app/assets/config/manifest.js",
+           File.read("#{Rails.root}/app/assets/config/manifest.js").sub(/\/\/\s*START.*\z/m, "// START\n" + dirs))

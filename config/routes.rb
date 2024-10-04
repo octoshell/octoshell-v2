@@ -811,7 +811,7 @@ Octoshell::Application.routes.draw do
     end
     mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   end
-  get '*path.:ext', to: 'catch_all#index', xhr: true
+  #get '*path.:ext', to: 'catch_all#index', xhr: true
 end
 
 # require "#{Rails.root}/engines/core/config/routes.rb"

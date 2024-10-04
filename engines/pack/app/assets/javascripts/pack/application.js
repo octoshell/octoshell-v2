@@ -13,5 +13,3 @@
 //
 
 //= require_directory .
-// - req jquery
-// - req jquery_ujs

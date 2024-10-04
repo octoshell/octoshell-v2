@@ -82,15 +82,16 @@ module Face
     end
 
     def markdown_view
-      text = if @marked_included.nil?
-        @marked_included = true
-        %Q(
-        #{javascript_include_tag 'marked.min'}
-        #{MARKED_JS}
-        )
-      else
-        ''
-      end
+      text = ''
+      # text = if @marked_included.nil?
+      #   @marked_included = true
+      #   %Q(
+      #   #{javascript_include_tag 'marked.min'}
+      #   #{MARKED_JS}
+      #   )
+      # else
+      #   ''
+      # end
       js = if @js_view_included.nil?
         @js_view_included = true
         %Q(<script>
