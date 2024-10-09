@@ -11,8 +11,6 @@
  *= require rails_email_preview/application
  *= require face/application
  *= require core/application
- *= require support/application
- *= require sessions/application
  *= require_self
  */
 

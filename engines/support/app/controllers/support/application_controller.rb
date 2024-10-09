@@ -3,7 +3,10 @@ module Support
     #
     layout "layouts/application"
     before_action :require_login
-
+    before_action do
+      @extra_js = 'support/application'
+      @extra_css = 'support/application'
+    end
 #    before_action :journal_user
 
 #    def journal_user
