@@ -118,7 +118,7 @@ module Jobstat
     end
 
     def get_grp_select_options_by_projects projects, selected=[]
-      list=[['ALL',['ALL']]]
+      list=[]
       dis=[]
       projects.each{|proj,logins|
         p="---- #{shorten(proj.title,32)} ----"

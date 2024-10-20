@@ -38,7 +38,7 @@ module Jobstat
         #logger.warn "#{name}--#{c.description}: #{part_opt.inspect}"
         #logger.warn "===> #{@clusters.inspect}"
       }
-      @partitions_options = [part_opt, 'ALL'].flatten.uniq
+      @partitions_options = [part_opt].flatten.uniq
 
       # lom1.states = slurm_states
       # lom2.states = slurm_states
@@ -62,6 +62,7 @@ module Jobstat
       # }
 
       @default_cluster = Core::Cluster.last.description #"lomonosov-2"
+      
 
       @states_options = slurm_states.keys
       #@partitions_options = Core::Cluster.where(available_for_work: true).map{|c|

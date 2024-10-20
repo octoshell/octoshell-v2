@@ -69,6 +69,11 @@ server {
     root /var/www/octoshell2/current/public;
   }
 
+  policy /policy.html;
+  location = /policy.html {
+    root /var/www/octoshell2/current/public;
+  }
+
   error_page 500 503 504 /500.html;
   location = /500.html {
     root /var/www/octoshell2/current/public;
@@ -147,6 +152,11 @@ server {
 
   error_page 502 /502.html;
   location = /502.html {
+    root /var/www/octoshell2/current/public;
+  }
+
+  policy /policy.html;
+  location = /policy.html {
     root /var/www/octoshell2/current/public;
   }
 
