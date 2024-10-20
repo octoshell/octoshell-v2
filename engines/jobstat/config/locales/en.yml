@@ -239,8 +239,8 @@ en:
           job_count: 'Job count'
           no_organization: No organization
           no_projects_found: No projects found
-          node_hours: Node hour
-          partitions: Used partitions
+          node_hours: Node hours
+          partitions: Node hours in partitions
     common:
       agree_button: I agree with estimation
       agree_rule: true
