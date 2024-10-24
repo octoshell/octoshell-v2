@@ -1,5 +1,7 @@
 ---
 ru:
+  admin_submenu:
+    job_stats: Запуски проектов
   jobstat:
     account_list:
       all_rules:
@@ -221,6 +223,36 @@ ru:
         status: Статус
         supercomputer: Суперкомпьютер
         total: Всего
+    admin:
+      stats:
+        by_project:
+          id_in: Проекты только с id
+          id_in_error: >-
+            В поле "Проекты только с id" могут быть записаны только числа, разделённые
+            пробелами, запятой, точкой с запятой
+          id_not_in: Исключить проекты с id
+          id_not_in_error: >-
+            В поле "Исключить проекты с id" могут быть записаны только числа, разделённые
+            пробелами, запятыми, точками с запятой
+          id_placeholder: Айди, разделённые запятой(,),точкой с запятой(;) и пробелами
+          instructions: >-
+            Выберите проекты и задачи с помощью фильтров и нажмите "Найти" или "CSV"
+            В правом столбце находятся фильтры на вычислительные задачи проекта. Проекты,
+            у которых не будет найдено задач, всё равно будут показаны.
+          job_count_gteq: К-во задач не менее
+          partition_in: Задача из разделов
+          submit_time_gt: 'TRME TRME TRME '
+          submit_time_gteq: Поставлена в очередь не ранее
+          submit_time_lt: 'TRME TRME TRME '
+          submit_time_lteq: Поставлена в очередь не позже
+          title: Узлочасы, потраченные проектами на Ломоносове-2
+        project_table:
+          job_count: К-во задач
+          no_organization:
+            html: 'TRME TRME TRME '
+          no_projects_found: Не найдено проектов
+          node_hours: Узлочасы
+          partitions: Узлочасы в разделах
     common:
       agree_button: Согласен с оценкой
       agree_rule: Да.
@@ -243,6 +275,7 @@ ru:
     job:
       detailed:
         back: Вернуться
+        no-data: 'TRME '
       show:
         avg: Среднее %{link}
         base: Базовые свойства

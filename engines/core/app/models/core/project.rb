@@ -45,7 +45,7 @@ module Core
 
     has_many :members, dependent: :destroy, inverse_of: :project
     has_many :users, through: :members, class_name: Core.user_class.to_s, inverse_of: :projects
-
+    has_many :removed_members, dependent: :destroy, inverse_of: :project
     has_one :member_owner, -> { where(owner: true) }, class_name: Member.to_s
     has_one :owner, through: :member_owner,
                     class_name: Core.user_class.to_s,
@@ -160,8 +160,13 @@ module Core
 
     def invite_member(user_id)
       user = ::Core.user_class.find(user_id)
-      users << user
-      ::Core::MailerWorker.perform_async(:invitation_to_project, [user.id, self.id])
+      ActiveRecord::Base.transaction do
+        member = members.create!(user_id: user_id)
+        RemovedMember.where(member.attributes
+                                  .slice('project_id', 'user_id', 'login'))
+                     .map(&:destroy!)
+      end
+      ::Core::MailerWorker.perform_async(:invitation_to_project, [user.id, id])
     rescue ::ActiveRecord::RecordNotUnique
       errors.add :member, I18n.t("errors.user_is_already_in_members", email: user.full_name)
     rescue ::ActiveRecord::RecordNotFound
@@ -169,8 +174,12 @@ module Core
     end
 
     def drop_member(user_id)
-      user = ::Core.user_class.find(user_id)
-      users.destroy(user)
+      member = members.find_by_user_id!(user_id)
+      ActiveRecord::Base.transaction do
+        RemovedMember.create!(member.attributes
+                                    .slice('project_id', 'user_id', 'login'))
+        member.destroy!
+      end
     end
 
     def spare_clusters

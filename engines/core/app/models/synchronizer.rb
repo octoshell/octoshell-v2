@@ -99,6 +99,9 @@ class Synchronizer
         elsif member.denied?
           cluster.log("\t Access for #{member.login} is denied", project)
           deactivate_member(member, member_state_on_cluster)
+        elsif member.engaged?
+          cluster.log("\t Access for #{member.login} is engaged", project)
+          block_member(member) if member_state_on_cluster.include? 'active'
         end
       end
     elsif project.blocked? || project.suspended?
@@ -112,11 +115,17 @@ class Synchronizer
         drop_member(member, member_state_on_cluster)
       end
     end
+    project.removed_members.each do |removed_member|
+      member_state_on_cluster = check_member_state_on_cluster(removed_member)
+      block_member(removed_member) if member_state_on_cluster.include? 'active'
+    end
+
+
   end
 
   def activate_member(member, state)
-    (state == "active") ||
-      ((state == "blocked") ? unblock_member(member) : add_member(member))
+    (state.include? "active") ||
+      ((state.include? "blocked") ? unblock_member(member) : add_member(member))
 
     member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
@@ -125,7 +134,7 @@ class Synchronizer
   end
 
   def deactivate_member(member, state)
-    (state == "blocked") || block_member(member)
+    (state.include? "blocked") || block_member(member)
 
     member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
@@ -134,11 +143,11 @@ class Synchronizer
   end
 
   def suspend_member(member, state)
-    (state == "blocked") || block_member(member)
+    (state.include? "blocked") || block_member(member)
   end
 
   def drop_member(member, state)
-    (state != "closed") && close_member(member)
+    !state.include?('closed') && close_member(member)
 
     member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
@@ -168,6 +177,7 @@ class Synchronizer
 
   def upload_credential(credential)
     return unless connection_to_cluster
+    
     credential_path = mock_ssh_key_path(credential.public_key)
     scp_session = Net::SCP.new(connection_to_cluster)
     scp_session.upload!(credential_path, credential_path)
@@ -176,7 +186,7 @@ class Synchronizer
 
   def credential_exists_on_cluster?(member, path_to_pub_key)
     out = run_on_cluster "sudo /usr/octo/check_openkey #{member.login} #{path_to_pub_key}"
-    out == "found"
+    out[0..4] == 'found'
   end
 
   def add_credential(member, path_to_pub_key)

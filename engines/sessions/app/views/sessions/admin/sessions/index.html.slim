@@ -26,11 +26,10 @@ div class="page-header"
 
 table class="table table-striped"
   tr
-    th class="col-xs-1" 
+    th class="col-xs-1"
     - @sessions.each do |session|
       td = link_to session.description, [:admin, session]
-  - Sessions.user_class.experts.each do |expert|
-    - if has_reports?(@sessions, expert)
+  - Sessions.user_class.experts.where(id: Sessions::Report.distinct.pluck(:expert_id)).each do |expert|
       tr
         td = link_to expert.profile.full_name, octo_url_for(:admin, expert)
         - @sessions.each do |session|
@@ -41,4 +40,3 @@ table class="table table-striped"
     td = t(".summ")
     - @sessions.each do |session|
       td = session.reports.count
-

@@ -3,6 +3,7 @@ module Core
   octo_configure :core do
     add('Project')
     add('Organization')
+    add('Member')
     add_ability(:manage, :projects, 'superadmins')
     add_controller_ability(:manage, :projects, 'admin/projects',
                            'admin/project_kinds', 'admin/direction_of_sciences',

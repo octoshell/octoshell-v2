@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_01_095932) do
+ActiveRecord::Schema.define(version: 2024_07_03_123357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -477,11 +477,6 @@ ActiveRecord::Schema.define(version: 2023_12_01_095932) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "core_law_lists", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "core_members", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "project_id", null: false
@@ -629,6 +624,16 @@ ActiveRecord::Schema.define(version: 2023_12_01_095932) do
     t.string "measurement_ru", limit: 255
     t.string "name_en"
     t.string "measurement_en"
+  end
+
+  create_table "core_removed_members", force: :cascade do |t|
+    t.bigint "project_id"
+    t.bigint "user_id"
+    t.string "login"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_core_removed_members_on_project_id"
+    t.index ["user_id"], name: "index_core_removed_members_on_user_id"
   end
 
   create_table "core_request_fields", id: :serial, force: :cascade do |t|

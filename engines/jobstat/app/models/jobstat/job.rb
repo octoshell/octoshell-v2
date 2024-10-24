@@ -47,6 +47,8 @@ module Jobstat
                       NODE_FAIL TIMEOUT unknown].freeze
     INITIAL_STATES = (%w[CONFIGURING RESIZING RUNNING] + [nil]).freeze
 
+    scope :finished, -> { where(state: FINAL_STATES) }
+
     def notify_when_finished
       return unless state_previously_changed? &&
                     INITIAL_STATES.include?(state_previous_change[0]) &&
@@ -66,20 +68,22 @@ module Jobstat
     end
 
     def self._update_job(attributes)
-      find_or_create_by(
-        drms_job_id: attributes['job_id'],
-        cluster: attributes['cluster'],
-        drms_task_id: attributes.fetch('task_id', 0)
-      ).tap do |job|
-        next unless job.allow_update?(attributes['state'])
+      ActiveRecord::Base.transaction do
+        find_or_create_by(
+          drms_job_id: attributes['job_id'],
+          cluster: attributes['cluster'],
+          drms_task_id: attributes.fetch('task_id', 0)
+        ).tap do |job|
+          next unless job.allow_update?(attributes['state'])
 
-        job.update!(
-          { login: attributes['account'],
-            submit_time: Time.at(attributes['t_submit']).utc.to_datetime,
-            start_time: Time.at(attributes['t_start']).utc.to_datetime,
-            end_time: Time.at(attributes['t_end']).utc.to_datetime }
-            .merge(attributes.slice(*%w[partition timelimit nodelist
-                                        command state num_cores num_nodes])))
+          job.update!(
+            { login: attributes['account'],
+              submit_time: Time.at(attributes['t_submit']).utc.to_datetime,
+              start_time: Time.at(attributes['t_start']).utc.to_datetime,
+              end_time: Time.at(attributes['t_end']).utc.to_datetime }
+              .merge(attributes.slice(*%w[partition timelimit nodelist
+                                          command state num_cores num_nodes])))
+        end
       end
     end
 

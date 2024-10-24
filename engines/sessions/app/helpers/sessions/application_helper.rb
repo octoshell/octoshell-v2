@@ -80,9 +80,5 @@ module Sessions
       else "#2E8B57"
       end
     end
-    #checking if expert has any reports
-    def has_reports?(sessions, expert)
-      sessions.any? { |session| session.reports.where(expert_id: expert.id).exists? }
-    end
   end
 end

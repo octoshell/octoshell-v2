@@ -1,0 +1,33 @@
+div class="page-header"
+  h1 = t(".title")
+h4 = t('.instructions')
+- options = common_datepicker_options
+= bootstrap_form_for @project_search, url: admin_stats_by_project_path, method: :get, layout: :vertical do |f|
+  .row
+    .col-md-6
+      = f.autocomplete_field :organization_id_eq,{ label: Core::Project.human_attribute_name(:organization), source: core.organizations_path} do |val|
+        -Core::Organization.find(val).name_with_id
+      = f.select :state_in, Core::Project.human_state_names_with_original, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
+      = f.collection_select :kind_id_eq, Core::ProjectKind.all, :id, :name, label: Core::Project.human_attribute_name(:kind), include_blank: true
+      = f.text_field :id_in,label: t('.id_in'), placeholder: t('.id_placeholder')
+      = f.text_field :id_not_in,label: t('.id_not_in'), placeholder: t('.id_placeholder')
+
+      = f.fields_for :custom_q, @custom_search do |ff|
+        = ff.number_field :job_count_gteq, label: t('.job_count_gteq')
+    .col-md-6
+      = f.fields_for :job_q, @job_search do |ff|
+        = ff.text_field :submit_time_gteq, options.merge(label: t('.submit_time_gteq'))
+        = ff.text_field :submit_time_lteq, options.merge(label: t('.submit_time_lteq'))
+        = ff.select :partition_in, @partitions, { label: t('.partition_in') }, multiple: true
+
+  .row
+      = f.form_group do
+        = display_all_tag
+        = f.primary t("actions.find"), data: { disable_with: false }
+        = f.submit "CSV", name: 'csv', class: "btn btn-success left-margin",
+                          data: { disable_with: false }
+= safe_paginate @projects
+= render 'project_table', projects: @projects
+= safe_paginate @projects
+css:
+  .left-margin { margin: 20px };
