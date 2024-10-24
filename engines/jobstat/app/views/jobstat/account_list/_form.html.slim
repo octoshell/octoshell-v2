@@ -8,6 +8,7 @@ div class="container" id="intro-step2" data-disable-interaction="1"
       = f.select("all_logins", grouped_options_for_select(@all_logins[:list],@all_logins[:options].reject { |key, _| key == "ALL" }), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
       = f.select("states", @states_options.reject { |key, _| key == "ALL" }, {label: t('.statuses'), selected: @params[:states]}, {multiple: true, wrapper: {class: 'col-md-3'}})
       = f.select("partitions", @partitions_options.reject { |key, _| key == "ALL" }, {label: t('.partitions'), selected: @params[:partitions]}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("all_logins", grouped_options_for_select(@all_logins[:list],@all_logins[:options].reject { |key, _| key == "ALL" }), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
     div class="row"
       = f.submit t('.show'), class: 'col-md-1 btn btn-success'
       span class='col-md-1'
