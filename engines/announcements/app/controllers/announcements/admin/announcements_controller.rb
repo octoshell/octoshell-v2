@@ -54,6 +54,12 @@ module Announcements::Admin
       redirect_to admin_announcements_path
     end
 
+    def send_mails
+      Announcement.find(params[:announcement_id]).send_mails
+      redirect_to admin_announcements_path
+    end
+
+
     def destroy
       @announcement = Announcement.find(params[:id])
       @announcement.destroy
