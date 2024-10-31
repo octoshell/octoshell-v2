@@ -54,7 +54,7 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  config.logger = Logger.new(config.paths['log'].first, 'weekly', 5.megabytes)
+  config.logger = Logger.new(config.paths['log'].first)
   config.log_tags = [:remote_ip, lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
   config.logger.level = Logger::DEBUG
   config.colorize_logging = false
