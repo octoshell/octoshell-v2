@@ -1,5 +1,5 @@
 module Statistics
-  class OrganizationsController < ApplicationController
+  class OrganizationsController < Statistics::ApplicationController
     def index
     end
 
