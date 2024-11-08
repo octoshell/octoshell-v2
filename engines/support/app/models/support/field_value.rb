@@ -2,16 +2,22 @@
 #
 # Table name: support_field_values
 #
-#  id         :integer          not null, primary key
-#  value      :text
-#  created_at :datetime
-#  updated_at :datetime
-#  field_id   :integer
-#  ticket_id  :integer
+#  id              :integer          not null, primary key
+#  value           :text
+#  created_at      :datetime
+#  updated_at      :datetime
+#  field_id        :integer
+#  ticket_id       :integer
+#  topics_field_id :bigint(8)
 #
 # Indexes
 #
-#  index_support_field_values_on_ticket_id  (ticket_id)
+#  index_support_field_values_on_ticket_id        (ticket_id)
+#  index_support_field_values_on_topics_field_id  (topics_field_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (topics_field_id => support_topics_fields.id)
 #
 
 module Support

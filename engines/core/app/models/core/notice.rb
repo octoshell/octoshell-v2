@@ -3,7 +3,7 @@
 # Table name: core_notices
 #
 #  id              :integer          not null, primary key
-#  active          :integer
+#  active          :boolean          default(FALSE)
 #  category        :integer
 #  count           :integer
 #  kind            :string
