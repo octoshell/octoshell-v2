@@ -75,7 +75,7 @@
 
 .right-float-return {
   position: fixed;
-  right: -18em;
+  right: -17em;
   width: 20em;
   top: 10vh;
   z-index: 6000;
@@ -92,7 +92,7 @@
           transition: all 1s ease;
 }
 
-.right-float-return > div {
+.right-float-return > * {
   float: left;
 }
 
