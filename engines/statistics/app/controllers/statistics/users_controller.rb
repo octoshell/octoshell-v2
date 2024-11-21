@@ -1,5 +1,5 @@
 module Statistics
-  class UsersController < ApplicationController
+  class UsersController < Statistics::ApplicationController
     def index
     end
 

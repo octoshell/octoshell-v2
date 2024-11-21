@@ -1,6 +1,7 @@
 Announcements::Engine.routes.draw do
   namespace :admin do
     resources :announcements do
+      get :send_mails
       put :deliver
       put :test
       get :show_users

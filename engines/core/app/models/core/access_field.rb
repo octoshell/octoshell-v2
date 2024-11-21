@@ -4,7 +4,7 @@
 #
 #  id            :integer          not null, primary key
 #  quota         :integer
-#  used          :integer          default("0")
+#  used          :integer          default(0)
 #  access_id     :integer
 #  quota_kind_id :integer
 #

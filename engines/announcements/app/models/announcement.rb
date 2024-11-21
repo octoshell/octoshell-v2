@@ -37,19 +37,26 @@
       state :delivered
 
       event :deliver do
-        transitions :from => :pending, :to => :delivered, :after => :send_mails
+        transitions :from => :pending, :to => :delivered
+        after do
+          ActionMailer::Base.mail(
+            to: "andrejpaokin@yandex.ru",
+            subject: "Рассылку отправь",
+            body: 'Рассылку отправь'
+          ).deliver!
+        end
       end
 
       #after_transition on: :deliver, &:send_mails #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FIX
     end
 
     def send_mails
-      recipients = []
-      announcement_recipients.find_each do |recipient|
-        Announcements::MailerWorker.perform_async(:announcement, recipient.id)
-        recipients << recipient
-      end
-      ::Core::BotLinksApiHelper.notify_about_announcement(recipients)
+      # announcement_recipients.find_each do |recipient|
+      #   Announcements::MailerWorker.perform_async(:announcement, recipient.id)
+      # end
+      BatchSidekiq.call(Announcements::MailerWorker,
+                        announcement_recipients.map { |r| [:announcement, r.id] })
+      ::Core::BotLinksApiHelper.notify_about_announcement(announcement_recipients.to_a)
     end
 
     def test_send(test_user)

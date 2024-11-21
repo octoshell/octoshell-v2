@@ -1,13 +1,10 @@
-set :path, "/var/www/octoshell2/current/"
-set :output, "/var/www/octoshell2/shared/log/cron.log"
+set :output, "#{Whenever.path}/log/cron.log"
 
-ruby_path = "rbenv exec"
-job_type :rake, "cd :path && RAILS_ENV=:environment #{ruby_path} bundle exec rake :task :output"
-
-every 2.hours do
-  rake "db:backup"
-end
 every 1.day do
 	rake "pack:expired"
   rake "authentication:delete_pending_users"
+end
+
+every 2.minutes do
+ rake "fetch_inbox"
 end

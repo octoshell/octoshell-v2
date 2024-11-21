@@ -54,7 +54,7 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  config.logger = Logger.new(config.paths['log'].first, 'weekly', 5.megabytes)
+  config.logger = Logger.new(config.paths['log'].first)
   config.log_tags = [:remote_ip, lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
   config.logger.level = Logger::DEBUG
   config.colorize_logging = false
@@ -98,7 +98,9 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   config.base_host = "users.parallel.ru"
-  config.action_mailer.default_options = { from: "Octoshell Notifier <info@users.parallel.ru>" }
+  config.action_mailer.default_options = {
+    from:  "Octoshell Notifier <#{ (h=Rails.application.secrets[:imap]) ? h[:login] : "info@users.parallel.ru"}>"
+  }
   config.action_mailer.default_url_options = { host: "users.parallel.ru" }
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
@@ -110,10 +112,22 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    :address => "smtp.parallel.ru",
-    :port => 25
-  }
+  config.action_mailer.smtp_settings = if (h = Rails.application.secrets[:imap])
+    {
+      address: h[:host],
+      port: 587,
+      user_name: h[:login],
+      password: h[:password],
+      domain: 'users.parallel.ru'
+      # enable_starttls_auto: true,
+      # tls: true
+    }
+                                       else
+    {
+      :address => "smtp.parallel.ru",
+      :port => 25
+    }
+                                       end
 
   config.i18n.fallbacks = [I18n.default_locale]
 end
