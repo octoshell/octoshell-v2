@@ -4,7 +4,7 @@
 
 class BatchSidekiq
   INTERVAL = 5.minutes
-  BATCH_SIZE = 100
+  BATCH_SIZE = 300
   class << self
     def call(worker, arg_array)
       arg_array.each_with_index do |a, i|
