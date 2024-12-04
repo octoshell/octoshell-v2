@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_03_123357) do
+ActiveRecord::Schema.define(version: 2024_11_29_110043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -473,6 +473,11 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
   create_table "core_group_of_research_areas", force: :cascade do |t|
     t.string "name_en"
     t.string "name_ru"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "core_law_lists", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -1013,6 +1018,12 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
     t.datetime "updated_at"
     t.integer "subject_id"
     t.index ["group_id"], name: "index_permissions_on_group_id"
+  end
+
+  create_table "policies", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "profiles", id: :serial, force: :cascade do |t|
