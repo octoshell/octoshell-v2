@@ -1,0 +1,26 @@
+<h1>Policies</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>PDF File</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @policies.each do |policy| %>
+      <tr>
+        <td><%= policy.title %></td>
+        <td>
+          <% if policy.pdf_file.attached? %>
+            <%= link_to "Download PDF", url_for(policy.pdf_file), target: "_blank" %>
+          <% else %>
+            No file attached
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Add New Policy', new_policy_path %>

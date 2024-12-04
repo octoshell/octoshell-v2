@@ -1,0 +1,1 @@
+require "example_core/settings" if defined?(Octoface)

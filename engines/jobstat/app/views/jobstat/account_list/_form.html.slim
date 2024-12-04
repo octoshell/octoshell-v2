@@ -3,11 +3,36 @@ div class="container" id="intro-step2" data-disable-interaction="1"
     div class="row"
       = f.text_field("start_time", class: "datepicker", value: @params[:start_time], label: t('.from'), wrapper: {class: 'col-md-3'})
       = f.text_field("end_time", class: "datepicker", value: @params[:end_time], label: t('.to'), wrapper: {class: 'col-md-3'})
-      = f.select("cluster", options_for_select(@clusters.map{|name,c| [name, c.id]}.sort{|a,b| a[0]<=>b[0]}, @params[:cluster]), {label: t('.cluster')}, {wrapper: {class: 'col-md-3'}})
+      = f.select("cluster", options_for_select(@clusters.map{|name,c| [name, c.id]}.sort{|a,b| a[0]<=>b[0]}, @params[:cluster] || 5), {label: t('.cluster')}, {wrapper: {class: 'col-md-3'}})
     div class="row"
-      = f.select("all_logins", grouped_options_for_select(@all_logins[:list],@all_logins[:options]), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
-      = f.select("states", ["ALL"] + @states_options, {label: t('.statuses'), selected: @params[:states]}, {multiple: true, wrapper: {class: 'col-md-3'}})
-      = f.select("partitions", @partitions_options, {label: t('.partitions'), selected: @params[:partitions]}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = search_form_for @q do |f|
+        .form-group
+        = f.label :logins_in, t('.logins')
+        = f.select :logins_in,
+                  grouped_options_for_select(@all_logins[:options]),
+                  { include_blank: true },
+                  { multiple: true, class: 'form-control col-md-3' }
+
+        .form-group
+          = f.submit t('.filter'), class: 'btn btn-primary'
+
+      = search_form_for @q do |f|
+        .form-group
+          = f.label :name, "Search by Name"
+          = f.text_field :name_cont
+
+        .form-group
+          - if @states_options.present?
+            = f.select("states", @states_options.reject { |key, _| key == "ALL" }, 
+              { label: t('.statuses'), selected: @params[:states] }, 
+              { multiple: true, wrapper: { class: 'col-md-3' } })
+          - else
+            p Ошибка: нет доступных статусов для выбора.
+
+        .form-group
+          = f.submit "Search", class: 'btn btn-primary'
+      = f.select("partitions", @partitions_options.reject { |key, _| key == "ALL" }, {label: t('.partitions'), selected: @params[:partitions]}, {multiple: true, wrapper: {class: 'col-md-3'}})
+      = f.select("all_logins", grouped_options_for_select(@all_logins[:list],@all_logins[:options].reject { |key, _| key == "ALL" }), {label: t('.logins')}, {multiple: true, wrapper: {class: 'col-md-3'}})
     div class="row"
       = f.submit t('.show'), class: 'col-md-1 btn btn-success'
       span class='col-md-1'

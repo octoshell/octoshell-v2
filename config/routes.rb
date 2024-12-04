@@ -774,6 +774,8 @@ Octoshell::Application.routes.draw do
 
   resource :profile
 
+  resources :policies
+
   resources :options, only: [] do
     collection do
       get :categories

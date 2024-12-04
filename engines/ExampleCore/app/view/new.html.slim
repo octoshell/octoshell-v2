@@ -1,0 +1,19 @@
+<h1>Create a New Policy</h1>
+
+<%= form_with model: @policy, local: true do |form| %>
+  <div>
+    <%= form.label :title, "Policy Title" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :pdf_file, "Upload PDF File" %>
+    <%= form.file_field :pdf_file %>
+  </div>
+
+  <div>
+    <%= form.submit "Create Policy" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back to Policies', policies_path %>
