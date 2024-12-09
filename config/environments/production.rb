@@ -99,7 +99,8 @@ Rails.application.configure do
 
   config.base_host = "users.parallel.ru"
   config.action_mailer.default_options = {
-    from:  "Octoshell Notifier <#{ (h=Rails.application.secrets[:imap]) ? h[:login] : "info@users.parallel.ru"}>"
+    from:  "Octoshell Notifier <#{ (h=Rails.application.secrets[:imap]) ? h[:login] : "info@users.parallel.ru"}>",
+    protocol: 'https'
   }
   config.action_mailer.default_url_options = { host: "users.parallel.ru" }
 
