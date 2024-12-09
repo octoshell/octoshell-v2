@@ -76,7 +76,7 @@ module Jobstat
             drms_job_id: '1',
             drms_task_id: 0,
             login: 'my_login',
-            partition: Core::Partition.where(cluster: cluster).last.name,
+            partition: 'compute',
             submit_time: now-1,
             start_time: now-2/8r,
             end_time: now,
@@ -103,7 +103,7 @@ module Jobstat
             drms_job_id: '2',
             drms_task_id: 0,
             login: 'my_login',
-            partition: Core::Partition.where(cluster: cluster).last.name,
+            partition: 'compute',
             submit_time: now-7/8r,
             start_time: now-2/8r,
             end_time: now-1/8r,
@@ -157,9 +157,9 @@ module Jobstat
         end
         @shown = @jobs.length
         @jobs=@jobs.to_a
-      rescue => e
-        logger.info "account_list_controller:index: #{e.message}; #{e.backtrace.join("\n")}"
-        @jobs = []
+      # rescue => e
+      #   logger.info "account_list_controller:index: #{e.message}; #{e.backtrace.join("\n")}"
+      #   @jobs = []
       end
 
       joblist=@jobs.map{|j| j.drms_job_id}

@@ -61,7 +61,7 @@ module Jobstat
       #   "pascal" => {"cores" => 12, "gpus" => 2},
       # }
 
-      @default_cluster = Core::Cluster.last.description #"lomonosov-2"
+      @default_cluster = 'lomonosov-2' #"lomonosov-2"
 
       @states_options = slurm_states.keys
       #@partitions_options = Core::Cluster.where(available_for_work: true).map{|c|
