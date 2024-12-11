@@ -1,6 +1,5 @@
 div class="page-header"
   h1 = t(".title")
-
 - options = common_datepicker_options
 = bootstrap_form_for @search, url: admin_tickets_path, method: :get, layout: :vertical do |f|
   div class="container"
@@ -24,7 +23,7 @@ div class="page-header"
                             label: Support::Ticket.human_attribute_name(:responsible),
                             include_blank: true
     div class="col-md-3"
-      = f.text_field :find_by_content, label: t('.find_by_content')
+      = f.text_field :find_by_content, label: t('.find_by_content'), placeholder: t('.words_delimited_by_space')
       = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
       = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
     div class="col-md-3"

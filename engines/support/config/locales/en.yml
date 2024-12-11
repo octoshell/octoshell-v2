@@ -156,13 +156,14 @@ en:
         index:
           created_after: Сreated after
           created_before: Created before
-          find_by_content: Find by content
+          find_by_content: Find words in header, description and replies
           new_ticket_on_user: Create request for user
           project: Project
           reporter: Author
           title: List of requests for support
           updated_after: Updated after
           updated_before: Updated before
+          words_delimited_by_space: space - delimitter
         new:
           title: Create request for user
           choose_topic: Choose topic

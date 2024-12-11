@@ -167,11 +167,12 @@ ru:
         index:
           created_after: Создан после
           created_before: Создан до
-          find_by_content: Найти по содержимому
+          find_by_content: Есть слова в заголовке, описании и ответах
           new_ticket_on_user: Создать тикет на пользователя
           project: Проект
           reporter: Автор
           title: Список заявок в поддержку
+          words_delimited_by_space: Слова, разделенные пробелами 
           updated_after: Обновлён после
           updated_before: Обновлён до
         new:
