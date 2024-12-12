@@ -28,6 +28,7 @@ module LocalizedEmails
     def message
       messages = MessagesCollection.new
       addresses = Array(old_message.to)
+      BatchSidekiq.raise_error_if_limit_reached(addresses.count)
       users = User.where(email: addresses).to_a
       grouped_addresses = addresses.group_by do |to|
         language || users.detect { |u| u.email == to }&.language || DEFAULT_LOCALE

@@ -2,7 +2,7 @@
 module Pack
   class PackWorker
     include Sidekiq::Worker
-    sidekiq_options retry: 2, queue: :default
+    sidekiq_options queue: :default
 
     def perform(template, args = 'default')
       if template == "expired"
