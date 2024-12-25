@@ -19,7 +19,8 @@ class Synchronizer
 
   def mock_ssh_key_path(key)
     path = "/tmp/octo-#{SecureRandom.hex}"
-    File.open(path, "wb") { |f| f.write key }
+    File.delete(path) if File.exist? path
+    File.open(path, "wb", 0o600) { |f| f.write key }
     path
   end
 
@@ -177,7 +178,7 @@ class Synchronizer
 
   def upload_credential(credential)
     return unless connection_to_cluster
-    
+
     credential_path = mock_ssh_key_path(credential.public_key)
     scp_session = Net::SCP.new(connection_to_cluster)
     scp_session.upload!(credential_path, credential_path)
