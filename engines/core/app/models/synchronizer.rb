@@ -102,7 +102,7 @@ class Synchronizer
           deactivate_member(member, member_state_on_cluster)
         elsif member.engaged?
           cluster.log("\t Access for #{member.login} is engaged", project)
-          block_member(member) if member_state_on_cluster.include? 'active'
+          block_member(member) if member_state_on_cluster ==  'active'
         end
       end
     elsif project.blocked? || project.suspended?
@@ -118,15 +118,15 @@ class Synchronizer
     end
     project.removed_members.each do |removed_member|
       member_state_on_cluster = check_member_state_on_cluster(removed_member)
-      block_member(removed_member) if member_state_on_cluster.include? 'active'
+      block_member(removed_member) if member_state_on_cluster == 'active'
     end
 
 
   end
 
   def activate_member(member, state)
-    (state.include? "active") ||
-      ((state.include? "blocked") ? unblock_member(member) : add_member(member))
+    (state == "active") ||
+      ((state == "blocked") ? unblock_member(member) : add_member(member))
 
     member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
@@ -135,7 +135,7 @@ class Synchronizer
   end
 
   def deactivate_member(member, state)
-    (state.include? "blocked") || block_member(member)
+    (state == "blocked") || block_member(member)
 
     member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
@@ -144,11 +144,11 @@ class Synchronizer
   end
 
   def suspend_member(member, state)
-    (state.include? "blocked") || block_member(member)
+    (state == "blocked") || block_member(member)
   end
 
   def drop_member(member, state)
-    !state.include?('closed') && close_member(member)
+    !(state == 'closed') && close_member(member)
 
     member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
@@ -157,7 +157,12 @@ class Synchronizer
   end
 
   def check_member_state_on_cluster(member)
-    run_on_cluster "sudo /usr/octo/check_user #{member.login} #{@project_group}"
+    output = run_on_cluster "sudo /usr/octo/check_user #{member.login} #{@project_group}"
+    if %w[active\n blocked\n closed\n].include? output
+      output[0...-1]
+    else
+      output
+    end
   end
 
   def add_member(member)
