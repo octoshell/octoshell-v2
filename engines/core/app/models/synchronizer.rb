@@ -102,7 +102,7 @@ class Synchronizer
           deactivate_member(member, member_state_on_cluster)
         elsif member.engaged?
           cluster.log("\t Access for #{member.login} is engaged", project)
-          block_member(member) if member_state_on_cluster ==  'active'
+          block_member(member) if member_state_on_cluster == 'active'
         end
       end
     elsif project.blocked? || project.suspended?

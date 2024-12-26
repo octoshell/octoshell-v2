@@ -34,7 +34,6 @@ public/assets/
 public/wikiplus/
 public/system_archive.tar.gz
 vendor/
-deploy/
 tests/
 
 .ruby-version

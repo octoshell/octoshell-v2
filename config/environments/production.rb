@@ -101,7 +101,7 @@ Rails.application.configure do
   config.action_mailer.default_options = {
     from:  "Octoshell Notifier <#{ (h=Rails.application.secrets[:imap]) ? h[:login] : "info@users.parallel.ru"}>",
   }
-  config.action_mailer.default_url_options = { host: "users.parallel.ru", protocol: 'https' }
+  config.action_mailer.default_url_options = { host: config.base_host, protocol: 'https' }
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
@@ -118,7 +118,7 @@ Rails.application.configure do
       port: 587,
       user_name: h[:login],
       password: h[:password],
-      domain: 'users.parallel.ru'
+      domain: config.base_host
       # enable_starttls_auto: true,
       # tls: true
     }

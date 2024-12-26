@@ -1,0 +1,130 @@
+upstream octo2 {
+  server unix://!deploy_to!/socket fail_timeout=0;
+}
+
+server {
+  listen 80;
+  charset utf-8;
+
+  #proxy_connect_timeout       160;
+  proxy_send_timeout          120;
+  proxy_read_timeout          120;
+  proxy_connect_timeout 120;
+  #send_timeout                160;
+  keepalive_timeout 10;
+
+
+  root !deploy_to!/current/public;
+
+  #include acme;
+
+  if ($request_filename ~ /wiki/pages/12-reregistration) {
+    rewrite ^ https://users.parallel.ru/wikiplus/pages/11-reregistration? permanent;
+  }
+
+  location /nbasic_status {
+      stub_status on;
+  }
+
+  location / {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-FORWARDED-PROTO https;
+    proxy_set_header Host $host;
+    proxy_redirect off;
+
+    proxy_set_header  X-Sendfile-Type  X-Accel-Redirect;
+    proxy_set_header  X-Accel-Mapping  "!deploy_to!/releases/[\d]+/secured_uploads/=/secured_uploads/";
+    proxy_pass http://octo2;
+  }
+
+   location /secured_uploads/{
+        alias   !deploy_to!/current/secured_uploads/;  # Append the path with /
+        internal;   # Can't access this directory from direct access from the web
+        sendfile on;
+  }
+
+
+  location /vk {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-FORWARDED-PROTO https;
+    proxy_set_header Host $host;
+    proxy_redirect off;
+
+    proxy_pass http://asi.srcc.msu.ru:8080/vk;
+  }
+
+  location /wp-login.php {
+    add_header Content-Type text/html;
+    error_page 405 =200 $uri;
+  }
+
+  location /wp-admin.css {
+    error_page 405 =200 $uri;
+  }
+
+  location /wp-login.php.html {
+    error_page 405 =200 $uri;
+  }
+
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location /admin/sidekiq {
+    proxy_pass http://octo2;
+  }
+
+  location ^~ /uploads/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location ^~ /lib/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location ^~ /images/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location ^~ /plugins/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location ^~ /fonts/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location = /favicon.ico {
+    expires    max;
+    add_header Cache-Control public;
+  }
+
+  location = /robots.txt {
+    expires    max;
+    add_header Cache-Control public;
+  }
+
+  error_page 502 /502.html;
+  location = /502.html {
+    root !deploy_to!/current/public;
+  }
+
+  error_page 500 503 504 /500.html;
+  location = /500.html {
+    root !deploy_to!/current/public;
+  }
+}

@@ -1,0 +1,16 @@
+[Unit]
+Description= Octoshell Rails Puma Webserver
+Wants=network-online.target
+After=syslog.target network.target network-online.target
+
+[Service]
+Type=simple
+#User=admin
+WorkingDirectory=!deploy_to!/current
+#ExecStart= /home/admin/.rbenv/bin/rbenv exec bundle exec puma -C !deploy_to!/current/config/puma.rb -e production
+ExecStart=/bin/bash -lc 'bundle exec puma'
+TimeoutSec=15
+Restart=always
+
+[Install]
+WantedBy=default.target
