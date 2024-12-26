@@ -60,7 +60,8 @@ task setup: :remote_environment do
 
 end
 
-task :setup_database => :remote_environment do
+task :setup_2 => :remote_environment do
+
   database_yml = <<-DATABASE.dedent
 development: &def
   adapter: postgresql
@@ -85,6 +86,11 @@ production:
     echo "#{database_yml}" > #{fetch(:deploy_to)}/shared/config/database.yml
   }
   comment "-----> Database configured."
+  command %{
+    cp #{fetch(:deploy_to)}/config/environments/production_example.rb #{fetch(:deploy_to)}/config/environments/production.rb
+  }
+  comment "-----> production.rb copied"
+
 end
 
 task :setup_runner => :remote_environment do
@@ -137,7 +143,7 @@ task :deploy => :remote_environment do
       invoke :"git:clone"
       invoke :"deploy:link_shared_paths"
       command "bundle install"
-      command "rails assets:precompile"
+      invoke :"rails:assets_precompile"
 
       # command %{rm Gemfile.lock}
       # command %{rbenv local 2.5.1}
@@ -175,7 +181,7 @@ end
 
 
 task generate_config: :remote_environment  do
-  command "rails r deploy/deploy/copy_systemd_puma.rb #{fetch(:deploy_to)}"
+  command "bundle exec rails r deploy/copy_systemd_puma.rb #{fetch(:deploy_to)}"
 end
 
 
