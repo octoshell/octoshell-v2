@@ -126,20 +126,21 @@ task first_deploy: :remote_environment do
 
     invoke :"rails:assets_precompile"
     command %(rails runner deploy/copy_systemd_puma.rb #{fetch(:deploy_to)})
+    command %(cp deploy/restart_all.sh ~)
+    command %(cp deploy/exec_all.sh ~)
+
     %w[schedule.rb honeybadger.yml].each do |file|
       command %(cp config/#{file}.example  #{fetch(:deploy_to)}/shared/config/#{file})
     end
     command "rails db:create"
     command "rails db:migrate"
     command %(rails runner deploy/init_db.rb)
-
     on :launch do
        invoke :"rbenv:load"
        invoke :'whenever:update'
     end
-
+    invoke :"deploy:cleanup"
   end
-
 end
 
 desc "Deploys the current version to the server."
@@ -153,6 +154,7 @@ task :deploy => :remote_environment do
       invoke :"git:clone"
       invoke :"deploy:link_shared_paths"
       command "bundle install"
+      invoke :"rails:db_migrate"
       invoke :"rails:assets_precompile"
 
       # command %{rm Gemfile.lock}
@@ -160,7 +162,6 @@ task :deploy => :remote_environment do
       # command %{gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"}
       # invoke :'bundle:install'
       # command %{HONEYBADGER=1 bundle install}
-      # invoke :"rails:db_migrate"
       # invoke :"rails:assets_precompile"
       # command %{RAILS_ENV=production bundle exec rails db:migrate}
 

@@ -1,0 +1,10 @@
+export DEPLOY_BRANCH=master
+export DEPLOY_REPO=https://github.com/octoshell/octoshell-v2
+export DEPLOY_DOMAIN=localhost #domain for ssh
+export DEPLOY_PORT=22 #port for ssh
+export DEPLOY_RUBY=2.7.6 # ruby version
+export DEPLOY_USER=octo #user
+export DEPLOY_DBUSER=octo
+export DEPLOY_DBPASS=test
+export DEPLOY_IDENTITY="~/.ssh/my_key" # private key
+export DEPLOY_TO=/home/octo/www/octoshell2 # folder containing application
