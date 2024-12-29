@@ -2,6 +2,7 @@ namespace :admin do
   task :add_user => :environment do
     user = User.find_by_email(ENV["EMAIL"])
     user.groups << Group.superadmins
+    user.update!(activation_state: "active")
     puts "#{ENV["EMAIL"]} has added to the superadmins group."
   end
 

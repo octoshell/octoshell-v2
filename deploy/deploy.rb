@@ -1,12 +1,8 @@
 require "mina/bundler"
 require "mina/rbenv"
-#require "mina/rbenv/addons"
-#require "mina/foreman"
 require "mina/rails"
 require "mina/git"
-# require "mina/scp"
-
-#require "mina/systemd"
+require 'mina/whenever'
 
 #set :execution_mode, :printer
 
@@ -37,9 +33,8 @@ set :keep_releases, 1
 #set :foreman_app, 'octoshell3'
 #old set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log vendor/bundle)
 set :shared_dirs, %w(public/uploads log secured_uploads public/images)
-set :shared_files, %w(config/puma.rb config/secrets.yml config/settings.yml config/environments/production.rb
-                      config/database.yml config/schedule.rb database.yml config/honeybadger.yml mail.sock)
-#set :shared_paths, %w(public/uploads config/puma.rb config/settings.yml config/database.yml log)
+set :shared_files, %w(config/puma.rb config/secrets.yml
+                      config/database.yml config/schedule.rb config/honeybadger.yml)
 set :force_asset_precompile, true
 set :rails_env, 'production'
 set :bundle_bin, 'bundle'
@@ -50,17 +45,14 @@ end
 
 task setup: :remote_environment do
   command %[mkdir -p "#{fetch(:deploy_to)}/shared/log"]
-  command %[chmod g+rx,u+rwx "#{fetch(:deploy_to)}/shared/log"]
-
+  # command %[chmod g+rx,u+rwx "#{fetch(:deploy_to)}/shared/log"]
   command %[mkdir -p "#{fetch(:deploy_to)}/shared/config"]
-  command %[chmod g+rx,u+rwx "#{fetch(:deploy_to)}/shared/config"]
-
-  command %[touch "#{fetch(:deploy_to)}/shared/config/database.yml"]
-  comment %[Be sure to edit 'shared/config/database.yml'.]
-
-end
-
-task :setup_2 => :remote_environment do
+  # command %[chmod g+rx,u+rwx "#{fetch(:deploy_to)}/shared/config"]
+  # command %[touch "#{fetch(:deploy_to)}/shared/config/database.yml"]
+  fetch(:shared_files).each do |path|
+    command "touch #{fetch(:deploy_to)}/shared/#{path}"
+    command "chmod 600 #{fetch(:deploy_to)}/shared/#{path}"
+  end
 
   database_yml = <<-DATABASE.dedent
 development: &def
@@ -86,26 +78,21 @@ production:
     echo "#{database_yml}" > #{fetch(:deploy_to)}/shared/config/database.yml
   }
   comment "-----> Database configured."
-  command %{
-    cp #{fetch(:deploy_to)}/config/environments/production_example.rb #{fetch(:deploy_to)}/config/environments/production.rb
-  }
-  comment "-----> production.rb copied"
-
 end
 
-task :setup_runner => :remote_environment do
-  run_file = <<-RUN.dedent
-  #!/bin/bash
-
-  cd #{fetch(:deploy_to)}/current
-  exec "\$@"
-  RUN
-  command %{
-    echo "#{run_file}" > #{fetch(:deploy_to)}/run_current
-    chmod a+x #{fetch(:deploy_to)}/run_current
-  }
-end
-
+# task :setup_runner => :remote_environment do
+#   run_file = <<-RUN.dedent
+#   #!/bin/bash
+#
+#   cd #{fetch(:deploy_to)}/current
+#   exec "\$@"
+#   RUN
+#   command %{
+#     echo "#{run_file}" > #{fetch(:deploy_to)}/run_current
+#     chmod a+x #{fetch(:deploy_to)}/run_current
+#   }
+# end
+#
 #
 ## See https://github.com/cespare/ruby-dedent/blob/master/lib/dedent.rb
 ##
@@ -122,14 +109,37 @@ class String
   end
 end
 
-task :copy_files do
-  run(:local) do
-      command "hostname"
-      command "pwd"
-      comment "Copying files"
-      command "scp -i #{fetch(:identity_file)}  -P  #{fetch(:port)} merge_orgs.xlsx  #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/"
-      command "scp -i #{fetch(:identity_file)}  -P  #{fetch(:port)} joining-orgs_2017_11-2.ods  #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/"
+desc "first deploy"
+task first_deploy: :remote_environment do
+  deploy do
+    comment "Start deploy..."
+    command "hostname"
+    command "pwd"
+    invoke :"git:clone"
+    invoke :"deploy:link_shared_paths"
+    command "bundle install"
+    secret = <<-SECRET.dedent
+      production:
+        secret_key_base: $(bundle exec rake secret)
+    SECRET
+    command %(echo "#{secret}" >  #{fetch(:deploy_to)}/shared/config/secrets.yml)
+
+    invoke :"rails:assets_precompile"
+    command %(rails runner deploy/copy_systemd_puma.rb #{fetch(:deploy_to)})
+    %w[schedule.rb honeybadger.yml].each do |file|
+      command %(cp config/#{file}.example  #{fetch(:deploy_to)}/shared/config/#{file})
+    end
+    command "rails db:create"
+    command "rails db:migrate"
+    command %(rails runner deploy/init_db.rb)
+
+    on :launch do
+       invoke :"rbenv:load"
+       invoke :'whenever:update'
+    end
+
   end
+
 end
 
 desc "Deploys the current version to the server."
@@ -167,17 +177,19 @@ task :deploy => :remote_environment do
 
       # command %{bundle exec rails runner -e production engines/core/scripts/ruby/support.rb}
       # command %{bundle exec whenever --update-crontab}
+      on :launch do
+        invoke :"rbenv:load"
+        invoke :'whenever:update'
+      end
 
 
       invoke :"deploy:cleanup"
 #      invoke :"set_whenever"
-    on :launch do
-#      invoke :restart_service
-    end
   end
 end
 
-
+# task touch_files: :remote_environment do
+# end
 
 
 task generate_config: :remote_environment  do
@@ -190,22 +202,22 @@ task :"seed_if_needed" do
   command "test #{fetch(:deploy_to)}/seed_done.txt || RACK_ENV=production rbenv exec bundle exec rake db:seed && touch #{fetch(:deploy_to)}/seed_done.txt"
 end
 
-desc "Prepare for first deploy"
-task :deploy_1 do
-  run(:local) do
-      command "hostname"
-      command "pwd"
-      comment "Copying puma.rb"
-      command "scp  -i #{fetch(:identity_file)} -P  #{fetch(:port)} config/puma.rb   #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/puma.rb"
-      comment "Copying settings.yml"
-      command "scp -i #{fetch(:identity_file)}   -P  #{fetch(:port)} config/settings.yml   #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/settings.yml"
-      comment "Copying secrets.yml"
-      command "scp -i #{fetch(:identity_file)}  -P  #{fetch(:port)} config/secrets.yml  #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/secrets.yml"
-      comment "Copying honeybadger.yml"
-      command "scp -i #{fetch(:identity_file)}  -P  #{fetch(:port)} config/honeybadger.yml  #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/honeybadger.yml"
-
-  end
-end
+# desc "Prepare for first deploy"
+# task :deploy_1 do
+#   run(:local) do
+#       command "hostname"
+#       command "pwd"
+#       comment "Copying puma.rb"
+#       command "scp  -i #{fetch(:identity_file)} -P  #{fetch(:port)} config/puma.rb   #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/puma.rb"
+#       comment "Copying settings.yml"
+#       command "scp -i #{fetch(:identity_file)}   -P  #{fetch(:port)} config/settings.yml   #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/settings.yml"
+#       comment "Copying secrets.yml"
+#       command "scp -i #{fetch(:identity_file)}  -P  #{fetch(:port)} config/secrets.yml  #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/secrets.yml"
+#       comment "Copying honeybadger.yml"
+#       command "scp -i #{fetch(:identity_file)}  -P  #{fetch(:port)} config/honeybadger.yml  #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/config/honeybadger.yml"
+#
+#   end
+# end
 
 task :make_seed => :remote_environment do
   in_path(fetch(:current_path)) do

@@ -1,0 +1,5 @@
+---
+api_key: 'honeybadger_api_key'
+debug: true
+development:
+  report_data: true
