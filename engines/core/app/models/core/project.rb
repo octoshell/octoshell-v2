@@ -269,6 +269,10 @@ module Core
 
       event :suspend do
         transitions :from => :active, :to => :suspended
+        after do
+          on_deactivate
+        end
+
       end
 
       event :reactivate do

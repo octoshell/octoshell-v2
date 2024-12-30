@@ -118,12 +118,8 @@ task first_deploy: :remote_environment do
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
     command "bundle install"
-    secret = <<-SECRET.dedent
-      production:
-        secret_key_base: $(bundle exec rake secret)
-    SECRET
+    secret = File.read('config/secrets.yml.example')
     command %(echo "#{secret}" >  #{fetch(:deploy_to)}/shared/config/secrets.yml)
-
     invoke :"rails:assets_precompile"
     command %(rails runner deploy/copy_systemd_puma.rb #{fetch(:deploy_to)})
     command %(cp deploy/restart_all.sh ~)
@@ -132,9 +128,9 @@ task first_deploy: :remote_environment do
     %w[schedule.rb honeybadger.yml].each do |file|
       command %(cp config/#{file}.example  #{fetch(:deploy_to)}/shared/config/#{file})
     end
-    command "rails db:create"
-    command "rails db:migrate"
-    command %(rails runner deploy/init_db.rb)
+    command "RAILS_ENV=production rails db:create"
+    command "RAILS_ENV=production rails db:migrate"
+    command %(RAILS_ENV=production rails runner deploy/init_db.rb)
     on :launch do
        invoke :"rbenv:load"
        invoke :'whenever:update'
