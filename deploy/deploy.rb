@@ -118,12 +118,12 @@ task first_deploy: :remote_environment do
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
     command "bundle install"
-    secret = File.read('config/secrets.yml.example')
+    secret = File.read('example_config/secrets.yml')
     command %(echo "#{secret}" >  #{fetch(:deploy_to)}/shared/config/secrets.yml)
     invoke :"rails:assets_precompile"
     command %(rails runner deploy/copy_systemd_puma.rb #{fetch(:deploy_to)})
-    command %(cp deploy/restart_all.sh ~)
-    command %(cp deploy/exec_all.sh ~)
+    command %(cp deploy/restart-all.sh ~)
+    command %(cp deploy/exec-all.sh ~)
 
     %w[schedule.rb honeybadger.yml].each do |file|
       command %(cp config/#{file}.example  #{fetch(:deploy_to)}/shared/config/#{file})
