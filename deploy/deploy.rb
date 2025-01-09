@@ -122,7 +122,7 @@ task first_deploy: :remote_environment do
     secret = File.read('example_config/secrets.yml')
     command %(echo "#{secret}" >  #{fetch(:deploy_to)}/shared/config/secrets.yml)
     invoke :"rails:assets_precompile"
-    command %(rails runner deploy/copy_systemd_puma.rb #{fetch(:deploy_to)})
+    command %(bundle exec rails runner deploy/copy_systemd_puma.rb #{fetch(:deploy_to)})
     command %(cp deploy/restart-all.sh ~)
     command %(cp deploy/exec-all.sh ~)
 
