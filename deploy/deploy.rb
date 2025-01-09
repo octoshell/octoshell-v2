@@ -117,6 +117,7 @@ task first_deploy: :remote_environment do
     command "pwd"
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
+    command "gem install bundler:1.16.5"
     command "bundle install"
     secret = File.read('example_config/secrets.yml')
     command %(echo "#{secret}" >  #{fetch(:deploy_to)}/shared/config/secrets.yml)
@@ -128,9 +129,9 @@ task first_deploy: :remote_environment do
     %w[schedule.rb honeybadger.yml].each do |file|
       command %(cp config/#{file}.example  #{fetch(:deploy_to)}/shared/config/#{file})
     end
-    command "RAILS_ENV=production rails db:create"
-    command "RAILS_ENV=production rails db:migrate"
-    command %(RAILS_ENV=production rails runner deploy/init_db.rb)
+    command "RAILS_ENV=production bundle exec rails db:create"
+    command "RAILS_ENV=production bundle exec rails db:migrate"
+    command %(RAILS_ENV=production bundle exec rails runner deploy/init_db.rb)
     on :launch do
        invoke :"rbenv:load"
        invoke :'whenever:update'

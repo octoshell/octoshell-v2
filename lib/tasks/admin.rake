@@ -1,4 +1,12 @@
 namespace :admin do
+  task :test_email => :environment do
+    ActionMailer::Base.mail(
+      to: ENV["EMAIL"],
+      subject: "test",
+      body: "test"
+    ).deliver
+
+  end
   task :add_user => :environment do
     user = User.find_by_email(ENV["EMAIL"])
     user.groups << Group.superadmins
