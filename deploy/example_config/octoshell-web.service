@@ -8,7 +8,7 @@ Type=simple
 #User=admin
 WorkingDirectory=!deploy_to!/current
 #ExecStart= /home/admin/.rbenv/bin/rbenv exec bundle exec puma -C !deploy_to!/current/config/puma.rb -e production
-ExecStart=/bin/bash -c 'bundle exec puma'
+ExecStart=/bin/bash -ic 'bundle exec puma'
 TimeoutSec=15
 Restart=always
 

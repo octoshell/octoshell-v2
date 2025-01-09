@@ -6,7 +6,7 @@ After=syslog.target network.target network-online.target
 [Service]
 Type=simple
 WorkingDirectory=!deploy_to!/current
-ExecStart=/bin/bash -c 'bundle exec sidekiq -C config/sidekiq.yml'
+ExecStart=/bin/bash -ic 'bundle exec sidekiq -C config/sidekiq.yml'
 TimeoutSec=15
 Restart=always
 
