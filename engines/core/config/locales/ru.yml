@@ -512,6 +512,7 @@ ru:
           new_organization: Новая организация
           none: Не имеет значения
           noo: Нет
+          projects_state_in: Есть проект в состояниях
           title: Организации
           yess: Да
         load_source_objects:

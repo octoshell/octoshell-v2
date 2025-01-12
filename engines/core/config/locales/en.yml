@@ -488,6 +488,7 @@ en:
           new_organization: New organization
           none: Irrelevant
           noo: false
+          projects_state_in: has project in states
           title: Organizations
           yess: true
         load_source_objects:
