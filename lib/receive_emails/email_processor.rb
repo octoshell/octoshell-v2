@@ -16,7 +16,8 @@ module ReceiveEmails
 
     def continue_processing?
       user && (!message.header['Auto-Submitted'] ||
-               message.header['Auto-Submitted'].to_s == 'no')
+               message.header['Auto-Submitted'].to_s == 'no') &&
+        !message.header['X-Autorespond']
     end
 
     def topic
