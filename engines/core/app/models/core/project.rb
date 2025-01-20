@@ -121,7 +121,7 @@ module Core
         scope = scope.group('core_members.project_id')
       end
       if type == 2
-        scope = scope.group(Perf::Job.coalesce_project)
+        scope = scope.group(Perf::Job.new_coalesce_project)
       end
       if core_hours_lt.present?
         if !core_hours_gt.present? || core_hours_gt.to_i.zero?

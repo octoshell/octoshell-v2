@@ -52,6 +52,12 @@ module Perf
           joins_projects_in_session(session_id)
       end
 
+      def new_coalesce_project
+        <<-SQL
+         COALESCE(core_members.project_id,core_removed_members.project_id)
+        SQL
+      end
+
       def coalesce_project
         <<-SQL
          COALESCE(core_members.project_id,
@@ -77,18 +83,29 @@ module Perf
         )
       end
 
+
       def join_all_projects
         join_projects.joins(
           <<-SQL
-        LEFT JOIN versions ON core_members.id IS NULL AND
-          versions.item_type = 'Core::Member' AND versions.object IS NOT NULL AND
-          versions.object LIKE CONCAT('%login: ', jobstat_jobs.login, '%\n')
+        LEFT JOIN core_removed_members ON core_members.id IS NULL AND
+          core_removed_members.login = jobstat_jobs.login
           SQL
        )
       end
 
+
+      # def join_all_projects
+      #   join_projects.joins(
+      #     <<-SQL
+      #   LEFT JOIN versions ON core_members.id IS NULL AND
+      #     versions.item_type = 'Core::Member' AND versions.object IS NOT NULL AND
+      #     versions.object LIKE CONCAT('%login: ', jobstat_jobs.login, '%\n')
+      #     SQL
+      #  )
+      # end
+
       def project_id_in_period
-        select("DISTINCT #{coalesce_project} AS p_id ").join_all_projects
+        select("DISTINCT #{new_coalesce_project} AS p_id ").join_all_projects
       end
 
 
