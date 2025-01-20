@@ -35,8 +35,7 @@ table class="table table-striped"
     - [:assessing, :assessed, :rejected].each do |state|
       th = Sessions::Report.human_state_name(state)
     th
-    - Sessions.user_class.experts.each do |expert|
-      -if(@session.reports.where(expert_id: expert.id).count != 0)
+    - User.where(id: @session.reports.distinct.pluck(:expert_id)).includes(:profile).each do |expert|
         tr
           td = link_to expert.profile.full_name, octo_url_for(:admin, expert)
           - [:assessing, :assessed, :rejected].each do |state|
