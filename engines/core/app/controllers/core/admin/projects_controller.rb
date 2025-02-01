@@ -5,9 +5,10 @@ module Core
     def index
       respond_to do |format|
         format.html do
+          setup_default_filter
           @search = Project.search(params[:q])
           @projects = @search.result(distinct: true).preload(owner: [:profile])
-                             .preload(:organization).order(created_at: :desc)
+                             .preload(:organization)
           @count_all_members = Member.group(:project_id)
           @count_allowed_members = User.group('core_projects.id')
                                        .cluster_access_state_present
@@ -156,7 +157,7 @@ module Core
 
     def setup_default_filter
       params[:q] ||= { state_in: ["active"] }
-      params[:q][:meta_sort] ||= "created_at.desc"
+      params[:q][:s] ||= "id desc"
     end
   end
 end

@@ -5,8 +5,10 @@ class Admin::UsersController < Admin::ApplicationController
   def index
     respond_to do |format|
       format.html do
-        @search = User.includes({employments:[:organization,:organization_department]}, :profile).ransack(params[:q])
-        @users = @search.result(distinct: true).order(id: :desc)
+        @search = User.includes({employments:[:organization,:organization_department]}, :profile)
+                      .select('users.*, profiles.last_name')
+                      .left_joins(:profile).ransack(params[:q])
+        @users = @search.result(distinct: true)#.order(id: :desc)
         without_pagination(:users)
       end
       format.json do
@@ -93,8 +95,8 @@ private
 
   def setup_default_filter
     params[:q] ||= {
-      user_groups_group_name_in: ['authorized']
+      user_groups_group_name_in: ['authorized'],
     }
-    params[:q][:meta_sort] ||= 'id.desc'
+    params[:q][:s] ||= 'id desc'
   end
 end

@@ -4,7 +4,7 @@ table class="table table-bordered table-striped"
     th class="col-xs-1" #
     th
       - if @search
-        = sort_link @search, :last_name, User.human_attribute_name(:full_name), :default_order => :asc
+        = sort_link @search, :profile_last_name, User.human_attribute_name(:full_name), :default_order => :asc
       - else
         = User.human_attribute_name(:full_name)
     th = User.human_attribute_name(:access_state)
@@ -16,7 +16,7 @@ table class="table table-bordered table-striped"
         = User.human_attribute_name(:created_at)
     th
       - if @search
-        = sort_link @search, :id, User.human_attribute_name(:last_login_at), :default_order => :asc
+        = sort_link @search, :last_login_at, User.human_attribute_name(:last_login_at), :default_order => :asc
       - else
         = User.human_attribute_name(:last_login_at)
   - users.each do |user|
