@@ -20,7 +20,7 @@ class Synchronizer
   def mock_ssh_key_path(key)
     path = "/tmp/octo-#{SecureRandom.hex}"
     File.delete(path) if File.exist? path
-    File.open(path, "wb", 0o600) { |f| f.write key }
+    File.open(path, "wb") { |f| f.write key }
     path
   end
 
