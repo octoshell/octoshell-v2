@@ -20,7 +20,7 @@ class Synchronizer
   def mock_ssh_key_path(key)
     path = "/tmp/octo-#{SecureRandom.hex}"
     File.delete(path) if File.exist? path
-    File.open(path, "wb") { |f| f.write key }
+    File.open(path, "wb", 0o600) { |f| f.write key }
     path
   end
 
@@ -158,7 +158,7 @@ class Synchronizer
 
   def check_member_state_on_cluster(member)
     output = run_on_cluster "sudo /usr/octo/check_user #{member.login} #{@project_group}"
-    if %w[active\n blocked\n closed\n].include? output
+    if %W[active\n blocked\n closed\n].include? output
       output[0...-1]
     else
       output
