@@ -27,6 +27,7 @@ div class="page-header"
 
   = f.text_field :projects_id_in,label: t('.projects_id_in'), placeholder: t('.id_placeholder')
   = f.text_field :projects_id_not_in,label: t('.projects_id_not_in'), placeholder: t('.id_placeholder')
+  = f.text_field :email_in,label: t('.email_in'), placeholder: t('.email_placeholder')
 
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"

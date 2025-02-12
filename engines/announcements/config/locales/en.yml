@@ -43,6 +43,11 @@ en:
           special: special
           test: Test
         show_users:
+          email_in: Email
+          email_placeholder: Emails delimited by colon(,), semicolon(;) or space
+          email_in_error: >-
+            The "Email ID in" field can only include emails seperated by
+            colon, semicolon and spaces
           has_account_on_clusters: Cluster account exists
           has_rereg_report_statuses: Has reports with status
           has_survey_statuses: Has surveys with status
@@ -61,7 +66,7 @@ en:
           projects_id_not_in_error: >-
             The "Project ID  not in" field can only include numbers seperated by
             colons, semicolons and spaces
-          id_placeholder: IDs delimited by colon(,), semicolon(;) or space 
+          id_placeholder: IDs delimited by colon(,), semicolon(;) or space
     mailer:
       announcement:
         hello_known_name: Good afternoon, %{name}!
