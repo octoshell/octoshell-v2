@@ -111,7 +111,7 @@ module Core
         CSV.foreach(file.path) do |row|
           email = row.first.downcase
           initials = row.second
-          language = row.third || current_user.language
+          language = (row.third || current_user.language).strip
           user = User.find_by_email(email)
           if user.present?
             @project.invite_member(user.id) unless @project.users.exists?(id: user.id)
