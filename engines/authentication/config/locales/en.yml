@@ -35,6 +35,7 @@ en:
       user_is_already_activated: The user has been activated.
       user_is_not_activated: The user has not been activated yet
       user_is_not_registered: The user has not been registered.
+      pass_captcha: Pass captcha please
     helpers:
       submit:
         create: Create

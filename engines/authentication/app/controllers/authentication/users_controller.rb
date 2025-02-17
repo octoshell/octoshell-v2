@@ -1,20 +1,30 @@
+require 'json'
 class Authentication::UsersController < Authentication::ApplicationController
   def new
     @user = User.new
   end
 
   def create
+    @user = User.new(params[:user] ? user_params : {})
+    @user.language = session[:locale]
     if !params[:cond] || cond_params[:cond_accepted].to_i != 1
-      flash_message :notice, t("authentication.flash.conditions_must_be_accepted")
-      redirect_back_or_to(root_url)
-    else
-      @user = User.new(params[:user] ? user_params : {})
-      @user.language = session[:locale]
-      if @user.save
-        redirect_to confirmation_users_path(email: @user.email)
+      flash_now_message :notice, t("authentication.flash.conditions_must_be_accepted")
+      @errors = true
+    end
+
+    if params['smart-token']
+      if captcha_valid?
+        session[:captcha_valid] = 't'
       else
-        render :new
+        @errors = true
+        flash_now_message :notice, t("authentication.flash.pass_captcha")
       end
+    end
+
+    if !@errors && @user.save
+      redirect_to confirmation_users_path(email: @user.email)
+    else
+      render :new
     end
   end
 
@@ -36,6 +46,18 @@ class Authentication::UsersController < Authentication::ApplicationController
   end
 
   private
+
+  def captcha_valid?
+    uri = URI('https://smartcaptcha.yandexcloud.net/validate')
+    uri.query = URI.encode_www_form(secret: Rails.application.secrets.yandex_captcha[:server_key],
+                                    token: params['smart-token'],
+                                    ip: request.remote_ip)
+    res = Net::HTTP.get_response(uri)
+    return true unless res.is_a?(Net::HTTPSuccess)
+
+    JSON.parse(res.body)['status'] == 'ok'
+  end
+
   def cond_params
     params.require(:cond).permit(:cond_accepted)
   end
