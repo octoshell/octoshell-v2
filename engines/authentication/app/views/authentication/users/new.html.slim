@@ -9,7 +9,7 @@ div class="row"
       = f.password_field :password_confirmation
       = check_box :cond, :cond_accepted
       = label :cond, :cond_accepted, t(".cond_accepted")
-      - if(c=Rails.application.secrets.yandex_captcha) && !session[:captcha_valid]
+      - if(c=Rails.application.secrets.yandex_captcha)
         #captcha-container.smart-captcha[style="height: 100px" data-sitekey=c[:client_key]]
       = f.form_group do
         = f.submit t(".sign_up", default: "Sign Up")

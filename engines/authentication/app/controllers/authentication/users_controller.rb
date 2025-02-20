@@ -12,13 +12,9 @@ class Authentication::UsersController < Authentication::ApplicationController
       @errors = true
     end
 
-    if params['smart-token']
-      if captcha_valid?
-        session[:captcha_valid] = 't'
-      else
-        @errors = true
-        flash_now_message :notice, t("authentication.flash.pass_captcha")
-      end
+    if Rails.application.secrets.yandex_captcha && !captcha_valid?
+      @errors = true
+      flash_now_message :notice, t("authentication.flash.pass_captcha")
     end
 
     if !@errors && @user.save
