@@ -46,6 +46,12 @@ class UsersController < ApplicationController
     redirect_to session[:soul_location].present? ? session[:soul_location] : root_path
   end
 
+  def unblock_emails
+    current_user.update!(block_emails: false)
+    redirect_back_or_to(root_url, notice: t('.you_unblocked_email'))
+  end
+
+
   private
 
   def user_params

@@ -43,6 +43,10 @@ en:
           special: special
           test: Test
         show_users:
+          blocked_email_explanation: >-
+            Emails are not sent to those users who had trobles with their email
+            boxes. User can ublock email delivery after logging in Octoshell and following link.
+            Such users are not shown on this page.
           email_in: Email
           email_placeholder: Emails delimited by colon(,), semicolon(;) or space
           email_in_error: >-

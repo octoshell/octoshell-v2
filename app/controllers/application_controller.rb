@@ -9,6 +9,17 @@ class ApplicationController < ActionController::Base
   end
 
   before_action :set_paper_trail_whodunnit
+  before_action :show_blocked_email_alert
+
+  def show_blocked_email_alert
+    return unless current_user.block_emails
+
+    flash_now_message('alert', t('users.unblock_emails.your_email_blocked',
+                                 link: view_context.link_to(t('users.unblock_emails.link'),
+                                                            main_app.unblock_emails_users_path,
+                                                            method: :patch)).html_safe)
+  end
+
 
   def authorize_admins
     #logger.error "ADMINS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"

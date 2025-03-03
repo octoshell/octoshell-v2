@@ -203,6 +203,13 @@ en:
         no_projects_found: No projects found
       show:
         block_user: Block access
+        block_emails_explanation: >-
+          If this option is set, Octoshell does not deliver emails for a user, except
+          emails required for authentication.The feature helps to avoid unnecessary
+          workload for a mail server by not tring to deliver  undeliverable letters.
+          User can ublock email delivery in any moment.
+        block_emails: Block email delivery
+        unblock_emails: Unblock email delivery
         days_short: day
         delete_user: Delete user account
         edit_groups_involvement: Edit group involvement
@@ -340,6 +347,13 @@ en:
     tickets_warning:
       html: Support <span class="badge warning"><i class="fa fa-bell"></i></span>
   users:
+    unblock_emails:
+      you_unblocked_email: You unblocked your email address successfully!
+      link: link
+      your_email_blocked: >-
+        Octoshell does not send you emails anymore except ones used for authentication.
+        That happened because our mail server failed to send you emails (your email is overflowed,
+        email box does not exist etc.). Fix the problem and press this %{link}
     edit:
       minimum_password_length: Minimum 6 characters
       save: Save

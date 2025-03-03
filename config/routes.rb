@@ -764,6 +764,7 @@ Octoshell::Application.routes.draw do
   resources :users do
     get :login_as, on: :member
     get :return_to_self, on: :member
+    patch :unblock_emails, on: :collection
   end
 
   resources :lang_prefs, only: {} do
@@ -795,6 +796,9 @@ Octoshell::Application.routes.draw do
       member do
         post :block_access
         post :unblock_access
+        patch :block_emails
+        patch :unblock_emails
+
       end
       collection do
         get :id_finder

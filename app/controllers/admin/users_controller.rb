@@ -63,6 +63,18 @@ class Admin::UsersController < Admin::ApplicationController
     redirect_to [:admin, @user]
   end
 
+  def block_emails
+    @user = User.find(params[:id])
+    @user.update!(block_emails: true)
+    redirect_to [:admin, @user]
+  end
+
+  def unblock_emails
+    @user = User.find(params[:id])
+    @user.update!(block_emails: false)
+    redirect_to [:admin, @user]
+  end
+
   def destroy
     user = User.find(params[:id])
     #user.destroy!

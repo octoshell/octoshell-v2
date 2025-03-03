@@ -73,6 +73,7 @@ module Announcements::Admin
     end
 
     def show_users
+      flash_now_message(:notice, t('.blocked_email_explanation'))
       process_ransack_params
       @announcement = Announcement.find(params[:announcement_id])
       @search = Announcements.user_class.search(params[:q])
@@ -82,6 +83,7 @@ module Announcements::Admin
                else
                  @users.where(profiles: {receive_info_mails: true})
                end
+      @users = @users.where(block_emails: false)
       @recipient_ids = @announcement.recipient_ids
     end
 

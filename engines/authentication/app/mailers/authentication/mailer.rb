@@ -1,6 +1,11 @@
 module Authentication
   class Mailer < ActionMailer::Base
     attr_accessor :language
+
+    def non_blocking_delivery?
+      true
+    end
+
     def activation_needed(email, activation_token, language = 'en')
       self.language = language
       @activation_token = activation_token

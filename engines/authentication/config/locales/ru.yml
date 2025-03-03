@@ -8,6 +8,7 @@ ru:
         last_login_at: Последний раз заходил
         password: Пароль
         password_confirmation: Подтверждение пароля
+        block_emails: Блокировать отправку писем
     errors:
       models:
         user:

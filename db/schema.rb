@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_03_123357) do
+ActiveRecord::Schema.define(version: 2025_03_03_120512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
     t.text "body_ru"
     t.string "attachment", limit: 255
     t.boolean "is_special"
-    t.string "state", limit: 255
+    t.string "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "created_by_id"
@@ -321,10 +321,10 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
   create_table "core_accesses", id: :serial, force: :cascade do |t|
     t.integer "project_id", null: false
     t.integer "cluster_id", null: false
-    t.string "state", limit: 255
+    t.string "state"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "project_group_name", limit: 255
+    t.string "project_group_name"
     t.index ["cluster_id"], name: "index_core_accesses_on_cluster_id"
     t.index ["project_id", "cluster_id"], name: "index_core_accesses_on_project_id_and_cluster_id", unique: true
     t.index ["project_id"], name: "index_core_accesses_on_project_id"
@@ -371,7 +371,7 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
     t.text "description"
     t.text "public_key"
     t.text "private_key"
-    t.string "admin_login", limit: 255
+    t.string "admin_login"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "available_for_work", default: true
@@ -397,7 +397,7 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
   end
 
   create_table "core_critical_technologies", id: :serial, force: :cascade do |t|
-    t.string "name_ru", limit: 255
+    t.string "name_ru"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "name_en"
@@ -419,7 +419,7 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
   end
 
   create_table "core_direction_of_sciences", id: :serial, force: :cascade do |t|
-    t.string "name_ru", limit: 255
+    t.string "name_ru"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "name_en"
@@ -450,8 +450,8 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
 
   create_table "core_employment_positions", id: :serial, force: :cascade do |t|
     t.integer "employment_id"
-    t.string "name", limit: 255
-    t.string "value", limit: 255
+    t.string "name"
+    t.string "value"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "employment_position_name_id"
@@ -463,7 +463,7 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
     t.integer "user_id"
     t.integer "organization_id"
     t.boolean "primary"
-    t.string "state", limit: 255
+    t.string "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "organization_department_id"
@@ -481,8 +481,8 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
     t.integer "user_id", null: false
     t.integer "project_id", null: false
     t.boolean "owner", default: false
-    t.string "login", limit: 255
-    t.string "project_access_state", limit: 255
+    t.string "login"
+    t.string "project_access_state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "organization_id"
@@ -581,8 +581,8 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
 
   create_table "core_project_invitations", id: :serial, force: :cascade do |t|
     t.integer "project_id", null: false
-    t.string "user_fio", limit: 255, null: false
-    t.string "user_email", limit: 255, null: false
+    t.string "user_fio", null: false
+    t.string "user_email", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "language", default: "ru"
@@ -603,8 +603,8 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
   end
 
   create_table "core_projects", id: :serial, force: :cascade do |t|
-    t.string "title", limit: 255, null: false
-    t.string "state", limit: 255
+    t.string "title", null: false
+    t.string "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "organization_id"
@@ -646,7 +646,7 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
   create_table "core_requests", id: :serial, force: :cascade do |t|
     t.integer "project_id", null: false
     t.integer "cluster_id", null: false
-    t.string "state", limit: 255
+    t.string "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "cpu_hours"
@@ -664,8 +664,8 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
   end
 
   create_table "core_research_areas", id: :serial, force: :cascade do |t|
-    t.string "name_ru", limit: 255
-    t.string "old_group", limit: 255
+    t.string "name_ru"
+    t.string "old_group"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "name_en"
@@ -682,13 +682,13 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
 
   create_table "core_sureties", id: :serial, force: :cascade do |t|
     t.integer "project_id"
-    t.string "state", limit: 255
-    t.string "comment", limit: 255
-    t.string "boss_full_name", limit: 255
-    t.string "boss_position", limit: 255
+    t.string "state"
+    t.string "comment"
+    t.string "boss_full_name"
+    t.string "boss_position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "document", limit: 255
+    t.string "document"
     t.integer "author_id"
     t.text "reason"
     t.integer "changed_by_id"
@@ -721,8 +721,8 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
-    t.string "locked_by", limit: 255
-    t.string "queue", limit: 255
+    t.string "locked_by"
+    t.string "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
@@ -1150,7 +1150,7 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
     t.integer "session_id"
     t.integer "survey_id"
     t.integer "project_id"
-    t.string "state", limit: 255
+    t.string "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["project_id"], name: "index_sessions_user_surveys_on_project_id"
@@ -1226,11 +1226,11 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
     t.integer "author_id"
     t.integer "ticket_id"
     t.text "message"
-    t.string "attachment", limit: 255
+    t.string "attachment"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "attachment_file_name", limit: 255
-    t.string "attachment_content_type", limit: 255
+    t.string "attachment_file_name"
+    t.string "attachment_content_type"
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["author_id"], name: "index_support_replies_on_author_id"
@@ -1245,7 +1245,7 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
   end
 
   create_table "support_tags", id: :serial, force: :cascade do |t|
-    t.string "name_ru", limit: 255
+    t.string "name_ru"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "name_en"
@@ -1259,9 +1259,9 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
     t.integer "reporter_id"
     t.string "subject", limit: 255
     t.text "message"
-    t.string "state", limit: 255
-    t.string "url", limit: 255
-    t.string "attachment", limit: 255
+    t.string "state"
+    t.string "url"
+    t.string "attachment"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "responsible_id"
@@ -1330,26 +1330,27 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
-    t.string "email", limit: 255, null: false
-    t.string "crypted_password", limit: 255
-    t.string "salt", limit: 255
+    t.string "email", null: false
+    t.string "crypted_password"
+    t.string "salt"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "activation_state", limit: 255
-    t.string "activation_token", limit: 255
+    t.string "activation_state"
+    t.string "activation_token"
     t.datetime "activation_token_expires_at"
-    t.string "remember_me_token", limit: 255
+    t.string "remember_me_token"
     t.datetime "remember_me_token_expires_at"
-    t.string "reset_password_token", limit: 255
+    t.string "reset_password_token"
     t.datetime "reset_password_token_expires_at"
     t.datetime "reset_password_email_sent_at"
-    t.string "access_state", limit: 255
+    t.string "access_state"
     t.datetime "deleted_at"
     t.datetime "last_login_at"
     t.datetime "last_logout_at"
     t.datetime "last_activity_at"
-    t.string "last_login_from_ip_address", limit: 255
+    t.string "last_login_from_ip_address"
     t.string "language"
+    t.boolean "block_emails", default: false
     t.index ["activation_token"], name: "index_users_on_activation_token"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["last_login_at"], name: "index_users_on_last_login_at"
@@ -1373,7 +1374,7 @@ ActiveRecord::Schema.define(version: 2024_07_03_123357) do
   create_table "wiki_pages", id: :serial, force: :cascade do |t|
     t.string "name_ru", limit: 255
     t.text "content_ru"
-    t.string "url", limit: 255
+    t.string "url"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "name_en"
