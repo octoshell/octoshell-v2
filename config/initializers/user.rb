@@ -1,1 +1,1 @@
-::Authentication.delete_after = 6.months
+::Authentication.delete_after = 2.months
