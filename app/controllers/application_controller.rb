@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   before_action :show_blocked_email_alert
 
   def show_blocked_email_alert
-    return unless current_user.block_emails
+    return unless current_user && current_user.block_emails
 
     flash_now_message('alert', t('users.unblock_emails.your_email_blocked',
                                  link: view_context.link_to(t('users.unblock_emails.link'),
