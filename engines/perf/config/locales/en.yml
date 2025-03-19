@@ -5,16 +5,53 @@ en:
       experienced_users: С опытными пользователями
       packages: По пакетам
       research_areas: По областям исследований
+    admin:
+      experts:
+        show:
+          form:
+            jobs: By job count
+            node_hours: By node hours
+            share_jobs: By share of job count
+            share_node_hours: By share of node hours
+            state: State
+            order: Order
+          project: Project
+          percent: Share of all states
+          place: Place
+          value: Value
+          header: The statistics on the <b>"%{project_title}"</b> project, participating in
+             the <b>"%{session_title}" reregistartion</b>
+          jobs: Job number
+          node_hours: Node hours
+          # rating_info: Фильтры ниже влияют только на таблицу-рейтинг.
+          #   Фильтровать можно по нескольким состояниям или не фильтровать вовсе (удалять состояние можно кликая на "крестик").
+          #   В рейтинге только проекты, которые запустились хотя бы раз на "Ломоносов-2" за прошедший год.
+          #   Текущий проект выделен специальным цветом. Нажмите на место проекта для перехода к нему.
+          # brief_info:
+          #   Сравнение производится с <b> %{count} </b> проектами-участниками перерегистрации,
+          #   которые запустились хотя бы раз на "Ломоносов-2" за прошедший год.
+          #   Для некоторых пакетов ПО заканчивать свою задачу не в COMPLETED - нормальная ситуация.
+          #   Места отсортированы от большего к меньшему.
+
+        project_stat_table:
+          all: All
+          jobs: Job count
+          node_hours: Node hours
+          param_header: Feature
+          percent_header: Share of state in all jobs
+          percent_place_header: Place of share
+          place: '%{place}'
+          state_header: State
+          value_header: Value
+          value_place_header: Place of value
+          survey: Пройдите, пожалуйста, опрос
     hooks:
       sessions_admin_reports_show:
-        all: Всего
-        header: Краткая статистика использования ресурсов
-        jobs: Jobs
-        node_hours: Node hours
-        param: Param
-        percent: Percent
-        percent_place: Percent place
-        place: 'Число задач: %{value} № %{place} из %{count}'
-        state: Состояние
-        value: Значение
-        value_place: Value place
+        info:
+          Comparison is carried out with с <b> %{count} </b>  projects, participating in the reregistration,
+          which started at least  a job  for the past year. It is ok for some jobs to be finished not
+          in the COMPLETED state. Places are ordered from the lowest value to the highest value.
+        details: Details
+        header: Brief history of project launches in past year
+        no_jobs: There is no jobs launched for the project. If it is not true, please, contact technical support..
+        wait: The statistics is being calculated. It will appear appear in one minute (update the page).
