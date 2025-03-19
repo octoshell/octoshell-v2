@@ -50,7 +50,7 @@ en:
         info:
           Comparison is carried out with с <b> %{count} </b>  projects, participating in the reregistration,
           which started at least  a job  for the past year. It is ok for some jobs to be finished not
-          in the COMPLETED state. Places are ordered from the lowest value to the highest value.
+          in the COMPLETED state. Places are ordered from the highest value to the lowest value.
         details: Details
         header: Brief history of project launches in past year
         no_jobs: There is no jobs launched for the project. If it is not true, please, contact technical support..
