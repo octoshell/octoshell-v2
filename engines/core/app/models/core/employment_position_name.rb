@@ -18,7 +18,7 @@ module Core
   class EmploymentPositionName < ApplicationRecord
     validates "name_#{I18n.default_locale}", presence: true, uniqueness: true
 
-    translates :name
+    translates :name, :hint
 
     has_many :employment_position_fields, inverse_of: :employment_position_name
 

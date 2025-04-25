@@ -27,23 +27,30 @@ module Core
     validates :employment, presence: true
     validates :value, presence: true, if: proc { field_id.nil? }
     validates :employment_position_field, :field_id, presence: true, if: proc { value.blank? }
-
     validates :employment_position_name_id, uniqueness: { scope: :employment_id }, if: :employment_id?
-
     delegate *EmploymentPositionName.locale_columns(:name), to: :employment_position_name
     def try_save
       valid? ? save : errors.clear
     end
 
-    delegate :values, :available_values, to: :employment_position_name
+    delegate :values, :available_values, :hint, to: :employment_position_name
 
     def name
       return employment_position_name.name if employment_position_name
+
       super
     end
 
     def selected_value
       employment_position_field&.name
+    end
+
+    def value_to_show
+      value || selected_value
+    end
+
+    def present_value?
+      value.present? || field_id.present?
     end
 
   end

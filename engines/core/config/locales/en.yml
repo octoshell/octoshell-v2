@@ -998,6 +998,7 @@ en:
       new:
         title: Create a resources request
     sureties:
+      fill_post: Fill position in organization
       edit:
         add_scan: Add a scan
         help: 'Supported formats: pdf, png, jpeg, jpg.'

@@ -15,6 +15,7 @@ module Core
 
     def create
       @employment = current_user.employments.build(employment_params)
+      @employment.user_crud_context = true
       if @employment.save
         redirect_to main_app.profile_path
       else
@@ -30,6 +31,7 @@ module Core
 
     def update
       @employment = current_user.employments.find(params[:id])
+      @employment.user_crud_context = true
       if @employment.update(employment_params)
         @employment.save
         redirect_to main_app.profile_path

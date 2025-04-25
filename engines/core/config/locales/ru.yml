@@ -1065,6 +1065,7 @@ ru:
       new:
         title: Создание запроса на ресурсы
     sureties:
+      fill_post: Введите должность в организации
       edit:
         add_scan: Добавить скан
         help: 'Поддерживаются форматы: pdf, png, jpeg, jpg.'
