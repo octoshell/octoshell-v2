@@ -1,18 +1,17 @@
 <div class="container mt-4">
   <div class="mb-4">
     <div class="d-flex justify-content-between align-items-center">
-      <h1>Настройки уведомлений для проекта</h1>
+      <h1><%= t('.notification_settings_for_project') %></h1>
       <div>
-        <%= link_to "Назад к настройкам пользователя", users_job_notifications_path(@user), class: "btn btn-outline-secondary mr-2" %>
-        <%= link_to "К проекту", project_path(@project), class: "btn btn-outline-primary" %>
+        <%= link_to t('.back_to_user_settings'), users_job_notifications_path(@user), class: "btn btn-outline-secondary mr-2" %>
+        <%= link_to t('.to_project'), project_path(@project), class: "btn btn-outline-primary" %>
       </div>
     </div>
-    <p class="lead">Проект: <strong><%= @project.title %></strong> | Пользователь: <strong><%= @user.email %></strong></p>
+    <p class="lead"><%= t('.project_info', project_title: @project.title, user_email: @user.email).html_safe %></p>
   </div>
 
   <div class="alert alert-info">
-    <strong>Информация:</strong> Для каждого уведомления можно установить специфичные настройки для этого проекта.
-    Если настройки для проекта не заданы, используются пользовательские настройки, а если и они не заданы — глобальные настройки по умолчанию.
+    <strong><%= t('.info') %>:</strong> <%= t('.settings_description') %>
   </div>
 
   <div class="card">
@@ -22,12 +21,12 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>Уведомление</th>
-                <th>Telegram</th>
-                <th>Email</th>
-                <th>Останавливать задачу</th>
-                <th>Тип настроек</th>
-                <th>Действия</th>
+                <th><%= t('.notification') %></th>
+                <th><%= t('.telegram') %></th>
+                <th><%= t('.email') %></th>
+                <th><%= t('.stop_job') %></th>
+                <th><%= t('.settings_type') %></th>
+                <th><%= t('.actions') %></th>
               </tr>
             </thead>
             <tbody>
@@ -37,7 +36,6 @@
                   user_default = @user_defaults[notification.id]
                   global_default = notification.global_default
 
-                  # Определяем текущие активные настройки и их уровень
                   if project_setting
                     settings_type = "project"
                     notify_tg = project_setting.notify_tg.nil? ? (user_default ? user_default.notify_tg : global_default.notify_tg) : project_setting.notify_tg
@@ -58,12 +56,11 @@
 
                 <tr>
                   <td><%= notification.name %></td>
-
                   <td>
                     <% badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary") %>
                     <% badge_class = notify_tg ? "#{badge_class}" : "badge-danger" %>
                     <span class="badge <%= badge_class %>">
-                      <%= notify_tg ? 'Да' : 'Нет' %>
+                      <%= notify_tg ? t('.yes') : t('.no') %>
                     </span>
                   </td>
 
@@ -71,7 +68,7 @@
                     <% badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary") %>
                     <% badge_class = notify_mail ? "#{badge_class}" : "badge-danger" %>
                     <span class="badge <%= badge_class %>">
-                      <%= notify_mail ? 'Да' : 'Нет' %>
+                      <%= notify_mail ? t('.yes') : t('.no') %>
                     </span>
                   </td>
 
@@ -79,30 +76,30 @@
                     <% badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary") %>
                     <% badge_class = kill_job ? "#{badge_class}" : "badge-danger" %>
                     <span class="badge <%= badge_class %>">
-                      <%= kill_job ? 'Да' : 'Нет' %>
+                      <%= kill_job ? t('.yes') : t('.no') %>
                     </span>
                   </td>
 
                   <td>
                     <% if settings_type == "project" %>
-                      <span class="badge badge-primary">Проект</span>
+                      <span class="badge badge-primary"><%= t('.project') %></span>
                     <% elsif settings_type == "user" %>
-                      <span class="badge badge-info">Пользователь</span>
+                      <span class="badge badge-info"><%= t('.user') %></span>
                     <% else %>
-                      <span class="badge badge-secondary">Глобальные</span>
+                      <span class="badge badge-secondary"><%= t('.global') %></span>
                     <% end %>
                   </td>
 
                   <td>
                     <div class="btn-group">
                       <% if project_setting %>
-                        <%= link_to "Изменить", edit_job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id, id: project_setting.id), class: "btn btn-sm btn-warning" %>
-                        <%= link_to "Сбросить", job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id, id: project_setting.id),
+                        <%= link_to t('.edit'), edit_job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id, id: project_setting.id), class: "btn btn-sm btn-warning" %>
+                        <%= link_to t('.reset'), job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id, id: project_setting.id),
                                       method: :delete,
-                                      data: { confirm: "Вы уверены? Будут использоваться настройки пользователя или глобальные настройки." },
+                                      data: { confirm: t('.reset_confirmation') },
                                       class: "btn btn-sm btn-outline-danger" %>
                       <% else %>
-                        <%= link_to "Настроить для проекта", new_job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id), class: "btn btn-sm btn-primary" %>
+                        <%= link_to t('.configure_for_project'), new_job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id), class: "btn btn-sm btn-primary" %>
                       <% end %>
                     </div>
                   </td>
@@ -113,7 +110,7 @@
         </div>
       <% else %>
         <div class="alert alert-info">
-          В системе пока нет настроенных уведомлений.
+          <%= t('.no_notifications') %>
         </div>
       <% end %>
     </div>
@@ -122,32 +119,32 @@
   <div class="mt-4">
     <div class="card bg-light">
       <div class="card-body">
-        <h3 class="card-title">Условные обозначения</h3>
+        <h3 class="card-title"><%= t('.legend') %></h3>
 
         <div class="row">
           <div class="col-md-4">
-            <h5>Источник настроек:</h5>
+            <h5><%= t('.settings_source') %>:</h5>
             <ul class="list-unstyled">
-              <li><span class="badge badge-primary">Проект</span> - значение установлено в настройках проекта</li>
-              <li><span class="badge badge-info">Пользователь</span> - значение взято из настроек пользователя</li>
-              <li><span class="badge badge-secondary">Глобальные</span> - используется глобальное значение по умолчанию</li>
+              <li><span class="badge badge-primary"><%= t('.project') %></span> - <%= t('.project_source_description') %></li>
+              <li><span class="badge badge-info"><%= t('.user') %></span> - <%= t('.user_source_description') %></li>
+              <li><span class="badge badge-secondary"><%= t('.global') %></span> - <%= t('.global_source_description') %></li>
             </ul>
           </div>
 
           <div class="col-md-4">
-            <h5>Статус настроек:</h5>
+            <h5><%= t('.settings_status') %>:</h5>
             <ul class="list-unstyled">
-              <li><span class="badge badge-success">Да</span> - опция включена</li>
-              <li><span class="badge badge-danger">Нет</span> - опция отключена</li>
+              <li><span class="badge badge-success"><%= t('.yes') %></span> - <%= t('.option_enabled') %></li>
+              <li><span class="badge badge-danger"><%= t('.no') %></span> - <%= t('.option_disabled') %></li>
             </ul>
           </div>
 
           <div class="col-md-4">
-            <h5>Действия:</h5>
+            <h5><%= t('.actions') %>:</h5>
             <ul class="list-unstyled">
-              <li><span class="btn btn-sm btn-primary disabled">Настроить для проекта</span> - создать специальные настройки для этого проекта</li>
-              <li><span class="btn btn-sm btn-warning disabled">Изменить</span> - изменить настройки проекта</li>
-              <li><span class="btn btn-sm btn-outline-danger disabled">Сбросить</span> - удалить настройки проекта и использовать настройки более высокого уровня</li>
+              <li><span class="btn btn-sm btn-primary disabled"><%= t('.configure_for_project') %></span> - <%= t('.configure_for_project_description') %></li>
+              <li><span class="btn btn-sm btn-warning disabled"><%= t('.edit') %></span> - <%= t('.edit_description') %></li>
+              <li><span class="btn btn-sm btn-outline-danger disabled"><%= t('.reset') %></span> - <%= t('.reset_description') %></li>
             </ul>
           </div>
         </div>

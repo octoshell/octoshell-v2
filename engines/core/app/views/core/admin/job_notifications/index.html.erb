@@ -1,11 +1,11 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Уведомления о задачах</h1>
-    <%= link_to "Создать уведомление", new_admin_job_notification_path, class: "btn btn-primary" %>
-    <%= link_to "Просмотр событий", job_notification_events_path, class: "btn btn-primary" %>
-    <%= link_to "Просмотр лога событий", job_notification_event_logs_path, class: "btn btn-primary" %>
-    <%= link_to update_from_json_admin_job_notifications_path, method: :post, class: "btn btn-primary", data: { confirm: "Вы уверены, что хотите загрузить правила из JSON файла? Все текущие данные будут обновлены." } do %>
-      <i></i> Загрузить правила из JSON
+    <h1><%= t('.header') %></h1>
+    <%= link_to t('.create_notification'), new_admin_job_notification_path, class: "btn btn-primary" %>
+    <%= link_to t('.view_events'), job_notification_events_path, class: "btn btn-primary" %>
+    <%= link_to t('.view_event_logs'), job_notification_event_logs_path, class: "btn btn-primary" %>
+    <%= link_to update_from_json_admin_job_notifications_path, method: :post, class: "btn btn-primary", data: { confirm: t('.confirm_json_upload') } do %>
+      <i></i> <%= t('.load_from_json') %>
     <% end %>
   </div>
 
@@ -16,11 +16,11 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Название</th>
-                <th>Описание</th>
-                <th>Глобальные настройки</th>
-                <th>Действия</th>
+                <th><%= t('.columns.id') %></th>
+                <th><%= t('.columns.name') %></th>
+                <th><%= t('.columns.description') %></th>
+                <th><%= t('.columns.global_settings') %></th>
+                <th><%= t('.columns.actions') %></th>
               </tr>
             </thead>
             <tbody>
@@ -31,16 +31,16 @@
                   <td><%= notification.description.truncate(50) if notification.description %></td>
                   <td>
                     <% if notification.global_default %>
-                      <%= link_to "Настроить", edit_admin_job_notification_job_notification_global_default_path(notification), class: "btn btn-sm btn-outline-primary" %>
+                      <%= link_to t('.configure'), edit_admin_job_notification_job_notification_global_default_path(notification), class: "btn btn-sm btn-outline-primary" %>
                     <% else %>
-                      <span class="badge badge-warning">Не настроено</span>
+                      <span class="badge badge-warning"><%= t('.not_configured') %></span>
                     <% end %>
                   </td>
                   <td>
                     <div class="btn-group">
-                      <%= link_to "Просмотр", admin_job_notification_path(notification), class: "btn btn-sm btn-info" %>
-                      <%= link_to "Изменить", edit_admin_job_notification_path(notification), class: "btn btn-sm btn-warning" %>
-                      <%= link_to "Удалить", admin_job_notification_path(notification), method: :delete, data: { confirm: "Вы уверены?" }, class: "btn btn-sm btn-danger" %>
+                      <%= link_to t('.view'), admin_job_notification_path(notification), class: "btn btn-sm btn-info" %>
+                      <%= link_to t('.edit'), edit_admin_job_notification_path(notification), class: "btn btn-sm btn-warning" %>
+                      <%= link_to t('.delete'), admin_job_notification_path(notification), method: :delete, data: { confirm: t('.confirm_delete') }, class: "btn btn-sm btn-danger" %>
                     </div>
                   </td>
                 </tr>
@@ -50,7 +50,7 @@
         </div>
       <% else %>
         <div class="alert alert-info">
-          Уведомления пока не созданы. <%= link_to "Создать первое уведомление", new_admin_job_notification_path %>
+          <%= t('.no_notifications_html', link: link_to(t('.create_first_notification'), new_admin_job_notification_path)) %>
         </div>
       <% end %>
     </div>

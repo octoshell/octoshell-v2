@@ -1,13 +1,13 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>События уведомлений задач</h1>
+    <h1><%= t('.title') %></h1>
     <div>
-      <%= link_to "К уведомлениям", admin_job_notifications_path, class: "btn btn-outline-secondary" %>
-      <%= link_to "Логи обработки", job_notification_event_logs_path, class: "btn btn-outline-primary" %>
-      <%= button_to "Обработать события", process_batch_job_notification_events_path,
+      <%= link_to t('.to_notifications'), admin_job_notifications_path, class: "btn btn-outline-secondary" %>
+      <%= link_to t('.logs'), job_notification_event_logs_path, class: "btn btn-outline-primary" %>
+      <%= button_to t('.process_events'), process_batch_job_notification_events_path,
             method: :post,
             class: "btn btn-warning ml-2",
-            data: { confirm: "Вы уверены, что хотите принудительно обработать накопленные события?" }
+            data: { confirm: t('.process_confirmation') }
       %>
     </div>
   </div>
@@ -20,7 +20,7 @@
             <div class="col-md-3">
               <div class="card bg-light">
                 <div class="card-body">
-                  <h5 class="card-title">Всего событий</h5>
+                  <h5 class="card-title"><%= t('.total_events') %></h5>
                   <p class="card-text display-4"><%= Core::JobNotificationEvent.count %></p>
                 </div>
               </div>
@@ -28,7 +28,7 @@
             <div class="col-md-3">
               <div class="card bg-info text-white">
                 <div class="card-body">
-                  <h5 class="card-title">Необработанных</h5>
+                  <h5 class="card-title"><%= t('.unprocessed') %></h5>
                   <p class="card-text display-4"><%= Core::JobNotificationEvent.unprocessed.count %></p>
                 </div>
               </div>
@@ -36,7 +36,7 @@
             <div class="col-md-3">
               <div class="card bg-success text-white">
                 <div class="card-body">
-                  <h5 class="card-title">Обработано</h5>
+                  <h5 class="card-title"><%= t('.processed') %></h5>
                   <p class="card-text display-4"><%= Core::JobNotificationEvent.where(processed: true).count %></p>
                 </div>
               </div>
@@ -44,7 +44,7 @@
             <div class="col-md-3">
               <div class="card bg-warning">
                 <div class="card-body">
-                  <h5 class="card-title">За 24 часа</h5>
+                  <h5 class="card-title"><%= t('.last_24h') %></h5>
                   <p class="card-text display-4"><%= Core::JobNotificationEvent.where('created_at >= ?', 24.hours.ago).count %></p>
                 </div>
               </div>
@@ -56,14 +56,14 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Уведомление</th>
-                <th>Задача</th>
-                <th>Пользователь</th>
-                <th>Проект</th>
-                <th>Создано</th>
-                <th>Статус</th>
-                <th>Действия</th>
+                <th><%= t('.id') %></th>
+                <th><%= t('.notification') %></th>
+                <th><%= t('.job') %></th>
+                <th><%= t('.user') %></th>
+                <th><%= t('.project') %></th>
+                <th><%= t('.created') %></th>
+                <th><%= t('.status') %></th>
+                <th><%= t('.actions') %></th>
               </tr>
             </thead>
             <tbody>
@@ -77,13 +77,13 @@
                   <td><%= event.created_at.strftime('%d.%m.%Y %H:%M:%S') %></td>
                   <td>
                     <% if event.processed %>
-                      <span class="badge badge-success">Обработано</span>
+                      <span class="badge badge-success"><%= t('.processed_status') %></span>
                     <% else %>
-                      <span class="badge badge-warning">Ожидает</span>
+                      <span class="badge badge-warning"><%= t('.pending_status') %></span>
                     <% end %>
                   </td>
                   <td>
-                    <%= link_to "Подробнее", job_notification_event_path(event), class: "btn btn-sm btn-info" %>
+                    <%= link_to t('.details'), job_notification_event_path(event), class: "btn btn-sm btn-info" %>
                   </td>
                 </tr>
               <% end %>
@@ -96,7 +96,7 @@
         </div>
       <% else %>
         <div class="alert alert-info">
-          События пока не зарегистрированы.
+          <%= t('.no_events') %>
         </div>
       <% end %>
     </div>

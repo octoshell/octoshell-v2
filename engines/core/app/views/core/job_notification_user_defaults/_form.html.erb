@@ -1,7 +1,7 @@
 <%= form_with(model: [notification, user_default], local: true) do |form| %>
   <% if user_default.errors.any? %>
     <div class="alert alert-danger">
-      <h4><%= pluralize(user_default.errors.count, "ошибка") %> при сохранении:</h4>
+      <h4><%= t('.error_count', count: user_default.errors.count) %></h4>
       <ul>
         <% user_default.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -13,60 +13,60 @@
   <% global_default = notification.global_default %>
 
   <div class="form-group">
-    <h4>Основные настройки</h4>
-    <p class="text-muted">Если опция не выбрана, будет использоваться глобальная настройка</p>
+    <h4><%= t('.main_settings') %></h4>
+    <p class="text-muted"><%= t('.use_global') %></p>
 
     <div class="row mt-3">
       <div class="col-md-4">
-        <label class="d-block mb-3">Уведомления в Telegram</label>
+        <label class="d-block mb-3"><%= t('.telegram_notifications') %></label>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <label class="btn btn-outline-secondary <%= user_default.notify_tg.nil? ? 'active' : '' %>">
             <%= form.radio_button :notify_tg, nil, checked: user_default.notify_tg.nil? %>
-            По умолчанию <%= global_default.notify_tg ? '(Да)' : '(Нет)' %>
+            <%= t('.default') %> <%= global_default.notify_tg ? t('.yes_short') : t('.no_short') %>
           </label>
           <label class="btn btn-outline-success <%= user_default.notify_tg == true ? 'active' : '' %>">
             <%= form.radio_button :notify_tg, true, checked: user_default.notify_tg == true %>
-            Да
+            <%= t('.yes') %>
           </label>
           <label class="btn btn-outline-danger <%= user_default.notify_tg == false ? 'active' : '' %>">
             <%= form.radio_button :notify_tg, false, checked: user_default.notify_tg == false %>
-            Нет
+            <%= t('.no') %>
           </label>
         </div>
       </div>
 
       <div class="col-md-4">
-        <label class="d-block mb-3">Уведомления по email</label>
+        <label class="d-block mb-3"><%= t('.email_notifications') %></label>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <label class="btn btn-outline-secondary <%= user_default.notify_mail.nil? ? 'active' : '' %>">
             <%= form.radio_button :notify_mail, nil, checked: user_default.notify_mail.nil? %>
-            По умолчанию <%= global_default.notify_mail ? '(Да)' : '(Нет)' %>
+            <%= t('.default') %> <%= global_default.notify_mail ? t('.yes_short') : t('.no_short') %>
           </label>
           <label class="btn btn-outline-success <%= user_default.notify_mail == true ? 'active' : '' %>">
             <%= form.radio_button :notify_mail, true, checked: user_default.notify_mail == true %>
-            Да
+            <%= t('.yes') %>
           </label>
           <label class="btn btn-outline-danger <%= user_default.notify_mail == false ? 'active' : '' %>">
             <%= form.radio_button :notify_mail, false, checked: user_default.notify_mail == false %>
-            Нет
+            <%= t('.no') %>
           </label>
         </div>
       </div>
 
       <div class="col-md-4">
-        <label class="d-block mb-3">Останавливать задачу</label>
+        <label class="d-block mb-3"><%= t('.stop_job') %></label>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <label class="btn btn-outline-secondary <%= user_default.kill_job.nil? ? 'active' : '' %>">
             <%= form.radio_button :kill_job, nil, checked: user_default.kill_job.nil? %>
-            По умолчанию <%= global_default.kill_job ? '(Да)' : '(Нет)' %>
+            <%= t('.default') %> <%= global_default.kill_job ? t('.yes_short') : t('.no_short') %>
           </label>
           <label class="btn btn-outline-success <%= user_default.kill_job == true ? 'active' : '' %>">
             <%= form.radio_button :kill_job, true, checked: user_default.kill_job == true %>
-            Да
+            <%= t('.yes') %>
           </label>
           <label class="btn btn-outline-danger <%= user_default.kill_job == false ? 'active' : '' %>">
             <%= form.radio_button :kill_job, false, checked: user_default.kill_job == false %>
-            Нет
+            <%= t('.no') %>
           </label>
         </div>
       </div>
@@ -74,8 +74,8 @@
   </div>
 
   <div class="form-group mt-4">
-    <%= form.submit "Сохранить настройки", class: "btn btn-primary" %>
-    <%= link_to "Отмена", users_job_notifications_path(user), class: "btn btn-outline-secondary" %>
+    <%= form.submit t('.save_settings'), class: "btn btn-primary" %>
+    <%= link_to t('.cancel'), users_job_notifications_path(user), class: "btn btn-outline-secondary" %>
   </div>
 <% end %>
 

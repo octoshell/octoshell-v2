@@ -1,19 +1,19 @@
 <div class="container mt-4">
   <div class="mb-4">
     <%= link_to admin_job_notification_path(@notification), class: "btn btn-outline-secondary" do %>
-      <i class="fa fa-arrow-left"></i> Назад к уведомлению
+      <i class="fa fa-arrow-left"></i> <%= t('.back_to_notification') %>
     <% end %>
   </div>
 
   <div class="card">
     <div class="card-header">
-      <h2>Редактирование глобальных настроек уведомления "<%= @notification.name %>"</h2>
+      <h2><%= t('.edit_notification_settings', name: @notification.name) %></h2>
     </div>
     <div class="card-body">
       <%= form_with(model: [:admin, @notification, @global_default], local: true) do |form| %>
         <% if @global_default.errors.any? %>
           <div class="alert alert-danger">
-            <h4><%= pluralize(@global_default.errors.count, "ошибка") %> при сохранении:</h4>
+            <h4><%= t('.errors_header', count: @global_default.errors.count) %></h4>
             <ul>
               <% @global_default.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
@@ -22,31 +22,31 @@
           </div>
         <% end %>
 
-        <h4>Основные настройки</h4>
+        <h4><%= t('.basic_settings') %></h4>
         <div class="form-group row">
           <div class="col-md-4">
             <div class="custom-control custom-switch">
               <%= form.check_box :notify_tg, class: "custom-control-input" %>
-              <%= form.label :notify_tg, "Уведомлять в Telegram", class: "custom-control-label" %>
+              <%= form.label :notify_tg, t('.notify_telegram'), class: "custom-control-label" %>
             </div>
           </div>
           <div class="col-md-4">
             <div class="custom-control custom-switch">
               <%= form.check_box :notify_mail, class: "custom-control-input" %>
-              <%= form.label :notify_mail, "Уведомлять по email", class: "custom-control-label" %>
+              <%= form.label :notify_mail, t('.notify_email'), class: "custom-control-label" %>
             </div>
           </div>
           <div class="col-md-4">
             <div class="custom-control custom-switch">
               <%= form.check_box :kill_job, class: "custom-control-input" %>
-              <%= form.label :kill_job, "Останавливать задачу", class: "custom-control-label" %>
+              <%= form.label :kill_job, t('.stop_job'), class: "custom-control-label" %>
             </div>
           </div>
         </div>
 
         <div class="form-group mt-4">
-          <%= form.submit "Сохранить настройки", class: "btn btn-primary" %>
-          <%= link_to "Отмена", admin_job_notification_path(@notification), class: "btn btn-outline-secondary" %>
+          <%= form.submit t('.save_settings'), class: "btn btn-primary" %>
+          <%= link_to t('.cancel'), admin_job_notification_path(@notification), class: "btn btn-outline-secondary" %>
         </div>
       <% end %>
     </div>

@@ -1,7 +1,7 @@
 <%= form_with(model: [:admin, notification], local: true) do |form| %>
   <% if notification.errors.any? %>
     <div class="alert alert-danger">
-      <h4><%= pluralize(notification.errors.count, "ошибка") %> при сохранении:</h4>
+      <h4><%= t('.errors_header', count: notification.errors.count) %></h4>
       <ul>
         <% notification.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -10,21 +10,20 @@
     </div>
   <% end %>
 
-
   <div class="form-group">
-    <%= form.label :name, "Название" %>
-    <%= form.text_field :name, class: "form-control", placeholder: "Введите уникальное имя уведомления" %>
-    <small class="form-text text-muted">Используйте понятное название, отражающее суть уведомления (например, job_failed, job_completed и т.д.)</small>
+    <%= form.label :name, t('.name_label') %>
+    <%= form.text_field :name, class: "form-control", placeholder: t('.name_placeholder') %>
+    <small class="form-text text-muted"><%= t('.name_hint') %></small>
   </div>
 
   <div class="form-group">
-    <%= form.label :description, "Описание" %>
-    <%= form.text_area :description, class: "form-control", rows: 4, placeholder: "Подробное описание уведомления" %>
-    <small class="form-text text-muted">Опишите, для чего используется это уведомление и когда оно должно срабатывать</small>
+    <%= form.label :description, t('.description_label') %>
+    <%= form.text_area :description, class: "form-control", rows: 4, placeholder: t('.description_placeholder') %>
+    <small class="form-text text-muted"><%= t('.description_hint') %></small>
   </div>
 
   <div class="form-group">
-    <%= form.submit notification.new_record? ? "Создать уведомление" : "Сохранить изменения", class: "btn btn-primary" %>
-    <%= link_to "Отмена", notification.new_record? ? admin_job_notifications_path : admin_job_notification_path(notification), class: "btn btn-outline-secondary" %>
+    <%= form.submit notification.new_record? ? t('.create_button') : t('.update_button'), class: "btn btn-primary" %>
+    <%= link_to t('.cancel_button'), notification.new_record? ? admin_job_notifications_path : admin_job_notification_path(notification), class: "btn btn-outline-secondary" %>
   </div>
 <% end %>

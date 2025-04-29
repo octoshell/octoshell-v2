@@ -1,12 +1,11 @@
-<!-- app/views/users_job_notifications/index.html.erb (продолжение) -->
 <div class="container mt-4">
   <div class="mb-4">
     <div class="d-flex justify-content-between align-items-center">
-      <h1>Настройки уведомлений для пользователя</h1>
-      <%= link_to "Назад к профилю", "profile", class: "btn btn-primary" %>
-      <%= link_to "Настройка интервала группировки уведомлений", edit_user_notification_setting_path, class: "btn btn-primary" %>
+      <h1><%= t('.user_notification_settings') %></h1>
+      <%= link_to t('.back_to_profile'), "profile", class: "btn btn-primary" %>
+      <%= link_to t('.notification_interval_settings'), edit_user_notification_setting_path, class: "btn btn-primary" %>
     </div>
-    <p class="lead">Пользователь: <%= @user.email %></p>
+    <p class="lead"><%= t('.user_email', email: @user.email) %></p>
   </div>
 
   <div class="card">
@@ -16,12 +15,12 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>Уведомление</th>
-                <th>Описание</th>
-                <th>Telegram</th>
-                <th>Email</th>
-                <th>Останавливать задачу</th>
-                <th>Действия</th>
+                <th><%= t('.notification') %></th>
+                <th><%= t('.description') %></th>
+                <th><%= t('.telegram') %></th>
+                <th><%= t('.email') %></th>
+                <th><%= t('.stop_job') %></th>
+                <th><%= t('.actions') %></th>
               </tr>
             </thead>
             <tbody>
@@ -36,11 +35,11 @@
                   <td>
                     <% if user_default && !user_default.notify_tg.nil? %>
                       <span class="badge <%= user_default.notify_tg ? 'badge-success' : 'badge-danger' %>">
-                        <%= user_default.notify_tg ? 'Да' : 'Нет' %>
+                        <%= user_default.notify_tg ? t('.yes') : t('.no') %>
                       </span>
                     <% else %>
-                      <span class="badge badge-secondary" title="Глобальная настройка">
-                        <%= global_default.notify_tg ? 'Да' : 'Нет' %>
+                      <span class="badge badge-secondary" title="<%= t('.global_setting') %>">
+                        <%= global_default.notify_tg ? t('.yes') : t('.no') %>
                       </span>
                     <% end %>
                   </td>
@@ -48,11 +47,11 @@
                   <td>
                     <% if user_default && !user_default.notify_mail.nil? %>
                       <span class="badge <%= user_default.notify_mail ? 'badge-success' : 'badge-danger' %>">
-                        <%= user_default.notify_mail ? 'Да' : 'Нет' %>
+                        <%= user_default.notify_mail ? t('.yes') : t('.no') %>
                       </span>
                     <% else %>
-                      <span class="badge badge-secondary" title="Глобальная настройка">
-                        <%= global_default.notify_mail ? 'Да' : 'Нет' %>
+                      <span class="badge badge-secondary" title="<%= t('.global_setting') %>">
+                        <%= global_default.notify_mail ? t('.yes') : t('.no') %>
                       </span>
                     <% end %>
                   </td>
@@ -60,11 +59,11 @@
                   <td>
                     <% if user_default && !user_default.kill_job.nil? %>
                       <span class="badge <%= user_default.kill_job ? 'badge-success' : 'badge-danger' %>">
-                        <%= user_default.kill_job ? 'Да' : 'Нет' %>
+                        <%= user_default.kill_job ? t('.yes') : t('.no') %>
                       </span>
                     <% else %>
-                      <span class="badge badge-secondary" title="Глобальная настройка">
-                        <%= global_default.kill_job ? 'Да' : 'Нет' %>
+                      <span class="badge badge-secondary" title="<%= t('.global_setting') %>">
+                        <%= global_default.kill_job ? t('.yes') : t('.no') %>
                       </span>
                     <% end %>
                   </td>
@@ -72,13 +71,13 @@
                   <td>
                     <div class="btn-group">
                       <% if user_default %>
-                        <%= link_to "Изменить", edit_job_notification_job_notification_user_default_path(notification, user_default), class: "btn btn-sm btn-warning" %>
-                        <%= link_to "Сбросить", job_notification_job_notification_user_default_path(notification, user_default),
+                        <%= link_to t('.edit'), edit_job_notification_job_notification_user_default_path(notification, user_default), class: "btn btn-sm btn-warning" %>
+                        <%= link_to t('.reset'), job_notification_job_notification_user_default_path(notification, user_default),
                                       method: :delete,
-                                      data: { confirm: "Вы уверены? Будут использоваться глобальные настройки уведомлений по умолчанию." },
+                                      data: { confirm: t('.reset_confirmation') },
                                       class: "btn btn-sm btn-outline-danger" %>
                       <% else %>
-                        <%= link_to "Настроить", new_job_notification_job_notification_user_default_path(notification, user_id: @user.id), class: "btn btn-sm btn-primary" %>
+                        <%= link_to t('.configure'), new_job_notification_job_notification_user_default_path(notification, user_id: @user.id), class: "btn btn-sm btn-primary" %>
                       <% end %>
                     </div>
                   </td>
@@ -89,14 +88,14 @@
         </div>
       <% else %>
         <div class="alert alert-info">
-          В системе пока нет настроенных уведомлений.
+          <%= t('.no_notifications') %>
         </div>
       <% end %>
     </div>
   </div>
 
   <div class="mt-4">
-    <h2>Проекты пользователя</h2>
+    <h2><%= t('.user_projects') %></h2>
 
     <% if @user.projects.any? %>
       <div class="row">
@@ -105,7 +104,7 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title"><%= project.title %></h5>
-                <%= link_to "Настройки уведомлений для проекта", projects_users_job_notifications_path(project, @user), class: "btn btn-primary btn-block" %>
+                <%= link_to t('.project_notification_settings'), projects_users_job_notifications_path(project, @user), class: "btn btn-primary btn-block" %>
               </div>
             </div>
           </div>
@@ -113,7 +112,7 @@
       </div>
     <% else %>
       <div class="alert alert-info">
-        Пользователь не состоит ни в одном проекте.
+        <%= t('.no_projects') %>
       </div>
     <% end %>
   </div>

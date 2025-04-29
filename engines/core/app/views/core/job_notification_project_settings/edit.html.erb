@@ -1,20 +1,22 @@
 <div class="container mt-4">
   <div class="mb-4">
     <%= link_to projects_users_job_notifications_path(@project, @user), class: "btn btn-outline-secondary" do %>
-      <i class="fa fa-arrow-left"></i> Назад к настройкам проекта
+      <i class="fa fa-arrow-left"></i> <%= t('.back_to_settings') %>
     <% end %>
   </div>
 
   <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
       <div>
-        <h2>Редактирование настроек уведомления "<%= @notification.name %>"</h2>
-        <p class="text-muted mb-0">Проект: <%= @project.title %> | Пользователь: <%= @user.email %></p>
+        <h2><%= t('.edit_notification_settings', name: @notification.name) %></h2>
+        <p class="text-muted mb-0">
+          <%= t('.project_info', title: @project.title) %> | <%= t('.user_info', email: @user.email) %>
+        </p>
       </div>
-      <%= link_to "Удалить настройки",
+      <%= link_to t('.delete_settings'),
                 job_notification_job_notification_project_setting_path(@notification, @project_setting),
                 method: :delete,
-                data: { confirm: "Вы уверены? Будут использованы настройки пользователя или глобальные настройки." },
+                data: { confirm: t('.delete_confirmation') },
                 class: "btn btn-danger" %>
     </div>
     <div class="card-body">

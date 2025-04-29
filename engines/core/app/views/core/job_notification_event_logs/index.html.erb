@@ -1,9 +1,9 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Логи обработки уведомлений</h1>
+    <h1><%= t('.title') %></h1>
     <div>
-      <%= link_to "К уведомлениям", admin_job_notifications_path, class: "btn btn-outline-secondary" %>
-      <%= link_to "События", job_notification_events_path, class: "btn btn-outline-primary" %>
+      <%= link_to t('.to_notifications'), admin_job_notifications_path, class: "btn btn-outline-secondary" %>
+      <%= link_to t('.events'), job_notification_events_path, class: "btn btn-outline-primary" %>
     </div>
   </div>
 
@@ -38,32 +38,31 @@
     </div>
   </div>
 
-  <!-- Фильтры -->
   <div class="card mb-4">
     <div class="card-header">
-      <h3>Фильтры</h3>
+      <h3><%= t('.filters') %></h3>
     </div>
     <div class="card-body">
       <%= form_with(url: job_notification_event_logs_path, method: :get, local: true, class: "form-inline") do |form| %>
         <div class="form-group mr-3 mb-2">
-          <%= form.label :user_id, "Пользователь:", class: "mr-2" %>
+          <%= form.label :user_id, t('.user_label'), class: "mr-2" %>
           <%= form.collection_select :user_id, User.all, :id, :email,
-                                   { include_blank: "Все пользователи" },
-                                   { class: "form-control" } %>
+                                  { include_blank: t('.all_users') },
+                                  { class: "form-control" } %>
         </div>
 
         <div class="form-group mr-3 mb-2">
-          <%= form.label :date_from, "С:", class: "mr-2" %>
+          <%= form.label :date_from, t('.date_from'), class: "mr-2" %>
           <%= form.date_field :date_from, class: "form-control" %>
         </div>
 
         <div class="form-group mr-3 mb-2">
-          <%= form.label :date_to, "По:", class: "mr-2" %>
+          <%= form.label :date_to, t('.date_to'), class: "mr-2" %>
           <%= form.date_field :date_to, class: "form-control" %>
         </div>
 
-        <%= form.submit "Применить фильтры", class: "btn btn-primary mb-2" %>
-        <%= link_to "Сбросить", job_notification_event_logs_path, class: "btn btn-outline-secondary mb-2 ml-2" %>
+        <%= form.submit t('.apply_filters'), class: "btn btn-primary mb-2" %>
+        <%= link_to t('.reset'), job_notification_event_logs_path, class: "btn btn-outline-secondary mb-2 ml-2" %>
       <% end %>
     </div>
   </div>
@@ -75,12 +74,12 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Пользователь</th>
-                <th>Период</th>
-                <th>Событий</th>
-                <th>Создан</th>
-                <th>Действия</th>
+                <th><%= t('.id') %></th>
+                <th><%= t('.user') %></th>
+                <th><%= t('.period') %></th>
+                <th><%= t('.events_count') %></th>
+                <th><%= t('.created_at') %></th>
+                <th><%= t('.actions') %></th>
               </tr>
             </thead>
             <tbody>
@@ -95,7 +94,7 @@
                   <td><%= log.events_count %></td>
                   <td><%= log.created_at.strftime('%d.%m.%Y %H:%M:%S') %></td>
                   <td>
-                    <%= link_to "Подробнее", job_notification_event_log_path(log), class: "btn btn-sm btn-info" %>
+                    <%= link_to t('.details'), job_notification_event_log_path(log), class: "btn btn-sm btn-info" %>
                   </td>
                 </tr>
               <% end %>
@@ -108,7 +107,7 @@
         </div>
       <% else %>
         <div class="alert alert-info">
-          Логи обработки пока не созданы<%= " с указанными фильтрами" if params[:user_id].present? || params[:date_from].present? || params[:date_to].present? %>.
+          <%= t('.no_logs') + t('.with_filters') if params[:user_id].present? || params[:date_from].present? || params[:date_to].present? %>
         </div>
       <% end %>
     </div>

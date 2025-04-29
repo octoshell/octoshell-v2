@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <div class="mb-4">
     <%= link_to admin_job_notifications_path, class: "btn btn-outline-secondary" do %>
-      <i class="fa fa-arrow-left"></i> К списку уведомлений
+      <i class="fa fa-arrow-left"></i> <%= t('.back_to_list') %>
     <% end %>
   </div>
 
@@ -9,62 +9,61 @@
     <div class="card-header d-flex justify-content-between align-items-center">
       <h2><%= @notification.name %></h2>
       <div>
-        <%= link_to "Изменить", edit_admin_job_notification_path(@notification), class: "btn btn-warning" %>
-        <%= link_to "Удалить", admin_job_notification_path(@notification), method: :delete, data: { confirm: "Вы уверены?" }, class: "btn btn-danger" %>
+        <%= link_to t('.edit'), edit_admin_job_notification_path(@notification), class: "btn btn-warning" %>
+        <%= link_to t('.delete'), admin_job_notification_path(@notification), method: :delete, data: { confirm: t('.confirm_delete') }, class: "btn btn-danger" %>
       </div>
     </div>
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <h4>Основная информация</h4>
+          <h4><%= t('.basic_info') %></h4>
           <table class="table">
             <tr>
-              <th width="30%">ID:</th>
+              <th width="30%"><%= t('.columns.id') %></th>
               <td><%= @notification.id %></td>
             </tr>
             <tr>
-              <th>Название:</th>
+              <th><%= t('.columns.name') %></th>
               <td><%= @notification.name %></td>
             </tr>
             <tr>
-              <th>Описание:</th>
-              <td><%= @notification.description || "Не указано" %></td>
+              <th><%= t('.columns.description') %></th>
+              <td><%= @notification.description || t('.not_specified') %></td>
             </tr>
             <tr>
-              <th>Создано:</th>
+              <th><%= t('.columns.created_at') %></th>
               <td><%= @notification.created_at.strftime("%d.%m.%Y %H:%M") %></td>
             </tr>
             <tr>
-              <th>Обновлено:</th>
+              <th><%= t('.columns.updated_at') %></th>
               <td><%= @notification.updated_at.strftime("%d.%m.%Y %H:%M") %></td>
             </tr>
           </table>
         </div>
 
         <div class="col-md-6">
-          <h4>Глобальные настройки уведомлений по умолчанию</h4>
+          <h4><%= t('.global_settings') %></h4>
           <% if @notification.global_default %>
             <table class="table">
               <tr>
-                <th width="30%">Уведомлять в Telegram:</th>
-                <td><%= @notification.global_default.notify_tg ? "Да" : "Нет" %></td>
+                <th width="30%"><%= t('.columns.notify_telegram') %></th>
+                <td><%= @notification.global_default.notify_tg ? t('.yes') : t('.no') %></td>
               </tr>
               <tr>
-                <th>Уведомлять по email:</th>
-                <td><%= @notification.global_default.notify_mail ? "Да" : "Нет" %></td>
+                <th><%= t('.columns.notify_email') %></th>
+                <td><%= @notification.global_default.notify_mail ? t('.yes') : t('.no') %></td>
               </tr>
               <tr>
-                <th>Останавливать задачу:</th>
-                <td><%= @notification.global_default.kill_job ? "Да" : "Нет" %></td>
+                <th><%= t('.columns.stop_job') %></th>
+                <td><%= @notification.global_default.kill_job ? t('.yes') : t('.no') %></td>
               </tr>
             </table>
             <div class="mt-3">
-              <%= link_to "Изменить глобальные настройки", edit_admin_job_notification_job_notification_global_default_path(@notification), class: "btn btn-outline-primary" %>
+              <%= link_to t('.edit_global_settings'), edit_admin_job_notification_job_notification_global_default_path(@notification), class: "btn btn-outline-primary" %>
             </div>
           <% else %>
             <div class="alert alert-warning">
-              Глобальные настройки не заданы.
-              <%= link_to "Настроить", edit_admin_job_notification_job_notification_global_default_path(@notification), class: "alert-link" %>
+              <%= t('.global_settings_not_set_html', link: link_to(t('.set_up'), edit_admin_job_notification_job_notification_global_default_path(@notification), class: "alert-link")) %>
             </div>
           <% end %>
         </div>
@@ -72,10 +71,9 @@
     </div>
   </div>
 
-  <!-- Пользовательские настройки -->
   <div class="card mb-4">
     <div class="card-header">
-      <h3>Пользовательские настройки</h3>
+      <h3><%= t('.user_settings') %></h3>
     </div>
     <div class="card-body">
       <% if @notification.user_defaults.any? %>
@@ -83,22 +81,22 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>Пользователь</th>
-                <th>Telegram</th>
-                <th>Email</th>
-                <th>Останавливать задачу</th>
-                <th>Действия</th>
+                <th><%= t('.columns.user') %></th>
+                <th><%= t('.columns.telegram') %></th>
+                <th><%= t('.columns.email') %></th>
+                <th><%= t('.columns.stop_job') %></th>
+                <th><%= t('.columns.actions') %></th>
               </tr>
             </thead>
             <tbody>
               <% @notification.user_defaults.includes(:user).each do |user_default| %>
                 <tr>
                   <td><%= link_to user_default.user.email, admin_users_path(user_default.user) %></td>
-                  <td><%= user_default.notify_tg.nil? ? "По умолчанию" : (user_default.notify_tg ? "Да" : "Нет") %></td>
-                  <td><%= user_default.notify_mail.nil? ? "По умолчанию" : (user_default.notify_mail ? "Да" : "Нет") %></td>
-                  <td><%= user_default.kill_job.nil? ? "По умолчанию" : (user_default.kill_job ? "Да" : "Нет") %></td>
+                  <td><%= user_default.notify_tg.nil? ? t('.default') : (user_default.notify_tg ? t('.yes') : t('.no')) %></td>
+                  <td><%= user_default.notify_mail.nil? ? t('.default') : (user_default.notify_mail ? t('.yes') : t('.no')) %></td>
+                  <td><%= user_default.kill_job.nil? ? t('.default') : (user_default.kill_job ? t('.yes') : t('.no')) %></td>
                   <td>
-                    <%= link_to "Просмотр", users_job_notifications_path(user_default.user), class: "btn btn-sm btn-info" %>
+                    <%= link_to t('.view'), users_job_notifications_path(user_default.user), class: "btn btn-sm btn-info" %>
                   </td>
                 </tr>
               <% end %>
@@ -107,7 +105,7 @@
         </div>
       <% else %>
         <div class="alert alert-info">
-          Пока никто из пользователей не настроил персональные параметры для этого уведомления.
+          <%= t('.no_user_settings') %>
         </div>
       <% end %>
     </div>

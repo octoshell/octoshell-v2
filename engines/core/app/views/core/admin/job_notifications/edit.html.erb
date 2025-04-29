@@ -1,13 +1,13 @@
 <div class="container mt-4">
   <div class="mb-4">
     <%= link_to admin_job_notification_path(@notification), class: "btn btn-outline-secondary" do %>
-      <i class="fa fa-arrow-left"></i> Назад к уведомлению
+      <i class="fa fa-arrow-left"></i> <%= t('.back_button') %>
     <% end %>
   </div>
 
   <div class="card">
     <div class="card-header">
-      <h2>Редактирование уведомления</h2>
+      <h2><%= t('.header') %></h2>
     </div>
     <div class="card-body">
       <%= render 'form', notification: @notification %>
