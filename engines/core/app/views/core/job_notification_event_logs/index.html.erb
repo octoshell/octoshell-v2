@@ -1,0 +1,116 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Логи обработки уведомлений</h1>
+    <div>
+      <%= link_to "К уведомлениям", admin_job_notifications_path, class: "btn btn-outline-secondary" %>
+      <%= link_to "События", job_notification_events_path, class: "btn btn-outline-primary" %>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h5 class="card-title">Всего логов</h5>
+              <p class="card-text display-4"><%= Core::JobNotificationEventLog.count %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card bg-info text-white">
+            <div class="card-body">
+              <h5 class="card-title">Всего обработано событий</h5>
+              <p class="card-text display-4"><%= Core::JobNotificationEventLog.sum(:events_count) %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card bg-warning">
+            <div class="card-body">
+              <h5 class="card-title">За 24 часа</h5>
+              <p class="card-text display-4"><%= Core::JobNotificationEventLog.where('created_at >= ?', 24.hours.ago).count %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Фильтры -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3>Фильтры</h3>
+    </div>
+    <div class="card-body">
+      <%= form_with(url: job_notification_event_logs_path, method: :get, local: true, class: "form-inline") do |form| %>
+        <div class="form-group mr-3 mb-2">
+          <%= form.label :user_id, "Пользователь:", class: "mr-2" %>
+          <%= form.collection_select :user_id, User.all, :id, :email,
+                                   { include_blank: "Все пользователи" },
+                                   { class: "form-control" } %>
+        </div>
+
+        <div class="form-group mr-3 mb-2">
+          <%= form.label :date_from, "С:", class: "mr-2" %>
+          <%= form.date_field :date_from, class: "form-control" %>
+        </div>
+
+        <div class="form-group mr-3 mb-2">
+          <%= form.label :date_to, "По:", class: "mr-2" %>
+          <%= form.date_field :date_to, class: "form-control" %>
+        </div>
+
+        <%= form.submit "Применить фильтры", class: "btn btn-primary mb-2" %>
+        <%= link_to "Сбросить", job_notification_event_logs_path, class: "btn btn-outline-secondary mb-2 ml-2" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <% if @logs.any? %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Пользователь</th>
+                <th>Период</th>
+                <th>Событий</th>
+                <th>Создан</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @logs.each do |log| %>
+                <tr>
+                  <td><%= log.id %></td>
+                  <td><%= link_to log.user.email, "/profile" %></td>
+                  <td>
+                    <%= log.start_period&.strftime('%d.%m.%Y %H:%M') %> -
+                    <%= log.end_period&.strftime('%d.%m.%Y %H:%M') %>
+                  </td>
+                  <td><%= log.events_count %></td>
+                  <td><%= log.created_at.strftime('%d.%m.%Y %H:%M:%S') %></td>
+                  <td>
+                    <%= link_to "Подробнее", job_notification_event_log_path(log), class: "btn btn-sm btn-info" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-container">
+          <%= paginate @logs %>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          Логи обработки пока не созданы<%= " с указанными фильтрами" if params[:user_id].present? || params[:date_from].present? || params[:date_to].present? %>.
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

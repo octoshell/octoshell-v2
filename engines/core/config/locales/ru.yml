@@ -902,6 +902,24 @@ ru:
           Техподдержки.
         open_support: Открыть раздел техподдержки.
         subject: Ваш аккаунт заблокирован
+      job_notification:
+        subject: Сводка уведомлений о задачах
+        message: Представляем вам сводку уведомлений за период с %{start_date} по %{end_date}.
+        statistics:
+          header: Краткая статистика
+          total_events: Общее количество событий - %{count}
+          unique_notifications: Уникальных типов уведомлений - %{count}
+          unique_projects: Уникальных проектов - %{count}
+          unique_jobs: Уникальных задач - %{count}
+        distribution:
+          notifications_header: Распределение по типам уведомлений
+          description: Описание
+          no_description: Не найдено
+          projects_header: Распределение по проектам
+          type: Тип уведомления
+          type_not_found: Не найдено
+          project: Проект
+          count: Количество
     members:
       edit:
         accept_invitation: Присоединиться к проекту

@@ -262,6 +262,7 @@ ru:
       html: Поручительства <span class="badge info">%{count}</span>
     users: Пользователи
     wikiplus: Справка
+    job_notifications: Уведомления по задачам
   bad_job: 'Проблемная задача: '
   bad_jobs: 'Проблемные задачи: '
   common:

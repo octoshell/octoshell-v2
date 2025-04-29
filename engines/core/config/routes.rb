@@ -98,6 +98,13 @@ Core::Engine.routes.draw do
       end
       get :block, on: :member
       get :reactivate, on: :member
+
+    end
+    resources :job_notifications do
+      resource :job_notification_global_default, only: [:edit, :update], path: 'global_default'
+      collection do
+        post :update_from_json, path: 'update_from_json'
+      end
     end
   end
 
@@ -158,5 +165,28 @@ Core::Engine.routes.draw do
     end
   end
   root "projects#index"
+
+  resources :job_notifications do
+    resources :job_notification_user_defaults, only: [:new, :create, :edit, :update, :destroy], path: 'user_defaults'
+    resources :job_notification_project_settings, only: [:new, :create, :edit, :update, :destroy], path: '/projects/:project_id/users/:user_id/job_notification'
+  end
+
+  resources :users_job_notifications, only: [:index]
+  resources :projects_users_job_notifications, only: [:index], path: '/projects/:project_id/users/:user_id/job_notifications'
+
+  post 'event_occurred', to: 'job_notification_events#create'
+
+  resources :job_notification_events, only: [:index, :show], path: 'events' do
+    collection do
+      post :process_batch
+    end
+  end
+  resources :job_notification_event_logs, only: [:index, :show], path: 'event_logs' do
+    member do
+      post :resend_digest
+    end
+  end
+
+  resource :user_notification_setting, only: [:edit, :update]
 end
 # Face::MyMenu.validate_keys!

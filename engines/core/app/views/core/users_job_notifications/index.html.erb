@@ -1,0 +1,120 @@
+<!-- app/views/users_job_notifications/index.html.erb (продолжение) -->
+<div class="container mt-4">
+  <div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Настройки уведомлений для пользователя</h1>
+      <%= link_to "Назад к профилю", "profile", class: "btn btn-primary" %>
+      <%= link_to "Настройка интервала группировки уведомлений", edit_user_notification_setting_path, class: "btn btn-primary" %>
+    </div>
+    <p class="lead">Пользователь: <%= @user.email %></p>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <% if @notifications.any? %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Уведомление</th>
+                <th>Описание</th>
+                <th>Telegram</th>
+                <th>Email</th>
+                <th>Останавливать задачу</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @notifications.each do |notification| %>
+                <% user_default = @user_defaults[notification.id] %>
+                <% global_default = notification.global_default %>
+
+                <tr>
+                  <td><%= notification.name %></td>
+                  <td><%= notification.description.truncate(50) if notification.description %></td>
+
+                  <td>
+                    <% if user_default && !user_default.notify_tg.nil? %>
+                      <span class="badge <%= user_default.notify_tg ? 'badge-success' : 'badge-danger' %>">
+                        <%= user_default.notify_tg ? 'Да' : 'Нет' %>
+                      </span>
+                    <% else %>
+                      <span class="badge badge-secondary" title="Глобальная настройка">
+                        <%= global_default.notify_tg ? 'Да' : 'Нет' %>
+                      </span>
+                    <% end %>
+                  </td>
+
+                  <td>
+                    <% if user_default && !user_default.notify_mail.nil? %>
+                      <span class="badge <%= user_default.notify_mail ? 'badge-success' : 'badge-danger' %>">
+                        <%= user_default.notify_mail ? 'Да' : 'Нет' %>
+                      </span>
+                    <% else %>
+                      <span class="badge badge-secondary" title="Глобальная настройка">
+                        <%= global_default.notify_mail ? 'Да' : 'Нет' %>
+                      </span>
+                    <% end %>
+                  </td>
+
+                  <td>
+                    <% if user_default && !user_default.kill_job.nil? %>
+                      <span class="badge <%= user_default.kill_job ? 'badge-success' : 'badge-danger' %>">
+                        <%= user_default.kill_job ? 'Да' : 'Нет' %>
+                      </span>
+                    <% else %>
+                      <span class="badge badge-secondary" title="Глобальная настройка">
+                        <%= global_default.kill_job ? 'Да' : 'Нет' %>
+                      </span>
+                    <% end %>
+                  </td>
+
+                  <td>
+                    <div class="btn-group">
+                      <% if user_default %>
+                        <%= link_to "Изменить", edit_job_notification_job_notification_user_default_path(notification, user_default), class: "btn btn-sm btn-warning" %>
+                        <%= link_to "Сбросить", job_notification_job_notification_user_default_path(notification, user_default),
+                                      method: :delete,
+                                      data: { confirm: "Вы уверены? Будут использоваться глобальные настройки уведомлений по умолчанию." },
+                                      class: "btn btn-sm btn-outline-danger" %>
+                      <% else %>
+                        <%= link_to "Настроить", new_job_notification_job_notification_user_default_path(notification, user_id: @user.id), class: "btn btn-sm btn-primary" %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          В системе пока нет настроенных уведомлений.
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <h2>Проекты пользователя</h2>
+
+    <% if @user.projects.any? %>
+      <div class="row">
+        <% @user.projects.each do |project| %>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"><%= project.title %></h5>
+                <%= link_to "Настройки уведомлений для проекта", projects_users_job_notifications_path(project, @user), class: "btn btn-primary btn-block" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-info">
+        Пользователь не состоит ни в одном проекте.
+      </div>
+    <% end %>
+  </div>
+</div>

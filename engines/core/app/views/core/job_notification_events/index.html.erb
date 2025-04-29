@@ -1,0 +1,104 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>События уведомлений задач</h1>
+    <div>
+      <%= link_to "К уведомлениям", admin_job_notifications_path, class: "btn btn-outline-secondary" %>
+      <%= link_to "Логи обработки", job_notification_event_logs_path, class: "btn btn-outline-primary" %>
+      <%= button_to "Обработать события", process_batch_job_notification_events_path,
+            method: :post,
+            class: "btn btn-warning ml-2",
+            data: { confirm: "Вы уверены, что хотите принудительно обработать накопленные события?" }
+      %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <% if @events.any? %>
+        <div class="mb-3">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="card bg-light">
+                <div class="card-body">
+                  <h5 class="card-title">Всего событий</h5>
+                  <p class="card-text display-4"><%= Core::JobNotificationEvent.count %></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-info text-white">
+                <div class="card-body">
+                  <h5 class="card-title">Необработанных</h5>
+                  <p class="card-text display-4"><%= Core::JobNotificationEvent.unprocessed.count %></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-success text-white">
+                <div class="card-body">
+                  <h5 class="card-title">Обработано</h5>
+                  <p class="card-text display-4"><%= Core::JobNotificationEvent.where(processed: true).count %></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-warning">
+                <div class="card-body">
+                  <h5 class="card-title">За 24 часа</h5>
+                  <p class="card-text display-4"><%= Core::JobNotificationEvent.where('created_at >= ?', 24.hours.ago).count %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Уведомление</th>
+                <th>Задача</th>
+                <th>Пользователь</th>
+                <th>Проект</th>
+                <th>Создано</th>
+                <th>Статус</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @events.each do |event| %>
+                <tr class="<%= event.processed ? 'table-success' : '' %>">
+                  <td><%= event.id %></td>
+                  <td><%= event.job_notification.name %></td>
+                  <td><%= event.perf_job_id %></td>
+                  <td><%= event.user.email %></td>
+                  <td><%= event.core_project.title %></td>
+                  <td><%= event.created_at.strftime('%d.%m.%Y %H:%M:%S') %></td>
+                  <td>
+                    <% if event.processed %>
+                      <span class="badge badge-success">Обработано</span>
+                    <% else %>
+                      <span class="badge badge-warning">Ожидает</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= link_to "Подробнее", job_notification_event_path(event), class: "btn btn-sm btn-info" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-container">
+          <%= paginate @events %>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          События пока не зарегистрированы.
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

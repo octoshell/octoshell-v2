@@ -839,6 +839,24 @@ en:
           support section.
         open_support: The technical support section.
         subject: Your account has been blocked
+      job_notification:
+        subject: Task Notification Digest
+        message: Here is your task notification digest for the period from %{start_date} to %{end_date}.
+        statistics:
+          header: Brief Statistics
+          total_events: Total number of events - %{count}
+          unique_notifications: Unique notification types - %{count}
+          unique_projects: Unique projects - %{count}
+          unique_jobs: Unique jobs - %{count}
+        distribution:
+          notifications_header: Notification Type Distribution
+          description: Description
+          no_description: Not found
+          projects_header: Project Distribution
+          type: Notification Type
+          type_not_found: Not found
+          project: Project
+          count: Count
     members:
       edit:
         accept_invitation: Join the project

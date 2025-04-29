@@ -1,0 +1,163 @@
+<div class="container mt-4">
+  <div class="mb-4">
+    <%= link_to job_notification_event_logs_path, class: "btn btn-outline-secondary" do %>
+      <i class="fa fa-arrow-left"></i> К списку логов
+    <% end %>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2>Информация о логе обработки #<%= @log.id %></h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h4>Основная информация</h4>
+          <table class="table">
+            <tr>
+              <th width="30%">ID:</th>
+              <td><%= @log.id %></td>
+            </tr>
+            <tr>
+              <th>Пользователь:</th>
+              <td><%= link_to @log.user.email, "/profile" %></td>
+            </tr>
+            <tr>
+              <th>Период:</th>
+              <td>
+                <%= @log.start_period&.strftime('%d.%m.%Y %H:%M') %> -
+                <%= @log.end_period&.strftime('%d.%m.%Y %H:%M') %>
+              </td>
+            </tr>
+            <tr>
+              <th>Обработано событий:</th>
+              <td><%= @log.events_count %></td>
+            </tr>
+            <tr>
+              <th>Дата обработки:</th>
+              <td><%= @log.created_at.strftime('%d.%m.%Y %H:%M:%S') %></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="col-md-6">
+          <h4>Сводные данные</h4>
+          <% if @log.summary_data.present? %>
+            <div class="card bg-light">
+              <div class="card-body">
+                <div class="mb-3">
+                  <strong>Всего обработано:</strong> <%= @log.summary_data['total_count'] %> событий
+                </div>
+                <div class="mb-3">
+                  <strong>Временной диапазон:</strong>
+                  <%= Time.parse(@log.summary_data['time_range']['from']).strftime('%d.%m.%Y %H:%M:%S') %> —
+                  <%= Time.parse(@log.summary_data['time_range']['to']).strftime('%d.%m.%Y %H:%M:%S') %>
+                </div>
+                <div class="mb-3">
+                  <strong>Уникальных уведомлений:</strong> <%= @log.summary_data['unique_notifications'] %><br>
+                  <strong>Уникальных проектов:</strong> <%= @log.summary_data['unique_projects'] %><br>
+                  <strong>Уникальных задач:</strong> <%= @log.summary_data['unique_jobs'] %>
+                </div>
+              </div>
+            </div>
+          <% else %>
+            <div class="alert alert-info">
+              Сводные данные отсутствуют.
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Детальная информация по типам уведомлений -->
+      <% if @log.summary_data.present? && @log.summary_data['notifications'].present? %>
+        <div class="mt-4">
+          <h4>Распределение по типам уведомлений</h4>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Уведомление</th>
+                  <th>Количество событий</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @log.summary_data['notifications'].sort_by { |_, count| -count }.each do |notification_key, count| %>
+                  <% notification_id = notification_key.gsub('notification_', '').to_i %>
+                  <% notification = Core::JobNotification.find_by(id: notification_id) %>
+                  <tr>
+                    <td>
+                      <% if notification %>
+                        <%= link_to notification.name, job_notification_path(notification) %>
+                      <% else %>
+                        <%= notification_key %>
+                      <% end %>
+                    </td>
+                    <td><%= count %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Детальная информация по проектам -->
+      <% if @log.summary_data.present? && @log.summary_data['projects'].present? %>
+        <div class="mt-4">
+          <h4>Распределение по проектам</h4>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Проект</th>
+                  <th>Количество событий</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @log.summary_data['projects'].sort_by { |_, count| -count }.each do |project_key, count| %>
+                  <% project_id = project_key.gsub('project_', '').to_i %>
+                  <% project = Core::Project.find_by(id: project_id) %>
+                  <tr>
+                    <td>
+                      <% if project %>
+                        <%= link_to project.title, project_path(project) %>
+                      <% else %>
+                        <%= project_key %>
+                      <% end %>
+                    </td>
+                    <td><%= count %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @log.details.present? %>
+        <div class="mt-4">
+          <h4>Подробное описание</h4>
+          <div class="card">
+            <div class="card-body">
+              <pre class="mb-0"><%= @log.details %></pre>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Отправка письма с дайджестом вручную -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3>Действия</h3>
+    </div>
+    <div class="card-body">
+      <%= button_to "Отправить email с дайджестом повторно",
+                  resend_digest_job_notification_event_log_path(@log),
+                  method: :post,
+                  class: "btn btn-primary",
+                  data: { confirm: "Отправить email с дайджестом пользователю #{@log.user.email}?" } %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+doctype html
+html
+  head
+    meta http-equiv='Content-Type' content='text/html; charset=UTF-8'
+    style
+      | body { font-family: Arial, sans-serif; line-height: 1.5; color: #333; }
+      | .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+      | .summary { background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+      | h1, h2 { color: #2c3e50; }
+      | table { width: 100%; border-collapse: collapse; }
+      | th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+      | th { background-color: #f2f2f2; }
+  body
+    .container
+      = render "header"
+
+      .summary
+        h1= t('.subject')
+        p= t('.message', start_date: @period_start.strftime('%d.%m.%Y %H:%M'), end_date: @period_end.strftime('%d.%m.%Y %H:%M'))
+        h2= t('.statistics.header')
+        p= t('.statistics.total_events', count: @log.events_count)
+        p= t('.statistics.unique_notifications', count: @summary['unique_notifications'])
+        p= t('.statistics.unique_projects', count: @summary['unique_projects'])
+        p= t('.statistics.unique_jobs', count: @summary['unique_jobs'])
+
+      h2= t('.distribution.notifications_header')
+      table
+        tr
+          th= t('.distribution.type')
+          th= t('.distribution.description')
+          th= t('.distribution.count')
+        - @summary['notifications'].each do |notification_key, count|
+          - notification_id = notification_key.gsub('notification_', '').to_i
+          - notification = @notifications[notification_id]
+          tr
+            td = notification ? notification[1] : t('.distribution.type_not_found')
+            td = notification ? notification[2] : t('.distribution.no_description')
+            td = count
+
+      h2= t('.distribution.projects_header')
+      table
+        tr
+          th= t('.distribution.project')
+          th= t('.distribution.count')
+        - @summary['projects'].sort_by { |_, count| -count }.take(5).each do |project_key, count|
+          - project_id = project_key.gsub('project_', '').to_i
+          tr
+            td = @projects[project_id] || t('.distribution.project_not_found')
+            td = count
+
+      = render "footer"

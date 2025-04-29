@@ -1,0 +1,30 @@
+<%= form_with(model: [:admin, notification], local: true) do |form| %>
+  <% if notification.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(notification.errors.count, "ошибка") %> при сохранении:</h4>
+      <ul>
+        <% notification.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="form-group">
+    <%= form.label :name, "Название" %>
+    <%= form.text_field :name, class: "form-control", placeholder: "Введите уникальное имя уведомления" %>
+    <small class="form-text text-muted">Используйте понятное название, отражающее суть уведомления (например, job_failed, job_completed и т.д.)</small>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description, "Описание" %>
+    <%= form.text_area :description, class: "form-control", rows: 4, placeholder: "Подробное описание уведомления" %>
+    <small class="form-text text-muted">Опишите, для чего используется это уведомление и когда оно должно срабатывать</small>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit notification.new_record? ? "Создать уведомление" : "Сохранить изменения", class: "btn btn-primary" %>
+    <%= link_to "Отмена", notification.new_record? ? admin_job_notifications_path : admin_job_notification_path(notification), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

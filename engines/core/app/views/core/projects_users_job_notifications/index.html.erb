@@ -1,0 +1,157 @@
+<div class="container mt-4">
+  <div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Настройки уведомлений для проекта</h1>
+      <div>
+        <%= link_to "Назад к настройкам пользователя", users_job_notifications_path(@user), class: "btn btn-outline-secondary mr-2" %>
+        <%= link_to "К проекту", project_path(@project), class: "btn btn-outline-primary" %>
+      </div>
+    </div>
+    <p class="lead">Проект: <strong><%= @project.title %></strong> | Пользователь: <strong><%= @user.email %></strong></p>
+  </div>
+
+  <div class="alert alert-info">
+    <strong>Информация:</strong> Для каждого уведомления можно установить специфичные настройки для этого проекта.
+    Если настройки для проекта не заданы, используются пользовательские настройки, а если и они не заданы — глобальные настройки по умолчанию.
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <% if @notifications.any? %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Уведомление</th>
+                <th>Telegram</th>
+                <th>Email</th>
+                <th>Останавливать задачу</th>
+                <th>Тип настроек</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @notifications.each do |notification| %>
+                <%
+                  project_setting = @project_settings[notification.id]
+                  user_default = @user_defaults[notification.id]
+                  global_default = notification.global_default
+
+                  # Определяем текущие активные настройки и их уровень
+                  if project_setting
+                    settings_type = "project"
+                    notify_tg = project_setting.notify_tg.nil? ? (user_default ? user_default.notify_tg : global_default.notify_tg) : project_setting.notify_tg
+                    notify_mail = project_setting.notify_mail.nil? ? (user_default ? user_default.notify_mail : global_default.notify_mail) : project_setting.notify_mail
+                    kill_job = project_setting.kill_job.nil? ? (user_default ? user_default.kill_job : global_default.kill_job) : project_setting.kill_job
+                  elsif user_default
+                    settings_type = "user"
+                    notify_tg = user_default.notify_tg.nil? ? global_default.notify_tg : user_default.notify_tg
+                    notify_mail = user_default.notify_mail.nil? ? global_default.notify_mail : user_default.notify_mail
+                    kill_job = user_default.kill_job.nil? ? global_default.kill_job : user_default.kill_job
+                  else
+                    settings_type = "global"
+                    notify_tg = global_default.notify_tg
+                    notify_mail = global_default.notify_mail
+                    kill_job = global_default.kill_job
+                  end
+                %>
+
+                <tr>
+                  <td><%= notification.name %></td>
+
+                  <td>
+                    <% badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary") %>
+                    <% badge_class = notify_tg ? "#{badge_class}" : "badge-danger" %>
+                    <span class="badge <%= badge_class %>">
+                      <%= notify_tg ? 'Да' : 'Нет' %>
+                    </span>
+                  </td>
+
+                  <td>
+                    <% badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary") %>
+                    <% badge_class = notify_mail ? "#{badge_class}" : "badge-danger" %>
+                    <span class="badge <%= badge_class %>">
+                      <%= notify_mail ? 'Да' : 'Нет' %>
+                    </span>
+                  </td>
+
+                  <td>
+                    <% badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary") %>
+                    <% badge_class = kill_job ? "#{badge_class}" : "badge-danger" %>
+                    <span class="badge <%= badge_class %>">
+                      <%= kill_job ? 'Да' : 'Нет' %>
+                    </span>
+                  </td>
+
+                  <td>
+                    <% if settings_type == "project" %>
+                      <span class="badge badge-primary">Проект</span>
+                    <% elsif settings_type == "user" %>
+                      <span class="badge badge-info">Пользователь</span>
+                    <% else %>
+                      <span class="badge badge-secondary">Глобальные</span>
+                    <% end %>
+                  </td>
+
+                  <td>
+                    <div class="btn-group">
+                      <% if project_setting %>
+                        <%= link_to "Изменить", edit_job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id, id: project_setting.id), class: "btn btn-sm btn-warning" %>
+                        <%= link_to "Сбросить", job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id, id: project_setting.id),
+                                      method: :delete,
+                                      data: { confirm: "Вы уверены? Будут использоваться настройки пользователя или глобальные настройки." },
+                                      class: "btn btn-sm btn-outline-danger" %>
+                      <% else %>
+                        <%= link_to "Настроить для проекта", new_job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id), class: "btn btn-sm btn-primary" %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          В системе пока нет настроенных уведомлений.
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <div class="card bg-light">
+      <div class="card-body">
+        <h3 class="card-title">Условные обозначения</h3>
+
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Источник настроек:</h5>
+            <ul class="list-unstyled">
+              <li><span class="badge badge-primary">Проект</span> - значение установлено в настройках проекта</li>
+              <li><span class="badge badge-info">Пользователь</span> - значение взято из настроек пользователя</li>
+              <li><span class="badge badge-secondary">Глобальные</span> - используется глобальное значение по умолчанию</li>
+            </ul>
+          </div>
+
+          <div class="col-md-4">
+            <h5>Статус настроек:</h5>
+            <ul class="list-unstyled">
+              <li><span class="badge badge-success">Да</span> - опция включена</li>
+              <li><span class="badge badge-danger">Нет</span> - опция отключена</li>
+            </ul>
+          </div>
+
+          <div class="col-md-4">
+            <h5>Действия:</h5>
+            <ul class="list-unstyled">
+              <li><span class="btn btn-sm btn-primary disabled">Настроить для проекта</span> - создать специальные настройки для этого проекта</li>
+              <li><span class="btn btn-sm btn-warning disabled">Изменить</span> - изменить настройки проекта</li>
+              <li><span class="btn btn-sm btn-outline-danger disabled">Сбросить</span> - удалить настройки проекта и использовать настройки более высокого уровня</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

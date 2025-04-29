@@ -95,5 +95,21 @@ module Core
       @user = Core.user_class.find(user_id)
       mail to: @user.email, subject: t(".subject")
     end
+
+    def job_notification(user_id, log_id)
+      @user = Core.user_class.find(user_id)
+      @log = Core::JobNotificationEventLog.find_by(id: log_id)
+      @summary = @log.summary_data
+      @period_start = @log.start_period
+      @period_end = @log.end_period
+
+      project_ids = @summary['projects'].keys.map { |key| key.gsub('project_', '').to_i }
+      @projects = Core::Project.where(id: project_ids).pluck(:id, :title).to_h
+
+      notification_keys = @summary['notifications'].keys.map { |key| key.gsub('notification_', '').to_i }
+      @notifications = Core::JobNotification.where(id: notification_keys).pluck(:id, :name, :description).index_by(&:first)
+
+      mail to: @user.email, subject: t(".subject")
+    end
   end
 end

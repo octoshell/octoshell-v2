@@ -1,0 +1,58 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Уведомления о задачах</h1>
+    <%= link_to "Создать уведомление", new_admin_job_notification_path, class: "btn btn-primary" %>
+    <%= link_to "Просмотр событий", job_notification_events_path, class: "btn btn-primary" %>
+    <%= link_to "Просмотр лога событий", job_notification_event_logs_path, class: "btn btn-primary" %>
+    <%= link_to update_from_json_admin_job_notifications_path, method: :post, class: "btn btn-primary", data: { confirm: "Вы уверены, что хотите загрузить правила из JSON файла? Все текущие данные будут обновлены." } do %>
+      <i></i> Загрузить правила из JSON
+    <% end %>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <% if @notifications.any? %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Глобальные настройки</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @notifications.each do |notification| %>
+                <tr>
+                  <td><%= notification.id %></td>
+                  <td><%= link_to notification.name, admin_job_notification_path(notification) %></td>
+                  <td><%= notification.description.truncate(50) if notification.description %></td>
+                  <td>
+                    <% if notification.global_default %>
+                      <%= link_to "Настроить", edit_admin_job_notification_job_notification_global_default_path(notification), class: "btn btn-sm btn-outline-primary" %>
+                    <% else %>
+                      <span class="badge badge-warning">Не настроено</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <div class="btn-group">
+                      <%= link_to "Просмотр", admin_job_notification_path(notification), class: "btn btn-sm btn-info" %>
+                      <%= link_to "Изменить", edit_admin_job_notification_path(notification), class: "btn btn-sm btn-warning" %>
+                      <%= link_to "Удалить", admin_job_notification_path(notification), method: :delete, data: { confirm: "Вы уверены?" }, class: "btn btn-sm btn-danger" %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          Уведомления пока не созданы. <%= link_to "Создать первое уведомление", new_admin_job_notification_path %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

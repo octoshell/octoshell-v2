@@ -1,0 +1,111 @@
+<%= form_with(model: [notification, project_setting], local: true) do |form| %>
+  <% if project_setting.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(project_setting.errors.count, "ошибка") %> при сохранении:</h4>
+      <ul>
+        <% project_setting.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% user_default = notification.user_defaults.find_by(user: user) %>
+  <% global_default = notification.global_default %>
+
+  <div class="form-group">
+    <h4>Основные настройки</h4>
+    <p class="text-muted">Если опция не выбрана, будут использованы настройки пользователя или глобальные настройки</p>
+
+    <div class="row mt-3">
+      <div class="col-md-4">
+        <label class="d-block mb-3">Уведомления в Telegram</label>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-outline-secondary <%= project_setting.notify_tg.nil? ? 'active' : '' %>">
+            <%= form.radio_button :notify_tg, nil, checked: project_setting.notify_tg.nil? %>
+            По умолчанию
+            <% if user_default && !user_default.notify_tg.nil? %>
+              (<%= user_default.notify_tg ? 'Пользователь: Да' : 'Пользователь: Нет' %>)
+            <% else %>
+              (<%= global_default.notify_tg ? 'Глобально: Да' : 'Глобально: Нет' %>)
+            <% end %>
+          </label>
+          <label class="btn btn-outline-success <%= project_setting.notify_tg == true ? 'active' : '' %>">
+            <%= form.radio_button :notify_tg, true, checked: project_setting.notify_tg == true %>
+            Да
+          </label>
+          <label class="btn btn-outline-danger <%= project_setting.notify_tg == false ? 'active' : '' %>">
+            <%= form.radio_button :notify_tg, false, checked: project_setting.notify_tg == false %>
+            Нет
+          </label>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label class="d-block mb-3">Уведомления по email</label>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-outline-secondary <%= project_setting.notify_mail.nil? ? 'active' : '' %>">
+            <%= form.radio_button :notify_mail, nil, checked: project_setting.notify_mail.nil? %>
+            По умолчанию
+            <% if user_default && !user_default.notify_mail.nil? %>
+              (<%= user_default.notify_mail ? 'Пользователь: Да' : 'Пользователь: Нет' %>)
+            <% else %>
+              (<%= global_default.notify_mail ? 'Глобально: Да' : 'Глобально: Нет' %>)
+            <% end %>
+          </label>
+          <label class="btn btn-outline-success <%= project_setting.notify_mail == true ? 'active' : '' %>">
+            <%= form.radio_button :notify_mail, true, checked: project_setting.notify_mail == true %>
+            Да
+          </label>
+          <label class="btn btn-outline-danger <%= project_setting.notify_mail == false ? 'active' : '' %>">
+            <%= form.radio_button :notify_mail, false, checked: project_setting.notify_mail == false %>
+            Нет
+          </label>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label class="d-block mb-3">Останавливать задачу</label>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-outline-secondary <%= project_setting.kill_job.nil? ? 'active' : '' %>">
+            <%= form.radio_button :kill_job, nil, checked: project_setting.kill_job.nil? %>
+            По умолчанию
+            <% if user_default && !user_default.kill_job.nil? %>
+              (<%= user_default.kill_job ? 'Пользователь: Да' : 'Пользователь: Нет' %>)
+            <% else %>
+              (<%= global_default.kill_job ? 'Глобально: Да' : 'Глобально: Нет' %>)
+            <% end %>
+          </label>
+          <label class="btn btn-outline-success <%= project_setting.kill_job == true ? 'active' : '' %>">
+            <%= form.radio_button :kill_job, true, checked: project_setting.kill_job == true %>
+            Да
+          </label>
+          <label class="btn btn-outline-danger <%= project_setting.kill_job == false ? 'active' : '' %>">
+            <%= form.radio_button :kill_job, false, checked: project_setting.kill_job == false %>
+            Нет
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group mt-4">
+    <%= form.submit "Сохранить настройки проекта", class: "btn btn-primary" %>
+    <%= link_to "Отмена", projects_users_job_notifications_path(project, user), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.reset-field').forEach(function(button) {
+    button.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-target');
+      const targetField = document.querySelector(targetId);
+      if (targetField) {
+        targetField.value = '';
+        targetField.dispatchEvent(new Event('change'));
+      }
+    });
+  });
+});
+</script>

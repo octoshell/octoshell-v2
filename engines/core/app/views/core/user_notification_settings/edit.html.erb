@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <div class="mb-4">
+    <%= link_to "Назад к настройком уведомлений для пользователя", users_job_notifications_path, class: "btn btn-outline-secondary" %>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2>Настройки уведомлений</h2>
+    </div>
+    <div class="card-body">
+      <%= form_with(model: [@user_notification_settings], local: true) do |form| %>
+        <% if @user_notification_settings.errors.any? %>
+          <div class="alert alert-danger">
+            <h4><%= pluralize(@user_notification_settings.errors.count, "ошибка") %> при сохранении:</h4>
+            <ul>
+              <% @user_notification_settings.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= form.label :notification_batch_interval, "Интервал группировки уведомлений (минуты)" %>
+          <%= form.number_field :notification_batch_interval, class: "form-control", min: 1, max: 10080 %>
+          <small class="form-text text-muted">Укажите, как часто система должна группировать и отправлять вам уведомления (в минутах). Минимум 1, максимум 10080 (7d).</small>
+        </div>
+
+        <div class="form-group">
+          <%= form.submit "Сохранить настройки", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
