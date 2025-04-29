@@ -333,6 +333,7 @@ ru:
       change_password: Изменить пароль
       is_admin: Администратор
       title: Профиль
+      job_notifications_settings: Настройки уведомлений о задачах пользователя
   user_submenu:
     comments: Комментарии
     job_stat: Статистика

@@ -333,6 +333,7 @@ en:
       change_password: Change password
       is_admin: Administator
       title: Profile
+      job_notifications_settings: Job notifications user settings
   user_submenu:
     comments: Comments
     job_stat: Statistics
