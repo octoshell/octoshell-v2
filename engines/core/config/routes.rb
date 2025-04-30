@@ -166,7 +166,7 @@ Core::Engine.routes.draw do
   end
   root "projects#index"
 
-  resources :job_notifications do
+  resources :job_notifications, only: [] do
     resources :job_notification_user_defaults, only: [:new, :create, :edit, :update, :destroy], path: 'user_defaults'
     resources :job_notification_project_settings, only: [:new, :create, :edit, :update, :destroy], path: '/projects/:project_id/users/:user_id/job_notification'
   end

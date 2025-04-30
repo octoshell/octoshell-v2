@@ -1,0 +1,22 @@
+= form_with(model: [:admin, notification], local: true) do |form|
+  - if notification.errors.any?
+    .alert.alert-danger
+      h4
+        = t('.errors_header', count: notification.errors.count)
+      ul
+        - notification.errors.full_messages.each do |message|
+          li
+            = message
+  .form-group
+    = form.label :name, t('.name_label')
+    = form.text_field :name, class: "form-control", placeholder: t('.name_placeholder')
+    small.form-text.text-muted
+      = t('.name_hint')
+  .form-group
+    = form.label :description, t('.description_label')
+    = form.text_area :description, class: "form-control", rows: 4, placeholder: t('.description_placeholder')
+    small.form-text.text-muted
+      = t('.description_hint')
+  .form-group
+    = form.submit notification.new_record? ? t('.create_button') : t('.update_button'), class: "btn btn-primary"
+    = link_to t('.cancel_button'), notification.new_record? ? admin_job_notifications_path : admin_job_notification_path(notification), class: "btn btn-outline-secondary"

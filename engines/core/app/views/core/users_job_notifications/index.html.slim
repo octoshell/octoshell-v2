@@ -1,0 +1,98 @@
+.container.mt-4
+  .mb-4
+    .d-flex.justify-content-between.align-items-center
+      h1
+        = t('.user_notification_settings')
+      = link_to t('.back_to_profile'), "profile", class: "btn btn-primary"
+      = link_to t('.notification_interval_settings'), edit_user_notification_setting_path, class: "btn btn-primary"
+    p.lead
+      = t('.user_email', email: @user.email)
+  .card
+    .card-body
+      - if @notifications.any?
+        .table-responsive
+          table.table.table-hover
+            thead
+              tr
+                th
+                  = t('.notification')
+                th
+                  = t('.description')
+                th
+                  = t('.telegram')
+                th
+                  = t('.email')
+                th
+                  = t('.stop_job')
+                th
+                  = t('.actions')
+            tbody
+              - @notifications.each do |notification|
+                - user_default = @user_defaults[notification.id]
+                - global_default = notification.global_default
+                tr
+                  td
+                    = notification.name
+                  td
+                    = notification.description.truncate(50) if notification.description
+                  td
+                    - if user_default && !user_default.notify_tg.nil?
+                      |  <span class="badge
+                      = user_default.notify_tg ? 'badge-success' : 'badge-danger'
+                      | ">
+                      = user_default.notify_tg ? t('.yes') : t('.no')
+                    - else
+                      |  <span class="badge badge-secondary" title="
+                      = t('.global_setting')
+                      | ">
+                      = global_default.notify_tg ? t('.yes') : t('.no')
+                  td
+                    - if user_default && !user_default.notify_mail.nil?
+                      |  <span class="badge
+                      = user_default.notify_mail ? 'badge-success' : 'badge-danger'
+                      | ">
+                      = user_default.notify_mail ? t('.yes') : t('.no')
+                    - else
+                      |  <span class="badge badge-secondary" title="
+                      = t('.global_setting')
+                      | ">
+                      = global_default.notify_mail ? t('.yes') : t('.no')
+                  td
+                    - if user_default && !user_default.kill_job.nil?
+                      |  <span class="badge
+                      = user_default.kill_job ? 'badge-success' : 'badge-danger'
+                      | ">
+                      = user_default.kill_job ? t('.yes') : t('.no')
+                    - else
+                      |  <span class="badge badge-secondary" title="
+                      = t('.global_setting')
+                      | ">
+                      = global_default.kill_job ? t('.yes') : t('.no')
+                  td
+                    .btn-group
+                      - if user_default
+                        = link_to t('.edit'), edit_job_notification_job_notification_user_default_path(notification, user_default), class: "btn btn-sm btn-warning"
+                        = link_to t('.reset'), job_notification_job_notification_user_default_path(notification, user_default),
+                              method: :delete,
+                              data: { confirm: t('.reset_confirmation') },
+                              class: "btn btn-sm btn-outline-danger"
+                      - else
+                        = link_to t('.configure'), new_job_notification_job_notification_user_default_path(notification, user_id: @user.id), class: "btn btn-sm btn-primary"
+      - else
+        .alert.alert-info
+          = t('.no_notifications')
+  .mt-4
+    h2
+      = t('.user_projects')
+    - if @user.projects.any?
+      .row
+        - @user.projects.each do |project|
+          .col-md-4.mb-4
+            .card
+              .card-body
+                h5.card-title
+                  = project.title
+                = link_to t('.project_notification_settings'), projects_users_job_notifications_path(project, @user), class: "btn btn-primary btn-block"
+    - else
+      .alert.alert-info
+        = t('.no_projects')

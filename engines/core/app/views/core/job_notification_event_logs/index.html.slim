@@ -1,0 +1,89 @@
+.container.mt-4
+  .d-flex.justify-content-between.align-items-center.mb-4
+    h1
+      = t('.title')
+    div
+      = link_to t('.to_notifications'), admin_job_notifications_path, class: "btn btn-outline-secondary"
+      = link_to t('.events'), job_notification_events_path, class: "btn btn-outline-primary"
+  .card.mb-4
+    .card-body
+      .row
+        .col-md-4
+          .card.bg-light
+            .card-body
+              h5.card-title
+                | Всего логов
+              p.card-text.display-4
+                = Core::JobNotificationEventLog.count
+        .col-md-4
+          .card.bg-info.text-white
+            .card-body
+              h5.card-title
+                | Всего обработано событий
+              p.card-text.display-4
+                = Core::JobNotificationEventLog.sum(:events_count)
+        .col-md-4
+          .card.bg-warning
+            .card-body
+              h5.card-title
+                | За 24 часа
+              p.card-text.display-4
+                = Core::JobNotificationEventLog.where('created_at >= ?', 24.hours.ago).count
+  .card.mb-4
+    .card-header
+      h3
+        = t('.filters')
+    .card-body
+      = form_with(url: job_notification_event_logs_path, method: :get, local: true, class: "form-inline") do |form|
+        .form-group.mr-3.mb-2
+          = form.label :user_id, t('.user_label'), class: "mr-2"
+          = form.collection_select :user_id, User.all, :id, :email, { include_blank: t('.all_users') }, { class: "form-control" }
+        .form-group.mr-3.mb-2
+          = form.label :date_from, t('.date_from'), class: "mr-2"
+          = form.date_field :date_from, class: "form-control"
+        .form-group.mr-3.mb-2
+          = form.label :date_to, t('.date_to'), class: "mr-2"
+          = form.date_field :date_to, class: "form-control"
+        = form.submit t('.apply_filters'), class: "btn btn-primary mb-2"
+        = link_to t('.reset'), job_notification_event_logs_path, class: "btn btn-outline-secondary mb-2 ml-2"
+  .card
+    .card-body
+      - if @logs.any?
+        .table-responsive
+          table.table.table-hover
+            thead
+              tr
+                th
+                  = t('.id')
+                th
+                  = t('.user')
+                th
+                  = t('.period')
+                th
+                  = t('.events_count')
+                th
+                  = t('.created_at')
+                th
+                  = t('.actions')
+            tbody
+              - @logs.each do |log|
+                tr
+                  td
+                    = log.id
+                  td
+                    = link_to log.user.email, "/profile"
+                  td
+                    = log.start_period&.strftime('%d.%m.%Y %H:%M')
+                    |  -
+                    = log.end_period&.strftime('%d.%m.%Y %H:%M')
+                  td
+                    = log.events_count
+                  td
+                    = log.created_at.strftime('%d.%m.%Y %H:%M:%S')
+                  td
+                    = link_to t('.details'), job_notification_event_log_path(log), class: "btn btn-sm btn-info"
+        .pagination-container
+          = paginate @logs
+      - else
+        .alert.alert-info
+          = t('.no_logs') + t('.with_filters') if params[:user_id].present? || params[:date_from].present? || params[:date_to].present?

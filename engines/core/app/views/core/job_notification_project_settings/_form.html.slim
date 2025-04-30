@@ -1,0 +1,113 @@
+- if @project_setting.persisted?
+  - url = job_notification_job_notification_project_setting_path(@notification, @project_setting, project_id: @project.id, user_id: @user.id)
+  - method = :patch
+- else
+  - url = job_notification_job_notification_project_settings_path(@notification, project_id: @project.id, user_id: @user.id)
+  - method = :post
+
+= form_with(url: url, method: method, local: true, scope: :job_notification_project_setting) do |form|
+  = form.hidden_field :project_id, value: @project.id
+  = form.hidden_field :user_id, value: @user.id
+  = form.hidden_field :job_notification_id, value: @notification.id
+
+  - if @project_setting.errors.any?
+    div
+      h4
+        = t('.errors_header', count: @project_setting.errors.count)
+      ul
+        - @project_setting.errors.full_messages.each do |message|
+          li
+            = message
+
+  - user_default = @notification.user_defaults.find_by(user: @user)
+  - global_default = @notification.global_default
+
+  .form-group
+    h4
+      = t('.main_settings')
+    p.text-muted
+      = t('.settings_hint')
+    .row.mt-3
+      .col-md-4
+        label.d-block.mb-3
+          = t('.telegram_notifications')
+        .btn-group.btn-group-toggle data-toggle="buttons"
+          label.btn.btn-outline-secondary class=(@project_setting.notify_tg.nil? ? 'active' : '')
+            = form.radio_button :notify_tg, nil, checked: @project_setting.notify_tg.nil?
+            = t('.default')
+            - if user_default && !user_default.notify_tg.nil?
+              |  (
+              = user_default.notify_tg ? t('.user_yes') : t('.user_no')
+              | )
+            - else
+              |  (
+              = global_default.notify_tg ? t('.global_yes') : t('.global_no')
+              | )
+          label.btn.btn-outline-success class=(@project_setting.notify_tg == true ? 'active' : '')
+            = form.radio_button :notify_tg, true, checked: @project_setting.notify_tg == true
+            = t('.yes')
+          label.btn.btn-outline-danger class=(@project_setting.notify_tg == false ? 'active' : '')
+            = form.radio_button :notify_tg, false, checked: @project_setting.notify_tg == false
+            = t('.no')
+
+      .col-md-4
+        label.d-block.mb-3
+          = t('.email_notifications')
+        .btn-group.btn-group-toggle data-toggle="buttons"
+          label.btn.btn-outline-secondary class=(@project_setting.notify_mail.nil? ? 'active' : '')
+            = form.radio_button :notify_mail, nil, checked: @project_setting.notify_mail.nil?
+            = t('.default')
+            - if user_default && !user_default.notify_mail.nil?
+              |  (
+              = user_default.notify_mail ? t('.user_yes') : t('.user_no')
+              | )
+            - else
+              |  (
+              = global_default.notify_mail ? t('.global_yes') : t('.global_no')
+              | )
+          label.btn.btn-outline-success class=(@project_setting.notify_mail == true ? 'active' : '')
+            = form.radio_button :notify_mail, true, checked: @project_setting.notify_mail == true
+            = t('.yes')
+          label.btn.btn-outline-danger class=(@project_setting.notify_mail == false ? 'active' : '')
+            = form.radio_button :notify_mail, false, checked: @project_setting.notify_mail == false
+            = t('.no')
+
+      .col-md-4
+        label.d-block.mb-3
+          = t('.kill_job')
+        .btn-group.btn-group-toggle data-toggle="buttons"
+          label.btn.btn-outline-secondary class=(@project_setting.kill_job.nil? ? 'active' : '')
+            = form.radio_button :kill_job, nil, checked: @project_setting.kill_job.nil?
+            = t('.default')
+            - if user_default && !user_default.kill_job.nil?
+              |  (
+              = user_default.kill_job ? t('.user_yes') : t('.user_no')
+              | )
+            - else
+              |  (
+              = global_default.kill_job ? t('.global_yes') : t('.global_no')
+              | )
+          label.btn.btn-outline-success class=(@project_setting.kill_job == true ? 'active' : '')
+            = form.radio_button :kill_job, true, checked: @project_setting.kill_job == true
+            = t('.yes')
+          label.btn.btn-outline-danger class=(@project_setting.kill_job == false ? 'active' : '')
+            = form.radio_button :kill_job, false, checked: @project_setting.kill_job == false
+            = t('.no')
+
+  .form-group.mt-4
+    = form.submit t('.save_settings'), class: "btn btn-primary"
+    = link_to t('.cancel'), projects_users_job_notifications_path(@project, @user), class: "btn btn-outline-secondary"
+
+javascript:
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.reset-field').forEach(function(button) {
+      button.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-target');
+        const targetField = document.querySelector(targetId);
+        if (targetField) {
+          targetField.value = '';
+          targetField.dispatchEvent(new Event('change'));
+        }
+      });
+    });
+  });
