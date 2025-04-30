@@ -1,6 +1,26 @@
-<%= form_with(model: [notification, project_setting], local: true) do |form| %>
+<% if @project_setting.persisted? %>
+  <% url = job_notification_job_notification_project_setting_path(
+         @notification,
+         @project_setting,
+         project_id: @project.id,
+         user_id: @user.id
+       ) %>
+  <% method = :patch %>
+<% else %>
+  <% url = job_notification_job_notification_project_settings_path(
+         @notification,
+         project_id: @project.id,
+         user_id: @user.id
+       ) %>
+  <% method = :post %>
+<% end %>
+
+<%= form_with(url: url, method: method, local: true, scope: :job_notification_project_setting) do |form| %>
+  <%= form.hidden_field :project_id, value: @project.id %>
+  <%= form.hidden_field :user_id, value: @user.id %>
+  <%= form.hidden_field :job_notification_id, value: @notification.id %>
   <% if project_setting.errors.any? %>
-    <div class="alert alert-danger">
+    <div>
       <h4><%= t('.errors_header', count: project_setting.errors.count) %></h4>
       <ul>
         <% project_setting.errors.full_messages.each do |message| %>

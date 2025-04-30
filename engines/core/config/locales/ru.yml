@@ -823,7 +823,7 @@ ru:
             actions: "Действия"
             notify_telegram: "Уведомлять в Telegram"
             notify_email: "Уведомлять по email"
-      job_notification_event_logs:
+    job_notification_event_logs:
       index:
         title: "Логи обработки уведомлений"
         to_notifications: "К уведомлениям"
@@ -870,7 +870,7 @@ ru:
         actions_header: "Действия"
         resend_digest: "Отправить email с дайджестом повторно"
         resend_confirmation: "Отправить email с дайджестом пользователю %{email}?"
-      job_notification_events:
+    job_notification_events:
       index:
         title: "События уведомлений задач"
         to_notifications: "К уведомлениям"
@@ -908,7 +908,7 @@ ru:
         pending_status: "Ожидает обработки"
         additional_info: "Дополнительная информация"
         no_additional_data: "Дополнительные данные отсутствуют."
-      job_notification_project_settings:
+    job_notification_project_settings:
       form:
         errors_header: "Обуйте найдено %{count} ошибок при сохранении:"
         main_settings: "Основные настройки"
@@ -936,7 +936,7 @@ ru:
         back_to_settings: "Назад к настройкам проекта"
         setup_notification: "Настройка уведомления \"%{name}\" для проекта %{title}"
         user_info: "Пользователь: %{email}"
-      job_notification_user_defaults:
+    job_notification_user_defaults:
       form:
         error_count: "Ошибка при сохранении:"
         main_settings: "Основные настройки"
@@ -959,7 +959,7 @@ ru:
       new:
         back_to_user_settings: "Назад к настройкам пользователя"
         configure_notification: "Настройка уведомления \"%{notification_name}\" для пользователя %{user_email}"
-      projects_users_job_notifications:
+    projects_users_job_notifications:
       index:
         notification_settings_for_project: "Настройки уведомлений для проекта"
         back_to_user_settings: "Назад к настройкам пользователя"
@@ -994,7 +994,7 @@ ru:
         configure_for_project_description: "создать специальные настройки для этого проекта"
         edit_description: "изменить настройки проекта"
         reset_description: "удалить настройки проекта и использовать настройки более высокого уровня"
-      user_notification_settings:
+    user_notification_settings:
       edit:
         back_to_notifications: "Назад к настройкам уведомлений для пользователя"
         notification_settings: "Настройки уведомлений"
@@ -1007,7 +1007,7 @@ ru:
         batch_interval_label: "Интервал группировки уведомлений (минуты)"
         batch_interval_hint: "Укажите, как часто система должна группировать и отправлять вам уведомления (в минутах). Минимум 1, максимум 10080 (7d)."
         save_settings: "Сохранить настройки"
-      users_job_notifications:
+    users_job_notifications:
       index:
         user_notification_settings: "Настройки уведомлений для пользователя"
         back_to_profile: "Назад к профилю"
@@ -1030,6 +1030,44 @@ ru:
         user_projects: "Проекты пользователя"
         project_notification_settings: "Настройки уведомлений для проекта"
         no_projects: "Пользователь не состоит ни в одном проекте."
+    job_notification_user_events:
+      index:
+        title: "События уведомлений задач"
+        to_notifications: "К уведомлениям"
+        logs: "Логи обработки"
+        process_events: "Обработать события"
+        process_confirmation: "Вы уверены, что хотите принудительно обработать накопленные события?"
+        total_events: "Всего событий"
+        unprocessed: "Необработанных"
+        processed: "Обработано"
+        last_24h: "За 24 часа"
+        id: "ID"
+        notification: "Уведомление"
+        job: "Задача"
+        user: "Пользователь"
+        project: "Проект"
+        created: "Создано"
+        status: "Статус"
+        actions: "Действия"
+        processed_status: "Обработано"
+        pending_status: "Ожидает"
+        details: "Подробнее"
+        no_events: "События пока не зарегистрированы."
+      show:
+        back_to_events: "К списку событий"
+        event_info_header: "Информация о событии #%{id}"
+        main_info: "Основная информация"
+        id_label: "ID"
+        notification_label: "Уведомление"
+        job_label: "Задача"
+        user_label: "Пользователь"
+        project_label: "Проект"
+        created_label: "Создано"
+        status_label: "Статус"
+        processed_status: "Обработано"
+        pending_status: "Ожидает обработки"
+        additional_info: "Дополнительная информация"
+        no_additional_data: "Дополнительные данные отсутствуют."
     bot_links:
       list:
         bot_links: Токен для ботов

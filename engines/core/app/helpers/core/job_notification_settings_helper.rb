@@ -21,7 +21,7 @@ module Core
                           end
 
         [:notify_tg, :notify_mail, :kill_job].each do |field|
-          settings[field] = settings_object.get_setting(field)
+          settings[field] = settings_object[field]
         end
 
         settings

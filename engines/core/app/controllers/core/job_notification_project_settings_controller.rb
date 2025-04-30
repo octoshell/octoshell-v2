@@ -62,9 +62,7 @@ module Core
 
       def set_project_setting
         @project_setting = JobNotificationProjectSetting.find_by(
-          core_job_notification_id: @notification.id,
-          core_project_id: @project.id,
-          user: @user
+          id: params[:id]
         )
 
         unless @project_setting

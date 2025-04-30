@@ -175,6 +175,7 @@ Core::Engine.routes.draw do
   resources :projects_users_job_notifications, only: [:index], path: '/projects/:project_id/users/:user_id/job_notifications'
 
   post 'event_occurred', to: 'job_notification_events#create'
+  resources :job_notification_user_events, path: 'user_events', as: 'user_events', only: [:index, :show]
 
   resources :job_notification_events, only: [:index, :show], path: 'events' do
     collection do

@@ -334,6 +334,7 @@ en:
       is_admin: Administator
       title: Profile
       job_notifications_settings: Job notifications user settings
+      job_notifications_events: Job notifications user events
   user_submenu:
     comments: Comments
     job_stat: Statistics
