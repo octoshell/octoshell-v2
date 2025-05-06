@@ -68,37 +68,26 @@
               = t('.global_settings_not_set_html', link: link_to(t('.set_up'), edit_admin_job_notification_job_notification_global_default_path(@notification), class: "alert-link"))
   .card.mb-4
     .card-header
-      h3
-        = t('.user_settings')
+      h3 = t('.user_settings')
     .card-body
-      - if @notification.user_defaults.any?
+      - if @user_defaults.any?
         .table-responsive
           table.table.table-hover
             thead
               tr
-                th
-                  = t('.columns.user')
-                th
-                  = t('.columns.telegram')
-                th
-                  = t('.columns.email')
-                th
-                  = t('.columns.stop_job')
-                th
-                  = t('.columns.actions')
+                th = t('.columns.user')
+                th = t('.columns.telegram')
+                th = t('.columns.email')
+                th = t('.columns.stop_job')
+                th = t('.columns.actions')
             tbody
-              - @notification.user_defaults.includes(:user).each do |user_default|
+              - @user_defaults.each do |user_default|
                 tr
-                  td
-                    = link_to user_default.user.email, admin_users_path(user_default.user)
-                  td
-                    = user_default.notify_tg.nil? ? t('.default') : (user_default.notify_tg ? t('.yes') : t('.no'))
-                  td
-                    = user_default.notify_mail.nil? ? t('.default') : (user_default.notify_mail ? t('.yes') : t('.no'))
-                  td
-                    = user_default.kill_job.nil? ? t('.default') : (user_default.kill_job ? t('.yes') : t('.no'))
-                  td
-                    = link_to t('.view'), users_job_notifications_path(user_default.user), class: "btn btn-sm btn-info"
+                  td = link_to user_default.user.email, admin_users_path(user_default.user)
+                  td = user_default.notify_tg.nil? ? t('.default') : (user_default.notify_tg ? t('.yes') : t('.no'))
+                  td = user_default.notify_mail.nil? ? t('.default') : (user_default.notify_mail ? t('.yes') : t('.no'))
+                  td = user_default.kill_job.nil? ? t('.default') : (user_default.kill_job ? t('.yes') : t('.no'))
+                  td = link_to t('.view'), users_job_notifications_path(user_default.user), class: "btn btn-sm btn-info"
+        = paginate @user_defaults
       - else
-        .alert.alert-info
-          = t('.no_user_settings')
+        .alert.alert-info = t('.no_user_settings')

@@ -4,7 +4,6 @@
       = t('.header')
     = link_to t('.create_notification'), new_admin_job_notification_path, class: "btn btn-primary"
     = link_to t('.view_events'), job_notification_events_path, class: "btn btn-primary"
-    = link_to t('.view_event_logs'), job_notification_event_logs_path, class: "btn btn-primary"
     = link_to update_from_json_admin_job_notifications_path, method: :post, class: "btn btn-primary", data: { confirm: t('.confirm_json_upload') } do
       i
       = t('.load_from_json')

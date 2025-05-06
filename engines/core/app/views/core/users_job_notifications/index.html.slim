@@ -92,7 +92,7 @@
               .card-body
                 h5.card-title
                   = project.title
-                = link_to t('.project_notification_settings'), projects_users_job_notifications_path(project, @user), class: "btn btn-primary btn-block"
+                = link_to t('.project_notification_settings'), projects_users_job_notifications_path(project), class: "btn btn-primary btn-block"
     - else
       .alert.alert-info
         = t('.no_projects')

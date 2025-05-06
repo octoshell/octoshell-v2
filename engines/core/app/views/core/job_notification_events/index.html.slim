@@ -4,7 +4,6 @@
       = t('.title')
     div
       = link_to t('.to_notifications'), admin_job_notifications_path, class: "btn btn-outline-secondary"
-      = link_to t('.logs'), job_notification_event_logs_path, class: "btn btn-outline-primary"
       = button_to t('.process_events'), process_batch_job_notification_events_path, method: :post, class: "btn btn-warning ml-2", data: { confirm: t('.process_confirmation') }
   .card
     .card-body

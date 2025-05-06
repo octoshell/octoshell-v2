@@ -15,21 +15,22 @@ html
       = render "header"
 
       .summary
-        h1= t('.subject')
-        p= t('.message', start_date: @period_start.strftime('%d.%m.%Y %H:%M'), end_date: @period_end.strftime('%d.%m.%Y %H:%M'))
-        h2= t('.statistics.header')
-        p= t('.statistics.total_events', count: @log.events_count)
-        p= t('.statistics.unique_notifications', count: @summary['unique_notifications'])
-        p= t('.statistics.unique_projects', count: @summary['unique_projects'])
-        p= t('.statistics.unique_jobs', count: @summary['unique_jobs'])
+        h1 = t('.subject')
+        p = t('.message', start_date: @period_start.strftime('%d.%m.%Y %H:%M'), end_date: @period_end.strftime('%d.%m.%Y %H:%M'))
 
-      h2= t('.distribution.notifications_header')
+        h2 = t('.statistics.header')
+        p = t('.statistics.total_events', count: @summary['total_count'] || @summary[:total_count])
+        p = t('.statistics.unique_notifications', count: @summary['unique_notifications'] || @summary[:unique_notifications])
+        p = t('.statistics.unique_projects', count: @summary['unique_projects'] || @summary[:unique_projects])
+        p = t('.statistics.unique_jobs', count: @summary['unique_jobs'] || @summary[:unique_jobs])
+
+      h2 = t('.distribution.notifications_header')
       table
         tr
-          th= t('.distribution.type')
-          th= t('.distribution.description')
-          th= t('.distribution.count')
-        - @summary['notifications'].each do |notification_key, count|
+          th = t('.distribution.type')
+          th = t('.distribution.description')
+          th = t('.distribution.count')
+        - (@summary['notifications'] || @summary[:notifications] || {}).each do |notification_key, count|
           - notification_id = notification_key.gsub('notification_', '').to_i
           - notification = @notifications[notification_id]
           tr
@@ -37,15 +38,19 @@ html
             td = notification ? notification[2] : t('.distribution.no_description')
             td = count
 
-      h2= t('.distribution.projects_header')
+      h2 = t('.distribution.projects_header')
       table
         tr
-          th= t('.distribution.project')
-          th= t('.distribution.count')
-        - @summary['projects'].sort_by { |_, count| -count }.take(5).each do |project_key, count|
+          th = t('.distribution.project')
+          th = t('.distribution.count')
+        - ((@summary['projects'] || @summary[:projects]) || {}).sort_by { |_, count| -count }.take(5).each do |project_key, count|
           - project_id = project_key.gsub('project_', '').to_i
           tr
             td = @projects[project_id] || t('.distribution.project_not_found')
             td = count
+
+      - if @details.present?
+        h2 = t('.full_details')
+        pre = @details
 
       = render "footer"

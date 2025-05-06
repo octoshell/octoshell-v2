@@ -31,8 +31,8 @@ module Core
 
       events_by_user = unprocessed_events.group_by(&:user_id)
 
-      events_by_user.each do |user_id, user_events|
-        process_user_events(user_id, user_events)
+      events_by_user.each do |u_id, user_events|
+        process_user_events(u_id, user_events)
       end
     end
 
@@ -54,15 +54,7 @@ module Core
 
       summary_data = prepare_summary(events)
       events_count = events.count
-
-      log_entry = Core::JobNotificationEventLog.create!(
-        user: user,
-        events_count: events_count,
-        summary_data: summary_data,
-        details: generate_details(events, summary_data),
-        start_period: start_period,
-        end_period: end_period
-      )
+      details = generate_details(events, summary_data)
 
       events.each(&:mark_as_processed)
 
@@ -71,19 +63,27 @@ module Core
       if events_count > 0
         notifications = Core::JobNotification.where(id: events.map(&:core_job_notification_id).uniq)
 
-        if notifications.any? { |notif| notif.user_settings(user)&.notify_mail }
-          send_digest_email(user, log_entry)
+        params = {
+          events_count: events_count,
+          summary_data: summary_data,
+          details: details,
+          start_period: start_period,
+          end_period: end_period
+        }
+
+        if events.any? { |event| event.job_notification.user_settings(user, event.core_project)&.notify_mail }
+          Core::MailJobNotificationWorker.perform_async(user.id, params)
           notified_mail = true
         end
 
-        if notifications.any? { |notif| notif.user_settings(user)&.notify_tg }
-          send_digest_telegram(user, log_entry)
+        if events.any? { |event| event.job_notification.user_settings(user, event.core_project)&.notify_tg }
+          Core::TelegramJobNotificationWorker.perform_async(user.id, params)
           notified_tg = true
         end
+
       end
 
-      Rails.logger.info "Processed #{events_count} events for user #{user.email} (ID: #{user.id}) for period #{start_period} to #{end_period}. Log ID: #{log_entry.id}. NotifiedMail: #{notified_mail}. NotifiedTg: #{notified_tg}"
-
+      Rails.logger.info "Processed #{events_count} events for user #{user.email} (ID: #{user.id}) for period #{start_period} to #{end_period}. NotifiedMail: #{notified_mail}. NotifiedTg: #{notified_tg}"
     end
 
     def prepare_summary(events)
@@ -151,32 +151,5 @@ module Core
               .map { |id, count| "  - #{id}: #{count} событий" }
               .join("\n")
     end
-
-    def send_digest_email(user, log_entry)
-      Core::MailerWorker.perform_async(:job_notification, [user.id, log_entry.id])
-    rescue => e
-      Rails.logger.error "Error sending digest email to #{user.email}: #{e.message}"
-    end
-
-    def send_digest_telegram(user, log_entry)
-      bot_link = user.bot_links.find_by_active(true)
-      return unless bot_link
-
-      params = {
-        token: bot_link.token,
-        email: user.email,
-        events_count: log_entry.events_count,
-        summary_data: log_entry.summary_data,
-        details: log_entry.details,
-        start_period: log_entry.start_period,
-        end_period: log_entry.end_period
-      }
-
-      Core::BotLinksApiHelper.notify('/send_digest', params)
-
-    rescue => e
-      Rails.logger.error "Error sending telegram digest to #{user.email}: #{e.message}"
-    end
-
   end
 end

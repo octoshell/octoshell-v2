@@ -168,11 +168,11 @@ Core::Engine.routes.draw do
 
   resources :job_notifications, only: [] do
     resources :job_notification_user_defaults, only: [:new, :create, :edit, :update, :destroy], path: 'user_defaults'
-    resources :job_notification_project_settings, only: [:new, :create, :edit, :update, :destroy], path: '/projects/:project_id/users/:user_id/job_notification'
+    resources :job_notification_project_settings, only: [:new, :create, :edit, :update, :destroy], path: '/projects/:project_id/job_notification'
   end
 
   resources :users_job_notifications, only: [:index]
-  resources :projects_users_job_notifications, only: [:index], path: '/projects/:project_id/users/:user_id/job_notifications'
+  resources :projects_users_job_notifications, only: [:index], path: '/projects/:project_id/job_notifications'
 
   post 'event_occurred', to: 'job_notification_events#create'
   resources :job_notification_user_events, path: 'user_events', as: 'user_events', only: [:index, :show]
@@ -180,11 +180,6 @@ Core::Engine.routes.draw do
   resources :job_notification_events, only: [:index, :show], path: 'events' do
     collection do
       post :process_batch
-    end
-  end
-  resources :job_notification_event_logs, only: [:index, :show], path: 'event_logs' do
-    member do
-      post :resend_digest
     end
   end
 

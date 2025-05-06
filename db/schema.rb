@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_04_29_163508) do
+ActiveRecord::Schema.define(version: 2025_04_29_163507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -485,19 +485,6 @@ ActiveRecord::Schema.define(version: 2025_04_29_163508) do
     t.string "name_ru"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "core_job_notification_event_logs", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.integer "events_count", default: 0
-    t.jsonb "summary_data"
-    t.text "details"
-    t.datetime "start_period"
-    t.datetime "end_period"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id", "start_period"], name: "idx_job_event_logs_user_period"
-    t.index ["user_id"], name: "idx_job_event_logs_user_id"
   end
 
   create_table "core_job_notification_events", force: :cascade do |t|
@@ -1516,7 +1503,6 @@ ActiveRecord::Schema.define(version: 2025_04_29_163508) do
   end
 
   add_foreign_key "core_bot_links", "users"
-  add_foreign_key "core_job_notification_event_logs", "users"
   add_foreign_key "core_job_notification_events", "core_job_notifications"
   add_foreign_key "core_job_notification_events", "core_projects"
   add_foreign_key "core_job_notification_events", "users"

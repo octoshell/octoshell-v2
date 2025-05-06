@@ -751,6 +751,8 @@ ru:
           stop_job: "Останавливать задачу"
           save_settings: "Сохранить настройки"
           cancel: "Отмена"
+        update:
+          notice: "Глобальные настройки уведомления успешно обновлены."
       job_notifications:
         form:
           errors_header:
@@ -773,7 +775,6 @@ ru:
           header: "Уведомления о задачах"
           create_notification: "Создать уведомление"
           view_events: "Просмотр событий"
-          view_event_logs: "Просмотр лога событий"
           load_from_json: "Загрузить правила из JSON"
           confirm_json_upload: "Вы уверены, что хотите загрузить правила из JSON файла? Все текущие данные будут обновлены."
           configure: "Настроить"
@@ -823,53 +824,15 @@ ru:
             actions: "Действия"
             notify_telegram: "Уведомлять в Telegram"
             notify_email: "Уведомлять по email"
-    job_notification_event_logs:
-      index:
-        title: "Логи обработки уведомлений"
-        to_notifications: "К уведомлениям"
-        events: "События"
-        filters: "Фильтры"
-        user_label: "Пользователь:"
-        all_users: "Все пользователи"
-        date_from: "С:"
-        date_to: "По:"
-        apply_filters: "Применить фильтры"
-        reset: "Сбросить"
-        id: "ID"
-        user: "Пользователь"
-        period: "Период"
-        events_count: "Событий"
-        created_at: "Создан"
-        actions: "Действия"
-        details: "Подробнее"
-        no_logs: "Логи обработки пока не созданы"
-        with_filters: " с указанными фильтрами"
-      show:
-        back_to_logs: "К списку логов"
-        log_info_header: "Информация о логе обработки #%{id}"
-        main_info: "Основная информация"
-        id_label: "ID"
-        user_label: "Пользователь"
-        period_label: "Период"
-        processed_events: "Обработано событий"
-        processing_date: "Дата обработки"
-        summary_data: "Сводные данные"
-        total_processed: "Всего обработано"
-        events: "событий"
-        time_range: "Временной диапазон"
-        unique_notifications: "Уникальных уведомлений"
-        unique_projects: "Уникальных проектов"
-        unique_jobs: "Уникальных задач"
-        no_summary_data: "Сводные данные отсутствуют."
-        notification_distribution: "Распределение по типам уведомлений"
-        project_distribution: "Распределение по проектам"
-        notification: "Уведомление"
-        project: "Проект"
-        event_count: "Количество событий"
-        detailed_description: "Подробное описание"
-        actions_header: "Действия"
-        resend_digest: "Отправить email с дайджестом повторно"
-        resend_confirmation: "Отправить email с дайджестом пользователю %{email}?"
+        create:
+          notice: "Уведомление задачи успешно создано."
+        update:
+          notice: "Уведомление задачи успешно обновлено."
+        destroy:
+          notice: "Уведомление задачи успешно удалено."
+        update_from_json:
+          notice: "Уведомления обновлены из JSON файла."
+          alert: "Ошибка при обновлении из JSON: %{error}"
     job_notification_events:
       index:
         title: "События уведомлений задач"
@@ -908,6 +871,8 @@ ru:
         pending_status: "Ожидает обработки"
         additional_info: "Дополнительная информация"
         no_additional_data: "Дополнительные данные отсутствуют."
+      process_batch:
+        notice: "Обработка событий запущена. Проверьте результаты через несколько минут."
     job_notification_project_settings:
       form:
         errors_header: "Обуйте найдено %{count} ошибок при сохранении:"
@@ -936,6 +901,16 @@ ru:
         back_to_settings: "Назад к настройкам проекта"
         setup_notification: "Настройка уведомления \"%{name}\" для проекта %{title}"
         user_info: "Пользователь: %{email}"
+      create:
+        notice: "Настройки уведомления для проекта успешно созданы."
+      update:
+        notice: "Настройки уведомления для проекта успешно обновлены."
+      destroy:
+        notice: "Настройки уведомления для проекта успешно удалены."
+      check_user_in_project:
+        alert: "Пользователь не является участником проекта."
+      set_project_setting:
+        alert: "Настройки уведомления для проекта не найдены."
     job_notification_user_defaults:
       form:
         error_count: "Ошибка при сохранении:"
@@ -959,6 +934,14 @@ ru:
       new:
         back_to_user_settings: "Назад к настройкам пользователя"
         configure_notification: "Настройка уведомления \"%{notification_name}\" для пользователя %{user_email}"
+      create:
+        notice: "Пользовательские настройки уведомления успешно созданы."
+      update:
+        notice: "Пользовательские настройки уведомления успешно обновлены."
+      destroy:
+        notice: "Пользовательские настройки уведомления успешно удалены."
+      set_user_default:
+        alert: "Пользовательские настройки уведомления не найдены."
     projects_users_job_notifications:
       index:
         notification_settings_for_project: "Настройки уведомлений для проекта"
@@ -994,6 +977,8 @@ ru:
         configure_for_project_description: "создать специальные настройки для этого проекта"
         edit_description: "изменить настройки проекта"
         reset_description: "удалить настройки проекта и использовать настройки более высокого уровня"
+      check_user_in_project:
+        alert: "Пользователь не является участником проекта."
     user_notification_settings:
       edit:
         back_to_notifications: "Назад к настройкам уведомлений для пользователя"
@@ -1007,6 +992,8 @@ ru:
         batch_interval_label: "Интервал группировки уведомлений (минуты)"
         batch_interval_hint: "Укажите, как часто система должна группировать и отправлять вам уведомления (в минутах). Минимум 1, максимум 10080 (7d)."
         save_settings: "Сохранить настройки"
+      update:
+        notice: "Настройки уведомлений успешно обновлены."
     users_job_notifications:
       index:
         user_notification_settings: "Настройки уведомлений для пользователя"

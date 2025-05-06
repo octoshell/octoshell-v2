@@ -96,20 +96,21 @@ module Core
       mail to: @user.email, subject: t(".subject")
     end
 
-    def job_notification(user_id, log_id)
+    def job_notification(user_id, params)
       @user = Core.user_class.find(user_id)
-      @log = Core::JobNotificationEventLog.find_by(id: log_id)
-      @summary = @log.summary_data
-      @period_start = @log.start_period
-      @period_end = @log.end_period
+      @summary = params['summary_data'] || params[:summary_data]
+      @period_start = Time.parse(params['start_period']) || Time.parse(params[:start_period]) || Time.current
+      @period_end = Time.parse(params['end_period']) || Time.parse(params[:end_period]) || Time.current
+      @details = params['details'] || params[:details]
 
-      project_ids = @summary['projects'].keys.map { |key| key.gsub('project_', '').to_i }
+      project_ids = (@summary['projects'] || @summary[:projects]).keys.map { |key| key.gsub('project_', '').to_i }
       @projects = Core::Project.where(id: project_ids).pluck(:id, :title).to_h
 
-      notification_keys = @summary['notifications'].keys.map { |key| key.gsub('notification_', '').to_i }
+      notification_keys = (@summary['notifications'] || @summary[:notifications]).keys.map { |key| key.gsub('notification_', '').to_i }
       @notifications = Core::JobNotification.where(id: notification_keys).pluck(:id, :name, :description).index_by(&:first)
 
       mail to: @user.email, subject: t(".subject")
     end
+
   end
 end

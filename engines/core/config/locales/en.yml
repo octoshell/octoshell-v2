@@ -694,6 +694,8 @@ en:
           stop_job: "Stop job"
           save_settings: "Save settings"
           cancel: "Cancel"
+        update:
+          notice: "Global notification settings have been successfully updated."
       job_notifications:
         form:
           errors_header:
@@ -716,7 +718,6 @@ en:
           header: "Job notifications"
           create_notification: "Create notification"
           view_events: "View events"
-          view_event_logs: "View event logs"
           load_from_json: "Load rules from JSON"
           confirm_json_upload: "Are you sure you want to load rules from JSON file? All current data will be updated."
           configure: "Configure"
@@ -765,53 +766,15 @@ en:
             actions: "Actions"
             notify_telegram: "Notify via Telegram"
             notify_email: "Notify via email"
-    job_notification_event_logs:
-      index:
-        title: "Notification processing logs"
-        to_notifications: "Back to notifications"
-        events: "Events"
-        filters: "Filters"
-        user_label: "User:"
-        all_users: "All users"
-        date_from: "From:"
-        date_to: "To:"
-        apply_filters: "Apply filters"
-        reset: "Reset"
-        id: "ID"
-        user: "User"
-        period: "Period"
-        events_count: "Events count"
-        created_at: "Created at"
-        actions: "Actions"
-        details: "Details"
-        no_logs: "No processing logs created yet"
-        with_filters: " with specified filters"
-      show:
-        back_to_logs: "Back to logs list"
-        log_info_header: "Processing log info #%{id}"
-        main_info: "Main information"
-        id_label: "ID"
-        user_label: "User"
-        period_label: "Period"
-        processed_events: "Processed events"
-        processing_date: "Processing date"
-        summary_data: "Summary data"
-        total_processed: "Total processed"
-        events: "events"
-        time_range: "Time range"
-        unique_notifications: "Unique notifications"
-        unique_projects: "Unique projects"
-        unique_jobs: "Unique jobs"
-        no_summary_data: "No summary data available."
-        notification_distribution: "Notification type distribution"
-        project_distribution: "Project distribution"
-        notification: "Notification"
-        project: "Project"
-        event_count: "Event count"
-        detailed_description: "Detailed description"
-        actions_header: "Actions"
-        resend_digest: "Resend digest email"
-        resend_confirmation: "Send digest email to %{email} again?"
+        create:
+          notice: "Job notification was successfully created."
+        update:
+          notice: "Job notification was successfully updated."
+        destroy:
+          notice: "Job notification was successfully deleted."
+        update_from_json:
+          notice: "Notifications updated from JSON file."
+          alert: "Error updating from JSON: %{error}"
     job_notification_events:
       index:
         title: "Job notification events"
@@ -850,6 +813,8 @@ en:
         pending_status: "Pending processing"
         additional_info: "Additional info"
         no_additional_data: "No additional data available."
+      process_batch:
+        notice: "Event processing has started. Check the results in a few minutes."
     job_notification_project_settings:
       form:
         errors_header: "%{count} errors found while saving:"
@@ -878,6 +843,16 @@ en:
         back_to_settings: "Back to project settings"
         setup_notification: "Setting up notification \"%{name}\" for project %{title}"
         user_info: "User: %{email}"
+      create:
+        notice: "The project notification settings have been successfully created."
+      update:
+        notice: "The project notification settings have been successfully updated."
+      destroy:
+        notice: "The project notification settings have been successfully deleted."
+      check_user_in_project:
+        alert: "The user is not a member of the project."
+      set_project_setting:
+        alert: "Project notification settings not found."
     job_notification_user_defaults:
       form:
         error_count: "Error while saving:"
@@ -901,6 +876,14 @@ en:
       new:
         back_to_user_settings: "Back to user settings"
         configure_notification: "Configuring notification \"%{notification_name}\" for user %{user_email}"
+      create:
+        notice: "User notification preferences have been successfully created."
+      update:
+        notice: "User notification preferences have been successfully updated."
+      destroy:
+        notice: "User notification preferences have been successfully deleted."
+      set_user_default:
+        alert: "User notification preferences not found."
     projects_users_job_notifications:
       index:
         notification_settings_for_project: "Notification settings for project"
@@ -931,6 +914,8 @@ en:
         configure_for_project_description: "create special settings for this project"
         edit_description: "edit project settings"
         reset_description: "remove project settings and use higher level settings"
+      check_user_in_project:
+        alert: "The user is not a member of the project."
     user_notification_settings:
       edit:
         back_to_notifications: "Back to user notification settings"
@@ -944,6 +929,8 @@ en:
         batch_interval_label: "Notification batching interval (minutes)"
         batch_interval_hint: "Specify how often system should batch and send you notifications (in minutes). Min 1, max 10080 (7d)."
         save_settings: "Save settings"
+      update:
+        notice: "Notification settings have been successfully updated."
     users_job_notifications:
       index:
         user_notification_settings: "User notification settings"

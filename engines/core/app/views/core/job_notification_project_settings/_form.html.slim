@@ -2,7 +2,7 @@
   - url = job_notification_job_notification_project_setting_path(@notification, @project_setting, project_id: @project.id, user_id: @user.id)
   - method = :patch
 - else
-  - url = job_notification_job_notification_project_settings_path(@notification, project_id: @project.id, user_id: @user.id)
+  - url = job_notification_job_notification_project_settings_path(@notification, project_id: @project.id)
   - method = :post
 
 = form_with(url: url, method: method, local: true, scope: :job_notification_project_setting) do |form|
@@ -96,7 +96,7 @@
 
   .form-group.mt-4
     = form.submit t('.save_settings'), class: "btn btn-primary"
-    = link_to t('.cancel'), projects_users_job_notifications_path(@project, @user), class: "btn btn-outline-secondary"
+    = link_to t('.cancel'), projects_users_job_notifications_path(@project), class: "btn btn-outline-secondary"
 
 javascript:
   document.addEventListener('DOMContentLoaded', function() {

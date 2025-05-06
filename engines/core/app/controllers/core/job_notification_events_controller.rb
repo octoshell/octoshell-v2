@@ -71,7 +71,7 @@ module Core
       def process_batch
         BatchProcessingWorker.perform_async
 
-        redirect_to job_notification_events_path, notice: 'Обработка событий запущена. Проверьте результаты через несколько минут.'
+        redirect_to job_notification_events_path, notice: t('.process_batch.notice')
       end
 
 
