@@ -20,7 +20,7 @@ module Core
     add_ability(:manage, :geography, 'superadmins')
     add_controller_ability(:manage, :geography, 'admin/cities', 'admin/countries')
     add_ability(:manage,  :notices, 'superadmins')
-    add_controller_ability(:manage, :notices, 'admin/job_notifications', 'admin/job_notification_global_defaults')
+    add_controller_ability(:manage, :notices, 'admin/job_notifications', 'admin/job_notification_global_defaults', 'admin/user_job_notifications')
     add_routes do
       mount Core::Engine, :at => "/core"
     end

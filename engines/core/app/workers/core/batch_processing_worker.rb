@@ -24,15 +24,15 @@ module Core
             process_user_events(user_id, user_events)
           end
         end
-      end
+      else
+        unprocessed_events = Core::JobNotificationEvent.unprocessed
+        return if unprocessed_events.empty?
 
-      unprocessed_events = Core::JobNotificationEvent.unprocessed
-      return if unprocessed_events.empty?
+        events_by_user = unprocessed_events.group_by(&:user_id)
 
-      events_by_user = unprocessed_events.group_by(&:user_id)
-
-      events_by_user.each do |u_id, user_events|
-        process_user_events(u_id, user_events)
+        events_by_user.each do |u_id, user_events|
+          process_user_events(u_id, user_events)
+        end
       end
     end
 
@@ -117,23 +117,23 @@ module Core
     def generate_details(events, summary)
       notification_details = get_notification_details(events)
 
-      <<~DETAILS
-        Обработано событий: #{summary[:total_count]}
-        Диапазон времени: с #{summary[:time_range][:from]} по #{summary[:time_range][:to]}
-
-        Уникальных уведомлений: #{summary[:unique_notifications]}
-        Уникальных проектов: #{summary[:unique_projects]}
-        Уникальных задач: #{summary[:unique_jobs]}
-
-        Распределение по типам уведомлений:
-        #{notification_details}
-
-        Топ проектов:
-        #{format_top_items(summary[:projects], 5)}
-
-        Топ задач:
-        #{format_top_items(summary[:jobs], 5)}
-      DETAILS
+      [
+        t("core.batch_processing_worker.details.total_processed", count: summary[:total_count]),
+        t("core.batch_processing_worker.details.period", from: summary[:time_range][:from], to: summary[:time_range][:to]),
+        "",
+        t("core.batch_processing_worker.details.unique_notifications", count: summary[:unique_notifications]),
+        t("core.batch_processing_worker.details.unique_projects", count: summary[:unique_projects]),
+        t("core.batch_processing_worker.details.unique_jobs", count: summary[:unique_jobs]),
+        "",
+        t("core.batch_processing_worker.details.distribution_by_notification_types"),
+        notification_details,
+        "",
+        t("core.batch_processing_worker.details.top_projects"),
+        format_top_items(summary[:projects], 5),
+        "",
+        t("core.batch_processing_worker.details.top_jobs"),
+        format_top_items(summary[:jobs], 5)
+      ].join("\n")
     end
 
     def get_notification_details(events)

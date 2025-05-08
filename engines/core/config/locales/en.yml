@@ -775,6 +775,11 @@ en:
         update_from_json:
           notice: "Notifications updated from JSON file."
           alert: "Error updating from JSON: %{error}"
+      user_job_notifications:
+        index:
+          back_to_notifications: "Назад к уведомлениям"
+          user_configured: "User configured"
+          system_default: "System default"
     job_notification_events:
       index:
         title: "Job notification events"
@@ -948,6 +953,18 @@ en:
         user_projects: "User projects"
         project_notification_settings: "Project notification settings"
         no_projects: "User is not member of any projects."
+    batch_processing_worker:
+      details:
+        total_processed: "Processed events: %{count}"
+        period: "Time range: from %{from} to %{to}"
+        unique_notifications: "Unique notifications: %{count}"
+        unique_projects: "Unique projects: %{count}"
+        unique_jobs: "Unique jobs: %{count}"
+        distribution_by_notification_types: "Distribution by notification types:"
+        top_projects: "Top projects:"
+        top_jobs: "Top jobs:"
+      notification_detail: "  - %{name}: %{count} events"
+      top_item: "  - %{key}: %{count} events"
     bot_links:
       list:
         bot_links: Bot token

@@ -833,6 +833,11 @@ ru:
         update_from_json:
           notice: "Уведомления обновлены из JSON файла."
           alert: "Ошибка при обновлении из JSON: %{error}"
+      user_job_notifications:
+        index:
+          back_to_notifications: "Назад к уведомлениям"
+          user_configured: "Значния настроенные пользователем"
+          system_default: "Значения по умолчанию"
     job_notification_events:
       index:
         title: "События уведомлений задач"
@@ -1068,6 +1073,18 @@ ru:
           к функциональности Octoshell.
         no_bot_links_found: Сгенерируйте токен, если хотите работать в Octoshell из
           бота.
+    batch_processing_worker:
+      details:
+        total_processed: "Обработано событий: %{count}"
+        period: "Диапазон времени: с %{from} по %{to}"
+        unique_notifications: "Уникальных уведомлений: %{count}"
+        unique_projects: "Уникальных проектов: %{count}"
+        unique_jobs: "Уникальных задач: %{count}"
+        distribution_by_notification_types: "Распределение по типам уведомлений:"
+        top_projects: "Топ проектов:"
+        top_jobs: "Топ задач:"
+      notification_detail: "  - %{name}: %{count} событий"
+      top_item: "  - %{key}: %{count} событий"
     credentials:
       list:
         add_credential: Добавить публичный ключ

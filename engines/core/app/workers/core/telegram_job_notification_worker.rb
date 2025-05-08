@@ -1,4 +1,5 @@
-class TelegramJobNotificationWorker
+module Core
+  class TelegramJobNotificationWorker
     include Sidekiq::Worker
     sidekiq_options retry: 3
 

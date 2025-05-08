@@ -98,7 +98,7 @@ Core::Engine.routes.draw do
       end
       get :block, on: :member
       get :reactivate, on: :member
-
+      resources :user_job_notifications, only: [:index], path: 'job_notifications'
     end
     resources :job_notifications do
       resource :job_notification_global_default, only: [:edit, :update], path: 'global_default'

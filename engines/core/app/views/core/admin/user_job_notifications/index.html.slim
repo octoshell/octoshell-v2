@@ -1,0 +1,54 @@
+.container.mt-4
+  .mb-4
+    .d-flex.justify-content-between.align-items-center
+      h1= t('core.users_job_notifications.index.user_notification_settings')
+      = link_to t('.back_to_notifications'), admin_job_notifications_path, class: "btn btn-primary"
+    p.lead= t('core.users_job_notifications.index.user_email', email: @user.email)
+
+  .card.mb-3
+    .card-body
+      .legend.mb-3
+        .d-flex.align-items-center.mb-2
+          .legend-item.border.p-2.me-2 style="width: 30px; height: 20px; background-color: #ffffff; border: 2px solid #007bff;"
+          span= t('.user_configured')
+        .d-flex.align-items-center
+          .legend-item.p-2.me-2 style="width: 30px; height: 20px; background-color: #f8f9fa;"
+          span= t('.system_default')
+
+  .card
+    .card-body
+      - if @notifications.any?
+        .table-responsive
+          table.table.table-hover
+            thead
+              tr
+                th= t('core.users_job_notifications.index.notification')
+                th= t('core.users_job_notifications.index.description')
+                th= t('core.users_job_notifications.index.telegram')
+                th= t('core.users_job_notifications.index.email')
+                th= t('core.users_job_notifications.index.stop_job')
+            tbody
+              - @notifications.each do |notification|
+                - user_default = @user_defaults[notification.id]
+                - global_default = notification.global_default
+                tr
+                  td
+                    = link_to notification.name, admin_job_notification_path(notification)
+                  td= notification.description.truncate(50) if notification.description
+                  td
+                    - is_user_configured = user_default && !user_default.notify_tg.nil?
+                    - value = is_user_configured ? user_default.notify_tg : global_default.notify_tg
+                    div style="#{is_user_configured ? 'background-color: #ffffff; border: 2px solid #007bff;' : 'background-color: #f8f9fa;'} padding: 5px; border-radius: 4px;"
+                      = value ? t('core.users_job_notifications.index.yes') : t('core.users_job_notifications.index.no')
+                  td
+                    - is_user_configured = user_default && !user_default.notify_mail.nil?
+                    - value = is_user_configured ? user_default.notify_mail : global_default.notify_mail
+                    div style="#{is_user_configured ? 'background-color: #ffffff; border: 2px solid #007bff;' : 'background-color: #f8f9fa;'} padding: 5px; border-radius: 4px;"
+                      = value ? t('core.users_job_notifications.index.yes') : t('core.users_job_notifications.index.no')
+                  td
+                    - is_user_configured = user_default && !user_default.kill_job.nil?
+                    - value = is_user_configured ? user_default.kill_job : global_default.kill_job
+                    div style="#{is_user_configured ? 'background-color: #ffffff; border: 2px solid #007bff;' : 'background-color: #f8f9fa;'} padding: 5px; border-radius: 4px;"
+                      = value ? t('core.users_job_notifications.index.yes') : t('core.users_job_notifications.index.no')
+      - else
+        .alert.alert-info= t('core.users_job_notifications.index.no_notifications')

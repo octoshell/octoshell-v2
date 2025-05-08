@@ -87,7 +87,7 @@
                   td = user_default.notify_tg.nil? ? t('.default') : (user_default.notify_tg ? t('.yes') : t('.no'))
                   td = user_default.notify_mail.nil? ? t('.default') : (user_default.notify_mail ? t('.yes') : t('.no'))
                   td = user_default.kill_job.nil? ? t('.default') : (user_default.kill_job ? t('.yes') : t('.no'))
-                  td = link_to t('.view'), users_job_notifications_path(user_default.user), class: "btn btn-sm btn-info"
+                  td = link_to t('.view'), admin_user_user_job_notifications_path(user_default.user), class: "btn btn-sm btn-info"
         = paginate @user_defaults
       - else
         .alert.alert-info = t('.no_user_settings')
