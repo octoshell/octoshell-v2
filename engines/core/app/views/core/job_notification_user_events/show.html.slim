@@ -1,0 +1,75 @@
+.container.mt-4
+  .mb-4
+    = link_to job_notification_events_path, class: "btn btn-outline-secondary" do
+      i.fa.fa-arrow-left
+      = t('.back_to_events')
+  .card.mb-4
+    .card-header
+      h2
+        = t('.event_info_header', id: @event.id)
+    .card-body
+      .row
+        .col-md-6
+          h4
+            = t('.main_info')
+          table.table
+            tr
+              th[width="30%"]
+                = t('.id_label')
+                | :
+              td
+                = @event.id
+            tr
+              th
+                = t('.notification_label')
+                | :
+              td
+                = link_to @event.job_notification.name, job_notification_path(@event.job_notification)
+            tr
+              th
+                = t('.job_label')
+                | :
+              td
+                = @event.perf_job_id
+            tr
+              th
+                = t('.user_label')
+                | :
+              td
+                = @event.user.email
+            tr
+              th
+                = t('.project_label')
+                | :
+              td
+                = @event.core_project.title
+            tr
+              th
+                = t('.created_label')
+                | :
+              td
+                = @event.created_at.strftime('%d.%m.%Y %H:%M:%S')
+            tr
+              th
+                = t('.status_label')
+                | :
+              td
+                - if @event.processed
+                  span.badge.badge-success
+                    = t('.processed_status')
+                  span.text-muted.ml-2
+                    = @event.processed_at&.strftime('%d.%m.%Y %H:%M:%S')
+                - else
+                  span.badge.badge-warning
+                    = t('.pending_status')
+        .col-md-6
+          h4
+            = t('.additional_info')
+          - if @event.data.present?
+            .card.bg-light
+              .card-body
+                pre.mb-0
+                  = JSON.pretty_generate(@event.data)
+          - else
+            .alert.alert-info
+              = t('.no_additional_data')

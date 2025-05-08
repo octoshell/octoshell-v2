@@ -1,0 +1,37 @@
+.container.mt-4
+  .mb-4
+    = link_to admin_job_notification_path(@notification), class: "btn btn-outline-secondary" do
+      i.fa.fa-arrow-left
+      = t('.back_to_notification')
+  .card
+    .card-header
+      h2
+        = t('.edit_notification_settings', name: @notification.name)
+    .card-body
+      = form_with(model: [:admin, @notification, @global_default], local: true) do |form|
+        - if @global_default.errors.any?
+          .alert.alert-danger
+            h4
+              = t('.errors_header', count: @global_default.errors.count)
+            ul
+              - @global_default.errors.full_messages.each do |message|
+                li
+                  = message
+        h4
+          = t('.basic_settings')
+        .form-group.row
+          .col-md-4
+            .custom-control.custom-switch
+              = form.check_box :notify_tg, class: "custom-control-input"
+              = form.label :notify_tg, t('.notify_telegram'), class: "custom-control-label"
+          .col-md-4
+            .custom-control.custom-switch
+              = form.check_box :notify_mail, class: "custom-control-input"
+              = form.label :notify_mail, t('.notify_email'), class: "custom-control-label"
+          .col-md-4
+            .custom-control.custom-switch
+              = form.check_box :kill_job, class: "custom-control-input"
+              = form.label :kill_job, t('.stop_job'), class: "custom-control-label"
+        .form-group.mt-4
+          = form.submit t('.save_settings'), class: "btn btn-primary"
+          = link_to t('.cancel'), admin_job_notification_path(@notification), class: "btn btn-outline-secondary"

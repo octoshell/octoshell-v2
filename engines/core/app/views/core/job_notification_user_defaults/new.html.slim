@@ -1,0 +1,14 @@
+.container.mt-4
+  .mb-4
+    = link_to users_job_notifications_path(@user), class: "btn btn-outline-secondary" do
+      i.fa.fa-arrow-left
+      |  Назад к настройкам пользователя 
+  .card
+    .card-header
+      h2
+        | Настройка уведомления "
+        = @notification.name
+        | " для пользователя 
+        = @user.email
+    .card-body
+      = render 'form', user_default: @user_default, notification: @notification, user: @user

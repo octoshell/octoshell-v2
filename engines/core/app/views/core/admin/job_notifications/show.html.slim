@@ -1,0 +1,93 @@
+.container.mt-4
+  .mb-4
+    = link_to admin_job_notifications_path, class: "btn btn-outline-secondary" do
+      i.fa.fa-arrow-left
+      = t('.back_to_list')
+  .card.mb-4
+    .card-header.d-flex.justify-content-between.align-items-center
+      h2
+        = @notification.name
+      div
+        = link_to t('.edit'), edit_admin_job_notification_path(@notification), class: "btn btn-warning"
+        = link_to t('.delete'), admin_job_notification_path(@notification), method: :delete, data: { confirm: t('.confirm_delete') }, class: "btn btn-danger"
+    .card-body
+      .row
+        .col-md-6
+          h4
+            = t('.basic_info')
+          table.table
+            tr
+              th[width="30%"]
+                = t('.columns.id')
+              td
+                = @notification.id
+            tr
+              th
+                = t('.columns.name')
+              td
+                = @notification.name
+            tr
+              th
+                = t('.columns.description')
+              td
+                = @notification.description || t('.not_specified')
+            tr
+              th
+                = t('.columns.created_at')
+              td
+                = @notification.created_at.strftime("%d.%m.%Y %H:%M")
+            tr
+              th
+                = t('.columns.updated_at')
+              td
+                = @notification.updated_at.strftime("%d.%m.%Y %H:%M")
+        .col-md-6
+          h4
+            = t('.global_settings')
+          - if @notification.global_default
+            table.table
+              tr
+                th[width="30%"]
+                  = t('.columns.notify_telegram')
+                td
+                  = @notification.global_default.notify_tg ? t('yes') : t('no')
+              tr
+                th
+                  = t('.columns.notify_email')
+                td
+                  = @notification.global_default.notify_mail ? t('yes') : t('no')
+              tr
+                th
+                  = t('.columns.stop_job')
+                td
+                  = @notification.global_default.kill_job ? t('yes') : t('no')
+            .mt-3
+              = link_to t('.edit_global_settings'), edit_admin_job_notification_job_notification_global_default_path(@notification), class: "btn btn-outline-primary"
+          - else
+            .alert.alert-warning
+              = t('.global_settings_not_set_html', link: link_to(t('.set_up'), edit_admin_job_notification_job_notification_global_default_path(@notification), class: "alert-link"))
+  .card.mb-4
+    .card-header
+      h3 = t('.user_settings')
+    .card-body
+      - if @user_defaults.any?
+        .table-responsive
+          table.table.table-hover
+            thead
+              tr
+                th = t('.columns.user')
+                th = t('.columns.telegram')
+                th = t('.columns.email')
+                th = t('.columns.stop_job')
+                th = t('.columns.actions')
+            tbody
+              - @user_defaults.each do |user_default|
+                tr
+                  td = link_to user_default.user.email, admin_users_path(user_default.user)
+                  td = user_default.notify_tg.nil? ? t('.default') : (user_default.notify_tg ? t('yes') : t('no'))
+                  td = user_default.notify_mail.nil? ? t('.default') : (user_default.notify_mail ? t('yes') : t('no'))
+                  td = user_default.kill_job.nil? ? t('.default') : (user_default.kill_job ? t('yes') : t('no'))
+                  td = link_to t('.view'), admin_user_user_job_notifications_path(user_default.user), class: "btn btn-sm btn-info"
+        = paginate @user_defaults
+      - else
+        .alert.alert-info = t('.no_user_settings')

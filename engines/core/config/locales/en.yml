@@ -680,6 +680,285 @@ en:
           no_users_found: No users have been found
           reactivate: Reactivate
           title: Resources user access management
+      job_notification_global_defaults:
+        edit:
+          back_to_notification: "Back to notification"
+          edit_notification_settings: "Editing global notification settings \"%{name}\""
+          errors_header:
+            one: "%{count} error while saving:"
+            few: "%{count} errors while saving:"
+            many: "%{count} errors while saving:"
+          basic_settings: "Basic settings"
+          notify_telegram: "Notify via Telegram"
+          notify_email: "Notify via email"
+          stop_job: "Stop job"
+          save_settings: "Save settings"
+          cancel: "Cancel"
+        update:
+          notice: "Global notification settings have been successfully updated."
+      job_notifications:
+        form:
+          errors_header:
+            one: "%{count} error while saving:"
+            few: "%{count} errors while saving:"
+            many: "%{count} errors while saving:"
+          name_label: "Name"
+          name_placeholder: "Enter notification name"
+          name_hint: "Short description of notification type"
+          description_label: "Description"
+          description_placeholder: "Detailed notification description"
+          description_hint: "Trigger rules and conditions"
+          create_button: "Create"
+          update_button: "Update"
+          cancel_button: "Cancel"
+        edit:
+          back_button: "Back to notification"
+          header: "Editing notification"
+        index:
+          header: "Job notifications"
+          create_notification: "Create notification"
+          view_events: "View events"
+          load_from_json: "Load rules from JSON"
+          confirm_json_upload: "Are you sure you want to load rules from JSON file? All current data will be updated."
+          configure: "Configure"
+          not_configured: "Not configured"
+          view: "View"
+          edit: "Edit"
+          delete: "Delete"
+          confirm_delete: "Are you sure?"
+          no_notifications_html: "No notifications created yet. %{link}"
+          create_first_notification: "Create first notification"
+          columns:
+            id: "ID"
+            name: "Name"
+            description: "Description"
+            global_settings: "Global settings"
+            actions: "Actions"
+        new:
+          back_to_list: "Back to notifications list"
+          new_notification: "New notification"
+        show:
+          back_to_list: "Back to notifications list"
+          edit: "Edit"
+          delete: "Delete"
+          confirm_delete: "Are you sure?"
+          basic_info: "Basic information"
+          global_settings: "Default global notification settings"
+          user_settings: "User settings"
+          not_specified: "Not specified"
+          default: "Default"
+          edit_global_settings: "Edit global settings"
+          set_up: "Set up"
+          global_settings_not_set_html: "Global settings not set. %{link}"
+          no_user_settings: "No users have configured personal settings for this notification yet."
+          columns:
+            id: "ID"
+            name: "Name"
+            description: "Description"
+            created_at: "Created at"
+            updated_at: "Updated at"
+            user: "User"
+            telegram: "Telegram"
+            email: "Email"
+            stop_job: "Stop job"
+            actions: "Actions"
+            notify_telegram: "Notify via Telegram"
+            notify_email: "Notify via email"
+        create:
+          notice: "Job notification was successfully created."
+        update:
+          notice: "Job notification was successfully updated."
+        destroy:
+          notice: "Job notification was successfully deleted."
+        update_from_json:
+          notice: "Notifications updated from JSON file."
+          alert: "Error updating from JSON: %{error}"
+      user_job_notifications:
+        index:
+          back_to_notifications: "Назад к уведомлениям"
+          user_configured: "User configured"
+          system_default: "System default"
+    job_notification_events:
+      index:
+        title: "Job notification events"
+        to_notifications: "Back to notifications"
+        logs: "Processing logs"
+        process_events: "Process events"
+        process_confirmation: "Are you sure you want to force process pending events?"
+        total_events: "Total events"
+        unprocessed: "Pending"
+        processed: "Processed"
+        last_24h: "Last 24 hours"
+        id: "ID"
+        notification: "Notification"
+        job: "Job"
+        user: "User"
+        project: "Project"
+        created: "Created"
+        status: "Status"
+        actions: "Actions"
+        processed_status: "Processed"
+        pending_status: "Pending"
+        details: "Details"
+        no_events: "No events registered yet."
+      show:
+        back_to_events: "Back to events list"
+        event_info_header: "Event info #%{id}"
+        main_info: "Main information"
+        id_label: "ID"
+        notification_label: "Notification"
+        job_label: "Job"
+        user_label: "User"
+        project_label: "Project"
+        created_label: "Created"
+        status_label: "Status"
+        processed_status: "Processed"
+        pending_status: "Pending processing"
+        additional_info: "Additional info"
+        no_additional_data: "No additional data available."
+      process_batch:
+        notice: "Event processing has started. Check the results in a few minutes."
+    job_notification_project_settings:
+      form:
+        errors_header: "%{count} errors found while saving:"
+        main_settings: "Main settings"
+        settings_hint: "If option is not selected, will use user settings or global settings"
+        telegram_notifications: "Telegram notifications"
+        email_notifications: "Email notifications"
+        kill_job: "Stop job"
+        default: "Default"
+        user_yes: "User: Yes"
+        user_no: "User: No"
+        global_yes: "Global: Yes"
+        global_no: "Global: No"
+        save_settings: "Save project settings"
+        cancel: "Cancel"
+      edit:
+        back_to_settings: "Back to project settings"
+        edit_notification_settings: "Editing notification settings \"%{name}\""
+        project_info: "Project: %{title}"
+        user_info: "User: %{email}"
+        delete_settings: "Delete settings"
+        delete_confirmation: "Are you sure? Will use user or global settings."
+      new:
+        back_to_settings: "Back to project settings"
+        setup_notification: "Setting up notification \"%{name}\" for project %{title}"
+        user_info: "User: %{email}"
+      create:
+        notice: "The project notification settings have been successfully created."
+      update:
+        notice: "The project notification settings have been successfully updated."
+      destroy:
+        notice: "The project notification settings have been successfully deleted."
+      check_user_in_project:
+        alert: "The user is not a member of the project."
+      set_project_setting:
+        alert: "Project notification settings not found."
+    job_notification_user_defaults:
+      form:
+        error_count: "Error while saving:"
+        main_settings: "Main settings"
+        use_global: "If option is not selected, will use global setting"
+        telegram_notifications: "Telegram notifications"
+        email_notifications: "Email notifications"
+        stop_job: "Stop job"
+        default: "Default"
+        yes_short: "(Yes)"
+        no_short: "(No)"
+        save_settings: "Save settings"
+        cancel: "Cancel"
+      edit:
+        back_to_user_settings: "Back to user settings"
+        edit_notification_settings: "Editing notification settings \"%{notification_name}\" for %{user_email}"
+        delete_settings: "Delete settings"
+        delete_confirmation: "Are you sure? Will use global notification defaults."
+      new:
+        back_to_user_settings: "Back to user settings"
+        configure_notification: "Configuring notification \"%{notification_name}\" for user %{user_email}"
+      create:
+        notice: "User notification preferences have been successfully created."
+      update:
+        notice: "User notification preferences have been successfully updated."
+      destroy:
+        notice: "User notification preferences have been successfully deleted."
+      set_user_default:
+        alert: "User notification preferences not found."
+    projects_users_job_notifications:
+      index:
+        notification_settings_for_project: "Notification settings for project"
+        back_to_user_settings: "Back to user settings"
+        to_project: "To project"
+        project_info: "Project: <strong>%{project_title}</strong> | User: <strong>%{user_email}</strong>"
+        info: "Info"
+        settings_description: "For each notification you can set specific settings for this project. If project settings are not set, user settings will be used, and if they're not set either - global default settings."
+        notification: "Notification"
+        telegram: "Telegram"
+        email: "Email"
+        stop_job: "Stop job"
+        settings_type: "Settings type"
+        actions: "Actions"
+        edit: "Edit"
+        reset: "Reset"
+        reset_confirmation: "Are you sure? Will use user or global settings."
+        configure_for_project: "Configure for project"
+        no_notifications: "No notifications configured in system yet."
+        legend: "Legend"
+        settings_source: "Settings source"
+        project_source_description: "value set in project settings"
+        user_source_description: "value taken from user settings"
+        global_source_description: "using global default value"
+        settings_status: "Settings status"
+        option_enabled: "option enabled"
+        option_disabled: "option disabled"
+        configure_for_project_description: "create special settings for this project"
+        edit_description: "edit project settings"
+        reset_description: "remove project settings and use higher level settings"
+      check_user_in_project:
+        alert: "The user is not a member of the project."
+    user_notification_settings:
+      edit:
+        back_to_notifications: "Back to user notification settings"
+        notification_settings: "Notification settings"
+        error_count:
+          zero: "No errors while saving"
+          one: "%{count} error while saving"
+          few: "%{count} errors while saving"
+          many: "%{count} errors while saving"
+          other: "%{count} errors while saving"
+        batch_interval_label: "Notification batching interval (minutes)"
+        batch_interval_hint: "Specify how often system should batch and send you notifications (in minutes). Min 1, max 10080 (7d)."
+        save_settings: "Save settings"
+      update:
+        notice: "Notification settings have been successfully updated."
+    users_job_notifications:
+      index:
+        user_notification_settings: "User notification settings"
+        back_to_profile: "Back to profile"
+        notification_interval_settings: "Notification batching interval settings"
+        user_email: "User: %{email}"
+        notification: "Notification"
+        description: "Description"
+        actions: "Actions"
+        edit: "Edit"
+        reset: "Reset"
+        reset_confirmation: "Are you sure? Will use global notification defaults."
+        configure: "Configure"
+        no_notifications: "No notifications configured in system yet."
+        user_projects: "User projects"
+        project_notification_settings: "Project notification settings"
+        no_projects: "User is not member of any projects."
+    batch_processing_worker:
+      details:
+        total_processed: "Processed events: %{count}"
+        period: "Time range: from %{from} to %{to}"
+        unique_notifications: "Unique notifications: %{count}"
+        unique_projects: "Unique projects: %{count}"
+        unique_jobs: "Unique jobs: %{count}"
+        distribution_by_notification_types: "Distribution by notification types:"
+        top_projects: "Top projects:"
+        top_jobs: "Top jobs:"
+      notification_detail: "  - %{name}: %{count} events"
+      top_item: "  - %{key}: %{count} events"
     bot_links:
       list:
         bot_links: Bot token
@@ -839,6 +1118,24 @@ en:
           support section.
         open_support: The technical support section.
         subject: Your account has been blocked
+      job_notification:
+        subject: Task Notification Digest
+        message: Here is your task notification digest for the period from %{start_date} to %{end_date}.
+        statistics:
+          header: Brief Statistics
+          total_events: Total number of events - %{count}
+          unique_notifications: Unique notification types - %{count}
+          unique_projects: Unique projects - %{count}
+          unique_jobs: Unique jobs - %{count}
+        distribution:
+          notifications_header: Notification Type Distribution
+          description: Description
+          no_description: Not found
+          projects_header: Project Distribution
+          type: Notification Type
+          type_not_found: Not found
+          project: Project
+          count: Count
     members:
       edit:
         accept_invitation: Join the project

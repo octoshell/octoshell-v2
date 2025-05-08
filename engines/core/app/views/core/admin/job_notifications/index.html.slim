@@ -1,0 +1,49 @@
+.container.mt-4
+  .d-flex.justify-content-between.align-items-center.mb-4
+    h1
+      = t('.header')
+    = link_to t('.create_notification'), new_admin_job_notification_path, class: "btn btn-primary"
+    = link_to t('.view_events'), job_notification_events_path, class: "btn btn-primary"
+    = link_to update_from_json_admin_job_notifications_path, method: :post, class: "btn btn-primary", data: { confirm: t('.confirm_json_upload') } do
+      i
+      = t('.load_from_json')
+  .card
+    .card-body
+      - if @notifications.any?
+        .table-responsive
+          table.table.table-hover
+            thead
+              tr
+                th
+                  = t('.columns.id')
+                th
+                  = t('.columns.name')
+                th
+                  = t('.columns.description')
+                th
+                  = t('.columns.global_settings')
+                th
+                  = t('.columns.actions')
+            tbody
+              - @notifications.each do |notification|
+                tr
+                  td
+                    = notification.id
+                  td
+                    = link_to notification.name, admin_job_notification_path(notification)
+                  td
+                    = notification.description.truncate(50) if notification.description
+                  td
+                    - if notification.global_default
+                      = link_to t('.configure'), edit_admin_job_notification_job_notification_global_default_path(notification), class: "btn btn-sm btn-outline-primary"
+                    - else
+                      span.badge.badge-warning
+                        = t('.not_configured')
+                  td
+                    .btn-group
+                      = link_to t('.view'), admin_job_notification_path(notification), class: "btn btn-sm btn-info"
+                      = link_to t('.edit'), edit_admin_job_notification_path(notification), class: "btn btn-sm btn-warning"
+                      = link_to t('.delete'), admin_job_notification_path(notification), method: :delete, data: { confirm: t('.confirm_delete') }, class: "btn btn-sm btn-danger"
+      - else
+        .alert.alert-info
+          = t('.no_notifications_html', link: link_to(t('.create_first_notification'), new_admin_job_notification_path))

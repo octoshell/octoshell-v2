@@ -1,0 +1,24 @@
+.container.mt-4
+  .mb-4
+    = link_to t('.back_to_notifications'), users_job_notifications_path, class: "btn btn-outline-secondary"
+  .card
+    .card-header
+      h2
+        = t('.notification_settings')
+    .card-body
+      = form_with(model: [@user_notification_settings], local: true) do |form|
+        - if @user_notification_settings.errors.any?
+          .alert.alert-danger
+            h4
+              = t('.error_count', count: @user_notification_settings.errors.count)
+            ul
+              - @user_notification_settings.errors.full_messages.each do |message|
+                li
+                  = message
+        .form-group
+          = form.label :notification_batch_interval, t('.batch_interval_label')
+          = form.number_field :notification_batch_interval, class: "form-control", min: 1, max: 10080
+          small.form-text.text-muted
+            = t('.batch_interval_hint')
+        .form-group
+          = form.submit t('.save_settings'), class: "btn btn-primary"

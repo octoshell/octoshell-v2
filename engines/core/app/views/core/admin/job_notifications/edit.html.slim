@@ -1,0 +1,11 @@
+.container.mt-4
+  .mb-4
+    = link_to admin_job_notification_path(@notification), class: "btn btn-outline-secondary" do
+      i.fa.fa-arrow-left
+      = t('.back_button')
+  .card
+    .card-header
+      h2
+        = t('.header')
+    .card-body
+      = render 'form', notification: @notification
