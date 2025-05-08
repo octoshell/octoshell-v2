@@ -40,34 +40,34 @@
                       |  <span class="badge
                       = user_default.notify_tg ? 'badge-success' : 'badge-danger'
                       | ">
-                      = user_default.notify_tg ? t('.yes') : t('.no')
+                      = user_default.notify_tg ? t('yes') : t('no')
                     - else
                       |  <span class="badge badge-secondary" title="
                       = t('.global_setting')
                       | ">
-                      = global_default.notify_tg ? t('.yes') : t('.no')
+                      = global_default.notify_tg ? t('yes') : t('no')
                   td
                     - if user_default && !user_default.notify_mail.nil?
                       |  <span class="badge
                       = user_default.notify_mail ? 'badge-success' : 'badge-danger'
                       | ">
-                      = user_default.notify_mail ? t('.yes') : t('.no')
+                      = user_default.notify_mail ? t('yes') : t('no')
                     - else
                       |  <span class="badge badge-secondary" title="
                       = t('.global_setting')
                       | ">
-                      = global_default.notify_mail ? t('.yes') : t('.no')
+                      = global_default.notify_mail ? t('yes') : t('no')
                   td
                     - if user_default && !user_default.kill_job.nil?
                       |  <span class="badge
                       = user_default.kill_job ? 'badge-success' : 'badge-danger'
                       | ">
-                      = user_default.kill_job ? t('.yes') : t('.no')
+                      = user_default.kill_job ? t('yes') : t('no')
                     - else
                       |  <span class="badge badge-secondary" title="
                       = t('.global_setting')
                       | ">
-                      = global_default.kill_job ? t('.yes') : t('.no')
+                      = global_default.kill_job ? t('yes') : t('no')
                   td
                     .btn-group
                       - if user_default

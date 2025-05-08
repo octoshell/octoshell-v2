@@ -45,10 +45,10 @@
               | )
           label.btn.btn-outline-success class=(@project_setting.notify_tg == true ? 'active' : '')
             = form.radio_button :notify_tg, true, checked: @project_setting.notify_tg == true
-            = t('.yes')
+            = t('yes')
           label.btn.btn-outline-danger class=(@project_setting.notify_tg == false ? 'active' : '')
             = form.radio_button :notify_tg, false, checked: @project_setting.notify_tg == false
-            = t('.no')
+            = t('no')
 
       .col-md-4
         label.d-block.mb-3
@@ -67,10 +67,10 @@
               | )
           label.btn.btn-outline-success class=(@project_setting.notify_mail == true ? 'active' : '')
             = form.radio_button :notify_mail, true, checked: @project_setting.notify_mail == true
-            = t('.yes')
+            = t('yes')
           label.btn.btn-outline-danger class=(@project_setting.notify_mail == false ? 'active' : '')
             = form.radio_button :notify_mail, false, checked: @project_setting.notify_mail == false
-            = t('.no')
+            = t('no')
 
       .col-md-4
         label.d-block.mb-3
@@ -89,10 +89,10 @@
               | )
           label.btn.btn-outline-success class=(@project_setting.kill_job == true ? 'active' : '')
             = form.radio_button :kill_job, true, checked: @project_setting.kill_job == true
-            = t('.yes')
+            = t('yes')
           label.btn.btn-outline-danger class=(@project_setting.kill_job == false ? 'active' : '')
             = form.radio_button :kill_job, false, checked: @project_setting.kill_job == false
-            = t('.no')
+            = t('no')
 
   .form-group.mt-4
     = form.submit t('.save_settings'), class: "btn btn-primary"

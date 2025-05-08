@@ -50,17 +50,17 @@
                 th[width="30%"]
                   = t('.columns.notify_telegram')
                 td
-                  = @notification.global_default.notify_tg ? t('.yes') : t('.no')
+                  = @notification.global_default.notify_tg ? t('yes') : t('no')
               tr
                 th
                   = t('.columns.notify_email')
                 td
-                  = @notification.global_default.notify_mail ? t('.yes') : t('.no')
+                  = @notification.global_default.notify_mail ? t('yes') : t('no')
               tr
                 th
                   = t('.columns.stop_job')
                 td
-                  = @notification.global_default.kill_job ? t('.yes') : t('.no')
+                  = @notification.global_default.kill_job ? t('yes') : t('no')
             .mt-3
               = link_to t('.edit_global_settings'), edit_admin_job_notification_job_notification_global_default_path(@notification), class: "btn btn-outline-primary"
           - else
@@ -84,9 +84,9 @@
               - @user_defaults.each do |user_default|
                 tr
                   td = link_to user_default.user.email, admin_users_path(user_default.user)
-                  td = user_default.notify_tg.nil? ? t('.default') : (user_default.notify_tg ? t('.yes') : t('.no'))
-                  td = user_default.notify_mail.nil? ? t('.default') : (user_default.notify_mail ? t('.yes') : t('.no'))
-                  td = user_default.kill_job.nil? ? t('.default') : (user_default.kill_job ? t('.yes') : t('.no'))
+                  td = user_default.notify_tg.nil? ? t('.default') : (user_default.notify_tg ? t('yes') : t('no'))
+                  td = user_default.notify_mail.nil? ? t('.default') : (user_default.notify_mail ? t('yes') : t('no'))
+                  td = user_default.kill_job.nil? ? t('.default') : (user_default.kill_job ? t('yes') : t('no'))
                   td = link_to t('.view'), admin_user_user_job_notifications_path(user_default.user), class: "btn btn-sm btn-info"
         = paginate @user_defaults
       - else

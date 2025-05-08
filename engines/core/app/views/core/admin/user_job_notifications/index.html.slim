@@ -39,16 +39,16 @@
                     - is_user_configured = user_default && !user_default.notify_tg.nil?
                     - value = is_user_configured ? user_default.notify_tg : global_default.notify_tg
                     div style="#{is_user_configured ? 'background-color: #ffffff; border: 2px solid #007bff;' : 'background-color: #f8f9fa;'} padding: 5px; border-radius: 4px;"
-                      = value ? t('core.users_job_notifications.index.yes') : t('core.users_job_notifications.index.no')
+                      = value ? t('yes') : t('no')
                   td
                     - is_user_configured = user_default && !user_default.notify_mail.nil?
                     - value = is_user_configured ? user_default.notify_mail : global_default.notify_mail
                     div style="#{is_user_configured ? 'background-color: #ffffff; border: 2px solid #007bff;' : 'background-color: #f8f9fa;'} padding: 5px; border-radius: 4px;"
-                      = value ? t('core.users_job_notifications.index.yes') : t('core.users_job_notifications.index.no')
+                      = value ? t('yes') : t('no')
                   td
                     - is_user_configured = user_default && !user_default.kill_job.nil?
                     - value = is_user_configured ? user_default.kill_job : global_default.kill_job
                     div style="#{is_user_configured ? 'background-color: #ffffff; border: 2px solid #007bff;' : 'background-color: #f8f9fa;'} padding: 5px; border-radius: 4px;"
-                      = value ? t('core.users_job_notifications.index.yes') : t('core.users_job_notifications.index.no')
+                      = value ? t('yes') : t('no')
       - else
         .alert.alert-info= t('core.users_job_notifications.index.no_notifications')

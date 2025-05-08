@@ -65,17 +65,17 @@
                     - badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary")
                     - badge_class = notify_tg ? "#{badge_class}" : "badge-danger"
                     |
-                    = notify_tg ? t('.yes') : t('.no')
+                    = notify_tg ? t('yes') : t('no')
                   td
                     - badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary")
                     - badge_class = notify_mail ? "#{badge_class}" : "badge-danger"
                     |
-                    = notify_mail ? t('.yes') : t('.no')
+                    = notify_mail ? t('yes') : t('no')
                   td
                     - badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary")
                     - badge_class = kill_job ? "#{badge_class}" : "badge-danger"
                     |
-                    = kill_job ? t('.yes') : t('.no')
+                    = kill_job ? t('yes') : t('no')
                   td
                     - if settings_type == "project"
                       span.badge.badge-primary
@@ -129,12 +129,12 @@
             ul.list-unstyled
               li
                 span.badge.badge-success
-                  = t('.yes')
+                  = t('yes')
                 |  -
                 = t('.option_enabled')
               li
                 span.badge.badge-danger
-                  = t('.no')
+                  = t('no')
                 |  -
                 = t('.option_disabled')
           .col-md-4

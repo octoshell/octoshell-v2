@@ -21,10 +21,10 @@
             = global_default.notify_tg ? t('.yes_short') : t('.no_short')
           label.btn.btn-outline-success class=(user_default.notify_tg == true ? 'active' : '')
             = form.radio_button :notify_tg, true, checked: user_default.notify_tg == true, autocomplete: "off"
-            = t('.yes')
+            = t('yes')
           label.btn.btn-outline-danger class=(user_default.notify_tg == false ? 'active' : '')
             = form.radio_button :notify_tg, false, checked: user_default.notify_tg == false, autocomplete: "off"
-            = t('.no')
+            = t('no')
 
       .col-md-4
         label.d-block.mb-3 = t('.email_notifications')
@@ -35,10 +35,10 @@
             = global_default.notify_mail ? t('.yes_short') : t('.no_short')
           label.btn.btn-outline-success class=(user_default.notify_mail == true ? 'active' : '')
             = form.radio_button :notify_mail, true, checked: user_default.notify_mail == true, autocomplete: "off"
-            = t('.yes')
+            = t('yes')
           label.btn.btn-outline-danger class=(user_default.notify_mail == false ? 'active' : '')
             = form.radio_button :notify_mail, false, checked: user_default.notify_mail == false, autocomplete: "off"
-            = t('.no')
+            = t('no')
 
       .col-md-4
         label.d-block.mb-3 = t('.stop_job')
@@ -49,10 +49,10 @@
             = global_default.kill_job ? t('.yes_short') : t('.no_short')
           label.btn.btn-outline-success class=(user_default.kill_job == true ? 'active' : '')
             = form.radio_button :kill_job, true, checked: user_default.kill_job == true, autocomplete: "off"
-            = t('.yes')
+            = t('yes')
           label.btn.btn-outline-danger class=(user_default.kill_job == false ? 'active' : '')
             = form.radio_button :kill_job, false, checked: user_default.kill_job == false, autocomplete: "off"
-            = t('.no')
+            = t('no')
 
   .form-group.mt-4
     = form.submit t('.save_settings'), class: "btn btn-primary"
