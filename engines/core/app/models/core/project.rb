@@ -68,6 +68,11 @@ module Core
     has_many :invitations, class_name: "Core::ProjectInvitation"
     has_many :project_versions, inverse_of: :project
 
+    has_many :job_notification_project_settings,
+      class_name: 'Core::JobNotificationProjectSetting',
+      foreign_key: 'core_project_id',
+      dependent: :destroy
+
     accepts_nested_attributes_for :card, :sureties
     accepts_nested_attributes_for :project_critical_technologies,
                                   :project_direction_of_sciences,
@@ -313,5 +318,19 @@ module Core
     def self.can_not_be_automerged?(department)
       can_not_be_automerged(department).exists?
     end
+
+    def job_notification_settings(notification, user)
+      project_setting = job_notification_project_settings.find_by(
+        core_job_notification_id: notification.id,
+        user: user
+      )
+
+      if project_setting.present?
+        project_setting
+      else
+        user.job_notification_settings(notification)
+      end
+    end
+
   end
 end

@@ -261,6 +261,7 @@ en:
       html: Sureties <span class="badge info">%{count}</span>
     users: Users
     wikiplus: Wiki
+    job_notifications: Job notifications
   bad_job: 'Bad job: '
   bad_jobs: 'Bad jobs: '
   common:
@@ -332,6 +333,8 @@ en:
       change_password: Change password
       is_admin: Administator
       title: Profile
+      job_notifications_settings: Job notifications user settings
+      job_notifications_events: Job notifications user events
   user_submenu:
     comments: Comments
     job_stat: Statistics

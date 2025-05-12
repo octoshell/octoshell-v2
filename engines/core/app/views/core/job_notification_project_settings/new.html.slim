@@ -1,0 +1,13 @@
+.container.mt-4
+  .mb-4
+    = link_to projects_users_job_notifications_path(@project), class: "btn btn-outline-secondary" do
+      i.fa.fa-arrow-left
+      = t('.back_to_settings')
+  .card
+    .card-header
+      h2
+        = t('.setup_notification', name: @notification.name, title: @project.title)
+      p.text-muted
+        = t('.user_info', email: @user.email)
+    .card-body
+      = render 'form', project_setting: @project_setting, notification: @notification, project: @project

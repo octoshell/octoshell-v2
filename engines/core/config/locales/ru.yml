@@ -737,6 +737,319 @@ ru:
           no_users_found: Пользователи не найдены
           reactivate: Возобновить
           title: Управление доступом пользователей к ресурсам
+      job_notification_global_defaults:
+        edit:
+          back_to_notification: "Назад к уведомлению"
+          edit_notification_settings: "Редактирование глобальных настроек уведомления \"%{name}\""
+          errors_header:
+            one: "%{count} ошибка при сохранении:"
+            few: "%{count} ошибки при сохранении:"
+            many: "%{count} ошибок при сохранении:"
+          basic_settings: "Основные настройки"
+          notify_telegram: "Уведомлять в Telegram"
+          notify_email: "Уведомлять по email"
+          stop_job: "Останавливать задачу"
+          save_settings: "Сохранить настройки"
+          cancel: "Отмена"
+        update:
+          notice: "Глобальные настройки уведомления успешно обновлены."
+      job_notifications:
+        form:
+          errors_header:
+            one: "%{count} ошибка при сохранении:"
+            few: "%{count} ошибки при сохранении:"
+            many: "%{count} ошибок при сохранении:"
+          name_label: "Название"
+          name_placeholder: "Введите название уведомления"
+          name_hint: "Краткое описание типа уведомления"
+          description_label: "Описание"
+          description_placeholder: "Подробное описание уведомления"
+          description_hint: "Правила и условия срабатывания"
+          create_button: "Создать"
+          update_button: "Обновить"
+          cancel_button: "Отмена"
+        edit:
+          back_button: "Назад к уведомлению"
+          header: "Редактирование уведомления"
+        index:
+          header: "Уведомления о задачах"
+          create_notification: "Создать уведомление"
+          view_events: "Просмотр событий"
+          load_from_json: "Загрузить правила из JSON"
+          confirm_json_upload: "Вы уверены, что хотите загрузить правила из JSON файла? Все текущие данные будут обновлены."
+          configure: "Настроить"
+          not_configured: "Не настроено"
+          view: "Просмотр"
+          edit: "Изменить"
+          delete: "Удалить"
+          confirm_delete: "Вы уверены?"
+          no_notifications_html: "Уведомления пока не созданы. %{link}"
+          create_first_notification: "Создать первое уведомление"
+          columns:
+            id: "ID"
+            name: "Название"
+            description: "Описание"
+            global_settings: "Глобальные настройки"
+            actions: "Действия"
+        new:
+          back_to_list: "К списку уведомлений"
+          new_notification: "Новое уведомление"
+        show:
+          back_to_list: "К списку уведомлений"
+          edit: "Изменить"
+          delete: "Удалить"
+          confirm_delete: "Вы уверены?"
+          basic_info: "Основная информация"
+          global_settings: "Глобальные настройки уведомлений по умолчанию"
+          user_settings: "Пользовательские настройки"
+          not_specified: "Не указано"
+          default: "По умолчанию"
+          view: "Просмотр"
+          edit_global_settings: "Изменить глобальные настройки"
+          set_up: "Настроить"
+          global_settings_not_set_html: "Глобальные настройки не заданы. %{link}"
+          no_user_settings: "Пока никто из пользователей не настроил персональные параметры для этого уведомления."
+          columns:
+            id: "ID"
+            name: "Название"
+            description: "Описание"
+            created_at: "Создано"
+            updated_at: "Обновлено"
+            user: "Пользователь"
+            telegram: "Telegram"
+            email: "Email"
+            stop_job: "Останавливать задачу"
+            actions: "Действия"
+            notify_telegram: "Уведомлять в Telegram"
+            notify_email: "Уведомлять по email"
+        create:
+          notice: "Уведомление задачи успешно создано."
+        update:
+          notice: "Уведомление задачи успешно обновлено."
+        destroy:
+          notice: "Уведомление задачи успешно удалено."
+        update_from_json:
+          notice: "Уведомления обновлены из JSON файла."
+          alert: "Ошибка при обновлении из JSON: %{error}"
+      user_job_notifications:
+        index:
+          back_to_notifications: "Назад к уведомлениям"
+          user_configured: "Значния настроенные пользователем"
+          system_default: "Значения по умолчанию"
+    job_notification_events:
+      index:
+        title: "События уведомлений задач"
+        to_notifications: "К уведомлениям"
+        logs: "Логи обработки"
+        process_events: "Обработать события"
+        process_confirmation: "Вы уверены, что хотите принудительно обработать накопленные события?"
+        total_events: "Всего событий"
+        unprocessed: "Необработанных"
+        processed: "Обработано"
+        last_24h: "За 24 часа"
+        id: "ID"
+        notification: "Уведомление"
+        job: "Задача"
+        user: "Пользователь"
+        project: "Проект"
+        created: "Создано"
+        status: "Статус"
+        actions: "Действия"
+        processed_status: "Обработано"
+        pending_status: "Ожидает"
+        details: "Подробнее"
+        no_events: "События пока не зарегистрированы."
+      show:
+        back_to_events: "К списку событий"
+        event_info_header: "Информация о событии #%{id}"
+        main_info: "Основная информация"
+        id_label: "ID"
+        notification_label: "Уведомление"
+        job_label: "Задача"
+        user_label: "Пользователь"
+        project_label: "Проект"
+        created_label: "Создано"
+        status_label: "Статус"
+        processed_status: "Обработано"
+        pending_status: "Ожидает обработки"
+        additional_info: "Дополнительная информация"
+        no_additional_data: "Дополнительные данные отсутствуют."
+      process_batch:
+        notice: "Обработка событий запущена. Проверьте результаты через несколько минут."
+    job_notification_project_settings:
+      form:
+        errors_header: "Обуйте найдено %{count} ошибок при сохранении:"
+        main_settings: "Основные настройки"
+        settings_hint: "Если опция не выбрана, будут использованы настройки пользователя или глобальные настройки"
+        telegram_notifications: "Уведомления в Telegram"
+        email_notifications: "Уведомления по email"
+        kill_job: "Останавливать задачу"
+        default: "По умолчанию"
+        user_yes: "Пользователь: Да"
+        user_no: "Пользователь: Нет"
+        global_yes: "Глобально: Да"
+        global_no: "Глобально: Нет"
+        save_settings: "Сохранить настройки проекта"
+        cancel: "Отмена"
+      edit:
+        back_to_settings: "Назад к настройкам проекта"
+        edit_notification_settings: "Редактирование настроек уведомления \"%{name}\""
+        project_info: "Проект: %{title}"
+        user_info: "Пользователь: %{email}"
+        delete_settings: "Удалить настройки"
+        delete_confirmation: "Вы уверены? Будут использованы настройки пользователя или глобальные настройки."
+      new:
+        back_to_settings: "Назад к настройкам проекта"
+        setup_notification: "Настройка уведомления \"%{name}\" для проекта %{title}"
+        user_info: "Пользователь: %{email}"
+      create:
+        notice: "Настройки уведомления для проекта успешно созданы."
+      update:
+        notice: "Настройки уведомления для проекта успешно обновлены."
+      destroy:
+        notice: "Настройки уведомления для проекта успешно удалены."
+      check_user_in_project:
+        alert: "Пользователь не является участником проекта."
+      set_project_setting:
+        alert: "Настройки уведомления для проекта не найдены."
+    job_notification_user_defaults:
+      form:
+        error_count: "Ошибка при сохранении:"
+        main_settings: "Основные настройки"
+        use_global: "Если опция не выбрана, будет использоваться глобальная настройка"
+        telegram_notifications: "Уведомления в Telegram"
+        email_notifications: "Уведомления по email"
+        stop_job: "Останавливать задачу"
+        default: "По умолчанию"
+        yes_short: "(Да)"
+        no_short: "(Нет)"
+        save_settings: "Сохранить настройки"
+        cancel: "Отмена"
+      edit:
+        back_to_user_settings: "Назад к настройкам пользователя"
+        edit_notification_settings: "Редактирование настроек уведомления \"%{notification_name}\" для %{user_email}"
+        delete_settings: "Удалить настройки"
+        delete_confirmation: "Вы уверены? Будут использованы глобальные настройки уведомлений по умолчанию."
+      new:
+        back_to_user_settings: "Назад к настройкам пользователя"
+        configure_notification: "Настройка уведомления \"%{notification_name}\" для пользователя %{user_email}"
+      create:
+        notice: "Пользовательские настройки уведомления успешно созданы."
+      update:
+        notice: "Пользовательские настройки уведомления успешно обновлены."
+      destroy:
+        notice: "Пользовательские настройки уведомления успешно удалены."
+      set_user_default:
+        alert: "Пользовательские настройки уведомления не найдены."
+    projects_users_job_notifications:
+      index:
+        notification_settings_for_project: "Настройки уведомлений для проекта"
+        back_to_user_settings: "Назад к настройкам пользователя"
+        to_project: "К проекту"
+        project_info: "Проект: <strong>%{project_title}</strong> | Пользователь: <strong>%{user_email}</strong>"
+        info: "Информация"
+        settings_description: "Для каждого уведомления можно установить специфичные настройки для этого проекта. Если настройки для проекта не заданы, используются пользовательские настройки, а если и они не заданы — глобальные настройки по умолчанию."
+        notification: "Уведомление"
+        telegram: "Telegram"
+        email: "Email"
+        stop_job: "Останавливать задачу"
+        settings_type: "Тип настроек"
+        actions: "Действия"
+        project: "Проект"
+        user: "Пользователь"
+        global: "Глобальные"
+        edit: "Изменить"
+        reset: "Сбросить"
+        reset_confirmation: "Вы уверены? Будут использоваться настройки пользователя или глобальные настройки."
+        configure_for_project: "Настроить для проекта"
+        no_notifications: "В системе пока нет настроенных уведомлений."
+        legend: "Условные обозначения"
+        settings_source: "Источник настроек"
+        project_source_description: "значение установлено в настройках проекта"
+        user_source_description: "значение взято из настроек пользователя"
+        global_source_description: "используется глобальное значение по умолчанию"
+        settings_status: "Статус настроек"
+        option_enabled: "опция включена"
+        option_disabled: "опция отключена"
+        configure_for_project_description: "создать специальные настройки для этого проекта"
+        edit_description: "изменить настройки проекта"
+        reset_description: "удалить настройки проекта и использовать настройки более высокого уровня"
+      check_user_in_project:
+        alert: "Пользователь не является участником проекта."
+    user_notification_settings:
+      edit:
+        back_to_notifications: "Назад к настройкам уведомлений для пользователя"
+        notification_settings: "Настройки уведомлений"
+        error_count:
+          zero: "Ошибок при сохранении"
+          one: "%{count} ошибка при сохранении"
+          few: "%{count} ошибки при сохранении"
+          many: "%{count} ошибок при сохранении"
+          other: "%{count} ошибок при сохранении"
+        batch_interval_label: "Интервал группировки уведомлений (минуты)"
+        batch_interval_hint: "Укажите, как часто система должна группировать и отправлять вам уведомления (в минутах). Минимум 1, максимум 10080 (7d)."
+        save_settings: "Сохранить настройки"
+      update:
+        notice: "Настройки уведомлений успешно обновлены."
+    users_job_notifications:
+      index:
+        user_notification_settings: "Настройки уведомлений для пользователя"
+        back_to_profile: "Назад к профилю"
+        notification_interval_settings: "Настройка интервала группировки уведомлений"
+        user_email: "Пользователь: %{email}"
+        notification: "Уведомление"
+        description: "Описание"
+        telegram: "Telegram"
+        email: "Email"
+        stop_job: "Останавливать задачу"
+        actions: "Действия"
+        global_setting: "Глобальная настройка"
+        edit: "Изменить"
+        reset: "Сбросить"
+        reset_confirmation: "Вы уверены? Будут использоваться глобальные настройки уведомлений по умолчанию."
+        configure: "Настроить"
+        no_notifications: "В системе пока нет настроенных уведомлений."
+        user_projects: "Проекты пользователя"
+        project_notification_settings: "Настройки уведомлений для проекта"
+        no_projects: "Пользователь не состоит ни в одном проекте."
+    job_notification_user_events:
+      index:
+        title: "События уведомлений задач"
+        to_notifications: "К уведомлениям"
+        logs: "Логи обработки"
+        process_events: "Обработать события"
+        process_confirmation: "Вы уверены, что хотите принудительно обработать накопленные события?"
+        total_events: "Всего событий"
+        unprocessed: "Необработанных"
+        processed: "Обработано"
+        last_24h: "За 24 часа"
+        id: "ID"
+        notification: "Уведомление"
+        job: "Задача"
+        user: "Пользователь"
+        project: "Проект"
+        created: "Создано"
+        status: "Статус"
+        actions: "Действия"
+        processed_status: "Обработано"
+        pending_status: "Ожидает"
+        details: "Подробнее"
+        no_events: "События пока не зарегистрированы."
+      show:
+        back_to_events: "К списку событий"
+        event_info_header: "Информация о событии #%{id}"
+        main_info: "Основная информация"
+        id_label: "ID"
+        notification_label: "Уведомление"
+        job_label: "Задача"
+        user_label: "Пользователь"
+        project_label: "Проект"
+        created_label: "Создано"
+        status_label: "Статус"
+        processed_status: "Обработано"
+        pending_status: "Ожидает обработки"
+        additional_info: "Дополнительная информация"
+        no_additional_data: "Дополнительные данные отсутствуют."
     bot_links:
       list:
         bot_links: Токен для ботов
@@ -750,6 +1063,18 @@ ru:
           к функциональности Octoshell.
         no_bot_links_found: Сгенерируйте токен, если хотите работать в Octoshell из
           бота.
+    batch_processing_worker:
+      details:
+        total_processed: "Обработано событий: %{count}"
+        period: "Диапазон времени: с %{from} по %{to}"
+        unique_notifications: "Уникальных уведомлений: %{count}"
+        unique_projects: "Уникальных проектов: %{count}"
+        unique_jobs: "Уникальных задач: %{count}"
+        distribution_by_notification_types: "Распределение по типам уведомлений:"
+        top_projects: "Топ проектов:"
+        top_jobs: "Топ задач:"
+      notification_detail: "  - %{name}: %{count} событий"
+      top_item: "  - %{key}: %{count} событий"
     credentials:
       list:
         add_credential: Добавить публичный ключ
@@ -902,6 +1227,24 @@ ru:
           Техподдержки.
         open_support: Открыть раздел техподдержки.
         subject: Ваш аккаунт заблокирован
+      job_notification:
+        subject: Сводка уведомлений о задачах
+        message: Представляем вам сводку уведомлений за период с %{start_date} по %{end_date}.
+        statistics:
+          header: Краткая статистика
+          total_events: Общее количество событий - %{count}
+          unique_notifications: Уникальных типов уведомлений - %{count}
+          unique_projects: Уникальных проектов - %{count}
+          unique_jobs: Уникальных задач - %{count}
+        distribution:
+          notifications_header: Распределение по типам уведомлений
+          description: Описание
+          no_description: Не найдено
+          projects_header: Распределение по проектам
+          type: Тип уведомления
+          type_not_found: Не найдено
+          project: Проект
+          count: Количество
     members:
       edit:
         accept_invitation: Присоединиться к проекту

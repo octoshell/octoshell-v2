@@ -262,6 +262,7 @@ ru:
       html: Поручительства <span class="badge info">%{count}</span>
     users: Пользователи
     wikiplus: Справка
+    job_notifications: Уведомления по задачам
   bad_job: 'Проблемная задача: '
   bad_jobs: 'Проблемные задачи: '
   common:
@@ -332,6 +333,8 @@ ru:
       change_password: Изменить пароль
       is_admin: Администратор
       title: Профиль
+      job_notifications_settings: Настройки уведомлений о задачах пользователя
+      job_notifications_events: События уведомлений о задачах пользователя
   user_submenu:
     comments: Комментарии
     job_stat: Статистика

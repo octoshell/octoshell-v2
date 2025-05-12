@@ -16,6 +16,7 @@ Core.user_class.class_eval do
     source: :project,
     inverse_of: :owner
 
+
   def requests
     Core::Request.joins(project: :owner).where('core_members.user_id = ?', id)
   end
@@ -185,6 +186,23 @@ Core.user_class.class_eval do
 
   def self.ransackable_scopes(_auth_object = nil)
     %i[cluster_access_state_present]
+  end
+
+  has_many :job_notification_user_defaults,
+    class_name: 'Core::JobNotificationUserDefault',
+    dependent: :destroy
+
+  has_many :job_notification_project_settings,
+    class_name: 'Core::JobNotificationProjectSetting',
+    dependent: :destroy
+
+  def job_notification_settings(notification, project = nil)
+    notification.user_settings(self, project)
+  end
+
+  def get_job_notification_setting(notification, field_name, project = nil)
+    settings = job_notification_settings(notification, project)
+    settings.get_setting(field_name)
   end
 
 end if Core.user_class

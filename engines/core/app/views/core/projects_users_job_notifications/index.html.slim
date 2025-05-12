@@ -1,0 +1,159 @@
+.container.mt-4
+  .mb-4
+    .d-flex.justify-content-between.align-items-center
+      h1
+        = t('.notification_settings_for_project')
+      div
+        = link_to t('.back_to_user_settings'), users_job_notifications_path(@user), class: "btn btn-outline-secondary mr-2"
+        = link_to t('.to_project'), project_path(@project), class: "btn btn-outline-primary"
+    p.lead
+      = t('.project_info', project_title: @project.title, user_email: @user.email).html_safe
+  .alert.alert-info
+    strong
+      = t('.info')
+      | :
+    = t('.settings_description')
+  .card
+    .card-body
+      - if @notifications.any?
+        .table-responsive
+          table.table.table-hover
+            thead
+              tr
+                th
+                  = t('.notification')
+                th
+                  = t('.telegram')
+                th
+                  = t('.email')
+                th
+                  = t('.stop_job')
+                th
+                  = t('.settings_type')
+                th
+                  = t('.actions')
+            tbody
+              - @notifications.each do |notification|
+                - project_setting = @project_settings[notification.id]
+                - user_default = @user_defaults[notification.id]
+                - global_default = notification.global_default
+                - settings_type = ""
+                - notify_tg = false
+                - notify_mail = false
+                - kill_job = false
+
+                - if project_setting
+                  - settings_type = "project"
+                  - notify_tg = project_setting.notify_tg.nil? ? (user_default ? user_default.notify_tg : global_default.notify_tg) : project_setting.notify_tg
+                  - notify_mail = project_setting.notify_mail.nil? ? (user_default ? user_default.notify_mail : global_default.notify_mail) : project_setting.notify_mail
+                  - kill_job = project_setting.kill_job.nil? ? (user_default ? user_default.kill_job : global_default.kill_job) : project_setting.kill_job
+                - elsif user_default
+                  - settings_type = "user"
+                  - notify_tg = user_default.notify_tg.nil? ? global_default.notify_tg : user_default.notify_tg
+                  - notify_mail = user_default.notify_mail.nil? ? global_default.notify_mail : user_default.notify_mail
+                  - kill_job = user_default.kill_job.nil? ? global_default.kill_job : user_default.kill_job
+                - else
+                  - settings_type = "global"
+                  - notify_tg = global_default.notify_tg
+                  - notify_mail = global_default.notify_mail
+                  - kill_job = global_default.kill_job
+
+                tr
+                  td
+                    = notification.name
+                  td
+                    - badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary")
+                    - badge_class = notify_tg ? "#{badge_class}" : "badge-danger"
+                    |
+                    = notify_tg ? t('yes') : t('no')
+                  td
+                    - badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary")
+                    - badge_class = notify_mail ? "#{badge_class}" : "badge-danger"
+                    |
+                    = notify_mail ? t('yes') : t('no')
+                  td
+                    - badge_class = settings_type == "global" ? "badge-secondary" : (settings_type == "user" ? "badge-info" : "badge-primary")
+                    - badge_class = kill_job ? "#{badge_class}" : "badge-danger"
+                    |
+                    = kill_job ? t('yes') : t('no')
+                  td
+                    - if settings_type == "project"
+                      span.badge.badge-primary
+                        = t('.project')
+                    - elsif settings_type == "user"
+                      span.badge.badge-info
+                        = t('.user')
+                    - else
+                      span.badge.badge-secondary
+                        = t('.global')
+                  td
+                    .btn-group
+                      - if project_setting
+                        = link_to t('.edit'), edit_job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id, id: project_setting.id), class: "btn btn-sm btn-warning"
+                        = link_to t('.reset'), job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id, id: project_setting.id), method: :delete, data: { confirm: t('.reset_confirmation') }, class: "btn btn-sm btn-outline-danger"
+                      - else
+                        = link_to t('.configure_for_project'), new_job_notification_job_notification_project_setting_path(notification, user_id: @user.id, project_id: @project.id), class: "btn btn-sm btn-primary"
+      - else
+        .alert.alert-info
+          = t('.no_notifications')
+  .mt-4
+    .card.bg-light
+      .card-body
+        h3.card-title
+          = t('.legend')
+        .row
+          .col-md-4
+            h5
+              = t('.settings_source')
+              | :
+            ul.list-unstyled
+              li
+                span.badge.badge-primary
+                  = t('.project')
+                |  -
+                = t('.project_source_description')
+              li
+                span.badge.badge-info
+                  = t('.user')
+                |  -
+                = t('.user_source_description')
+              li
+                span.badge.badge-secondary
+                  = t('.global')
+                |  -
+                = t('.global_source_description')
+          .col-md-4
+            h5
+              = t('.settings_status')
+              | :
+            ul.list-unstyled
+              li
+                span.badge.badge-success
+                  = t('yes')
+                |  -
+                = t('.option_enabled')
+              li
+                span.badge.badge-danger
+                  = t('no')
+                |  -
+                = t('.option_disabled')
+          .col-md-4
+            h5
+              = t('.actions')
+              | :
+            ul.list-unstyled
+              li
+                span.btn.btn-sm.btn-primary.disabled
+                  = t('.configure_for_project')
+                |  -
+                = t('.configure_for_project_description')
+              li
+                span.btn.btn-sm.btn-warning.disabled
+                  = t('.edit')
+                |  -
+                = t('.edit_description')
+              li
+                span.btn.btn-sm.btn-outline-danger.disabled
+                  = t('.reset')
+                |  -
+                = t('.reset_description')

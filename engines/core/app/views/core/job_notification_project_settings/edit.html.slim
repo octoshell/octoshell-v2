@@ -1,0 +1,21 @@
+.container.mt-4
+  .mb-4
+    = link_to projects_users_job_notifications_path(@project), class: "btn btn-outline-secondary" do
+      i.fa.fa-arrow-left
+      = t('.back_to_settings')
+  .card
+    .card-header.d-flex.justify-content-between.align-items-center
+      div
+        h2
+          = t('.edit_notification_settings', name: @notification.name)
+        p.text-muted.mb-0
+          = t('.project_info', title: @project.title)
+          |  |
+          = t('.user_info', email: @user.email)
+      = link_to t('.delete_settings'),
+            job_notification_job_notification_project_setting_path(@notification, @project_setting),
+            method: :delete,
+            data: { confirm: t('.delete_confirmation') },
+            class: "btn btn-danger"
+    .card-body
+      = render 'form', project_setting: @project_setting, notification: @notification, project: @project

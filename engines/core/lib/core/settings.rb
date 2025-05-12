@@ -20,6 +20,7 @@ module Core
     add_ability(:manage, :geography, 'superadmins')
     add_controller_ability(:manage, :geography, 'admin/cities', 'admin/countries')
     add_ability(:manage,  :notices, 'superadmins')
+    add_controller_ability(:manage, :notices, 'admin/job_notifications', 'admin/job_notification_global_defaults', 'admin/user_job_notifications')
     add_routes do
       mount Core::Engine, :at => "/core"
     end
@@ -99,6 +100,8 @@ module Core
 
             add_item_if_may('countries', t("admin_submenu.countries"), core.admin_countries_path, 'core/admin/countries')
             add_item_if_may('cities', t("admin_submenu.cities"), core.admin_cities_path, 'core/admin/cities')
+
+            add_item_if_may('notices', t("admin_submenu.job_notifications"), core.admin_job_notifications_path, 'core/admin/job_notifications')
 
             if can?(:manage, :notices)
               add_item('notices', t('core.notice.notices_menu'),
