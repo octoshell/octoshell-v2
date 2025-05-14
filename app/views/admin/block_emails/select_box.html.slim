@@ -1,0 +1,10 @@
+div class="page-header"
+  h1 = t(".title")
+- options = {:'data-date-end-date' => '1d', class: "datepicker"}
+p = t('.how_it_works')
+= bootstrap_form_for @form, layout: :horizontal, url: fetch_emails_admin_block_emails_path, method: :get do |f|
+  = f.text_field :name, label: t('.box_name')
+  = f.text_field :date_gte, options.merge(label: t('.date_gte') )
+
+  = f.form_group do
+    = f.submit t("actions.save")

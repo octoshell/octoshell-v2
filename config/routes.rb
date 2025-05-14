@@ -798,7 +798,6 @@ Octoshell::Application.routes.draw do
         post :unblock_access
         patch :block_emails
         patch :unblock_emails
-
       end
       collection do
         get :id_finder
@@ -811,6 +810,14 @@ Octoshell::Application.routes.draw do
 
     resources :options_categories do
 
+    end
+
+    resources :block_emails, only: [] do
+      collection do
+        get :select_box
+        get :fetch_emails
+        post :block_emails
+      end
     end
     mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   end
