@@ -16,11 +16,12 @@ class Admin::BlockEmailsController < Admin::ApplicationController
     @users = User.where('lower(email) IN (?)', emails_messages.map(&:first)
                                                               .compact
                                                                .map(&:downcase))
-    @emails = emails_messages.map do |e|
+    @emails = emails_messages.group_by(&:first).map do |k, v|
       OpenStruct.new(
-        email: e[0],
-        user: @users.detect { |u| u.email.downcase == e[0]&.downcase },
-        message: e[1]
+        email: k,
+        user: @users.detect { |u| u.email.downcase == k&.downcase },
+        messages: v.map(&:second)#.join("<br><br> #{t('.delim')} <br><br>")
+                                 #.html_safe
       )
     end
   end

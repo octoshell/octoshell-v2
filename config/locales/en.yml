@@ -146,10 +146,11 @@ en:
       block_emails:
         success: You successully blocked email delivery for checked users.
       fetch_emails:
+        hint: Messages are grouped by addresses
         email: Email
-        emails_found: Emails found
-        message: Message
-        show_message: Show message
+        emails_found: Addresses found
+        messages: Messages
+        show_messages: Show messages
         title: List of messages in  %{name} box from  %{date_gte}
         users_found: Users found
       select_box:

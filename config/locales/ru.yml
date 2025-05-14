@@ -147,10 +147,11 @@ ru:
       block_emails:
         success: Выбранные пользователи успешно заблокированы
       fetch_emails:
+        hint: Сообщения сгруппированы по адресам
         email: Email
-        emails_found: Найдено сообщений
-        message: Сообщение
-        show_message: Показать сообщеник
+        emails_found: Найдено адресов
+        messages: Сообщения
+        show_messages: Показать сообщения
         title: Список сообщений в ящике %{name}, начиная с %{date_gte}
         users_found: Найдено пользователей
       select_box:
