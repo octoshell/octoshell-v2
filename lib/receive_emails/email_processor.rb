@@ -97,7 +97,7 @@ module ReceiveEmails
          Support::Ticket.find(ticket_id).reporter != user
         raise 'foreign ticket'
       end
-      message_body = new_ticket_message.rpartition(/-{#{Support.dash_number}}/).last
+      message_body = new_ticket_message
       reply = Support::Reply.new(message:  message_body,
                                  ticket_id: ticket_id,
                                  author: user)
@@ -121,8 +121,8 @@ module ReceiveEmails
       return unless continue_processing?
 
       begin
-        ticket_string = text_part&.body.to_s[/ticket_id:\d+.*-{#{Support.dash_number}}/]
-        if ticket_string
+        ticket_string = text_part&.body.to_s #[/ticket_id:\d+.*-{#{Support.dash_number}}/]
+        if ticket_string[/ticket_id:\d+/]
           I18n.with_locale(user.language.to_sym) do
             ActiveRecord::Base.transaction do
               create_reply ticket_string[/ticket_id:\d+/][/\d+/]
