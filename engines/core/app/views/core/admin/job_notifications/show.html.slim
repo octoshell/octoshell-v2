@@ -83,7 +83,7 @@
             tbody
               - @user_defaults.each do |user_default|
                 tr
-                  td = link_to user_default.user.email, admin_users_path(user_default.user)
+                  td = link_to user_default.user.email, main_app.admin_user_path(user_default.user)
                   td = user_default.notify_tg.nil? ? t('.default') : (user_default.notify_tg ? t('yes') : t('no'))
                   td = user_default.notify_mail.nil? ? t('.default') : (user_default.notify_mail ? t('yes') : t('no'))
                   td = user_default.kill_job.nil? ? t('.default') : (user_default.kill_job ? t('yes') : t('no'))

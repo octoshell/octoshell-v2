@@ -1,6 +1,6 @@
 .container.mt-4
   .mb-4
-    = link_to job_notification_events_path, class: "btn btn-outline-secondary" do
+    = link_to user_events_path, class: "btn btn-outline-secondary" do
       i.fa.fa-arrow-left
       = t('.back_to_events')
   .card.mb-4
@@ -24,7 +24,13 @@
                 = t('.notification_label')
                 | :
               td
-                = link_to @event.job_notification.name, job_notification_path(@event.job_notification)
+                = @event.job_notification.name
+            tr
+              th
+                = t('.notification_description')
+                | :
+              td
+                = @event.job_notification.description
             tr
               th
                 = t('.job_label')
@@ -54,7 +60,7 @@
                 = t('.status_label')
                 | :
               td
-                - if @event.processed
+                - if @event.processed?
                   span.badge.badge-success
                     = t('.processed_status')
                   span.text-muted.ml-2

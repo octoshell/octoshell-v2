@@ -59,5 +59,12 @@ class CorePreview
     Core::Mailer.surety_rejected(Core.user_class.first.id)
   end
 
+  def job_notification
+    user_id = Core::JobNotificationEvent.last.user_id
+    ids = Core::JobNotificationEvent.where(user_id: user_id).ids
+    Core::Mailer.job_notification(user_id, ids)
+  end
+
+
 
 end

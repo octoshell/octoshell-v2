@@ -4,7 +4,7 @@
       h1
         = t('.notification_settings_for_project')
       div
-        = link_to t('.back_to_user_settings'), users_job_notifications_path(@user), class: "btn btn-outline-secondary mr-2"
+        = link_to t('.back_to_user_settings'), users_job_notifications_path, class: "btn btn-outline-secondary mr-2"
         = link_to t('.to_project'), project_path(@project), class: "btn btn-outline-primary"
     p.lead
       = t('.project_info', project_title: @project.title, user_email: @user.email).html_safe

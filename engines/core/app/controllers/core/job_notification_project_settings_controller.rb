@@ -23,7 +23,7 @@ module Core
       @project_setting.user = @user
 
       if @project_setting.save
-        redirect_to projects_users_job_notifications_path(@project, @user),
+        redirect_to projects_users_job_notifications_path(@project),
                     notice: t('core.job_notification_project_settings.create.notice')
       else
         render :new
@@ -35,7 +35,7 @@ module Core
 
     def update
       if @project_setting.update(project_setting_params)
-        redirect_to projects_users_job_notifications_path(@project, @user),
+        redirect_to projects_users_job_notifications_path(@project),
                     notice: t('core.job_notification_project_settings.update.notice')
       else
         render :edit
@@ -44,7 +44,7 @@ module Core
 
     def destroy
       @project_setting.destroy
-      redirect_to projects_users_job_notifications_path(@project, @user),
+      redirect_to projects_users_job_notifications_path(@project),
                   notice: t('core.job_notification_project_settings.destroy.notice')
     end
 
@@ -61,7 +61,6 @@ module Core
     def check_user_in_project
       unless @project.users.exists?(id: @user.id)
         redirect_to users_job_notifications_path(@user), alert: t('core.job_notification_project_settings.check_user_in_project.alert')
-        return
       end
     end
 
@@ -75,7 +74,7 @@ module Core
       )
 
       unless @project_setting
-        redirect_to projects_users_job_notifications_path(@project, @user),
+        redirect_to projects_users_job_notifications_path(@project),
                     alert: t('core.job_notification_project_settings.set_project_setting.alert')
       end
     end

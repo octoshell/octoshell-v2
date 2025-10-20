@@ -42,7 +42,6 @@ class Group < ApplicationRecord
         end
       end
     end
-
     def default!
       Permission.redefine!
       transaction do

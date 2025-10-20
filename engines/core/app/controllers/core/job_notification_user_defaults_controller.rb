@@ -5,7 +5,6 @@ module Core
     before_action :set_user
     before_action :set_notification
     before_action :set_user_default, only: [:edit, :update, :destroy]
-
     def new
       @user_default = JobNotificationUserDefault.new(
         user: @user,
@@ -19,7 +18,7 @@ module Core
       @user_default.job_notification = @notification
 
       if @user_default.save
-        redirect_to users_job_notifications_path(@user),
+        redirect_to users_job_notifications_path,
                     notice: t('core.job_notification_user_defaults.create.notice')
       else
         render :new
@@ -31,7 +30,7 @@ module Core
 
     def update
       if @user_default.update(user_default_params)
-        redirect_to users_job_notifications_path(@user),
+        redirect_to users_job_notifications_path,
                     notice: t('core.job_notification_user_defaults.update.notice')
       else
         render :edit
@@ -40,7 +39,7 @@ module Core
 
     def destroy
       @user_default.destroy
-      redirect_to users_job_notifications_path(@user),
+      redirect_to users_job_notifications_path,
                   notice: t('core.job_notification_user_defaults.destroy.notice')
     end
 
@@ -61,7 +60,7 @@ module Core
       )
 
       unless @user_default
-        redirect_to users_job_notifications_path(@user),
+        redirect_to users_job_notifications_path,
                     alert: t('core.job_notification_user_defaults.set_user_default.alert')
       end
     end

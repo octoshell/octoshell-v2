@@ -15,6 +15,13 @@ module Core
       end
     end
 
+    def core_user_event_submenu_items
+      menu = Face::MyMenu.new
+      menu.add_item_without_key(t("engine_submenu.job_event_settings"), core.users_job_notifications_path, 'core/users_job_notifications')
+      menu.add_item_without_key(t("engine_submenu.events"), core.user_events_path, 'core/job_notification_user_events')
+      menu.items(self)
+    end
+
     def organizations_admin_submenu_items
 
       menu = Face::MyMenu.new

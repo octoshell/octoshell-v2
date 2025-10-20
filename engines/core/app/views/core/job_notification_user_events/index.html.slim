@@ -2,41 +2,21 @@
   .d-flex.justify-content-between.align-items-center.mb-4
     h1
       = t('.title')
-    div
-      = link_to t('.to_notifications'), users_job_notifications_path, class: "btn btn-outline-secondary"
+    - options = common_datepicker_options
+    = bootstrap_form_for @search, url: user_events_path, method: :get, layout: :vertical do |f|
+        div class="col-md-12"
+          div class="col-md-3"
+            = f.collection_select :job_notification_id_in, Core::JobNotification.all, :id, :name, {label: t('.notification_in'), include_blank: true}, { multiple: true }
+          div class="col-md-3"
+            = f.text_field :created_at_gt, options.merge(label: t('.created_after'))
+          div class="col-md-3"
+            = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
+        = f.form_group do
+          = f.submit t("actions.find"), class: "btn btn-primary"
   .card
     .card-body
       - if @events.any?
-        .mb-3
-          .row
-            .col-md-3
-              .card.bg-light
-                .card-body
-                  h5.card-title
-                    = t('.total_events')
-                  p.card-text.display-4
-                    = Core::JobNotificationEvent.count
-            .col-md-3
-              .card.bg-info.text-white
-                .card-body
-                  h5.card-title
-                    = t('.unprocessed')
-                  p.card-text.display-4
-                    = Core::JobNotificationEvent.unprocessed.count
-            .col-md-3
-              .card.bg-success.text-white
-                .card-body
-                  h5.card-title
-                    = t('.processed')
-                  p.card-text.display-4
-                    = Core::JobNotificationEvent.where(processed: true).count
-            .col-md-3
-              .card.bg-warning
-                .card-body
-                  h5.card-title
-                    = t('.last_24h')
-                  p.card-text.display-4
-                    = Core::JobNotificationEvent.where('created_at >= ?', 24.hours.ago).count
+        /= safe_paginate @projects
         .table-responsive
           table.table.table-hover
             thead
@@ -48,34 +28,29 @@
                 th
                   = t('.job')
                 th
-                  = t('.user')
-                th
                   = t('.project')
                 th
                   = t('.created')
                 th
                   = t('.status')
                 th
-                  = t('.actions')
             tbody
               - @events.each do |event|
                 |  <tr class="
-                = event.processed ? 'table-success' : ''
-                | "> 
+                = event.processed? ? 'table-success' : ''
+                | ">
                 td
                   = event.id
                 td
                   = event.job_notification.name
                 td
-                  = event.perf_job_id
-                td
-                  = event.user.email
+                  = link_to event.perf_job_id, jobstat.job_path(event.perf_job_id)
                 td
                   = event.core_project.title
                 td
                   = event.created_at.strftime('%d.%m.%Y %H:%M:%S')
                 td
-                  - if event.processed
+                  - if event.processed?
                     span.badge.badge-success
                       = t('.processed_status')
                   - else
@@ -85,6 +60,22 @@
                   = link_to t('.details'), user_event_path(event), class: "btn btn-sm btn-info"
         .pagination-container
           = paginate @events
+
+        h3 = t('.stat_header')
+        .table-responsive
+          table.table.table-hover
+            thead
+              tr
+                th = t('.notification')
+                th = t('.notification_description')
+                th = t('.count')
+            tbody
+            - @event_stats.each do |s|
+              tr
+                td = s.job_notification.name
+                td = s.job_notification.description
+                td = s['count']
+
       - else
         .alert.alert-info
           = t('.no_events')

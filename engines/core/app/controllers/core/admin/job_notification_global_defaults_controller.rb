@@ -27,10 +27,9 @@ module Core
     end
 
     def global_default_params
-      permitted_params = params.require(:job_notification_global_default).permit(
+      params.require(:job_notification_global_default).permit(
         :notify_tg, :notify_mail, :kill_job
       )
-      permitted_params
     end
   end
 end

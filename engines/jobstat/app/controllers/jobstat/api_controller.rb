@@ -33,17 +33,15 @@ module Jobstat
       StringDatum.where(job_id: job.id, name: 'tag').destroy_all
 
       return if tags.nil?
+
+      rules = []
       tags.each do |name|
         StringDatum.where(job_id: job.id, name: 'tag', value: name).first_or_create()
 
-        if name.start_with?("rule_")
-          Core::CreateJobEventWorker.perform_async(
-            job.id,
-            name
-          )
-        else
-        end
+        rules << name if name.start_with?("rule_")
       end
+
+      JobNotificationEvent.create_from_job(job, rules)
 
       check_job(job)
 

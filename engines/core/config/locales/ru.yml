@@ -1034,13 +1034,20 @@ ru:
         processed_status: "Обработано"
         pending_status: "Ожидает"
         details: "Подробнее"
-        no_events: "События пока не зарегистрированы."
+        no_events: "Нет событий."
+        created_after: Созданы после
+        created_before: Созданы до
+        notification_in: Тип уведомления
+        stat_header: Количество событий по их типам согласно полям поисковой формы
+        notification_description: Описание уведомления
+        count: К-во
       show:
         back_to_events: "К списку событий"
         event_info_header: "Информация о событии #%{id}"
         main_info: "Основная информация"
         id_label: "ID"
         notification_label: "Уведомление"
+        notification_description: "Описание"
         job_label: "Задача"
         user_label: "Пользователь"
         project_label: "Проект"
@@ -1228,8 +1235,9 @@ ru:
         open_support: Открыть раздел техподдержки.
         subject: Ваш аккаунт заблокирован
       job_notification:
-        subject: Сводка уведомлений о задачах
-        message: Представляем вам сводку уведомлений за период с %{start_date} по %{end_date}.
+        subject: Ноаые уведомления о вычислительных заданиях
+        message: "Ниже представлены новые уведомления о событиях выполнения Ваших вычислительных заданий.
+                  Все уведомления и настройки их получения доступны по <a href=\"%{link}\">ссылке</a>."
         statistics:
           header: Краткая статистика
           total_events: Общее количество событий - %{count}
@@ -1434,6 +1442,9 @@ ru:
     merge_edit: Слияние
     organizations_list: Список организаций
     prepare_merge: Неслитые организации
+    job_events: Уведомления о вычислительных заданиях
+    events: Полученные уведомления
+    job_event_settings: Настройки получения уведомлений
   errors:
     choose_at_least: выберите не менее %{count}
     choose_at_max: Выберите не более  %{count}

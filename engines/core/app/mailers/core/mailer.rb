@@ -96,21 +96,27 @@ module Core
       mail to: @user.email, subject: t(".subject")
     end
 
-    def job_notification(user_id, params)
+    def job_notification(user_id, event_ids)
       @user = Core.user_class.find(user_id)
-      @summary = params['summary_data'] || params[:summary_data]
-      @period_start = Time.parse(params['start_period']) || Time.parse(params[:start_period]) || Time.current
-      @period_end = Time.parse(params['end_period']) || Time.parse(params[:end_period]) || Time.current
-      @details = params['details'] || params[:details]
-
-      project_ids = (@summary['projects'] || @summary[:projects]).keys.map { |key| key.gsub('project_', '').to_i }
-      @projects = Core::Project.where(id: project_ids).pluck(:id, :title).to_h
-
-      notification_keys = (@summary['notifications'] || @summary[:notifications]).keys.map { |key| key.gsub('notification_', '').to_i }
-      @notifications = Core::JobNotification.where(id: notification_keys).pluck(:id, :name, :description).index_by(&:first)
-
+      @events = Core::JobNotificationEvent.where(id: event_ids)
       mail to: @user.email, subject: t(".subject")
     end
+
+    # def job_notification(user_id, params)
+    #   @user = Core.user_class.find(user_id)
+    #   @summary = params['summary_data'] || params[:summary_data]
+    #   @period_start = Time.parse(params['start_period']) || Time.parse(params[:start_period]) || Time.current
+    #   @period_end = Time.parse(params['end_period']) || Time.parse(params[:end_period]) || Time.current
+    #   @details = params['details'] || params[:details]
+    #
+    #   project_ids = (@summary['projects'] || @summary[:projects]).keys.map { |key| key.gsub('project_', '').to_i }
+    #   @projects = Core::Project.where(id: project_ids).pluck(:id, :title).to_h
+    #
+    #   notification_keys = (@summary['notifications'] || @summary[:notifications]).keys.map { |key| key.gsub('notification_', '').to_i }
+    #   @notifications = Core::JobNotification.where(id: notification_keys).pluck(:id, :name, :description).index_by(&:first)
+    #
+    #   mail to: @user.email, subject: t(".subject")
+    # end
 
   end
 end

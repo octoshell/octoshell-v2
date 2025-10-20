@@ -5,7 +5,6 @@ module Core
     before_action :set_project
     before_action :set_user
     before_action :check_user_in_project
-
     def index
       @notifications = Core::JobNotification.includes(:global_default).all
       @project_settings = @project.job_notification_project_settings
@@ -31,7 +30,6 @@ module Core
     def check_user_in_project
       unless @project.users.exists?(id: @user.id)
         redirect_to users_job_notifications_path(@user), alert: t('core.projects_users_job_notifications.check_user_in_project.alert')
-        return
       end
     end
   end

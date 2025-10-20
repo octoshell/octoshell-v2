@@ -34,7 +34,7 @@
                   td
                     = notification.name
                   td
-                    = notification.description.truncate(50) if notification.description
+                    = notification.description
                   td
                     - if user_default && !user_default.notify_tg.nil?
                       |  <span class="badge
@@ -77,7 +77,7 @@
                               data: { confirm: t('.reset_confirmation') },
                               class: "btn btn-sm btn-outline-danger"
                       - else
-                        = link_to t('.configure'), new_job_notification_job_notification_user_default_path(notification, user_id: @user.id), class: "btn btn-sm btn-primary"
+                        = link_to t('.configure'), new_job_notification_job_notification_user_default_path(notification), class: "btn btn-sm btn-primary"
       - else
         .alert.alert-info
           = t('.no_notifications')

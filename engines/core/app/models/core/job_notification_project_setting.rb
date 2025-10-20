@@ -4,7 +4,7 @@ module Core
 
       belongs_to :job_notification,
                 class_name: 'Core::JobNotification',
-                foreign_key: 'core_job_notification_id'
+                foreign_key: 'core_job_notification_id', inverse_of: :project_settings
 
       belongs_to :project,
                 class_name: 'Core::Project',

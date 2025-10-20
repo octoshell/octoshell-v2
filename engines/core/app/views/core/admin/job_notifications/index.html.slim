@@ -41,7 +41,6 @@
                         = t('.not_configured')
                   td
                     .btn-group
-                      = link_to t('.view'), admin_job_notification_path(notification), class: "btn btn-sm btn-info"
                       = link_to t('.edit'), edit_admin_job_notification_path(notification), class: "btn btn-sm btn-warning"
                       = link_to t('.delete'), admin_job_notification_path(notification), method: :delete, data: { confirm: t('.confirm_delete') }, class: "btn btn-sm btn-danger"
       - else

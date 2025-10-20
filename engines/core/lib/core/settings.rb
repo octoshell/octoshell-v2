@@ -48,7 +48,13 @@ module Core
             core.notices_path,
             %r{^notices})
         end
-
+        if Core.user_class.superadmins.include? current_user
+          add_item(
+            'job_notifications',
+            t('engine_submenu.job_events'),
+            core.user_events_path,
+            '/core\/job_notification_user_events|core\/users_job_notifications/')
+        end
       end
       Face::MyMenu.items_for(:admin_submenu) do
         if can? :manage, :projects

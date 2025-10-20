@@ -52,15 +52,13 @@ module Core
     def update_from_json
       file_path = Rails.root.join('engines', 'jobstat', 'config', 'conditions.json')
       json_data = JSON.parse(File.read(file_path))
-
-      json_data['rules'].each do |key, rule|
-        notification = JobNotification.find_or_initialize_by(name: rule['name'])
-        notification.description = rule['description']
-        notification.build_global_default(notify_tg: false, notify_mail: false, kill_job: false)
-
-        notification.save
+      ActiveRecord::Base.transaction do
+        json_data['rules'].each do |_key, rule|
+          notification = JobNotification.find_or_initialize_by(name: rule['name'])
+          notification.description = rule['description']
+          notification.save!
+        end
       end
-
       redirect_to admin_job_notifications_path,
                   notice: t('core.admin.job_notifications.update_from_json.notice')
     rescue StandardError => e
