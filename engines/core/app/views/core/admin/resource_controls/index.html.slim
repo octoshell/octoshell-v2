@@ -1,0 +1,12 @@
+div class="page-header"
+  h1 = t(".title")
+- options = common_datepicker_options
+= bootstrap_form_for @search, url: admin_resource_controls_path, method: :get, layout: :vertical do |f|
+  = f.select :state_in, Core::ResourceControl.human_state_names_with_original, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
+  = f.form_group do
+    = f.submit t("actions.find"), class: "btn btn-primary"
+
+= render "table", resource_controls: @resource_controls
+
+javascript:
+   change_child_grouped_select('#q_group_of_research_areas_id_in', '#q_research_areas_id_in');

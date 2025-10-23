@@ -4,6 +4,7 @@ Core::Engine.routes.draw do
     get :generate
   end
   namespace :admin do
+    resources :resource_controls
     resources :notices do
       get :hide
     end

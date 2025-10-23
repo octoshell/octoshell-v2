@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_31_194719) do
+ActiveRecord::Schema.define(version: 2025_10_22_214352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -487,6 +487,68 @@ ActiveRecord::Schema.define(version: 2025_03_31_194719) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "core_job_notification_events", force: :cascade do |t|
+    t.bigint "core_job_notification_id", null: false
+    t.bigint "perf_job_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "core_project_id", null: false
+    t.jsonb "data", default: {}
+    t.string "status"
+    t.datetime "processed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["core_job_notification_id"], name: "idx_job_events_notification_id"
+    t.index ["core_project_id"], name: "index_core_job_notification_events_on_core_project_id"
+    t.index ["perf_job_id"], name: "idx_job_events_job_id"
+    t.index ["user_id"], name: "index_core_job_notification_events_on_user_id"
+  end
+
+  create_table "core_job_notification_global_defaults", force: :cascade do |t|
+    t.bigint "core_job_notification_id", null: false
+    t.boolean "notify_tg", default: false
+    t.boolean "notify_mail", default: false
+    t.boolean "kill_job", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["core_job_notification_id"], name: "idx_core_job_notif_global_defaults_notif_id"
+  end
+
+  create_table "core_job_notification_project_settings", force: :cascade do |t|
+    t.bigint "core_job_notification_id", null: false
+    t.bigint "core_project_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "notify_tg"
+    t.boolean "notify_mail"
+    t.boolean "kill_job"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["core_job_notification_id", "core_project_id", "user_id"], name: "idx_core_job_proj_settings_notif_proj_user_uniq", unique: true
+    t.index ["core_job_notification_id"], name: "idx_core_job_proj_settings_notif_id"
+    t.index ["core_project_id"], name: "index_core_job_notification_project_settings_on_core_project_id"
+    t.index ["user_id"], name: "index_core_job_notification_project_settings_on_user_id"
+  end
+
+  create_table "core_job_notification_user_defaults", force: :cascade do |t|
+    t.bigint "core_job_notification_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "notify_tg"
+    t.boolean "notify_mail"
+    t.boolean "kill_job"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["core_job_notification_id", "user_id"], name: "idx_core_job_user_defaults_notif_user_uniq", unique: true
+    t.index ["core_job_notification_id"], name: "idx_core_job_user_defaults_notif_id"
+    t.index ["user_id"], name: "index_core_job_notification_user_defaults_on_user_id"
+  end
+
+  create_table "core_job_notifications", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "idx_core_job_notif_name_uniq", unique: true
+  end
+
   create_table "core_members", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "project_id", null: false
@@ -629,6 +691,15 @@ ActiveRecord::Schema.define(version: 2025_03_31_194719) do
     t.index ["state"], name: "index_core_projects_on_state"
   end
 
+  create_table "core_queue_accesses", force: :cascade do |t|
+    t.bigint "resource_control_id"
+    t.bigint "partition_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["partition_id"], name: "index_core_queue_accesses_on_partition_id"
+    t.index ["resource_control_id"], name: "index_core_queue_accesses_on_resource_control_id"
+  end
+
   create_table "core_quota_kinds", id: :serial, force: :cascade do |t|
     t.string "name_ru", limit: 255
     t.string "measurement_ru", limit: 255
@@ -690,6 +761,27 @@ ActiveRecord::Schema.define(version: 2025_03_31_194719) do
     t.index ["research_area_id"], name: "ira_on_ira_per_projects"
   end
 
+  create_table "core_resource_control_fields", force: :cascade do |t|
+    t.bigint "resource_control_id"
+    t.bigint "quota_kind_id"
+    t.float "cur_amount"
+    t.float "limit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quota_kind_id"], name: "index_core_resource_control_fields_on_quota_kind_id"
+    t.index ["resource_control_id"], name: "index_core_resource_control_fields_on_resource_control_id"
+  end
+
+  create_table "core_resource_controls", force: :cascade do |t|
+    t.datetime "last_sync_at"
+    t.datetime "started_at"
+    t.bigint "access_id"
+    t.string "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["access_id"], name: "index_core_resource_controls_on_access_id"
+  end
+
   create_table "core_sureties", id: :serial, force: :cascade do |t|
     t.integer "project_id"
     t.string "state", limit: 255
@@ -721,6 +813,14 @@ ActiveRecord::Schema.define(version: 2025_03_31_194719) do
     t.integer "surety_id"
     t.string "image", limit: 255
     t.index ["surety_id"], name: "index_core_surety_scans_on_surety_id"
+  end
+
+  create_table "core_user_notification_settings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "notification_batch_interval", default: 5
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "idx_core_user_notification_settings_user", unique: true
   end
 
   create_table "delayed_jobs", id: :serial, force: :cascade do |t|
@@ -1431,5 +1531,15 @@ ActiveRecord::Schema.define(version: 2025_03_31_194719) do
   end
 
   add_foreign_key "core_bot_links", "users"
+  add_foreign_key "core_job_notification_events", "core_job_notifications"
+  add_foreign_key "core_job_notification_events", "core_projects"
+  add_foreign_key "core_job_notification_events", "users"
+  add_foreign_key "core_job_notification_global_defaults", "core_job_notifications"
+  add_foreign_key "core_job_notification_project_settings", "core_job_notifications"
+  add_foreign_key "core_job_notification_project_settings", "core_projects"
+  add_foreign_key "core_job_notification_project_settings", "users"
+  add_foreign_key "core_job_notification_user_defaults", "core_job_notifications"
+  add_foreign_key "core_job_notification_user_defaults", "users"
+  add_foreign_key "core_user_notification_settings", "users"
   add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"
 end

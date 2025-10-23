@@ -20,7 +20,7 @@
 module Core
   class Access < ApplicationRecord
 
-    
+
 
     belongs_to :project
     belongs_to :cluster
@@ -51,6 +51,10 @@ module Core
 
     def log message
       logger.info message
+    end
+
+    def to_s
+      "#{project.title} | #{cluster.name}" 
     end
 
     # Требования к теребоньке.
