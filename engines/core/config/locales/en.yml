@@ -704,6 +704,15 @@ en:
         title: New ssh-key
     employments:
       form:
+        how_to_select_org: ->
+          To fill in the workplace information, you should first
+          select an organization and then its department. Universities and
+          university branches are considered organizations, while faculties and
+          laboratories are their departments. This same structure must be taken
+          into account when creating an organization. New organizations must be
+          approved by Octoshell administrators to be able to participate in projects,
+          who are automatically notified about this.
+
         add_organization: Add organization
         new_organization_department: Add a department
         no_department: Have you not found your department?

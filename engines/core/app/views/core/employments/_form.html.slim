@@ -1,3 +1,4 @@
+p =t('.how_to_select_org')
 - if @employment.organization
   = bootstrap_nested_form_for @employment, layout: :horizontal do |f|
     = f.text_field :organization, readonly: true
