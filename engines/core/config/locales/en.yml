@@ -704,7 +704,7 @@ en:
         title: New ssh-key
     employments:
       form:
-        how_to_select_org: ->
+        how_to_select_org: >-
           To fill in the workplace information, you should first
           select an organization and then its department. Universities and
           university branches are considered organizations, while faculties and
