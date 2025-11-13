@@ -6,11 +6,11 @@
 //x link_directory * .js
 // Lines bellow are rewritten using script
 // START
-//=link sessions/manifest.js
-//=link jobstat/manifest.js
-//=link wikiplus/manifest.js
-//=link pack/manifest.js
-//=link comments/manifest.js
 //=link announcements/manifest.js
-//=link support/manifest.js
+//=link comments/manifest.js
 //=link core/manifest.js
+//=link jobstat/manifest.js
+//=link pack/manifest.js
+//=link sessions/manifest.js
+//=link support/manifest.js
+//=link wikiplus/manifest.js

@@ -9,7 +9,12 @@ Bundler.require(*Rails.groups)
 module Octoshell
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.0
+    config.load_defaults 8.0
+    # config.active_support.cache_format_version = 7.0
+    config.active_storage.variant_processor = :mini_magick
+    config.active_record.default_column_serializer = YAML
+    config.yjit = false
+
 
     config.time_zone = "Moscow"
 

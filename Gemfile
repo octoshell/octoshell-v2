@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 gem "rake"
-gem "rails", "~> 7.0.0"
+gem "rails", "~> 8.0.0"
 #-----------------------------------------
 gem "honeybadger", "~> 4.8"
 
@@ -8,7 +8,7 @@ if ENV['AIRBRAKE'].to_s != ''
   gem "airbrake"
 end
 #-----------------------------------------
-gem 'after_commit_everywhere', '~> 1.0'
+gem 'after_commit_everywhere'#, '~> 1.0'
 gem 'bootsnap'
 gem 'listen'
 platforms :jruby do
@@ -18,9 +18,9 @@ end
 gem "pg"
 gem "responders"
 gem "uglifier", ">= 1.3.0"
-gem "sassc-rails"
+# gem "sassc-rails"
 gem "bootstrap_form"
-gem 'rails_email_preview', '~> 2.0.6'
+gem 'rails_email_preview'#, '~> 2.0.6'
 gem 'traco'
 gem 'lmtp', github: 'apaokin/ruby-lmtp', require: false
 gem 'rubyzip', '>= 1.0.0', require: false
@@ -35,7 +35,7 @@ gem "ransack"
 # security reasons
 gem "nokogiri", ">= 1.10.4"
 gem "mini_magick", ">= 4.9.4"
-gem 'sidekiq', '< 7'
+gem 'sidekiq' #,  '< 7'
 group :development do
   gem "annotate"
   gem "pry-rails"
@@ -43,7 +43,7 @@ group :development do
   gem 'railroady'
   #gem "better_errors"
   gem 'rails_db'
-  gem 'i18n-tasks', github: 'apaokin/i18n-tasks'
+  # gem 'i18n-tasks', github: 'apaokin/i18n-tasks'
   gem 'minitest-reporters'
   gem 'letter_opener_web', '~> 2.0'
 end
@@ -110,5 +110,5 @@ group :test do
   gem "codeclimate-test-reporter", require: false
 end
 # gem 'sprockets-rails', '2.3.3'
- gem 'ffi', '1.16.3'
- gem 'rails-i18n', '~> 7.0.0'
+ gem 'ffi'#, '1.16.3'
+ gem 'rails-i18n'#, '~> 7.0.0'
