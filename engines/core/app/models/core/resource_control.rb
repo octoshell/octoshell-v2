@@ -4,12 +4,12 @@ module Core
     include ::AASM_Additions
     belongs_to :access
     has_many :resource_control_fields, inverse_of: :resource_control
-    has_many :queue_accesses, inverse_of: :resource_control
-    accepts_nested_attributes_for :resource_control_fields, :queue_accesses, allow_destroy: true
-    validates :access, :state, presence: true
+    has_and_belongs_to_many :partitions
+    accepts_nested_attributes_for :resource_control_fields, allow_destroy: true
+    validates :access, :status, presence: true
     validates :access_id, uniqueness: true, unless: :archived?
 
-    aasm(:state) do
+    aasm(:status) do
       state :active, initial: true
       state :blocked
       state :archived
@@ -32,19 +32,19 @@ module Core
       access.cluster.partitions
     end
 
-    def partition_ids_setter
-      queue_accesses.reject(&:marked_for_destruction?).map(&:partition_id)
-    end
-
-    def partition_ids_setter=(ids)
-      ids = (ids || []).select(&:present?).map(&:to_i)
-      ids.each do |id|
-        queue_accesses.detect { |a| a.partition_id == id } ||
-          queue_accesses.build(partition_id: id)
-      end
-      queue_accesses.reject{ |a| ids.include?(a.partition_id) }
-                    .each(&:mark_for_destruction)
-    end
+    # def partition_ids_setter
+    #   queue_accesses.reject(&:marked_for_destruction?).map(&:partition_id)
+    # end
+    #
+    # def partition_ids_setter=(ids)
+    #   ids = (ids || []).select(&:present?).map(&:to_i)
+    #   ids.each do |id|
+    #     queue_accesses.detect { |a| a.partition_id == id } ||
+    #       queue_accesses.build(partition_id: id)
+    #   end
+    #   queue_accesses.reject { |a| ids.include?(a.partition_id) }
+    #                 .each(&:mark_for_destruction)
+    # end
 
 
     def current

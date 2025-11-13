@@ -7,11 +7,11 @@
         th  = Core::ResourceControl.human_attribute_name(:partitions)
         th  = Core::ResourceControl.human_attribute_name(:resource_control_fields)
         th  = Core::ResourceControl.human_attribute_name(:started_at)
-        td = 
+        td =
       - resource_controls.each do |control|
         tr
           td = link_to control.access.project.title, admin_project_path(control.access.project)
           td = control.access.cluster.name
-          td = control.queue_accesses.map(&:partition).flatten.map(&:name).join(', ')
+          td = control.partitions.map(&:name).join(', ')
           td = control.resource_control_fields.map(&:stat).join("\n")
           td = control.started_at

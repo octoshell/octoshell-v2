@@ -2,7 +2,7 @@
   h5
     | #{Core::Access.model_name.human}:  #{f.object.access.to_s}
   = f.hidden_field :access_id
-  = f.collection_check_boxes :partition_ids_setter, f.object.available_partitions, :id, :name, label: t('.partitions')
+  = f.collection_check_boxes :partition_ids, f.object.available_partitions, :id, :name, label: t('.partitions')
   = f.text_field :started_at, include_blank: true, class: "datepicker"
 
   h3 = t('.enter_limits')

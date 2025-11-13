@@ -5,9 +5,9 @@ module Core
     def index
       @search = ResourceControl.search(params[:q])
       @resource_controls = @search.result(distinct: true)
-                                  .includes(access: %i[project cluster],
-                                            resource_control_fields: :quota_kind,
-                                            queue_accesses: :partition)
+                                  .includes({access: %i[project cluster],
+                                            resource_control_fields: :quota_kind},
+                                            )
                               #    .joins(:access)
                               #    .order('core_accesses.project_id ASC, core_accesses.cluster_id ASC')
       # @spans = Array.new(@resource_control.count)
