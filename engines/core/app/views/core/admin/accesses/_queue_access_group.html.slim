@@ -1,0 +1,15 @@
+- if group
+  - control = group.first.resource_control
+  - rowspan = group.count
+  - rowspan = rowspan.zero? ? 1 : rowspan
+  - if control
+    td rowspan=rowspan style="color: #{control.disabled? ? 'red' : 'green' };" = control.started_at
+    td rowspan=rowspan style="color: #{control.exceeded? ? 'red' : 'green' };" = control.resource_control_fields.map(&:stat).join("\n")
+  - else
+    td rowspan=rowspan colspan=2
+      = t('.no_resource_control')
+  = render "queue_access", q_a: group[0]
+  -if rowspan > 1
+    - group[1..].each do |q_a|
+      tr
+        = render "queue_access", q_a: q_a

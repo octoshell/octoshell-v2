@@ -1,0 +1,14 @@
+= bootstrap_form_for [:admin, @resource_control], layout: :horizontal do |f|
+  h5
+    | #{Core::Access.model_name.human}:  #{f.object.access.to_s}
+  = f.hidden_field :access_id
+  = f.collection_check_boxes :partition_ids, f.object.available_partitions, :id, :name, label: t('.partitions')
+  = f.text_field :started_at, include_blank: true, class: "datepicker"
+
+  h3 = t('.enter_limits')
+  = f.fields_for :resource_control_fields do |ff|
+      = ff.hidden_field :id
+      = ff.hidden_field :quota_kind_id
+      = ff.number_field :limit, :step => :any, min: 0, label: ff.object.quota_kind.to_s
+  = f.form_group do
+    = f.submit t("actions.save")

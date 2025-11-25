@@ -1,6 +1,7 @@
 = bootstrap_form_for [:admin, @quota_kind], layout: :horizontal do |f|
   -Core::QuotaKind.locale_columns(:name,:measurement).each do |column|
     = f.text_field column
+  = f.text_field :api_key
 
   = f.form_group do
     = f.submit t("actions.save")

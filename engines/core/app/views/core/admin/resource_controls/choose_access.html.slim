@@ -1,0 +1,14 @@
+div class="page-header"
+  h1 = t(".title", default: "Choose access")
+= bootstrap_form_tag layout: :horizontal, url: choose_access_admin_resource_controls_path, method: :get do |f|
+  = f.autocomplete_field :project_id, {source: finder_admin_projects_path,
+    label: Core::Project.model_name.human, initial_value: params[:project_id]} do |val|
+      - Core::Project.find(val).title
+
+
+  = f.collection_radio_buttons :cluster_id,
+                               Core::Cluster.where(available_for_work: true).order(:id),
+                               :id, :name, { label: Core::Cluster.model_name.human,
+                                             checked: params.dig(:cluster_id).to_i }
+  = f.form_group do
+    = f.submit t("actions.find")

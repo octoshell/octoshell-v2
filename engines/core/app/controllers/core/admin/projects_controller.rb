@@ -1,5 +1,6 @@
 module Core
   class Admin::ProjectsController < Admin::ApplicationController
+    layout "layouts/core/admin_project"
     before_action :octo_authorize!, except: %i[show finder id_finder
           find_similar find_similar_by_members]
     def index

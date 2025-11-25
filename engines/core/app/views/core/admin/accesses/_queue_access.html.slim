@@ -1,0 +1,6 @@
+td style="color: #{queue_access_color(q_a)};"  = q_a.partition.name
+td = q_a.max_running_jobs
+td = q_a.max_submitted_jobs
+- if @access
+  td = q_a.allowed
+  td = q_a.synced_with_cluster

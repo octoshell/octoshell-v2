@@ -1,0 +1,60 @@
+div class="page-header"
+  h1 = t(".title", title: @access.project.title,  default: "Access ")
+div class="panel-body"
+  h4 =  Core::Project.model_name.human
+  p = link_to @access.project.title, admin_project_path(@access.project)
+  h4 = Core::Cluster.model_name.human
+  p = @access.cluster.name
+
+
+  h3 = Core::Access.human_attribute_name(:available_queues)
+  table class="table table-hover"
+    tr
+      th = Core::Partition.model_name.human
+      th = Core::QueueAccess.human_attribute_name(:allowed)
+      th = Core::QueueAccess.human_attribute_name(:synced_with_cluster)
+      th
+      th
+    - queue_access_groups = access.queue_accesses.group_by(&:resource_control).values
+    - rowspan = queue_access_groups.count
+    - rowspan = rowspan.zero? ? 1 : rowspan
+    tr
+      td rowspan=rowspan = access.cluster.name
+      = render "queue_access_group", group: queue_access_groups[0]
+    - if rowspan > 1
+      - queue_access_groups[1..].each do |group|
+        tr
+          = render 'queue_access_group', group: group
+
+
+      tr
+        td = queue.partition.name
+        td style="color: #{queue.allowed ? 'green' : 'red' };"
+          = queue.allowed
+        td style="color: #{queue.synced_with_cluster ? 'green' : 'red' };"
+          = queue.synced_with_cluster
+        td
+          - if queue.allowed
+              = link_to t('.disable_queue_access'),
+                        block_queue_admin_access_path(queue),
+                        class: "btn btn-danger btn-sm", method: :put
+          - else
+              = link_to t('activate_queue_access'),
+                        activate_queue_admin_access_path(queue),
+                        class: "btn btn-success btn-sm", method: :put
+
+  h3 = Core::ResourceControl.model_name.human
+  table class="table table-hover"
+    tr
+      th = Core::Partition.model_name.human
+      th = Core::QueueAccess.human_attribute_name(:allowed)
+      th = Core::QueueAccess.human_attribute_name(:synced_with_cluster)
+      th
+      th
+    - @access.resource_controls.each do |control|
+      tr
+        = render 'resource_control', control: control
+
+
+/Рассылка
+/Лимит задач на задач

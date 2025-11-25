@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_11_13_125348) do
+ActiveRecord::Schema.define(version: 2025_11_25_111742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -496,6 +496,7 @@ ActiveRecord::Schema.define(version: 2025_11_13_125348) do
     t.datetime "updated_at"
     t.integer "organization_id"
     t.integer "organization_department_id"
+    t.boolean "notify_about_resources", default: false
     t.index ["organization_id"], name: "index_core_members_on_organization_id"
     t.index ["owner", "user_id", "project_id"], name: "index_core_members_on_owner_and_user_id_and_project_id"
     t.index ["project_access_state"], name: "index_core_members_on_project_access_state"
@@ -566,13 +567,9 @@ ActiveRecord::Schema.define(version: 2025_11_13_125348) do
     t.string "name"
     t.integer "cluster_id"
     t.string "resources"
+    t.integer "max_running_jobs"
+    t.integer "max_submitted_jobs"
     t.index ["cluster_id"], name: "index_core_partitions_on_cluster_id"
-  end
-
-  create_table "core_partitions_resource_controls", id: false, force: :cascade do |t|
-    t.bigint "core_resource_control_id", null: false
-    t.bigint "core_partition_id", null: false
-    t.index ["core_resource_control_id", "core_partition_id"], name: "index_core_partitions_resource_controls", unique: true
   end
 
   create_table "core_project_cards", id: :serial, force: :cascade do |t|
@@ -637,11 +634,16 @@ ActiveRecord::Schema.define(version: 2025_11_13_125348) do
   create_table "core_queue_accesses", force: :cascade do |t|
     t.bigint "access_id"
     t.bigint "partition_id"
-    t.string "status"
+    t.bigint "resource_control_id"
+    t.integer "max_running_jobs"
+    t.integer "max_submitted_jobs"
+    t.boolean "synced_with_cluster", default: false
+    t.boolean "allowed", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["access_id"], name: "index_core_queue_accesses_on_access_id"
     t.index ["partition_id"], name: "index_core_queue_accesses_on_partition_id"
+    t.index ["resource_control_id"], name: "index_core_queue_accesses_on_resource_control_id"
   end
 
   create_table "core_quota_kinds", id: :serial, force: :cascade do |t|
@@ -649,6 +651,7 @@ ActiveRecord::Schema.define(version: 2025_11_13_125348) do
     t.string "measurement_ru", limit: 255
     t.string "name_en"
     t.string "measurement_en"
+    t.string "api_key"
   end
 
   create_table "core_removed_members", force: :cascade do |t|
@@ -718,7 +721,7 @@ ActiveRecord::Schema.define(version: 2025_11_13_125348) do
 
   create_table "core_resource_controls", force: :cascade do |t|
     t.datetime "last_sync_at"
-    t.datetime "started_at"
+    t.date "started_at"
     t.bigint "access_id"
     t.string "status"
     t.datetime "created_at", null: false

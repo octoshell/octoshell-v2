@@ -29,6 +29,8 @@ module Core
     accepts_nested_attributes_for :fields
 
     validates :project, :cluster, presence: true
+    has_many :resource_controls, inverse_of: :access
+    has_many :queue_accesses, inverse_of: :access
 
     include AASM
     include ::AASM_Additions
@@ -54,7 +56,20 @@ module Core
     end
 
     def to_s
-      "#{project.title} | #{cluster.name}" 
+      "#{project.title} | #{cluster.name}"
+    end
+
+    def activate_queue_accesses(partitions)
+      partitions.each do |partition|
+        queue_accesses.find_or_create_by(partition: partition).activate
+      end
+    end
+
+
+    def block_queue_accesses(partitions)
+      partitions.each do |partition|
+        queue_accesses.find_or_create_by(partition: partition).block
+      end
     end
 
     # Требования к теребоньке.

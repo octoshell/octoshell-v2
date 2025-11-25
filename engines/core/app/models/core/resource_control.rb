@@ -2,74 +2,52 @@ module Core
   class ResourceControl < ApplicationRecord
     include AASM
     include ::AASM_Additions
-    belongs_to :access
+    belongs_to :access, inverse_of: :resource_controls
     has_many :resource_control_fields, inverse_of: :resource_control
-    has_and_belongs_to_many :partitions
+    has_many :queue_accesses, inverse_of: :resource_control
     accepts_nested_attributes_for :resource_control_fields, allow_destroy: true
     validates :access, :status, presence: true
-    validates :access_id, uniqueness: true, unless: :archived?
 
-    aasm(:status) do
+    # after_commit do
+    #   check_for_exceeded
+    # end
+
+    aasm(:state, column: :status, whiny_transitions: false) do
       state :active, initial: true
-      state :blocked
-      state :archived
+      state :disabled
 
-      event :block do
-        transitions from: %i[active blocked], to: :blocked
+
+      event :disable do
+        transitions from: :active, to: :disabled
       end
 
       event :activate do
-        transitions from: %i[active blocked], to: :active
-      end
-
-      event :archive do
-        transitions from: %i[active blocked], to: :archived
+        transitions from: :disabled, to: :active
       end
     end
 
+    def exceeded?
+      resource_control_fields.any?(&:exceeded?)
+    end
+
+    # def check_for_exceeded
+    #   if exceeded?
+    #     access.block_queue_accesses(partitions)
+    #   else
+    #     access.activate_queue_accesses(partitions)
+    #   end
+    # end
 
     def available_partitions
       access.cluster.partitions
     end
 
-    # def partition_ids_setter
-    #   queue_accesses.reject(&:marked_for_destruction?).map(&:partition_id)
-    # end
-    #
-    # def partition_ids_setter=(ids)
-    #   ids = (ids || []).select(&:present?).map(&:to_i)
-    #   ids.each do |id|
-    #     queue_accesses.detect { |a| a.partition_id == id } ||
-    #       queue_accesses.build(partition_id: id)
-    #   end
-    #   queue_accesses.reject { |a| ids.include?(a.partition_id) }
-    #                 .each(&:mark_for_destruction)
-    # end
-
-
-    def current
-
-    end
-
     def build_resource_control_fields
-      # part_ids = QueueAccess.joins(resource_control_field: :resource_control)
-      #                       .where(core_resource_controls: { access_id: id })
-      #                       .distinct.pluck(:partition_id)
-      # cur_part_ids = resource_control_fields.map(&:queue_accesses).flatten
-      #                                       .map(&:partition_id).uniq
+      return if resource_control_fields.any?
 
-      unless resource_control_fields.any?
-        resource_control_fields.build(quota_kind: QuotaKind.last)
+      QuotaKind.where('api_key is not null AND api_key != ""').each do |kind|
+        resource_control_fields.build(quota_kind: kind)
       end
-
-
-      # field = resource_control_fields.to_a.last
-      # access.cluster.partitions.each do |partition|
-      #   next if (part_ids | cur_part_ids).include? partition.id
-      #
-      #   field.queue_accesses.build(partition: partition)
-      #
-      # end
     end
 
   end

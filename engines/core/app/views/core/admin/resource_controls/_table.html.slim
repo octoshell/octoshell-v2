@@ -2,12 +2,12 @@
   div class="panel-body"
     table class="table table-hover"
       tr
-        th  = Core::Project.model_name.human
+        th  = sort_link @search, :access_project_id, Core::Project.model_name.human, default_order: :desc
         th  = Core::Cluster.model_name.human
         th  = Core::ResourceControl.human_attribute_name(:partitions)
         th  = Core::ResourceControl.human_attribute_name(:resource_control_fields)
         th  = Core::ResourceControl.human_attribute_name(:started_at)
-        td =
+        th
       - resource_controls.each do |control|
         tr
           td = link_to control.access.project.title, admin_project_path(control.access.project)
@@ -15,3 +15,13 @@
           td = control.partitions.map(&:name).join(', ')
           td = control.resource_control_fields.map(&:stat).join("\n")
           td = control.started_at
+          td
+            = link_to t("actions.edit"), edit_admin_resource_control_path(control), class: "btn btn-default btn-sm"
+            - if control.active?
+                = link_to Core::ResourceControl.human_state_event_name(:disable),
+                          fire_event_admin_resource_control_path(control, event: 'disable'),
+                          class: "btn btn-danger btn-sm", method: :put
+            - if control.disabled?
+                = link_to Core::ResourceControl.human_state_event_name(:activate),
+                          fire_event_admin_resource_control_path(control, event: 'activate'),
+                          class: "btn btn-success btn-sm", method: :put

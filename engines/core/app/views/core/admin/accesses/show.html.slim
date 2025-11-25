@@ -1,0 +1,30 @@
+div class="page-header"
+  h1 = t(".title", title: @access.project.title,  default: "Access ")
+
+edit_admin_access_path
+div class="panel-body"
+  h4 =  Core::Project.model_name.human
+  p = link_to @access.project.title, admin_project_path(@access.project)
+  h4 = Core::Cluster.model_name.human
+  p = @access.cluster.name
+
+
+  h3 = Core::Access.human_attribute_name(:available_queues)
+  table class="table table-hover"
+    tr
+      th  = Core::ResourceControl.human_attribute_name(:started_at)
+      th  = Core::ResourceControl.human_attribute_name(:consumed)
+      th  = Core::Access.human_attribute_name(:available_queues)
+      th  = Core::QueueAccess.human_attribute_name(:max_submitted_jobs)
+      th  = Core::QueueAccess.human_attribute_name(:max_running_jobs)
+      th  = Core::QueueAccess.human_attribute_name(:allowed)
+      th  = Core::QueueAccess.human_attribute_name(:synced_with_cluster)
+    - queue_access_groups = @access.queue_accesses.group_by(&:resource_control).values
+    - rowspan = queue_access_groups.count
+    - rowspan = rowspan.zero? ? 1 : rowspan
+    tr
+      = render "queue_access_group", group: queue_access_groups[0]
+    - if rowspan > 1
+      - queue_access_groups[1..].each do |group|
+        tr
+          = render 'queue_access_group', group: group

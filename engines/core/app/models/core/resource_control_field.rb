@@ -6,7 +6,11 @@ module Core
     validates :resource_control_id, uniqueness: { scope: :quota_kind_id }
 
     def stat
-      "#{cur_amount} / #{limit} (#{quota_kind})"
+      "#{cur_value} / #{limit} (#{quota_kind})"
+    end
+
+    def exceeded?
+      !cur_value.nil? && cur_value >= limit
     end
 
 

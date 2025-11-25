@@ -4,7 +4,17 @@ Core::Engine.routes.draw do
     get :generate
   end
   namespace :admin do
-    resources :resource_controls
+    resources :accesses do
+      collection do
+        get :choose_access
+      end
+      member do
+        put :activate_queue
+        put :block_queue
+        put :fire_event
+      end
+    end
+
     resources :notices do
       get :hide
     end
