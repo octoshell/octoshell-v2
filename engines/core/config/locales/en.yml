@@ -576,6 +576,7 @@ en:
           direction_of_sciences_id_in: has one of science directions
           group_of_research_areas_id_in: has one of research area groups
           research_areas_id_in: has one of research areas
+          rereg_participated: Participated in reregistration
           title: Projects
           updated_after: Updated after
           updated_before: Updated before

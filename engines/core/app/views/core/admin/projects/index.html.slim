@@ -16,6 +16,7 @@ div class="page-header"
       /= f.collection_select :members_id_eq, Core::Member.all.order(:login), :id, :login, label: Core::Member.human_attribute_name(:login), include_blank: true
       = f.select :state_in, Core::Project.human_state_names_with_original, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
       = f.collection_select :kind_id_eq, Core::ProjectKind.all, :id, :name, label: Core::Project.human_attribute_name(:kind), include_blank: true
+      = f.collection_select :sessions_id_in, Sessions::Session.all, :id, :description, { label: t('.rereg_participated')}, include_blank: true,  multiple: true
     div class="col-md-3"
       = f.text_field :created_at_lt, options.merge(label: t('.created_before'))
       = f.text_field :first_activation_at_lt, options.merge(label: t('.activated_before'))
