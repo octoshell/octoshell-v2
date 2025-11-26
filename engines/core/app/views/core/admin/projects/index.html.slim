@@ -3,6 +3,8 @@ div class="page-header"
 - options = common_datepicker_options
 = bootstrap_form_for @search, url: admin_projects_path, method: :get, layout: :vertical do |f|
   div class="col-md-12"
+    = f.autocomplete_field :organization_id_in,{ label: Core::Project.human_attribute_name(:organization), source: core.organizations_path}, { multiple: true } do |val|
+      -Core::Organization.find(val).name_with_id
     div class="col-md-3"
       = f.autocomplete_field :id_eq,{ label: Core::Project.human_attribute_name(:id), source: id_finder_admin_projects_path},'redirect-url': '/core/admin/projects/{{id}}'
       = f.autocomplete_field :title_eq,{ label: Core::Project.human_attribute_name(:title), source: finder_admin_projects_path},'redirect-url': '/core/admin/projects/{{id}}'
@@ -10,9 +12,6 @@ div class="page-header"
         -User.find(val).full_name_with_email
       = f.autocomplete_field :members_id_eq,{ label: Core::Member.human_attribute_name(:login), source: core.admin_members_path}, 'redirect-url': '/core/admin/projects/{{project_id}}'
     div class="col-md-3"
-
-      = f.autocomplete_field :organization_id_eq,{ label: Core::Project.human_attribute_name(:organization), source: core.organizations_path} do |val|
-        -Core::Organization.find(val).name_with_id
       /= f.collection_select :members_id_eq, Core::Member.all.order(:login), :id, :login, label: Core::Member.human_attribute_name(:login), include_blank: true
       = f.select :state_in, Core::Project.human_state_names_with_original, { label: Core::Project.human_attribute_name(:state), include_blank: true }, { multiple: true }
       = f.collection_select :kind_id_eq, Core::ProjectKind.all, :id, :name, label: Core::Project.human_attribute_name(:kind), include_blank: true
