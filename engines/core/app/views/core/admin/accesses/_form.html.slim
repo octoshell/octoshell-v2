@@ -1,14 +1,46 @@
-= bootstrap_form_for [:admin, @resource_control], layout: :horizontal do |f|
-  h5
-    | #{Core::Access.model_name.human}:  #{f.object.access.to_s}
-  = f.hidden_field :access_id
-  = f.collection_check_boxes :partition_ids, f.object.available_partitions, :id, :name, label: t('.partitions')
-  = f.text_field :started_at, include_blank: true, class: "datepicker"
-
-  h3 = t('.enter_limits')
-  = f.fields_for :resource_control_fields do |ff|
+= bootstrap_form_for [:admin, @access], layout: :horizontal do |f|
+  h4
+    | #{Core::Access.model_name.human}:  #{@access.to_s}
+  /= f.collection_check_boxes :member_ids, @access.project.members,
+  /                           :id, :full_name, label: t('.notify_about_resources')
+  h4 = Core::ResourceControl.model_name.human
+  p = t('.how_to_add')
+  = f.fields_for :resource_users do |ff|
+    .row
       = ff.hidden_field :id
-      = ff.hidden_field :quota_kind_id
-      = ff.number_field :limit, :step => :any, min: 0, label: ff.object.quota_kind.to_s
+      .col-md-4
+        = ff.autocomplete_field :user_id,{ label: User.model_name.human, source: main_app.users_path} do |val|
+          -User.find(val).full_name_with_email
+      .col-md-4
+        = ff.text_field :email
+      .col-md-3
+        = ff.check_box :_destroy, label: t('.destroy_resource_user')
+  = f.submit t('.add_resource_user'), name: "add_resource_user",
+                                         class: "btn btn-info left-margin"
+  = f.fields_for :resource_controls do |ff|
+      h3
+        -if ff.object.persisted?
+          = t('.control_header', id: ff.object.id)
+        -else
+          = t('new_control')
+      = ff.check_box :_destroy, label: t('.destroy_resource_control')
+      = ff.hidden_field :id
+      = ff.text_field :started_at, include_blank: true, class: "datepicker"
+      = ff.fields_for :resource_control_fields do |fff|
+          = fff.hidden_field :id
+          = fff.hidden_field :quota_kind_id
+          = fff.number_field :limit, :step => :any, min: 0, label: fff.object.quota_kind.to_s
+      = ff.fields_for :queue_accesses do |fff|
+        = render  'queue_access_form', {fff: fff, manage_status: false}
+  h2 = t('.uncontrolled_queue_accesses')
+  = f.fields_for :uncontrolled_queue_accesses do |ff|
+    = render 'queue_access_form', {fff: ff, manage_status: true}
+  css:
+    .left-margin { margin: 20px };
   = f.form_group do
     = f.submit t("actions.save")
+    = f.submit t('.add_resource_control'), name: "add_resource_control",
+                                           class: "btn btn-info left-margin"
+
+
+=javascript_include_tag "core/access"

@@ -1,2 +1,2 @@
 //= require jquery_nested_form
-//= require_tree .
+//= require_tree ./all

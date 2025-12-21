@@ -2,5 +2,11 @@ td style="color: #{queue_access_color(q_a)};"  = q_a.partition.name
 td = q_a.max_running_jobs
 td = q_a.max_submitted_jobs
 - if @access
-  td = q_a.allowed
+  td = q_a.human_state_name
   td = q_a.synced_with_cluster
+td
+  - unless q_a.resource_control
+    -q_a.human_state_names_with_original_except_mine.each do |st|
+        = link_to st[0],
+                  set_queue_status_admin_access_path(q_a, status: st[1]),
+                  class: "btn btn-info btn-sm", method: :put

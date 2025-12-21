@@ -5,9 +5,24 @@ module Core
       c.title_ru.blank? ? t('core_no_name') : c.title_ru
     end
 
+    def resource_control_color(r)
+      case r.status
+      when 'active'
+        'green'
+      when 'blocked'
+        'red'
+      when 'disabled'
+        'purple'
+      else
+        'black'
+      end
+    end
+
     def queue_access_color(q)
       if q.synced_with_cluster
-        q.allowed ? 'green' : 'red'
+        return 'green' if q.active
+        return 'red' if q.blocked
+
       else
         'blue'
       end

@@ -9,9 +9,9 @@ Core::Engine.routes.draw do
         get :choose_access
       end
       member do
-        put :activate_queue
-        put :block_queue
-        put :fire_event
+        put :set_queue_status
+        put :activate_resource_control
+        put :disable_resource_control
       end
     end
 

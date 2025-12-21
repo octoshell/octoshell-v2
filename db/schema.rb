@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_11_25_111742) do
+ActiveRecord::Schema.define(version: 2025_12_21_200135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -698,10 +698,10 @@ ActiveRecord::Schema.define(version: 2025_11_25_111742) do
     t.bigint "access_id"
     t.bigint "partition_id"
     t.bigint "resource_control_id"
+    t.boolean "synced_with_cluster", default: false
+    t.string "status", null: false
     t.integer "max_running_jobs"
     t.integer "max_submitted_jobs"
-    t.boolean "synced_with_cluster", default: false
-    t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["access_id"], name: "index_core_queue_accesses_on_access_id"
@@ -786,10 +786,18 @@ ActiveRecord::Schema.define(version: 2025_11_25_111742) do
     t.datetime "last_sync_at"
     t.date "started_at"
     t.bigint "access_id"
-    t.string "status"
+    t.string "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["access_id"], name: "index_core_resource_controls_on_access_id"
+  end
+
+  create_table "core_resource_users", force: :cascade do |t|
+    t.string "email"
+    t.bigint "access_id"
+    t.bigint "user_id"
+    t.index ["access_id"], name: "index_core_resource_users_on_access_id"
+    t.index ["user_id"], name: "index_core_resource_users_on_user_id"
   end
 
   create_table "core_sureties", id: :serial, force: :cascade do |t|

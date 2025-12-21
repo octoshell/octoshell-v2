@@ -3,10 +3,25 @@
   - rowspan = group.count
   - rowspan = rowspan.zero? ? 1 : rowspan
   - if control
-    td rowspan=rowspan style="color: #{control.disabled? ? 'red' : 'green' };" = control.started_at
-    td rowspan=rowspan style="color: #{control.exceeded? ? 'red' : 'green' };" = control.resource_control_fields.map(&:stat).join("\n")
+    td rowspan=rowspan style="color: #{resource_control_color(control)};" = control.started_at
+    td rowspan=rowspan = control.last_sync_at
+    - if control.disabled?
+      td rowspan=rowspan = control.resource_control_fields.map(&:stat).join("\n")
+    -else
+      td rowspan=rowspan style="color: #{control.exceeded? ? 'red' : 'green' };" = control.resource_control_fields.map(&:stat).join("\n")
+    td rowspan=rowspan
+      -if control.disabled?
+        = link_to t('.activate'),
+                  activate_resource_control_admin_access_path(control),
+                  class: "btn btn-info btn-sm", method: :put
+      -else
+        = link_to t('.disable'),
+                  disable_resource_control_admin_access_path(control),
+                  class: "btn btn-danger btn-sm", method: :put
+
+
   - else
-    td rowspan=rowspan colspan=2
+    td rowspan=rowspan colspan=4
       = t('.no_resource_control')
   = render "queue_access", q_a: group[0]
   -if rowspan > 1

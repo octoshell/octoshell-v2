@@ -1,0 +1,30 @@
+= render "header"
+
+p = t('.access_info', project: @access.project.title, cluster: @access.cluster.name)
+
+css:
+  table {
+    border-collapse: collapse; /* Collapses borders into a single line */
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+
+table
+  tr
+    th = Core::Cluster.model_name.human
+    th = t('.partitions')
+    th = Core::ResourceControl.human_attribute_name(:started_at)
+    th = Core::ResourceControl.human_attribute_name(:consumed)
+
+  - @access.resource_controls.each do |control|
+    tr
+      td = control.access.cluster.name
+      td = control.queue_accesses.map(&:partition).map(&:name).join(" ")
+      td = control.started_at
+      td = control.resource_control_fields.map(&:stat).join("\n")
+
+p
+  = link_to_support
+
+= render "footer"

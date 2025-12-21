@@ -27,10 +27,16 @@ module Core
 
     has_many :fields, class_name: "AccessField", inverse_of: :access, dependent: :destroy
     accepts_nested_attributes_for :fields
-
     validates :project, :cluster, presence: true
     has_many :resource_controls, inverse_of: :access
+    has_many :resource_users, inverse_of: :access
     has_many :queue_accesses, inverse_of: :access
+    has_many :uncontrolled_queue_accesses, -> { where(resource_control_id: nil) },
+                                          inverse_of: :access,
+                                          class_name: 'Core::QueueAccess'
+
+    accepts_nested_attributes_for :resource_controls, :uncontrolled_queue_accesses,
+                                  :resource_users, allow_destroy: true
 
     include AASM
     include ::AASM_Additions
@@ -39,11 +45,11 @@ module Core
       state :closed
 
       event :close do
-        transitions :from => :opened, :to => :closed
+        transitions from: :opened, to: :closed
       end
 
       event :reopen do
-        transitions :from => :closed, :to => :opened
+        transitions from: :closed, to: :opened
       end
     end
 
@@ -59,16 +65,15 @@ module Core
       "#{project.title} | #{cluster.name}"
     end
 
-    def activate_queue_accesses(partitions)
-      partitions.each do |partition|
-        queue_accesses.find_or_create_by(partition: partition).activate
+    def build_queue_accesses
+      resource_controls.each do |control|
+        control.build_resource_control_fields
+        (cluster.partitions - control.queue_accesses.map(&:partition).flatten).each do |part|
+          control.queue_accesses.new(partition: part, access_id: id).mark_for_destruction
+        end
       end
-    end
-
-
-    def block_queue_accesses(partitions)
-      partitions.each do |partition|
-        queue_accesses.find_or_create_by(partition: partition).block
+      (cluster.partitions - uncontrolled_queue_accesses.map(&:partition).flatten).each do |part|
+        uncontrolled_queue_accesses.new(partition: part).mark_for_destruction
       end
     end
 

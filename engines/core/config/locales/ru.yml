@@ -1,6 +1,12 @@
 ---
 ru:
   activerecord:
+    string_enum:
+      core/queueaccess:
+        states:
+          active: Активный
+          blocked: Заблокированный
+          disabled: Отключен
     aasm:
       core/access:
         state:
@@ -319,6 +325,9 @@ ru:
   choose_value: Выберите значение
   core:
     admin:
+      accesses:
+        form:
+          add_resource_control: Добавить контроль 
       cities:
         destroy:
           org_exist: Нельзя удалить город,если в нём есть организации

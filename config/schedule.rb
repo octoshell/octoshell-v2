@@ -8,3 +8,8 @@ end
 every 2.minutes do
  rake "fetch_inbox"
 end
+
+
+every 7.days do
+	runner "Core::SshWorker.perform_async(:calculate_resources)"
+end

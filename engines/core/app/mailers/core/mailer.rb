@@ -95,5 +95,16 @@ module Core
       @user = Core.user_class.find(user_id)
       mail to: @user.email, subject: t(".subject")
     end
+
+    def resource_usage(resource_user_id, access_id)
+      @resource_user = Core::ResourceUser.find(resource_user_id)
+      @access = Core::Access.find(access_id)
+      # .includes(resource_controls: {queue_accesses: :partition,
+      #                                                 access: :cluster,
+      #                                                 resource_control_fields: :quota_kind})
+      mail to: @resource_user.user_or_plain_email, subject: t(".subject")
+    end
+
+
   end
 end
