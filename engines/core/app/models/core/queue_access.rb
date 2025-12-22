@@ -5,7 +5,7 @@ module Core
     belongs_to :partition
     belongs_to :resource_control, inverse_of: :queue_accesses
     validates :access, :partition, :max_running_jobs, :max_submitted_jobs, presence: true
-    string_enum %i[active blocked disabled]
+    string_enum %i[active blocked]
 
     after_initialize({ if: :new_record? }) do |access|
       access.status ||= 'active'
@@ -15,18 +15,18 @@ module Core
     end
 
     def block!
-      update!(status: 'blocked', synced_with_cluster: false) if active?
+      update!(status: 'blocked', synced_with_cluster: false)
     end
 
     def activate!
-      update!(status: 'active', synced_with_cluster: false) if blocked?
+      update!(status: 'active', synced_with_cluster: false)
     end
 
     def set_status(status)
       return if resource_control
 
       self.status = status
-      self.synced_with_cluster = false if status != 'disabled'
+      self.synced_with_cluster = false
       save!
     end
 

@@ -21,7 +21,7 @@
         tr
           td rowspan=rowspan = link_to access.id, admin_access_path(access)
           td rowspan=rowspan = link_to access.project.title, admin_project_path(access.project)
-          td rowspan=rowspan = access.cluster.name
+          td rowspan=rowspan  style="color: #{access.closed? ? 'red' : 'green' };" = access.cluster.name
           = render "queue_access_group", group: queue_access_groups[0]
         - if rowspan > 1
           - queue_access_groups[1..].each do |group|

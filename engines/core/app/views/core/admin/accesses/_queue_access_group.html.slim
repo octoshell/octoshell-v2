@@ -5,10 +5,7 @@
   - if control
     td rowspan=rowspan style="color: #{resource_control_color(control)};" = control.started_at
     td rowspan=rowspan = control.last_sync_at
-    - if control.disabled?
-      td rowspan=rowspan = control.resource_control_fields.map(&:stat).join("\n")
-    -else
-      td rowspan=rowspan style="color: #{control.exceeded? ? 'red' : 'green' };" = control.resource_control_fields.map(&:stat).join("\n")
+    td rowspan=rowspan = control.resource_control_fields.map(&:stat).join("\n")
     td rowspan=rowspan
       -if control.disabled?
         = link_to t('.activate'),

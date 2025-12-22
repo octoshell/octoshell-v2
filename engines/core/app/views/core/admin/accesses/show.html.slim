@@ -12,7 +12,7 @@ div class="panel-body"
   h4 = t('.notify_about_resources')
   - @access.resource_users.includes(:user).each do |r|
       - if r.user_id
-        p = link_to((r.user.full_name, main_app.admin_user_path(r.user_id))
+        p = link_to(r.user.full_name, main_app.admin_user_path(r.user_id))
       - else
         p = r.email
 

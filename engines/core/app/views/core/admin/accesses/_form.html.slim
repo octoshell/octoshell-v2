@@ -22,7 +22,7 @@
         -if ff.object.persisted?
           = t('.control_header', id: ff.object.id)
         -else
-          = t('new_control')
+          = t('.new_control')
       = ff.check_box :_destroy, label: t('.destroy_resource_control')
       = ff.hidden_field :id
       = ff.text_field :started_at, include_blank: true, class: "datepicker"

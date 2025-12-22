@@ -73,7 +73,7 @@ module Core
 
     def disable!
       self.status = 'disabled'
-      queue_accesses.each(&:disabled!)
+      queue_accesses.each(&:block!)
       save!
     end
 

@@ -1,16 +1,19 @@
 module Core
   class Admin::AccessesController < Admin::ApplicationController
     # before_action :setup_default_filter
-    # before_action :octo_authorize!
+    before_action :octo_authorize!
     layout "layouts/core/admin_project"
     def index
-      @search = Access.ransack(params[:q])
+      @search = Access.ransack(params[:q] || { queue_accesses_id_exists: true })
       @search.sorts = 'project_id desc' if @search.sorts.empty?
       @accesses = @search.result(distinct: true)
-                                  .select('core_accesses.*, core_accesses.project_id')
-                                  .includes([%i[project cluster],
-                                            {fields: :quota_kind}]
-                                            )
+                         .select('core_accesses.*, core_accesses.project_id')
+                          .page(params[:page])
+                          .includes(:project, :cluster,
+                            {queue_accesses: [:partition, resource_control:{
+                              resource_control_fields: :quota_kind }]})
+      without_pagination :accesses
+
     end
 
     def show
