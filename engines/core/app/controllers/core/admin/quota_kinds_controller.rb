@@ -36,7 +36,7 @@ module Core
     private
 
     def quota_kind_params
-      params.require(:quota_kind).permit(QuotaKind.locale_columns(:name,:measurement))
+      params.require(:quota_kind).permit(QuotaKind.locale_columns(:name,:measurement), :api_key )
     end
   end
 end
