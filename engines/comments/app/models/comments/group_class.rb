@@ -18,7 +18,7 @@
 
 module Comments
   class GroupClass < ApplicationRecord
-    enum type_ab: %i[read_ab update_ab create_ab create_with_context_ab]
+    old_enum type_ab: %i[read_ab update_ab create_ab create_with_context_ab]
     belongs_to :group
     validates :type_ab, presence: true
     validates :group, uniqueness: { scope: %i[class_name obj_id type_ab]}

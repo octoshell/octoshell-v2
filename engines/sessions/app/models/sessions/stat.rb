@@ -32,7 +32,7 @@ module Sessions
 
     scope :sorted, ->{ order('stats.weight asc') }
 
-    serialize :cache, Array
+    serialize :cache, type: Array
 
     def cache!
       self.cache = graph_data

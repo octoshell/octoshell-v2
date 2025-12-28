@@ -2,10 +2,9 @@ module CloudComputing
   class OpennebulaClient
     #Hash.from_xml(CloudComputing::OpennebulaClient.vm_info(498)[1])['VM']['TEMPLATE']['NIC']
     def self.init
-      settings_hash = Rails.application.secrets.cloud_computing || {}
+      settings_hash = Rails.configuration.secrets[:cloud_computing] || {}
       uri = settings_hash[:opennebula_api_uri]
       return unless uri
-
       @server = XMLRPC::Client.new2(uri)
       @session_string = settings_hash[:session_string]
     end

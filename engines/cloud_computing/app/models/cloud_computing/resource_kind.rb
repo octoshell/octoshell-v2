@@ -1,6 +1,6 @@
 module CloudComputing
   class ResourceKind < ApplicationRecord
-    enum content_type: %i[positive_integer decimal boolean]
+    old_enum content_type: %i[positive_integer decimal boolean]
     translates :name, :description, :measurement, :help
     validates_translated :name, presence: true
     has_many :resources, inverse_of: :resource_kind, dependent: :destroy

@@ -1,6 +1,6 @@
 module CloudComputing
   class Condition < ApplicationRecord
-    enum kind: %i[required available]
+    old_enum kind: %i[required available]
     belongs_to :from, polymorphic: true
     belongs_to :to, polymorphic: true
 

@@ -62,6 +62,17 @@ class ApplicationRecord < ActiveRecord::Base
     record
   end
 
+  def self.old_enum(arg)
+    values = arg.values.first
+    key = arg.keys.first
+    case values
+    when Hash
+      enum arg
+    when Array
+      enum(key, values.each_with_index.map { |x, i| [x, i] }.to_h)
+    end
+  end
+
   scope :id_finder, (lambda do |id|
     where('CAST(id AS varchar) LIKE ?', "%#{id}%")
   end)

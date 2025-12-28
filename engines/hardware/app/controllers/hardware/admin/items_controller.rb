@@ -99,7 +99,7 @@ module Hardware
 
     def json_update
       auth = request.headers['X-OctoAPI-Auth']
-      if auth != Rails.application.secrets.hardware_api
+      if auth != Rails.configuration.secrets[:hardware_api]
         render plain: 'incorrect password', status: :forbidden
         return
       end

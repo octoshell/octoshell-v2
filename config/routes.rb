@@ -766,7 +766,7 @@ Octoshell::Application.routes.draw do
     get :return_to_self, on: :member
   end
 
-  resources :lang_prefs, only: {} do
+  resources :lang_prefs, only: [] do
     collection do
       post :change
     end

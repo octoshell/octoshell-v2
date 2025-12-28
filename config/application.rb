@@ -35,7 +35,7 @@ module Octoshell
 
     config.factory_bot.definition_file_paths +=
            Dir.glob('engines/*/spec/factories') if defined?(FactoryBotRails)
-
+    config.secrets = config_for(:secrets)
 
     # Configuration for the application, engines, and railties goes here.
     #

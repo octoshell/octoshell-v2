@@ -35,7 +35,7 @@ module CloudComputing
         }
       else
         flash = {
-          error: @new_item.errors.to_h
+          error: @new_item.errors.to_hash
         }
       end
       redirect_back fallback_location: @item.holder, flash: flash

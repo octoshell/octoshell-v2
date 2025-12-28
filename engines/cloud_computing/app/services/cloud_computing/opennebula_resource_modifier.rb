@@ -2,12 +2,12 @@ module CloudComputing
   class OpennebulaResourceModifier
 
     def internet_network_id
-      settings_hash = Rails.application.secrets.cloud_computing || {}
+      settings_hash = Rails.configuration.secrets[:cloud_computing] || {}
       settings_hash[:internet_network_id]&.to_s
     end
 
     def inner_network_id
-      settings_hash = Rails.application.secrets.cloud_computing || {}
+      settings_hash = Rails.configuration.secrets[:cloud_computing] || {}
       settings_hash[:inner_network_id]&.to_s
     end
 

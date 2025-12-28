@@ -34,7 +34,7 @@ module Sessions
     end
     unless new_report_material.save
       csv << [new_report_material.report_id, report&.materials&.file&.file,
-              new_report_material.errors.to_h, report.updated_at]
+              new_report_material.errors.to_hash, report.updated_at]
     end
     old_file.close
   end
