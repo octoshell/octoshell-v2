@@ -34,8 +34,8 @@ module Pack
     validates :package, presence: true
     belongs_to :package, inverse_of: :versions
     # belongs_to :ticket, class_name: 'Support::Ticket'
-    has_many :clustervers, inverse_of: :version, :dependent => :destroy
-    has_many :version_options, inverse_of: :version, :dependent => :destroy
+    has_many :clustervers, inverse_of: :version, dependent: :destroy
+    has_many :version_options, inverse_of: :version, dependent: :destroy
     # has_many :options_categories, through: :version_options
     # has_many :category_values, through: :version_options
     has_many :accesses, dependent: :destroy, as: :to
@@ -43,7 +43,9 @@ module Pack
     accepts_nested_attributes_for :clustervers, allow_destroy: true
     # validates_associated :version_options,:clustervers
     validates_associated :clustervers
-    scope :finder, ->(q) { where("lower(name_ru) like lower(:q) OR lower(name_en) like lower(:q)", q: "%#{q.mb_chars}%").limit(10) }
+    scope :finder, lambda { |q|
+      where('lower(name_ru) like lower(:q) OR lower(name_en) like lower(:q)', q: "%#{q.mb_chars}%").limit(10)
+    }
     # validate :date_and_state, :work_with_stale, :pack_deleted
     validate :date_and_state, :pack_deleted
 
@@ -51,9 +53,7 @@ module Pack
 
     before_save :delete_accesses, :make_clvers_not_active, :remove_ticket, :change_state
 
-
-
-    aasm :column => :state do
+    aasm column: :state do
       state :forever, :available, :expired
       event :to_expired do
         transitions from: :available, to: :expired
@@ -69,47 +69,45 @@ module Pack
     end
 
     def pack_deleted
-      if package&.deleted && !deleted
-        errors.add(:deleted, :pack_deleted)
-      end
+      return unless package&.deleted && !deleted
+
+      errors.add(:deleted, :pack_deleted)
     end
 
     def remove_ticket
-      if end_lic.blank? || end_lic > Date.today + Pack.expire_after
-        self.ticket_created = false
-      end
+      return unless end_lic.blank? || end_lic > Date.today + Pack.expire_after
+
+      self.ticket_created = false
     end
 
     def delete_accesses
-      if deleted == true || package.deleted == true
-        self.deleted = true
-      end
-      if deleted == true || state == 'expired' && delete_on_expire
-        accesses.load
-        accesses.each do |a|
-          a.status = 'deleted'
-          a.save
-        end
+      self.deleted = true if deleted == true || package.deleted == true
+      return unless deleted == true || state == 'expired' && delete_on_expire
+
+      accesses.load
+      accesses.each do |a|
+        a.status = 'deleted'
+        a.save
       end
     end
 
     def make_clvers_not_active
-      if deleted == true
-        clustervers.where(active: true).each do |cl|
-          cl.active = false
-          cl.save
-        end
+      return unless deleted == true
+
+      clustervers.where(active: true).each do |cl|
+        cl.active = false
+        cl.save
       end
     end
 
     def change_state
       return if state == 'forever'
 
-      if end_lic >= Date.current
-        self.state = "available"
-      else
-        self.state = "expired"
-      end
+      self.state = if end_lic >= Date.current
+                     'available'
+                   else
+                     'expired'
+                   end
     end
 
     def end_lic_readable
@@ -119,20 +117,21 @@ module Pack
     after_commit :send_emails
 
     def send_emails
-      if previous_changes["state"]
-        accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status IN ('allowed','expired')").each do |ac|
-          ::Pack::PackWorker.perform_async(:version_state_changed, [ac.id, id])
-        end
-        package.accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status IN ('allowed','expired')").each do |ac|
-          ::Pack::PackWorker.perform_async(:version_state_changed, [ac.id, id])
-        end
+      return unless previous_changes['state']
 
+      accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status IN ('allowed','expired')").each do |ac|
+        ::Pack::PackWorker.perform_async(:version_state_changed, [ac.id, id])
+      end
+      package.accesses.where("pack_accesses.who_type in ('User','Core::Project') AND pack_accesses.status IN ('allowed','expired')").each do |ac|
+        ::Pack::PackWorker.perform_async(:version_state_changed, [ac.id, id])
       end
     end
 
     def self.expired_versions
       Version.transaction do
-       where("end_lic IS NOT NULL and end_lic < ? and state='available'", Date.today).each{ |ac| ac.update!(state: 'expired') }
+        where("end_lic IS NOT NULL and end_lic < ? and state='available'", Date.today).each do |ac|
+          ac.update!(state: 'expired')
+        end
       end
     end
 
@@ -143,16 +142,16 @@ module Pack
     end
     where("end_lic IS NOT NULL and end_lic < ? AND state='available'", Date.today).where(ticket_created: false)
 
-
     def self.notify_about_expiring_versions
       return unless expiring_versions_without_ticket.exists?
+
       versions = expiring_versions_without_ticket.to_a
-      if Octoface.role_class?(:support, 'Notificator')
-        Version.transaction do
-          Notificator.notify_about_expiring_versions(expiring_versions_without_ticket)
-          versions.each do |version|
-            version.update!(ticket_created: true)
-          end
+      return unless Octoface.role_class?(:support, 'Notificator')
+
+      Version.transaction do
+        Notificator.notify_about_expiring_versions(expiring_versions_without_ticket)
+        versions.each do |version|
+          version.update!(ticket_created: true)
         end
       end
     end
@@ -162,13 +161,11 @@ module Pack
     end
 
     def self.allowed_for_users_with_joins(user_id)
-      allowed_for_users.user_access(user_id, "LEFT")
+      allowed_for_users.user_access(user_id, 'LEFT')
     end
 
     def self.user_access(user_id, join_type)
-      if user_id == true
-        user_id = 1
-      end
+      user_id = 1 if user_id == true
       join_accesses self, user_id, join_type
     end
 
@@ -180,32 +177,31 @@ module Pack
       join_string = "(pack_accesses.to_id = pack_versions.id AND pack_accesses.to_type = 'Pack::Version' OR
                       pack_accesses.to_id = pack_packages.id AND pack_accesses.to_type = 'Pack::Package')"
       if relation.all.klass == Pack::Version
-        relation = relation.joins("LEFT OUTER JOIN pack_packages ON pack_packages.id = pack_versions.package_id")
+        relation = relation.joins('LEFT OUTER JOIN pack_packages ON pack_packages.id = pack_versions.package_id')
       end
       project_accesses = relation.joins(
-          <<-eoruby
+        <<-EORUBY
           LEFT JOIN "core_members" ON ( "core_members"."user_id" = #{user_id}   )
           #{join_type} JOIN  pack_accesses ON (#{join_string}
           AND "pack_accesses"."who_type" = 'Core::Project'
           AND core_members.project_id = pack_accesses.who_id)
-          eoruby
-        )
+        EORUBY
+      )
       group_accesses = relation.joins(
-          <<-eoruby
+        <<-EORUBY
          LEFT JOIN "user_groups" ON ("user_groups"."user_id" = #{user_id}  )
            #{join_type} JOIN  pack_accesses ON (#{join_string} AND "pack_accesses"."who_type" = 'Group'
           AND user_groups.group_id = pack_accesses.who_id)
-          eoruby
-          )
-      user_accesses  = relation.joins(
-          <<-eoruby
+        EORUBY
+      )
+      user_accesses = relation.joins(
+        <<-EORUBY
           #{join_type} JOIN  pack_accesses ON (#{join_string} AND "pack_accesses"."who_type" = 'User'
           AND #{user_id} = pack_accesses.who_id)
-          eoruby
-            )
+        EORUBY
+      )
       project_accesses.union(group_accesses).union(user_accesses)
     end
-
 
     def deleted?
       deleted || package.deleted
@@ -234,14 +230,12 @@ module Pack
     def build_clustervers
       cluster_ids = clustervers.map(&:core_cluster_id)
       ::Core::Cluster.all.each do |cluster|
-        if cluster_ids.exclude? cluster.id
-          build_clusterver(cluster)
-        end
+        build_clusterver(cluster) if cluster_ids.exclude? cluster.id
       end
     end
 
-    def as_json(_options)
-    { id: id, text: (name + self.package_id.to_s) }
+    def as_json(_options = nil)
+      { id: id, text: (name + package_id.to_s) }
     end
 
     def to_s

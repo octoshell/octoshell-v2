@@ -3,7 +3,12 @@ en:
   mailer:
     footer:
       octo_regards: Yours faithfully, Octoshell.
-
+  date:
+    formats:
+       default: "%Y.%m.%d" 
+  time:
+    formats:
+      default: "%Y.%m.%d %H:%M"
   '':
     core:
       admin:

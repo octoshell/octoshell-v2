@@ -1,24 +1,24 @@
-if ENV["CI_RUN"]
-  require "codeclimate-test-reporter"
+if ENV['CI_RUN']
+  require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 end
-ENV["RAILS_ENV"] ||= "test"
-require File.expand_path("../../config/environment", __FILE__)
-require "rspec/rails"
-require "rspec/autorun"
+ENV['RAILS_ENV'] ||= 'test'
+require File.expand_path('../config/environment', __dir__)
+require 'rspec/rails'
+require 'rspec/autorun'
 require 'shoulda-matchers'
-require "database_cleaner"
-require "factory_bot_rails"
-require "capybara/rspec"
-require "sidekiq/testing"
-require "common_helper"
+require 'database_cleaner'
+require 'factory_bot_rails'
+require 'capybara/rspec'
+require 'sidekiq/testing'
+require 'common_helper'
 
 Sidekiq::Testing.inline!
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
-ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
+ActiveRecord::Migration.check_all_pending! if defined?(ActiveRecord::Migration)
 RSpec.configure do |config|
   config.include Sorcery::TestHelpers::Rails::Controller, type: :controller
   config.include Sorcery::TestHelpers::Rails::Integration, type: :feature
@@ -32,7 +32,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include Requests::Helpers, type: :feature
   config.use_transactional_fixtures = true
-  config.order = "random"
+  config.order = 'random'
   config.infer_base_class_for_anonymous_controllers = false
   DatabaseCleaner.strategy = :transaction
   DatabaseCleaner.clean_with :truncation
@@ -43,10 +43,10 @@ RSpec.configure do |config|
   config.before(:suite) do
     begin
       Group.default!
-      user = User.create!(email: "big_admin@octoshell.ru", password: "123456")
+      user = User.create!(email: 'big_admin@octoshell.ru', password: '123456')
       Thread.current[:user] = user
-      UserGroup.create!(user: user, group: Group.find_by!(name: "superadmins"))
-      UserGroup.create!(user: user, group: Group.find_by!(name: "support"))
+      UserGroup.create!(user: user, group: Group.find_by!(name: 'superadmins'))
+      UserGroup.create!(user: user, group: Group.find_by!(name: 'support'))
       country = Core::Country.create!(title_ru: 'Россия', title_en: 'Russia')
       country.cities.create!(title_ru: 'Москва', title_en: 'Moscow')
       DatabaseCleaner.start
@@ -54,7 +54,7 @@ RSpec.configure do |config|
     ensure
       DatabaseCleaner.clean
     end
-    puts "Seeding data"
+    puts 'Seeding data'
     Seed.all
     Pack::Seed.all
   end

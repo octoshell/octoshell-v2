@@ -26,11 +26,11 @@ module Core
     MERGED_ASSOC = [Employment, Member, Project, SuretyMember].freeze
     include MergeOrganzations
     include Checkable
-    belongs_to :kind, class_name: "Core::OrganizationKind", foreign_key: :kind_id
+    belongs_to :kind, class_name: 'Core::OrganizationKind', foreign_key: :kind_id
     belongs_to :country
     belongs_to :city
 
-    has_many :departments, class_name: "::Core::OrganizationDepartment", inverse_of: :organization
+    has_many :departments, class_name: '::Core::OrganizationDepartment', inverse_of: :organization
 
     has_many :employments, inverse_of: :organization, autosave: true
     has_many :users, class_name: Core.user_class.to_s, through: :employments, inverse_of: :organizations
@@ -48,8 +48,10 @@ module Core
     accepts_nested_attributes_for :departments, allow_destroy: true
     accepts_nested_attributes_for :city, allow_destroy: false
 
-    scope :finder, lambda { |q| where("lower(name) like :q OR lower(abbreviation) like :q OR CAST(id AS TEXT) like :q",
-                                      q: "%#{q.mb_chars.downcase}%").order("name asc") }
+    scope :finder, lambda { |q|
+      where('lower(name) like :q OR lower(abbreviation) like :q OR CAST(id AS TEXT) like :q',
+            q: "%#{q.mb_chars.downcase}%").order('name asc')
+    }
 
     validates :name, :city, :country, presence: true
     validate do
@@ -73,16 +75,16 @@ module Core
 
     def check_location
       unless country
-        puts "Modifying country for #{self.inspect} "
+        puts "Modifying country for #{inspect} "
         self.country = Country.find_or_create_by!(title_en: 'Unknown')
       end
       unless city
-        puts "Modifying city for #{self.inspect} "
+        puts "Modifying city for #{inspect} "
         self.city = City.find_or_create_by!(title_en: 'Unknown', country: country)
       end
       if invalid? && errors[:city_id]
         if city.country
-          puts "#{self.inspect} Organization city #{city.inspect.green} isn't located in organization country #{country.inspect.blue}. Solve this problem before merge and run this script again"
+          puts "#{inspect} Organization city #{city.inspect.green} isn't located in organization country #{country.inspect.blue}. Solve this problem before merge and run this script again"
         else
           puts "Country is not specified for #{city.inspect}".red
         end
@@ -99,7 +101,7 @@ module Core
       short_name
     end
 
-    def as_json(_options)
+    def as_json(_options = nil)
       full_json
     end
 
@@ -111,9 +113,10 @@ module Core
       city.try(:title_ru)
     end
 
-
     def city_title=(title)
-      self.city = country.cities.where(City.current_locale_column(:title) => title.mb_chars).first_or_initialize if title.present? && country.present?
+      return unless title.present? && country.present?
+
+      self.city = country.cities.where(City.current_locale_column(:title) => title.mb_chars).first_or_initialize
     end
 
     def short_name

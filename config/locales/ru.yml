@@ -5,10 +5,10 @@ ru:
       octo_regards: С уважением, Octoshell.
   date:
     formats:
-      default: "%d/%m/%Y"
+       default: "%Y.%m.%d" 
   time:
     formats:
-      default: "%d/%m/%Y %H:%M"
+      default: "%Y.%m.%d %H:%M"
   '':
     core:
       admin:

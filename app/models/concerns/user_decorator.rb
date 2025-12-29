@@ -1,4 +1,3 @@
-# encoding: utf-8
 module UserDecorator
   def self.included(base)
     base.class_eval do
@@ -27,13 +26,13 @@ module UserDecorator
         #       q: "%#{q.mb_chars.downcase}%")
         # .order("name asc")
         string = %w[profiles.last_name profiles.first_name profiles.middle_name email].join("||' '||")
-        #!!! WARNING !!! Postgresql extension!!!
+        # !!! WARNING !!! Postgresql extension!!!
         joins(:profile).where("(#{string}) ILIKE ?", "%#{q}%")
-        .order("profiles.last_name").includes(:profile).distinct(:id)
+        .order('profiles.last_name').includes(:profile).distinct(:id)
       end)
 
       scope :logins, (lambda do |q|
-        Core::Member.where("login ILIKE ?","%#{q}%").map{|a| {id: a.user_id, login: a.login}}
+        Core::Member.where('login ILIKE ?', "%#{q}%").map { |a| { id: a.user_id, login: a.login } }
       end)
 
       scope :inside_groups, (lambda do |*groups|
@@ -41,7 +40,7 @@ module UserDecorator
             .includes(:profile).order('profiles.last_name')
       end)
 
-      def as_json(_options)
+      def as_json(_options = nil)
         { id: id, text: full_name_with_email }
       end
 
@@ -50,7 +49,7 @@ module UserDecorator
       end
 
       interface do
-        #email
+        # email
         def full_name
           profile.full_name
         end
@@ -60,21 +59,21 @@ module UserDecorator
         end
 
         def full_name_with_email
-          [full_name, email].join(" ")
+          [full_name, email].join(' ')
         end
 
         def cut_email
           to_swap = email.rpartition('@').last.rpartition('.').first
-          if to_swap.length >= 2
-            modified = to_swap[0] + '*' + to_swap[-1]
-          else
-            modified = to_swap
-          end
+          modified = if to_swap.length >= 2
+                       to_swap[0] + '*' + to_swap[-1]
+                     else
+                       to_swap
+                     end
           email.gsub(/@#{to_swap}/, "@#{modified}")
         end
 
         def full_name_with_cut_email
-          [full_name, cut_email].join(" ")
+          [full_name, cut_email].join(' ')
         end
 
         def mailsender?

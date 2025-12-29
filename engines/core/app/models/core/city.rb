@@ -25,18 +25,19 @@ module Core
     validate do
       errors.add(:title_ru, :name_required) if title_ru.blank? && title_en.blank?
     end
-    validates :title_ru, format: { with: /\A[а-яё№\d[:space:][:punct:]\+]+\z/i,
-                                   message: I18n.t("errors.must_be_in_russian")},
+    validates :title_ru, format: { with: /\A[а-яё№\d[:space:][:punct:]+]+\z/i,
+                                   message: I18n.t('errors.must_be_in_russian') },
                          if: proc { |c| c.title_ru.present? && checked }
-    validates :title_en, format: { with: /\A[a-z\d[:space:][:punct:]\+]+\z/i,
-                                   message: I18n.t("errors.must_be_in_english") },
+    validates :title_en, format: { with: /\A[a-z\d[:space:][:punct:]+]+\z/i,
+                                   message: I18n.t('errors.must_be_in_english') },
                          if: proc { |c| c.title_en.present? && checked }
 
-    scope :finder, ->(q){ where("title_ru like :q OR title_en like :q", q: "%#{q.mb_chars}%").order(:title_ru) }
+    scope :finder, ->(q) { where('title_ru like :q OR title_en like :q', q: "%#{q.mb_chars}%").order(:title_ru) }
 
     def bad
       return if country
-      puts "---------------------------"
+
+      puts '---------------------------'
       puts inspect
       puts organizations.inspect
       if Organization.where(city: self).distinct.count(:country_id) == 1
@@ -48,7 +49,7 @@ module Core
           puts c.inspect
         end
       end
-      puts "---------------------------"
+      puts '---------------------------'
     end
 
     def check_country
@@ -70,7 +71,7 @@ module Core
       titles
     end
 
-    def as_json(options)
+    def as_json(options = nil)
       { id: id, text: "#{title}, #{country.title}" }
     end
 
@@ -90,6 +91,5 @@ module Core
         destroy!
       end
     end
-
   end
 end

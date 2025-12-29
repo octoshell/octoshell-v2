@@ -24,12 +24,11 @@
 
 module Core
   class Project < ApplicationRecord
-
-    belongs_to :kind, class_name: "Core::ProjectKind", foreign_key: :kind_id
+    belongs_to :kind, class_name: 'Core::ProjectKind', foreign_key: :kind_id
     belongs_to :organization
     belongs_to :organization_department
 
-    has_one :card, class_name: "Core::ProjectCard", dependent: :destroy,
+    has_one :card, class_name: 'Core::ProjectCard', dependent: :destroy,
                    inverse_of: :project, validate: true
 
     has_many :project_critical_technologies, inverse_of: :project
@@ -54,18 +53,18 @@ module Core
 
     has_many :requests, inverse_of: :project
     has_many :requested_clusters,
-             -> { where(core_requests: {state: ['pending', 'active']})},
+             -> { where(core_requests: { state: %w[pending active] }) },
              through: :requests, source: :cluster
 
     has_many :accesses, inverse_of: :project
-    has_many :available_clusters, -> { where(core_accesses: {state: 'opened'}) },
-                                  through: :accesses, source: :cluster
+    has_many :available_clusters, -> { where(core_accesses: { state: 'opened' }) },
+             through: :accesses, source: :cluster
 
-    has_many :synchronization_logs, class_name: "Core::ClusterLog", inverse_of: :project
+    has_many :synchronization_logs, class_name: 'Core::ClusterLog', inverse_of: :project
 
     has_many :sureties, inverse_of: :project
 
-    has_many :invitations, class_name: "Core::ProjectInvitation"
+    has_many :invitations, class_name: 'Core::ProjectInvitation'
     has_many :project_versions, inverse_of: :project
 
     accepts_nested_attributes_for :card, :sureties
@@ -75,17 +74,20 @@ module Core
                                   allow_destroy: true
     validates :card, :title, :organization, :kind, presence: true, if: :project_is_not_closing?
     validates :project_direction_of_sciences, :project_critical_technologies,
-      :project_research_areas, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }, if: :project_is_not_closing?
+              :project_research_areas, length: { minimum: 1, message: I18n.t('errors.choose_at_least') }, if: :project_is_not_closing?
 
     validate do
-      errors.add(:organization_department, :dif) if organization_department && organization_department.organization != organization
+      if organization_department && organization_department.organization != organization
+        errors.add(:organization_department,
+                   :dif)
+      end
     end
 
-    scope :finder, lambda { |q| where("lower(title) like :q", q: "%#{q.mb_chars.downcase}%").order("title asc") }
+    scope :finder, ->(q) { where('lower(title) like :q', q: "%#{q.mb_chars.downcase}%").order('title asc') }
 
     def members_for_new_surety
       members.joins(:user).where(project_access_state: :engaged,
-                                  users: { access_state: 'active'})
+                                 users: { access_state: 'active' })
     end
 
     after_create :engage_owner
@@ -103,26 +105,16 @@ module Core
       return self if type != 1 && type != 2
 
       scope = if type == 2
-        Perf::Job.project_id_in_period
-      else
-        Perf::Job.joins(:member)
-                 .select('DISTINCT core_members.project_id as p_id')
-      end
-      if date_after.present?
-        scope = scope.where("jobstat_jobs.submit_time >= '#{date_after}'")
-      end
-      if date_before.present?
-        scope = scope.where("jobstat_jobs.submit_time <= '#{date_before}'")
-      end
-      if core_hours_gt.present?
-        scope = scope.merge(Perf::Job.having_core_hours('>=', core_hours_gt))
-      end
-      if type == 1
-        scope = scope.group('core_members.project_id')
-      end
-      if type == 2
-        scope = scope.group(Perf::Job.coalesce_project)
-      end
+                Perf::Job.project_id_in_period
+              else
+                Perf::Job.joins(:member)
+                         .select('DISTINCT core_members.project_id as p_id')
+              end
+      scope = scope.where("jobstat_jobs.submit_time >= '#{date_after}'") if date_after.present?
+      scope = scope.where("jobstat_jobs.submit_time <= '#{date_before}'") if date_before.present?
+      scope = scope.merge(Perf::Job.having_core_hours('>=', core_hours_gt)) if core_hours_gt.present?
+      scope = scope.group('core_members.project_id') if type == 1
+      scope = scope.group(Perf::Job.coalesce_project) if type == 2
       if core_hours_lt.present?
         if !core_hours_gt.present? || core_hours_gt.to_i.zero?
           scope = scope.merge(Perf::Job.having_core_hours('>', core_hours_lt))
@@ -141,22 +133,24 @@ module Core
     end)
 
     def on_deactivate
-      #!!! after_transition :active => [:cancelled, :blocked, :finished] do |project, transition|
+      # !!! after_transition :active => [:cancelled, :blocked, :finished] do |project, transition|
       # Core::MailerWorker.perform_async(:project_suspended, project.id)
       accesses.where(state: :opened).map(&:close!)
-      members.where(:project_access_state=>:allowed).map(&:suspend!)
+      members.where(project_access_state: :allowed).map(&:suspend!)
       update(finished_at: Time.current) if finished?
       synchronize!
     end
 
     def on_activate
-      #!!! after_transition [:closed, :finihed, :blocked, :cancelled, :suspended] => :active do |project, transition|
-      accesses.where(state: :closed).map{|a| a.reopen!; a.save}
-      members.where(:project_access_state=>:suspended).map(&:activate!)
+      # !!! after_transition [:closed, :finihed, :blocked, :cancelled, :suspended] => :active do |project, transition|
+      accesses.where(state: :closed).map do |a|
+        a.reopen!
+        a.save
+      end
+      members.where(project_access_state: :suspended).map(&:activate!)
       ::Core::MailerWorker.perform_async(:project_activated, id)
       synchronize!
     end
-
 
     def invite_member(user_id)
       user = ::Core.user_class.find(user_id)
@@ -168,9 +162,9 @@ module Core
       end
       ::Core::MailerWorker.perform_async(:invitation_to_project, [user.id, id])
     rescue ::ActiveRecord::RecordNotUnique
-      errors.add :member, I18n.t("errors.user_is_already_in_members", email: user.full_name)
+      errors.add :member, I18n.t('errors.user_is_already_in_members', email: user.full_name)
     rescue ::ActiveRecord::RecordNotFound
-      errors.add :member, I18n.t("errors.user_is_not_registered")
+      errors.add :member, I18n.t('errors.user_is_not_registered')
     end
 
     def drop_member(user_id)
@@ -183,8 +177,8 @@ module Core
     end
 
     def spare_clusters
-      ::Core::Cluster.where.not(id: requested_clusters.pluck(:id) | available_clusters.pluck(:id)).
-              where(available_for_work: true)
+      ::Core::Cluster.where.not(id: requested_clusters.pluck(:id) | available_clusters.pluck(:id))
+                     .where(available_for_work: true)
     end
 
     # TODO: выяснить этот момент
@@ -200,7 +194,7 @@ module Core
       title
     end
 
-    def as_json(options)
+    def as_json(options = nil)
       { id: id, text: title }
     end
 
@@ -215,7 +209,7 @@ module Core
     end
 
     def self.ransackable_scopes(_auth_object = nil)
-      [:choose_to_hide, :hide_options_before, :hide_options_after]
+      %i[choose_to_hide hide_options_before hide_options_after]
     end
 
     def project_is_not_closing?
@@ -224,8 +218,8 @@ module Core
 
     include AASM
     include ::AASM_Additions
-    aasm(:state, :column => :state) do
-      state :pending, :initial => true   # свежесозданный проект
+    aasm(:state, column: :state) do
+      state :pending, initial: true # свежесозданный проект
       state :cancelled # руководитель отменил работу над проектом
       state :active    # активен, по проекту есть работа
       state :suspended # приостановлен на некоторое время
@@ -235,7 +229,7 @@ module Core
       state :finished  # проект завершён
 
       event :activate do
-        transitions :from => :pending, :to => :active
+        transitions from: :pending, to: :active
         after do
           synchronize!
         end
@@ -243,52 +237,51 @@ module Core
         before do
           self.first_activation_at = Time.current
         end
-
       end
 
       event :cancel do
-        transitions :from => [:pending, :active], :to => :cancelled
+        transitions from: %i[pending active], to: :cancelled
         after do
-          on_deactivate if aasm(:state).from_state==:active
+          on_deactivate if aasm(:state).from_state == :active
         end
       end
 
       event :block do
-        transitions :from => :active, :to => :blocked
+        transitions from: :active, to: :blocked
         after do
           on_deactivate
         end
       end
 
       event :unblock do
-        transitions :from => :blocked, :to => :active
+        transitions from: :blocked, to: :active
         after do
           on_activate
         end
       end
 
       event :suspend do
-        transitions :from => :active, :to => :suspended
+        transitions from: :active, to: :suspended
       end
 
       event :reactivate do
-        transitions :from => :suspended, :to => :active
+        transitions from: :suspended, to: :active
         after do
           on_activate
         end
       end
 
       event :finish do
-        transitions :from => [ :pending, :active,
-                    :suspended, :blocked,
-                    :cancelled, :closing, :closed], :to => :finished
+        transitions from: %i[pending active
+                             suspended blocked
+                             cancelled closing closed], to: :finished
         after do
-          on_deactivate if aasm(:state).from_state==:active
+          on_deactivate if aasm(:state).from_state == :active
         end
       end
 
       event :resurrect do
-        transitions :from => [:closed, :cancelled, :finished], :to => :active
+        transitions from: %i[closed cancelled finished], to: :active
         after do
           on_activate
         end
@@ -302,7 +295,7 @@ module Core
           core_members.user_id = e.user_id AND
           e.organization_department_id = #{department.id}")
         .where('core_projects.organization_department_id IS NULL OR core_projects.organization_department_id != e.organization_department_id ')
-        .where(core_members: {organization_id: department.organization_id, owner: true})
+        .where(core_members: { organization_id: department.organization_id, owner: true })
         .distinct('core_projects.id')
     end
 

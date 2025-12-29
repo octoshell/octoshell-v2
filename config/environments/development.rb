@@ -1,4 +1,4 @@
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -13,19 +13,18 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
-
   # Enable server timing
   config.server_timing = true
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join("tmp/caching-dev.txt").exist?
+  if Rails.root.join('tmp/caching-dev.txt').exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      "Cache-Control" => "public, max-age=#{2.days.to_i}"
+      'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -44,15 +43,14 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :letter_opener
 
-  config.base_host = "localhost"
+  config.base_host = 'localhost'
 
-  config.action_mailer.default_options = { from: "info@localhost" }
-  config.action_mailer.default_url_options = { host: "localhost" }
-
+  config.action_mailer.default_options = { from: 'info@localhost' }
+  config.action_mailer.default_url_options = { host: 'localhost' }
 
   config.action_mailer.perform_caching = false
 
-  #nginx is for serving files, and rails -- for authorization
+  # nginx is for serving files, and rails -- for authorization
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
   config.middleware.insert(0, Rack::Sendfile, config.action_dispatch.x_sendfile_header)
 
@@ -61,7 +59,7 @@ Rails.application.configure do
 
   config.logger = Logger.new(config.paths['log'].first, 'weekly', 5.megabytes)
   config.logger.level = Logger::DEBUG
-  config.log_tags = [:remote_ip, :request_method,  lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
+  config.log_tags = [:remote_ip, :request_method, ->(req) { Time.now }] # , lambda { |req| req.session.inspect}]
   config.colorize_logging = true
 
   # Raise exceptions for disallowed deprecations.
@@ -79,9 +77,7 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
-
   config.assets.debug = true
-
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
@@ -99,5 +95,4 @@ Rails.application.configure do
   # logger           = ActiveSupport::Logger.new(STDOUT)
   # logger.formatter = config.log_formatter
   # config.logger = ActiveSupport::TaggedLogging.new(logger)
-
 end
