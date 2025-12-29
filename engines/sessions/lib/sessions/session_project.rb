@@ -49,6 +49,7 @@ module Sessions
     def moderate_included_projects(selected_project_ids)
       exclude_projects_from_session(selected_project_ids)
       update(involved_project_ids: selected_project_ids)
+      create_personal_user_surveys
     end
 
     def exclude_projects_from_session(selected_project_ids)

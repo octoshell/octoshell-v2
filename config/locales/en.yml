@@ -151,6 +151,26 @@ en:
       options_category: Category of options
       profile: Profile
   admin:
+    block_emails:
+      block_emails:
+        success: You successully blocked email delivery for checked users.
+      fetch_emails:
+        hint: Messages are grouped by addresses
+        email: Email
+        emails_found: Addresses found
+        messages: Messages
+        show_messages: Show messages
+        title: List of messages in  %{name} box from  %{date_gte}
+        users_found: Users found
+      select_box:
+        box_name: Box name
+        date_gte: Starting date
+        how_it_works: >-
+            Create an email box, containing messages from delivery software and
+            users to be "email" blocked. Fill the form and check users to be "email"
+            blocked on the following page. Address is retrieved from the "Final-Recipient" and
+            the "Original-Recipient" fields.
+        title: Block email delivery for users
     groups:
       edit:
         title: Edit group
@@ -211,6 +231,12 @@ en:
       projects_list:
         no_projects_found: No projects found
       show:
+        block_emails: Block email delivery
+        block_emails_explanation: >-
+          If this option is set, Octoshell does not deliver emails for a user, except
+          emails required for authentication.The feature helps to avoid unnecessary
+          workload for a mail server by not tring to deliver  undeliverable letters.
+          User can ublock email delivery in any moment.
         block_user: Block access
         days_short: day
         delete_user: Delete user account
@@ -219,6 +245,7 @@ en:
         none: none
         present: present
         reg_date: Registation date
+        unblock_emails: Unblock email delivery
         unblock_user: Unblock access
       table:
         no_employment:
@@ -228,6 +255,7 @@ en:
   admin_submenu:
     announcements: Announcements
     api: API
+    block_emails: Block email delivery assistant
     cities: Cities
     cluster_logs: Cluster log
     clusters: Clusters
@@ -357,6 +385,14 @@ en:
       email: Email
       is_admin: Administator
       title: Users
+    unblock_emails:
+      link: link
+      you_unblocked_email: You unblocked your email address successfully!
+      your_email_blocked: >-
+        Octoshell does not send you emails anymore except ones used for authentication.
+        That happened because our mail server failed to send you emails (your email
+        is overflowed, email box does not exist etc.). Fix the problem and press this
+        %{link}
   views:
     pagination:
       first: First

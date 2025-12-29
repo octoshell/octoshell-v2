@@ -3,15 +3,18 @@
 # Table name: support_fields
 #
 #  id                   :integer          not null, primary key
-#  name_ru              :string(255)
-#  hint_ru              :string(255)
-#  required             :boolean          default(FALSE)
 #  contains_source_code :boolean          default(FALSE)
+#  hint_en              :string
+#  hint_ru              :string(255)
+#  kind                 :integer          default("text")
+#  model_collection     :string
+#  name_en              :string
+#  name_ru              :string(255)
+#  required             :boolean          default(FALSE)
+#  search               :boolean          default(FALSE)
 #  url                  :boolean          default(FALSE)
 #  created_at           :datetime
 #  updated_at           :datetime
-#  name_en              :string
-#  hint_en              :string
 #
 
 module Support

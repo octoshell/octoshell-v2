@@ -114,7 +114,7 @@ module Core
       scope = scope.where("jobstat_jobs.submit_time <= '#{date_before}'") if date_before.present?
       scope = scope.merge(Perf::Job.having_core_hours('>=', core_hours_gt)) if core_hours_gt.present?
       scope = scope.group('core_members.project_id') if type == 1
-      scope = scope.group(Perf::Job.coalesce_project) if type == 2
+      scope = scope.group(Perf::Job.new_coalesce_project) if type == 2
       if core_hours_lt.present?
         if !core_hours_gt.present? || core_hours_gt.to_i.zero?
           scope = scope.merge(Perf::Job.having_core_hours('>', core_hours_lt))
@@ -262,6 +262,9 @@ module Core
 
       event :suspend do
         transitions from: :active, to: :suspended
+        after do
+          on_deactivate
+        end
       end
 
       event :reactivate do

@@ -645,8 +645,14 @@ GEM
       tsort
     redis (5.4.1)
       redis-client (>= 0.22.0)
+    redis-classy (2.4.1)
+      redis-namespace (~> 1.0)
     redis-client (0.26.2)
       connection_pool
+    redis-mutex (4.0.2)
+      redis-classy (~> 2.0)
+    redis-namespace (1.11.0)
+      redis (>= 4)
     ref (2.0.0)
     regexp_parser (2.11.3)
     reline (0.6.3)
@@ -893,6 +899,7 @@ DEPENDENCIES
   rake
   ransack
   redis
+  redis-mutex
   reports!
   responders
   rspec-its

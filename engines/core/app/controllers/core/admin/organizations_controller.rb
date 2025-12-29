@@ -1,6 +1,6 @@
 module Core
   class Admin::OrganizationsController < Admin::ApplicationController
-    layout "layouts/core/admin"
+    layout "layouts/core/admin_organization"
     before_action :octo_authorize!, except: :show
 
     def index

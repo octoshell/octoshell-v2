@@ -25,10 +25,21 @@ module LocalizedEmails
       deliver_now
     end
 
+    def non_blocking_delivery?
+      processed_mailer.try(:non_blocking_delivery?)
+    end
+
+
     def message
       messages = MessagesCollection.new
       addresses = Array(old_message.to)
       users = User.where(email: addresses).to_a
+      unless non_blocking_delivery?
+        users.select(&:block_emails).each do |u|
+          addresses.delete(u.email)
+        end
+      end
+      BatchSidekiq.raise_error_if_limit_reached(addresses.count)
       grouped_addresses = addresses.group_by do |to|
         language || users.detect { |u| u.email == to }&.language || DEFAULT_LOCALE
       end

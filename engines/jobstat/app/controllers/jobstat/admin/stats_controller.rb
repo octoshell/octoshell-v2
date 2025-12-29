@@ -13,9 +13,9 @@ module Jobstat
       @projects = NodeHourCounter.for_projects(
         @project_relation,
         job_result
-      ).preload([{ owner: [:profile] }, :organization, :organization_department])
+      ).preload([{ owner: [:profile] }, :organization, :organization_department]).order(:id)
 
-      without_pagination :projects unless params[:csv]
+      # without_pagination :projects unless params[:csv]
 
       @project_partitions = NodeHourCounter.for_projects_and_partitions(@projects, job_result)
                                            .group_by do |row|
@@ -107,9 +107,9 @@ module Jobstat
 
       sep = /[\s,;]+/
       %w[id_in id_not_in].each do |key|
-        next unless key
-
         value = q[key]
+        next unless value.present?
+
         if value =~ /^(\d+#{sep})*\d*$/
           q[key] = value.split(sep)
         else

@@ -1,0 +1,22 @@
+div class="page-header"
+  h1 = t(".title")
+
+  div class="row well btn-toolbar"
+    = link_to t('.new_control'), choose_access_admin_resource_controls_path(@project), class: "btn btn-info"
+- options = common_datepicker_options
+= bootstrap_form_for @search, url: admin_resource_controls_path, method: :get, layout: :vertical do |f|
+  = f.select :status_in, Core::ResourceControl.human_state_names_with_original, { label: Core::Project.human_attribute_name(:status), include_blank: true }, { multiple: true }
+  = f.autocomplete_field :access_project_id_eq,{ label: Core::Project.model_name.human,
+                                                    source: finder_admin_projects_path} do |val|
+    - Core::Project.find(val).title
+  = f.collection_select  :access_cluster_id_in, Core::Cluster.all, :id, :name,
+                         { label: Core::Cluster.model_name.human }, multiple: true
+  = f.grouped_collection_select :partitions_id_in,
+                                 Core::Cluster.where(available_for_work: true).includes(:partitions),
+                                :partitions, :name, :id, :name,
+                                { label: t('.has_partition_in') }, multiple: true
+
+  = f.form_group do
+    = f.submit t("actions.find"), class: "btn btn-primary"
+
+= render "table", resource_controls: @resource_controls

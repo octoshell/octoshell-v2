@@ -2,6 +2,10 @@
   div class="well btn-toolbar"
       = link_to t(".login_as_user"), main_app.login_as_user_path(@user), class: "btn btn-success"
       = link_to t(".edit_groups_involvement"), [:edit, :admin, @user], class: "btn btn-default"
+      -if @user.block_emails
+        = link_to t(".unblock_emails"), [:unblock_emails, :admin, @user], method: :patch, class: "btn btn-info"
+      -else
+        = link_to t(".block_emails"), [:block_emails, :admin, @user], method: :patch, class: "btn btn-danger"
       = link_to t(".delete_user"), [:admin, @user], method: :delete, class: "btn btn-danger"
       /= link_to t(".show_similar"), find_similar_admin_user_path(@user), class: "btn btn-default"
 
@@ -29,6 +33,11 @@ div class="row"
       - else
         span class="label label-danger" = t('.none')
     h4 = "#{t('.reg_date')}: #{l @user.created_at.to_date} (#{(Date.current - @user.created_at.to_date).to_i} #{t('.days_short')})"
+    h4
+        | #{User.human_attribute_name :block_emails}
+        span data-bs-toggle="tooltip" data-bs-placement="right" title=t('.block_emails_explanation')
+            span class="glyphicon glyphicon-question-sign"
+        | : #{t(@user.block_emails)}
 
 h4 = User.human_attribute_name(:groups)
 ul class="list-unstyled"

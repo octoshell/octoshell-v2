@@ -709,13 +709,11 @@
 #       data_table GET  /data-table(.:format)                rails_db/dashboard#data_table
 #       standalone GET  /standalone(.:format)                rails_db/dashboard#standalone
 
-require "sidekiq/web"
-require "admin_constraint"
+require 'sidekiq/web'
+require 'admin_constraint'
 
 Octoshell::Application.routes.draw do
-
   mount RailsEmailPreview::Engine, at: '/admin/emails'
-
 
   # This line mounts Api routes at /api by default.
 
@@ -723,7 +721,7 @@ Octoshell::Application.routes.draw do
   # mount Wikiplus::Engine, :at => "/wikiplus"
 
   # This line mounts Wiki routes at /wiki by default.
-  #mount Wiki::Engine, :at => "/wiki"
+  # mount Wiki::Engine, :at => "/wiki"
 
   # This line mounts Wiki routes at /wiki by default.
   # mount Wiki::Engine, :at => "/wiki"
@@ -746,24 +744,24 @@ Octoshell::Application.routes.draw do
   # mount Face::Engine, at: "/"
 
   # This line mounts Authentication's routes at /auth by default.
-  mount Authentication::Engine, at: "/auth"
+  mount Authentication::Engine, at: '/auth'
 
   # mount Pack::Engine, at: "/pack"
   # mount Announcements::Engine, :at => "/announcements"
 
   Octoface::OctoConfig.instances.values.each do |instance|
-    instance_eval &instance.routes_block if instance.routes_block
+    instance_eval(&instance.routes_block) if instance.routes_block
   end
   # mount Hardware::Engine, at: "/hardware"
   # mount Reports::Engine, at: "/reports"
 
-
-  root "face/home#show"
+  root 'face/home#show'
 
   # Journal
   resources :users do
     get :login_as, on: :member
     get :return_to_self, on: :member
+    patch :unblock_emails, on: :collection
   end
 
   resources :lang_prefs, only: [] do
@@ -782,12 +780,10 @@ Octoshell::Application.routes.draw do
     member do
       get :values
     end
-
   end
 
-
   namespace :admin do
-    mount Sidekiq::Web => "/sidekiq", :constraints => AdminConstraint.new
+    mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
     get 'journal' => 'journal#journal'
     # get "journal" => "journal#journal"
 
@@ -795,7 +791,8 @@ Octoshell::Application.routes.draw do
       member do
         post :block_access
         post :unblock_access
-        #get :find_similar
+        patch :block_emails
+        patch :unblock_emails
       end
       collection do
         get :id_finder
@@ -807,11 +804,18 @@ Octoshell::Application.routes.draw do
     end
 
     resources :options_categories do
-
     end
-    mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+
+    resources :block_emails, only: [] do
+      collection do
+        get :select_box
+        get :fetch_emails
+        post :block_emails
+      end
+    end
+    mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
   end
-  #get '*path.:ext', to: 'catch_all#index', xhr: true
+  # get '*path.:ext', to: 'catch_all#index', xhr: true
 end
 
 # require "#{Rails.root}/engines/core/config/routes.rb"

@@ -1,3 +1,4 @@
+p =t('.how_to_select_org')
 - if @employment.organization
   = bootstrap_nested_form_for @employment, layout: :horizontal do |f|
     = f.text_field :organization, readonly: true
@@ -9,13 +10,14 @@
       = f.hidden_field :organization_department_name
     = f.form_group do
       = f.check_box :primary
-    = f.fields_for :positions do |ff|
+    = f.fields_for :positions, f.object.positions.sort_by(&:name).reverse do |ff|
       = ff.hidden_field :id
       = ff.hidden_field :employment_position_name_id
       - if ff.object.available_values.any?
-        = ff.collection_select :field_id, ff.object.available_values, :id, :name, label: ff.object.name, include_blank: true
+        = ff.collection_select :field_id, ff.object.available_values, :id, :name,
+          label: ff.object.name, help: ff.object.hint, include_blank: true
       - else
-        = ff.text_field :value, label: ff.object.name
+        = ff.text_field :value, label: ff.object.name, help: ff.object.hint
 
     = f.form_group do
       = f.submit t("actions.save")

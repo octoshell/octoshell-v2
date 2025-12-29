@@ -1,0 +1,18 @@
+div style="display: flex; gap: 50px;"
+  = fff.hidden_field :id
+  = fff.hidden_field :access_id
+  = fff.hidden_field :partition_id
+  = fff.check_box :_destroy, {checked: !fff.object.marked_for_destruction?,
+                            label: fff.object.partition.name}, 0, 1
+  = fff.check_box :synced_with_cluster
+  /- options = {wrapper: {label: { class: "col-sm-9" }, control: { class: "col-sm-3" } }}
+  /- options = {label_class: 'col-sm-6 control-label',wrapper: { class: 'form-group' }, control_class: 'col-sm-6' }
+  -options = {wrapper: { class: 'fix-labels' } }
+
+  = fff.text_field :max_running_jobs, {wrapper: { class: 'fix-labels' } }
+  = fff.text_field :max_submitted_jobs, {wrapper: { class: 'fix-labels' } }
+  -if manage_status
+    div style="display: flex; gap: 10px;"
+      = fff.collection_radio_buttons_without_bootstrap :status,
+                                     Core::QueueAccess.human_state_names_with_original,
+                                     :second, :first

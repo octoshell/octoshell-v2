@@ -29,7 +29,7 @@ table class="table table-striped"
     th class="col-xs-1"
     - @sessions.each do |session|
       td = link_to session.description, [:admin, session]
-  - Sessions.user_class.experts.where(id: Sessions::Report.distinct.pluck(:expert_id)).each do |expert|
+  - User.where(id: Sessions::Report.distinct.pluck(:expert_id)).includes(:profile).each do |expert|
       tr
         td = link_to expert.profile.full_name, octo_url_for(:admin, expert)
         - @sessions.each do |session|

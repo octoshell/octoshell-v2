@@ -34,8 +34,11 @@ module Support
 
     before_create do
       attach_answered_by_flag
-      notify_subscribers
       ticket.subscribers << author unless ticket.subscribers.include? author
+    end
+
+    after_commit do
+      notify_subscribers
     end
 
     # def create_or_update

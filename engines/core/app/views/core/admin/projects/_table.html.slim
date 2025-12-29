@@ -14,7 +14,7 @@
         th class="col-xs-1"
           - th_title = Core::Project.human_attribute_name(:created_at)
           - if @search
-            = sort_link @search, :created_at, th_title, default_order: :desc
+            = sort_link @search, :id, th_title, default_order: :desc
           - else
             = th_title
         th

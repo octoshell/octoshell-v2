@@ -19,6 +19,7 @@
 #  updated_at   :datetime         not null
 #  drms_job_id  :bigint(8)        not null
 #  drms_task_id :bigint(8)
+#  initiator_id :integer
 #
 # Indexes
 #

@@ -16,7 +16,8 @@ module ReceiveEmails
 
     def continue_processing?
       user && (!message.header['Auto-Submitted'] ||
-               message.header['Auto-Submitted'].to_s == 'no')
+               message.header['Auto-Submitted'].to_s == 'no') &&
+        !message.header['X-Autorespond']
     end
 
     def topic
@@ -30,25 +31,24 @@ module ReceiveEmails
       item.filename
     end
 
-    def text_content?(item)
-      item.content_type.start_with?('text/')
-    end
-
     def text_part
-      text_content?(@message) && @message ||
-        message.parts.detect { |part| text_content? part }
+      message.text_part || message.html_part
     end
 
     def file_parts
-      # file_content?(@message) && @message ||
       message.parts.select { |part| file_content? part }
     end
 
 
     def new_ticket_message
-      (text_part&.body || @message.content_type.to_s.inspect)
-        .to_s.gsub(/\n$/, '')
+      raise "text/plain or type/html Content-Type is not found for email" unless text_part
 
+      body_string = text_part.body.decoded
+      charset = text_part.charset
+      return body_string unless charset && charset.casecmp("utf-8") != 0
+
+      # Force the encoding of the decoded string, then transcode to UTF-8
+      body_string.force_encoding(charset).encode("UTF-8")
     end
 
     def add_attachment(model_instance, content, name)
@@ -84,6 +84,7 @@ module ReceiveEmails
 
     def create_ticket
       return unless ticket_creation_allowed?
+
       ticket = Support::Ticket.new(subject: message.subject,
                                    message: new_ticket_message,
                                    topic: topic,
@@ -96,7 +97,7 @@ module ReceiveEmails
          Support::Ticket.find(ticket_id).reporter != user
         raise 'foreign ticket'
       end
-      message_body = new_ticket_message.rpartition(/-{#{Support.dash_number}}/).last
+      message_body = new_ticket_message
       reply = Support::Reply.new(message:  message_body,
                                  ticket_id: ticket_id,
                                  author: user)
@@ -120,8 +121,8 @@ module ReceiveEmails
       return unless continue_processing?
 
       begin
-        ticket_string = text_part&.body.to_s[/ticket_id:\d+.*-{#{Support.dash_number}}/]
-        if ticket_string
+        ticket_string = text_part&.body.to_s #[/ticket_id:\d+.*-{#{Support.dash_number}}/]
+        if ticket_string[/ticket_id:\d+/]
           I18n.with_locale(user.language.to_sym) do
             ActiveRecord::Base.transaction do
               create_reply ticket_string[/ticket_id:\d+/][/\d+/]

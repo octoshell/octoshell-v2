@@ -1,0 +1,5 @@
+source "https://rubygems.org"
+
+gem 'mina'
+gem 'mina-scp', require: false
+gem 'mina-whenever'

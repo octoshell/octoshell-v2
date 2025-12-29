@@ -11,7 +11,7 @@ div class="row" id="accesses"
         th = Core::Access.human_attribute_name(:updated_at)
       - accesses.each do |access|
         tr class=(access.opened? ? "success" : "danger")
-          td = access.cluster.name
+          td = link_to(access.cluster.name, admin_access_path(access))
           td = access.cluster.host
           td = access.quota_resources_info
           td = l access.created_at.to_date

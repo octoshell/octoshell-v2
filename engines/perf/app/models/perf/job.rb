@@ -1,3 +1,36 @@
+# == Schema Information
+#
+# Table name: jobstat_jobs
+#
+#  id           :integer          not null, primary key
+#  cluster      :string(32)       not null
+#  command      :string(1024)
+#  end_time     :datetime
+#  login        :string(32)
+#  nodelist     :text
+#  num_cores    :bigint(8)
+#  num_nodes    :bigint(8)
+#  partition    :string(32)
+#  start_time   :datetime
+#  state        :string(32)
+#  submit_time  :datetime
+#  timelimit    :bigint(8)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  drms_job_id  :bigint(8)        not null
+#  drms_task_id :bigint(8)
+#  initiator_id :integer
+#
+# Indexes
+#
+#  index_jobstat_jobs_on_end_time     (end_time)
+#  index_jobstat_jobs_on_login        (login)
+#  index_jobstat_jobs_on_partition    (partition)
+#  index_jobstat_jobs_on_start_time   (start_time)
+#  index_jobstat_jobs_on_state        (state)
+#  index_jobstat_jobs_on_submit_time  (submit_time)
+#  uniq_jobs                          (cluster,drms_job_id,drms_task_id) UNIQUE
+#
 module Perf
   class Job < ::ApplicationRecord
     self.table_name = "jobstat_jobs"
@@ -17,6 +50,12 @@ module Perf
       def for_projects_in_session(start_date, finish_date, session_id)
         # submitted_in(start_date, finish_date)
           joins_projects_in_session(session_id)
+      end
+
+      def new_coalesce_project
+        <<-SQL
+         COALESCE(core_members.project_id,core_removed_members.project_id)
+        SQL
       end
 
       def coalesce_project
@@ -44,18 +83,29 @@ module Perf
         )
       end
 
+
       def join_all_projects
         join_projects.joins(
           <<-SQL
-        LEFT JOIN versions ON core_members.id IS NULL AND
-          versions.item_type = 'Core::Member' AND versions.object IS NOT NULL AND
-          versions.object LIKE CONCAT('%login: ', jobstat_jobs.login, '%\n')
+        LEFT JOIN core_removed_members ON core_members.id IS NULL AND
+          core_removed_members.login = jobstat_jobs.login
           SQL
        )
       end
 
+
+      # def join_all_projects
+      #   join_projects.joins(
+      #     <<-SQL
+      #   LEFT JOIN versions ON core_members.id IS NULL AND
+      #     versions.item_type = 'Core::Member' AND versions.object IS NOT NULL AND
+      #     versions.object LIKE CONCAT('%login: ', jobstat_jobs.login, '%\n')
+      #     SQL
+      #  )
+      # end
+
       def project_id_in_period
-        select("DISTINCT #{coalesce_project} AS p_id ").join_all_projects
+        select("DISTINCT #{new_coalesce_project} AS p_id ").join_all_projects
       end
 
 

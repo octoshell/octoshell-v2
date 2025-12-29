@@ -81,7 +81,9 @@ module Core
       access = request.project.accesses.find_or_create_by!(cluster_id: request.cluster_id,
                                                            project_group_name: project_group_name)
       request.fields.each do |request_field|
-        access.fields.create!(quota_kind_id: request_field.quota_kind_id, quota: request_field.value)
+        access.fields
+              .find_or_initialize_by(quota_kind_id: request_field.quota_kind_id)
+              .tap { |a| a.quota = request_field.value }.save!
       end
     end
 

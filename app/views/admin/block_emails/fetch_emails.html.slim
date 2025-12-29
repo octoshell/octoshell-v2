@@ -1,0 +1,42 @@
+div class="page-header"
+  h1 = t(".title", name: @form.name, date_gte: @form.date_gte)
+p = t('.hint')
+= form_tag block_emails_admin_block_emails_path do
+  - if @emails.any?
+    h3 #{t('.emails_found')}: #{@emails.count}
+    h3 #{t('.users_found')}: #{@users.count}
+
+    div class="panel-body"
+      table class="table table-hover"
+        tr
+          th = check_box_tag "check-all-box"
+          th = t('.email')
+          th = User.model_name.human
+          th = User.human_attribute_name(:block_emails)
+          th = t('.messages')
+        - @emails.each do |e|
+          tr
+            td = e.user ? check_box_tag("ids[]", e.user.id) : '-'
+            td = e.email
+            td = e.user ? link_to(e.user.full_name, octo_url_for(:admin, e.user)) : '-'
+            td = e.user ? t(e.user.block_emails)  : ''
+            td
+              details
+                summary
+                  a = t('.show_messages')
+                table class="table table-hover"
+                  -e.messages.each do |m|
+                    tr
+                      td = m
+    = submit_tag t("actions.submit"), class: "btn btn-default"
+
+javascript:
+  $(document).ready(function(){
+    $("input#check-all-box").on("click", function(e){
+      var boxes = $("input#ids_");
+      var original_box = this;
+      boxes.each(function(i, e){
+        e.checked = original_box.checked;
+      });
+    });
+  });

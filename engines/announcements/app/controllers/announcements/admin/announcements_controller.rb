@@ -54,6 +54,12 @@ module Announcements::Admin
       redirect_to admin_announcements_path
     end
 
+    def send_mails
+      Announcement.find(params[:announcement_id]).send_mails
+      redirect_to admin_announcements_path
+    end
+
+
     def destroy
       @announcement = Announcement.find(params[:id])
       @announcement.destroy
@@ -67,6 +73,7 @@ module Announcements::Admin
     end
 
     def show_users
+      flash_now_message(:notice, t('.blocked_email_explanation'))
       process_ransack_params
       @announcement = Announcement.find(params[:announcement_id])
       @search = Announcements.user_class.ransack(params[:q])
@@ -76,6 +83,7 @@ module Announcements::Admin
                else
                  @users.where(profiles: {receive_info_mails: true})
                end
+      @users = @users.where(block_emails: false)
       @recipient_ids = @announcement.recipient_ids
     end
 
@@ -90,21 +98,25 @@ module Announcements::Admin
 
     private
 
-    def process_ransack_params
+    def process_csv_like_params(keys, elem_format)
       q = params[:q]
-      return unless q
-
-      sep = /[\s,;]+/
-      %w[projects_id_in projects_id_not_in].each do |key|
+      Array(keys).each do |key|
         next unless key
 
+        sep = /[\s,;]+/
         value = q[key]
-        if value =~ /^(\d+#{sep})*\d*$/
+        if value =~ /^((#{elem_format})#{sep})*(#{elem_format})*$/
           q[key] = value.split(sep)
         else
           flash_message('error', t(".#{key}_error"))
         end
       end
+    end
+
+    def process_ransack_params
+      return unless params[:q]
+      process_csv_like_params(%w[projects_id_in projects_id_not_in], /\d+/)
+      process_csv_like_params('email_in', /[a-zA-Z0-9.!\#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*/)
     end
 
 

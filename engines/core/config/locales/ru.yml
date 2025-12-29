@@ -73,6 +73,7 @@ ru:
             closed: заблокирован
     attributes:
       core/access:
+        available_queues: Очереди
         cluster: Кластер
         cluster_id: Кластер
         created_at: Выдан
@@ -241,6 +242,17 @@ ru:
         group: Группа
         group_id: Группа
         name: Наименование
+      core/resource_control:
+        started_at: Отслеживание начато с
+        consumed: Потрачено
+        last_sync_at: Последняя синхронизация
+
+      core/queue_access:
+        max_submitted_jobs: Макс. число ждущих заданий
+        max_running_jobs: Макс. число работающих заданий
+        status: Статус доступа
+        synced_with_cluster: Синхронизирован с кластерами
+
       core/surety:
         author: Автор
         boss_full_name: ФИО руководителя организации-поручителя
@@ -300,10 +312,19 @@ ru:
       core/project_card: Карточка проекта
       core/project_invitation: Приглашение в проект
       core/project_kind: Тип проекта
+      core/resource_control: Контроли ресурсов
       core/quota_kind: Вид квоты на ресурсы
       core/request: Запрос на доступ к кластеру
       core/research_area: Область науки
       core/surety: Поручительство
+    string_enum:
+      core/queueaccess:
+        actions:
+          active: Активировать
+          blocked: Заблокировать
+        states:
+          active: Активный
+          blocked: Заблокированный
   admin:
     notices:
       other: Другое
@@ -319,6 +340,68 @@ ru:
   choose_value: Выберите значение
   core:
     admin:
+      accesses:
+        activate_resource_control:
+          success: 'Успешно включен контроль ресурсов'
+        disable_resource_control:
+          success: 'Успешно отключён контроль ресурсов'
+        edit:
+          title: 'Редактировать свойства контроля ресурсов'
+        form:
+          add_resource_control: Добавить контроль
+          add_resource_user: Добавить пользователя в рассылку
+          control_header: "Контроль ресурсов # %{id}"
+          destroy_resource_control: 'Удалить этот контроль ресурсов'
+          destroy_resource_user: 'Удалить пользователя из рассылки'
+          new_control: Новый контроль ресурсов
+          how_to_add: Добавьте либо зарегистрированного в Octoshell пользователя
+                      в рассылку через левое поле, либо введите email справа
+          uncontrolled_queue_accesses: 'Доступы в очереди без автоматического контроля ресурсов'
+        index:
+          control_info: >-
+            В этом разделе можно настроить доступ к очередям, к которым у
+            пользователя нет доступа по-умолчанию, а также настроить сбор и
+            рассылку статистики использования ресурсов к этим очередям.
+            На этой странице представлен список доступов с полями "Проект" и "Клаcтер",
+            у которого в свою очередь может быть несколько доступов к очередям,
+            каждый из которых может быть <span style="color:green;">активным</span> или
+            <span style="color:red;">заблокированным</span>.
+            <span style="color:purple;">Сиреневым цветом </span> выделены доступы,
+            которые пока не синхронизированы с кластерами. Значения макс. числа заданий
+            по-умолчанию можно настроить для каждой очереди на странице "Кластеры".
+            Доступы к очереди можно объединить одним "контролем ресуров",
+            в этом случае доступы управляются только автоматически через их
+            контроли ресурсов, каждый из которых может быть
+            <span style="color:green;">активным</span> (если лимит ресурсов не достигнут),
+            <span style="color:red;">заблокированным</span> (если лимит ресурсов не достигнут),
+            <span style="color:purple;">отключённым </span> (как заблокированный,
+            но в этом случае значения затраченных ресурсов не будут обновляться).
+            В таблице ниже доступы к очередям сгруппированы по контролю ресурсов
+            на первом уровне, по доступу проекта -- на втором.
+
+
+
+          has_partition_in: Имеет доступ к очереди
+          has_queue_accesses: Есть доступ к очередям
+
+          title: 'Список доступов'
+        queue_access_group:
+          activate: 'Активировать контроль ресурсов'
+          disable: 'Отключить контроль ресурсов'
+          no_resource_control: 'Нет контроля ресурсов'
+        set_queue_status:
+          success: 'Успешно изменён статус доступа в очередь'
+        show:
+          edit: 'Редактировать доступ'
+          notify_about_resources: Рассылать статистику ресурсов пользователям
+          queue_access_actions: 'Действия с доступом к очереди'
+          resource_control_actions: 'Действия с контролем ресурсов'
+          title: 'Доступ'
+        table:
+          queue_access_actions: 'Действия с доступом к очереди'
+          resource_control_actions: 'Действия с контролем ресурсов'
+        update:
+          success: 'Доступ успешно отредактирован'
       cities:
         destroy:
           org_exist: Нельзя удалить город,если в нём есть организации
@@ -512,6 +595,7 @@ ru:
           new_organization: Новая организация
           none: Не имеет значения
           noo: Нет
+          projects_state_in: Есть проект в состояниях
           title: Организации
           yess: Да
         load_source_objects:
@@ -616,6 +700,7 @@ ru:
           direction_of_sciences_id_in: В одном из направлений исследований
           group_of_research_areas_id_in: В одной из групп областей науки
           research_areas_id_in: В одной из областей науки
+          rereg_participated: Участвовал в перерегистрации
           title: Проекты
           updated_after: Обновлен после
           updated_before: Обновлен до
@@ -627,14 +712,14 @@ ru:
           project_access_state: Есть доступ к проекту
           send_email_to_member: Отправить email участнику
           title: Участники
-        requests:
-          access_request: Заявки на доступ к ресурсам СКЦ МГУ
-          resources_requested: Запрошено ресурсов
         removed_members:
-          title: Удаленные участники
           email: Email
           login: Логин
           remove_date: Дата удаления
+          title: Удаленные участники
+        requests:
+          access_request: Заявки на доступ к ресурсам СКЦ МГУ
+          resources_requested: Запрошено ресурсов
         show:
           close: Закрыть
           description: Описание
@@ -776,6 +861,12 @@ ru:
         title: Новый ssh-ключ
     employments:
       form:
+        how_to_select_org: >-
+          Для заполнения места работы необходимо выбрать организацию и потом её
+          подразделение. ВУЗ и филиал ВУЗа являются организациями, факультеты и лаборатории --
+          их подразделениями. Это же необходимо учесть и при создании организации.
+          Новые организации для участия в проектах должны быть утверждены
+          администраторами Octoshell, о чём они информируются автоматически.
         add_organization: Добавить организацию
         new_organization_department: Добавить подразделение (если это необходимо)
         no_department: Подразделение не обязательно (кроме МГУ). Не нашли своё подразделение?
@@ -878,6 +969,11 @@ ru:
           (%{pid}) отклонена.
         open_support: Открыть раздел техподдержки.
         subject: Заявка №%{number} отклонена
+      resource_usage:
+        access_info: Ниже приведена статистика использования ресурсов по
+                     доступу для проекта "%{project}" на кластере "%{cluster}"
+        partitions: 'Очереди'
+        subject: 'Статистика использования ресурсов'
       surety_accepted:
         msg_comment: Желаем Вам плодотворной работы и успехов в исследовании!
         msg_surety_accepted: Поручительство №%{id} в рамках проекта «%{title}» (%{pid})
@@ -935,9 +1031,11 @@ ru:
         notice_succeed: Не удалось создать уведомление
       form:
         for_all: Для всех
+        other: TRME other
         personal: Персональные
         show_from: Показ с
         show_till: Показ до
+        visible: TRME visible
       hide: Скрыть
       index:
         active: Активно
@@ -956,6 +1054,7 @@ ru:
         personal: Персональное
         show_from: Показ с
         show_till: Показ до
+        visible: TRME Visible
     notificator:
       check:
         show: Перейти на страницу записи
@@ -972,6 +1071,7 @@ ru:
         title: Новая организация
     projects:
       accesses:
+        new_resource_control: Новый контроль ресурсов
         quota_resources_info: Выделено ресурсов
         title: Доступ к ресурсам СКЦ МГУ
       edit:
@@ -1080,6 +1180,7 @@ ru:
         add_scan: Добавить скан
         help: 'Поддерживаются форматы: pdf, png, jpeg, jpg.'
         remove_scan: Удалить скан
+      fill_post: Введите должность в организации
       new:
         title: Создание поручительства
       show:
@@ -1101,6 +1202,8 @@ ru:
     merge_edit: Слияние
     organizations_list: Список организаций
     prepare_merge: Неслитые организации
+    projects_list: Список проектов
+    acess_management: Управление доступом к очередям
   errors:
     choose_at_least: выберите не менее %{count}
     choose_at_max: Выберите не более  %{count}

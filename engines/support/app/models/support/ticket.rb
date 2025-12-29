@@ -72,12 +72,18 @@ module Support
     after_commit :notify_support, on: :create
 
     scope :find_by_content, -> (q) do
-      processed = q.mb_chars.split(' ').join('%')
-      #left_join(:replies).where("support_replies.message LIKE :q OR support_tickets.message LIKE :q",q: "%#{processed}%")
-      tickets = where("message ILIKE ? OR subject ILIKE ?", "%#{processed}%" , "%#{processed}%" )
-      replies = ::Support::Reply.where("message LIKE ?", "%#{processed}%" )
-      tickets.or(::Support::Ticket.where(replies: replies))
+      words = q.mb_chars.split
+
+      string = "UPPER(support_tickets.message || ' ' ||
+        COALESCE(support_replies.message, '') || ' ' || support_tickets.subject)"
+
+      predicate = words.count.times.map do
+        "(position(UPPER(?) in #{string})>0)"
+      end.join(" AND ")
+      left_joins(:replies).where(predicate, *words)
     end
+
+
 
     after_save do
       field_values.where(value: ['', nil]).destroy_all

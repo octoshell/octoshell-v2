@@ -11,4 +11,7 @@ Sidekiq.configure_client do |config|
     port: ENV['REDIS_PORT'] || '6379'
   }
 end
+
 Sidekiq.strict_args!(false)
+RedisClassy.redis = Redis.new(host: ENV['REDIS_HOST'],
+                              port: ENV['REDIS_PORT'] || '6379')

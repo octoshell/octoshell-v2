@@ -14,6 +14,7 @@
 #  name_ru          :string
 #  service          :boolean          default(FALSE), not null
 #  state            :string
+#  ticket_created   :boolean          default(FALSE)
 #  created_at       :datetime
 #  updated_at       :datetime
 #  package_id       :integer

@@ -58,7 +58,7 @@ module Core
 
     def setup_default_filter
       params[:q] ||= { state_in: ["pending"] }
-      params[:q][:meta_sort] ||= "created_at.desc"
+      params[:q][:s] ||= "id desc"
     end
 
     def request_params

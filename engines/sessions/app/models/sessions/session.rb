@@ -101,7 +101,7 @@ module Sessions
       personal_surveys = surveys.where(only_for_project_owners: false)
       personal_surveys.each do |personal_survey|
         User.with_active_projects.merge(involved_projects).find_each do |user|
-          user.surveys.create!(session: self, survey: personal_survey)
+          user.surveys.where(session: self, survey: personal_survey).first_or_create!
         end
       end
     end

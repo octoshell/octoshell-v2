@@ -13,6 +13,7 @@
 # Indexes
 #
 #  index_jobstat_digest_float_data_on_job_id  (job_id)
+#  jobstat_digest_float_data_pkey             (id)
 #
 
 module Jobstat

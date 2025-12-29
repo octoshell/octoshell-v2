@@ -3,7 +3,8 @@
 
 - if session[:soul_id]
   div class="right-float-return"
-    = link_to t("actions.return_to_self_session"), main_app.return_to_self_user_path(current_user), class: "btn btn-lg btn-danger fa fa-sign-out"
+    = link_to main_app.return_to_self_user_path(current_user), class: "btn btn-lg btn-danger",align: "left" do
+      span.fa.fa-sign-out = t("actions.return_to_self_session")
 
 div class='right-float-button'
   div class="right-float-button-text"

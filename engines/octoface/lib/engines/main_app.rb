@@ -7,6 +7,8 @@ module FakeMainApp
     add_ability(:manage, :groups, 'superadmins') #Если абилки нет, то она создаётся
     add_controller_ability(:manage, :groups, 'admin/groups') #В указанных контроллерах используется :manage :reports
     add_ability(:manage, :options, 'superadmins') #Если абилки нет, то она создаётся
+    add_controller_ability(:manage, :users, 'admin/block_emails') #В указанных контроллерах используется :manage :reports
+
     after_init do
       Face::MyMenu.items_for(:user_submenu) do
         add_item('profile', t('user_submenu.profile'), main_app.profile_path, 'profiles',
@@ -33,6 +35,11 @@ module FakeMainApp
                               main_app.admin_options_categories_path,
                               %r{admin/options})
         end
+
+        add_item_if_may('block_emails', t("admin_submenu.block_emails"),
+                            main_app.select_box_admin_block_emails_path,
+                            'admin/block_emails')
+
 
         if Rails.env.development?
           add_item('letter_opener', 'Letter opener',

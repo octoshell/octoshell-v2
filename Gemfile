@@ -89,8 +89,8 @@ gem 'active_record_union'
 gem 'config', github: 'railsconfig/config'
 gem 'decorators' # , '~> 2.0.3'
 gem 'redis'
+gem 'redis-mutex'
 gem 'whenever'
-
 group :test, :development do
   gem 'factory_bot_rails'
   gem 'letter_opener'

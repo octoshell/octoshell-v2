@@ -8,7 +8,7 @@ module Core
     add_controller_ability(:manage, :projects, 'admin/projects',
                            'admin/project_kinds', 'admin/direction_of_sciences',
                            'admin/critical_technologies', 'admin/research_areas',
-                           'admin/group_of_research_areas')
+                           'admin/group_of_research_areas', 'admin/accesses')
     add_ability(:manage, :sureties, 'superadmins')
     add_controller_ability(:manage, :sureties, 'admin/sureties')
     add_ability(:manage, :requests, 'superadmins')

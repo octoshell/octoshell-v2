@@ -47,5 +47,17 @@ module Core
     def self.can_not_be_automerged?(department)
       can_not_be_automerged(department).exists?
     end
+
+    def self.full_names_and_posts
+      includes(user: [:profile, { employments: :positions }]).to_a.map do |m|
+        employment = m.user.employments.detect do |e|
+          e.organization_id == m.organization_id &&
+            e.organization_department_id == m.organization_department_id
+        end || m.user.employments.detect do |e|
+          e.organization_id == m.organization_id
+        end
+        "#{m.full_name}, #{employment&.post_in_organization || I18n.t('core.sureties.fill_post')}"
+      end
+    end
   end
 end

@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: core_project_versions
+#
+#  id             :bigint(8)        not null, primary key
+#  object         :text
+#  object_changes :text
+#  created_at     :datetime         not null
+#  project_id     :bigint(8)        not null
+#
+# Indexes
+#
+#  index_core_project_versions_on_project_id  (project_id)
+#
 module Core
   class ProjectVersion < ApplicationRecord
     RECORDED_ASSOCS = %w[card critical_technologies direction_of_sciences

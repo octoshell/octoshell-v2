@@ -1,4 +1,4 @@
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -22,7 +22,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
+  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
@@ -53,20 +53,15 @@ Rails.application.configure do
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
   config.middleware.insert(0, Rack::Sendfile, config.action_dispatch.x_sendfile_header)
 
-
-
-  # Include generic and useful information about system operation, but avoid logging too much
-  # information to avoid inadvertent exposure of personally identifiable information (PII).
-  config.logger = Logger.new(config.paths['log'].first, 'weekly', 5.megabytes)
-  config.log_tags = [:remote_ip, lambda { |req| Time.now}] #, lambda { |req| req.session.inspect}]
+  config.logger = Logger.new(config.paths['log'].first)
+  config.log_tags = [:remote_ip, ->(req) { Time.now }] # , lambda { |req| req.session.inspect}]
   config.logger.level = Logger::DEBUG
   config.colorize_logging = false
   # Set to :debug to see everything in the log.
   config.log_level = :info
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ lambda{|r| Rime.now}, :remote_ip ]
-
+  config.log_tags = [->(r) { Rime.now }, :remote_ip]
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -90,14 +85,14 @@ Rails.application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
-
   config.cache_store = :redis_cache_store
+  config.base_host = Rails.application.secrets.base_host || 'users.parallel.ru'
+  config.action_mailer.default_options = {
+    from: "Octoshell Notifier <#{(h = Rails.application.secrets[:email]) ? h[:login] : 'info@users.parallel.ru'}>"
+  }
+  config.action_mailer.default_url_options = { host: config.base_host, protocol: 'https' }
 
-  # Use a different logger for distributed setups.
-  # require "syslog/logger"
-  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
-
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
@@ -106,12 +101,20 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    :address => "smtp.parallel.ru",
-    :port => 25
-  }
+  config.action_mailer.smtp_settings = if (h = Rails.application.secrets[:email])
+                                         {
+                                           address: h[:host],
+                                           port: h[:smtp_port] || 587,
+                                           user_name: h[:login],
+                                           password: h[:password],
+                                           domain: config.base_host
+                                         }
+                                       else
+                                         {
+                                           address: 'smtp.parallel.ru',
+                                           port: 25
+                                         }
+                                       end
 
   config.i18n.fallbacks = [I18n.default_locale]
-
-
 end
