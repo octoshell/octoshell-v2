@@ -1,5 +1,4 @@
 module StringEnum
-
   def human_state_name
     self.class.aasm_translate('states', status)
   end
@@ -13,9 +12,8 @@ module StringEnum
   end
 
   module ClassMethods
-
     def string_enum(statuses)
-      enum status: statuses.map { |v| [v, v.to_s] }.to_h
+      enum :status, statuses.map { |v| [v, v.to_s] }.to_h
     end
 
     def translate_state_path
@@ -41,6 +39,5 @@ module StringEnum
     def human_state_names_with_original
       statuses.keys.map { |s| [aasm_translate('states', s), s.to_s] }
     end
-
   end
 end

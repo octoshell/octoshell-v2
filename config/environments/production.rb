@@ -86,9 +86,9 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
   config.cache_store = :redis_cache_store
-  config.base_host = Rails.application.secrets.base_host || 'users.parallel.ru'
+  config.base_host = Rails.configuration.secrets.base_host || 'users.parallel.ru'
   config.action_mailer.default_options = {
-    from: "Octoshell Notifier <#{(h = Rails.application.secrets[:email]) ? h[:login] : 'info@users.parallel.ru'}>"
+    from: "Octoshell Notifier <#{(h = Rails.configuration.secrets[:email]) ? h[:login] : 'info@users.parallel.ru'}>"
   }
   config.action_mailer.default_url_options = { host: config.base_host, protocol: 'https' }
 
@@ -101,7 +101,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = if (h = Rails.application.secrets[:email])
+  config.action_mailer.smtp_settings = if (h = Rails.configuration.secrets[:email])
                                          {
                                            address: h[:host],
                                            port: h[:smtp_port] || 587,

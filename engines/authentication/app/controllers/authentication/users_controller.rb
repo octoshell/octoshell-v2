@@ -8,13 +8,13 @@ class Authentication::UsersController < Authentication::ApplicationController
     @user = User.new(params[:user] ? user_params : {})
     @user.language = session[:locale]
     if !params[:cond] || cond_params[:cond_accepted].to_i != 1
-      flash_now_message :notice, t("authentication.flash.conditions_must_be_accepted")
+      flash_now_message :notice, t('authentication.flash.conditions_must_be_accepted')
       @errors = true
     end
 
-    if Rails.application.secrets.yandex_captcha && !captcha_valid?
+    if Rails.configuration.secrets.yandex_captcha && !captcha_valid?
       @errors = true
-      flash_now_message :notice, t("authentication.flash.pass_captcha")
+      flash_now_message :notice, t('authentication.flash.pass_captcha')
     end
 
     if !@errors && @user.save
@@ -30,9 +30,9 @@ class Authentication::UsersController < Authentication::ApplicationController
       @user.activate!
       @user.save
       auto_login @user
-      flash_message :notice, t("authentication.flash.user_is_activated")
+      flash_message :notice, t('authentication.flash.user_is_activated')
     else
-      flash_message :notice, t("authentication.flash.user_is_not_registered")
+      flash_message :notice, t('authentication.flash.user_is_not_registered')
     end
 
     redirect_back_or_to(root_url)
@@ -45,7 +45,7 @@ class Authentication::UsersController < Authentication::ApplicationController
 
   def captcha_valid?
     uri = URI('https://smartcaptcha.yandexcloud.net/validate')
-    uri.query = URI.encode_www_form(secret: Rails.application.secrets.yandex_captcha[:server_key],
+    uri.query = URI.encode_www_form(secret: Rails.configuration.secrets.yandex_captcha[:server_key],
                                     token: params['smart-token'],
                                     ip: request.remote_ip)
     res = Net::HTTP.get_response(uri)
@@ -59,8 +59,8 @@ class Authentication::UsersController < Authentication::ApplicationController
   end
 
   def user_params
-    p=params.require(:user).permit(:email, :password, :password_confirmation)
-    p[:email]=p[:email].to_s.downcase
+    p = params.require(:user).permit(:email, :password, :password_confirmation)
+    p[:email] = p[:email].to_s.downcase
     p
   end
 end
