@@ -35,6 +35,6 @@ class Admin::GroupsController < Admin::ApplicationController
   private
 
   def group_params
-    params.require(:group).permit(:name, permissions_attributes: [ :id, :available ])
+    params.require(:group).permit(:name, permissions_attributes: %i[id available])
   end
 end

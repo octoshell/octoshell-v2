@@ -1,9 +1,7 @@
 class Admin::OptionsCategoriesController < Admin::ApplicationController
-
   before_action do
     authorize! :manage, :options
   end
-
 
   def index
     @records = OptionsCategory.order(:id)
@@ -43,7 +41,7 @@ class Admin::OptionsCategoriesController < Admin::ApplicationController
     end
   end
 
-   def destroy
+  def destroy
     @option = OptionsCategory.find(params[:id])
     @option.destroy
     redirect_to admin_options_categories_path
@@ -52,7 +50,8 @@ class Admin::OptionsCategoriesController < Admin::ApplicationController
   private
 
   def option_params
-    params.require(:options_category).permit *OptionsCategory.locale_columns(:name),
-                                             category_values_attributes: [:id, :_destroy, CategoryValue.locale_columns(:value)]
+    params.require(:options_category).permit(*OptionsCategory.locale_columns(:name),
+                                             category_values_attributes: [:id, :_destroy,
+                                                                          CategoryValue.locale_columns(:value)])
   end
 end

@@ -1,20 +1,18 @@
-
 module Comments
   class Admin::GroupClassesController < Admin::ApplicationController
-
     def edit
       group_class_radio_enums = ['none', false, true]
-      group_class_radio_options = ['none', false, true].map{ |e|  t(".#{e}") }
+      group_class_radio_options = ['none', false, true].map { |e| t(".#{e}") }
 
       properties = GroupClass.type_abs.keys.map do |k|
-        [k, {"enum" => group_class_radio_enums, "required" => true }]
+        [k, { 'enum' => group_class_radio_enums, 'required' => true }]
       end
-      @properties = Hash[properties]
+      @properties = properties.to_h
       options = GroupClass.type_abs.keys.map do |k|
-        [k, { "label" => t("types_labels.#{k}"), "validate" => false ,
-              "type" => "radio", "optionLabels" => group_class_radio_options }]
+        [k, { 'label' => t("types_labels.#{k}"), 'validate' => false,
+              'type' => 'radio', 'optionLabels' => group_class_radio_options }]
       end
-      @options = Hash[options]
+      @options = options.to_h
       @alpaca_raw_json = {
         group_options: Group.all.map(&:id),
         group_labels: Group.all.map(&:name),
@@ -24,7 +22,7 @@ module Comments
         properties: @properties,
         options: @options
       }
-      @alpaca_raw_json[:obj_type_labels] = @alpaca_raw_json[:obj_type_options].map{ |e| t ".#{e}"}
+      @alpaca_raw_json[:obj_type_labels] = @alpaca_raw_json[:obj_type_options].map { |e| t ".#{e}" }
     end
 
     def update
@@ -55,7 +53,7 @@ module Comments
           defa.save!
         end
       end
-      render json: {success: true}
+      render json: { success: true }
     end
 
     # def list_objects
@@ -69,12 +67,12 @@ module Comments
     # end
 
     def type_abs
-      obj_id = params[:obj_id] == '' ? nil : params[:obj_id];
+      obj_id = params[:obj_id] == '' ? nil : params[:obj_id]
       @defaults_hash = {
-                    class_name: params[:class_name],
-                    obj_id:  obj_id,
-                    group_id: nil
-                  }
+        class_name: params[:class_name],
+        obj_id: obj_id,
+        group_id: nil
+      }
       @groups_hash = @defaults_hash.dup
       @groups_hash[:group_id] = params[:group_id]
       @defaults = GroupClass.where(@defaults_hash).to_a
@@ -82,17 +80,14 @@ module Comments
       @defaults_json = {}
       @groups_json = {}
       GroupClass.type_abs.each_key do |key|
-        record = @defaults.detect { |d| d.type_ab == key.to_s}
+        record = @defaults.detect { |d| d.type_ab == key.to_s }
         @defaults_json[key] = record ? record.allow : nil
 
-        group_record = @groups.detect { |d| d.type_ab == key.to_s}
+        group_record = @groups.detect { |d| d.type_ab == key.to_s }
         @groups_json[key] = group_record ? group_record.allow : nil
       end
 
-
-      render json: {defaults: @defaults_json, groups: @groups_json}
-
-
+      render json: { defaults: @defaults_json, groups: @groups_json }
     end
 
     private

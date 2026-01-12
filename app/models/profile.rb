@@ -17,10 +17,10 @@ class Profile < ApplicationRecord
                     inverse_of: :profile
 
   def full_name
-    [last_name, first_name, middle_name].join(" ")
+    [last_name, first_name, middle_name].join(' ')
   end
 
   def initials
-    [first_name, middle_name].join(" ")
+    [first_name, middle_name].join(' ')
   end
 end

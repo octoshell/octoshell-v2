@@ -21,25 +21,25 @@
 module Comments
   class Comment < ApplicationRecord
     include Attachable
-    DEFAUlT_PER = 10
+    DEFAULT_PER = 10
     validates :text, presence: true
 
     def self.all_records_to_json_view(hash)
-      hash[:per] ||= DEFAUlT_PER
-      hash[:includes] = {user: %i[groups profile]}
-      relation, pages, corrected_page = pag_all_records(hash)
+      hash[:per] ||= DEFAULT_PER
+      hash[:includes] = { user: %i[groups profile] }
+      relation, pages, corrected_page = pag_all_records(**hash)
       [relation.to_a.map { |c| c.to_full_json_with_preload hash[:user_id] }, pages, corrected_page]
     end
 
     def self.to_json_view(hash)
-      hash[:per] ||= DEFAUlT_PER
-      hash[:includes] = {user: %i[groups profile]}
-      relation, pages, corrected_page = pag_records(hash)
+      hash[:per] ||= DEFAULT_PER
+      hash[:includes] = { user: %i[groups profile] }
+      relation, pages, corrected_page = pag_records(**hash)
       [relation.to_a.map { |c| c.to_full_json_with_preload hash[:user_id] }, pages, corrected_page]
     end
 
     def to_json_with_preload(user_id)
-      attributes = self.attributes.slice('text', 'created_at', 'updated_at', 'id','context_id')
+      attributes = self.attributes.slice('text', 'created_at', 'updated_at', 'id', 'context_id')
       profile_attributes = user.profile.attributes.slice('first_name', 'last_name', 'middle_name')
       {
         can_update: can_update?(user_id),

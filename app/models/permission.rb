@@ -25,8 +25,10 @@ class Permission < ApplicationRecord
   validates :action, :subject_class, :group, presence: true
   validates :action, uniqueness: { scope: %i[subject_class group_id subject_id] }
 
-  scope :by_definition, ->(definition) { where(action: definition.action,
-                                               subject_class: definition.subject_class) }
+  scope :by_definition, lambda { |definition|
+    where(action: definition.action,
+          subject_class: definition.subject_class)
+  }
   belongs_to :subject, foreign_key: :subject_id, foreign_type: :subject_class, polymorphic: true
 
   class << self
@@ -49,7 +51,7 @@ class Permission < ApplicationRecord
 
     def delete_old
       cases = definitions.map { |d| "#{d.action}#{d.subject_class}" }
-      where("concat(action, subject_class) not in (?)", cases).delete_all
+      where('concat(action, subject_class) not in (?)', cases).delete_all
     end
 
     def create_new

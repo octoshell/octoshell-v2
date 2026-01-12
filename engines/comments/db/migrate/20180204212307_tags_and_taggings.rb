@@ -6,13 +6,13 @@ class TagsAndTaggings < ActiveRecord::Migration
 
     create_table :comments_taggings do |t|
       t.belongs_to :tag
-      t.belongs_to :attachable,{index: true,null: false,polymorphic: true}
-      t.belongs_to :user,{index: true,null: false}
-      t.belongs_to :context,{index: true}
+      t.belongs_to :attachable, { index: true, null: false, polymorphic: true }
+      t.belongs_to :user, { index: true, null: false }
+      t.belongs_to :context, { index: true }
       t.belongs_to :user
       t.timestamps null: false
     end
-    add_index :comments_taggings, [:tag_id,:attachable_id, :attachable_type,
-                                   :context_id],:unique => true, :name => 'att_contex_index'
+    add_index :comments_taggings, %i[tag_id attachable_id attachable_type
+                                     context_id], unique: true, name: 'att_contex_index'
   end
 end

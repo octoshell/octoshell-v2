@@ -36,11 +36,11 @@ class ApplicationRecord < ActiveRecord::Base
     yield(self)
   end
 
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     column_names + _ransackers.keys
   end
 
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     reflect_on_all_associations.map { |a| a.name.to_s } + _ransackers.keys
   end
 
@@ -54,9 +54,7 @@ class ApplicationRecord < ActiveRecord::Base
 
     record = new(names)
     main_name = "name_#{I18n.locale}"
-    unless record.public_send(main_name)
-      record.public_send("#{main_name}=", names.values.compact.first)
-    end
+    record.public_send("#{main_name}=", names.values.compact.first) unless record.public_send(main_name)
     yield(record) if block_given?
     record.save!
     record
@@ -76,8 +74,4 @@ class ApplicationRecord < ActiveRecord::Base
   scope :id_finder, (lambda do |id|
     where('CAST(id AS varchar) LIKE ?', "%#{id}%")
   end)
-
-
-
-
 end

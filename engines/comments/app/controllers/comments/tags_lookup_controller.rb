@@ -1,4 +1,3 @@
-
 module Comments
   class TagsLookupController < ApplicationController
     before_action :check_abilities, only: %i[edit update]
@@ -65,7 +64,6 @@ module Comments
       end
     end
 
-
     private
 
     def tag_params
@@ -80,7 +78,6 @@ module Comments
       @contexts = Context.allow_read(current_user.id).to_a
       @contexts << OpenStruct.new(id: 'all', name: t('comments.tags.q.all'))
       @contexts << OpenStruct.new(id: 'without_context', name: t('comments.tags.q.without_context'))
-
     end
 
     def not_authorized

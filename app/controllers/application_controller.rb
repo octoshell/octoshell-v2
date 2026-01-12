@@ -20,7 +20,6 @@ class ApplicationController < ActionController::Base
                                                             method: :patch)).html_safe)
   end
 
-
   def authorize_admins
     # logger.error "ADMINS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     authorize!(:access, :admin)

@@ -21,7 +21,7 @@ module Comments
     old_enum type_ab: %i[read_ab update_ab create_ab create_with_context_ab]
     belongs_to :group
     validates :type_ab, presence: true
-    validates :group, uniqueness: { scope: %i[class_name obj_id type_ab]}
+    validates :group, uniqueness: { scope: %i[class_name obj_id type_ab] }
     validates :allow, exclusion: { in: [nil] }
     validate :validate_class_name
 
@@ -37,19 +37,19 @@ module Comments
       errors.add(:class_name, :not_exist) unless b
     end
     # 1 как должно быть
-    #1р2з t f 1з2р f t 2р1з f f 2з1п f t
+    # 1р2з t f 1з2р f t 2р1з f f 2з1п f t
 
     def self.create_permissions_query(class_name, id, user_id, type_ab_sym)
       type_ab = GroupClass.type_abs[type_ab_sym]
       select("#{table_name}.*")
-      .where("
+        .where("
         #{table_name}.class_name = '#{class_name}' AND
         (#{table_name}.obj_id IS NULL OR
           #{table_name}.obj_id = #{id})
           AND #{table_name}.group_id IS NULL
           AND #{table_name}.type_ab =  (#{type_ab})")
-      .joins("LEFT JOIN user_groups AS u_g ON u_g.user_id = #{user_id}")
-      .joins("LEFT JOIN comments_group_classes AS g_c ON
+        .joins("LEFT JOIN user_groups AS u_g ON u_g.user_id = #{user_id}")
+        .joins("LEFT JOIN comments_group_classes AS g_c ON
         g_c.class_name = '#{class_name}' AND
         (g_c.obj_id IS NULL OR g_c.obj_id = #{id})
         AND g_c.group_id = u_g.group_id
@@ -61,7 +61,7 @@ module Comments
 
     def self.create_permissions(class_name, id, user_id)
       if create_permissions_query(class_name, id, user_id, :create_with_context_ab)
-        return :create_with_context
+        :create_with_context
       elsif create_permissions_query(class_name, id, user_id, :create_ab)
         true
       else

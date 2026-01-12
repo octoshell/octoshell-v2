@@ -1,7 +1,7 @@
 module Comments
   require 'main_spec_helper'
   describe Comment do
-    describe "::read_items items without context" do
+    describe '::read_items items without context' do
       before(:each) do
         Group.default!
         @user = create_admin
@@ -17,26 +17,22 @@ module Comments
         @tagging3 = create(:tagging, attachable: @user3, user: @user)
         @tagging4 = create(:tagging, tag: @tag1, attachable: @project, user: @user)
         @tagging_other = create(:tagging, tag: @tag2, attachable: @other_user, user: @user)
-
       end
-      it "retrieves all Gromacs tags" do
+      it 'retrieves all Gromacs tags' do
         rel = Comments::Tagging.joins(:tag)
-        	.where(comments_tags: {name: 'faced problems with the GROMACS application package'})
-        	.get_items(User.all)
+                               .where(comments_tags: { name: 'faced problems with the GROMACS application package' })
+                               .get_items(User.all)
         emails = rel.map(&:attachable).map(&:email)
         expect(emails).to match_array [@user3.email, @user4.email]
       end
 
-      it "retrieves specific Gromac tag" do
+      it 'retrieves specific Gromac tag' do
         rel = Comments::Tagging.joins(:tag)
-        	.where(comments_tags: {name: 'faced problems with the GROMACS application package'})
-        	.get_items(User.where(email: @user3.email))
+                               .where(comments_tags: { name: 'faced problems with the GROMACS application package' })
+                               .get_items(User.where(email: @user3.email))
         emails = rel.map(&:attachable).map(&:email)
         expect(emails).to match_array [@user3.email]
       end
-
-
-
     end
   end
 end

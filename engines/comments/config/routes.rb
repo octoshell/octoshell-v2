@@ -5,7 +5,6 @@ Comments::Engine.routes.draw do
       post 'create'
       get 'index'
       get 'index_all'
-
     end
   end
   resources :tags, only: :destroy do

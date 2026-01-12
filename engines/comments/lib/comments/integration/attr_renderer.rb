@@ -18,7 +18,6 @@ module Comments
         content_tag(:div, res, id: 'res_values_att')
       end
 
-
       private
 
       def att_view_paths
@@ -40,23 +39,22 @@ module Comments
       end
 
       def attachment_type_correct!
-        unless A_TYPES.include? @attachment_type.singularize.capitalize
-          raise ArgumentError, 'Invalid type'
-        end
+        return if A_TYPES.include? @attachment_type.singularize.capitalize
+
+        raise ArgumentError, 'Invalid type'
       end
 
       def assigns(attach_to, attachment_type, current_user)
         model_obj = case @attachment_type
-        when 'files'
-          Comments::FileAttachment
-        when 'comments'
-          Comments::Comment
-        when 'tags'
-          Comments::Tagging
-        else
-          raise ArgumentError, 'atttachment_type is incorrect'
-        end
-
+                    when 'files'
+                      Comments::FileAttachment
+                    when 'comments'
+                      Comments::Comment
+                    when 'tags'
+                      Comments::Tagging
+                    else
+                      raise ArgumentError, 'atttachment_type is incorrect'
+                    end
 
         if attach_to[:class_name] == 'all'
           records, pages = model_obj.all_records_to_json_view(user_id: current_user.id)
@@ -64,7 +62,7 @@ module Comments
           records, pages = model_obj.to_json_view(attach_to: @attach_to, user_id: current_user.id)
           unless attach_to[:ids] == 'all'
             with_context = Comments::Permissions
-                            .create_permissions(@attach_to.merge(user: current_user))
+                           .create_permissions(**@attach_to.merge(user: current_user))
           end
         end
         { attach_to: attach_to,
@@ -75,7 +73,6 @@ module Comments
           attachable_ids: attach_to[:ids] == 'all' ? 'all' : attach_to[:ids].join(','),
           contexts: Comments::Context.allow(current_user.id) }
       end
-
     end
   end
 end

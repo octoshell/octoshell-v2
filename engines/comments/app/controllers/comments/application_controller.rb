@@ -11,6 +11,5 @@ module Comments
     def check_abilities
       authorize! :manage, :comments_engine
     end
-
   end
 end
