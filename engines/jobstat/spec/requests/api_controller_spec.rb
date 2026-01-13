@@ -20,7 +20,10 @@ module Jobstat
       user = 'test'
       password = 'password'
       string = ActionController::HttpAuthentication::Basic.encode_credentials(user, password)
-      post '/jobstat/job/info', params: job_attrs.to_json, headers: { HTTP_AUTHORIZATION: string }
+      post '/jobstat/job/info', params: job_attrs.to_json, headers: {
+        HTTP_AUTHORIZATION: string,
+        'CONTENT_TYPE' => 'application/json'
+      }
       expect(response).to have_http_status(204)
     end
   end

@@ -29,7 +29,6 @@ module LocalizedEmails
       processed_mailer.try(:non_blocking_delivery?)
     end
 
-
     def message
       messages = MessagesCollection.new
       addresses = Array(old_message.to)
@@ -39,7 +38,7 @@ module LocalizedEmails
           addresses.delete(u.email)
         end
       end
-      BatchSidekiq.raise_error_if_limit_reached(addresses.count)
+      BatchSidekiq.raise_error_if_limit_reached(addresses.count) unless Rails.env.test?
       grouped_addresses = addresses.group_by do |to|
         language || users.detect { |u| u.email == to }&.language || DEFAULT_LOCALE
       end

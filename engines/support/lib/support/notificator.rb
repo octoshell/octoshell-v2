@@ -1,6 +1,5 @@
 module Support
   class Notificator < AbstractController::Base
-
     EMAIL = 'support_bot@octoshell.ru'.freeze
 
     def options
@@ -16,14 +15,14 @@ module Support
     end
 
     def translate(key, options = {})
-      if key.to_s.first == "."
-        path = controller_path.tr("/", ".")
+      if key.to_s.first == '.'
+        path = controller_path.tr('/', '.')
         defaults = [:"#{path}#{key}"]
         defaults << options[:default] if options[:default]
         options[:default] = defaults.flatten
         key = "#{path}.#{action_name}#{key}"
       end
-      I18n.translate(key, options)
+      I18n.translate(key, **options)
     end
     alias t translate
 
@@ -35,7 +34,7 @@ module Support
     end
 
     def collect_assigns
-      instance_variables.map{ |v| [v.to_s[1..-1], instance_variable_get(v)] }
+      instance_variables.map { |v| [v.to_s[1..-1], instance_variable_get(v)] }
     end
 
     def create_bot(password)

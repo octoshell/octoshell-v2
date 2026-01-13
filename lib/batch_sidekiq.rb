@@ -12,7 +12,6 @@ class BatchSidekiq
       end
     end
 
-
     def raise_error_if_limit_reached(count)
       raise "limit is too small for #{count} emails" if count > BATCH_SIZE
 
@@ -24,6 +23,7 @@ class BatchSidekiq
         end
         cur_limit = cur_limit.to_i
         raise "Email limit is reached when sending #{count} emails" if count > cur_limit
+
         redis.set(:email_limit, cur_limit - count, keepttl: true)
       end
     end

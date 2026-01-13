@@ -18,12 +18,16 @@ module Core
                                       project_access_state: 'allowed')
           Perf::Job.create!(start_time: @job_start, end_time: @job_end,
                             submit_time: @start_date, login: member.login,
+                            cluster: 'super_duper_cluster',
+                            drms_job_id: 1,
                             num_cores: 10, state: 'COMPLETED')
         end
       end
-      @project_resources_one_member_deleted.members.last.destroy!
+      @project_resources_one_member_deleted.drop_member(@project_resources_one_member_deleted.members.last.user_id)
       @project_resources_all_members_deleted.members.each do |m|
-        m.destroy! unless m == @project_resources_all_members_deleted.owner
+        unless m == @project_resources_all_members_deleted.owner
+          @project_resources_all_members_deleted.drop_member(m.user_id)
+        end
       end
     end
 
@@ -58,7 +62,6 @@ module Core
           .to contain_exactly(@project_resources,
                               @project_resources_one_member_deleted,
                               @project_resources_all_members_deleted)
-
       end
 
       it 'shows projects consumed resources of specific range' do
@@ -74,12 +77,7 @@ module Core
                               @project_resources_all_members_deleted)
         expect(Project.choose_to_hide(2, @start_date, 21, @end_date, nil).count)
           .to eq(0)
-
       end
-
-
-
-
     end
   end
 end
