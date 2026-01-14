@@ -105,6 +105,7 @@ group :test do
   gem 'shoulda-matchers' # , '~> 6.0'
   # gem 'shoulda-matchers', '~> 4.0'
   # gem "test_after_commit"
+  gem 'capybara-select-2'
   gem 'database_cleaner'
   # gem "factory_bot_rails"
   gem 'capybara'

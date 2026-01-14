@@ -1,6 +1,5 @@
 module PackHelpers
-
-  def build_packs(n,user)
+  def build_packs(n, user)
     packages = []
     n.times  do |i|
       package = Pack::Package.new(name: "name#{i}")
@@ -12,7 +11,7 @@ module PackHelpers
 
       packages << package
     end
-    Pack::Package.import packages,recursive: true, validate: false
+    Pack::Package.import packages, recursive: true, validate: false
   end
 
   def access_with_status(overrides = nil)
@@ -23,32 +22,32 @@ module PackHelpers
 
   def access_with_status_without_validation(overrides = nil)
     access = FactoryBot.build(:access, overrides)
-    access.save!(:validate => false)
+    access.save!(validate: false)
     access
   end
 
   def jobs_array
-    Pack::PackWorker.jobs.map{ |h| h['args']  }
+    Pack::PackWorker.jobs.map { |h| h['args'] }
   end
 
-  def expect_sidekiq_mailer arr
+  def expect_sidekiq_mailer(arr)
     puts jobs_array.inspect
     expect(jobs_array).to eq arr
     arr.each do |a|
-      a = a - ["access_changed"]
-      Pack::Mailer.access_changed(a[0], *( a.drop(1)  ) ) .deliver!
+      a -= ['access_changed']
+      Pack::Mailer.access_changed(a[0], *a.drop(1)).deliver!
     end
   end
 
-  def login_capybara user
+  def login_capybara(user)
     visit '/auth/session/new'
-      fill_in 'user_email',    with: user.email
-      fill_in 'user_password', with: '123456'
-      click_button 'Войти'
-    end
+    fill_in 'user_email',    with: user.email
+    fill_in 'user_password', with: '123456'
+    click_button 'Войти'
+  end
 
-    def jquery_regex
-      page.execute_script(<<-eo)
+  def jquery_regex
+    page.execute_script(<<-EO)
         jQuery.expr[':'].regex = function(elem, index, match) {
         var matchParams = match[3].split(','),
           validLabels = /^(data|css):/,
@@ -61,29 +60,28 @@ module PackHelpers
           regex = new RegExp(matchParams.join('').replace(/^\s+|\s+$/g,''), regexFlags);
         return regex.test(jQuery(elem)[attr.method](attr.property));
     }
-    eo
-    end
-
-    def select2 select_id,option_text
-    find("#select2-#{select_id}-container").click
-    a = <<-eoruby
-      $('#select2-#{select_id}-results').find('li').filter(function(){
-      return $(this).text() === '#{option_text}';
-      }).mouseup();
-    eoruby
-    page.execute_script(a)
+    EO
   end
+
+  #   def select2 select_id,option_text
+  #   find("#select2-#{select_id}-container").click
+  #   a = <<-eoruby
+  #     $('#select2-#{select_id}-results').find('li').filter(function(){
+  #     return $(this).text() === '#{option_text}';
+  #     }).mouseup();
+  #   eoruby
+  #   page.execute_script(a)
+  # end
 
   def all_with_con(con)
     arr = []
-    all(con).each do  |elem|
-      if yield(elem)
-        arr << elem
-      end
+    all(con).each do |elem|
+      arr << elem if yield(elem)
     end
     arr
   end
+
   def get_all_cat_radio
-    all(".select-auto")
+    all('.select-auto')
   end
 end
