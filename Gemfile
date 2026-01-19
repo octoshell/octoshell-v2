@@ -28,13 +28,11 @@ gem 'cancancan'
 gem 'connection_pool', '~> 2.4'
 gem 'groupdate'
 gem 'i18n-js'
-gem 'ransack'
-gem 'therubyracer' # for execjs
-# gem 'mail', '2.7.1' # smtp localhost does not work in 2.8.1
-# security reasons
 gem 'mini_magick', '>= 4.9.4'
 gem 'nokogiri', '>= 1.10.4'
-gem 'sidekiq' # ,  '< 7'
+gem 'ransack'
+gem 'sidekiq', '~> 7.3'
+gem 'therubyracer' # for execjs
 group :development do
   gem 'annotate'
   gem 'pry-rails'
