@@ -5,8 +5,7 @@ Sessions.user_class.class_eval do
   has_many :reports, class_name: "Sessions::Report", foreign_key: :author_id, inverse_of: :author, dependent: :destroy
   has_many :assessing_reports, -> { where(state: :assessing) },
                                class_name: "Sessions::Report",
-                               foreign_key: :expert_id,
-                               source: :report, inverse_of: :expert
+                               foreign_key: :expert_id, inverse_of: :expert
 
 
   def warning_reports

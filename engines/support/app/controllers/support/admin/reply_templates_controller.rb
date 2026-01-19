@@ -1,7 +1,7 @@
 module Support
   class Admin::ReplyTemplatesController < Admin::ApplicationController
     def index
-      @search = ReplyTemplate.search(params[:q])
+      @search = ReplyTemplate.ransack(params[:q])
       @reply_templates = @search.result(distinct: true).page(params[:page])
     end
 

@@ -1,4 +1,3 @@
-# require_dependency "pack/application_controller"
 # require "#{Pack::Engine.root}/app/services/pack/admin_access_updater"
 module Pack::Admin
   class AccessesController < Pack::Admin::ApplicationController

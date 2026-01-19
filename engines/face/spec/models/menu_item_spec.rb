@@ -14,13 +14,13 @@ describe Face::MenuItem do
   describe "#active?" do
     context "with not matched path" do
       it "is false" do
-        expect(item.active?("/projects")).to be_false
+        expect(item.active?("/projects")).to be_falsy
       end
     end
 
     context "with matched path" do
       it "is true" do
-        expect(item.active?("/users?foo=bar")).to be_true
+        expect(item.active?("/users?foo=bar")).to be_truthy
       end
     end
   end

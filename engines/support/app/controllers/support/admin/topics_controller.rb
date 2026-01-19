@@ -1,7 +1,7 @@
 module Support
   class Admin::TopicsController < Admin::ApplicationController
     def index
-      @search = Topic.search(params[:q])
+      @search = Topic.ransack(params[:q])
       @topics = @search.result(distinct: true).page(params[:page])
     end
 

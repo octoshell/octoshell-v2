@@ -1,4 +1,3 @@
 Rails.application.routes.draw do
-
-  mount Comments::Engine => "/comments"
+  mount Comments::Engine => '/comments'
 end

@@ -23,20 +23,20 @@ module Comments
   class FileAttachment < ApplicationRecord
     mount_uploader :file, FileUploader
     include Attachable
-    DEFAUlT_PER = 10
-    validates :description,:file, presence: true
+    DEFAULT_PER = 10
+    validates :description, :file, presence: true
 
     def self.all_records_to_json_view(hash)
-      hash[:per] ||= DEFAUlT_PER
-      hash[:includes] = {user: %i[groups profile]}
-      relation, pages, corrected_page = pag_all_records(hash)
+      hash[:per] ||= DEFAULT_PER
+      hash[:includes] = { user: %i[groups profile] }
+      relation, pages, corrected_page = pag_all_records(**hash)
       [relation.to_a.map { |c| c.to_full_json_with_preload hash[:user_id] }, pages, corrected_page]
     end
 
     def self.to_json_view(hash)
-      hash[:per] ||= DEFAUlT_PER
-      hash[:includes] = {user: %i[groups profile]}
-      relation, pages, corrected_page = pag_records(hash)
+      hash[:per] ||= DEFAULT_PER
+      hash[:includes] = { user: %i[groups profile] }
+      relation, pages, corrected_page = pag_records(**hash)
       [relation.to_a.map { |c| c.to_full_json_with_preload hash[:user_id] }, pages, corrected_page]
     end
 
@@ -45,7 +45,7 @@ module Comments
     end
 
     def to_json_with_preload(user_id)
-      attributes = self.attributes.slice('description', 'created_at', 'updated_at', 'id','context_id')
+      attributes = self.attributes.slice('description', 'created_at', 'updated_at', 'id', 'context_id')
       attributes['file_url'] = store_readable_dir
       attributes['file_name'] = file_identifier
       profile_attributes = user.profile.attributes.slice('first_name', 'last_name', 'middle_name')

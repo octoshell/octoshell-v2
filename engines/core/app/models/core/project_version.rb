@@ -17,8 +17,8 @@ module Core
     RECORDED_ASSOCS = %w[card critical_technologies direction_of_sciences
                          research_areas].freeze
     belongs_to :project, inverse_of: :project_versions
-    serialize :object_changes, Hash
-    serialize :object, Hash
+    serialize :object_changes, type: Hash
+    serialize :object, type: Hash
 
     def self.project_hash(project)
       RECORDED_ASSOCS.map do |a|

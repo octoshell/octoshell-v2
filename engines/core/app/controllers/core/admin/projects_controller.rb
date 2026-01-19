@@ -1,13 +1,13 @@
 module Core
   class Admin::ProjectsController < Admin::ApplicationController
-    layout "layouts/core/admin_project"
+    layout 'layouts/core/admin_project'
     before_action :octo_authorize!, except: %i[show finder id_finder
-          find_similar find_similar_by_members]
+                                               find_similar find_similar_by_members]
     def index
       respond_to do |format|
         format.html do
           setup_default_filter
-          @search = Project.search(params[:q])
+          @search = Project.ransack(params[:q])
           @projects = @search.result(distinct: true).preload(owner: [:profile])
                              .preload(:organization)
           @count_all_members = Member.group(:project_id)
@@ -16,7 +16,7 @@ module Core
           unless display_all_applied?
             @projects = @projects.page(params[:page])
             @count_all_members = @count_all_members.where(project_id: @projects.map(&:id))
-            @count_allowed_members = @count_allowed_members.where(core_projects: { id: @projects.map(&:id) } )
+            @count_allowed_members = @count_allowed_members.where(core_projects: { id: @projects.map(&:id) })
           end
           @count_all_members = Hash[@count_all_members.count('id')]
           @count_allowed_members = Hash[@count_allowed_members.count('users.id')]
@@ -68,7 +68,7 @@ module Core
       @project = current_user.owned_projects.find(params[:id])
       if @project.update(project_params)
         @project.save
-        redirect_to [:admin, @project], notice: t("flash.project_updated")
+        redirect_to [:admin, @project], notice: t('flash.project_updated')
       else
         render :edit
       end
@@ -145,7 +145,6 @@ module Core
                         }]).distinct
     end
 
-
     def project_params
       params.require(:project).permit(:title, :organization_id,
                                       :kind_id,
@@ -157,8 +156,8 @@ module Core
     end
 
     def setup_default_filter
-      params[:q] ||= { state_in: ["active"] }
-      params[:q][:s] ||= "id desc"
+      params[:q] ||= { state_in: ['active'] }
+      params[:q][:s] ||= 'id desc'
     end
   end
 end

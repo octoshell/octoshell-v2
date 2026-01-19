@@ -1,6 +1,8 @@
 require 'main_spec_helper'
 module TestEngine
   extend Octoface
+  class Model
+  end
   module Admin
     class MainApplicationController < ApplicationController
       before_action :octo_authorize!
@@ -15,15 +17,15 @@ module Octoface
   describe Octoface do
 
     before(:each) do
-      TestEngine.octo_configure do
-        add(:funny_string) { 'string' }
+      TestEngine.octo_configure :fake do
+        add('Model')
         add_ability :manage, :test_engine, 'superadmins'
         OctoConfig.finalize!
       end
     end
 
     it "defines variable" do
-      expect(TestEngine.funny_string).to eq 'string'
+      expect(Octoface.role_class(:fake, 'Model')).to eq TestEngine::Model
     end
 
     it "creates abilities" do

@@ -1,4 +1,3 @@
-# encoding: utf-8
 # == Schema Information
 #
 # Table name: sessions_reports
@@ -33,18 +32,16 @@
 # Отчет о проделанной работе по проекту.
 module Sessions
   class Report < ApplicationRecord
-
-
     prepend(ReportProject) if Sessions.link?(:project)
-
 
     POINT_RANGE = (0..5)
     belongs_to :session
     # belongs_to :project, class_name: "Core::Project", foreign_key: :project_id
-    belongs_to :author, class_name: "::User", foreign_key: :author_id
-    belongs_to :submit_denial_reason, class_name: "Sessions::ReportSubmitDenialReason", foreign_key: :submit_denial_reason_id
-    belongs_to :expert, class_name: "::User"
-    has_many :replies, class_name: "Sessions::ReportReply"
+    belongs_to :author, class_name: '::User', foreign_key: :author_id
+    belongs_to :submit_denial_reason, class_name: 'Sessions::ReportSubmitDenialReason',
+                                      foreign_key: :submit_denial_reason_id
+    belongs_to :expert, class_name: '::User'
+    has_many :replies, class_name: 'Sessions::ReportReply'
     has_many :report_materials, inverse_of: :report
 
     mount_uploader :materials, ReportMaterialsUploader
@@ -61,8 +58,8 @@ module Sessions
 
     include AASM
     include ::AASM_Additions
-    aasm(:state, :column => :state) do
-      state :pending, :initial => true
+    aasm(:state, column: :state) do
+      state :pending, initial: true
       state :can_not_be_submitted
       state :accepted
       state :submitted
@@ -72,39 +69,39 @@ module Sessions
       state :exceeded
 
       event :accept do
-        transitions :from => [:pending, :exceeded], :to => :accepted
+        transitions from: %i[pending exceeded], to: :accepted
       end
 
       event :decline_submitting do
-        transitions :from => [:pending, :rejected, :exceeded], :to => :can_not_be_submitted
+        transitions from: %i[pending rejected exceeded], to: :can_not_be_submitted
       end
 
       event :submit do
-        transitions :from => [:exceeded, :accepted], :to => :submitted
+        transitions from: %i[exceeded accepted], to: :submitted
       end
 
       event :pick, after_commit: :notify_about_pick do
-        transitions :from => [:pending, :accepted, :submitted, :exceeded, :rejected], :to => :assessing
+        transitions from: %i[pending accepted submitted exceeded rejected], to: :assessing
       end
 
       event :assess, after_commit: :notify_about_assess do
-        transitions :from => [:assessed, :assessing], :to => :assessed
+        transitions from: %i[assessed assessing], to: :assessed
       end
 
-      event :reject,  after_commit: :notify_about_reject do
-        transitions :from => [:can_not_be_submitted, :submitted, :assessing], :to => :rejected
+      event :reject, after_commit: :notify_about_reject do
+        transitions from: %i[can_not_be_submitted submitted assessing], to: :rejected
       end
 
       event :edit do
-        transitions :from => :assessed, :to => :assessing
+        transitions from: :assessed, to: :assessing
       end
 
       event :resubmit, after_commit: :notify_about_resubmit do
-        transitions :from => :rejected, :to => :assessing
+        transitions from: :rejected, to: :assessing
       end
 
       event :postdate, after_commit: :postdate_callback do
-        transitions :from => [:pending, :accepted, :rejected], :to => :exceeded
+        transitions from: %i[pending accepted rejected], to: :exceeded
       end
     end
 
@@ -117,8 +114,8 @@ module Sessions
       end
     end
 
-    def self.five_exists()
-      str =%w[illustration_points statement_points summary_points].map do |type|
+    def self.five_exists
+      str = %w[illustration_points statement_points summary_points].map do |type|
         "(sessions_reports.#{type} = 5)"
       end.join(' OR ')
       where(str)
@@ -127,8 +124,6 @@ module Sessions
     def self.ransackable_scopes(_auth_object = nil)
       (@ransackable_scopes || []) + ['five_exists']
     end
-
-
 
     def report_material=(hash)
       report_materials.new hash
@@ -140,14 +135,13 @@ module Sessions
     # end
 
     def to_s
-      %{Отчет по проекту "#{project.title}"}
+      %(Отчет по проекту "#{project.title}")
     end
 
     def failed?
-      [ illustration_points,
-        statement_points,
-        summary_points
-      ].any? { |point| [1, 2].include? point }
+      [illustration_points,
+       statement_points,
+       summary_points].any? { |point| [1, 2].include? point }
     end
 
     # def close_project!

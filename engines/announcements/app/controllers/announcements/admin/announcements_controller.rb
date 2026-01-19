@@ -76,7 +76,7 @@ module Announcements::Admin
       flash_now_message(:notice, t('.blocked_email_explanation'))
       process_ransack_params
       @announcement = Announcement.find(params[:announcement_id])
-      @search = Announcements.user_class.search(params[:q])
+      @search = Announcements.user_class.ransack(params[:q])
       @users = @search.result(distinct: true).includes(:profile).order(:id)
       @users = if @announcement.is_special?
                  @users.where(profiles: {receive_special_mails: true})

@@ -17,7 +17,7 @@ module Support
     end
 
     def index
-      @search = Ticket.search(params[:q])
+      @search = Ticket.ransack(params[:q])
       @tickets = @search.result(distinct: true)
                         .preload({ reporter: :profile}, { responsible: :profile },
                                   { field_values: {topics_field: {field: :field_options } }},

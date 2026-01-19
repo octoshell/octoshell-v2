@@ -1,7 +1,7 @@
-require 'uri'
 require_relative 'boot'
 
 require 'rails/all'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -9,15 +9,13 @@ Bundler.require(*Rails.groups)
 module Octoshell
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.0
+    config.load_defaults 8.0
+    # config.active_support.cache_format_version = 7.0
+    config.active_storage.variant_processor = :mini_magick
+    config.active_record.default_column_serializer = YAML
+    config.yjit = false
 
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    config.time_zone = "Moscow"
+    config.time_zone = 'Moscow'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
@@ -25,14 +23,27 @@ module Octoshell
     config.i18n.default_locale = :ru
     config.assets.initialize_on_precompile = false
     config.jd_systems = {}
+    config.octo_feedback_host = 'http://188.44.52.38:28082'
+    config.octo_jd_host = 'http://188.44.52.38:28081'
 
     config.cache_store = :memory_store, { size: 128.megabytes, expires_in: 600 }
     config.active_record.belongs_to_required_by_default = false
-    #config.active_record.raise_in_transactional_callbacks = true
     config.action_controller.include_all_helpers = true
-    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone]
-    # RAILS5
-    #config.action_controller.per_form_csrf_tokens = true
-    #config.action_controller.forgery_protection_origin_check = true
+    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone,
+                                                          ActiveSupport::TimeZone, ActiveSupport::HashWithIndifferentAccess]
+
+    if defined?(FactoryBotRails)
+      config.factory_bot.definition_file_paths +=
+        Dir.glob('engines/*/spec/factories')
+    end
+    config.secrets = config_for(:secrets)
+
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
   end
 end

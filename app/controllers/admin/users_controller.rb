@@ -2,13 +2,19 @@ class Admin::UsersController < Admin::ApplicationController
   before_action :setup_default_filter, only: :index
   before_action :octo_authorize!, except: %i[show index id_finder]
 
+  def find_similar
+    @user = User.find(params[:id])
+    @users = users(User.joins(:profile).where("users.id != ? AND (email = ? or CONCAT(last_name, ' ', first_name, ' ', middle_name) = ?)",
+                                              @user.id, @user.email, @user.full_name).page(params[:page]))
+  end
+
   def index
     respond_to do |format|
       format.html do
-        @search = User.includes({employments:[:organization,:organization_department]}, :profile)
+        @search = User.includes({ employments: %i[organization organization_department] }, :profile)
                       .select('users.*, profiles.last_name')
                       .left_joins(:profile).ransack(params[:q])
-        @users = @search.result(distinct: true)#.order(id: :desc)
+        @users = @search.result(distinct: true) # .order(id: :desc)
         without_pagination(:users)
       end
       format.json do
@@ -18,20 +24,18 @@ class Admin::UsersController < Admin::ApplicationController
       end
     end
 
-  def id_finder
-    authorize! :access, :admin
-    respond_to do |format|
-      format.json do
-        @users = User.id_finder(params[:q])
+    def id_finder
+      authorize! :access, :admin
+      respond_to do |format|
+        format.json do
+          @users = User.id_finder(params[:q])
 
-        @user_hash = @users.page(params[:page]).per(params[:per])
-                           .map { |p| { id: p.id, text: "#{p.id}|#{p.full_name}" } }
-        render json: { records: @user_hash, total: @users.count }
+          @user_hash = @users.page(params[:page]).per(params[:per])
+                             .map { |p| { id: p.id, text: "#{p.id}|#{p.full_name}" } }
+          render json: { records: @user_hash, total: @users.count }
+        end
       end
     end
-  end
-
-
   end
 
   def show
@@ -77,25 +81,29 @@ class Admin::UsersController < Admin::ApplicationController
 
   def destroy
     user = User.find(params[:id])
-    #user.destroy!
+    # user.destroy!
     user.deleted_at = Time.now
     user.email = '-'
-    #FIXME: add new state?
-    #user.state = 'deleted'
+    # FIXME: add new state?
+    # user.state = 'deleted'
     user.state = 'closed'
     user.save
     profile = user.profile
-    profile.last_name= '-'
-    profile.middle_name= '-'
-    profile.first_name= '-'
+    profile.last_name = '-'
+    profile.middle_name = '-'
+    profile.first_name = '-'
     profile.save
-    user.employments.each{|e|
+    user.employments.each do |e|
       e.positions.delete_all
-    }
+    end
     redirect_to admin_users_path
   end
 
-private
+  private
+
+  def users(relation)
+    relation.preload([:profile]).distinct
+  end
 
   def check_authorization
     authorize! :manage, :users
@@ -107,7 +115,7 @@ private
 
   def setup_default_filter
     params[:q] ||= {
-      user_groups_group_name_in: ['authorized'],
+      user_groups_group_name_in: ['authorized']
     }
     params[:q][:s] ||= 'id desc'
   end

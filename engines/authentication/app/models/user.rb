@@ -34,6 +34,7 @@
 #
 
 class User < ApplicationRecord
+  include UserDecorator
   authenticates_with_sorcery!
   validates :password, confirmation: true, length: { minimum: 6 }, on: :create
   validates :password, confirmation: true, length: { minimum: 6 }, on: :update, if: :password?
@@ -48,11 +49,11 @@ class User < ApplicationRecord
   end
 
   def activated?
-    activation_state == "active"
+    activation_state == 'active'
   end
 
   def activation_pending?
-    activation_state == "pending"
+    activation_state == 'pending'
   end
 
   def password?
@@ -61,7 +62,7 @@ class User < ApplicationRecord
 
   def send_activation_needed_email!
     Authentication::MailerWorker.perform_async(:activation_needed,
-                               [email, activation_token, language])
+                                               [email, activation_token, language])
   end
 
   def send_activation_success_email!
@@ -70,7 +71,7 @@ class User < ApplicationRecord
 
   def send_reset_password_email!
     Authentication::MailerWorker.perform_async(:reset_password,
-                               [email, reset_password_token])
+                                               [email, reset_password_token])
   end
 
   def last_login_from_ip_address=(arg)
@@ -80,7 +81,7 @@ class User < ApplicationRecord
   def self.delete_pending_users
     transaction do
       where("created_at < ? and activation_state = 'pending'",
-            Date.today - Authentication.delete_after).each(&:destroy)
+            Date.today - Authentication.delete_after).each(&:destroy!)
     end
   end
 

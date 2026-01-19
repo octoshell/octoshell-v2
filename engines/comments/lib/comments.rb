@@ -1,11 +1,11 @@
-require "comments/engine"
+require 'comments/engine'
 require 'comments/settings' if defined?(Octoface)
-require "comments/attachable"
-require "comments/integration/attr_renderer"
-require "comments/integration/custom_view"
-require "comments/permissions"
-require "comments/models_list"
-require "comments/interface"
+require 'comments/attachable'
+require 'comments/integration/attr_renderer'
+require 'comments/integration/custom_view'
+require 'comments/permissions'
+require 'comments/models_list'
+require 'comments/interface'
 require 'translit'
 require 'active_record_union'
 module Comments
@@ -42,13 +42,16 @@ module Comments
   def self.create_abilities
     puts 'Creating abilities'
     ActiveRecord::Base.transaction do
-      [Comments::ContextGroup, Comments::GroupClass, Comments::Context, Comments::FileAttachment, Comments::Tagging, Comments::Tag, Comments::Comment].each do |model|
+      [Comments::ContextGroup, Comments::GroupClass, Comments::Context, Comments::FileAttachment, Comments::Tagging,
+       Comments::Tag, Comments::Comment].each do |model|
         model.destroy_all
       end
 
-      first_group = ['superadmins', 'paper managers', 'support', 'reregistrators'].map { |name| Group.find_by_name name  }.compact
+      first_group = ['superadmins', 'paper managers', 'support', 'reregistrators'].map do |name|
+        Group.find_by_name name
+      end.compact
       second_group = ['experts'].map { |name| Group.find_by_name name }.compact
-      third_group = ['superadmins', 'support'].map { |name| Group.find_by_name name }.compact
+      third_group = %w[superadmins support].map { |name| Group.find_by_name name }.compact
 
       admin_context = Comments::Context.create!(name: 'Cмотреть всем, кроме экспертов')
 
@@ -60,27 +63,27 @@ module Comments
 
       [::User, Core::Project, Sessions::UserSurvey, Core::Organization, Pack::Package, Sessions::Report].each do |model|
         Comments::GroupClass.type_abs.map(&:second).each do |type|
-          Comments::GroupClass.create!(class_name: model.to_s, group: nil, allow: false,type_ab: type)
+          Comments::GroupClass.create!(class_name: model.to_s, group: nil, allow: false, type_ab: type)
         end
         first_group.each do |group|
           Comments::GroupClass.type_abs.map(&:second).each do |type|
-            Comments::GroupClass.create!(class_name: model.to_s, group: group, allow: true,type_ab: type)
+            Comments::GroupClass.create!(class_name: model.to_s, group: group, allow: true, type_ab: type)
           end
         end
         second_group.each do |group|
           %i[create_ab read_ab update_ab].each do |type|
-            Comments::GroupClass.create!(class_name: model.to_s, group: group, allow: true,type_ab: type)
+            Comments::GroupClass.create!(class_name: model.to_s, group: group, allow: true, type_ab: type)
           end
         end
       end
 
       Comments::GroupClass.type_abs.map(&:second).each do |type|
-        Comments::GroupClass.create!(class_name: Support::Ticket, group: nil, allow: false,type_ab: type)
+        Comments::GroupClass.create!(class_name: Support::Ticket, group: nil, allow: false, type_ab: type)
       end
 
       third_group.each do |group|
         Comments::GroupClass.type_abs.map(&:second).each do |type|
-          Comments::GroupClass.create!(class_name: Support::Ticket, group: group, allow: true,type_ab: type)
+          Comments::GroupClass.create!(class_name: Support::Ticket, group: group, allow: true, type_ab: type)
         end
       end
       puts 'DONE'

@@ -1,4 +1,4 @@
-require "ostruct"
+require 'ostruct'
 class Admin::BlockEmailsController < Admin::ApplicationController
   # before_action :setup_default_filter, only: :index
   before_action :octo_authorize!
@@ -20,8 +20,8 @@ class Admin::BlockEmailsController < Admin::ApplicationController
       OpenStruct.new(
         email: k,
         user: @users.detect { |u| u.email.downcase == k&.downcase },
-        messages: v.map(&:second)#.join("<br><br> #{t('.delim')} <br><br>")
-                                 #.html_safe
+        messages: v.map(&:second) # .join("<br><br> #{t('.delim')} <br><br>")
+        # .html_safe
       )
     end
   end
@@ -38,5 +38,4 @@ class Admin::BlockEmailsController < Admin::ApplicationController
   def block_emails_form_attributes
     params.require(:block_emails_form).permit(:name, :date_gte)
   end
-
 end

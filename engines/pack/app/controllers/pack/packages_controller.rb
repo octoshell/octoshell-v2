@@ -1,4 +1,3 @@
-require_dependency "pack/application_controller"
 #require "app/services/pack/pack_search_service"
 
 module Pack

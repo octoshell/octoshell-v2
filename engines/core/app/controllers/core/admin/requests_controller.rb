@@ -4,7 +4,7 @@ module Core
     before_action :octo_authorize!
 
     def index
-      @search = Request.search(params[:q])
+      @search = Request.ransack(params[:q])
       @requests = @search.result(distinct: true).order(created_at: :desc).preload(:project)
       without_pagination(:requests)
     end

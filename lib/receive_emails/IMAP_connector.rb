@@ -1,7 +1,7 @@
 require 'net/imap'
 module ReceiveEmails
   class IMAPConnector
-    def initialize(config = Rails.application.secrets.email)
+    def initialize(config = Rails.configuration.secrets[:email])
       raise 'No config supplied for IMAP connection' unless config
 
       @config = config

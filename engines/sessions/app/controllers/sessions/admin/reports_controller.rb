@@ -12,7 +12,7 @@ module Sessions
       @search = Report.includes([{ author: :profile },
                                  { expert: :profile }, :session])
                       .for_link(:project) { |r| r.includes(project: :research_areas) }
-                      .search(params[:q] || default_index_params)
+                      .ransack(params[:q] || default_index_params)
       @reports = if (User.superadmins | User.reregistrators).include? current_user
                    @search.result(distinct: true)
                  elsif User.experts.include? current_user

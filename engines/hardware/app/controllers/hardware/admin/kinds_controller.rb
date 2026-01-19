@@ -1,7 +1,7 @@
 module Hardware
   class Admin::KindsController < Admin::ApplicationController
     def index
-      @search = Kind.search(params[:q])
+      @search = Kind.ransack(params[:q])
       @kinds = @search.result(distinct: true).page(params[:page])
     end
 

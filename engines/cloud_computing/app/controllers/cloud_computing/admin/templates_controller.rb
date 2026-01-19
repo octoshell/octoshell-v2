@@ -1,9 +1,7 @@
-require_dependency "cloud_computing/application_controller"
-
 module CloudComputing::Admin
   class TemplatesController < CloudComputing::Admin::ApplicationController
     def index
-      @search = CloudComputing::Template.search(params[:q])
+      @search = CloudComputing::Template.ransack(params[:q])
       @templates = @search.result(distinct: true)
                       .order_by_name
                       .page(params[:page])

@@ -1,11 +1,9 @@
-require_dependency "cloud_computing/application_controller"
-
 module CloudComputing::Admin
   class ItemsController < CloudComputing::Admin::ApplicationController
 
     def api_logs
       @url = api_logs_admin_item_path(params[:id])
-      @search = CloudComputing::ApiLog.search(params[:q])
+      @search = CloudComputing::ApiLog.ransack(params[:q])
       @api_logs = @search.result(distinct: true)
                          .where(item_id: params[:id])
                          .order(created_at: :desc)

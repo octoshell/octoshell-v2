@@ -5,7 +5,8 @@ $(function(){
   }
 
   $('select, select2-container, select2-ajax, input.chosen, select.chosen').not('.select2-custom').each(function(i, e){
-    var select = $(e)
+    var select = $(e);
+    select.css("width","100%");
     var options = select.find('option')
     if (options.size() == 1) {
       $(options[0]).select()

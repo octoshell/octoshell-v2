@@ -29,25 +29,18 @@ module Hardware
     has_many :items_states, dependent: :restrict_with_error, inverse_of: :state
     has_many :items, through: :items_states, source: :item, inverse_of: :states
 
-
-
     translates :name, :description, fallback: :any
     validates :name_ru, uniqueness: { scope: :kind_id }, if: proc { |k| k.name_ru.present? }
     validates :name_en, uniqueness: { scope: :kind_id }, if: proc { |k| k.name_en.present? }
     validates_translated :name, presence: true
     validates :name, :kind, presence: true
     validate do
-      if from_states.include? self
-        errors.add :from_state_ids, I18n.t('hardware.self_error')
-      end
+      errors.add :from_state_ids, I18n.t('hardware.self_error') if from_states.include? self
 
-      if to_states.include? self
-        errors.add :to_state_ids, I18n.t('hardware.self_error')
-      end
+      errors.add :to_state_ids, I18n.t('hardware.self_error') if to_states.include? self
     end
-    def as_json(_options)
+    def as_json(_options = nil)
       { id: id, text: name }
     end
-
   end
 end

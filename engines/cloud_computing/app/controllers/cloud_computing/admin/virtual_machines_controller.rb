@@ -1,5 +1,3 @@
-require_dependency "cloud_computing/application_controller"
-
 module CloudComputing::Admin
   class VirtualMachinesController < CloudComputing::Admin::ApplicationController
 
@@ -34,7 +32,7 @@ module CloudComputing::Admin
 
     def api_logs
       @url = api_logs_admin_virtual_machine_path(params[:id])
-      @search = CloudComputing::ApiLog.search(params[:q])
+      @search = CloudComputing::ApiLog.ransack(params[:q])
       @api_logs = @search.result(distinct: true)
                          .where(virtual_machine_id: params[:id])
                          .order(created_at: :desc)

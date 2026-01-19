@@ -1,10 +1,15 @@
 module Jobstat
   class ApiController < ActionController::Base
     include AbnormalJobChecker
-
     before_action :parse_request
-    http_basic_authenticate_with name: Rails.application.secrets.jobstat[:user],
-                                 password: Rails.application.secrets.jobstat[:password]
+    if Rails.env.production? || Rails.configuration.secrets[:jobstat]
+      settings = Rails.configuration.secrets[:jobstat]
+      raise 'Provide password for Jobstat API Conntroller' unless settings
+
+      http_basic_authenticate_with name: settings[:user],
+                                   password: settings[:password]
+    end
+
     def post_info
       Job.update_job(@json).notify_when_finished
     end
@@ -22,7 +27,7 @@ module Jobstat
         head 404
       end
 
-      return job
+      job
     end
 
     def post_tags
@@ -33,8 +38,9 @@ module Jobstat
       StringDatum.where(job_id: job.id, name: 'tag').destroy_all
 
       return if tags.nil?
+
       tags.each do |name|
-        StringDatum.where(job_id: job.id, name: 'tag', value: name).first_or_create()
+        StringDatum.where(job_id: job.id, name: 'tag', value: name).first_or_create
       end
 
       check_job(job)
@@ -50,25 +56,27 @@ module Jobstat
       origin_drms_job_id = @json['origin']['job_id']
       origin_drms_task_id = @json['origin'].fetch('task_id', 0)
 
-      origin_job = Job.where(cluster: origin_cluster, drms_job_id: origin_drms_job_id, drms_task_id: origin_drms_task_id).first()
+      origin_job = Job.where(cluster: origin_cluster, drms_job_id: origin_drms_job_id,
+                             drms_task_id: origin_drms_task_id).first
 
       origin_job.initiatees << job
       job.initiator = origin_job
 
-      StringDatum.where(job_id: job.id, name: 'extra_data').first_or_create.update({value: @json['extra_data'].to_json})
+      StringDatum.where(job_id: job.id,
+                        name: 'extra_data').first_or_create.update({ value: @json['extra_data'].to_json })
 
       dt_name = 'detailed_types'
 
       StringDatum.where(job_id: job.id, name: dt_name).destroy_all
       detailed_types = @json[dt_name]
       detailed_types and detailed_types.each do |name|
-          StringDatum.where(job_id: job.id, name: dt_name, value: name).first_or_create()
+        StringDatum.where(job_id: job.id, name: dt_name, value: name).first_or_create
       end
 
       StringDatum.where(job_id: job.id, name: 'detailed').destroy_all
       tags = @json['tags']
       tags and tags.each do |name|
-          StringDatum.where(job_id: job.id, name: 'detailed', value: name).first_or_create()
+        StringDatum.where(job_id: job.id, name: 'detailed', value: name).first_or_create
       end
 
       check_job(job)
@@ -82,28 +90,28 @@ module Jobstat
       FloatDatum.where(job_id: job.id).destroy_all
 
       FloatDatum.where(job_id: job.id, name: 'cpu_user').first_or_create
-          .update({value: @json['avg']['cpu_user']})
+                .update({ value: @json['avg']['cpu_user'] })
 
       FloatDatum.where(job_id: job.id, name: 'instructions').first_or_create
-          .update({value: @json['avg']['fixed_counter1']})
+                .update({ value: @json['avg']['fixed_counter1'] })
 
       FloatDatum.where(job_id: job.id, name: 'gpu_load').first_or_create
-          .update({value: @json['avg']['gpu_load']})
+                .update({ value: @json['avg']['gpu_load'] })
       FloatDatum.where(job_id: job.id, name: 'loadavg').first_or_create
-          .update({value: @json['avg']['loadavg']})
+                .update({ value: @json['avg']['loadavg'] })
 
       FloatDatum.where(job_id: job.id, name: 'ipc').first_or_create
-          .update({value: @json['avg']['ipc']})
+                .update({ value: @json['avg']['ipc'] })
 
       FloatDatum.where(job_id: job.id, name: 'ib_rcv_data_fs').first_or_create
-          .update({value: @json['avg']['ib_rcv_data_fs']})
+                .update({ value: @json['avg']['ib_rcv_data_fs'] })
       FloatDatum.where(job_id: job.id, name: 'ib_xmit_data_fs').first_or_create
-          .update({value: @json['avg']['ib_xmit_data_fs']})
+                .update({ value: @json['avg']['ib_xmit_data_fs'] })
 
       FloatDatum.where(job_id: job.id, name: 'ib_rcv_data_mpi').first_or_create
-          .update({value: @json['avg']['ib_rcv_data_mpi']})
+                .update({ value: @json['avg']['ib_rcv_data_mpi'] })
       FloatDatum.where(job_id: job.id, name: 'ib_xmit_data_mpi').first_or_create
-          .update({value: @json['avg']['ib_xmit_data_mpi']})
+                .update({ value: @json['avg']['ib_xmit_data_mpi'] })
 
       head 200
     end
@@ -118,8 +126,9 @@ module Jobstat
       DigestFloatDatum.where(job_id: job.id, name: params['name']).destroy_all
 
       params['data'].each do |entry|
-      DigestFloatDatum.where(job_id: job.id, name: params['name'], time: Time.at(entry['time']).utc.to_datetime).first_or_create
-          .update({value: entry['avg']})
+        DigestFloatDatum.where(job_id: job.id, name: params['name'],
+                               time: Time.at(entry['time']).utc.to_datetime).first_or_create
+                        .update({ value: entry['avg'] })
       end
 
       head 200
@@ -135,18 +144,14 @@ module Jobstat
     protected
 
     def authenticate_from_token!
-      if !@json['api_token']
-        render nothing: true, status: :forbidden
-      end
+      render nothing: true, status: :forbidden unless @json['api_token']
       @json.delete['api_token']
     end
 
     def parse_request
-      begin
-        @json = JSON.parse(request.body.read)
-      rescue
-        @json = {}
-      end
+      @json = JSON.parse(request.body.read)
+    rescue StandardError
+      @json = {}
     end
   end
 end

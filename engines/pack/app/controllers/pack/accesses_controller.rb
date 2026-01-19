@@ -1,9 +1,7 @@
-require_dependency "pack/application_controller"
 require 'json'
 
 module Pack
   class AccessesController < ApplicationController
-
     def load_for
       render json: accesses(params[:package_ids], params[:version_ids])
     end
@@ -16,13 +14,16 @@ module Pack
                        .or(package_relation)
                        .user_access(current_user.id)
       accesses.map do |a|
-        a.attributes.merge('end_lic' => a.end_lic.to_s,
-                           'new_end_lic' => a.new_end_lic.to_s)
+        h = a.attributes
+        h['end_lic'] = h['end_lic'].strftime('%Y.%m.%d') if h['end_lic'].present?
+        h['new_end_lic'] = h['new_end_lic'].strftime('%Y.%m.%d') if h['new_end_lic'].present?
+        h
       end
     end
 
     def accessible(class_name, id)
       raise 'error' unless ['Pack::Version', 'Pack::Package'].include? class_name
+
       eval(class_name).find(id)
     end
 
@@ -56,17 +57,11 @@ module Pack
 
     private
 
-    def localized_date date
-      date.present? ? l(date) : date
-    end
-
-  	def access_params
+    def access_params
       params.permit(:id, :who_id, :who_type, :forever, :delete,
                     :to_id, :to_type, :end_lic,
                     :new_end_lic, :lock_version,
                     :new_end_lic_forever, :status, :type)
     end
-
   end
-
 end

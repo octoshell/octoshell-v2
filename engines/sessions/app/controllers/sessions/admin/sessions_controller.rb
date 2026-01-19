@@ -33,7 +33,7 @@ module Sessions
     # def show_projects
     #   @session = Session.find(params[:session_id])
     #   params[:q] ||= { state_in: ["active"] }
-    #   @search = Core::Project.search(params[:q])
+    #   @search = Core::Project.ransack(params[:q])
     #   @projects = @search.result(distinct: true).preload(owner: [:profile]).preload(:organization).order(id: :desc)
     #   @projects_involved_in_session_ids = @session.involved_project_ids
     # end

@@ -3,7 +3,7 @@ module Core
     helper ProjectVersionHelper
     def index
       @project = Core::Project.find(params[:id])
-      @search = ProjectVersion.search(params[:q])
+      @search = ProjectVersion.ransack(params[:q])
       @versions = @search.result(distinct: true)
                          .order(created_at: :desc)
                          .page(params[:page])

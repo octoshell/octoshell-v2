@@ -27,7 +27,7 @@ module Core
         notice = create(:notice)
         notice.notice_show_options.create!(user: user)
         notice2 = create(:notice)
-        notice2.notice_show_options.create!(user_id: user.id - 1, hidden: true)
+        notice2.notice_show_options.create!(user_id: create(:user).id, hidden: true)
         create(:notice).notice_show_options.create!(user: user, hidden: true)
         expect(Notice.notices_for_user(user).to_a).to contain_exactly(notice, notice2)
       end

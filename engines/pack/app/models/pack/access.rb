@@ -114,8 +114,9 @@ module Pack
 
       Support::Notificator.new.create!(subject: subject, reporter: created_by,
                                       message: subject,
-                                      topic_en: 'Request for package',
-                                      topic_ru: 'Заявка на доступ к пакету',
+                                      topic: {
+                                      name_en: 'Request for package',
+                                      name_ru: 'Заявка на доступ к пакету'},
                                       field_value: { key: :pack_access,
                                                      record_id: id })
     end

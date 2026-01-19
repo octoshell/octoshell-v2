@@ -19,7 +19,7 @@
 
 module Support
   class Field < ApplicationRecord
-    enum kind: %i[text radio check_box model_collection markdown]
+    old_enum kind: %i[text radio check_box model_collection markdown]
     has_and_belongs_to_many :topics, join_table: :support_topics_fields
     has_many :field_options, inverse_of: :field, dependent: :destroy
     has_many :topics_fields, inverse_of: :field, dependent: :destroy

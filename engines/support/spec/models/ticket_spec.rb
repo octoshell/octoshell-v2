@@ -96,9 +96,6 @@ module Support
       end
 
       it 'displays name of field' do
-        puts Ticket.where(id: @ticket.id).eager_load(field_values: :entity).to_a.inspect.red
-        puts Ticket.where(id: @ticket.id).eager_load(field_values: :entity).to_sql.inspect.red
-        # puts @ticket.field_values.first.entity.inspect.red
         expect(@ticket.field_values.first.field_option_name).to eq @first_field_option.name
       end
 

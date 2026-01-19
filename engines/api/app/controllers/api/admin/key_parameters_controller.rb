@@ -1,5 +1,3 @@
-require_dependency "api/admin/application_controller"
-
 module Api::Admin
   class KeyParametersController < Api::Admin::ApplicationController
     before_action :set_key_parameters, only: [:show, :edit, :update, :destroy]

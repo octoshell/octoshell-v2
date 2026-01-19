@@ -11,7 +11,7 @@ module Support
       end
 
       def ticket_field(args)
-        ModelField.new(args)
+        ModelField.new(**args)
       end
     end
 

@@ -1,5 +1,3 @@
-require_dependency "cloud_computing/application_controller"
-
 module CloudComputing::Admin
   class RequestsController < CloudComputing::Admin::ApplicationController
     before_action only: %i[refuse show] do
@@ -7,7 +5,7 @@ module CloudComputing::Admin
     end
 
     def index
-      @search = CloudComputing::Request.search(params[:q])
+      @search = CloudComputing::Request.ransack(params[:q])
       @requests = @search.result(distinct: true)
                          .includes(:created_by, :for)
                          .order(:created_at)

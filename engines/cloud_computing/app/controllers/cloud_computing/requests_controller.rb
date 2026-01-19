@@ -1,5 +1,3 @@
-require_dependency "cloud_computing/application_controller"
-
 module CloudComputing
   class RequestsController < ApplicationController
 
@@ -37,7 +35,7 @@ module CloudComputing
         }
       else
         flash = {
-          error: @new_item.errors.to_h
+          error: @new_item.errors.to_hash
         }
       end
       redirect_back fallback_location: @item.holder, flash: flash
@@ -46,7 +44,7 @@ module CloudComputing
 
 
     def index
-      @search = user_requests.search(params[:q])
+      @search = user_requests.ransack(params[:q])
       @requests = @search.result(distinct: true)
                          .order(:created_at)
                          .page(params[:page])

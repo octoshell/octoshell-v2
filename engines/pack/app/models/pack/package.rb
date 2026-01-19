@@ -15,25 +15,23 @@
 
 module Pack
   class Package < ApplicationRecord
-
-
-
     translates :description, :name
 
     self.locking_column = :lock_version
-    validates_translated :description,:name, presence: true
-    has_many :versions,dependent: :destroy, inverse_of: :package
+    validates_translated :description, :name, presence: true
+    has_many :versions, dependent: :destroy, inverse_of: :package
     has_many :accesses, dependent: :destroy, as: :to
-    scope :finder, ->(q) { where("lower(name_ru) like lower(:q) OR lower(name_ru) like lower(:q)", q: "%#{q.mb_chars}%") }
+    scope :finder, lambda { |q|
+      where('lower(name_ru) like lower(:q) OR lower(name_ru) like lower(:q)', q: "%#{q.mb_chars}%")
+    }
 
-    def as_json(_options)
-    { id: id, text: name }
+    def as_json(_options = nil)
+      { id: id, text: name }
     end
 
     def to_s
       "#{self.class.model_name.human} \"#{name}\""
     end
-
 
     def self.ransackable_scopes(_auth_object = nil)
       %i[end_lic_greater]
@@ -67,17 +65,12 @@ module Pack
 
     def self.allowed_for_users_with_joins(user_id)
       all.merge(Version.allowed_for_users).joins(:versions)
-         .user_access(user_id, "LEFT")
+         .user_access(user_id, 'LEFT')
     end
 
-
-    def self.user_access(user_id,join_type)
-      if user_id == true
-        user_id = 1
-      end
+    def self.user_access(user_id, join_type)
+      user_id = 1 if user_id == true
       Version.join_accesses joins(:versions), user_id, join_type
     end
-
   end
-
 end

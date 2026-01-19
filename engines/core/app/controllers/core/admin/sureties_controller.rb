@@ -3,7 +3,7 @@ module Core
     before_action :setup_default_filter, only: :index
     before_action :octo_authorize!
     def index
-      @search = Surety.search(params[:q])
+      @search = Surety.ransack(params[:q])
       @sureties = @search.result(distinct: true).includes({ author: :profile,
                                                             members: :profile,
                                                             project: [:card, :organization] },
@@ -13,6 +13,9 @@ module Core
 
     def show
       @surety = find_surety(params[:id])
+      @project = @surety.project
+      @projects = projects(@project.organization.projects).page(params[:page])
+      @projects_by_members = projects(Core::Project.joins(:users).where(users: { id: @project.users })).page(params[:page])
       respond_to do |format|
         format.html
         format.rtf do
@@ -120,6 +123,15 @@ module Core
     end
 
     private
+
+    def projects(relation)
+      relation.preload([:organization, :critical_technologies,
+                        :direction_of_sciences, :research_areas,
+                        {
+                          users: :profile, requests: { fields: :quota_kind },
+                          reports: %i[session submit_denial_reason]
+                        }]).distinct
+    end
 
     def find_surety(id)
       Surety.find(id)

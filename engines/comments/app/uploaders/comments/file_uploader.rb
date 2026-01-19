@@ -1,9 +1,7 @@
-# encoding: utf-8
-
 module Comments
   class FileUploader < CarrierWave::Uploader::Base
-    #include CarrierWave::MimeTypes
-    CarrierWave::SanitizedFile.sanitize_regexp = /[^a-zA-Zа-яА-ЯёЁ0-9\.\-\+_]/u
+    # include CarrierWave::MimeTypes
+    CarrierWave::SanitizedFile.sanitize_regexp = /[^a-zA-Zа-яА-ЯёЁ0-9.\-+_]/u
 
     storage :file
 

@@ -4,7 +4,7 @@ module Statistics
     end
 
     def calculate_stats
-      SessionStatsCollectorWorker.perform_async
+      SessionsStatsCollectorWorker.perform_async
       head :ok
     end
   end

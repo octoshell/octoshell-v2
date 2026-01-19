@@ -36,7 +36,8 @@ module Support
                                    foreign_key: :subject_id,
                                    foreign_type: :subject_class,
                                    dependent: :destroy,
-                                   class_name: '::Permission'
+                                   class_name: '::Permission',
+                                   as: :subject
 
     accepts_nested_attributes_for :user_topics, :permissions, :topics_fields, allow_destroy: true
     validates_translated :name, presence: true

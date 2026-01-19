@@ -8,6 +8,8 @@ module ReceiveEmails
     socket_permissions: 066
   }
   def self.lmtp_server
+    path = CONFIG[:socket_path]
+    File.delete(path) if File.exist? path
     ::LmtpServer.new(CONFIG[:socket_path], CONFIG[:socket_permissions]) do |msg|
       EmailProccessor.new(msg).process
     end

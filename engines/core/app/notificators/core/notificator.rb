@@ -1,12 +1,9 @@
 module Core
   if Octoface.role_class?(:support, 'Notificator')
     class Notificator < Octoface.role_class(:support, 'Notificator')
-      def self.topic_ru
-        'Проверить новую запись'
-      end
-
-      def self.topic_en
-        'Check new record'
+      def options
+        { topic: { name_ru: 'Проверить новую запись',
+                   name_en: 'Check new record' } }
       end
 
       def check(object, current_user)
@@ -19,9 +16,9 @@ module Core
           id = @object.id
         end
         @url = "/core/admin/#{name}/#{id}"
-        hash = { subject: t('.subject', model_name: @object.model_name.human, to_s: @object.to_s) }
-        hash[:reporter] = current_user
-        hash
+        { subject: t('.subject', model_name: @object.model_name.human,
+                                 to_s: @object.to_s),
+          reporter: current_user }
       end
     end
   end

@@ -45,7 +45,6 @@ module Core
       if @cluster.update(cluster_params)
         redirect_to [:admin, @cluster], notice: t("flash.cluster_updated")
       else
-        puts @cluster.errors.inspect
         render :edit
       end
     end

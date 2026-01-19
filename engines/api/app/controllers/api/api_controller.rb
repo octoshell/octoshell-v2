@@ -1,5 +1,3 @@
-require_dependency "api/application_controller"
-
 module Api
   class ApiController < ApplicationController
 

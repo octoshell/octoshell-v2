@@ -2,7 +2,7 @@ module Core
   class Admin::ProjectKindsController < Admin::ApplicationController
     before_action :octo_authorize!
     def index
-      @search = ProjectKind.search(params[:q])
+      @search = ProjectKind.ransack(params[:q])
       @project_kinds = @search.result(distinct: true).page(params[:page])
     end
 

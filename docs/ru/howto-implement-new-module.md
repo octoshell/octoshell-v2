@@ -81,7 +81,7 @@ If you want to add submenu, then in app/helpers/foo/application_helper define th
   - 'engines/foo/app/views/foo/admin'
 
 ### И контроллеры для админа:
-Создаём engines/foo/app/controllers/foo/admin/application_controller.rb 
+Создаём engines/foo/app/controllers/foo/admin/application_controller.rb
 
     module Foo
       class Admin::ApplicationController < Foo::ApplicationController
@@ -90,9 +90,8 @@ If you want to add submenu, then in app/helpers/foo/application_helper define th
     end
 
 
-В engines/foo/app/controllers/foo/admin/bar_controller.rb 
+В engines/foo/app/controllers/foo/admin/bar_controller.rb
 
-    require_dependency "foo/admin/application_controller"
     module Foo
       class Admin::FooController < Admin::ApplicationController
       ...

@@ -4,7 +4,7 @@ module Core
     def index
       respond_to do |format|
         format.html do
-          @search = City.search(params[:q])
+          @search = City.ransack(params[:q])
           search_result = @search.result(distinct: true).order(:title_ru)
           @cities = search_result.includes(:country)
           without_pagination :cities

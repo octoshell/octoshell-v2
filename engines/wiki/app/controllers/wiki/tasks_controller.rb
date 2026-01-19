@@ -1,4 +1,3 @@
-require_dependency "wiki/application_controller"
 
 module Wiki
   class TasksController < ApplicationController

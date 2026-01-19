@@ -5,6 +5,8 @@ module Pack
 
     before_action do |controller|
       @extra_css=["pack/pack.css"]
+      @extra_js=["pack/application.js"]
+
     end
 
   end

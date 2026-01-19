@@ -5,7 +5,7 @@ module Face
     initializer "face.action_controller" do |app|
       ActiveSupport.on_load :action_controller do
         #helper Face::ApplicationHelper
-        ::ActionController::Base.send(:include, Face::ApplicationHelper)
+        # ::ActionController::Base.send(:include, Face::ApplicationHelper)
       end
     end
 

@@ -17,11 +17,11 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
 
-  s.add_dependency "rails", "~> 5.0"
+  # s.add_dependency "rails", "~> 5.0"
 
   s.add_development_dependency "annotate"
-  s.add_dependency "activerecord-jdbcpostgresql-adapter" if /java/.match(RUBY_PLATFORM)
-  s.add_dependency "pg", "~> 0.18" unless /java/.match(RUBY_PLATFORM)
+  # s.add_dependency "activerecord-jdbcpostgresql-adapter" if /java/.match(RUBY_PLATFORM)
+  # s.add_dependency "pg", "~> 0.18" unless /java/.match(RUBY_PLATFORM)
   # s.add_dependency "decorators", "~> 1.0.2"
   #s.add_dependency "state_machine"
   s.add_dependency "aasm"

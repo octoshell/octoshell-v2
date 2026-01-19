@@ -1,0 +1,9 @@
+---
+ru:
+  mailer:
+    footer:
+      maintained_by: Лаборатория Параллельных информационных технологий НИВЦ МГУ.
+en:
+  mailer:
+    footer:
+      maintained_by: Parallel information technologies laboratory, RCC MSU.

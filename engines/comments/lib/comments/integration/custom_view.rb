@@ -3,28 +3,29 @@ module Comments
     class CustomView < ActionView::Base
       include Engine.routes.url_helpers
       attr_reader :current_user
+
       def initialize(path, attach_to, attachment_type, user)
-        super(path)
+        super(path, {}, nil)
         @attach_to = attach_to
         @attachment_type = attachment_type
         @current_user = user
         model_obj = case @attachment_type
-        when 'files'
-          Comments::FileAttachment
-        when 'comments'
-          Comments::Comment
-        when 'tags'
-          Comments::Tagging
-        else
-          raise ArgumentError, 'atttachment_type is incorrect'
-        end
+                    when 'files'
+                      Comments::FileAttachment
+                    when 'comments'
+                      Comments::Comment
+                    when 'tags'
+                      Comments::Tagging
+                    else
+                      raise ArgumentError, 'atttachment_type is incorrect'
+                    end
         if @attach_to[:class_name] == 'all'
           @records, @pages = model_obj.all_records_to_json_view(user_id: current_user.id)
         else
           @records, @pages = model_obj.to_json_view(attach_to: @attach_to, user_id: current_user.id)
           unless @attach_to[:ids] == 'all'
             @with_context = Comments::Permissions
-                            .create_permissions(@attach_to.merge(user: user))
+                            .create_permissions(**@attach_to.merge(user: user))
           end
         end
         @attachable_ids = @attach_to[:ids] == 'all' ? 'all' : @attach_to[:ids].join(',')
@@ -51,7 +52,6 @@ module Comments
           yield block
         end
       end
-
     end
   end
 end

@@ -3,9 +3,6 @@ class UsersController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html do
-        @users = User.order(created_at: :desc)
-      end
       format.json do
         @users = User.finder(params[:q])
         if User.superadmins.include? current_user
@@ -13,8 +10,10 @@ class UsersController < ApplicationController
                          total: @users.count }
         else
           render json: { records: @users.page(params[:page]).per(params[:per])
-                                        .map{ |u| { id: u.id,
-                                                    text: u.full_name_with_cut_email }},
+                                        .map do |u|
+                                          { id: u.id,
+                                            text: u.full_name_with_cut_email }
+          end,
                          total: @users.count }
         end
       end
@@ -26,7 +25,7 @@ class UsersController < ApplicationController
 
   def update
     if current_user.update(user_params)
-      redirect_to profile_path, notice: t("flash.password_updated")
+      redirect_to profile_path, notice: t('flash.password_updated')
     else
       render :edit
     end
@@ -36,7 +35,7 @@ class UsersController < ApplicationController
     authorize! :manage, :users
     user = User.find(params[:id])
     session[:soul_id] = current_user.id
-    session[:soul_location] = request.env["HTTP_REFERER"]
+    session[:soul_location] = request.env['HTTP_REFERER']
     auto_login(user)
     redirect_to root_path
   end

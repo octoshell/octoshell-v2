@@ -26,7 +26,7 @@ module Core
     has_many :surety_members, inverse_of: :organization_department
     after_create :notify_admins
 
-    scope :finder, ->(q){ where("name like :q", q: "%#{q.mb_chars}%").order(:name) }
+    scope :finder, ->(q) { where('name like :q', q: "%#{q.mb_chars}%").order(:name) }
 
     validates :name, :organization, presence: true
 
@@ -38,7 +38,7 @@ module Core
       "#{organization.short_name}, #{name}"
     end
 
-    def as_json(options)
+    def as_json(options = nil)
       { id: id, text: name }
     end
 

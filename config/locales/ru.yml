@@ -1,5 +1,14 @@
 ---
 ru:
+  mailer:
+    footer:
+      octo_regards: С уважением, Octoshell.
+  date:
+    formats:
+       default: "%Y.%m.%d" 
+  time:
+    formats:
+      default: "%Y.%m.%d %H:%M"
   '':
     core:
       admin:
@@ -208,6 +217,10 @@ ru:
         confirm: Вы действительно хотите удалить эту категорию опций?
         no_found: Нет категорий для опцийW
     users:
+      find_similar:
+        title: "Похожие пользователи на пользователя %{name}(%{email})"
+        full_name: "ФИО"
+        email: Email
       edit:
         title: Участие пользователя в группах доступа
       index:
@@ -239,6 +252,7 @@ ru:
         reg_date: Дата регистрации
         unblock_emails: Разблокировать отправку писем
         unblock_user: Возобновить доступ
+        show_similar: Показать похожих пользователей
       table:
         no_employment:
           html: >-

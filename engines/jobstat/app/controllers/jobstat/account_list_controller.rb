@@ -1,4 +1,3 @@
-require_dependency "jobstat/application_controller"
 
 module Jobstat
   class AccountListController < ApplicationController
@@ -68,7 +67,7 @@ module Jobstat
 
         params[:fake_data]=@fake_data
         if @fake_data!=0
-          cluster=Core::Cluster.last
+          cluster=Core::Partition.last.cluster
           now=DateTime.now
           j=OpenStruct.new(
             id: 1,
@@ -124,8 +123,6 @@ module Jobstat
               ipc: 'low', ib_rcv_data_mpi: 'low', ib_xmit_data_mpi: 'low',
             }
           )
-
-          #Job.where(drms_job_id: 869867)
           @total_count=2
           @jobs_plus['1']=j
           @jobs_feedback['1']={ }

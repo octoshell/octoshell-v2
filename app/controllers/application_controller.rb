@@ -20,24 +20,22 @@ class ApplicationController < ActionController::Base
                                                             method: :patch)).html_safe)
   end
 
-
   def authorize_admins
-    #logger.error "ADMINS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    # logger.error "ADMINS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     authorize!(:access, :admin)
   end
 
   def not_authenticated
-    redirect_to main_app.root_path, alert: t("flash.not_logged_in")
+    redirect_to main_app.root_path, alert: t('flash.not_logged_in')
   end
 
   def not_authorized
     # logger.error "-------------------------------------------"
     # logger.error caller(0).join("\n");
-    redirect_to main_app.root_path, alert: t("flash.not_authorized")
+    redirect_to main_app.root_path, alert: t('flash.not_authorized')
   end
 
   rescue_from CanCan::AccessDenied, with: :not_authorized
-
 
   def info_for_paper_trail
     { session_id: request.session.id }
@@ -45,9 +43,8 @@ class ApplicationController < ActionController::Base
 
   def octo_authorize!
     # logger.warn "AUTH: #{params[:controller]}"
-    ret = authorize!(*::Octoface.action_and_subject_by_path(params[:controller]))
+    authorize!(*::Octoface.action_and_subject_by_path(params[:controller]))
     # logger.warn "AUTH ret: #{ret}"
-    ret
   end
 
   def admin_redirect_path
@@ -65,12 +62,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   def options_attributes
-    [:id, :name, :category,
-     :name_type, :options_category_id, :value_type,
-     :category_value_id, :name_ru, :name_en,
-     :value_ru, :value_en, :_destroy, :admin]
+    %i[id name category
+       name_type options_category_id value_type
+       category_value_id name_ru name_en
+       value_ru value_en _destroy admin]
   end
 
   include ControllerHelper
@@ -88,9 +84,73 @@ class ApplicationController < ActionController::Base
 
   def check_notices
     return unless current_user
-    #return if request[:controller] =~ /\/admin\//
+
+    # return if request[:controller] =~ /\/admin\//
     Core::Notice.show_notices(current_user, params, request).each do |data|
       flash_now_message(data[0], data[1])
     end
+  end
+  helper_method :menu_items
+  helper_method :user_submenu_items
+  helper_method :admin_submenu_items
+
+  def menu_items
+    menu = Face::MyMenu.new
+    # menu.items.clear
+    if Octoface::OctoConfig.find_by_role(:core) && logged_in?
+      menu.add_item_without_key(t('main_menu.working_area'), core.root_path, /^((?!admin|wiki).)*$/s)
+    end
+    menu.add_item_without_key(t('main_menu.admin_area'), admin_redirect_path, /admin/) if can?(:access, :admin)
+    # menu.add_item_without_key(wiki_item)
+    if Octoface::OctoConfig.find_by_role(:wiki)
+      menu.add_item_without_key(t('main_menu.wikiplus'), wikiplus.root_path, /wikiplus/)
+    end
+
+    # menu.add_item(working_area_item) if logged_in?
+    # menu.add_item(admin_area_item) if can?(:access, :admin)
+    # menu.add_item(wiki_item)
+    # menu.add_item(wikiplus_item)
+    menu.items(self)
+  end
+
+  def wiki_item
+    wikiplus_item
+    # Face::MenuItem.new({
+    #   name: t("main_menu.wiki"),
+    #   url: wiki.root_path,
+    #   regexp: /wiki/
+    # })
+  end
+
+  def wikiplus_item
+    Face::MenuItem.new({
+                         name: t('main_menu.wikiplus'),
+                         url: wikiplus.root_path,
+                         regexp: /wikiplus/
+                       })
+  end
+
+  def working_area_item
+    Face::MenuItem.new({
+                         name: t('main_menu.working_area'),
+                         url: core.root_path,
+                         regexp: /^((?!admin|wiki).)*$/s
+                       })
+  end
+
+  def admin_area_item
+    Face::MenuItem.new({
+                         name: t('main_menu.admin_area'),
+                         url: admin_redirect_path,
+                         regexp: /admin/
+                       })
+  end
+
+  def user_submenu_items
+    Face::MyMenu.user_submenu(self)
+  end
+
+  def admin_submenu_items
+    Face::MyMenu.admin_submenu(self)
   end
 end

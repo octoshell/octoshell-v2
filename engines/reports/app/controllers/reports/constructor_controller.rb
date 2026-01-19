@@ -1,4 +1,3 @@
-require_dependency "reports/application_controller"
 
 module Reports
   class ConstructorController < ApplicationController

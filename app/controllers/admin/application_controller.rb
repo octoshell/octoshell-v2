@@ -1,9 +1,8 @@
-# coding: utf-8
 class Admin::ApplicationController < ApplicationController
   before_action :authorize_admins!
   before_action :require_login
 
-private
+  private
 
   def authorize_admins!
     authorize! :access, :admin

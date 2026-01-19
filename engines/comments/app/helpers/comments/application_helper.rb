@@ -2,13 +2,13 @@ module Comments
   module ApplicationHelper
     def comments_admin_submenu_items
       menu = Face::MyMenu.new
-      menu.add_item_without_key(t("engine_submenu.group_classes_links"),
+      menu.add_item_without_key(t('engine_submenu.group_classes_links'),
                                 edit_admin_group_classes_path, 'comments/admin/group_classes')
 
-      menu.add_item_without_key(t("engine_submenu.contexts"),
+      menu.add_item_without_key(t('engine_submenu.contexts'),
                                 admin_contexts_path, 'comments/admin/contexts')
 
-      menu.add_item_without_key(t("engine_submenu.context_groups_links"),
+      menu.add_item_without_key(t('engine_submenu.context_groups_links'),
                                 edit_admin_context_groups_path, 'comments/admin/context_groups')
 
       menu.items(self)

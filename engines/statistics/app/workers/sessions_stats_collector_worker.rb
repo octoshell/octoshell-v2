@@ -1,4 +1,4 @@
-class SessionStatsCollectorWorker
+class SessionsStatsCollectorWorker
   include Sidekiq::Worker
   sidekiq_options queue: :low
 

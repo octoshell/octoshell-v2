@@ -1,8 +1,6 @@
-# encoding: utf-8
+require 'main_spec_helper'
 
-require "main_spec_helper"
-
-feature "Working with projects", js: true do
+feature 'Working with projects', js: true do
   background do
     create(:project)
     @user = create(:user)
@@ -11,10 +9,9 @@ feature "Working with projects", js: true do
     @organization.employments.create!(user: @user)
   end
 
-
-  scenario "project creation" do
+  scenario 'project creation' do
     visit core.new_project_path
-    fill_in "Наименование", with: "Сложная система уравнений в частных производных"
+    fill_in 'Наименование', with: 'Сложная система уравнений в частных производных'
     select Core::ProjectKind.first.name_ru, from: 'Тип'
     select @organization.name, from: 'Организация'
     select Core::ResearchArea.first.name_ru, from: 'Область науки'
@@ -27,26 +24,26 @@ feature "Working with projects", js: true do
     [Core::DirectionOfScience, Core::CriticalTechnology].each do |model|
       check model.first.name_ru
     end
-    click_on "Сохранить"
+    click_on 'Сохранить'
 
-    expect(page).to have_content("Проект создан")
+    expect(page).to have_content('Проект создан')
   end
 
-  scenario "request to cluster creation" do
+  scenario 'request to cluster creation' do
     cluster = create(:cluster)
     project = create(:project, owner: @user)
     # project.members.create!(user: @user, organization: @organization,
     #                         project_access_state: 'allowed')
 
     visit core.project_path(project)
-    within("#spare-clusters") do
-      click_on "Запросить доступ"
+    within('#spare-clusters') do
+      click_on 'Запросить доступ'
     end
 
-    click_button "Сохранить"
+    click_button 'Сохранить'
 
-    expect(page).to have_content("Заявка создана")
-    within("#requests") do
+    expect(page).to have_content('Заявка создана')
+    within('#requests') do
       expect(page).to have_content(cluster.name)
     end
   end
@@ -67,8 +64,8 @@ feature "Working with projects", js: true do
   # end
 end
 
-feature "Obtaining access to clusters", js: true do
-  scenario "obtaining access to cluster" do
+feature 'Obtaining access to clusters', js: true do
+  scenario 'obtaining access to cluster' do
     admin = create(:admin)
     cluster = create(:cluster)
     user = create(:user)
@@ -78,21 +75,21 @@ feature "Obtaining access to clusters", js: true do
 
     sign_in(user)
     visit core.project_path(project)
-    within("#spare-clusters") do
-      click_on "Запросить доступ"
+    within('#spare-clusters') do
+      click_on 'Запросить доступ'
     end
-    click_button "Сохранить"
+    click_button 'Сохранить'
     sign_out
 
     sign_in(admin)
     visit core.admin_request_path(Core::Request.last)
     fill_in 'request_reason', with: 'I AM BIG RUSSIAN ADMIN'
-    click_on "Подтвердить"
+    click_on 'Подтвердить'
     sign_out
 
     sign_in(user)
     visit core.project_path(project)
-    within("#accesses") do
+    within('#accesses') do
       expect(page).to have_content(cluster.name)
     end
     sign_out

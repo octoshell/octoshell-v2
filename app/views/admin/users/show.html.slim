@@ -7,6 +7,7 @@
       -else
         = link_to t(".block_emails"), [:block_emails, :admin, @user], method: :patch, class: "btn btn-danger"
       = link_to t(".delete_user"), [:admin, @user], method: :delete, class: "btn btn-danger"
+      /= link_to t(".show_similar"), find_similar_admin_user_path(@user), class: "btn btn-default"
 
 div class="row"
     /div class="page-header"

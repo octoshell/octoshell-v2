@@ -1,4 +1,3 @@
-require_dependency "cloud_computing/application_controller"
 
 module CloudComputing
   class VirtualMachinesController < ApplicationController
@@ -36,7 +35,7 @@ module CloudComputing
 
     def api_logs
       @url = api_logs_virtual_machine_path(params[:id])
-      @search = @virtual_machine.api_logs.search(params[:q])
+      @search = @virtual_machine.api_logs.ransack(params[:q])
       @api_logs = @search.result(distinct: true)
                          .order(created_at: :desc)
                          .page(params[:page])

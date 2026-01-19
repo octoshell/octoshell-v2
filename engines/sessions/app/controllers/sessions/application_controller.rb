@@ -1,6 +1,11 @@
 module Sessions
   class ApplicationController < ::ApplicationController
     helper Face::ApplicationHelper
+    before_action do
+      @extra_js = 'sessions/application'
+      @extra_css = 'sessions/application'
+
+    end
     before_action :require_login
     layout "layouts/application"
     #before_action :journal_user
