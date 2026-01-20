@@ -1,2 +1,2 @@
 ENV=production
-bundle exec bin/rails server -e $ENV -p 5000 -b 0.0.0.0 &
+bundle exec bin/rails server -e $ENV -p 5000 -b 0.0.0.0

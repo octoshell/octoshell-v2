@@ -2,7 +2,7 @@
 For russian version see below.
 
 # README
-Octoshell - access management system for HPC centers. This project is based on Ruby on Rails framework(5.2)
+Octoshell - access management system for HPC centers. This project is based on Ruby on Rails framework(8.0)
 Working production: https://users.parallel.ru/
 
 ## Install Octoshell inside  docker container (NOT for production)
@@ -13,7 +13,7 @@ Requires: Docker and Docker Composer
 1. execute `cd docker`
 1. build and run containers `docker-compose up`. Add `-d` flag for detached mode: run containers in background. Now your containers are launched, you can press  ctrl + c to turn them off.
 1. check status of containers `docker-compose ps`
-1. install database and run seeds.rb while your containers are running: `docker-compose exec app bundle exec rake db:setup`
+1. install database and run seeds.rb while your containers are running: `docker-compose exec app bundle exec rails db:setup`
 1. visit `http://localhost:3000/` (login: `admin@octoshell.ru`, password: `123456`)
 ### Usage
 
@@ -33,8 +33,8 @@ The Letter-opener gem opens for you sent emails via browser. It is not possible 
 
 We assume, that all below is doing as user `octo` (or root, if it is said 'as root'). You can use another user. Please, note, that linux account `octo` and database role `octo` are not connected, but we prefer to use the same name for both cases. You can create user by command like `adduser octo`
 
-1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo yarnpkg pg-dev`)
-1. install as root redis (under debian/ubuntu: `sudo apt-get install -y redis-server redis-tools`)
+1. install packages as root (under debian/ubuntu: `sudo apt-get install -y git curl wget build-essential libssl-dev libreadline-dev zlib1g-dev sudo yarnpkg pg-dev autoconf libssl-dev libyaml-dev libffi-dev libgmp-dev rustc`)
+1. install as root redis (under debian/ubuntu: `sudo apt-get install -y redis-server redis-tools`). Make sure version of redis-server >= 6.2. redis-server v 7.0 is suitable.  
 1. install postgresql (under debian/ubuntu: `sudo apt-get install -y postgresql postgresql-server-dev-all`)
 1. as root add database user octo: `sudo -u postgres bash -c "psql -c \"CREATE USER octo WITH PASSWORD 'HERE_COMES_YOUR_DESIRED_PASSWORD';\""`
 1. as root allow user octo to create databases: `sudo -u postgres bash -c "psql -c \"ALTER USER octo CREATEDB;\""`
@@ -51,17 +51,16 @@ We assume, that all below is doing as user `octo` (or root, if it is said 'as ro
 1. install ruby:
 
     ```
-      rbenv install 2.7.6
-      rbenv global 2.7.6
+      rbenv install 3.2.9
+      rbenv global 3.2.9
     ```
-1. execute `gem install bundler --version '< 2.0'`
+1. execute `gem install bundler --version '4.0.3'`
 1. execute `git clone https://github.com/octoshell/octoshell-v2.git`
 1. go into cloned directory `cd octoshell-v2`
-1. execute `./rebuild_bundles full`
+1. execute `bundle install`
 1. copy `config/database.yml.example` into `config/database.yml`
 1. fill database parameters and password in `config/database.yml`
 1. execute `bundle exec rake db:setup`
-1. execute `bundle exec rake assets:precompile` (Downloading pages without precompilation  and   config.assets.debug = true can take significant amount of time)
 
 Now you can test all in **development** mode, just execute `./dev` and wait for 'Use Ctrl-C to stop'. Open 'http://localhost:5000/' to access application.
 To test delayed actions, such as email send, cluster sync, start sidekiq in development mode: `dev-sidekiq`.
@@ -147,12 +146,12 @@ Use "options" to extend desription  of any model.
 
 
 
-## Deploy
+## Deploy (outdated, just see /deploy folder )
 
 1. Prepare deploy server (1-10 from above)
 1. Make sure you can ssh to deploy server without password
 1. `git clone`
-1. Rename `deploy_env.sample` to `deploy_env` and fill right environment
+1. Rename `example_env.sample` to `deploy_env` and fill right environment
 1. `./do_deploy_setup`
 1. `./do_deploy`
 1. `./deploy_copy_files`

@@ -32,7 +32,7 @@ gem 'mini_magick', '>= 4.9.4'
 gem 'nokogiri', '>= 1.10.4'
 gem 'ransack'
 gem 'sidekiq', '~> 7.3'
-gem 'therubyracer' # for execjs
+#gem 'therubyracer' # for execjs
 group :development do
   gem 'annotate'
   gem 'pry-rails'
