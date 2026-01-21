@@ -13,7 +13,12 @@ module Announcements
     private
 
     def hard_markdown(text)
-      CommonMarker.render_html(text, :DEFAULT,[:table,:autolink]).html_safe
+      Commonmarker.to_html(text,
+                           options: {
+                             render: { unsafe: true }
+                           }).html_safe
+
+      # ::Commonmarker.to_html(text, :DEFAULT, %i[table autolink]).html_safe
     end
     helper_method :hard_markdown
   end
