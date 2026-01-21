@@ -2,6 +2,7 @@ module Jobstat
   class ApiController < ActionController::Base
     include AbnormalJobChecker
     before_action :parse_request
+    skip_before_action :verify_authenticity_token
     if Rails.env.production? || Rails.configuration.secrets[:jobstat]
       settings = Rails.configuration.secrets[:jobstat]
       raise 'Provide password for Jobstat API Conntroller' unless settings
