@@ -1,6 +1,6 @@
 (function( $ ) {
   $.fn.ruTwbsPagination = function(params) {
-		locale = {
+		var locale = {
 			first: 'Начало',
 			next: 'Следующая',
 			prev: 'Предыдущая',
