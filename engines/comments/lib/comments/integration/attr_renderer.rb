@@ -11,7 +11,6 @@ module Comments
       end
 
       def render
-        puts ActionController::Base.view_paths.inspect.red
         view = CustomView.with_empty_template_cache
                          .new(att_view_paths, @attach_to, @attachment_type, @user)
         res = view.render(template: 'from_view')

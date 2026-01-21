@@ -6,6 +6,11 @@ module Comments
 
       def initialize(path, attach_to, attachment_type, user)
         super(path, {}, nil)
+
+        lookup_context.view_paths.each do |resolver|
+          resolver.clear_cache if resolver.respond_to?(:clear_cache)
+        end
+
         @attach_to = attach_to
         @attachment_type = attachment_type
         @current_user = user
