@@ -32,7 +32,7 @@ gem 'mini_magick', '>= 4.9.4'
 gem 'nokogiri', '>= 1.10.4'
 gem 'ransack'
 gem 'sidekiq', '~> 7.3'
-#gem 'therubyracer' # for execjs
+# gem 'therubyracer' # for execjs
 group :development do
   gem 'annotate'
   gem 'pry-rails'
@@ -45,6 +45,7 @@ group :development do
   gem 'minitest-reporters'
   gem 'rubocop'
   gem 'rubocop-rails'
+  gem 'ruby-lsp-rails', github: 'apaokin/ruby-lsp-rails', branch: 'extended_view_paths'
   gem 'ruby-lsp-rspec', require: false
 end
 

@@ -5,6 +5,14 @@ GIT
     lmtp (0.0.1)
 
 GIT
+  remote: https://github.com/apaokin/ruby-lsp-rails.git
+  revision: 3ccc885740682db353d11fe58248b4dc4726f47f
+  branch: extended_view_paths
+  specs:
+    ruby-lsp-rails (0.4.8)
+      ruby-lsp (>= 0.26.0, < 0.27.0)
+
+GIT
   remote: https://github.com/colszowka/phantomjs-gem.git
   revision: 38a722deeb7989e2de093fd628139266386492c1
   specs:
@@ -716,7 +724,7 @@ GEM
       rubocop-ast (>= 1.44.0, < 2.0)
     ruby-graphviz (1.2.5)
       rexml
-    ruby-lsp (0.26.4)
+    ruby-lsp (0.26.5)
       language_server-protocol (~> 3.17.0)
       prism (>= 1.2, < 2.0)
       rbs (>= 3, < 5)
@@ -905,6 +913,7 @@ DEPENDENCIES
   rspec-sidekiq
   rubocop
   rubocop-rails
+  ruby-lsp-rails!
   ruby-lsp-rspec
   rubyzip (>= 1.0.0)
   selenium-webdriver
