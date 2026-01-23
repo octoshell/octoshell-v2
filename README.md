@@ -3,16 +3,24 @@ For russian version see below.
 
 # README
 Octoshell - access management system for HPC centers. This project is based on Ruby on Rails framework(8.0)
-Working production: https://users.parallel.ru/
+Working production: https://users.parallel.ru/. 
+Here u can read the instructions to run Octoshell mainly in the development mode. 
+## Editor settings
+The project is set up to work with the Visual Studio Code editor (check .vscode directory) and can be run inside the development container (check the .devcoinainers directory). Also, installation in local environment is available. 
+To verify that Language Server Protocol features are deeply integrated in your editor: open engines/core/app/controllers/core/admin/projects_controller.rb and check that lenses like "Jump to view" appeared above some methods.    
 
 ## Install Octoshell inside  docker container (NOT for production)
-Requires: Docker and Docker Composer
-### Installation
-
+Requires: docker-compose  >= 5.0.1
+ .vscode/settings.json and config/database.yml are populated automically every time the docker container is launched. 
+### Installation. 
 1. copy repo `git clone https://github.com/octoshell/octoshell-v2.git`
-1. execute `cd docker`
-1. build and run containers `docker-compose up`. Add `-d` flag for detached mode: run containers in background. Now your containers are launched, you can press  ctrl + c to turn them off.
-1. check status of containers `docker-compose ps`
+1. If you use dev containers:
+    1. Install the dev-containers extension in your editor (Visual Studio Code etc.).
+    1. Run container
+1. Pure docker-compose without dev containers:
+    1. execute `cd docker`
+    1. build and run containers `docker-compose up`. Add `-d` flag for detached mode: run containers in background. Now your containers are launched, you can press  ctrl + c to turn them off.
+    1. check status of containers `docker-compose ps`
 1. install database and run seeds.rb while your containers are running: `docker-compose exec app bundle exec rails db:setup`
 1. visit `http://localhost:3000/` (login: `admin@octoshell.ru`, password: `123456`)
 ### Usage
