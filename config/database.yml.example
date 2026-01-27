@@ -12,5 +12,6 @@ development:
   <<: *default
 test:
   <<: *default
+  database: octoshell_test
 production:
   <<: *default
