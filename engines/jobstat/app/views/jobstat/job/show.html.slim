@@ -111,19 +111,21 @@ div class="row"
         td class="job_metric_#{@ranking[:ib_rcv_data_mpi]}"
           = @ranking[:ib_rcv_data_mpi]
       tr
+        - rank_read = @ranking[:ib_rcv_data_fs]
         td
           =t('.fs_read')
         td
-          = format_float_or_nil(@job_perf[:ib_rcv_data_fs])
-        td class="job_metric_#{@ranking[:ib_rcv_data_fs]}"
-          = @ranking[:ib_rcv_data_fs]
+          = format_float_or_nil(@job_perf[:lustre_read_bytes] || @job_perf[:ib_rcv_data_fs])
+        td class="job_metric_#{rank_read}"
+          = rank_read
       tr
+        - rank_write = @ranking[:ib_xmit_data_fs]
         td
           =t('.fs_write')
         td
-          = format_float_or_nil(@job_perf[:ib_xmit_data_fs])
-        td class="job_metric_#{@ranking[:ib_xmit_data_fs]}"
-          = @ranking[:ib_xmit_data_fs]
+          = format_float_or_nil(@job_perf[:lustre_write_bytes] || @job_perf[:ib_xmit_data_fs])
+        td class="job_metric_#{rank_write}"
+          = rank_write
 
   div class="col-md-4"
     h3 = t('.base')

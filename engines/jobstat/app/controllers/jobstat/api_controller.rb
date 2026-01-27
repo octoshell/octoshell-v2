@@ -88,32 +88,7 @@ module Jobstat
       job = fetch_job_or_404(@json)
       return if job.nil?
 
-      FloatDatum.where(job_id: job.id).destroy_all
-
-      FloatDatum.where(job_id: job.id, name: 'cpu_user').first_or_create
-                .update({ value: @json['avg']['cpu_user'] })
-
-      FloatDatum.where(job_id: job.id, name: 'instructions').first_or_create
-                .update({ value: @json['avg']['fixed_counter1'] })
-
-      FloatDatum.where(job_id: job.id, name: 'gpu_load').first_or_create
-                .update({ value: @json['avg']['gpu_load'] })
-      FloatDatum.where(job_id: job.id, name: 'loadavg').first_or_create
-                .update({ value: @json['avg']['loadavg'] })
-
-      FloatDatum.where(job_id: job.id, name: 'ipc').first_or_create
-                .update({ value: @json['avg']['ipc'] })
-
-      FloatDatum.where(job_id: job.id, name: 'ib_rcv_data_fs').first_or_create
-                .update({ value: @json['avg']['ib_rcv_data_fs'] })
-      FloatDatum.where(job_id: job.id, name: 'ib_xmit_data_fs').first_or_create
-                .update({ value: @json['avg']['ib_xmit_data_fs'] })
-
-      FloatDatum.where(job_id: job.id, name: 'ib_rcv_data_mpi').first_or_create
-                .update({ value: @json['avg']['ib_rcv_data_mpi'] })
-      FloatDatum.where(job_id: job.id, name: 'ib_xmit_data_mpi').first_or_create
-                .update({ value: @json['avg']['ib_xmit_data_mpi'] })
-
+      FloatDatum.save_job_perf(job.id, @json)
       head 200
     end
 
