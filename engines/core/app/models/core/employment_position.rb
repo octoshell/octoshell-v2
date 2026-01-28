@@ -1,4 +1,3 @@
-# encoding: utf-8
 # == Schema Information
 #
 # Table name: core_employment_positions
@@ -28,7 +27,7 @@ module Core
     validates :value, presence: true, if: proc { field_id.nil? }
     validates :employment_position_field, :field_id, presence: true, if: proc { value.blank? }
     validates :employment_position_name_id, uniqueness: { scope: :employment_id }, if: :employment_id?
-    delegate *EmploymentPositionName.locale_columns(:name), to: :employment_position_name
+    delegate(*EmploymentPositionName.locale_columns(:name), to: :employment_position_name)
     def try_save
       valid? ? save : errors.clear
     end
@@ -46,12 +45,11 @@ module Core
     end
 
     def value_to_show
-      value || selected_value
+      selected_value || value
     end
 
     def present_value?
       value.present? || field_id.present?
     end
-
   end
 end

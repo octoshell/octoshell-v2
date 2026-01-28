@@ -6,9 +6,7 @@ module Core
     def new
       @employment = current_user.employments.build do |employment|
         hash = employment_params
-        if hash && hash[:organization_id].present?
-          employment.organization = Organization.find(hash[:organization_id])
-        end
+        employment.organization = Organization.find(hash[:organization_id]) if hash && hash[:organization_id].present?
       end
       @employment.build_default_positions
     end
@@ -36,7 +34,6 @@ module Core
         @employment.save
         redirect_to main_app.profile_path
       else
-        puts @employment.errors.inspect
         @employment.build_default_positions
         render :show
       end
@@ -57,8 +54,8 @@ module Core
                                            :organization_department_id,
                                            :organization_department_name,
                                            :primary,
-                                           positions_attributes: [:id, :name, :value,:field_id,
-                                                                  :employment_position_name_id])
+                                           positions_attributes: %i[id name value field_id
+                                                                    employment_position_name_id])
       else
         {}
       end
