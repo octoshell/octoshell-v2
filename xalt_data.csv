@@ -1,0 +1,550 @@
+path	COUNT(DISTINCT r.job_id)	MAX(r.date)	YEAR(r.date)
+/opt/analysis/	0	NULL	NULL
+/opt/archive/	0	NULL	NULL
+/opt/aspera/	0	NULL	NULL
+/opt/aur_license/	0	NULL	NULL
+/opt/autoconf/2.69/	0	NULL	NULL
+/opt/automake/1.14/	0	NULL	NULL
+/opt/automake/1.16/	0	NULL	NULL
+/opt/BAK/	0	NULL	NULL
+/opt/ccc/	0	NULL	NULL
+/opt/ccoe/abinit-10-mpi/	0	NULL	NULL
+/opt/ccoe/abinit-7.10.5-cuda/	5	2023-11-03 19:07:16	2023
+/opt/ccoe/abinit-8.8.3-mpi/	0	NULL	NULL
+/opt/ccoe/abinit-9.6.2/	0	NULL	NULL
+/opt/ccoe/amber12-cuda/	0	NULL	NULL
+/opt/ccoe/amber12/	0	NULL	NULL
+/opt/ccoe/boost_install/	0	NULL	NULL
+/opt/ccoe/bzip2-1.0.6/	0	NULL	NULL
+/opt/ccoe/caffe/	0	NULL	NULL
+/opt/ccoe/ccoe/	0	NULL	NULL
+/opt/ccoe/charm/	0	NULL	NULL
+/opt/ccoe/cmake-3.12.3/	0	NULL	NULL
+/opt/ccoe/cmake-3.30.7/	0	NULL	NULL
+/opt/ccoe/cmake-3.4.0/	0	NULL	NULL
+/opt/ccoe/cp2k-2022.2/	2	2023-04-02 19:01:46	2023
+/opt/ccoe/cp2k-2022.2/	71	2024-12-18 17:06:22	2024
+/opt/ccoe/cp2k-2022.2/	37	2025-05-20 06:11:47	2025
+/opt/ccoe/cp2k-3.0/	0	NULL	NULL
+/opt/ccoe/cp2k-6.1/	0	NULL	NULL
+/opt/ccoe/CryoSPARC/	0	NULL	NULL
+/opt/ccoe/crystal/	794	2023-12-28 00:42:00	2023
+/opt/ccoe/crystal/	326	2024-12-30 12:17:46	2024
+/opt/ccoe/crystal/	219	2025-06-10 18:31:23	2025
+/opt/ccoe/Docker/	0	NULL	NULL
+/opt/ccoe/eigen/	0	NULL	NULL
+/opt/ccoe/espresso-5.3.0/	0	NULL	NULL
+/opt/ccoe/espresso-6.4.1_MPI/	8	2023-09-29 05:26:46	2023
+/opt/ccoe/espresso-6.4.1_MPI/	246	2024-09-11 20:02:11	2024
+/opt/ccoe/espresso-6.4.1_MPI/	346	2025-06-08 21:17:19	2025
+/opt/ccoe/espresso-6.4.1_PGI_GPU/	90	2023-11-13 10:41:14	2023
+/opt/ccoe/espresso-6.4.1_PGI_GPU/	41	2024-12-10 21:59:02	2024
+/opt/ccoe/espresso-6.4.1_PGI_GPU/	9	2025-05-27 09:14:58	2025
+/opt/ccoe/fftw-2.1.5/	0	NULL	NULL
+/opt/ccoe/fftw-3.3.10/	0	NULL	NULL
+/opt/ccoe/fftw-3.3.8/	0	NULL	NULL
+/opt/ccoe/fftw3/	0	NULL	NULL
+/opt/ccoe/fltk/	0	NULL	NULL
+/opt/ccoe/gcc-11.3.0/	0	NULL	NULL
+/opt/ccoe/gcc-14.1/	0	NULL	NULL
+/opt/ccoe/gcc-4.8.5/	0	NULL	NULL
+/opt/ccoe/git/	0	NULL	NULL
+/opt/ccoe/gromacs-/	0	NULL	NULL
+/opt/ccoe/gromacs-2018-gcc/	12	2023-10-07 17:28:03	2023
+/opt/ccoe/gromacs-2018-gcc/	5	2024-12-07 15:09:43	2024
+/opt/ccoe/gromacs-2018-gcc/	7	2025-04-10 16:44:26	2025
+/opt/ccoe/gromacs-2018-icc/	5	2022-12-31 23:59:51	2022
+/opt/ccoe/gromacs-2018-icc/	20198	2023-12-04 20:11:57	2023
+/opt/ccoe/gromacs-2018-icc/	17487	2024-12-31 23:28:05	2024
+/opt/ccoe/gromacs-2018-icc/	7303	2025-05-14 12:56:57	2025
+/opt/ccoe/gromacs-2019.4-gcc-cuda/	366	2023-08-14 17:55:43	2023
+/opt/ccoe/gromacs-2019.4-icc/	0	NULL	NULL
+/opt/ccoe/gromacs-2020.3-gcc-cuda/	335	2023-12-09 14:43:58	2023
+/opt/ccoe/gromacs-2020.3-gcc-cuda/	178	2025-05-25 03:44:43	2025
+/opt/ccoe/gromacs-2020.3-mpi-cuda/	1139	2023-12-31 10:40:50	2023
+/opt/ccoe/gromacs-2020.3-mpi-cuda/	1394	2024-12-31 19:04:57	2024
+/opt/ccoe/gromacs-2020.3-mpi-cuda/	548	2025-06-10 10:08:48	2025
+/opt/ccoe/gromacs-5.1.1/	211	2023-12-31 23:59:39	2023
+/opt/ccoe/gromacs-5.1.1/	308	2024-12-17 14:14:33	2024
+/opt/ccoe/gromacs-5.1.1/	73	2025-04-10 20:43:12	2025
+/opt/ccoe/gsl/	0	NULL	NULL
+/opt/ccoe/intel_2019_cpp/	0	NULL	NULL
+/opt/ccoe/intel_2019_cpp_only/	0	NULL	NULL
+/opt/ccoe/lammps-29Oct2020/	1	2024-04-12 17:30:26	2024
+/opt/ccoe/lammps-29Oct2020/	2	2025-02-11 14:41:56	2025
+/opt/ccoe/lammps-30Jul16/	0	NULL	NULL
+/opt/ccoe/lammps-7Aug19/	3	2023-11-13 17:02:47	2023
+/opt/ccoe/lammps-7Aug19/	136	2024-09-15 12:49:51	2024
+/opt/ccoe/lammps-7Dec15/	0	NULL	NULL
+/opt/ccoe/lammps-7Feb2024/	65	2024-10-17 01:16:34	2024
+/opt/ccoe/lammps-7Feb2024/	161	2025-05-21 00:40:15	2025
+/opt/ccoe/lammps/	47	2023-11-14 15:25:01	2023
+/opt/ccoe/lammps/	278	2024-12-30 19:02:27	2024
+/opt/ccoe/lammps/	5	2025-03-14 10:27:21	2025
+/opt/ccoe/libxx/	0	NULL	NULL
+/opt/ccoe/magma-1.7.0/	0	NULL	NULL
+/opt/ccoe/ML-DL_Python-2.7/	0	NULL	NULL
+/opt/ccoe/ML-DL_Python-3.6/	0	NULL	NULL
+/opt/ccoe/ML-DL_Python-3.6_nccl/	0	NULL	NULL
+/opt/ccoe/ML-DL_Python-3.6_test/	0	NULL	NULL
+/opt/ccoe/modulefiles/	0	NULL	NULL
+/opt/ccoe/myModulefiles/	0	NULL	NULL
+/opt/ccoe/NAMD-2.11-cuda/	211	2023-12-22 14:55:57	2023
+/opt/ccoe/NAMD-2.11-cuda/	341	2024-12-29 17:18:10	2024
+/opt/ccoe/NAMD-2.11-cuda/	175	2025-06-10 10:41:21	2025
+/opt/ccoe/NAMD-2.11/	1	2024-12-13 12:15:52	2024
+/opt/ccoe/NAMD-2.11/	6	2025-03-01 19:21:46	2025
+/opt/ccoe/NAMD-2.14/	0	NULL	NULL
+/opt/ccoe/namd/2.14-icc-cuda8/	0	NULL	NULL
+/opt/ccoe/namd/Linux-x86_64-icc/	0	NULL	NULL
+/opt/ccoe/namd/namd-2.14b2-gcc/	8	2023-03-27 13:39:30	2023
+/opt/ccoe/namd/namd-2.14b2-gcc/	53	2025-03-27 14:53:39	2025
+/opt/ccoe/namd/namd-3.01-gcc-cuda/	0	NULL	NULL
+/opt/ccoe/namd/namd-3.01-gcc-cuda11/	0	NULL	NULL
+/opt/ccoe/namd/namd-test/	0	NULL	NULL
+/opt/ccoe/namd_cuda/	0	NULL	NULL
+/opt/ccoe/namd_smp/	0	NULL	NULL
+/opt/ccoe/nccl/	0	NULL	NULL
+/opt/ccoe/nvhpc_2024_245/	0	NULL	NULL
+/opt/ccoe/nwchem-6.6/	22	2023-10-27 12:09:59	2023
+/opt/ccoe/nwchem-6.6/	2	2024-12-30 17:22:05	2024
+/opt/ccoe/nwchem-6.8/	89	2023-12-19 02:51:12	2023
+/opt/ccoe/nwchem-6.8/	1	2025-04-24 12:40:42	2025
+/opt/ccoe/old/	0	NULL	NULL
+/opt/ccoe/openCV-2.4/	0	NULL	NULL
+/opt/ccoe/plumed2/	0	NULL	NULL
+/opt/ccoe/pmu-events/	0	NULL	NULL
+/opt/ccoe/singularity-3.11.0/	0	NULL	NULL
+/opt/ccoe/singularity/	5	2024-08-21 13:23:54	2024
+/opt/ccoe/singularity/	16	2025-04-23 21:30:37	2025
+/opt/ccoe/sources/	0	NULL	NULL
+/opt/ccoe/tensorflow/	0	NULL	NULL
+/opt/ccoe/TeraChem/	0	NULL	NULL
+/opt/ccoe/vasp-5.4.1/	85	2023-12-14 16:50:58	2023
+/opt/ccoe/vasp-5.4.1/	219	2024-10-28 22:58:39	2024
+/opt/ccoe/vasp-5.4.4/	5	2023-12-14 17:06:04	2023
+/opt/ccoe/vasp-5.4.4/	39	2024-12-01 09:08:43	2024
+/opt/ccoe/vasp-6.4.1/	0	NULL	NULL
+/opt/ccoe/vasp-6.6.3/	0	NULL	NULL
+/opt/cgf/	0	NULL	NULL
+/opt/cgru/	0	NULL	NULL
+/opt/check-status/	0	NULL	NULL
+/opt/clang/	0	NULL	NULL
+/opt/cmake/	0	NULL	NULL
+/opt/collectd-5.5/	0	NULL	NULL
+/opt/collectd/	0	NULL	NULL
+/opt/conda_env/	0	NULL	NULL
+/opt/containerd/	0	NULL	NULL
+/opt/cuda/cuda-10.1/	0	NULL	NULL
+/opt/cuda/cuda-11.1/	0	NULL	NULL
+/opt/cuda/cuda-12.0/	0	NULL	NULL
+/opt/cuda/cuda-12.4/	0	NULL	NULL
+/opt/cuda/cuda-5.5/	0	NULL	NULL
+/opt/cuda/cuda-6.5/	0	NULL	NULL
+/opt/cuda/cuda-8.0/	0	NULL	NULL
+/opt/cuda/cuda-9.0/	0	NULL	NULL
+/opt/cuda/cuda-9.1/	0	NULL	NULL
+/opt/cuda/cuda/	0	NULL	NULL
+/opt/cuda/nvidia-libs-346.96/	0	NULL	NULL
+/opt/dimonta/	85	2023-11-22 15:56:46	2023
+/opt/dimonta/	236	2024-12-24 14:47:28	2024
+/opt/dimonta/	13	2025-02-08 11:59:30	2025
+/opt/dislib/	0	NULL	NULL
+/opt/DOC/	0	NULL	NULL
+/opt/docker/	0	NULL	NULL
+/opt/emc/	0	NULL	NULL
+/opt/extra/	0	NULL	NULL
+/opt/flexnetserver/	0	NULL	NULL
+/opt/gcc/	0	NULL	NULL
+/opt/gnustep/	0	NULL	NULL
+/opt/h/	0	NULL	NULL
+/opt/hfs15.0.313/	0	NULL	NULL
+/opt/hfs15.0.459/	0	NULL	NULL
+/opt/houdini_libs/	0	NULL	NULL
+/opt/hpctools/	0	NULL	NULL
+/opt/hpcx-v1.9.5-gcc-MLNX_OFED_LINUX-4.1-1.0.2.0-redhat7.1-x86_64/	0	NULL	NULL
+/opt/ibutils.pvt/	0	NULL	NULL
+/opt/ibutils/	0	NULL	NULL
+/opt/ib_guids/	0	NULL	NULL
+/opt/intel/advisor/	0	NULL	NULL
+/opt/intel/advisor_2017.1.1.486553/	0	NULL	NULL
+/opt/intel/advisor_2018.2.0.551025/	0	NULL	NULL
+/opt/intel/advisor_2018/	0	NULL	NULL
+/opt/intel/advisor_2019.4.0.597843/	0	NULL	NULL
+/opt/intel/advisor_2019.5.0.602216/	37	2023-11-27 14:11:27	2023
+/opt/intel/advisor_2019.5.0.602216/	21	2024-11-30 18:17:21	2024
+/opt/intel/advisor_2019/	0	NULL	NULL
+/opt/intel/advisor_xe/	0	NULL	NULL
+/opt/intel/advisor_xe_2013/	0	NULL	NULL
+/opt/intel/advisor_xe_2015.1.10.380555/	0	NULL	NULL
+/opt/intel/advisor_xe_2015/	0	NULL	NULL
+/opt/intel/bin/	0	NULL	NULL
+/opt/intel/clck/	0	NULL	NULL
+/opt/intel/clck_latest/	0	NULL	NULL
+/opt/intel/compilers_and_libraries/	0	NULL	NULL
+/opt/intel/compilers_and_libraries_2017.1.132/	153	2023-10-20 22:23:57	2023
+/opt/intel/compilers_and_libraries_2017.1.132/	83	2024-12-31 08:55:05	2024
+/opt/intel/compilers_and_libraries_2017.1.132/	176	2025-06-10 12:30:45	2025
+/opt/intel/compilers_and_libraries_2017/	0	NULL	NULL
+/opt/intel/compilers_and_libraries_2018.2.199/	0	NULL	NULL
+/opt/intel/compilers_and_libraries_2018/	0	NULL	NULL
+/opt/intel/compilers_and_libraries_2019.2.187/	0	NULL	NULL
+/opt/intel/compilers_and_libraries_2019.4.243/	0	NULL	NULL
+/opt/intel/compilers_and_libraries_2019.5.281/	0	NULL	NULL
+/opt/intel/compilers_and_libraries_2019/	0	NULL	NULL
+/opt/intel/compilers_and_libraries_2020.4.304/	963	2023-12-23 06:51:18	2023
+/opt/intel/compilers_and_libraries_2020.4.304/	1426	2024-12-23 22:15:27	2024
+/opt/intel/compilers_and_libraries_2020.4.304/	1645	2025-06-09 13:51:12	2025
+/opt/intel/compilers_and_libraries_2020/	0	NULL	NULL
+/opt/intel/composerxe/	0	NULL	NULL
+/opt/intel/composer_xe_2013_sp1.2.144/	0	NULL	NULL
+/opt/intel/composer_xe_2013_sp1.3.174/	0	NULL	NULL
+/opt/intel/composer_xe_2013_sp1/	0	NULL	NULL
+/opt/intel/composer_xe_2015.3.187/	0	NULL	NULL
+/opt/intel/composer_xe_2015/	0	NULL	NULL
+/opt/intel/conda_channel/	0	NULL	NULL
+/opt/intel/daal/	0	NULL	NULL
+/opt/intel/debugger_2017/	0	NULL	NULL
+/opt/intel/debugger_2018/	0	NULL	NULL
+/opt/intel/debugger_2019/	0	NULL	NULL
+/opt/intel/documentation_2017/	0	NULL	NULL
+/opt/intel/documentation_2018/	0	NULL	NULL
+/opt/intel/documentation_2019/	0	NULL	NULL
+/opt/intel/documentation_2020/	0	NULL	NULL
+/opt/intel/ics/	0	NULL	NULL
+/opt/intel/icsxe/	0	NULL	NULL
+/opt/intel/ide_support_2017/	0	NULL	NULL
+/opt/intel/ide_support_2018/	0	NULL	NULL
+/opt/intel/ide_support_2019/	0	NULL	NULL
+/opt/intel/imb/	0	NULL	NULL
+/opt/intel/imb_4.0.3/	0	NULL	NULL
+/opt/intel/imb_latest/	0	NULL	NULL
+/opt/intel/impi/	4218	2023-12-31 22:11:20	2023
+/opt/intel/impi/	2688	2024-12-29 23:07:15	2024
+/opt/intel/impi/	1281	2025-06-10 18:34:44	2025
+/opt/intel/impi_5.0.3/	0	NULL	NULL
+/opt/intel/impi_latest/	0	NULL	NULL
+/opt/intel/include/	0	NULL	NULL
+/opt/intel/inspector/	0	NULL	NULL
+/opt/intel/inspector_2017.1.1.484836/	0	NULL	NULL
+/opt/intel/inspector_2018.2.0.551023/	0	NULL	NULL
+/opt/intel/inspector_2018/	0	NULL	NULL
+/opt/intel/inspector_2019.4.0.597413/	0	NULL	NULL
+/opt/intel/inspector_2019.5.0.602103/	0	NULL	NULL
+/opt/intel/inspector_2019/	0	NULL	NULL
+/opt/intel/inspector_xe/	0	NULL	NULL
+/opt/intel/inspector_xe_2013/	0	NULL	NULL
+/opt/intel/inspector_xe_2015.1.2.379161/	0	NULL	NULL
+/opt/intel/inspector_xe_2015/	0	NULL	NULL
+/opt/intel/intel/	0	NULL	NULL
+/opt/intel/intelpython2/	0	NULL	NULL
+/opt/intel/intelpython3/	0	NULL	NULL
+/opt/intel/intel_sdp_products.db/	0	NULL	NULL
+/opt/intel/intel_sdp_products.tgz.db/	0	NULL	NULL
+/opt/intel/ipp/	0	NULL	NULL
+/opt/intel/ism/	0	NULL	NULL
+/opt/intel/itac/	0	NULL	NULL
+/opt/intel/itac_2017/	0	NULL	NULL
+/opt/intel/itac_2018/	0	NULL	NULL
+/opt/intel/itac_2019/	0	NULL	NULL
+/opt/intel/itac_9.0.3/	0	NULL	NULL
+/opt/intel/itac_latest/	0	NULL	NULL
+/opt/intel/lib/	0	NULL	NULL
+/opt/intel/licenses/	0	NULL	NULL
+/opt/intel/logs_10_2019_10_18_09.34.54.tar/	0	NULL	NULL
+/opt/intel/lom2-2018-01.csv/	0	NULL	NULL
+/opt/intel/man/	0	NULL	NULL
+/opt/intel/mkl/	0	NULL	NULL
+/opt/intel/mpirt/	0	NULL	NULL
+/opt/intel/oneapi/	1298	2023-12-23 22:41:44	2023
+/opt/intel/oneapi/	618	2024-12-06 20:00:30	2024
+/opt/intel/oneapi/	191	2025-06-09 18:14:20	2025
+/opt/intel/oneapi_2024/	0	NULL	NULL
+/opt/intel/packagemanager/	0	NULL	NULL
+/opt/intel/parallel_studio_xe_2015/	0	NULL	NULL
+/opt/intel/parallel_studio_xe_2017.1.043/	0	NULL	NULL
+/opt/intel/parallel_studio_xe_2018.2.046/	0	NULL	NULL
+/opt/intel/parallel_studio_xe_2018/	0	NULL	NULL
+/opt/intel/parallel_studio_xe_2019.2.057/	0	NULL	NULL
+/opt/intel/parallel_studio_xe_2019.4.070/	0	NULL	NULL
+/opt/intel/parallel_studio_xe_2019.5.075/	0	NULL	NULL
+/opt/intel/parallel_studio_xe_2019/	0	NULL	NULL
+/opt/intel/parallel_studio_xe_2020.4.912/	0	NULL	NULL
+/opt/intel/parallel_studio_xe_2020/	0	NULL	NULL
+/opt/intel/performance_snapshot/	0	NULL	NULL
+/opt/intel/performance_snapshots/	0	NULL	NULL
+/opt/intel/performance_snapshots_2018.2.0.551022/	0	NULL	NULL
+/opt/intel/performance_snapshots_2019.4.0.597835/	0	NULL	NULL
+/opt/intel/performance_snapshots_2019.6.0.602217/	0	NULL	NULL
+/opt/intel/pstl/	0	NULL	NULL
+/opt/intel/samples_2017/	0	NULL	NULL
+/opt/intel/samples_2018/	0	NULL	NULL
+/opt/intel/samples_2019/	0	NULL	NULL
+/opt/intel/tbb/	0	NULL	NULL
+/opt/intel/uninstall/	0	NULL	NULL
+/opt/intel/vtune2019/	1	2023-04-24 00:29:39	2023
+/opt/intel/vtune_amplifier/	0	NULL	NULL
+/opt/intel/vtune_amplifier_2018.2.0.551022/	0	NULL	NULL
+/opt/intel/vtune_amplifier_2018/	0	NULL	NULL
+/opt/intel/vtune_amplifier_2019.4.0.597835/	0	NULL	NULL
+/opt/intel/vtune_amplifier_2019.6.0.602217/	99	2023-11-18 21:06:34	2023
+/opt/intel/vtune_amplifier_2019.6.0.602217/	81	2024-12-01 12:04:33	2024
+/opt/intel/vtune_amplifier_2019.6.0.602217/	1	2025-02-11 23:49:47	2025
+/opt/intel/vtune_amplifier_2019/	0	NULL	NULL
+/opt/intel/vtune_amplifier_xe_2013/	0	NULL	NULL
+/opt/intel/vtune_amplifier_xe_2015.3.0.403110/	0	NULL	NULL
+/opt/intel/vtune_amplifier_xe_2015/	0	NULL	NULL
+/opt/intel/vtune_amplifier_xe_2017.1.0.486011/	0	NULL	NULL
+/opt/java/	56	2024-12-17 08:11:41	2024
+/opt/knem-1.1.1.90mlnx/	0	NULL	NULL
+/opt/knem-1.1.2.90mlnx2/	0	NULL	NULL
+/opt/knem-1.1.3.90mlnx1/	0	NULL	NULL
+/opt/libpapi.so.5.2.0.0/	0	NULL	NULL
+/opt/libpapi.so.5.2/	0	NULL	NULL
+/opt/libpapi.so.5/	0	NULL	NULL
+/opt/libpapi.so/	0	NULL	NULL
+/opt/libpfm.so.4.4.0/	0	NULL	NULL
+/opt/libpfm.so.4/	0	NULL	NULL
+/opt/libpfm.so/	0	NULL	NULL
+/opt/libtool/	0	NULL	NULL
+/opt/Lost+Found.2/	0	NULL	NULL
+/opt/make/4.1/	0	NULL	NULL
+/opt/make/4.4/	0	NULL	NULL
+/opt/make/make/	0	NULL	NULL
+/opt/mellanox-sdk/	0	NULL	NULL
+/opt/mellanox/bupc/	0	NULL	NULL
+/opt/mellanox/ethtool/	0	NULL	NULL
+/opt/mellanox/fabric_collector/	0	NULL	NULL
+/opt/mellanox/fca/	0	NULL	NULL
+/opt/mellanox/hcoll/	0	NULL	NULL
+/opt/mellanox/hpcx/	0	NULL	NULL
+/opt/mellanox/iproute2/	0	NULL	NULL
+/opt/mellanox/libibprof/	0	NULL	NULL
+/opt/mellanox/mellanox/	0	NULL	NULL
+/opt/mellanox/mlnx-fw-updater/	0	NULL	NULL
+/opt/mellanox/mxm/	0	NULL	NULL
+/opt/mellanox/sharp/	0	NULL	NULL
+/opt/modulefiles/	0	NULL	NULL
+/opt/modulefiles7/	0	NULL	NULL
+/opt/mpi/archive/	0	NULL	NULL
+/opt/mpi/mpi/	0	NULL	NULL
+/opt/mpi/mpich-4.2.1/	0	NULL	NULL
+/opt/mpi/mpich-4.3.2-gcc9/	0	NULL	NULL
+/opt/mpi/mvapich2-2.0.1/	0	NULL	NULL
+/opt/mpi/mvapich2-2.1a/	0	NULL	NULL
+/opt/mpi/mvapich2-2.1rc1-icc/	0	NULL	NULL
+/opt/mpi/mvapich2-2.3.4-icc/	0	NULL	NULL
+/opt/mpi/mvapich2-2.3.4-icc2019/	0	NULL	NULL
+/opt/mpi/openmpi-1.10.0-centos7-icc-woslurm/	0	NULL	NULL
+/opt/mpi/openmpi-1.10.7-icc-th/	0	NULL	NULL
+/opt/mpi/openmpi-1.10.7-icc/	0	NULL	NULL
+/opt/mpi/openmpi-1.10.7-woslurm/	0	NULL	NULL
+/opt/mpi/openmpi-1.6.5-centos7-gcc-woslurm/	0	NULL	NULL
+/opt/mpi/openmpi-1.8.4-centos7-icc/	0	NULL	NULL
+/opt/mpi/openmpi-1.8.4-gcc-centos7/	0	NULL	NULL
+/opt/mpi/openmpi-1.8.4-gcc/	0	NULL	NULL
+/opt/mpi/openmpi-1.8.4-icc-centos7-woslurm/	0	NULL	NULL
+/opt/mpi/openmpi-1.8.4-icc/	0	NULL	NULL
+/opt/mpi/openmpi-2.0.1-icc-woslurm/	0	NULL	NULL
+/opt/mpi/openmpi-2.0.1-icc/	0	NULL	NULL
+/opt/mpi/openmpi-2.1.1-icc/	0	NULL	NULL
+/opt/mpi/openmpi-2.1.1-woslurm-womlx/	0	NULL	NULL
+/opt/mpi/openmpi-2.1.1-woslurm/	0	NULL	NULL
+/opt/mpi/openmpi-3.0.0-icc-not-working/	0	NULL	NULL
+/opt/mpi/openmpi-4.0.0-icc/	0	NULL	NULL
+/opt/mpi/openmpi-4.0.1-icc/	0	NULL	NULL
+/opt/mpi/openmpi-4.0.1-icc2019/	0	NULL	NULL
+/opt/mpi/openmpi-4.0.2-gcc/	0	NULL	NULL
+/opt/mpi/openmpi-4.0.5-gcc/	0	NULL	NULL
+/opt/mpi/openmpi-4.1.0-gcc/	0	NULL	NULL
+/opt/mpi/openmpi-4.1.0-gcc8/	0	NULL	NULL
+/opt/mpi/openmpi-4.1.0-gcc9/	0	NULL	NULL
+/opt/mpi/openmpi-4.1.0-icc/	0	NULL	NULL
+/opt/mpi/openmpi-4.1.1-gcc8/	0	NULL	NULL
+/opt/mpi/openmpi-4.1.1-icc/	0	NULL	NULL
+/opt/mpi/openmpi-5.0.5/	0	NULL	NULL
+/opt/mpi/wrappers/	0	NULL	NULL
+/opt/Navisphere/	0	NULL	NULL
+/opt/nec/aur_license/	0	NULL	NULL
+/opt/nec/nec/	0	NULL	NULL
+/opt/nec/prepare-upgrade.sh/	0	NULL	NULL
+/opt/nec/set_numa_mode.sh/	0	NULL	NULL
+/opt/nec/ve/	0	NULL	NULL
+/opt/neohost/	0	NULL	NULL
+/opt/nmon/	0	NULL	NULL
+/opt/nmon_old/	0	NULL	NULL
+/opt/nodetest/	0	NULL	NULL
+/opt/nvidia/	1	2023-07-18 11:32:32	2023
+/opt/nvidia/	11	2024-11-04 14:35:06	2024
+/opt/octo/	0	NULL	NULL
+/opt/opt/	0	NULL	NULL
+/opt/osu/	0	NULL	NULL
+/opt/papi_avail/	0	NULL	NULL
+/opt/paradigm.mount/	0	NULL	NULL
+/opt/paradigm.umount/	0	NULL	NULL
+/opt/pgi/	0	NULL	NULL
+/opt/phoronix-test-suite/	0	NULL	NULL
+/opt/pwnam/	0	NULL	NULL
+/opt/qwe/	0	NULL	NULL
+/opt/r.tgz/	0	NULL	NULL
+/opt/rh/devtoolset-7/	0	NULL	NULL
+/opt/rh/devtoolset-8/	0	NULL	NULL
+/opt/rh/devtoolset-9/	0	NULL	NULL
+/opt/rh/rh-ruby27/	0	NULL	NULL
+/opt/rh/rh/	0	NULL	NULL
+/opt/schrodinger/	0	NULL	NULL
+/opt/setup_cgf.sh/	0	NULL	NULL
+/opt/sin_cont/	0	NULL	NULL
+/opt/slurm.old/	0	NULL	NULL
+/opt/slurm/14.11.5/	0	NULL	NULL
+/opt/slurm/14.11.5m/	0	NULL	NULL
+/opt/slurm/15.08.1/	35	2022-12-31 23:59:48	2022
+/opt/slurm/15.08.1/	21902	2023-12-31 22:35:10	2023
+/opt/slurm/15.08.1/	28221	2024-12-31 23:57:47	2024
+/opt/slurm/15.08.1/	11152	2025-06-10 18:34:44	2025
+/opt/slurm/current/	0	NULL	NULL
+/opt/slurm/etc-15.08.1/	0	NULL	NULL
+/opt/slurm/etc/	0	NULL	NULL
+/opt/slurm/scripts/	0	NULL	NULL
+/opt/so/	0	NULL	NULL
+/opt/soft/	0	NULL	NULL
+/opt/software/amber/	170	2024-10-14 09:34:40	2024
+/opt/software/amber/	72	2025-06-10 13:26:45	2025
+/opt/software/amber14-gpu/	0	NULL	NULL
+/opt/software/amber22-cpu/	0	NULL	NULL
+/opt/software/amber22/	0	NULL	NULL
+/opt/software/Anaconda2/	12	2023-11-03 16:54:38	2023
+/opt/software/Anaconda2/	156	2024-12-29 09:02:27	2024
+/opt/software/Anaconda2/	542	2025-06-09 18:11:36	2025
+/opt/software/Anaconda3.11/	19	2023-12-17 13:20:24	2023
+/opt/software/Anaconda3.11/	137	2024-09-18 22:23:15	2024
+/opt/software/Anaconda3.11/	12	2025-05-29 15:50:10	2025
+/opt/software/Anaconda3/	90	2023-12-30 00:05:35	2023
+/opt/software/Anaconda3/	353	2024-10-04 10:51:21	2024
+/opt/software/Anaconda3/	3	2025-04-23 00:00:16	2025
+/opt/software/assembly_tools/	69	2024-09-22 23:30:49	2024
+/opt/software/bazel/	0	NULL	NULL
+/opt/software/biovia/	0	NULL	NULL
+/opt/software/castep-7.01/	48	2023-10-26 22:45:48	2023
+/opt/software/castep-7.01/	803	2024-08-20 14:14:13	2024
+/opt/software/charliecloud/	0	NULL	NULL
+/opt/software/clang-6.0/	0	NULL	NULL
+/opt/software/clang-7.0/	0	NULL	NULL
+/opt/software/cmake-3.19.8/	0	NULL	NULL
+/opt/software/containers/	0	NULL	NULL
+/opt/software/cp2k/	1128	2023-12-31 22:35:15	2023
+/opt/software/cp2k/	1239	2024-12-31 14:19:43	2024
+/opt/software/cp2k/	687	2025-06-10 17:53:37	2025
+/opt/software/cryosparc/	0	NULL	NULL
+/opt/software/cryospark/	0	NULL	NULL
+/opt/software/CubeBundle/	0	NULL	NULL
+/opt/software/cudatoolkit/	0	NULL	NULL
+/opt/software/easybuild/	0	NULL	NULL
+/opt/software/elpa-2019-05-001-omp/	0	NULL	NULL
+/opt/software/elpa-2019.05.001/	0	NULL	NULL
+/opt/software/espresso-6.2.1/	568	2023-12-29 19:31:30	2023
+/opt/software/espresso-6.2.1/	46	2024-12-12 14:54:30	2024
+/opt/software/espresso-6.3/	0	NULL	NULL
+/opt/software/extralibs/	0	NULL	NULL
+/opt/software/firefly/	0	NULL	NULL
+/opt/software/FlowVision/	184	2023-12-22 16:42:54	2023
+/opt/software/FlowVision/	18	2024-11-29 13:53:59	2024
+/opt/software/FlowVision/	4	2025-01-09 20:04:12	2025
+/opt/software/FV/	0	NULL	NULL
+/opt/software/gcc-5.5/	0	NULL	NULL
+/opt/software/gcc-9.1/	0	NULL	NULL
+/opt/software/gmp-6.2.1/	0	NULL	NULL
+/opt/software/gmsh/	0	NULL	NULL
+/opt/software/gsl/	0	NULL	NULL
+/opt/software/gulp/	0	NULL	NULL
+/opt/software/hdf5/1.12.0-gcc9/	0	NULL	NULL
+/opt/software/hdf5/1.12.0-openmpi-gcc9/	0	NULL	NULL
+/opt/software/hdf5/1.12.0-openmpi4/	0	NULL	NULL
+/opt/software/hdf5/1.12.0/	0	NULL	NULL
+/opt/software/hdf5/1.12.1-openmpi-gcc9/	0	NULL	NULL
+/opt/software/hdf5/1.12.1-openmpi4-gxx9/	0	NULL	NULL
+/opt/software/hdf5/1.12.1-oprnmpi4-gcc9/	0	NULL	NULL
+/opt/software/hpas/	0	NULL	NULL
+/opt/software/java/	26	2024-06-27 02:21:50	2024
+/opt/software/keras/	0	NULL	NULL
+/opt/software/kokkos-kernels/	0	NULL	NULL
+/opt/software/kokkos/	0	NULL	NULL
+/opt/software/lammps/2020Mar3-gpu/	0	NULL	NULL
+/opt/software/lammps/2021May27-2/	25	2023-11-14 13:39:11	2023
+/opt/software/lammps/2021May27-2/	13	2025-03-27 14:20:18	2025
+/opt/software/lammps/2021May27/	0	NULL	NULL
+/opt/software/lammps/lammps-22Feb18-cuda/	3	2023-11-14 13:48:17	2023
+/opt/software/lammps/lammps-22Feb18-cuda/	1	2024-03-14 22:11:53	2024
+/opt/software/lammps/lammps-22Feb18-cuda/	1	2025-02-11 14:26:27	2025
+/opt/software/lammps/lammps-22Feb18-ompi/	507	2023-12-21 20:10:11	2023
+/opt/software/lammps/lammps-22Feb18-ompi/	386	2024-12-26 21:12:04	2024
+/opt/software/lammps/lammps-22Feb18-ompi/	156	2025-06-09 14:52:09	2025
+/opt/software/lammps/lammps-22Feb18/	0	NULL	NULL
+/opt/software/lammps/lammps-30Mar18-cuda-p100/	1221	2023-12-23 18:13:27	2023
+/opt/software/lammps/lammps-30Mar18-cuda-p100/	1585	2024-12-31 12:33:58	2024
+/opt/software/lammps/lammps-30Mar18-cuda-p100/	820	2025-06-10 15:51:23	2025
+/opt/software/lammps/lammps.tar.gz/	0	NULL	NULL
+/opt/software/MATLAB/R2017b/	0	NULL	NULL
+/opt/software/MATLAB/R2018b/	0	NULL	NULL
+/opt/software/MATLAB/R2019a/	0	NULL	NULL
+/opt/software/MATLAB/R2019b/	0	NULL	NULL
+/opt/software/MATLAB/Runtime_R2021b/	0	NULL	NULL
+/opt/software/molpro/	0	NULL	NULL
+/opt/software/mpip/	0	NULL	NULL
+/opt/software/Nek5000/	0	NULL	NULL
+/opt/software/netcdf/	0	NULL	NULL
+/opt/software/netgauge/	0	NULL	NULL
+/opt/software/nhc.old/	0	NULL	NULL
+/opt/software/nhc/	0	NULL	NULL
+/opt/software/nwchem-6.8/	0	NULL	NULL
+/opt/software/openblas/	0	NULL	NULL
+/opt/software/opencascade/	0	NULL	NULL
+/opt/software/OpenFoam-4.1/	0	NULL	NULL
+/opt/software/OpenFoam-5.0/	329	2023-12-13 03:26:58	2023
+/opt/software/OpenFoam-5.0/	162	2024-11-02 02:44:21	2024
+/opt/software/OpenFOAM/	0	NULL	NULL
+/opt/software/orca_5_0_3_linux_x86-64_shared_openmpi411/	73	2024-10-01 00:40:02	2024
+/opt/software/otf2/	0	NULL	NULL
+/opt/software/PDGM/	0	NULL	NULL
+/opt/software/pmu-tools/	0	NULL	NULL
+/opt/software/python/	0	NULL	NULL
+/opt/software/qt/	0	NULL	NULL
+/opt/software/R/	0	NULL	NULL
+/opt/software/sarus/	0	NULL	NULL
+/opt/software/scalasca/	0	NULL	NULL
+/opt/software/schrodinger20/	0	NULL	NULL
+/opt/software/schrodinger2017-4/	0	NULL	NULL
+/opt/software/schrodinger2018-1/	0	NULL	NULL
+/opt/software/schrodinger2019-3/	0	NULL	NULL
+/opt/software/smenu/	0	NULL	NULL
+/opt/software/software/	0	NULL	NULL
+/opt/software/trilinos-13.0/	0	NULL	NULL
+/opt/software/valgrind-3./	0	NULL	NULL
+/opt/software/valgrind-3.12.0/	0	NULL	NULL
+/opt/software/valgrind/	0	NULL	NULL
+/opt/software/VASP-5.4.4-gcc/	335	2025-06-06 08:02:58	2025
+/opt/software/VASP-5.4.4-icc1/	3237	2023-12-31 19:14:24	2023
+/opt/software/VASP-5.4.4-icc1/	4811	2024-12-31 23:59:22	2024
+/opt/software/VASP-5.4.4-icc1/	3820	2025-06-10 18:49:32	2025
+/opt/software/VASP-5.4.4.1.old/	0	NULL	NULL
+/opt/software/VASP-5.4.4.1/	10	2023-11-21 14:15:23	2023
+/opt/software/VASP-5.4.4.1/	8	2024-03-22 11:31:54	2024
+/opt/software/wien2k/	0	NULL	NULL
+/opt/software/WRF/	0	NULL	NULL
+/opt/SRC/	0	NULL	NULL
+/opt/sudoers/	0	NULL	NULL
+/opt/support/	0	NULL	NULL
+/opt/syssoft/	0	NULL	NULL
+/opt/tests/	0	NULL	NULL
+/opt/tmp/	0	NULL	NULL
+/opt/toolworks/	0	NULL	NULL
+/opt/tst-g/	0	NULL	NULL
+/opt/tst/	0	NULL	NULL
+/opt/ve/	0	NULL	NULL
+/opt/VirtualGL/	0	NULL	NULL
+/opt/vm/	0	NULL	NULL
+/opt/x11-fonts/	0	NULL	NULL
+/opt/xalt-0.5.0/	0	NULL	NULL
+/opt/xalt/	0	NULL	NULL
+/opt/xalt2/	18	2025-05-17 18:52:23	2025
+/opt/xcat/	0	NULL	NULL

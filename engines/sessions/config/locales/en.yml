@@ -70,6 +70,7 @@ en:
         submit_denial_description: Describe in detail why it is necessary to save
           the project
         submit_denial_reason: Reason for refusing report submission
+        submit_denial_reason_id: Reason for refusing report submission
         submitted_at: Submitted at
         summary_points: Summary points
         superviser_comment: Comments

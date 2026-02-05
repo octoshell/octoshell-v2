@@ -73,7 +73,7 @@ module Sessions
       end
 
       event :decline_submitting do
-        transitions from: %i[pending rejected exceeded], to: :can_not_be_submitted
+        transitions from: %i[pending rejected exceeded accepted], to: :can_not_be_submitted
       end
 
       event :submit do

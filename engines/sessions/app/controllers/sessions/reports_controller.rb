@@ -1,6 +1,6 @@
 module Sessions
   class ReportsController < Sessions::ApplicationController
-    layout "layouts/sessions/user"
+    layout 'layouts/sessions/user'
 
     def index
       @search = current_user.reports.ransack(params[:q] || default_index_params)
@@ -16,17 +16,16 @@ module Sessions
 
     def decline_submitting
       @report = get_report(params[:report_id])
-      @report.can_not_be_submitted? || @report.decline_submitting!
-      @report.save
       render :edit
-    end
-
-    def edit
-      @report = get_report(params[:id])
     end
 
     def update
       @report = get_report(params[:id])
+      unless @report.may_decline_submitting?
+        redirect_to(reports_path)
+        return
+      end
+      @report.decline_submitting
       if @report.update(report_params)
         redirect_to reports_path
       else
@@ -53,15 +52,15 @@ module Sessions
     def submit
       @report = get_report(params[:report_id])
       if params[:report].nil? || report_params[:report_material].empty?
-        redirect_to @report, alert: t("flash.you_must_provide_report_materials")
+        redirect_to @report, alert: t('flash.you_must_provide_report_materials')
         return
       end
       begin
         if @report.update(report_params)
           if @report.rejected?
             @report.resubmit!
-          else
-            @report.submit! if @report.may_submit?
+          elsif @report.may_submit?
+            @report.submit!
           end
           redirect_to @report
         else
@@ -92,11 +91,10 @@ module Sessions
       params.require(:report_reply).permit(:message)
     end
 
-
     def report_params
-      params.require(:report).permit( :submit_denial_reason_id,
-                              :submit_denial_description,
-                              :materials, report_material: %i[ materials id])
+      params.require(:report).permit(:submit_denial_reason_id,
+                                     :submit_denial_description,
+                                     :materials, report_material: %i[materials id])
     end
   end
 end

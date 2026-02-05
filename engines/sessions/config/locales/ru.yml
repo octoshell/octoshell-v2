@@ -69,6 +69,7 @@ ru:
         statement_points: Изложение
         submit_denial_description: Опишите подробно почему надо сохранить проект
         submit_denial_reason: Причина отказа предоставления отчета
+        submit_denial_reason_id: Причина отказа предоставления отчета
         submitted_at: Отправлен
         summary_points: Общая оценка
         superviser_comment: Комментарий

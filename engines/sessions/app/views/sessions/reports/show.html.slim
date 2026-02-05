@@ -14,7 +14,8 @@ div class="page-header"
   div class="well"
     - if @report.pending?
       = link_to t('.start_report_completion'), [@report, :accept], method: :put, class: "btn btn-success"
-      = link_to t('.decline_submitting'), [@report, :decline_submitting], method: :put, class: "btn btn-warning"
+    - if @report.may_decline_submitting?
+      = link_to t('.decline_submitting'), [@report, :decline_submitting], class: "btn btn-warning"
     - else
       - if @report.report_materials.any?
         table class="table table-bordered"
@@ -28,10 +29,6 @@ div class="page-header"
               td class="col-xs-1" = number_to_human_size(r_m.materials.size)
               td class="col-xs-2" = link_to t('.download_report_file'), r_m.materials.url, class: "btn btn-primary"
       - unless @report.assessed?
-        - if @report.rejected?
-          div class="well"
-            p #{t('.decline_submitting')}
-            = link_to t('.decline_submitting'), [@report, :decline_submitting], method: :put, class: "btn btn-warning"
         - if @report.accepted?
           legend #{t('.attach_report_file')}
         - else
