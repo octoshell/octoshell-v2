@@ -12,7 +12,7 @@ div class="page-header"
     = @report.submit_denial_description
 - else
   div class="well"
-    - if @report.may_accept?
+    - if @report.pending?
       = link_to t('.start_report_completion'), [@report, :accept], method: :put, class: "btn btn-success"
     - if @report.may_decline_submitting?
       = link_to t('.decline_submitting'), [@report, :decline_submitting], class: "btn btn-warning"
@@ -27,17 +27,17 @@ div class="page-header"
             td class="col-xs-5" = l(r_m.updated_at, format: :long)
             td class="col-xs-1" = number_to_human_size(r_m.materials.size)
             td class="col-xs-2" = link_to t('.download_report_file'), r_m.materials.url, class: "btn btn-primary"
-      - unless @report.assessed?
-        - if @report.report_materials.any?
-          legend #{t('.update_report_file')}
-        - else
-          legend #{t('.attach_report_file')}
-        = bootstrap_form_for @report, url: [@report, :submit], layout: :horizontal, html: {multipart: true} do |f|
-          -editted_material = @report.report_materials.detect {|m| m.new_record? } ||  @report.report_materials.new
-          = f.fields_for editted_material  do |ff|
-            = ff.file_field :materials, help: t('.report_file_help', fs: Sessions::ReportMaterialsUploader.new.extension_whitelist.join(', '))
-          = f.form_group do
-            = f.submit t("actions.send")
+    - unless @report.assessed?
+      - if @report.report_materials.any?
+        legend #{t('.update_report_file')}
+      - else
+        legend #{t('.attach_report_file')}
+      = bootstrap_form_for @report, url: [@report, :submit], layout: :horizontal, html: {multipart: true} do |f|
+        -editted_material = @report.report_materials.detect {|m| m.new_record? } ||  @report.report_materials.new
+        = f.fields_for editted_material  do |ff|
+          = ff.file_field :materials, help: t('.report_file_help', fs: Sessions::ReportMaterialsUploader.new.extension_whitelist.join(', '))
+        = f.form_group do
+          = f.submit t("actions.send")
 
 
 
