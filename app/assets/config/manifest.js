@@ -4,6 +4,7 @@
 //= link support/tickets.js
 //x link_directory * .css
 //x link_directory * .js
+//= link jquery.mjs.nestedSortable
 // Lines bellow are rewritten using script
 // START
 //=link announcements/manifest.js
