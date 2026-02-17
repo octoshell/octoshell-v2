@@ -40,7 +40,7 @@ module Sessions
     def update
       @session = Session.find(params[:session_id])
       @stat = @session.stats.find(params[:id])
-      if @stat.update_attributes(stats_params)
+      if @stat.update(stats_params)
         redirect_to admin_session_stats_path(@session)
       else
         render :edit
@@ -56,9 +56,9 @@ module Sessions
     private
 
     def stats_params
-      params.require(:stat).permit( :group_by, :session_id,
-                                    :survey_field_id, :organization_id,
-                                    :weight)
+      params.require(:stat).permit(:group_by, :session_id,
+                                   :survey_field_id, :organization_id,
+                                   :weight)
     end
   end
 end

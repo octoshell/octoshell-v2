@@ -24,8 +24,7 @@ module Core
 
     def update
       @direction_of_science = DirectionOfScience.find(params[:id])
-      if @direction_of_science.update_attributes(direction_of_science_params)
-        @direction_of_science.save
+      if @direction_of_science.update(direction_of_science_params)
         redirect_to admin_direction_of_sciences_path
       else
         render :edit
@@ -39,6 +38,7 @@ module Core
     end
 
     private
+
     def direction_of_science_params
       params.require(:direction_of_science).permit(*DirectionOfScience.locale_columns(:name))
     end

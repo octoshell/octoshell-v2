@@ -1,6 +1,6 @@
 module Core
   class Admin::OrganizationsController < Admin::ApplicationController
-    layout "layouts/core/admin_organization"
+    layout 'layouts/core/admin_organization'
     before_action :octo_authorize!, except: :show
 
     def index
@@ -15,11 +15,11 @@ module Core
                                    .where(organization_id: @organizations
                                    .to_a.map(&:id), state: 'active').count
           @users_count = User.group('core_employments.organization_id').joins(:organizations)
-                             .where(core_employments: {organization_id: @organizations.map(&:id)})
+                             .where(core_employments: { organization_id: @organizations.map(&:id) })
                              .where(activation_state: :active).distinct.count('users.id')
           @users_with_access_count = User.cluster_access_state_present
                                          .group('core_employments.organization_id').joins(:organizations)
-                                         .where(core_employments: {organization_id: @organizations.map(&:id)})
+                                         .where(core_employments: { organization_id: @organizations.map(&:id) })
                                          .distinct.count('users.id')
         end
         format.json do
@@ -27,7 +27,7 @@ module Core
           @current_organizations = @organizations.page(params[:page])
                                                  .per(params[:per])
                                                  .map(&:full_json)
-          render json: { records: @current_organizations, total: @organizations.count}
+          render json: { records: @current_organizations, total: @organizations.count }
         end
       end
     end
@@ -36,7 +36,7 @@ module Core
       respond_to do |format|
         format.json do
           @departments = Organization.find(params[:id]).departments
-          @array = @departments.map { |d| { id: d.id, text: d.name } }.sort{|a,b| a[:text]<=>b[:text]}
+          @array = @departments.map { |d| { id: d.id, text: d.name } }.sort { |a, b| a[:text] <=> b[:text] }
           render json: @array
         end
       end
@@ -48,12 +48,10 @@ module Core
 
     def create
       @organization = Organization.new(organization_params)
-      if params[:city_id]
-        @organization.city_id=params[:city_id]
-      end
+      @organization.city_id = params[:city_id] if params[:city_id]
       if @organization.save
         if @organization.kind.departments_required?
-          redirect_to [:admin, :edit, @organization], notice: t("flash.you_have_to_fill_departments")
+          redirect_to [:admin, :edit, @organization], notice: t('flash.you_have_to_fill_departments')
         else
           @organization.departments.create!(name: @organization.short_name)
           redirect_to [:admin, @organization]
@@ -78,8 +76,7 @@ module Core
 
     def update
       @organization = Organization.find(params[:id])
-      if @organization.update_attributes(organization_params)
-        @organization.save
+      if @organization.update(organization_params)
         redirect_to [:admin, @organization]
       else
         render :edit
@@ -92,7 +89,6 @@ module Core
       redirect_to [:admin, @organization]
     end
 
-
     def destroy
       @organization = Organization.find(params[:id])
       if @organization.destroy_allowed?
@@ -103,8 +99,6 @@ module Core
         redirect_to [:admin, @organization]
       end
     end
-
-
 
     def merge_edit
       provide_cities_hash
@@ -134,13 +128,14 @@ module Core
                          when 'same_object'
                            t '.same_object'
                          when 'mergers_exists'
-                           @link = view_context.link_to t('engine_submenu.prepare_merge'), admin_prepare_merge_index_path.to_s
+                           @link = view_context.link_to t('engine_submenu.prepare_merge'),
+                                                        admin_prepare_merge_index_path.to_s
                            t('.mergers_exists', link: @link)
                          when 'stale_organization_id'
                            to_org_name = Organization.find(@to_org_id).name
                            to_dep_name = OrganizationDepartment.find(params[:to][:department_id]).name
                            t('.stale_organization_id', dep_name: to_dep_name, org_name: to_org_name) +
-                            t('.update')
+                           t('.update')
                          else
                            error
                          end
@@ -157,17 +152,12 @@ module Core
       end
     rescue ActiveRecord::RecordNotFound, MergeError => e
       render status: 400, json: { message: e.message + t('.update') }
-
     end
 
     private
 
     def source_object
-      if @department
-        @department
-      else
-        @organization
-      end
+      @department || @organization
     end
 
     def create_organization
@@ -216,7 +206,7 @@ module Core
 
     def organization_params
       params.require(:organization).permit(:checked, :name, :abbreviation, :city_id, :country_id, :kind_id, :id,
-                                           :_destroy, departments_attributes: [ :name, :_destroy, :id, :checked], city_attributes: [:id])
+                                           :_destroy, departments_attributes: %i[name _destroy id checked], city_attributes: [:id])
     end
   end
 end

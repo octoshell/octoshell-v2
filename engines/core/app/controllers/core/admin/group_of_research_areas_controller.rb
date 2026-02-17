@@ -2,7 +2,6 @@ module Core
   class Admin::GroupOfResearchAreasController < Admin::ApplicationController
     before_action :octo_authorize!
 
-
     def new
       @group_of_research_area = GroupOfResearchArea.new
     end
@@ -22,8 +21,7 @@ module Core
 
     def update
       @group_of_research_area = GroupOfResearchArea.find(params[:id])
-      if @group_of_research_area.update_attributes(research_area_params)
-        @group_of_research_area.save
+      if @group_of_research_area.update(research_area_params)
         redirect_to admin_research_areas_path
       else
         render :edit

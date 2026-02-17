@@ -24,8 +24,7 @@ module Core
 
     def update
       @research_area = ResearchArea.find(params[:id])
-      if @research_area.update_attributes(research_area_params)
-        @research_area.save
+      if @research_area.update(research_area_params)
         redirect_to admin_research_areas_path
       else
         render :edit
@@ -39,6 +38,7 @@ module Core
     end
 
     private
+
     def research_area_params
       params.require(:research_area).permit(*ResearchArea.locale_columns(:name), :group_id)
     end

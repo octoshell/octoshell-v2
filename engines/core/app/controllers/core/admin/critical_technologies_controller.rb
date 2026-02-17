@@ -1,7 +1,9 @@
 module Core
   class Admin::CriticalTechnologiesController < Admin::ApplicationController
     before_action :octo_authorize!
+
     private
+
     # def critical_technology_params #FIXIT does not work... WHY?????
     #   params.require(:critical_technology).permit(:name)
     # end
@@ -21,7 +23,7 @@ module Core
     end
 
     def create
-      @critical_technology = CriticalTechnology.new(self.crit_tech_params)
+      @critical_technology = CriticalTechnology.new(crit_tech_params)
       if @critical_technology.save
         redirect_to admin_critical_technologies_path
       else
@@ -35,8 +37,7 @@ module Core
 
     def update
       @critical_technology = CriticalTechnology.find(params[:id])
-      if @critical_technology.update_attributes(self.crit_tech_params)
-        @critical_technology.save
+      if @critical_technology.update(crit_tech_params)
         redirect_to admin_critical_technologies_path
       else
         render :edit

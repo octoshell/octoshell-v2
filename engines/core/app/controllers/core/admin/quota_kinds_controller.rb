@@ -25,8 +25,7 @@ module Core
 
     def update
       @quota_kind = QuotaKind.find(params[:id])
-      if @quota_kind.update_attributes(quota_kind_params)
-        @quota_kind.save
+      if @quota_kind.update(quota_kind_params)
         redirect_to admin_quota_kinds_path
       else
         render :edit
@@ -36,7 +35,7 @@ module Core
     private
 
     def quota_kind_params
-      params.require(:quota_kind).permit(QuotaKind.locale_columns(:name,:measurement), :api_key )
+      params.require(:quota_kind).permit(QuotaKind.locale_columns(:name, :measurement), :api_key)
     end
   end
 end

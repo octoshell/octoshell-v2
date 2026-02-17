@@ -29,8 +29,7 @@ module Core
 
     def update
       @project_kind = ProjectKind.find(params[:id])
-      if @project_kind.update_attributes(project_kind_params)
-        @project_kind.save
+      if @project_kind.update(project_kind_params)
         redirect_to admin_project_kinds_path
       else
         render :edit

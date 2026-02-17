@@ -23,7 +23,7 @@ class Admin::GroupsController < Admin::ApplicationController
 
   def update
     @group = Group.find(params[:id])
-    @group.update_attributes(group_params)
+    @group.update(group_params)
     redirect_to admin_groups_path
   end
 

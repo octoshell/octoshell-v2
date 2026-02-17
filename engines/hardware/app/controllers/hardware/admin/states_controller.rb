@@ -28,8 +28,7 @@ module Hardware
 
     def update
       @state = State.find(params[:id])
-      if @state.update_attributes(state_params)
-        @state.save
+      if @state.update(state_params)
         redirect_to [:admin, @state.kind, @state]
       else
         render :edit
@@ -46,11 +45,11 @@ module Hardware
       redirect_to admin_kind_path(@state.kind)
     end
 
-
     private
 
     def state_params
-      params.require(:state).permit(*State.locale_columns(:name, :description),:kind_id,:lock_version, from_state_ids: [], to_state_ids: [])
+      params.require(:state).permit(*State.locale_columns(:name, :description), :kind_id, :lock_version,
+                                    from_state_ids: [], to_state_ids: [])
     end
   end
 end

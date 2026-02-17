@@ -12,7 +12,7 @@ module Announcements::Admin
 
     helper Face::ApplicationHelper
     def index
-      @announcements = Announcement.order("id desc").includes(created_by: :profile)
+      @announcements = Announcement.order('id desc').includes(created_by: :profile)
     end
 
     def show
@@ -39,8 +39,7 @@ module Announcements::Admin
 
     def update
       @announcement = Announcement.find(params[:id])
-      if @announcement.update_attributes(announcement_params)
-        @announcement.save
+      if @announcement.update(announcement_params)
         redirect_to admin_announcement_show_users_path(@announcement)
       else
         render :edit
@@ -58,7 +57,6 @@ module Announcements::Admin
       Announcement.find(params[:announcement_id]).send_mails
       redirect_to admin_announcements_path
     end
-
 
     def destroy
       @announcement = Announcement.find(params[:id])
@@ -79,9 +77,9 @@ module Announcements::Admin
       @search = Announcements.user_class.ransack(params[:q])
       @users = @search.result(distinct: true).includes(:profile).order(:id)
       @users = if @announcement.is_special?
-                 @users.where(profiles: {receive_special_mails: true})
+                 @users.where(profiles: { receive_special_mails: true })
                else
-                 @users.where(profiles: {receive_info_mails: true})
+                 @users.where(profiles: { receive_info_mails: true })
                end
       @users = @users.where(block_emails: false)
       @recipient_ids = @announcement.recipient_ids
@@ -115,10 +113,11 @@ module Announcements::Admin
 
     def process_ransack_params
       return unless params[:q]
-      process_csv_like_params(%w[projects_id_in projects_id_not_in], /\d+/)
-      process_csv_like_params('email_in', /[a-zA-Z0-9.!\#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*/)
-    end
 
+      process_csv_like_params(%w[projects_id_in projects_id_not_in], /\d+/)
+      process_csv_like_params('email_in',
+                              %r{[a-zA-Z0-9.!\#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*})
+    end
 
     def announcement_params
       params.require(:announcement).permit!
