@@ -1,8 +1,8 @@
 require 'zip'
 module ReceiveEmails
   class EmailProccessor
-
     attr_reader :message, :user
+
     delegate :to, :from, to: :message
 
     def ticket_creation_allowed?
@@ -32,36 +32,36 @@ module ReceiveEmails
     end
 
     def text_part
-      message.text_part || message.html_part
+      message.text_part || message.html_part || message
     end
 
     def file_parts
       message.parts.select { |part| file_content? part }
     end
 
-
     def new_ticket_message
-      raise "text/plain or type/html Content-Type is not found for email" unless text_part
+      raise 'text/plain or type/html Content-Type is not found for email' unless text_part
 
       body_string = text_part.body.decoded
       charset = text_part.charset
-      return body_string unless charset && charset.casecmp("utf-8") != 0
+      return body_string unless charset && charset.casecmp('utf-8') != 0
 
       # Force the encoding of the decoded string, then transcode to UTF-8
-      body_string.force_encoding(charset).encode("UTF-8")
+      body_string.force_encoding(charset).encode('UTF-8')
     end
 
     def add_attachment(model_instance, content, name)
       file = Tempfile.new(name)
       begin
-        file.puts content.force_encoding("UTF-8")
-        model_instance.attachment = ActionDispatch::Http::UploadedFile.new(filename: Translit.convert(file_parts.first.filename, :english), tempfile: file)
+        file.puts content.force_encoding('UTF-8')
+        model_instance.attachment = ActionDispatch::Http::UploadedFile.new(
+          filename: Translit.convert(file_parts.first.filename, :english), tempfile: file
+        )
         model_instance.save!
       ensure
         file.close
         file.unlink
       end
-
     end
 
     def zip_and_add_attachments(model_instance)
@@ -70,10 +70,10 @@ module ReceiveEmails
         content = Zip::OutputStream.write_buffer do |stream|
           file_parts.each do |file_part|
             stream.put_next_entry Translit.convert(file_part.filename, :english)
-            stream.write file_part.body.to_s.force_encoding("UTF-8")
+            stream.write file_part.body.to_s.force_encoding('UTF-8')
           end
         end
-        file.puts content.string.force_encoding("UTF-8")
+        file.puts content.string.force_encoding('UTF-8')
         model_instance.attachment = ActionDispatch::Http::UploadedFile.new(filename: 'attachments.zip', tempfile: file)
         model_instance.save!
       ensure
@@ -97,8 +97,9 @@ module ReceiveEmails
          Support::Ticket.find(ticket_id).reporter != user
         raise 'foreign ticket'
       end
+
       message_body = new_ticket_message
-      reply = Support::Reply.new(message:  message_body,
+      reply = Support::Reply.new(message: message_body,
                                  ticket_id: ticket_id,
                                  author: user)
       reply.ticket.reopen if reply.ticket.may_reopen?
@@ -121,7 +122,7 @@ module ReceiveEmails
       return unless continue_processing?
 
       begin
-        ticket_string = text_part&.body.to_s #[/ticket_id:\d+.*-{#{Support.dash_number}}/]
+        ticket_string = text_part&.body.to_s # [/ticket_id:\d+.*-{#{Support.dash_number}}/]
         if ticket_string[/ticket_id:\d+/]
           I18n.with_locale(user.language.to_sym) do
             ActiveRecord::Base.transaction do
