@@ -1,7 +1,6 @@
 module Core
   module ApplicationHelper
-
-    def no_name_c c
+    def no_name_c(c)
       c.title_ru.blank? ? t('core_no_name') : c.title_ru
     end
 
@@ -20,8 +19,9 @@ module Core
 
     def queue_access_color(q)
       if q.synced_with_cluster
-        return 'green' if q.active
-        return 'red' if q.blocked
+        return 'green' if q.active?
+
+        'red' if q.blocked?
 
       else
         'blue'
@@ -40,58 +40,58 @@ module Core
 
     def project_admin_submenu_items
       menu = Face::MyMenu.new
-      menu.add_item_without_key(t("engine_submenu.projects_list"),
+      menu.add_item_without_key(t('engine_submenu.projects_list'),
                                 admin_organizations_path, 'core/admin/projects')
 
-      menu.add_item_without_key(t("engine_submenu.acess_management"),
+      menu.add_item_without_key(t('engine_submenu.acess_management'),
                                 admin_accesses_path, 'core/admin/accesses')
 
       menu.items(self)
     end
 
     def organizations_admin_submenu_items
-
       menu = Face::MyMenu.new
-      menu.add_item_without_key(t("engine_submenu.organizations_list"),
+      menu.add_item_without_key(t('engine_submenu.organizations_list'),
                                 admin_organizations_path, 'core/admin/organizations')
 
-      menu.add_item_without_key(t("engine_submenu.prepare_merge"),
+      menu.add_item_without_key(t('engine_submenu.prepare_merge'),
                                 admin_prepare_merge_index_path, 'core/admin/prepare_merge')
       menu.items(self)
     end
+
     def mark_project_state(project)
       label_class = case project.state
-                    when "active"
-                      "success"
-                    when "pending"
-                      "info"
-                    when "suspended"
-                      "warning"
+                    when 'active'
+                      'success'
+                    when 'pending'
+                      'info'
+                    when 'suspended'
+                      'warning'
                     else
-                      "danger"
+                      'danger'
                     end
 
       "<span class=\"label label-#{label_class} lg\">#{project.human_state_name}</span>".html_safe
     end
 
     def mark_ownership(project)
-      "<i class=\"fa fa-flag\"></i>".html_safe if current_user == project.owner
+      '<i class="fa fa-flag"></i>'.html_safe if current_user == project.owner
     end
 
     def mark_member_state(project, member)
       label_class = case member.project_access_state
-                    when "invited"
-                      "info"
-                    when "engaged"
-                      "primary"
-                    when "unsured"
-                      "warning"
-                    when "denied"
-                      "danger"
-                    when "suspended"
-                      "danger"
+                    when 'invited'
+                      'info'
+                    when 'engaged'
+                      'primary'
+                    when 'unsured'
+                      'warning'
+                    when 'denied'
+                      'danger'
+                    when 'suspended'
+                      'danger'
                     else
-                      "success"
+                      'success'
                     end
 
       "<span class=\"label label-#{label_class} lg\">#{member.human_project_access_state_name}</span>".html_safe
@@ -99,12 +99,12 @@ module Core
 
     def mark_request_state(request)
       label_class = case request.state
-                    when "active"
-                      "success"
-                    when "pending"
-                      "warning"
+                    when 'active'
+                      'success'
+                    when 'pending'
+                      'warning'
                     else
-                      "danger"
+                      'danger'
                     end
 
       "<span class=\"label label-#{label_class} lg\">#{request.human_state_name}</span>".html_safe
@@ -113,7 +113,5 @@ module Core
     def link_to_support
       custom_helper(:support, :new_ticket_link)
     end
-
-
   end
 end
