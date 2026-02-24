@@ -6,7 +6,8 @@ Core::Engine.routes.draw do
   namespace :admin do
     resources :accesses do
       collection do
-        get :choose_access
+        put :sync_resource_controls
+        put :sync_queue_accesses
       end
       member do
         put :set_queue_status
@@ -33,14 +34,13 @@ Core::Engine.routes.draw do
         get 'versions', to: 'project_versions#index'
         get :find_similar
         get :find_similar_by_members
-
       end
       collection do
         get :finder
         get :id_finder
       end
 
-      resources :requests, only: [:new, :create]
+      resources :requests, only: %i[new create]
     end
 
     resources :sureties do
@@ -69,7 +69,7 @@ Core::Engine.routes.draw do
         post :merge
       end
     end
-    resources :prepare_merge,only: [:index,:update,:edit] do
+    resources :prepare_merge, only: %i[index update edit] do
       member do
         delete :destroy
       end
@@ -91,7 +91,7 @@ Core::Engine.routes.draw do
     resources :research_areas
     resources :group_of_research_areas, except: :index
 
-    resources :requests, only: [:index, :show, :edit, :update] do
+    resources :requests, only: %i[index show edit update] do
       get :approve, on: :member
       get :reject, on: :member
       put :activate_or_reject, on: :member
@@ -119,7 +119,7 @@ Core::Engine.routes.draw do
     end
   end
 
-  resources :credentials, only: [:new, :create] do
+  resources :credentials, only: %i[new create] do
     put :deactivate
   end
 
@@ -140,12 +140,11 @@ Core::Engine.routes.draw do
       put :drop_member
     end
 
-
     post :sureties
     put :toggle_member_access_state, on: :collection
 
-    resources :requests, only: [:new, :create]
-    resources :members, only: [:edit, :update, :create]
+    resources :requests, only: %i[new create]
+    resources :members, only: %i[edit update create]
   end
 
   resources :sureties do
@@ -156,11 +155,11 @@ Core::Engine.routes.draw do
   resources :organization_kinds, only: :index
 
   resources :organizations, except: [:destroy] do
-    resources :organization_departments, path: :departments, only: [:index, :new, :create]
+    resources :organization_departments, path: :departments, only: %i[index new create]
   end
 
   resources :countries, only: :index do
-    resources :cities, only: [:index, :show]
+    resources :cities, only: %i[index show]
   end
   resources :cities do
     collection do
@@ -168,6 +167,6 @@ Core::Engine.routes.draw do
       get :finder
     end
   end
-  root "projects#index"
+  root 'projects#index'
 end
 # Face::MyMenu.validate_keys!

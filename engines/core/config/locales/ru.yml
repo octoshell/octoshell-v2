@@ -407,6 +407,8 @@ ru:
   
           has_partition_in: Имеет доступ к очереди
           has_queue_accesses: Есть доступ к очередям
+          sync_resource_controls: Посчитать узлочасы и их разослать
+          sync_queue_accesses: Синхронизировать очереди
 
           title: 'Список доступов'
         queue_access_group:

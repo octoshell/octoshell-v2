@@ -65,6 +65,16 @@ module Core
                     flash: { info: t('.success') })
     end
 
+    def sync_resource_controls
+      Core::SshWorker.perform_async(:calculate_resources)
+      redirect_to admin_accesses_path
+    end
+
+    def sync_queue_accesses
+      QueueAccess.sync_global
+      redirect_to admin_accesses_path
+    end
+
     private
 
     def render_edit

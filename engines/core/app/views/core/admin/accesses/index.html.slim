@@ -1,5 +1,8 @@
 div class="page-header"
   h1 = t(".title")
+div class="row well btn-toolbar"
+  = link_to t('.sync_resource_controls'), sync_resource_controls_admin_accesses_path, class: "btn btn-info",  method: :put
+  = link_to t('.sync_queue_accesses'), sync_queue_accesses_admin_accesses_path, class: "btn btn-success",  method: :put
 
 p = t('.control_info').html_safe
   /div class="row well btn-toolbar"

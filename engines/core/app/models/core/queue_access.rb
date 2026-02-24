@@ -32,6 +32,10 @@ module Core
       QueueAccess.find(id).sync_with_cluster
     end
 
+    def self.sync_global
+      all.each(&:sync_access)
+    end
+
     def sync_access
       Core::SshWorker.perform_async(:sync_with_cluster, id)
     end
