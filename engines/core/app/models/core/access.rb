@@ -44,7 +44,7 @@ module Core
 
     def notify_about_resources
       resource_users.each do |r|
-        ::Core::MailerWorker.perform_async(:resource_usage, r.id, id)
+        ::Core::MailerWorker.perform_async(:resource_usage, [r.id, id])
       end
     end
 
