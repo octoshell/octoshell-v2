@@ -97,6 +97,12 @@ ru:
         host: Хост
         name: Наименование
         state: Статус
+      core/partition:
+        name: Название
+        resources: Ресурсы
+        max_submitted_jobs: Макс. ожидающих заданий
+        max_running_jobs: Макс. работающих заданий
+
       core/cluster_log:
         cluster: Кластер
         cluster_id: Кластер

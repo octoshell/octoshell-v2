@@ -13,6 +13,9 @@ div class="row"
     = f.fields_for :partitions, layout: :horizontal do |part_form|
       = part_form.text_field :name
       = part_form.text_field :resources
+      = part_form.number_field :max_submitted_jobs
+      = part_form.text_field :max_running_jobs
+
       = part_form.form_group do
         = part_form.link_to_remove t('.remove_partition'), class: "fa fa-times text-danger"
     = f.link_to_add t('.add_partition'), :partitions
