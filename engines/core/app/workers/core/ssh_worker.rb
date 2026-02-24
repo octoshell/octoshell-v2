@@ -4,7 +4,14 @@ module Core
     sidekiq_options queue: :default
 
     def perform(template, args)
-      Core::ResourceControl.send(template, *args).deliver!
+      case template
+      when 'calculate_resources'
+        Core::ResourceControl.send(template, *args)
+      when 'sync_with_cluster'
+        Core::QueueAccess.send(template, *args)
+      else
+        raise "Unknown job #{template} in SshWorker"
+      end
     end
   end
 end

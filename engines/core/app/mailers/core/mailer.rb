@@ -106,7 +106,7 @@ module Core
     def admin_resource_usage(user_id)
       @user = Core.user_class.find(user_id)
       @resource_controls = Core::ResourceControl.calculated
-      mail to: @user, subject: t('.subject')
+      mail to: @user.email, subject: t('.subject')
     end
   end
 end

@@ -20,7 +20,7 @@ module Core
 
         access = create(:core_access)
         controller = create(:user)
-        controller.groups.create(name: 'resource_controller')
+        controller.groups.create!(name: 'resource_controller')
         expect { ResourceControl.calculate_resources }
           .to change {
                 access.reload.resource_controls.first.resource_control_fields.first.cur_value
