@@ -61,9 +61,11 @@ class CorePreview
 
   def resource_usage
     access = Core::Access.joins(:resource_controls).group('core_accesses.id')
-                .having('COUNT(core_resource_controls.id)>1').first
+                         .having('COUNT(core_resource_controls.id)>1').first
     Core::Mailer.resource_usage(access.resource_users.first.id, access.id)
   end
 
-
+  def admin_resource_usage
+    Core::Mailer.admin_resource_usage User.first.id
+  end
 end

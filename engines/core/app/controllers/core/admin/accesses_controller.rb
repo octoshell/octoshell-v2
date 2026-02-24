@@ -2,18 +2,18 @@ module Core
   class Admin::AccessesController < Admin::ApplicationController
     # before_action :setup_default_filter
     before_action :octo_authorize!
-    layout "layouts/core/admin_project"
+    layout 'layouts/core/admin_project'
     def index
       @search = Access.ransack(params[:q] || { queue_accesses_id_exists: true })
       @search.sorts = 'project_id desc' if @search.sorts.empty?
       @accesses = @search.result(distinct: true)
                          .select('core_accesses.*, core_accesses.project_id')
-                          .page(params[:page])
-                          .includes(:project, :cluster,
-                            {queue_accesses: [:partition, resource_control:{
-                              resource_control_fields: :quota_kind }]})
+                         .page(params[:page])
+                         .includes(:project, :cluster,
+                                   { queue_accesses: [:partition, { resource_control: {
+                                     resource_control_fields: :quota_kind
+                                   } }] })
       without_pagination :accesses
-
     end
 
     def show
@@ -78,11 +78,12 @@ module Core
                                    status partition_id max_running_jobs
                                    max_submitted_jobs]
       params.require(:access).permit({
-      resource_users_attributes: %i[id user_id email _destroy],
-      resource_controls_attributes: [:id, :started_at, :status, :_destroy,
-        resource_control_fields_attributes: %i[id quota_kind_id limit],
-         queue_accesses_attributes: queue_access_attributes],
-      uncontrolled_queue_accesses_attributes: queue_access_attributes})
+                                       resource_users_attributes: %i[id user_id email _destroy],
+                                       resource_controls_attributes: [:id, :started_at, :status, :_destroy,
+                                                                      { resource_control_fields_attributes: %i[id quota_kind_id limit],
+                                                                        queue_accesses_attributes: queue_access_attributes }],
+                                       uncontrolled_queue_accesses_attributes: queue_access_attributes
+                                     })
     end
   end
 end

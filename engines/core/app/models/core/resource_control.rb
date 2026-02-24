@@ -3,13 +3,15 @@ module Core
     include StringEnum
     belongs_to :access, inverse_of: :resource_controls
     has_many :resource_control_fields, inverse_of: :resource_control
-    has_many :queue_accesses, inverse_of: :resource_control
-    accepts_nested_attributes_for :resource_control_fields, :queue_accesses,  allow_destroy: true
+    has_many :queue_accesses, inverse_of: :resource_control, dependent: :destroy
+    accepts_nested_attributes_for :resource_control_fields, :queue_accesses, allow_destroy: true
     validates :access, :status, :started_at, presence: true
     validates :queue_accesses, length: { minimum: 1 }
 
     string_enum %i[active blocked disabled]
-    after_initialize({ if: :new_record? }) do |control|
+    after_initialize do |control|
+      next unless new_record?
+
       control.status ||= 'active'
     end
 
@@ -17,14 +19,18 @@ module Core
       where(status: %w[active blocked])
     end
 
+    def self.usage_in_node_hours(cluster, controls)
+      Core::NodeHourCounterService.new(cluster,
+                                       controls.map(&:format_for_counter)).run
+    end
+
     def self.calculate_resources
       calculated
-        .includes(access: [{ project: %i[members removed_members] }, :cluster],
+        .includes(access: [{ project: %i[members removed_members] }, :cluster, :resource_users],
                   queue_accesses: :partition)
         .group_by { |r| r.access.cluster }
         .each do |cluster, controls|
-          results = Core::NodeHourCounterService.new(cluster,
-                                        controls.map(&:format_for_counter)).run
+          results = usage_in_node_hours(cluster, controls)
           transaction do
             controls.each_with_index do |control, i|
               result = results[i]
@@ -39,15 +45,11 @@ module Core
               control.block_or_activate!
             end
           end
-      end
-    end
-
-    def self.send_emails_about_usage
-      project_ids = calculated.select('DISTINCT core_accesses.project_id')
-                              .joins(:access).map { |r| r['project_id'] }
-      Core::Member.where(notify_about_resources: true, project_id: project_ids)
-                  .each do |m|
-       ::Core::MailerWorker.perform_async(:resource_usage, m.user_id, m.project_id)
+          # select { |c| c.previous_changes['status'] }
+          Group.find_by_name('resource_controller')&.users&.each do |user|
+            Core::MailerWorker.perform_async(:admin_resource_usage, user.id)
+          end
+          controls.map(&:access).uniq.each(&:notify_about_resources)
       end
     end
 

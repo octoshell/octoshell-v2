@@ -15,6 +15,8 @@ table
     th = t('.partitions')
     th = Core::ResourceControl.human_attribute_name(:started_at)
     th = Core::ResourceControl.human_attribute_name(:consumed)
+    th = Core::ResourceControl.human_attribute_name(:status)
+
 
   - @access.resource_controls.includes(queue_accesses: :partition,
                                        resource_control_fields: :quota_kind).each do |control|
@@ -22,8 +24,9 @@ table
       td = control.queue_accesses.map(&:partition).map(&:name).join(" ")
       td = control.started_at
       td = control.resource_control_fields.map(&:stat).join("\n")
+      td = control.human_state_name
 
 p
   = link_to_support
 
-= render "footer"
+= render "mailer/footer"

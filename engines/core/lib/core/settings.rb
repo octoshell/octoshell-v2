@@ -4,7 +4,7 @@ module Core
     add('Project')
     add('Organization')
     add('Member')
-    add_ability(:manage, :projects, 'superadmins')
+    add_ability(:manage, :projects, 'superadmins', 'resource_controller')
     add_controller_ability(:manage, :projects, 'admin/projects',
                            'admin/project_kinds', 'admin/direction_of_sciences',
                            'admin/critical_technologies', 'admin/research_areas',
@@ -19,9 +19,9 @@ module Core
     add_controller_ability(:manage, :clusters, 'admin/clusters', 'admin/cluster_logs', 'admin/quota_kinds')
     add_ability(:manage, :geography, 'superadmins')
     add_controller_ability(:manage, :geography, 'admin/cities', 'admin/countries')
-    add_ability(:manage,  :notices, 'superadmins')
+    add_ability(:manage, :notices, 'superadmins')
     add_routes do
-      mount Core::Engine, :at => "/core"
+      mount Core::Engine, at: '/core'
     end
     module ::Core::NoticeHandlers
       def self.call
@@ -39,15 +39,15 @@ module Core
         notices_count = Core::Notice.get_count_for_user current_user
         if notices_count.zero?
           add_item('notices', t('core.notice.notices_menu'), core.notices_path,
-                   %r{^notices})
+                   /^notices/)
         else
           add_item(
             'notices',
             t('core.notice.notices_menu_count.html', count: notices_count).html_safe,
             core.notices_path,
-            %r{^notices})
+            /^notices/
+          )
         end
-
       end
       Face::MyMenu.items_for(:admin_submenu) do
         if can? :manage, :projects
@@ -58,53 +58,60 @@ module Core
 
         sureties_count = Core::Surety.where(state: :confirmed).count
         sureties_title = if sureties_count.zero?
-                           t("admin_submenu.sureties")
+                           t('admin_submenu.sureties')
                          else
-                           t("admin_submenu.sureties_with_count.html", count: sureties_count).html_safe
+                           t('admin_submenu.sureties_with_count.html', count: sureties_count).html_safe
                          end
 
-         add_item_if_may('sureties', sureties_title,
-                  core.admin_sureties_path,
-                  'core/admin/sureties')
+        add_item_if_may('sureties', sureties_title,
+                        core.admin_sureties_path,
+                        'core/admin/sureties')
 
-         requests_count = Core::Request.where(state: :pending).count
-         requests_title = if requests_count.zero?
-                          t("admin_submenu.requests")
-                        else
-                          t("admin_submenu.requests_with_count.html", count: requests_count).html_safe
-                        end
-          add_item_if_may('requests', requests_title,
-                   core.admin_requests_path,
-                   'core/admin/requests')
+        requests_count = Core::Request.where(state: :pending).count
+        requests_title = if requests_count.zero?
+                           t('admin_submenu.requests')
+                         else
+                           t('admin_submenu.requests_with_count.html', count: requests_count).html_safe
+                         end
+        add_item_if_may('requests', requests_title,
+                        core.admin_requests_path,
+                        'core/admin/requests')
 
+        add_item_if_may('organizations', t('admin_submenu.organizations'), core.admin_organizations_path,
+                        'core/admin/organizations')
 
-            add_item_if_may('organizations', t("admin_submenu.organizations"), core.admin_organizations_path, 'core/admin/organizations')
+        add_item_if_may('clusters', t('admin_submenu.clusters'), core.admin_clusters_path, 'core/admin/clusters')
 
-            add_item_if_may('clusters', t("admin_submenu.clusters"), core.admin_clusters_path, 'core/admin/clusters')
+        add_item_if_may('cluster_logs', t('admin_submenu.cluster_logs'), core.admin_cluster_logs_path,
+                        'core/admin/cluster_logs')
 
-            add_item_if_may('cluster_logs', t("admin_submenu.cluster_logs"), core.admin_cluster_logs_path, 'core/admin/cluster_logs')
+        add_item_if_may('quota_kinds', t('admin_submenu.quota_kinds'), core.admin_quota_kinds_path,
+                        'core/admin/quota_kinds')
 
-            add_item_if_may('quota_kinds', t("admin_submenu.quota_kinds"), core.admin_quota_kinds_path, 'core/admin/quota_kinds')
+        add_item_if_may('project_kinds', t('admin_submenu.project_kinds'), core.admin_project_kinds_path,
+                        'core/admin/project_kinds')
+        # projects
+        add_item_if_may('organization_kinds', t('admin_submenu.organization_kinds'),
+                        core.admin_organization_kinds_path, 'core/admin/organization_kinds')
+        # organization
 
-            add_item_if_may('project_kinds', t("admin_submenu.project_kinds"), core.admin_project_kinds_path, 'core/admin/project_kinds')
-            #projects
-            add_item_if_may('organization_kinds', t("admin_submenu.organization_kinds"), core.admin_organization_kinds_path, 'core/admin/organization_kinds')
-            #organization
+        add_item_if_may('direction_of_sciences', t('admin_submenu.direction_of_sciences'),
+                        core.admin_direction_of_sciences_path, 'core/admin/direction_of_sciences')
 
-            add_item_if_may('direction_of_sciences', t("admin_submenu.direction_of_sciences"), core.admin_direction_of_sciences_path, 'core/admin/direction_of_sciences')
+        add_item_if_may('critical_technologies', t('admin_submenu.critical_technologies'),
+                        core.admin_critical_technologies_path, 'core/admin/critical_technologies')
 
-            add_item_if_may('critical_technologies', t("admin_submenu.critical_technologies"), core.admin_critical_technologies_path, 'core/admin/critical_technologies')
+        add_item_if_may('research_areas', t('admin_submenu.research_areas'), core.admin_research_areas_path,
+                        'core/admin/research_areas')
 
-            add_item_if_may('research_areas', t("admin_submenu.research_areas"), core.admin_research_areas_path, 'core/admin/research_areas')
+        add_item_if_may('countries', t('admin_submenu.countries'), core.admin_countries_path,
+                        'core/admin/countries')
+        add_item_if_may('cities', t('admin_submenu.cities'), core.admin_cities_path, 'core/admin/cities')
 
-            add_item_if_may('countries', t("admin_submenu.countries"), core.admin_countries_path, 'core/admin/countries')
-            add_item_if_may('cities', t("admin_submenu.cities"), core.admin_cities_path, 'core/admin/cities')
-
-            if can?(:manage, :notices)
-              add_item('notices', t('core.notice.notices_menu'),
-                       core.admin_notices_path,'core/admin/notices')
-            end
-
+        if can?(:manage, :notices)
+          add_item('notices', t('core.notice.notices_menu'),
+                   core.admin_notices_path, 'core/admin/notices')
+        end
       end
       set :support do
         ticket_field(key: :cluster,
@@ -125,8 +132,6 @@ module Core
                      admin_query: proc { Core::Project.all },
                      # Поиск по аяксу в админке
                      admin_source: proc { core.finder_admin_projects_path })
-
-
       end
     end
   end

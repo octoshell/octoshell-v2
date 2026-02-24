@@ -4,6 +4,7 @@ div class="page-header"
 div class="row well btn-toolbar"
   = link_to t('.edit'), edit_admin_access_path(@access), class: "btn btn-info"
 
+
 div class="panel-body"
   h4 =  Core::Project.model_name.human
   p = link_to @access.project.title, admin_project_path(@access.project)

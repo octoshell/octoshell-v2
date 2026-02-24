@@ -1,0 +1,37 @@
+= render "header"
+
+css:
+  table {
+    border-collapse: collapse; /* Collapses borders into a single line */
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+
+p 
+  = t('.info')
+
+table
+  tr
+    th ID
+    th = t('.partitions')
+    th  = Core::Project.model_name.human
+    th  = Core::Cluster.model_name.human
+    th  = Core::ResourceControl.human_attribute_name(:started_at)
+    th  = Core::ResourceControl.human_attribute_name(:last_sync_at)
+    th  = Core::ResourceControl.human_attribute_name(:consumed)
+
+  - @resource_controls.includes(queue_accesses: :partition,
+                                access: %i[cluster project],
+                                resource_control_fields: :quota_kind).each do |control|
+    tr
+        td = link_to control.access.id, core.admin_access_url(control.access)
+        td = control.queue_accesses.map(&:partition).map(&:name).join(" ")
+        td = link_to control.access.project.title, core.admin_project_path(control.access.project)
+        td = control.access.cluster
+        td = control.started_at
+        td = control.last_sync_at
+        td = control.resource_control_fields.map(&:stat).join("\n")
+
+= render "mailer/footer"
+    

@@ -253,6 +253,11 @@ en:
         has_surety: User has surety
     errors:
       models:
+        core/access:
+          attributes:
+            base:
+              not_synced: Not synced queue access can not be destroyed 
+
         core/city:
           attributes:
             title_ru:
@@ -261,6 +266,11 @@ en:
           attributes:
             title_ru:
               name_required: You have to fill russian title or english title
+        core/queue_access:
+          attributes:
+            partition_id:
+              exist_in_resource_control: The  "%{partition}" queue is accessed without resource control and with resource control 
+
         core/organization:
           attributes:
             city_id:

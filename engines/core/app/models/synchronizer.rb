@@ -1,5 +1,4 @@
 class Synchronizer
-
   attr_reader :access, :connection_to_cluster, :project, :cluster
 
   def initialize(access)
@@ -9,9 +8,8 @@ class Synchronizer
     @project_group = access.project_group_name
     begin
       @connection_to_cluster = Net::SSH.start(@cluster.host,
-        @cluster.admin_login,
-        keys: [mock_ssh_key_path(@cluster.private_key)])
-    rescue => e
+                                              @cluster.admin_login, key_data: @cluster.private_key)
+    rescue StandardError => e
       access.log "Synchronizer error: #{e.message} (access=#{access})."
       nil
     end
@@ -20,7 +18,7 @@ class Synchronizer
   def mock_ssh_key_path(key)
     path = "/tmp/octo-#{SecureRandom.hex}"
     File.delete(path) if File.exist? path
-    File.open(path, "wb", 0o600) { |f| f.write key }
+    File.open(path, 'wb', 0o600) { |f| f.write key }
     path
   end
 
@@ -39,19 +37,12 @@ class Synchronizer
 
   def run_on_cluster(command, log_result = true)
     cluster.log("\t command: #{command}", project)
-    # result = ""
-    # connection_to_cluster.open_channel do |channel|
-    #   channel.request_pty do |ch, success|
-    #     ch.exec command
-    #   end
-    #   channel.on_data do |ch, data|
-    #     result = data
-    #   end
-    # end
     result =
-      connection_to_cluster ?
-      connection_to_cluster.exec!(command) :
-      'Failed to connect cluster'
+      if connection_to_cluster
+        connection_to_cluster.exec!(command)
+      else
+        'Failed to connect cluster'
+      end
 
     cluster.log("\t  result: #{result}", project) if log_result
     result
@@ -59,9 +50,9 @@ class Synchronizer
 
   ### - project sync
   def sync_project
-    if project.active?
-      activate_project!
-    end
+    return unless project.active?
+
+    activate_project!
   end
 
   def activate_project!
@@ -69,7 +60,7 @@ class Synchronizer
   end
 
   def project_exists_on_cluster?
-    raw = run_on_cluster("cat /etc/group", false)
+    raw = run_on_cluster('cat /etc/group', false)
     groups_on_cluster = raw.each_line.map do |line|
       line[/(\w+):/, 1]
     end
@@ -85,7 +76,7 @@ class Synchronizer
   ### - project members sync
   def sync_project_members
     unless connection_to_cluster
-      cluster.log("No connection to cluster",project)
+      cluster.log('No connection to cluster', project)
       return false
     end
     if project.active?
@@ -94,7 +85,7 @@ class Synchronizer
         if member.allowed?
           cluster.log("\t Access for #{member.login} is allowed", project)
           activate_member(member, member_state_on_cluster)
-        elsif  member.suspended?
+        elsif member.suspended?
           cluster.log("\t Access for #{member.login} is suspended", project)
           suspend_member(member, member_state_on_cluster)
         elsif member.denied?
@@ -120,13 +111,12 @@ class Synchronizer
       member_state_on_cluster = check_member_state_on_cluster(removed_member)
       block_member(removed_member) if member_state_on_cluster == 'active'
     end
-
-
+    access.queue_accesses.each { |q| q.sync_with_cluster(connection_to_cluster) }
   end
 
   def activate_member(member, state)
-    (state == "active") ||
-      ((state == "blocked") ? unblock_member(member) : add_member(member))
+    (state == 'active') ||
+      (state == 'blocked' ? unblock_member(member) : add_member(member))
 
     member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
@@ -135,7 +125,7 @@ class Synchronizer
   end
 
   def deactivate_member(member, state)
-    (state == "blocked") || block_member(member)
+    (state == 'blocked') || block_member(member)
 
     member.credentials.where(state: :active).each do |credential|
       path = upload_credential(credential)
@@ -144,7 +134,7 @@ class Synchronizer
   end
 
   def suspend_member(member, state)
-    (state == "blocked") || block_member(member)
+    (state == 'blocked') || block_member(member)
   end
 
   def drop_member(member, state)

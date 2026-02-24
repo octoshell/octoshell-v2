@@ -1,6 +1,5 @@
 module Core
   class NodeHourCounterService
-
     def initialize(cluster, project_hashes, ssh_class = Net::SSH)
       @cluster = cluster
       @project_hashes = project_hashes
@@ -18,7 +17,6 @@ module Core
     ensure
       close_connection
     end
-
 
     private
 
@@ -40,10 +38,19 @@ module Core
       run_on_cluster "sudo /usr/octo/get_jobs_of_users.sh -u #{logins} -p #{partitions} -d #{start_time}"
     end
 
+    def contains_letters?(str)
+      str.match?(/\p{L}/) # \p{L} - любая буква в Unicode
+    end
+
     def sum_node_hours(logins, start_time, partitions)
       _exit_code, stdout, stderr = jobs_of_users(logins, start_time, partitions)
       node_hours = stdout.split("\n").reduce(0) do |sum, row|
         fields = row.split('|')
+        if contains_letters?(fields[0]) || contains_letters?(fields[1])
+          stderr ||= ''
+          stderr += 'Incorrect value for nodehours. Check if everything is okay'
+          next sum
+        end
         sum + node_hours(fields[0], fields[1])
       end
       [node_hours, stderr]
