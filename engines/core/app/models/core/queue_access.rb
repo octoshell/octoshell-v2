@@ -49,7 +49,7 @@ module Core
                     raise 'unknown status'
                   end
       (access.project.members.map(&:login) | access.project.removed_members.map(&:login)).each do |login|
-        access.cluster.log("\t  Synchronizing queue accesses for #{login}", access.project)
+        access.cluster.log("\t  Synchronizing queue accesses for #{login} in #{partition.name}", access.project)
         results = Core::QueueAccessSynchronizerService.new(
           access.cluster,
           { partition: partition.name, user: login, account: access.project_group_name }.merge(resources),
@@ -57,7 +57,7 @@ module Core
         ).run
         access.cluster.log("\t  #{results[2]}", access.project) if results[2].present?
       end
-      access.cluster.log("\t  Synchronization of  queue accesses finished", access.project)
+      access.cluster.log("\t  Synchronization of  queue accesses finished in #{partition.name}", access.project)
       update!(synced_with_cluster: true)
     end
 
