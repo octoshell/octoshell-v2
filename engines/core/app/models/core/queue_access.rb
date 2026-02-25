@@ -50,11 +50,12 @@ module Core
                   end
       (access.project.members.map(&:login) | access.project.removed_members.map(&:login)).each do |login|
         access.cluster.log("\t  Synchronizing queue accesses for #{login}", access.project)
-        Core::QueueAccessSynchronizerService.new(
+        results = Core::QueueAccessSynchronizerService.new(
           access.cluster,
           { partition: partition.name, user: login, account: access.project_group_name }.merge(resources),
           connection
         ).run
+        access.cluster.log("\t  #{results[2]}", access.project) if results[2].present?
       end
       access.cluster.log("\t  Synchronization of  queue accesses finished", access.project)
       update!(synced_with_cluster: true)
