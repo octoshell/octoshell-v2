@@ -12,7 +12,7 @@ begin
 
         user, jobid, nnodes_str, elapsed_str, start_time, state = fields
         start_year = start_time.split('-').first
-        next unless start_year != 2025
+        next unless start_year != '2025'
 
         next if state.include?('CANCELLED') && elapsed_str == '00:00:00'
         raise "dot in line #{line}" if jobid.include?('.')
