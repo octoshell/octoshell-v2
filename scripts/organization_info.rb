@@ -1,6 +1,5 @@
 begin
   cluster_id = 5
-  year = 2025
   def login_by_node_hours(year, cluster_options)
     results = {}
     Net::SSH.start(cluster_options[:host], cluster_options[:user], key_data: cluster_options[:key]) do |ssh|
@@ -13,7 +12,7 @@ begin
 
         user, jobid, nnodes_str, elapsed_str, start_time, state = fields
         start_year = start_time.split('-').first
-        next unless %w[2024 2025].include? start_year
+        next unless start_year != 2025
 
         next if state.include?('CANCELLED') && elapsed_str == '00:00:00'
         raise "dot in line #{line}" if jobid.include?('.')
