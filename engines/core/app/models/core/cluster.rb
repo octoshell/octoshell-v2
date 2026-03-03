@@ -44,27 +44,6 @@ module Core
     before_create do
       generate_ssh_keys
     end
-    # state_machine initial: :active do
-    #   state :active
-    #   state :inactive
-
-    #   event :deactivate do
-    #     transition :active => :inactive
-    #   end
-
-    #   event :activate do
-    #     transition :inactive => :active
-    #   end
-
-    #   after_transition :inactive => :active do |cluster, _|
-    #     accesses.map(&:synchronize!)
-    #   end
-    # end
-
-    # def create_or_update
-    #   generate_ssh_keys if new_record?
-    #   super
-    # end
 
     def log(message, project)
       logs.create!(message: message, project: project)
@@ -78,14 +57,38 @@ module Core
       name
     end
 
-    def as_json(options = nil)
+    def as_json(_options = nil)
       { id: id, text: name }
     end
+
+    def execute(command, ssh = nil)
+      return exec!(ssh, command) if ssh
+
+      Net::SSH.start(host, admin_login, key_data: private_key) do |ssh|
+        exec!(ssh, command)
+      end
+    end
+
+    private
 
     def generate_ssh_keys
       key = SSHKey.generate(comment: host)
       self.public_key = key.ssh_public_key
       self.private_key = key.private_key
+    end
+
+    def exec!(ssh, command)
+      stdout_data = ''
+      stderr_data = ''
+      ssh.exec!(command) do |_channel, stream, data|
+        case stream
+        when :stdout
+          stdout_data << data
+        when :stderr
+          stderr_data << data
+        end
+      end
+      [stdout_data, stderr_data].map { |d| d.force_encoding('UTF-8') }
     end
   end
 end
