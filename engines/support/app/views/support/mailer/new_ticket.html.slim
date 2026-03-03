@@ -11,3 +11,5 @@ p
 	= link_to t('.show_ticket_details'), polymorphic_url([:admin, @ticket], anchor: 'reply')
 
 = render "mailer/footer"
+p
+  | ticket_id:#{@ticket.id}
