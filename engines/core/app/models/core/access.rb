@@ -76,12 +76,7 @@ module Core
     end
 
     def build_queue_accesses
-      resource_controls.each do |control|
-        control.build_resource_control_fields
-        (cluster.partitions - control.queue_accesses.map(&:partition).flatten).each do |part|
-          control.queue_accesses.new(partition: part, access_id: id).mark_for_destruction
-        end
-      end
+      resource_controls.each(&:build_resource_control_defaults_for_form)
       (cluster.partitions - uncontrolled_queue_accesses.map(&:partition).flatten).each do |part|
         uncontrolled_queue_accesses.new(partition: part).mark_for_destruction
       end
@@ -89,11 +84,10 @@ module Core
 
     # Требования к теребоньке.
     #
-    # Выполнять все действия в по одному ssh-соединению
+    # Выполнять все действия по одному ssh-соединению
     # логировать все команды и результаты выполнения
     # синхронизовать проект
     # синхронизовать участников проекта
-    # для участников проекта закидывать ключи через scp
 
     def synchronize!
       Synchronizer.new(self).run!

@@ -4,7 +4,8 @@ FactoryBot.define do
     started_at { Date.current - 1.year }
     after(:build) do |resource_control|
       Core::QuotaKind.find_or_create_by!(api_key: 'node_hours', name_ru: 'Node hours') do |k|
-        resource_control.resource_control_fields.build(quota_kind: k, limit: 1000)
+        field = resource_control.resource_control_fields.find_or_initialize_by(quota_kind: k)
+        field.limit = 1000 if field.limit.nil? || field.limit.zero?
       end
       if resource_control.queue_accesses.empty?
         resource_control.queue_accesses.build(

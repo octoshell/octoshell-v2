@@ -1,0 +1,16 @@
+h3
+  -if f.object.persisted?
+    = t('.control_header', id: f.object.id)
+  -else
+    - f.object.build_resource_control_defaults_for_form(@access)
+    = t('.new_control')
+= f.form_group do
+  = f.link_to_remove t('.destroy_resource_control'), class: "fa fa-times text-danger"
+= f.hidden_field :id
+= f.text_field :started_at, include_blank: true, class: "datepicker"
+= f.fields_for :resource_control_fields do |fff|
+  = fff.hidden_field :id
+  = fff.hidden_field :quota_kind_id
+  = fff.number_field :limit, :step => :any, min: 0, label: fff.object.quota_kind.to_s
+= f.fields_for :queue_accesses do |fff|
+  = render 'queue_access_form', fff: fff, manage_status: false

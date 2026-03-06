@@ -53,14 +53,26 @@ module Core
 
     def activate_resource_control
       @resource_control = ResourceControl.find(params[:id])
-      @resource_control.block_or_activate!
+      @resource_control.check_limit!
       redirect_back(fallback_location: admin_access_path(@resource_control.access_id),
                     flash: { info: t('.success') })
     end
 
     def disable_resource_control
       @resource_control = ResourceControl.find(params[:id])
-      @resource_control.disable!
+      @resource_control.block!
+      redirect_back(fallback_location: admin_access_path(@resource_control.access_id),
+                    flash: { info: t('.success') })
+    end
+
+    def destroy_resource_control
+      @resource_control = ResourceControl.find(params[:id])
+      unless @resource_control.queue_accesses.all?(&:synced_with_cluster)
+        redirect_back(fallback_location: admin_access_path(@resource_control.access_id),
+                      flash: { error: t('.queue_accesses_not_synced') })
+        return
+      end
+      @resource_control.destroy!
       redirect_back(fallback_location: admin_access_path(@resource_control.access_id),
                     flash: { info: t('.success') })
     end
@@ -73,6 +85,11 @@ module Core
     def sync_queue_accesses
       QueueAccess.sync_global
       redirect_to admin_accesses_path
+    end
+
+    def send_emails
+      ResourceControl.send_resource_usage_emails
+      redirect_to admin_accesses_path, flash: { info: t('.success') }
     end
 
     private
@@ -88,7 +105,7 @@ module Core
                                    status partition_id max_running_jobs
                                    max_submitted_jobs]
       params.require(:access).permit({
-                                       resource_users_attributes: %i[id user_id email _destroy],
+                                       resource_users_attributes: %i[id member_id email _destroy],
                                        resource_controls_attributes: [:id, :started_at, :status, :_destroy,
                                                                       { resource_control_fields_attributes: %i[id quota_kind_id limit],
                                                                         queue_accesses_attributes: queue_access_attributes }],

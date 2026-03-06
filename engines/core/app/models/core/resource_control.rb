@@ -1,6 +1,8 @@
 module Core
   class ResourceControl < ApplicationRecord
-    include StringEnum
+    include AASM
+    include ::AASM_Additions
+
     belongs_to :access, inverse_of: :resource_controls
     has_many :resource_control_fields, inverse_of: :resource_control
     has_many :queue_accesses, inverse_of: :resource_control, dependent: :destroy
@@ -8,13 +10,45 @@ module Core
     validates :access, :status, :started_at, presence: true
     validates :queue_accesses, length: { minimum: 1 }
 
-    string_enum %i[active blocked disabled]
-    after_initialize do |control|
-      next unless new_record?
+    def build_resource_control_defaults_for_form(access = nil)
+      self.access = access if access
+      build_resource_control_fields
+      return unless self.access&.cluster
 
-      control.status ||= 'active'
+      (self.access.cluster.partitions - queue_accesses.map(&:partition)).each do |part|
+        queue_accesses.new(partition: part, access_id: self.access.id).mark_for_destruction
+      end
     end
 
+    aasm column: :status do
+      state :pending, initial: true
+      state :active
+      state :blocked
+
+      event :activate do
+        transitions from: :pending, to: :active
+      end
+
+      event :block do
+        transitions from: %i[pending active], to: :blocked
+      end
+
+      event :unblock do
+        transitions from: :blocked, to: :active
+      end
+
+      event :check_limit do
+        transitions from: %i[pending active], to: :blocked, guard: :exceeded?
+        transitions from: %i[pending active], to: :active, guard: -> { !exceeded? }
+        transitions from: :blocked, to: :active, guard: -> { !exceeded? }
+        transitions from: :blocked, to: :blocked, guard: :exceeded?
+      end
+
+      after_all_transitions :sync_queue_accesses
+    end
+
+    # Scope for controls that should be included in resource calculation
+    # (active and blocked, but not pending)
     def self.calculated
       where(status: %w[active blocked])
     end
@@ -24,6 +58,7 @@ module Core
                                        controls.map(&:format_for_counter)).run
     end
 
+    # Calculate resources and update cur_value, but do NOT send emails
     def self.calculate_resources
       calculated
         .includes(access: [{ project: %i[members removed_members] }, :cluster, :resource_users],
@@ -42,14 +77,21 @@ module Core
                             control.access.project)
               end
               control.last_sync_at = DateTime.now
-              control.block_or_activate!
+              control.check_limit!
             end
           end
-          # select { |c| c.previous_changes['status'] }
-          Group.find_by_name('resource_controller')&.users&.each do |user|
-            Core::MailerWorker.perform_async(:admin_resource_usage, user.id)
-          end
-          controls.map(&:access).uniq.each(&:notify_about_resources)
+        end
+    end
+
+    # Send resource usage emails to all recipients (resource users and resource controller)
+    def self.send_resource_usage_emails
+      # Notify resource controller group (admins)
+      Group.find_by_name('resource_controller')&.users&.each do |user|
+        Core::MailerWorker.perform_async(:admin_resource_usage, user.id)
+      end
+      # Notify all resource users (both with member and with email)
+      ResourceUser.find_each do |ru|
+        Core::MailerWorker.perform_async(:resource_usage, ru.id, ru.access_id)
       end
     end
 
@@ -60,23 +102,6 @@ module Core
         logins: access.project.members.map(&:login) |
           access.project.removed_members.map(&:login)
       }
-    end
-
-    def block_or_activate!
-      if exceeded?
-        self.status = 'blocked'
-        queue_accesses.each(&:block!)
-      else
-        self.status = 'active'
-        queue_accesses.each(&:activate!)
-      end
-      save!
-    end
-
-    def disable!
-      self.status = 'disabled'
-      queue_accesses.each(&:block!)
-      save!
     end
 
     def exceeded?
@@ -93,6 +118,18 @@ module Core
           resource_control_fields.build(quota_kind: kind)
         end
       end
+    end
+
+    private
+
+    def sync_queue_accesses
+      case aasm.to_state
+      when :active
+        queue_accesses.each(&:activate!)
+      when :blocked
+        queue_accesses.each(&:block!)
+      end
+      # pending: do nothing
     end
   end
 end

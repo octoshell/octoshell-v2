@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_21_200135) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_06_123457) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -499,6 +499,37 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_21_200135) do
     t.index ["user_id"], name: "index_core_members_on_user_id"
   end
 
+  create_table "core_node_partitions", force: :cascade do |t|
+    t.bigint "node_id", null: false
+    t.bigint "partition_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["node_id", "partition_id"], name: "index_core_node_partitions_on_node_id_and_partition_id", unique: true
+    t.index ["node_id"], name: "index_core_node_partitions_on_node_id"
+    t.index ["partition_id"], name: "index_core_node_partitions_on_partition_id"
+  end
+
+  create_table "core_node_states", force: :cascade do |t|
+    t.bigint "node_id", null: false
+    t.string "state", null: false
+    t.text "reason"
+    t.datetime "state_time", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_core_node_states_on_id"
+    t.index ["node_id"], name: "index_core_node_states_on_node_id"
+    t.index ["state_time"], name: "index_core_node_states_on_state_time"
+  end
+
+  create_table "core_nodes", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "cluster_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cluster_id", "name"], name: "index_core_nodes_on_cluster_id_and_name", unique: true
+    t.index ["cluster_id"], name: "index_core_nodes_on_cluster_id"
+  end
+
   create_table "core_notice_show_options", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "notice_id"
@@ -725,9 +756,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_21_200135) do
   create_table "core_resource_users", force: :cascade do |t|
     t.string "email"
     t.bigint "access_id"
-    t.bigint "user_id"
+    t.integer "member_id"
     t.index ["access_id"], name: "index_core_resource_users_on_access_id"
-    t.index ["user_id"], name: "index_core_resource_users_on_user_id"
+    t.index ["member_id", "access_id"], name: "index_core_resource_users_on_member_id_and_access_id", unique: true, where: "(member_id IS NOT NULL)"
   end
 
   create_table "core_sureties", id: :serial, force: :cascade do |t|
@@ -1455,5 +1486,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_21_200135) do
   end
 
   add_foreign_key "core_bot_links", "users"
+  add_foreign_key "core_node_partitions", "core_nodes", column: "node_id"
+  add_foreign_key "core_node_partitions", "core_partitions", column: "partition_id"
+  add_foreign_key "core_node_states", "core_nodes", column: "node_id"
+  add_foreign_key "core_nodes", "core_clusters", column: "cluster_id"
+  add_foreign_key "core_resource_users", "core_members", column: "member_id"
   add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"
 end

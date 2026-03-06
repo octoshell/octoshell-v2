@@ -10,8 +10,8 @@ module Core
         'green'
       when 'blocked'
         'red'
-      when 'disabled'
-        'purple'
+      when 'pending'
+        'orange'
       else
         'black'
       end
