@@ -93,7 +93,7 @@ module Core
     # Treats 'allocated' and 'idle' as equivalent states
     # Optimized for performance: uses batch loading and bulk insert
     def log_node_states
-      # Actually sinfo -h -o "%N %P %T %E"' happens here
+      # Actually sinfo -h -o "%N %R %T %E"' happens here
       stdout, stderr = execute('sudo /usr/octo/sinfo')
       raise "Error when retrieving sinfo: #{stderr}" if stderr.present?
 
