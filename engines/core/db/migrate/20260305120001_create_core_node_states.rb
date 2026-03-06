@@ -10,7 +10,6 @@ class CreateCoreNodeStates < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :core_node_states, :node_id
     add_index :core_node_states, :state_time
     add_index :core_node_states, :id
   end

@@ -45,7 +45,7 @@ module Core
 
       # Treat 'allocated', 'completing' and 'idle' as equivalent
       # Keep SLURM suffixes (~, #, *) for accurate state tracking
-      %w[allocated completing].include?(state) ? 'idle' : state
+      %w[allocated].include?(state) ? 'idle' : state
     end
 
     # Instance method delegate to class method for backward compatibility
