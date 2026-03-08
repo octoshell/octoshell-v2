@@ -3,10 +3,10 @@ module Core
     include StringEnum
     belongs_to :access, inverse_of: :resource_controls
     has_many :resource_control_fields, inverse_of: :resource_control
-    has_many :queue_accesses, inverse_of: :resource_control, dependent: :destroy
-    accepts_nested_attributes_for :resource_control_fields, :queue_accesses, allow_destroy: true
+    has_many :resource_control_partitions, inverse_of: :resource_control, dependent: :destroy
+    accepts_nested_attributes_for :resource_control_fields, :resource_control_partitions, allow_destroy: true
     validates :access, :status, :started_at, presence: true
-    validates :queue_accesses, length: { minimum: 1 }
+    validates :resource_control_partitions, length: { minimum: 1 }
 
     string_enum %i[active blocked disabled]
     after_initialize do |control|

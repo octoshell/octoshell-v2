@@ -15,11 +15,11 @@ p = t('.control_info').html_safe
     - Core::Project.find(val).title
   = f.collection_select  :cluster_id_in, Core::Cluster.all, :id, :name,
                          { label: Core::Cluster.model_name.human }, multiple: true
-  = f.grouped_collection_select :queue_accesses_partition_id_in,
+  /= f.grouped_collection_select :queue_accesses_partition_id_in,
                                  Core::Cluster.where(available_for_work: true).includes(:partitions),
                                 :partitions, :name, :id, :name,
                             { label: t('.has_partition_in') }, multiple: true
-  = f.check_box  :queue_accesses_id_exists, { label: t('.has_queue_accesses') }
+  /= f.check_box  :queue_accesses_id_exists, { label: t('.has_queue_accesses') }
 
   = f.form_group do
     = f.submit t("actions.find"), class: "btn btn-primary"
