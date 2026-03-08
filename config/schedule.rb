@@ -13,6 +13,6 @@ every 7.days do
   runner 'Core::SshWorker.perform_async(:calculate_resources)'
 end
 
-every 2.minutes do
+every 3.minutes do
   runner 'Core::Cluster.where(id: [5, 8]).each(&:log_node_states)'
 end
