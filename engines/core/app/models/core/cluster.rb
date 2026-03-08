@@ -94,8 +94,8 @@ module Core
     # Optimized for performance: uses batch loading and bulk insert
     def log_node_states
       # Actually sinfo -h -o "%N %R %T %E"' happens here
-      stdout, stderr = execute('sudo /usr/octo/sinfo')
-      raise "Error when retrieving sinfo: #{stderr}" if stderr.present?
+      stdout, stderr = execute('sudo /usr/octo/sinfo_log_nodes')
+      raise "Error when retrieving sinfo_log_nodes: #{stderr}" if stderr.present?
 
       # Parse all lines first
       parsed_lines = stdout.each_line.filter_map do |line|

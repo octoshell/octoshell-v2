@@ -37,13 +37,13 @@ module Core
       last_state&.reason
     end
 
-    # Normalizes state: treats 'allocated', 'completing' and 'idle' as equivalent
+    # Normalizes state: treats 'allocated' and 'idle' as equivalent
     # @param state [String, nil] state to normalize
     # @return [String, nil] normalized state
     def self.normalize_state(state)
       return state if state.blank?
 
-      # Treat 'allocated', 'completing' and 'idle' as equivalent
+      # Treat 'allocated' and 'idle' as equivalent
       # Keep SLURM suffixes (~, #, *) for accurate state tracking
       %w[allocated].include?(state) ? 'idle' : state
     end
