@@ -10,9 +10,10 @@ module Core
                          .select('core_accesses.*, core_accesses.project_id')
                          .page(params[:page])
                          .includes(:project, :cluster,
-                                   { queue_accesses: [:partition, { resource_control: {
-                                     resource_control_fields: :quota_kind
-                                   } }] })
+                                   { resource_controls: {
+                                     resource_control_fields: :quota_kind,
+                                     resource_control_partitions: :partition
+                                   } })
       without_pagination :accesses
     end
 
@@ -101,15 +102,14 @@ module Core
     end
 
     def access_params
-      queue_access_attributes = %i[id _destroy synced_with_cluster access_id
-                                   status partition_id max_running_jobs
-                                   max_submitted_jobs]
+      partition_attributes = %i[id _destroy
+                                partition_id max_running_jobs
+                                max_submitted_jobs]
       params.require(:access).permit({
                                        resource_users_attributes: %i[id member_id email _destroy],
                                        resource_controls_attributes: [:id, :started_at, :status, :_destroy,
                                                                       { resource_control_fields_attributes: %i[id quota_kind_id limit],
-                                                                        queue_accesses_attributes: queue_access_attributes }],
-                                       uncontrolled_queue_accesses_attributes: queue_access_attributes
+                                                                        resource_control_partition_attributes: partition_attributes }]
                                      })
     end
   end

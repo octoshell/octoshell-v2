@@ -27,20 +27,16 @@ module Core
     validates :project, :cluster, presence: true
     has_many :resource_controls, inverse_of: :access
     has_many :resource_users, inverse_of: :access
-    has_many :queue_accesses, inverse_of: :access
-    has_many :uncontrolled_queue_accesses, -> { where(resource_control_id: nil) },
-             inverse_of: :access,
-             class_name: 'Core::QueueAccess'
 
-    accepts_nested_attributes_for :resource_controls, :uncontrolled_queue_accesses,
+    accepts_nested_attributes_for :resource_controls,
                                   :resource_users, allow_destroy: true
-    validate do
-      next unless (uncontrolled_queue_accesses | resource_controls.map(&:queue_accesses).flatten).any? do |q|
-        !q.new_record? && !q.synced_with_cluster && q.marked_for_destruction?
-      end
+    # validate do
+    #   next unless (uncontrolled_queue_accesses | resource_controls.map(&:queue_accesses).flatten).any? do |q|
+    #     !q.new_record? && !q.synced_with_cluster && q.marked_for_destruction?
+    #   end
 
-      errors.add(:base, :not_synced)
-    end
+    #   errors.add(:base, :not_synced)
+    # end
 
     def notify_about_resources
       resource_users.each do |r|
