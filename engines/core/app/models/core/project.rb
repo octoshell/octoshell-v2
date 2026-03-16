@@ -105,6 +105,10 @@ module Core
     #   name.to_s
     # end
 
+    def id_with_title
+      "#{id}|#{title}"
+    end
+
     scope :choose_to_hide, (lambda do |type, date_after, core_hours_gt, date_before, core_hours_lt|
       type = type.to_i
       return self if type != 1 && type != 2
