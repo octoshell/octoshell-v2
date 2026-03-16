@@ -23,7 +23,7 @@ module Core
 
     def edit
       @access = Access.find(params[:id])
-      @access.build_queue_accesses
+      render_edit
     end
 
     def update
@@ -40,63 +40,58 @@ module Core
         return
       end
       if @access.save
+        @access.resource_controls.each(&:enqueue_synchronize)
         redirect_to admin_access_path(@access), flash: { info: t('.success') }
       else
         render_edit
       end
     end
 
-    def set_queue_status
-      @queue_access = QueueAccess.find(params[:id])
-      @queue_access.set_status(params[:status])
-      redirect_to admin_access_path(@queue_access.access_id), flash: { info: t('.success') }
-    end
-
-    def activate_resource_control
+    def enable_resource_control
       @resource_control = ResourceControl.find(params[:id])
-      @resource_control.check_limit!
+      @resource_control.enable!
       redirect_back(fallback_location: admin_access_path(@resource_control.access_id),
-                    flash: { info: t('.success') })
+                    info: t('.success'))
     end
 
     def disable_resource_control
       @resource_control = ResourceControl.find(params[:id])
-      @resource_control.block!
+      @resource_control.disable!
       redirect_back(fallback_location: admin_access_path(@resource_control.access_id),
-                    flash: { info: t('.success') })
+                    info: t('.success'))
     end
 
     def destroy_resource_control
       @resource_control = ResourceControl.find(params[:id])
-      unless @resource_control.queue_accesses.all?(&:synced_with_cluster)
+      unless @resource_control.may_destroy?
         redirect_back(fallback_location: admin_access_path(@resource_control.access_id),
-                      flash: { error: t('.queue_accesses_not_synced') })
+                      error: t('.error_not_synced'))
         return
       end
       @resource_control.destroy!
       redirect_back(fallback_location: admin_access_path(@resource_control.access_id),
-                    flash: { info: t('.success') })
+                    info: t('.success'))
     end
 
     def sync_resource_controls
+      Core::ResourceControl.all.each(&:enqueue_synchronize)
+      redirect_to admin_accesses_path
+    end
+
+    def calculate_resources
       Core::SshWorker.perform_async(:calculate_resources)
       redirect_to admin_accesses_path
     end
 
-    def sync_queue_accesses
-      QueueAccess.sync_global
-      redirect_to admin_accesses_path
-    end
-
     def send_emails
-      ResourceControl.send_resource_usage_emails
-      redirect_to admin_accesses_path, flash: { info: t('.success') }
+      Core::ResourceControl.send_resource_usage_emails
+      redirect_to admin_accesses_path
     end
 
     private
 
     def render_edit
-      @access.build_queue_accesses
+      @access.build_form_defaults
       flash_now_message(:error, @access.errors.full_messages.join('. ')) if @access.errors.any?
       render :edit
     end
@@ -107,9 +102,9 @@ module Core
                                 max_submitted_jobs]
       params.require(:access).permit({
                                        resource_users_attributes: %i[id member_id email _destroy],
-                                       resource_controls_attributes: [:id, :started_at, :status, :_destroy,
+                                       resource_controls_attributes: [:id, :started_at, :status, :_destroy, :note,
                                                                       { resource_control_fields_attributes: %i[id quota_kind_id limit],
-                                                                        resource_control_partition_attributes: partition_attributes }]
+                                                                        resource_control_partitions_attributes: partition_attributes }]
                                      })
     end
   end

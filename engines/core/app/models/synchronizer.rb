@@ -111,7 +111,7 @@ class Synchronizer
       member_state_on_cluster = check_member_state_on_cluster(removed_member)
       block_member(removed_member) if member_state_on_cluster == 'active'
     end
-    access.queue_accesses.each { |q| q.sync_with_cluster(connection_to_cluster) }
+    access.resource_controls.each { |r| r.synchronize(connection_to_cluster) }
   end
 
   def activate_member(member, state)

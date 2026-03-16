@@ -19,9 +19,6 @@
   = f.fields_for :resource_controls, layout: :horizontal do |ff|
     = render 'resource_control_fields', f: ff
   = f.link_to_add t('.add_resource_control'), :resource_controls, class: "btn btn-info left-margin"
-  h2 = t('.uncontrolled_queue_accesses')
-  = f.fields_for :uncontrolled_queue_accesses do |ff|
-    = render 'queue_access_form', {fff: ff, manage_status: true}
   css:
     .left-margin { margin: 20px };
   = f.form_group do

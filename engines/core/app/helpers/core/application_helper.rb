@@ -6,14 +6,14 @@ module Core
 
     def resource_control_color(r)
       case r.status
-      when 'active'
-        'green'
+      when 'pending'
+        'blue'
       when 'blocked'
         'red'
-      when 'pending'
-        'orange'
-      else
-        'black'
+      when 'active'
+        'green'
+      when 'disabled'
+        'purple'
       end
     end
 
@@ -41,7 +41,7 @@ module Core
     def project_admin_submenu_items
       menu = Face::MyMenu.new
       menu.add_item_without_key(t('engine_submenu.projects_list'),
-                                admin_organizations_path, 'core/admin/projects')
+                                admin_projects_path, 'core/admin/projects')
 
       menu.add_item_without_key(t('engine_submenu.acess_management'),
                                 admin_accesses_path, 'core/admin/accesses')

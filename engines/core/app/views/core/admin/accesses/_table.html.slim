@@ -5,6 +5,9 @@
         th ID
         th  = sort_link @search, :project_id, Core::Project.model_name.human, default_order: :desc
         th  = Core::Cluster.model_name.human
+        th  = Core::ResourceControl.human_attribute_name(:status)
+        th  = Core::ResourceControl.human_attribute_name(:synced_with_cluster)
+        th  = Core::ResourceControl.human_attribute_name(:note)
         th  = Core::ResourceControl.human_attribute_name(:started_at)
         th  = Core::ResourceControl.human_attribute_name(:last_sync_at)
         th  = Core::ResourceControl.human_attribute_name(:consumed)

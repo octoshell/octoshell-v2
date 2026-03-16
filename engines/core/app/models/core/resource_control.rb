@@ -9,60 +9,88 @@ module Core
     accepts_nested_attributes_for :resource_control_fields, :resource_control_partitions, allow_destroy: true
     validates :access, :status, :started_at, presence: true
     validates :resource_control_partitions, length: { minimum: 1 }
+    before_destroy do
+      throw(:abort) if may_destroy?
+    end
 
     def build_resource_control_defaults_for_form(access = nil)
       self.access = access if access
       build_resource_control_fields
       return unless self.access&.cluster
 
-      (self.access.cluster.partitions - queue_accesses.map(&:partition)).each do |part|
-        queue_accesses.new(partition: part, access_id: self.access.id).mark_for_destruction
+      (self.access.cluster.partitions - resource_control_partitions.map(&:partition)).each do |part|
+        resource_control_partitions.new(partition: part).mark_for_destruction
       end
     end
 
-    aasm column: :status do
+    aasm(column: :status) do
       state :pending, initial: true
       state :active
       state :blocked
+      state :disabled
 
-      event :activate do
-        transitions from: :pending, to: :active
+      event :enable do
+        transitions from: %i[pending disabled], to: :blocked, guard: :exceeded?
+        transitions from: %i[pending disabled], to: :active, guard: -> { !exceeded? }
       end
 
-      event :block do
-        transitions from: %i[pending active], to: :blocked
+      event :change_cluster_state do
+        transitions from: %i[active], to: :blocked, guard: :exceeded?
+        transitions from: %i[blocked], to: :active, guard: -> { !exceeded? }
+        before do
+          self.synced_with_cluster = false
+        end
       end
 
-      event :unblock do
-        transitions from: :blocked, to: :active
+      event :disable do
+        transitions from: %i[pending blocked active], to: :disabled
       end
 
-      event :check_limit do
-        transitions from: %i[pending active], to: :blocked, guard: :exceeded?
-        transitions from: %i[pending active], to: :active, guard: -> { !exceeded? }
-        transitions from: :blocked, to: :active, guard: -> { !exceeded? }
-        transitions from: :blocked, to: :blocked, guard: :exceeded?
-      end
-
-      after_all_transitions :sync_queue_accesses
+      after_all_transitions :enqueue_synchronize
     end
 
-    # Scope for controls that should be included in resource calculation
-    # (active and blocked, but not pending)
-    def self.calculated
-      where(status: %w[active blocked])
+    def fix_sync_timestamp
+      update!(last_sync_at: DateTime.current, synced_with_cluster: true)
+    end
+
+    def synchronize(connection = nil)
+      if active?
+        resource_control_partitions.each do |r_p|
+          r_p.activate(connection)
+        end
+        fix_sync_timestamp
+      elsif blocked? || disabled?
+        resource_control_partitions.each do |r_p|
+          r_p.block(connection)
+        end
+        fix_sync_timestamp
+      else
+        nil
+      end
+    end
+
+    def enqueue_synchronize
+      SshWorker.perform_async(:synchronize, id)
+    end
+
+    def self.synchronize(id)
+      find(id).synchronize
     end
 
     def self.usage_in_node_hours(cluster, controls)
-      Core::NodeHourCounterService.new(cluster,
-                                       controls.map(&:format_for_counter)).run
+      NodeHourCounterService.new(cluster,
+                                 controls.map(&:format_for_counter)).run
+    end
+
+    def self.calculated
+      where(status: %w[active blocked])
     end
 
     # Calculate resources and update cur_value, but do NOT send emails
     def self.calculate_resources
       calculated
         .includes(access: [{ project: %i[members removed_members] }, :cluster, :resource_users],
-                  queue_accesses: :partition)
+                  resource_control_partitions: :partition)
         .group_by { |r| r.access.cluster }
         .each do |cluster, controls|
           results = usage_in_node_hours(cluster, controls)
@@ -76,8 +104,7 @@ module Core
                 cluster.log("ResourceControl##{control.id}: #{result[1]}",
                             control.access.project)
               end
-              control.last_sync_at = DateTime.now
-              control.check_limit!
+              control.change_cluster_state! if control.may_change_cluster_state?
             end
           end
         end
@@ -87,18 +114,18 @@ module Core
     def self.send_resource_usage_emails
       # Notify resource controller group (admins)
       Group.find_by_name('resource_controller')&.users&.each do |user|
-        Core::MailerWorker.perform_async(:admin_resource_usage, user.id)
+        MailerWorker.perform_async(:admin_resource_usage, user.id)
       end
       # Notify all resource users (both with member and with email)
       ResourceUser.find_each do |ru|
-        Core::MailerWorker.perform_async(:resource_usage, ru.id, ru.access_id)
+        MailerWorker.perform_async(:resource_usage, [ru.id, ru.access_id])
       end
     end
 
     def format_for_counter
       {
         start_date: started_at,
-        partitions: queue_accesses.map(&:partition).map(&:name),
+        partitions: resource_control_partitions.map(&:partition).map(&:name),
         logins: access.project.members.map(&:login) |
           access.project.removed_members.map(&:login)
       }
@@ -120,16 +147,8 @@ module Core
       end
     end
 
-    private
-
-    def sync_queue_accesses
-      case aasm.to_state
-      when :active
-        queue_accesses.each(&:activate!)
-      when :blocked
-        queue_accesses.each(&:block!)
-      end
-      # pending: do nothing
+    def may_destroy?
+      disabled? && synced_with_cluster || pending?
     end
   end
 end

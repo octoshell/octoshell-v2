@@ -27,6 +27,7 @@ module Core
     validates :project, :cluster, presence: true
     has_many :resource_controls, inverse_of: :access
     has_many :resource_users, inverse_of: :access
+    has_many :resource_control_partitions, through: :resource_controls
 
     accepts_nested_attributes_for :resource_controls,
                                   :resource_users, allow_destroy: true
@@ -71,11 +72,8 @@ module Core
       "#{project.title} | #{cluster.name}"
     end
 
-    def build_queue_accesses
+    def build_form_defaults
       resource_controls.each(&:build_resource_control_defaults_for_form)
-      (cluster.partitions - uncontrolled_queue_accesses.map(&:partition).flatten).each do |part|
-        uncontrolled_queue_accesses.new(partition: part).mark_for_destruction
-      end
     end
 
     # Требования к теребоньке.

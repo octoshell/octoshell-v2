@@ -2,6 +2,7 @@ module Core
   class ResourceUser < ApplicationRecord
     belongs_to :access, inverse_of: :resource_users
     belongs_to :member, class_name: 'Core::Member'
+    has_one :user, through: :member
     validates :access, presence: true
     validates :email, presence: true, uniqueness: { scope: :access_id }, unless: :member
     validates :member, presence: true, uniqueness: { scope: :access_id }, unless: -> { email.present? }

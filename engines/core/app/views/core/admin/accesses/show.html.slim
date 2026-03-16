@@ -11,9 +11,9 @@ div class="panel-body"
   h4 = Core::Cluster.model_name.human
   p = @access.cluster.name
   h4 = t('.notify_about_resources')
-  - @access.resource_users.includes(:user).each do |r|
-      - if r.user_id
-        p = link_to(r.user.full_name, main_app.admin_user_path(r.user_id))
+  - @access.resource_users.includes(member: :user).each do |r|
+      - if r.user
+        p = link_to(r.user.full_name, main_app.admin_user_path(r.user.id))
       - else
         p = r.email
 
@@ -21,6 +21,9 @@ div class="panel-body"
   h3 = Core::Access.human_attribute_name(:available_queues)
   table class="table table-hover"
     tr
+      th  = Core::ResourceControl.human_attribute_name(:status)
+      th  = Core::ResourceControl.human_attribute_name(:synced_with_cluster)
+      th  = Core::ResourceControl.human_attribute_name(:note)
       th  = Core::ResourceControl.human_attribute_name(:started_at)
       th  = Core::ResourceControl.human_attribute_name(:last_sync_at)
       th  = Core::ResourceControl.human_attribute_name(:consumed)

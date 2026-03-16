@@ -6,13 +6,12 @@ Core::Engine.routes.draw do
   namespace :admin do
     resources :accesses do
       collection do
+        put :calculate_resources
         put :sync_resource_controls
-        put :sync_queue_accesses
         put :send_emails
       end
       member do
-        put :set_queue_status
-        put :activate_resource_control
+        put :enable_resource_control
         put :disable_resource_control
         delete :destroy_resource_control
       end
