@@ -39,6 +39,7 @@ Core::Engine.routes.draw do
       collection do
         get :finder
         get :id_finder
+        get :id_title_finder
       end
 
       resources :requests, only: %i[new create]

@@ -85,6 +85,11 @@ module Core
 
     scope :finder, ->(q) { where('lower(title) like :q', q: "%#{q.mb_chars.downcase}%").order('title asc') }
 
+    scope :id_title_finder, lambda { |val|
+      pattern = "%#{val}%"
+      where('CAST(id AS varchar) LIKE ? OR title ILIKE ?', pattern, pattern)
+    }
+
     def members_for_new_surety
       members.joins(:user).where(project_access_state: :engaged,
                                  users: { access_state: 'active' })
