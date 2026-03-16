@@ -1,0 +1,21 @@
+- if control
+  td  style="color: #{resource_control_color(control)};" = control.human_state_name
+  td = control.synced_with_cluster
+  td = control.note
+  td = control.started_at
+  td = control.last_sync_at
+  td  style="color: #{control.exceeded? ? 'red' : 'green' };" = control.resource_control_fields.map(&:stat).join("\n")
+  td = control.resource_control_partitions.join(' ')
+  td
+    -if control.may_enable?
+      = link_to Core::ResourceControl.human_state_event_name(:enable),
+                enable_resource_control_admin_access_path(control),
+                class: "btn btn-info btn-sm", method: :put
+    -if control.may_disable?
+      = link_to Core::ResourceControl.human_state_event_name(:disable),
+                disable_resource_control_admin_access_path(control),
+                class: "btn btn-warning btn-sm", method: :put
+    -if control.may_destroy?
+      = link_to t('.destroy'),
+                destroy_resource_control_admin_access_path(control),
+                class: "btn btn-danger btn-sm", method: :delete

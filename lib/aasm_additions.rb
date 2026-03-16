@@ -12,11 +12,14 @@ module AASM_Additions
   end
 
   module ClassMethods
-
     def state_key
-      array = AASM::StateMachineStore[name].keys
+      AASM::StateMachineStore[name].keys.map do |key|
+        aasm(key).state_machine.config.column.to_s
+      end.first
+
+      # array = AASM::StateMachineStore[name].keys
       # raise "Don't use AASM_Additions with >1 aasm columns" if array.count > 1
-      array.first
+      # array.first
     end
 
     def translate_state_path
@@ -43,7 +46,7 @@ module AASM_Additions
       aasm(st).states.map { |s| [aasm_translate('states', s), s.to_s] }
     end
 
-    def state_names(st=:state)
+    def state_names(st = :state)
       aasm(st).states
     end
   end

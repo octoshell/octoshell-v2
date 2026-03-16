@@ -9,22 +9,26 @@ css:
   table, th, td {
     border: 1px solid black;
   }
+  th, td {
+    padding: 8px;      
+  } 
+
 
 table
   tr
-    th = t('.partitions')
+    th = t('.status')
     th = Core::ResourceControl.human_attribute_name(:started_at)
     th = Core::ResourceControl.human_attribute_name(:consumed)
-    th = Core::ResourceControl.human_attribute_name(:status)
+    th = t('.partitions')
 
 
-  - @access.resource_controls.includes(queue_accesses: :partition,
+  - @access.resource_controls.includes(resource_control_partitions: :partition,
                                        resource_control_fields: :quota_kind).each do |control|
     tr
-      td = control.queue_accesses.map(&:partition).map(&:name).join(" ")
+      td = control.human_state_name
       td = control.started_at
       td = control.resource_control_fields.map(&:stat).join("\n")
-      td = control.human_state_name
+      td = control.resource_control_partitions.join(" ")
 
 p
   = link_to_support

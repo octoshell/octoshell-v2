@@ -98,7 +98,7 @@ module Core
 
     def resource_usage(resource_user_id, access_id)
       @resource_user = Core::ResourceUser.find(resource_user_id)
-      @user = @resource_user.user if @resource_user.user
+      @user = @resource_user.member.user if @resource_user&.member
       @access = Core::Access.find(access_id)
       mail to: @resource_user.user_or_plain_email, subject: t('.subject')
     end

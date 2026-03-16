@@ -26,17 +26,16 @@
 
 module Core
   class Member < ApplicationRecord
-
     belongs_to :user, class_name: Core.user_class.to_s, foreign_key: :user_id, inverse_of: :accounts
     belongs_to :project, inverse_of: :members
     belongs_to :organization
     belongs_to :organization_department
-    delegate :full_name, :email, :credentials, :sured?, to: :user
+    delegate :full_name, :email, :credentials, :sured?, :full_name_with_email, to: :user
 
-    has_many :jobs, class_name: "Perf::Job", foreign_key: :login, primary_key: :login
+    has_many :jobs, class_name: 'Perf::Job', foreign_key: :login, primary_key: :login
 
     scope :finder, (lambda do |q|
-      where("lower(login) like :q", q: "%#{q}%").order(:login)
+      where('lower(login) like :q', q: "%#{q}%").order(:login)
     end)
 
     before_create do
@@ -45,8 +44,8 @@ module Core
 
     include AASM
     include ::AASM_Additions
-    aasm(:project_access_state, :column => :project_access_state) do
-      state :invited, :initial => true   # приглашён, не подтвердил участие
+    aasm(:project_access_state, column: :project_access_state) do
+      state :invited, initial: true # приглашён, не подтвердил участие
       state :engaged   # принял приглашение (заполнил организации)
       state :unsured   # упомянут в ещё не активированном поручительстве
       state :allowed   # поручительство подписано и одобрено администрацией
@@ -54,11 +53,11 @@ module Core
       state :suspended # участие приостановлено, т.к. проект неактивен
 
       event :accept_invitation do
-        transitions :from => :invited, :to => :engaged
+        transitions from: :invited, to: :engaged
       end
 
       event :append_to_surety do
-        transitions :from => :engaged, :to => :unsured
+        transitions from: :engaged, to: :unsured
       end
 
       event :substract_from_surety do
@@ -66,14 +65,12 @@ module Core
       end
 
       event :activate do
-        transitions :from => [:unsured, :suspended], :to => :allowed
+        transitions from: %i[unsured suspended], to: :allowed
 
         after do
-          if aasm(:project_access_state).from_state==:unsured
+          if aasm(:project_access_state).from_state == :unsured
             ::Core::MailerWorker.perform_async(:access_to_project_granted, id)
-            if project.pending? && project.accesses.where(state: :opened).any?
-              project.activate!
-            end
+            project.activate! if project.pending? && project.accesses.where(state: :opened).any?
           elsif aasm(:project_access_state).from_state == :suspended
             ::Core::MailerWorker.perform_async(:access_to_project_granted, id)
           end
@@ -81,7 +78,7 @@ module Core
       end
 
       event :deny do
-        transitions :from => :allowed, :to => :denied
+        transitions from: :allowed, to: :denied
 
         after do
           ::Core::MailerWorker.perform_async(:access_to_project_denied, id)
@@ -89,7 +86,7 @@ module Core
       end
 
       event :allow do
-        transitions :from => :denied, :to => :allowed
+        transitions from: :denied, to: :allowed
 
         after do
           ::Core::MailerWorker.perform_async(:access_to_project_granted, id)
@@ -97,11 +94,11 @@ module Core
       end
 
       event :suspend do
-        transitions :from => :allowed, :to => :suspended
+        transitions from: :allowed, to: :suspended
       end
     end
 
-    def human_project_access_state_name st=nil
+    def human_project_access_state_name(st = nil)
       if st.nil?
         human_state_name
       else
@@ -127,8 +124,8 @@ module Core
     end
 
     def assign_login
-      new_login = email.delete(".+_-")[/^(.+)@/, 1].downcase
-      self.login = "#{new_login[0,24]}_#{project.id}"
+      new_login = email.delete('.+_-')[/^(.+)@/, 1].downcase
+      self.login = "#{new_login[0, 24]}_#{project.id}"
     end
 
     def self.department_members(department)
@@ -144,16 +141,15 @@ module Core
     end
 
     def self.can_be_automerged(department)
-      department_members(department).having("COUNT( DISTINCT COALESCE(e.organization_department_id,-1)) = 1")
+      department_members(department).having('COUNT( DISTINCT COALESCE(e.organization_department_id,-1)) = 1')
     end
 
     def self.can_not_be_automerged(department)
-      department_members(department).having("Count( DISTINCT COALESCE(e.organization_department_id,-1)) > 1")
+      department_members(department).having('Count( DISTINCT COALESCE(e.organization_department_id,-1)) > 1')
     end
 
     def self.can_not_be_automerged?(department)
       can_not_be_automerged(department).exists?
     end
-
   end
 end

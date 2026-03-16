@@ -1,0 +1,33 @@
+h3
+  -if f.object.persisted?
+    = t('.control_header', id: f.object.id)
+  -else
+    - f.object.build_resource_control_defaults_for_form(@access)
+    = t('.new_control')
+= f.link_to_remove t('.destroy_resource_control'), class: "fa fa-times text-danger"
+= f.hidden_field :id
+= f.text_field :started_at, include_blank: true, class: "datepicker"
+= f.text_field :note
+= f.fields_for :resource_control_fields do |fff|
+  = fff.hidden_field :id
+  = fff.hidden_field :quota_kind_id
+  = fff.number_field :limit, :step => :any, min: 0, label: fff.object.quota_kind.to_s
+p 
+  | #{Core::ResourceControlPartition.human_attribute_name(:partition_id)} / 
+  | #{Core::ResourceControlPartition.human_attribute_name(:max_running_jobs)} / 
+  | #{Core::ResourceControlPartition.human_attribute_name(:max_submitted_jobs)}
+
+.row
+  = f.fields_for :resource_control_partitions do |fff|
+    .col-md-4
+      .row  
+        .col-md-6
+          = fff.hidden_field :id
+          = fff.hidden_field :partition_id
+          = fff.check_box :_destroy, {checked: !fff.object.marked_for_destruction?,
+                                      label: fff.object.partition.name}, 0, 1
+        .col-md-3
+          = fff.text_field_without_bootstrap :max_running_jobs, class: 'form-control' 
+        .col-md-3
+          = fff.text_field_without_bootstrap :max_submitted_jobs, class: 'form-control'
+
