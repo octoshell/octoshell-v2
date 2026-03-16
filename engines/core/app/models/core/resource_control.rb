@@ -32,6 +32,9 @@ module Core
       event :enable do
         transitions from: %i[pending disabled], to: :blocked, guard: :exceeded?
         transitions from: %i[pending disabled], to: :active, guard: -> { !exceeded? }
+        before do
+          self.synced_with_cluster = false
+        end
       end
 
       event :change_cluster_state do
@@ -44,6 +47,9 @@ module Core
 
       event :disable do
         transitions from: %i[pending blocked active], to: :disabled
+        before do
+          self.synced_with_cluster = false
+        end
       end
 
       after_all_transitions :enqueue_synchronize
