@@ -2,7 +2,7 @@
   div class="panel-body"
     table class="table table-hover"
       tr
-        th ID
+        th  = Core::Access.model_name.human
         th  = sort_link @search, :project_id, Core::Project.model_name.human, default_order: :desc
         th  = Core::Cluster.model_name.human
         th  = Core::ResourceControl.human_attribute_name(:status)
@@ -10,7 +10,9 @@
         th  = Core::ResourceControl.human_attribute_name(:note)
         th  = Core::ResourceControl.human_attribute_name(:started_at)
         th  = Core::ResourceControl.human_attribute_name(:last_sync_at)
-        th  = Core::ResourceControl.human_attribute_name(:consumed)
+        - @tracked_quota_kinds.each do |kind|
+         th 
+            | #{Core::ResourceControl.human_attribute_name(:consumed)} #{kind}
         th  = Core::Access.human_attribute_name(:available_queues)
         th  = t('.resource_control_actions')
 
@@ -20,7 +22,7 @@
         - rowspan = rowspan.zero? ? 1 : rowspan
         tr
           td rowspan=rowspan = link_to access.id, admin_access_path(access)
-          td rowspan=rowspan = link_to access.project.title, admin_project_path(access.project)
+          td rowspan=rowspan = link_to access.project.id_with_title, admin_project_path(access.project)
           td rowspan=rowspan  style="color: #{access.closed? ? 'red' : 'green' };" = access.cluster.name
           = render "resource_control", control: resource_controls[0]
         - if rowspan > 1

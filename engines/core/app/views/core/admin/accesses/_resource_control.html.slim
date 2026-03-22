@@ -4,7 +4,12 @@
   td = control.note
   td = control.started_at
   td = control.last_sync_at
-  td  style="color: #{control.exceeded? ? 'red' : 'green' };" = control.resource_control_fields.map(&:stat).join("\n")
+  - @tracked_quota_kinds.each do |q_k|
+    - field = control.field_by_quota_kind(q_k)
+    - if field
+      td  style="color: #{field.exceeded? ? 'red' : 'green' };" = field.stat
+    - else
+      td 
   td = control.resource_control_partitions.join(' ')
   td
     -if control.may_enable?

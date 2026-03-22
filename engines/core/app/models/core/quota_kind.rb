@@ -17,6 +17,11 @@ module Core
     has_many :cluster_quotas, class_name: 'ClusterQuota', inverse_of: :quota_kind, dependent: :destroy
     has_many :request_fields, dependent: :destroy
     has_many :access_fields, dependent: :destroy
+    has_many :resource_control_fields
+
+    scope :tracked, lambda {
+      joins(:resource_control_fields).distinct
+    }
 
     def full_name
       if measurement

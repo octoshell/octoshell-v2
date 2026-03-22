@@ -26,7 +26,9 @@ div class="panel-body"
       th  = Core::ResourceControl.human_attribute_name(:note)
       th  = Core::ResourceControl.human_attribute_name(:started_at)
       th  = Core::ResourceControl.human_attribute_name(:last_sync_at)
-      th  = Core::ResourceControl.human_attribute_name(:consumed)
+      - @tracked_quota_kinds.each do |kind|
+         th 
+            | #{Core::ResourceControl.human_attribute_name(:consumed)} #{kind}
       th  = Core::Access.human_attribute_name(:available_queues)
       th  = t('.resource_control_actions')
     -@access.resource_controls.each do |resource_control|

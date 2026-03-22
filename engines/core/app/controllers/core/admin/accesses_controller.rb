@@ -10,15 +10,17 @@ module Core
                          .select('core_accesses.*, core_accesses.project_id')
                          .page(params[:page])
                          .includes(:project, :cluster,
-                                   { resource_controls: {
-                                     resource_control_fields: :quota_kind,
-                                     resource_control_partitions: :partition
-                                   } })
+                                   { resource_controls: [:resource_control_fields,
+                                                         {
+                                                           resource_control_partitions: :partition
+                                                         }] })
+      @tracked_quota_kinds = Core::QuotaKind.tracked
       without_pagination :accesses
     end
 
     def show
       @access = Access.find(params[:id])
+      @tracked_quota_kinds = Core::QuotaKind.tracked
     end
 
     def edit

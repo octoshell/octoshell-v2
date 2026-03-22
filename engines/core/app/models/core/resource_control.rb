@@ -156,5 +156,9 @@ module Core
     def may_destroy?
       disabled? && synced_with_cluster || pending?
     end
+
+    def field_by_quota_kind(quota_kind)
+      resource_control_fields.detect { |f| f.quota_kind_id == quota_kind.id }
+    end
   end
 end
