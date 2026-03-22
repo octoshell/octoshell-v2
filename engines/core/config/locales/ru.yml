@@ -421,7 +421,9 @@ ru:
           has_queue_accesses: Определена очередь
           calculate_resources: Посчитать узлочасы
           sync_resource_controls: Синхронизировать очереди
-          send_emails: Отправить email о расходе всем
+          send_emails_for_admins: Отправить статистику админам
+          send_emails_for_users: Отправить статистику пользователям
+          export_xlsx: Скачать таблицу по условиям формы
 
           title: 'Список доступов'
         queue_access_group:

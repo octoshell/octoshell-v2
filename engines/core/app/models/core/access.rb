@@ -31,19 +31,6 @@ module Core
 
     accepts_nested_attributes_for :resource_controls,
                                   :resource_users, allow_destroy: true
-    # validate do
-    #   next unless (uncontrolled_queue_accesses | resource_controls.map(&:queue_accesses).flatten).any? do |q|
-    #     !q.new_record? && !q.synced_with_cluster && q.marked_for_destruction?
-    #   end
-
-    #   errors.add(:base, :not_synced)
-    # end
-
-    def notify_about_resources
-      resource_users.each do |r|
-        ::Core::MailerWorker.perform_async(:resource_usage, [r.id, id])
-      end
-    end
 
     include AASM
     include ::AASM_Additions

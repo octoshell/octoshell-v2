@@ -9,6 +9,9 @@ Core::Engine.routes.draw do
         put :calculate_resources
         put :sync_resource_controls
         put :send_emails
+        put :send_emails_for_admins
+        put :send_emails_for_users
+        get :export_xlsx
       end
       member do
         put :enable_resource_control

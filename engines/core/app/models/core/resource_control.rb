@@ -131,10 +131,10 @@ module Core
       jobs.each do |job|
         next unless logins.include?(job[:user])
 
-        job_start = SlurmTimeParser.parse_time_string(job[:start])
+        job_start = Core::SlurmTimeParser.parse_time_string(job[:start])
         next if job_start.nil? || job_start < started_at
 
-        elapsed_hours = SlurmTimeParser.elapsed_to_hours(job[:elapsed])
+        elapsed_hours = Core::SlurmTimeParser.elapsed_to_hours(job[:elapsed])
         nnodes = job[:nnodes].to_i
         total += elapsed_hours * nnodes
       end
@@ -162,16 +162,24 @@ module Core
         end
     end
 
-    # Send resource usage emails to all recipients (resource users and resource controller)
-    def self.send_resource_usage_emails
-      # Notify resource controller group (admins)
+    # Notify resource controller group (admins)
+    def self.send_resource_usage_emails_for_admins
       Group.find_by_name('resource_controller')&.users&.each do |user|
         MailerWorker.perform_async(:admin_resource_usage, user.id)
       end
-      # Notify all resource users (both with member and with email)
+    end
+
+    # Notify all resource users (both with member and with email)
+    def self.send_resource_usage_emails_for_users
       ResourceUser.find_each do |ru|
         MailerWorker.perform_async(:resource_usage, [ru.id, ru.access_id])
       end
+    end
+
+    # Send resource usage emails to all recipients (resource users and resource controller)
+    def self.send_resource_usage_emails
+      send_resource_usage_emails_for_admins
+      send_resource_usage_emails_for_users
     end
 
     def exceeded?

@@ -23,7 +23,9 @@ table
     th  = Core::ResourceControl.human_attribute_name(:status)
     th  = Core::ResourceControl.human_attribute_name(:note)
     th  = Core::ResourceControl.human_attribute_name(:started_at)
-    th  = Core::ResourceControl.human_attribute_name(:consumed)
+    - @tracked_quota_kinds.each do |kind|
+      th 
+        | #{Core::ResourceControl.human_attribute_name(:consumed)} #{kind}
     th  = Core::Access.human_attribute_name(:available_queues)
 
 
@@ -37,7 +39,12 @@ table
         td = control.human_state_name
         td = control.note
         td = control.started_at
-        td = control.resource_control_fields.map(&:stat).join("\n")
+        - @tracked_quota_kinds.each do |q_k|
+          - field = control.field_by_quota_kind(q_k)
+          - if field
+            td = field.stat
+          - else
+            td 
         td = control.resource_control_partitions.join(' ')
 
 = render "mailer/footer"

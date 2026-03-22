@@ -97,6 +97,7 @@ module Core
     end
 
     def resource_usage(resource_user_id, access_id)
+      @tracked_quota_kinds = Core::QuotaKind.tracked
       @resource_user = Core::ResourceUser.find(resource_user_id)
       @user = @resource_user.member.user if @resource_user&.member
       @access = Core::Access.find(access_id)
@@ -104,6 +105,7 @@ module Core
     end
 
     def admin_resource_usage(user_id)
+      @tracked_quota_kinds = Core::QuotaKind.tracked
       @user = Core.user_class.find(user_id)
       @resource_controls = Core::ResourceControl.calculated
       mail to: @user.email, subject: t('.subject')

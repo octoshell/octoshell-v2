@@ -217,7 +217,7 @@ module Core
         next if elapsed.blank? || nnodes.blank?
 
         # Convert Elapsed to hours
-        hours = SlurmTimeParser.elapsed_to_hours(elapsed)
+        hours = Core::SlurmTimeParser.elapsed_to_hours(elapsed)
         next if hours.nil?
 
         # Convert NNodes to integer

@@ -17,7 +17,7 @@
         th  = t('.resource_control_actions')
 
       - accesses.each do |access|
-        - resource_controls = access.resource_controls
+        - resource_controls = access.resource_controls.to_a
         - rowspan = resource_controls.count
         - rowspan = rowspan.zero? ? 1 : rowspan
         tr
