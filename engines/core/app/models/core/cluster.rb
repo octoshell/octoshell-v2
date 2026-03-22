@@ -184,6 +184,53 @@ module Core
       true
     end
 
+    def jobs_in_period(start_time, end_time)
+      stdout, stderr = execute("sudo /usr/octo/jobs_in_period \
+      #{start_time.strftime('%Y-%m-%dT%H:%M:%S')} \
+      #{end_time.strftime('%Y-%m-%dT%H:%M:%S')}")
+      raise "Error when retrieving jobs_in_period: #{stderr}" if stderr.present?
+
+      stdout
+    end
+
+    # Returns a hash {login => total node-hours} for the given period.
+    # Node-hours are computed as NNodes * Elapsed (converted to hours).
+    # Parses output of jobs_in_period which uses sacct with format User,Partition,Elapsed,NNodes,Start,End,State.
+    # Validates Elapsed and NNodes fields (skips rows with invalid values).
+    def nodehours_by_login(start_time, end_time)
+      raw_output = jobs_in_period(start_time, end_time)
+      totals = Hash.new(0.0)
+
+      raw_output.each_line do |line|
+        line.strip!
+        next if line.empty?
+
+        # Format: User|Partition|Elapsed|NNodes|Start|End|State
+        parts = line.split('|')
+        next unless parts.size >= 7
+
+        user = parts[0]
+        elapsed = parts[2]
+        nnodes = parts[3]
+
+        # Skip if values are missing or invalid
+        next if elapsed.blank? || nnodes.blank?
+
+        # Convert Elapsed to hours
+        hours = SlurmTimeParser.elapsed_to_hours(elapsed)
+        next if hours.nil?
+
+        # Convert NNodes to integer
+        node_count = nnodes.to_i
+        next if node_count <= 0
+
+        node_hours = hours * node_count
+        totals[user] += node_hours
+      end
+
+      totals
+    end
+
     private
 
     def generate_ssh_keys

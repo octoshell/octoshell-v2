@@ -3,7 +3,7 @@ require 'main_spec_helper'
 feature 'Admin manages accesses', js: false do
   background do
     # Mock SSH and sync to avoid connection errors
-    allow_any_instance_of(Core::QueueAccess).to receive(:sync_with_cluster).and_return(nil)
+    allow_any_instance_of(Core::ResourceControlPartition).to receive(:sync_with_cluster).and_return(nil)
     allow(Core::SshWorker).to receive(:perform_async).and_return(nil)
     # Create admin user
     @admin = create(:admin, email: 'admin@octoshell.ru', password: '123456')
@@ -23,9 +23,9 @@ feature 'Admin manages accesses', js: false do
       status: 'pending',
       started_at: Date.current - 1.year
     )
-    # Build queue_accesses (one partition) before validation
+    # Build resource_control_partitions (one partition) before validation
     partition = @cluster.partitions.first || create(:partition, cluster: @cluster)
-    @resource_control.queue_accesses.build(partition: partition, access: @access)
+    @resource_control.resource_control_partitions.build(partition: partition)
     # Build resource_control_fields (one with limit)
     quota_kind = Core::QuotaKind.find_or_create_by!(api_key: 'node_hours', name_ru: 'Node hours')
     @resource_control.resource_control_fields.build(quota_kind: quota_kind, limit: 1000)

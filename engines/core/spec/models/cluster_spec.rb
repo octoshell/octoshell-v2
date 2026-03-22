@@ -53,7 +53,7 @@ module Core
       end
 
       before do
-        allow(cluster).to receive(:execute).with('sudo /usr/octo/sinfo').and_return([sinfo_output, ''])
+        allow(cluster).to receive(:execute).with('sudo /usr/octo/sinfo_log_nodes').and_return([sinfo_output, ''])
       end
 
       it 'creates nodes and updates their states' do
@@ -103,7 +103,7 @@ module Core
         end
 
         before do
-          allow(cluster).to receive(:execute).with('sudo /usr/octo/sinfo').and_return([sinfo_output, ''])
+          allow(cluster).to receive(:execute).with('sudo /usr/octo/sinfo_log_nodes').and_return([sinfo_output, ''])
         end
 
         it 'does not create a new state (treats allocated and idle as equivalent)' do
@@ -124,7 +124,7 @@ module Core
         end
 
         before do
-          allow(cluster).to receive(:execute).with('sudo /usr/octo/sinfo').and_return([sinfo_output, ''])
+          allow(cluster).to receive(:execute).with('sudo /usr/octo/sinfo_log_nodes').and_return([sinfo_output, ''])
         end
 
         it 'does not create a new state' do
@@ -145,7 +145,7 @@ module Core
         end
 
         before do
-          allow(cluster).to receive(:execute).with('sudo /usr/octo/sinfo').and_return([sinfo_output, ''])
+          allow(cluster).to receive(:execute).with('sudo /usr/octo/sinfo_log_nodes').and_return([sinfo_output, ''])
         end
 
         it 'creates a new state' do
@@ -153,6 +153,76 @@ module Core
 
           expect(node.node_states.reload.count).to eq(2)
           expect(node.node_states.reload.order(:state_time).last.state).to eq('down~')
+        end
+      end
+    end
+    describe '#nodehours_by_login' do
+      let(:start_time) { Time.zone.parse('2025-01-01 00:00:00') }
+      let(:end_time) { Time.zone.parse('2025-01-02 00:00:00') }
+
+      context 'when jobs_in_period returns valid data' do
+        let(:sacct_output) do
+          <<~OUTPUT
+            user1|batch|1-12:30:00|2|2025-01-01T00:00:00|2025-01-01T12:30:00|COMPLETED
+            user2|gpu|12:30:00|1|2025-01-01T00:00:00|2025-01-01T12:30:00|COMPLETED
+            user1|batch|00:30:00|4|2025-01-01T00:00:00|2025-01-01T00:30:00|COMPLETED
+          OUTPUT
+        end
+
+        before do
+          allow(cluster).to receive(:jobs_in_period).with(start_time, end_time).and_return(sacct_output)
+        end
+
+        it 'calculates node-hours per login correctly' do
+          result = cluster.nodehours_by_login(start_time, end_time)
+
+          # user1: first job: 1 day 12h30m = 36.5 hours, nodes=2 => 73 node-hours
+          #        second job: 0.5 hours, nodes=4 => 2 node-hours
+          # total for user1 = 75 node-hours
+          # user2: 12h30m = 12.5 hours, nodes=1 => 12.5 node-hours
+          expect(result['user1']).to be_within(0.01).of(75.0)
+          expect(result['user2']).to be_within(0.01).of(12.5)
+        end
+      end
+
+      context 'when jobs_in_period returns empty output' do
+        before do
+          allow(cluster).to receive(:jobs_in_period).with(start_time, end_time).and_return('')
+        end
+
+        it 'returns empty hash' do
+          expect(cluster.nodehours_by_login(start_time, end_time)).to eq({})
+        end
+      end
+
+      context 'when jobs_in_period returns malformed lines' do
+        let(:sacct_output) do
+          <<~OUTPUT
+            user1|batch|invalid|2|2025-01-01T00:00:00|2025-01-01T12:30:00|COMPLETED
+            user2|gpu|12:30:00|not_a_number|2025-01-01T00:00:00|2025-01-01T12:30:00|COMPLETED
+            |||||
+          OUTPUT
+        end
+
+        before do
+          allow(cluster).to receive(:jobs_in_period).with(start_time, end_time).and_return(sacct_output)
+        end
+
+        it 'skips invalid lines and returns empty hash' do
+          result = cluster.nodehours_by_login(start_time, end_time)
+          expect(result).to eq({})
+        end
+      end
+
+      context 'when jobs_in_period raises error' do
+        before do
+          allow(cluster).to receive(:jobs_in_period).with(start_time, end_time)
+                                                    .and_raise(RuntimeError, 'Error when retrieving jobs_in_period: something')
+        end
+
+        it 'propagates the error' do
+          expect { cluster.nodehours_by_login(start_time, end_time) }
+            .to raise_error(RuntimeError, /Error when retrieving jobs_in_period/)
         end
       end
     end

@@ -10,7 +10,7 @@ module Core
     validates :access, :status, :started_at, presence: true
     validates :resource_control_partitions, length: { minimum: 1 }
     before_destroy do
-      throw(:abort) if may_destroy?
+      throw(:abort) unless may_destroy?
     end
 
     def build_resource_control_defaults_for_form(access = nil)
@@ -83,34 +83,80 @@ module Core
       find(id).synchronize
     end
 
-    def self.usage_in_node_hours(cluster, controls)
-      NodeHourCounterService.new(cluster,
-                                 controls.map(&:format_for_counter)).run
-    end
-
     def self.calculated
       where(status: %w[active blocked])
     end
 
-    # Calculate resources and update cur_value, but do NOT send emails
+    # Parse the output of Cluster#jobs_in_period into an array of job hashes.
+    # Each hash contains :user, :elapsed, :nnodes, :start.
+    def self.parse_jobs_output(output)
+      return [] if output.blank?
+
+      lines = output.strip.split("\n")
+      # Skip header line if present (optional)
+      lines.shift if lines.first&.match?(/^User\|Partition\|Elapsed\|NNodes\|Start\|End\|State$/)
+      lines.map do |line|
+        fields = line.split('|')
+        next if fields.size < 7
+
+        {
+          user: fields[0]&.strip,
+          partition: fields[1]&.strip,
+          elapsed: fields[2]&.strip,
+          nnodes: fields[3]&.strip,
+          start: fields[4]&.strip,
+          end: fields[5]&.strip,
+          state: fields[6]&.strip
+        }
+      end.compact
+    end
+
+    def update_consumed_resources(jobs)
+      field = resource_control_fields.joins(:quota_kind)
+                                     .where(core_quota_kinds: { api_key: 'node_hours' })
+                                     .first
+      node_hours = node_hours_from_jobs(jobs)
+      field&.update!(cur_value: node_hours)
+      change_cluster_state! if may_change_cluster_state?
+    end
+
+    # Instance method to compute node‑hours for this control from a list of jobs.
+    # Returns node_hours as Float
+    def node_hours_from_jobs(jobs)
+      return 0.0 if jobs.blank?
+
+      logins = access.project.members.map(&:login) | access.project.removed_members.map(&:login)
+      total = 0.0
+
+      jobs.each do |job|
+        next unless logins.include?(job[:user])
+
+        job_start = SlurmTimeParser.parse_time_string(job[:start])
+        next if job_start.nil? || job_start < started_at
+
+        elapsed_hours = SlurmTimeParser.elapsed_to_hours(job[:elapsed])
+        nnodes = job[:nnodes].to_i
+        total += elapsed_hours * nnodes
+      end
+
+      total.round(6)
+    end
+
+    # Calculate resources and update cur_value
     def self.calculate_resources
       calculated
         .includes(access: [{ project: %i[members removed_members] }, :cluster, :resource_users],
                   resource_control_partitions: :partition)
         .group_by { |r| r.access.cluster }
         .each do |cluster, controls|
-          results = usage_in_node_hours(cluster, controls)
+          # Determine the earliest started_at among controls to limit the jobs query
+          earliest_start = controls.map(&:started_at).min
+          jobs_output = cluster.jobs_in_period(earliest_start, Time.current)
+          jobs = parse_jobs_output(jobs_output)
+
           transaction do
-            controls.each_with_index do |control, i|
-              result = results[i]
-              control.resource_control_fields.joins(:quota_kind)
-                     .where(core_quota_kinds: { api_key: 'node_hours' })
-                     .first&.update!(cur_value: result[0])
-              if result[1]&.present?
-                cluster.log("ResourceControl##{control.id}: #{result[1]}",
-                            control.access.project)
-              end
-              control.change_cluster_state! if control.may_change_cluster_state?
+            controls.each do |control|
+              control.update_consumed_resources(jobs)
             end
           end
         end
@@ -126,15 +172,6 @@ module Core
       ResourceUser.find_each do |ru|
         MailerWorker.perform_async(:resource_usage, [ru.id, ru.access_id])
       end
-    end
-
-    def format_for_counter
-      {
-        start_date: started_at,
-        partitions: resource_control_partitions.map(&:partition).map(&:name),
-        logins: access.project.members.map(&:login) |
-          access.project.removed_members.map(&:login)
-      }
     end
 
     def exceeded?

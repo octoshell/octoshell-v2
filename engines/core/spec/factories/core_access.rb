@@ -7,10 +7,9 @@ FactoryBot.define do
         field = resource_control.resource_control_fields.find_or_initialize_by(quota_kind: k)
         field.limit = 1000 if field.limit.nil? || field.limit.zero?
       end
-      if resource_control.queue_accesses.empty?
-        resource_control.queue_accesses.build(
-          partition: resource_control.access.cluster.partitions.first,
-          access: resource_control.access
+      if resource_control.resource_control_partitions.empty?
+        resource_control.resource_control_partitions.build(
+          partition: resource_control.access.cluster.partitions.first
         )
       end
     end
@@ -21,8 +20,8 @@ FactoryBot.define do
     after(:create) do |access|
       [0..1, 2..2, 3..3].each do |range|
         create(:resource_control, access: access,
-                                  queue_accesses: access.cluster.partitions[range].map do |partition|
-                                    Core::QueueAccess.new(partition: partition, access: access)
+                                  resource_control_partitions: access.cluster.partitions[range].map do |partition|
+                                    Core::ResourceControlPartition.new(partition: partition)
                                   end)
       end
     end
