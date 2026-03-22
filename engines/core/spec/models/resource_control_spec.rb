@@ -56,6 +56,118 @@ module Core
         expect(resource_control).to have_received(:enqueue_synchronize)
       end
     end
+    describe '#node_hours_from_jobs' do
+      let(:resource_control) { create(:resource_control) }
+      let(:project) { resource_control.access.project }
+      let(:user) { create(:user) }
+      let(:member) { project.members.create(user: user) }
+      let(:partition) { resource_control.resource_control_partitions.first.partition }
+      let(:other_partition_name) { 'other' }
+
+      before do
+        # Ensure resource_control_fields exists
+        if resource_control.resource_control_fields.empty?
+          kind = Core::QuotaKind.find_or_create_by!(api_key: 'node_hours', name_ru: 'Node hours')
+          resource_control.resource_control_fields.create!(quota_kind: kind, limit: 1000, cur_value: nil)
+        end
+        # Ensure resource_control has at least one partition
+        if resource_control.resource_control_partitions.empty?
+          resource_control.resource_control_partitions.create!(partition: partition)
+        end
+      end
+
+      it 'includes jobs with matching user, partition, and start date' do
+        jobs = [
+          {
+            user: member.login,
+            partition: partition.name,
+            elapsed: '1:00:00',
+            nnodes: '2',
+            start: (resource_control.started_at + 1.day).iso8601
+          }
+        ]
+        # 1 hour * 2 nodes = 2 node-hours
+        expect(resource_control.node_hours_from_jobs(jobs)).to eq(2.0)
+      end
+
+      it 'excludes jobs with non-member user' do
+        jobs = [
+          {
+            user: 'otheruser',
+            partition: partition.name,
+            elapsed: '1:00:00',
+            nnodes: '2',
+            start: (resource_control.started_at + 1.day).iso8601
+          }
+        ]
+        expect(resource_control.node_hours_from_jobs(jobs)).to eq(0.0)
+      end
+
+      it 'excludes jobs with non-allowed partition' do
+        jobs = [
+          {
+            user: member.login,
+            partition: other_partition_name,
+            elapsed: '1:00:00',
+            nnodes: '2',
+            start: (resource_control.started_at + 1.day).iso8601
+          }
+        ]
+        expect(resource_control.node_hours_from_jobs(jobs)).to eq(0.0)
+      end
+
+      it 'excludes jobs started before resource_control started_at' do
+        jobs = [
+          {
+            user: member.login,
+            partition: partition.name,
+            elapsed: '1:00:00',
+            nnodes: '2',
+            start: (resource_control.started_at - 1.day).iso8601
+          }
+        ]
+        expect(resource_control.node_hours_from_jobs(jobs)).to eq(0.0)
+      end
+
+      it 'sums multiple jobs correctly' do
+        jobs = [
+          {
+            user: member.login,
+            partition: partition.name,
+            elapsed: '1:00:00',
+            nnodes: '1',
+            start: (resource_control.started_at + 1.day).iso8601
+          },
+          {
+            user: member.login,
+            partition: partition.name,
+            elapsed: '0:30:00',
+            nnodes: '2',
+            start: (resource_control.started_at + 2.days).iso8601
+          }
+        ]
+        # 1 * 1 + 0.5 * 2 = 1 + 1 = 2 node-hours
+        expect(resource_control.node_hours_from_jobs(jobs)).to eq(2.0)
+      end
+
+      it 'handles empty jobs array' do
+        expect(resource_control.node_hours_from_jobs([])).to eq(0.0)
+      end
+
+      it 'rounds result to 6 decimal places' do
+        jobs = [
+          {
+            user: member.login,
+            partition: partition.name,
+            elapsed: '0:01:30', # 0.025 hours
+            nnodes: '3',
+            start: (resource_control.started_at + 1.day).iso8601
+          }
+        ]
+        # 0.025 * 3 = 0.075
+        expect(resource_control.node_hours_from_jobs(jobs)).to eq(0.075)
+      end
+    end
 
     describe '.calculate_resources' do
       it 'calculates resources and updates resource_control_fields' do

@@ -126,15 +126,17 @@ module Core
       return 0.0 if jobs.blank?
 
       logins = access.project.members.map(&:login) | access.project.removed_members.map(&:login)
+      allowed_partitions = resource_control_partitions.map(&:partition).map(&:name)
       total = 0.0
 
       jobs.each do |job|
         next unless logins.include?(job[:user])
+        next unless allowed_partitions.include?(job[:partition])
 
-        job_start = Core::SlurmTimeParser.parse_time_string(job[:start])
+        job_start = ::Core::SlurmTimeParser.parse_time_string(job[:start])
         next if job_start.nil? || job_start < started_at
 
-        elapsed_hours = Core::SlurmTimeParser.elapsed_to_hours(job[:elapsed])
+        elapsed_hours = ::Core::SlurmTimeParser.elapsed_to_hours(job[:elapsed])
         nnodes = job[:nnodes].to_i
         total += elapsed_hours * nnodes
       end
