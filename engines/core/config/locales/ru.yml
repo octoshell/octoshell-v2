@@ -265,6 +265,7 @@ ru:
         status: Статус котроля ресурсов
         note: Заметка
         synced_with_cluster: Синхронизирован
+        limit: Лимит
 
       core/resource_control_partition:
         partition_id: Раздел

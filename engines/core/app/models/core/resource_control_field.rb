@@ -9,8 +9,13 @@ module Core
       (cur_value || 0).round(2).to_f
     end
 
+    def percentage
+      return 0 if limit <= 0
+
+      ((cur_value || 0) / limit * 100).to_i
+    end
+
     def stat
-      percentage = (cur_value_human / limit * 100).to_i
       "#{percentage}% (#{cur_value_human} / #{limit})"
     end
 

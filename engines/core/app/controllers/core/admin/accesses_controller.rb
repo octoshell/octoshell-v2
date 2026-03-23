@@ -102,31 +102,57 @@ module Core
       workbook = WriteXLSX.new(buffer)
       worksheet = workbook.add_worksheet
 
-      headers = [
-        Core::Project.model_name.human,
-        Core::Cluster.model_name.human,
-        Core::ResourceControl.human_attribute_name(:status),
-        Core::ResourceControl.human_attribute_name(:note),
-        Core::ResourceControl.human_attribute_name(:started_at)
-      ]
+      # Форматы
+      header_center = workbook.add_format(align: 'center', valign: 'vcenter', text_wrap: true)
+      subheader_center = workbook.add_format(align: 'center', valign: 'vcenter')
+      wrap_format = workbook.add_format(text_wrap: true, valign: 'top')
+
+      # Заголовки для проекта (двухуровневый)
+      worksheet.merge_range(0, 0, 0, 1, Core::Project.model_name.human, header_center)
+      worksheet.write(1, 0, 'ID', subheader_center)
+      worksheet.write(1, 1, 'Название', subheader_center)
+      # Ширина колонок для проекта
+      worksheet.set_column(0, 0, 10, wrap_format)  # ID
+      worksheet.set_column(1, 1, 30, wrap_format)  # Название
+
+      # Остальные основные колонки: заметка, кластер, статус, начало отслеживания
+      # Заметка
+      worksheet.merge_range(0, 2, 1, 2, Core::ResourceControl.human_attribute_name(:note), header_center)
+      worksheet.set_column(2, 2, 20)
+      # Кластер
+      worksheet.merge_range(0, 3, 1, 3, Core::Cluster.model_name.human, header_center)
+      worksheet.set_column(3, 3, 15)
+      # Статус
+      worksheet.merge_range(0, 4, 1, 4, Core::ResourceControl.human_attribute_name(:status), header_center)
+      worksheet.set_column(4, 4, 10)
+      # Начало отслеживания
+      worksheet.merge_range(0, 5, 1, 5, Core::ResourceControl.human_attribute_name(:started_at), header_center)
+      worksheet.set_column(5, 5, 15)
+
+      col = 6 # после основных колонок
+      # Заголовки для каждого tracked_quota_kind
       @tracked_quota_kinds.each do |kind|
-        headers << "#{Core::ResourceControl.human_attribute_name(:consumed)} #{kind}"
+        # Объединяем ячейки в первой строке
+        worksheet.merge_range(0, col, 0, col + 2, kind.to_s, header_center)
+        # Подзаголовки во второй строке
+        worksheet.write(1, col, '%', subheader_center)
+        worksheet.write(1, col + 1, Core::ResourceControl.human_attribute_name(:consumed), subheader_center)
+        worksheet.write(1, col + 2, Core::ResourceControl.human_attribute_name(:limit), subheader_center)
+        col += 3
       end
-      headers << Core::Access.human_attribute_name(:available_queues)
 
-      headers.each_with_index do |header, col|
-        worksheet.write(0, col, header)
-      end
+      # Колонка "Доступные очереди"
+      worksheet.merge_range(0, col, 1, col, Core::Access.human_attribute_name(:available_queues), header_center)
 
-      row = 1
+      row = 2
       @accesses.each do |access|
         resource_controls = access.resource_controls
         if resource_controls.empty?
-          write_xlsx_row(worksheet, row, access, nil, @tracked_quota_kinds)
+          write_xlsx_row(worksheet, row, access, nil, @tracked_quota_kinds, wrap_format)
           row += 1
         else
           resource_controls.each do |control|
-            write_xlsx_row(worksheet, row, access, control, @tracked_quota_kinds)
+            write_xlsx_row(worksheet, row, access, control, @tracked_quota_kinds, wrap_format)
             row += 1
           end
         end
@@ -142,42 +168,24 @@ module Core
 
     private
 
-    def write_xlsx_row(worksheet, row, access, control, tracked_quota_kinds)
-      col = 0
-      # Проект
-      worksheet.write(row, col, access.project.id_with_title)
-      col += 1
-      # Кластер
-      worksheet.write(row, col, access.cluster.name)
-      col += 1
-      # Статус контроля ресурсов
-      if control
-        worksheet.write(row, col, control.human_state_name)
-      else
-        worksheet.write(row, col, '')
-      end
-      col += 1
-      # Заметка
-      worksheet.write(row, col, control&.note)
-      col += 1
-      # Отслеживание начато с
-      worksheet.write(row, col, control&.started_at)
-      col += 1
-      # Потрачено по каждому виду квот
+    def write_xlsx_row(worksheet, row, access, control, tracked_quota_kinds, wrap_format = nil)
+      worksheet.write(row, 0, access.project.id, wrap_format)
+      worksheet.write(row, 1, access.project.title, wrap_format)
+      no_format_values = [
+        control&.note,
+        access.cluster.name,
+        control&.human_state_name,
+        control&.started_at
+      ]
+
       tracked_quota_kinds.each do |q_k|
         field = control&.field_by_quota_kind(q_k)
-        if field
-          worksheet.write(row, col, field.stat)
-        else
-          worksheet.write(row, col, '')
-        end
-        col += 1
+        no_format_values += [field&.percentage, field&.cur_value_human, field&.limit]
       end
-      # Очереди
-      if control
-        worksheet.write(row, col, control.resource_control_partitions.join(' '))
-      else
-        worksheet.write(row, col, '')
+
+      no_format_values << control&.resource_control_partitions&.join(' ')
+      no_format_values.each_with_index do |value, i|
+        worksheet.write(row, 2 + i, value)
       end
     end
 
