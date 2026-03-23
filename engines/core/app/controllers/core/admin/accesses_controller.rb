@@ -85,6 +85,14 @@ module Core
       redirect_to admin_accesses_path
     end
 
+    def send_emails_for_access
+      @access = Access.find(params[:id])
+      @access.resource_users.each do |ru|
+        MailerWorker.perform_async(:resource_usage, [ru.id, ru.access_id])
+      end
+      redirect_to admin_access_path(@access), flash: { info: t('.success') }
+    end
+
     def export_xlsx
       require 'write_xlsx'
       require 'stringio'

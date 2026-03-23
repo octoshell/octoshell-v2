@@ -3,6 +3,7 @@ div class="page-header"
 
 div class="row well btn-toolbar"
   = link_to t('.edit'), edit_admin_access_path(@access), class: "btn btn-info"
+  = link_to t('.send_emails_for_access'), send_emails_for_access_admin_access_path(@access), class: "btn btn-warning", method: :put
 
 
 div class="panel-body"

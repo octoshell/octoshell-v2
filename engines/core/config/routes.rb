@@ -17,6 +17,7 @@ Core::Engine.routes.draw do
         put :enable_resource_control
         put :disable_resource_control
         delete :destroy_resource_control
+        put :send_emails_for_access
       end
     end
 
