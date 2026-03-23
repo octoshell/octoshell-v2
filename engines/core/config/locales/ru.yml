@@ -442,7 +442,7 @@ ru:
         show:
           edit: 'Редактировать контроли ресурсов'
           notify_about_resources: Рассылать статистику ресурсов пользователям
-          send_emails_for_access: 'Отправить письмо пользователям'
+          send_emails_for_access: 'Отправить статистику контактным лицам'
           queue_access_actions: 'Действия с доступом к очереди'
           resource_control_actions: 'Действия с контролем ресурсов'
           title: 'Доступ'
