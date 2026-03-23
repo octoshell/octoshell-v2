@@ -8,6 +8,10 @@ module Core
       errors.add(:partition_id, :invalid) unless resource_control.access.cluster.partitions.include? partition
     end
 
+    before_destroy do
+      throw(:abort) unless resource_control.pending?
+    end
+
     after_initialize do |record|
       next unless new_record?
 

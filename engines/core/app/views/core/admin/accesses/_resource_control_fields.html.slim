@@ -4,10 +4,11 @@ h3
   -else
     - f.object.build_resource_control_defaults_for_form(@access)
     = t('.new_control')
-= f.link_to_remove t('.destroy_resource_control'), class: "fa fa-times text-danger"
-p 
-  | #{Core::ResourceControlPartition.human_attribute_name(:partition_id)} / 
-  | #{Core::ResourceControlPartition.human_attribute_name(:max_running_jobs)} / 
+- if f.object.may_destroy?
+  = f.link_to_remove t('.destroy_resource_control'), class: "fa fa-times text-danger"
+p
+  | #{Core::ResourceControlPartition.human_attribute_name(:partition_id)} /
+  | #{Core::ResourceControlPartition.human_attribute_name(:max_running_jobs)} /
   | #{Core::ResourceControlPartition.human_attribute_name(:max_submitted_jobs)}
 
 .row
@@ -17,8 +18,12 @@ p
         .col-md-6
           = fff.hidden_field :id
           = fff.hidden_field :partition_id
-          = fff.check_box :_destroy, {checked: !fff.object.marked_for_destruction?,
-                                      label: fff.object.partition.name}, 0, 1
+          - if f.object.pending? || !fff.object.persisted?
+            = fff.check_box :_destroy, {checked: !fff.object.marked_for_destruction?,
+                                        label: fff.object.partition.name}, 0, 1
+          - else
+            = fff.hidden_field :_destroy, value: 0
+            = fff.label fff.object.partition.name
         .col-md-3
           = fff.text_field_without_bootstrap :max_running_jobs, class: 'form-control' 
         .col-md-3
