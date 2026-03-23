@@ -15,6 +15,7 @@ div class="row"
       = part_form.text_field :resources
       = part_form.number_field :max_submitted_jobs
       = part_form.text_field :max_running_jobs
+      = part_form.number_field :resource_control_weight
 
       = part_form.form_group do
         = part_form.link_to_remove t('.remove_partition'), class: "fa fa-times text-danger"

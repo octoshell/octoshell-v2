@@ -112,6 +112,7 @@ ru:
         resources: Ресурсы
         max_submitted_jobs: Макс. ожидающих заданий
         max_running_jobs: Макс. работающих заданий
+        resource_control_weight: Вес для сортировки в контролях ресурсов 
 
       core/cluster_log:
         cluster: Кластер

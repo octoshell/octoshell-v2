@@ -64,7 +64,7 @@ module Core
       params.require(:cluster).permit(:name, :host, :admin_login,
                                       :available_for_work, :description,
                                       *Core::Cluster.locale_columns(:name),
-                                      partitions_attributes: %i[id _destroy
+                                      partitions_attributes: %i[id _destroy resource_control_weight
                                                                 name resources max_submitted_jobs max_running_jobs],
                                       quotas_attributes: %i[id quota_kind_id
                                                             value _destroy])

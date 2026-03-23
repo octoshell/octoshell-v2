@@ -5,7 +5,9 @@ module Core
 
     belongs_to :access, inverse_of: :resource_controls
     has_many :resource_control_fields, inverse_of: :resource_control
-    has_many :resource_control_partitions, inverse_of: :resource_control, dependent: :destroy
+    has_many :resource_control_partitions, lambda {
+      joins(:partition).order('core_partitions.resource_control_weight DESC')
+    }, inverse_of: :resource_control, dependent: :destroy
     accepts_nested_attributes_for :resource_control_fields, :resource_control_partitions, allow_destroy: true
     validates :access, :status, :started_at, presence: true
     validates :resource_control_partitions, length: { minimum: 1 }
