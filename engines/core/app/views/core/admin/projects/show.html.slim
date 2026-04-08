@@ -20,6 +20,7 @@ div class="page-header"
     = link_to Core::Project.human_state_event_name(:unblock), unblock_admin_project_path(@project), class: "btn btn-success" if @project.blocked?
     = link_to Core::Project.human_state_event_name(:finish), finish_admin_project_path(@project), class: "btn btn-danger" unless @project.finished?
     = link_to Core::Project.human_state_event_name(:resurrect), resurrect_admin_project_path(@project), class: "btn btn-info" if @project.finished? || @project.cancelled?
+    = link_to t(".change_owner"), change_owner_form_admin_project_path(@project), class: "btn btn-warning"
     = link_to t(".similar_project"), find_similar_admin_project_path(@project), class: "btn btn-default"
     = link_to t(".similar_project_by_members"), find_similar_by_members_admin_project_path(@project), class: "btn btn-default"
 

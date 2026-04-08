@@ -39,6 +39,8 @@ Core::Engine.routes.draw do
         get 'versions', to: 'project_versions#index'
         get :find_similar
         get :find_similar_by_members
+        get :change_owner_form
+        post :change_owner
       end
       collection do
         get :finder

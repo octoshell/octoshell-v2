@@ -785,7 +785,18 @@ ru:
           session: "Перерегистрация %{session_name}\n"
           start: " Дата перерегистрации: %{date}"
           marks_title: Оценки за отчёты (иллюстрации, изложение, общая оценка)
-          marks: "Оценки: " 
+          marks: "Оценки: "
+        change_owner_form:
+          change_owner: Сменить руководителя
+          title: "Смена руководителя проекта «%{project}»"
+          select_new_owner: Выберите нового руководителя
+          select_report: Выберите отчёты для перезаписи автора (опционально)
+          rewrite_report: Переписать отчёт по последней перерегистрации на нового руководителя
+          report_info: "Отчёт по перерегистрации «%{session}» от %{date}. Будет изменён автор отчёта."
+          view_report: Посмотреть отчёт
+          no_reports: Нет отчётов по перерегистрациям
+          cancel: Отмена
+          submit: Сохранить
         similar:
           denial: Отказ
           info: Зелёным цветом помечены участники проекта "%{title}"
@@ -1290,6 +1301,8 @@ ru:
     organization_created: Организация создана
     project_created: Проект создан
     project_updated: Проект обновлён
+    owner_changed: Руководитель проекта успешно изменён
+    invalid_member: Выбранный участник не найден в проекте
     request_created: Заявка создана
     request_updated: Заявка обновлена
     scan_uploaded: Скан загружен

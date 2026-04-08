@@ -138,6 +138,10 @@ module Sessions
       %(Отчет по проекту "#{project.title}")
     end
 
+    def session_and_state
+      "#{session} #{human_state_name}"
+    end
+
     def failed?
       [illustration_points,
        statement_points,

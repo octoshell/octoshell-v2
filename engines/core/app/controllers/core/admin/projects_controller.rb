@@ -146,6 +146,35 @@ module Core
                                   .where(users: { id: @project.users })).page(params[:page])
     end
 
+    def change_owner_form
+      @project = Project.find(params[:id])
+      @members = @project.members.where(owner: false).includes(:user)
+      @reports = @project.reports.order(created_at: :desc)
+    end
+
+    def change_owner
+      @project = Project.find(params[:id])
+      new_owner_id = params[:new_owner_id]
+      report_ids = Array(params[:report_ids]).reject(&:blank?)
+
+      new_member = @project.members.find_by(id: new_owner_id)
+      if new_member.nil?
+        flash[:error] = t('flash.invalid_member')
+        redirect_to admin_project_path(@project)
+        return
+      end
+
+      ActiveRecord::Base.transaction do
+        @project.members.where(owner: true).update_all(owner: false)
+        new_member.update!(owner: true)
+
+        @project.reports.where(id: report_ids).update_all(author_id: new_member.user_id) if report_ids.any?
+      end
+
+      flash[:notice] = t('flash.owner_changed')
+      redirect_to admin_project_path(@project)
+    end
+
     private
 
     def projects(relation)
