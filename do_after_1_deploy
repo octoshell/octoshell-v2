@@ -1,4 +1,0 @@
-source ./deploy_env
-
-bundle exec mina make_seed
-

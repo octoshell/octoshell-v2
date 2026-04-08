@@ -1,2 +1,0 @@
-ENV=development
-bundle exec bin/rails console -e $ENV
