@@ -5,7 +5,7 @@ module Core
     layout 'layouts/core/admin_project'
     def index
       @search = Access.ransack(params[:q] || { queue_accesses_id_exists: true })
-      @search.sorts = 'project_id desc' if @search.sorts.empty?
+      @search.sorts = 'project_id asc' if @search.sorts.empty?
       @accesses = @search.result(distinct: true)
                          .select('core_accesses.*, core_accesses.project_id')
                          .page(params[:page])

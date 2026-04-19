@@ -17,7 +17,7 @@ p
 
 table
   tr
-    th ID
+    th  = Core::Access.model_name.human
     th  = Core::Project.model_name.human
     th  = Core::Cluster.model_name.human
     th  = Core::ResourceControl.human_attribute_name(:status)
@@ -34,7 +34,7 @@ table
                                 resource_control_fields: :quota_kind).each do |control|
     tr
         td = link_to control.access.id, core.admin_access_url(control.access)
-        td = link_to control.access.project.title, core.admin_project_url(control.access.project)
+        td = link_to control.access.project.id_with_title, core.admin_project_url(control.access.project)
         td = control.access.cluster
         td = control.human_state_name
         td = control.note

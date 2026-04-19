@@ -107,7 +107,7 @@ module Core
     def admin_resource_usage(user_id)
       @tracked_quota_kinds = Core::QuotaKind.tracked
       @user = Core.user_class.find(user_id)
-      @resource_controls = Core::ResourceControl.calculated
+      @resource_controls = Core::ResourceControl.calculated.joins(:access).order('core_accesses.project_id ASC')
       mail to: @user.email, subject: t('.subject')
     end
   end
