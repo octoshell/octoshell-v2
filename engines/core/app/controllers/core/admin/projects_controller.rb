@@ -150,12 +150,19 @@ module Core
       @project = Project.find(params[:id])
       @members = @project.members.where(owner: false).includes(:user)
       @reports = @project.reports.order(created_at: :desc)
+      @surveys = if defined?(Sessions::UserSurvey)
+                   Sessions::UserSurvey.includes(:session, :survey)
+                                       .where(project_id: @project.id).order(created_at: :desc)
+                 else
+                   []
+                 end
     end
 
     def change_owner
       @project = Project.find(params[:id])
       new_owner_id = params[:new_owner_id]
       report_ids = Array(params[:report_ids]).reject(&:blank?)
+      survey_ids = Array(params[:survey_ids]).reject(&:blank?)
 
       new_member = @project.members.find_by(id: new_owner_id)
       if new_member.nil?
@@ -169,6 +176,11 @@ module Core
         new_member.update!(owner: true)
 
         @project.reports.where(id: report_ids).update_all(author_id: new_member.user_id) if report_ids.any?
+
+        if survey_ids.any? && defined?(Sessions::UserSurvey)
+          Sessions::UserSurvey.where(id: survey_ids, project_id: @project.id)
+                              .update_all(user_id: new_member.user_id)
+        end
       end
 
       flash[:notice] = t('flash.owner_changed')

@@ -783,9 +783,12 @@ ru:
           denial: Отказ
           year: "%{year} год: "
           session: "Перерегистрация %{session_name}\n"
-          start: " Дата перерегистрации: %{date}"
+          start: " Дата начала: %{date}"
           marks_title: Оценки за отчёты (иллюстрации, изложение, общая оценка)
           marks: "Оценки: "
+          change_owner: Сменить руководителя
+          end: " Дата окончания: %{date}"
+          resource_requests: Заявки на ресурсы
         change_owner_form:
           change_owner: Сменить руководителя
           title: "Смена руководителя проекта «%{project}»"
@@ -795,6 +798,8 @@ ru:
           report_info: "Отчёт по перерегистрации «%{session}» от %{date}. Будет изменён автор отчёта."
           view_report: Посмотреть отчёт
           no_reports: Нет отчётов по перерегистрациям
+          select_survey: Выберите опросы для перезаписи автора (опционально)
+          no_surveys: Нет опросов для руководителей проектов
           cancel: Отмена
           submit: Сохранить
         similar:
