@@ -202,6 +202,8 @@ ru:
           summary_points_in: Общая оценка
           title: Список отчетов по проектам
         show:
+          similar_project: Проекты той же организации
+          similar_project_by_members: Проекты с теми же участниками
           are_you_sure: Вы уверены?
           assign_expert: Назначить эксперта
           continue_expertise: Возобновить оценку
