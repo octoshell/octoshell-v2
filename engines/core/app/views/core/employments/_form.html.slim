@@ -24,7 +24,7 @@ p =t('.how_to_select_org')
 - else
   = bootstrap_form_for @employment, url: new_employment_path, layout: :horizontal, method: :get do |f|
     = f.collection_select :organization_id, Core::Organization.order(:name), 
-                          :id, :full_name, { selected: Core::Organization.MSU&.id }
+                          :id, :full_name, { selected: Core::Organization.MSU_or_nil&.id }
     = f.form_group do
       = link_to(t('.add_organization', default: 'Add organization'), new_organization_path)
     = f.form_group do

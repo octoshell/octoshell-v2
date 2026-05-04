@@ -97,6 +97,10 @@ module Core
       find(497)
     end
 
+    def self.MSU_or_nil
+      find_by_id(497)
+    end
+
     def to_s
       short_name
     end
