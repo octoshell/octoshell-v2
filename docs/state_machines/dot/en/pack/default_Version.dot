@@ -1,0 +1,10 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  forever [label="forever"];
+  available [label="available"];
+  expired [label="expired"];
+  available -> expired [label="to_expired"];
+}

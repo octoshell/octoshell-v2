@@ -1,0 +1,19 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  created [label="TRME новая"];
+  sent [label="TRME отправлено на рассмотрение"];
+  approved [label="TRME одобрено"];
+  refused [label="TRME отказано"];
+  cancelled [label="TRME отозвано пользоватлем"];
+  __initial [shape=point];
+  __initial -> created;
+  created -> sent [label="to_sent"];
+  sent -> approved [label="approve"];
+  sent -> refused [label="refuse"];
+  created -> cancelled [label="cancel"];
+  sent -> cancelled [label="cancel"];
+  approved -> cancelled [label="cancel"];
+}

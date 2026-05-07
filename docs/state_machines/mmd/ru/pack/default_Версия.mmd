@@ -1,0 +1,8 @@
+stateDiagram-v2
+  direction LR
+
+  state "forever" as forever
+  state "available" as available
+  state "expired" as expired
+
+  available --> expired : to_expired

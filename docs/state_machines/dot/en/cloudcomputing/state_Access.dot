@@ -1,0 +1,19 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  created [label="TRME новый"];
+  approved [label="TRME доступ одобрен"];
+  prepared_to_finish [label="TRME подготовлен к завершению"];
+  prepared_to_deny [label="TRME подготовлен к завершению администратором"];
+  denied [label="TRME отказано в доступе"];
+  finished [label="TRME завершён"];
+  __initial [shape=point];
+  __initial -> created;
+  created -> approved [label="approve"];
+  approved -> prepared_to_finish [label="prepare_to_finish"];
+  approved -> prepared_to_deny [label="prepare_to_deny"];
+  prepared_to_finish -> finished [label="finish"];
+  prepared_to_deny -> denied [label="deny"];
+}

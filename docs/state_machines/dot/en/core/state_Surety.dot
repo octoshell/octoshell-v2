@@ -1,0 +1,22 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  generated [label="generated"];
+  confirmed [label="sent for consideration"];
+  rejected [label="rejected"];
+  active [label="approved"];
+  closed [label="closed"];
+  __initial [shape=point];
+  __initial -> generated;
+  generated -> confirmed [label="Send for consideration"];
+  rejected -> confirmed [label="Send for consideration"];
+  confirmed -> rejected [label="Reject"];
+  confirmed -> active [label="Activate"];
+  generated -> active [label="Activate"];
+  generated -> closed [label="Close"];
+  confirmed -> closed [label="Close"];
+  rejected -> closed [label="Close"];
+  active -> closed [label="Close"];
+}

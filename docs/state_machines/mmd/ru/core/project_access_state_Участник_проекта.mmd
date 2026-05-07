@@ -1,0 +1,22 @@
+stateDiagram-v2
+  direction LR
+
+  state "не подтвердил участие" as invited
+  state "подтвердил участие в проекте" as engaged
+  state "нет заверенного поручительства" as unsured
+  state "разрешён" as allowed
+  state "запрещён" as denied
+  state "приостановлен" as suspended
+
+  [*] --> invited
+  invited --> engaged : accept_invitation
+  engaged --> unsured : append_to_surety
+  allowed --> engaged : substract_from_surety
+  unsured --> engaged : substract_from_surety
+  denied --> engaged : substract_from_surety
+  suspended --> engaged : substract_from_surety
+  unsured --> allowed : activate
+  suspended --> allowed : activate
+  allowed --> denied : deny
+  denied --> allowed : allow
+  allowed --> suspended : suspend

@@ -1,0 +1,8 @@
+stateDiagram-v2
+  direction LR
+
+  state "создана" as pending
+  state "разослана" as delivered
+
+  [*] --> pending
+  pending --> delivered : deliver

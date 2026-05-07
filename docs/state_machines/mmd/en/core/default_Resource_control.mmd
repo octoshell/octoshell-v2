@@ -1,0 +1,18 @@
+stateDiagram-v2
+  direction LR
+
+  state "pending" as pending
+  state "active" as active
+  state "blocked" as blocked
+  state "disabled" as disabled
+
+  [*] --> pending
+  pending --> blocked : enable
+  disabled --> blocked : enable
+  pending --> active : enable
+  disabled --> active : enable
+  active --> blocked : change_cluster_state
+  blocked --> active : change_cluster_state
+  pending --> disabled : disable
+  blocked --> disabled : disable
+  active --> disabled : disable

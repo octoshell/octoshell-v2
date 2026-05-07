@@ -1,0 +1,36 @@
+stateDiagram-v2
+  direction LR
+
+  state "Not started" as pending
+  state "Refusal to report" as can_not_be_submitted
+  state "Unsent" as accepted
+  state "Submitted" as submitted
+  state "Is being rated" as assessing
+  state "Is rated" as assessed
+  state "Rejected" as rejected
+  state "Exceeded" as exceeded
+
+  [*] --> pending
+  pending --> accepted : Start filling
+  exceeded --> accepted : Start filling
+  pending --> can_not_be_submitted : I can not provide an adequate report text
+  rejected --> can_not_be_submitted : I can not provide an adequate report text
+  exceeded --> can_not_be_submitted : I can not provide an adequate report text
+  accepted --> can_not_be_submitted : I can not provide an adequate report text
+  exceeded --> submitted : Submit
+  accepted --> submitted : Submit
+  pending --> assessing : Take on the mark
+  accepted --> assessing : Take on the mark
+  submitted --> assessing : Take on the mark
+  exceeded --> assessing : Take on the mark
+  rejected --> assessing : Take on the mark
+  assessed --> assessed : Rate
+  assessing --> assessed : Rate
+  can_not_be_submitted --> rejected : Reject
+  submitted --> rejected : Reject
+  assessing --> rejected : Reject
+  assessed --> assessing : Edit
+  rejected --> assessing : Resubmit
+  pending --> exceeded : postdate
+  accepted --> exceeded : postdate
+  rejected --> exceeded : postdate

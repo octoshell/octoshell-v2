@@ -1,0 +1,9 @@
+stateDiagram-v2
+  direction LR
+
+  state "active" as active
+  state "blocked" as closed
+
+  [*] --> active
+  active --> closed : block
+  closed --> active : reactivate

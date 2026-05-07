@@ -1,0 +1,10 @@
+stateDiagram-v2
+  direction LR
+
+  state "Создана" as pending
+  state "Активна" as active
+  state "Завершена" as ended
+
+  [*] --> pending
+  pending --> active : Начать
+  active --> ended : Остановить

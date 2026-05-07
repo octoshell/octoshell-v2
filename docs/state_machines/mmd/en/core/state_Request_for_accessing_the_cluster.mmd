@@ -1,0 +1,10 @@
+stateDiagram-v2
+  direction LR
+
+  state "Pending" as pending
+  state "Confirmed" as active
+  state "Closed" as closed
+
+  [*] --> pending
+  pending --> active : Approve
+  pending --> closed : Reject

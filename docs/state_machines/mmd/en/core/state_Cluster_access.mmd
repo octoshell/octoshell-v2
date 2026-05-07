@@ -1,0 +1,9 @@
+stateDiagram-v2
+  direction LR
+
+  state "Opened" as opened
+  state "Closed" as closed
+
+  [*] --> opened
+  opened --> closed : Close
+  closed --> opened : reopen

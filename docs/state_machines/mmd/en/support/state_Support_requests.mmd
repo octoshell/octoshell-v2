@@ -1,0 +1,27 @@
+stateDiagram-v2
+  direction LR
+
+  state "Pending" as pending
+  state "Answered by support" as answered_by_support
+  state "Answered by reporter" as answered_by_reporter
+  state "Resolved" as resolved
+  state "Closed" as closed
+
+  [*] --> pending
+  pending --> answered_by_support : attach_support_reply
+  resolved --> answered_by_support : attach_support_reply
+  answered_by_support --> answered_by_support : attach_support_reply
+  answered_by_reporter --> answered_by_support : attach_support_reply
+  pending --> answered_by_reporter : attach_reporter_reply
+  resolved --> answered_by_reporter : attach_reporter_reply
+  answered_by_support --> answered_by_reporter : attach_reporter_reply
+  answered_by_reporter --> answered_by_reporter : attach_reporter_reply
+  pending --> resolved : Problem is solved!
+  answered_by_reporter --> resolved : Problem is solved!
+  answered_by_support --> resolved : Problem is solved!
+  closed --> pending : Reopen
+  resolved --> pending : Reopen
+  pending --> closed : Close
+  resolved --> closed : Close
+  answered_by_support --> closed : Close
+  answered_by_reporter --> closed : Close

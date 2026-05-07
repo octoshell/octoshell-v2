@@ -1,0 +1,36 @@
+stateDiagram-v2
+  direction LR
+
+  state "Не начат" as pending
+  state "Отказ предоставления отчета" as can_not_be_submitted
+  state "Не прислан" as accepted
+  state "Отправлен" as submitted
+  state "Оценивается" as assessing
+  state "Оценен" as assessed
+  state "Отклонен" as rejected
+  state "Просрочен" as exceeded
+
+  [*] --> pending
+  pending --> accepted : Начать заполнение
+  exceeded --> accepted : Начать заполнение
+  pending --> can_not_be_submitted : Не могу предоставить адекватный текст отчета
+  rejected --> can_not_be_submitted : Не могу предоставить адекватный текст отчета
+  exceeded --> can_not_be_submitted : Не могу предоставить адекватный текст отчета
+  accepted --> can_not_be_submitted : Не могу предоставить адекватный текст отчета
+  exceeded --> submitted : Отправить
+  accepted --> submitted : Отправить
+  pending --> assessing : Взять на оценку
+  accepted --> assessing : Взять на оценку
+  submitted --> assessing : Взять на оценку
+  exceeded --> assessing : Взять на оценку
+  rejected --> assessing : Взять на оценку
+  assessed --> assessed : Оценить
+  assessing --> assessed : Оценить
+  can_not_be_submitted --> rejected : Отклонить
+  submitted --> rejected : Отклонить
+  assessing --> rejected : Отклонить
+  assessed --> assessing : Редактировать
+  rejected --> assessing : Отправить еще раз
+  pending --> exceeded : postdate
+  accepted --> exceeded : postdate
+  rejected --> exceeded : postdate

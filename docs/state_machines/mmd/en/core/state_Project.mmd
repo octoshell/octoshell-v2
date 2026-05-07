@@ -1,0 +1,30 @@
+stateDiagram-v2
+  direction LR
+
+  state "pending" as pending
+  state "cancelled" as cancelled
+  state "active" as active
+  state "suspended" as suspended
+  state "blocked" as blocked
+  state "closing" as closing
+  state "closed" as closed
+  state "finished" as finished
+
+  [*] --> pending
+  pending --> active : Activate
+  pending --> cancelled : Cancel
+  active --> cancelled : Cancel
+  active --> blocked : Block
+  blocked --> active : Unblock
+  active --> suspended : Suspend
+  suspended --> active : Reactivate
+  pending --> finished : Finish
+  active --> finished : Finish
+  suspended --> finished : Finish
+  blocked --> finished : Finish
+  cancelled --> finished : Finish
+  closing --> finished : Finish
+  closed --> finished : Finish
+  closed --> active : Resurrect
+  cancelled --> active : Resurrect
+  finished --> active : Resurrect

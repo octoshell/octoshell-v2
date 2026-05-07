@@ -1,0 +1,12 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  active [label="active"];
+  closed [label="blocked"];
+  __initial [shape=point];
+  __initial -> active;
+  active -> closed [label="block"];
+  closed -> active [label="reactivate"];
+}

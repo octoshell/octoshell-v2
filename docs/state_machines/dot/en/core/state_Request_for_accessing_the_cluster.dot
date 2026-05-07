@@ -1,0 +1,13 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="Pending"];
+  active [label="Confirmed"];
+  closed [label="Closed"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> active [label="Approve"];
+  pending -> closed [label="Reject"];
+}

@@ -1,0 +1,27 @@
+stateDiagram-v2
+  direction LR
+
+  state "Ожидает обработки" as pending
+  state "Есть ответ от поддержки" as answered_by_support
+  state "Есть ответ от автора" as answered_by_reporter
+  state "Решена" as resolved
+  state "Закрыта" as closed
+
+  [*] --> pending
+  pending --> answered_by_support : attach_support_reply
+  resolved --> answered_by_support : attach_support_reply
+  answered_by_support --> answered_by_support : attach_support_reply
+  answered_by_reporter --> answered_by_support : attach_support_reply
+  pending --> answered_by_reporter : attach_reporter_reply
+  resolved --> answered_by_reporter : attach_reporter_reply
+  answered_by_support --> answered_by_reporter : attach_reporter_reply
+  answered_by_reporter --> answered_by_reporter : attach_reporter_reply
+  pending --> resolved : Вопрос решён!
+  answered_by_reporter --> resolved : Вопрос решён!
+  answered_by_support --> resolved : Вопрос решён!
+  closed --> pending : Заново открыть
+  resolved --> pending : Заново открыть
+  pending --> closed : Закрыть
+  resolved --> closed : Закрыть
+  answered_by_support --> closed : Закрыть
+  answered_by_reporter --> closed : Закрыть

@@ -1,0 +1,19 @@
+stateDiagram-v2
+  direction LR
+
+  state "generated" as generated
+  state "sent for consideration" as confirmed
+  state "rejected" as rejected
+  state "approved" as active
+  state "closed" as closed
+
+  [*] --> generated
+  generated --> confirmed : Send for consideration
+  rejected --> confirmed : Send for consideration
+  confirmed --> rejected : Reject
+  confirmed --> active : Activate
+  generated --> active : Activate
+  generated --> closed : Close
+  confirmed --> closed : Close
+  rejected --> closed : Close
+  active --> closed : Close

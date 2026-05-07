@@ -1,0 +1,21 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="Сформирован"];
+  active [label="Активен"];
+  blocked [label="Заблокирован"];
+  disabled [label="Отключён админом"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> blocked [label="Включить"];
+  disabled -> blocked [label="Включить"];
+  pending -> active [label="Включить"];
+  disabled -> active [label="Включить"];
+  active -> blocked [label="change_cluster_state"];
+  blocked -> active [label="change_cluster_state"];
+  pending -> disabled [label="Выключить"];
+  blocked -> disabled [label="Выключить"];
+  active -> disabled [label="Выключить"];
+}

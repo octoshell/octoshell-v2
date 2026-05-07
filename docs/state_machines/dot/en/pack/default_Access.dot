@@ -1,0 +1,22 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  requested [label="requested"];
+  allowed [label="allowed"];
+  denied [label="denied"];
+  expired [label="expired"];
+  deleted [label="deleted"];
+  __initial [shape=point];
+  __initial -> requested;
+  allowed -> expired [label="to_expired"];
+  expired -> allowed [label="to_allowed"];
+  requested -> allowed [label="allow"];
+  denied -> allowed [label="allow"];
+  denied -> expired [label="expire"];
+  requested -> expired [label="expire"];
+  requested -> denied [label="deny"];
+  expired -> denied [label="deny"];
+  allowed -> denied [label="deny"];
+}

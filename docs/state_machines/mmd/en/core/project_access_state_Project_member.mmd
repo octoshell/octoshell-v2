@@ -1,0 +1,22 @@
+stateDiagram-v2
+  direction LR
+
+  state "did not confirm project membership" as invited
+  state "confirmed project membership" as engaged
+  state "no certified surety" as unsured
+  state "allowed" as allowed
+  state "denied" as denied
+  state "suspended" as suspended
+
+  [*] --> invited
+  invited --> engaged : accept_invitation
+  engaged --> unsured : append_to_surety
+  allowed --> engaged : substract_from_surety
+  unsured --> engaged : substract_from_surety
+  denied --> engaged : substract_from_surety
+  suspended --> engaged : substract_from_surety
+  unsured --> allowed : activate
+  suspended --> allowed : activate
+  allowed --> denied : deny
+  denied --> allowed : allow
+  allowed --> suspended : suspend

@@ -1,0 +1,16 @@
+stateDiagram-v2
+  direction LR
+
+  state "TRME новая" as created
+  state "TRME отправлено на рассмотрение" as sent
+  state "TRME одобрено" as approved
+  state "TRME отказано" as refused
+  state "TRME отозвано пользоватлем" as cancelled
+
+  [*] --> created
+  created --> sent : to_sent
+  sent --> approved : approve
+  sent --> refused : refuse
+  created --> cancelled : cancel
+  sent --> cancelled : cancel
+  approved --> cancelled : cancel

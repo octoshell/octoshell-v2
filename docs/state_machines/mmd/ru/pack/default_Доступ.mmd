@@ -1,0 +1,19 @@
+stateDiagram-v2
+  direction LR
+
+  state "requested" as requested
+  state "allowed" as allowed
+  state "denied" as denied
+  state "expired" as expired
+  state "deleted" as deleted
+
+  [*] --> requested
+  allowed --> expired : to_expired
+  expired --> allowed : to_allowed
+  requested --> allowed : allow
+  denied --> allowed : allow
+  denied --> expired : expire
+  requested --> expired : expire
+  requested --> denied : deny
+  expired --> denied : deny
+  allowed --> denied : deny

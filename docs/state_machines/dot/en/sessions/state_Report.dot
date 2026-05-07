@@ -1,0 +1,39 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="Not started"];
+  can_not_be_submitted [label="Refusal to report"];
+  accepted [label="Unsent"];
+  submitted [label="Submitted"];
+  assessing [label="Is being rated"];
+  assessed [label="Is rated"];
+  rejected [label="Rejected"];
+  exceeded [label="Exceeded"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> accepted [label="Start filling"];
+  exceeded -> accepted [label="Start filling"];
+  pending -> can_not_be_submitted [label="I can not provide an adequate report text"];
+  rejected -> can_not_be_submitted [label="I can not provide an adequate report text"];
+  exceeded -> can_not_be_submitted [label="I can not provide an adequate report text"];
+  accepted -> can_not_be_submitted [label="I can not provide an adequate report text"];
+  exceeded -> submitted [label="Submit"];
+  accepted -> submitted [label="Submit"];
+  pending -> assessing [label="Take on the mark"];
+  accepted -> assessing [label="Take on the mark"];
+  submitted -> assessing [label="Take on the mark"];
+  exceeded -> assessing [label="Take on the mark"];
+  rejected -> assessing [label="Take on the mark"];
+  assessed -> assessed [label="Rate"];
+  assessing -> assessed [label="Rate"];
+  can_not_be_submitted -> rejected [label="Reject"];
+  submitted -> rejected [label="Reject"];
+  assessing -> rejected [label="Reject"];
+  assessed -> assessing [label="Edit"];
+  rejected -> assessing [label="Resubmit"];
+  pending -> exceeded [label="postdate"];
+  accepted -> exceeded [label="postdate"];
+  rejected -> exceeded [label="postdate"];
+}

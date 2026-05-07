@@ -1,0 +1,30 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="Ожидает обработки"];
+  answered_by_support [label="Есть ответ от поддержки"];
+  answered_by_reporter [label="Есть ответ от автора"];
+  resolved [label="Решена"];
+  closed [label="Закрыта"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> answered_by_support [label="attach_support_reply"];
+  resolved -> answered_by_support [label="attach_support_reply"];
+  answered_by_support -> answered_by_support [label="attach_support_reply"];
+  answered_by_reporter -> answered_by_support [label="attach_support_reply"];
+  pending -> answered_by_reporter [label="attach_reporter_reply"];
+  resolved -> answered_by_reporter [label="attach_reporter_reply"];
+  answered_by_support -> answered_by_reporter [label="attach_reporter_reply"];
+  answered_by_reporter -> answered_by_reporter [label="attach_reporter_reply"];
+  pending -> resolved [label="Вопрос решён!"];
+  answered_by_reporter -> resolved [label="Вопрос решён!"];
+  answered_by_support -> resolved [label="Вопрос решён!"];
+  closed -> pending [label="Заново открыть"];
+  resolved -> pending [label="Заново открыть"];
+  pending -> closed [label="Закрыть"];
+  resolved -> closed [label="Закрыть"];
+  answered_by_support -> closed [label="Закрыть"];
+  answered_by_reporter -> closed [label="Закрыть"];
+}

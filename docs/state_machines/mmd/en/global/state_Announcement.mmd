@@ -1,0 +1,8 @@
+stateDiagram-v2
+  direction LR
+
+  state "created" as pending
+  state "delivered" as delivered
+
+  [*] --> pending
+  pending --> delivered : deliver

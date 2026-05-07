@@ -1,0 +1,20 @@
+stateDiagram-v2
+  direction LR
+
+  state "Не заполнен" as pending
+  state "Заполняется" as filling
+  state "Отправлен" as submitted
+  state "Просрочен" as exceeded
+  state "Заполняется с опознанием" as postfilling
+  state "Отправлен с опозданием" as postdated
+
+  [*] --> pending
+  pending --> filling : accept
+  filling --> submitted : Отправить
+  postfilling --> postdated : Отправить
+  submitted --> filling : edit
+  exceeded --> postfilling : edit
+  postfilling --> postfilling : edit
+  postdated --> postfilling : edit
+  pending --> exceeded : postdate
+  filling --> exceeded : postdate

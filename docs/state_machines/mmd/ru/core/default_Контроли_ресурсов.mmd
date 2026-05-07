@@ -1,0 +1,18 @@
+stateDiagram-v2
+  direction LR
+
+  state "Сформирован" as pending
+  state "Активен" as active
+  state "Заблокирован" as blocked
+  state "Отключён админом" as disabled
+
+  [*] --> pending
+  pending --> blocked : Включить
+  disabled --> blocked : Включить
+  pending --> active : Включить
+  disabled --> active : Включить
+  active --> blocked : change_cluster_state
+  blocked --> active : change_cluster_state
+  pending --> disabled : Выключить
+  blocked --> disabled : Выключить
+  active --> disabled : Выключить

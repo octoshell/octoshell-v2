@@ -1,0 +1,10 @@
+stateDiagram-v2
+  direction LR
+
+  state "Created" as pending
+  state "Active" as active
+  state "Finished" as ended
+
+  [*] --> pending
+  pending --> active : Start
+  active --> ended : Stop

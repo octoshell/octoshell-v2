@@ -1,0 +1,16 @@
+stateDiagram-v2
+  direction LR
+
+  state "новая" as created
+  state "отправлено на рассмотрение" as sent
+  state "одобрено" as approved
+  state "отказано" as refused
+  state "отозвано пользоватлем" as cancelled
+
+  [*] --> created
+  created --> sent : to_sent
+  sent --> approved : approve
+  sent --> refused : refuse
+  created --> cancelled : cancel
+  sent --> cancelled : cancel
+  approved --> cancelled : cancel

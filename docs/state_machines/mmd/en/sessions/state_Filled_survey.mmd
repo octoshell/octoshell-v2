@@ -1,0 +1,20 @@
+stateDiagram-v2
+  direction LR
+
+  state "Not filled" as pending
+  state "Is filling" as filling
+  state "Submitted" as submitted
+  state "Exceeded" as exceeded
+  state "Is late filling" as postfilling
+  state "Late submitted" as postdated
+
+  [*] --> pending
+  pending --> filling : accept
+  filling --> submitted : Submit
+  postfilling --> postdated : Submit
+  submitted --> filling : edit
+  exceeded --> postfilling : edit
+  postfilling --> postfilling : edit
+  postdated --> postfilling : edit
+  pending --> exceeded : postdate
+  filling --> exceeded : postdate

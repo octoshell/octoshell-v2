@@ -1,0 +1,12 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  active [label="активен"];
+  deactivated [label="деактивирован"];
+  __initial [shape=point];
+  __initial -> active;
+  deactivated -> active [label="reactivate"];
+  active -> deactivated [label="deactivate"];
+}

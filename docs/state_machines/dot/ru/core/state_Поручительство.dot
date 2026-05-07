@@ -1,0 +1,22 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  generated [label="сгенерировано"];
+  confirmed [label="отправлено на рассмотрение"];
+  rejected [label="отклонено"];
+  active [label="одобрено"];
+  closed [label="аннулировано"];
+  __initial [shape=point];
+  __initial -> generated;
+  generated -> confirmed [label="Отправить на рассмотрение"];
+  rejected -> confirmed [label="Отправить на рассмотрение"];
+  confirmed -> rejected [label="Отклонить"];
+  confirmed -> active [label="Одобрить"];
+  generated -> active [label="Одобрить"];
+  generated -> closed [label="Аннулировать"];
+  confirmed -> closed [label="Аннулировать"];
+  rejected -> closed [label="Аннулировать"];
+  active -> closed [label="Аннулировать"];
+}

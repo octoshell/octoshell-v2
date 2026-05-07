@@ -1,0 +1,10 @@
+stateDiagram-v2
+  direction LR
+
+  state "ожидает рассмотрения" as pending
+  state "подтверждена" as active
+  state "отклонена" as closed
+
+  [*] --> pending
+  pending --> active : Подтвердить
+  pending --> closed : Отклонить

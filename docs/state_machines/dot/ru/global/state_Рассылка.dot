@@ -1,0 +1,11 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="создана"];
+  delivered [label="разослана"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> delivered [label="deliver"];
+}

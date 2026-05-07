@@ -1,0 +1,25 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  invited [label="не подтвердил участие"];
+  engaged [label="подтвердил участие в проекте"];
+  unsured [label="нет заверенного поручительства"];
+  allowed [label="разрешён"];
+  denied [label="запрещён"];
+  suspended [label="приостановлен"];
+  __initial [shape=point];
+  __initial -> invited;
+  invited -> engaged [label="accept_invitation"];
+  engaged -> unsured [label="append_to_surety"];
+  allowed -> engaged [label="substract_from_surety"];
+  unsured -> engaged [label="substract_from_surety"];
+  denied -> engaged [label="substract_from_surety"];
+  suspended -> engaged [label="substract_from_surety"];
+  unsured -> allowed [label="activate"];
+  suspended -> allowed [label="activate"];
+  allowed -> denied [label="deny"];
+  denied -> allowed [label="allow"];
+  allowed -> suspended [label="suspend"];
+}

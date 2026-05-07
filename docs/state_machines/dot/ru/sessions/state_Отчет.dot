@@ -1,0 +1,39 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="Не начат"];
+  can_not_be_submitted [label="Отказ предоставления отчета"];
+  accepted [label="Не прислан"];
+  submitted [label="Отправлен"];
+  assessing [label="Оценивается"];
+  assessed [label="Оценен"];
+  rejected [label="Отклонен"];
+  exceeded [label="Просрочен"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> accepted [label="Начать заполнение"];
+  exceeded -> accepted [label="Начать заполнение"];
+  pending -> can_not_be_submitted [label="Не могу предоставить адекватный текст отчета"];
+  rejected -> can_not_be_submitted [label="Не могу предоставить адекватный текст отчета"];
+  exceeded -> can_not_be_submitted [label="Не могу предоставить адекватный текст отчета"];
+  accepted -> can_not_be_submitted [label="Не могу предоставить адекватный текст отчета"];
+  exceeded -> submitted [label="Отправить"];
+  accepted -> submitted [label="Отправить"];
+  pending -> assessing [label="Взять на оценку"];
+  accepted -> assessing [label="Взять на оценку"];
+  submitted -> assessing [label="Взять на оценку"];
+  exceeded -> assessing [label="Взять на оценку"];
+  rejected -> assessing [label="Взять на оценку"];
+  assessed -> assessed [label="Оценить"];
+  assessing -> assessed [label="Оценить"];
+  can_not_be_submitted -> rejected [label="Отклонить"];
+  submitted -> rejected [label="Отклонить"];
+  assessing -> rejected [label="Отклонить"];
+  assessed -> assessing [label="Редактировать"];
+  rejected -> assessing [label="Отправить еще раз"];
+  pending -> exceeded [label="postdate"];
+  accepted -> exceeded [label="postdate"];
+  rejected -> exceeded [label="postdate"];
+}

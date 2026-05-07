@@ -1,0 +1,19 @@
+stateDiagram-v2
+  direction LR
+
+  state "сгенерировано" as generated
+  state "отправлено на рассмотрение" as confirmed
+  state "отклонено" as rejected
+  state "одобрено" as active
+  state "аннулировано" as closed
+
+  [*] --> generated
+  generated --> confirmed : Отправить на рассмотрение
+  rejected --> confirmed : Отправить на рассмотрение
+  confirmed --> rejected : Отклонить
+  confirmed --> active : Одобрить
+  generated --> active : Одобрить
+  generated --> closed : Аннулировать
+  confirmed --> closed : Аннулировать
+  rejected --> closed : Аннулировать
+  active --> closed : Аннулировать

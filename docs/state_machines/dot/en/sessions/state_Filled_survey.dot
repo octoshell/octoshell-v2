@@ -1,0 +1,23 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="Not filled"];
+  filling [label="Is filling"];
+  submitted [label="Submitted"];
+  exceeded [label="Exceeded"];
+  postfilling [label="Is late filling"];
+  postdated [label="Late submitted"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> filling [label="accept"];
+  filling -> submitted [label="Submit"];
+  postfilling -> postdated [label="Submit"];
+  submitted -> filling [label="edit"];
+  exceeded -> postfilling [label="edit"];
+  postfilling -> postfilling [label="edit"];
+  postdated -> postfilling [label="edit"];
+  pending -> exceeded [label="postdate"];
+  filling -> exceeded [label="postdate"];
+}

@@ -1,0 +1,30 @@
+stateDiagram-v2
+  direction LR
+
+  state "формируется" as pending
+  state "отменён" as cancelled
+  state "активен" as active
+  state "приостановлен" as suspended
+  state "заблокирован" as blocked
+  state "подготовлен к закрытию" as closing
+  state "закрыт" as closed
+  state "завершён" as finished
+
+  [*] --> pending
+  pending --> active : Активировать
+  pending --> cancelled : Отменить проект
+  active --> cancelled : Отменить проект
+  active --> blocked : Заблокировать
+  blocked --> active : Разблокировать
+  active --> suspended : Приостановить проект
+  suspended --> active : Заново активировать
+  pending --> finished : Завершить проект
+  active --> finished : Завершить проект
+  suspended --> finished : Завершить проект
+  blocked --> finished : Завершить проект
+  cancelled --> finished : Завершить проект
+  closing --> finished : Завершить проект
+  closed --> finished : Завершить проект
+  closed --> active : Восстановить проект
+  cancelled --> active : Восстановить проект
+  finished --> active : Восстановить проект

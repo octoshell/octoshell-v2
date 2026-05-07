@@ -1,0 +1,30 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="Pending"];
+  answered_by_support [label="Answered by support"];
+  answered_by_reporter [label="Answered by reporter"];
+  resolved [label="Resolved"];
+  closed [label="Closed"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> answered_by_support [label="attach_support_reply"];
+  resolved -> answered_by_support [label="attach_support_reply"];
+  answered_by_support -> answered_by_support [label="attach_support_reply"];
+  answered_by_reporter -> answered_by_support [label="attach_support_reply"];
+  pending -> answered_by_reporter [label="attach_reporter_reply"];
+  resolved -> answered_by_reporter [label="attach_reporter_reply"];
+  answered_by_support -> answered_by_reporter [label="attach_reporter_reply"];
+  answered_by_reporter -> answered_by_reporter [label="attach_reporter_reply"];
+  pending -> resolved [label="Problem is solved!"];
+  answered_by_reporter -> resolved [label="Problem is solved!"];
+  answered_by_support -> resolved [label="Problem is solved!"];
+  closed -> pending [label="Reopen"];
+  resolved -> pending [label="Reopen"];
+  pending -> closed [label="Close"];
+  resolved -> closed [label="Close"];
+  answered_by_support -> closed [label="Close"];
+  answered_by_reporter -> closed [label="Close"];
+}

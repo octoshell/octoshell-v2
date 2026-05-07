@@ -1,0 +1,16 @@
+stateDiagram-v2
+  direction LR
+
+  state "новый" as created
+  state "доступ одобрен" as approved
+  state "подготовлен к завершению" as prepared_to_finish
+  state "подготовлен к завершению администратором" as prepared_to_deny
+  state "отказано в доступе" as denied
+  state "завершён" as finished
+
+  [*] --> created
+  created --> approved : approve
+  approved --> prepared_to_finish : prepare_to_finish
+  approved --> prepared_to_deny : prepare_to_deny
+  prepared_to_finish --> finished : finish
+  prepared_to_deny --> denied : deny

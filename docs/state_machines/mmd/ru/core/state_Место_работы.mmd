@@ -1,0 +1,8 @@
+stateDiagram-v2
+  direction LR
+
+  state "active" as active
+  state "closed" as closed
+
+  [*] --> active
+  active --> closed : deactivate

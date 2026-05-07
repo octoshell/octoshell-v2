@@ -1,0 +1,33 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="pending"];
+  cancelled [label="cancelled"];
+  active [label="active"];
+  suspended [label="suspended"];
+  blocked [label="blocked"];
+  closing [label="closing"];
+  closed [label="closed"];
+  finished [label="finished"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> active [label="Activate"];
+  pending -> cancelled [label="Cancel"];
+  active -> cancelled [label="Cancel"];
+  active -> blocked [label="Block"];
+  blocked -> active [label="Unblock"];
+  active -> suspended [label="Suspend"];
+  suspended -> active [label="Reactivate"];
+  pending -> finished [label="Finish"];
+  active -> finished [label="Finish"];
+  suspended -> finished [label="Finish"];
+  blocked -> finished [label="Finish"];
+  cancelled -> finished [label="Finish"];
+  closing -> finished [label="Finish"];
+  closed -> finished [label="Finish"];
+  closed -> active [label="Resurrect"];
+  cancelled -> active [label="Resurrect"];
+  finished -> active [label="Resurrect"];
+}

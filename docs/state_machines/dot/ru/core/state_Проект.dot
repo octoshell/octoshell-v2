@@ -1,0 +1,33 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="формируется"];
+  cancelled [label="отменён"];
+  active [label="активен"];
+  suspended [label="приостановлен"];
+  blocked [label="заблокирован"];
+  closing [label="подготовлен к закрытию"];
+  closed [label="закрыт"];
+  finished [label="завершён"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> active [label="Активировать"];
+  pending -> cancelled [label="Отменить проект"];
+  active -> cancelled [label="Отменить проект"];
+  active -> blocked [label="Заблокировать"];
+  blocked -> active [label="Разблокировать"];
+  active -> suspended [label="Приостановить проект"];
+  suspended -> active [label="Заново активировать"];
+  pending -> finished [label="Завершить проект"];
+  active -> finished [label="Завершить проект"];
+  suspended -> finished [label="Завершить проект"];
+  blocked -> finished [label="Завершить проект"];
+  cancelled -> finished [label="Завершить проект"];
+  closing -> finished [label="Завершить проект"];
+  closed -> finished [label="Завершить проект"];
+  closed -> active [label="Восстановить проект"];
+  cancelled -> active [label="Восстановить проект"];
+  finished -> active [label="Восстановить проект"];
+}

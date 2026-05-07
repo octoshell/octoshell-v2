@@ -1,0 +1,13 @@
+digraph {
+  rankdir=LR;
+  node [shape=oval];
+  edge [fontsize=10];
+
+  pending [label="Created"];
+  active [label="Active"];
+  ended [label="Finished"];
+  __initial [shape=point];
+  __initial -> pending;
+  pending -> active [label="Start"];
+  active -> ended [label="Stop"];
+}

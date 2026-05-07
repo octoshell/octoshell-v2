@@ -1,0 +1,9 @@
+stateDiagram-v2
+  direction LR
+
+  state "active" as active
+  state "deactivated" as deactivated
+
+  [*] --> active
+  deactivated --> active : reactivate
+  active --> deactivated : deactivate
