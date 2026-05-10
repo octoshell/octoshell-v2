@@ -117,6 +117,15 @@ en:
               incident: "Incident (comments)"
             empty_chart_message: "There is no Slurm snapshot data for the selected period. Try expanding the period or first click \"Update node states (sinfo)\" on the Analytics tab."
             y_axis_title: "Number of nodes"
+            summary_labels:
+              max_available: "Maximum available resources"
+              avg_available: "Average available resources"
+              avg_availability: "Average availability"
+              max_period: "Maximum period"
+              nodes_from: "of"
+              nodes: "nodes"
+              avg_line: "Average available"
+              no_data: "No data"
 
         tags_manage:
           add_tag:

@@ -22,7 +22,17 @@ ruby:
     empty_chart_message: t('.js.empty_chart_message'),
     y_axis_title: t('.js.y_axis_title'),
     pie_empty_message: t('.js.pie_empty_message'),
-    node_hours_suffix: t('.js.node_hours_suffix')
+    node_hours_suffix: t('.js.node_hours_suffix'),
+    summary_labels: {
+      max_available: t('.js.summary_labels.max_available'),
+      avg_available: t('.js.summary_labels.avg_available'),
+      avg_availability: t('.js.summary_labels.avg_availability'),
+      max_period: t('.js.summary_labels.max_period'),
+      nodes_from: t('.js.summary_labels.nodes_from'),
+      nodes: t('.js.summary_labels.nodes'),
+      avg_line: t('.js.summary_labels.avg_line'),
+      no_data: t('.js.summary_labels.no_data')
+    }
   }
 
 - content_for :page_title do
@@ -65,6 +75,32 @@ style
   |   text-align: center;
   |   color: #777;
   |   margin-top: 15px;
+  | }
+  | .availability-summary {
+  |   display: grid;
+  |   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  |   gap: 10px;
+  |   margin: 12px 0 4px;
+  | }
+  | .availability-summary-card {
+  |   border: 1px solid #ddd;
+  |   border-radius: 6px;
+  |   padding: 10px 12px;
+  |   background: #fafafa;
+  | }
+  | .availability-summary-card .summary-title {
+  |   color: #777;
+  |   font-size: 12px;
+  |   margin-bottom: 4px;
+  | }
+  | .availability-summary-card .summary-value {
+  |   font-size: 20px;
+  |   font-weight: 600;
+  | }
+  | .availability-summary-card .summary-note {
+  |   color: #777;
+  |   font-size: 12px;
+  |   margin-top: 4px;
   | }
 
 = javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js'
@@ -145,8 +181,8 @@ hr
                                 from: from_val,
                                 to: to_val,
                                 metric: 'states')
-            canvas.availability-chart id="availability_chart_#{cluster.id}" data-url=data_url data-pie-canvas-id="availability_pie_#{cluster.id}" data-pie-empty-id="availability_pie_empty_#{cluster.id}"
-
+            canvas.availability-chart id="availability_chart_#{cluster.id}" data-url=data_url data-pie-canvas-id="availability_pie_#{cluster.id}" data-pie-empty-id="availability_pie_empty_#{cluster.id}" data-summary-id="availability_summary_#{cluster.id}"
+          .availability-summary id="availability_summary_#{cluster.id}" style="display:none;"
           .availability-subtitle = t('.pie_title')
 
           .availability-pie-wrap
@@ -312,6 +348,11 @@ javascript:
       var pieEmptyId = canvas.getAttribute('data-pie-empty-id');
       var pieEmptyEl = pieEmptyId ? document.getElementById(pieEmptyId) : null;
 
+      var summaryId = canvas.getAttribute('data-summary-id');
+      var summaryEl = summaryId ? document.getElementById(summaryId) : null;
+
+      renderAvailabilitySummary(summaryEl, payload);
+
       var series = payload.series || null;
       var states = payload.states || (series ? Object.keys(series) : []);
 
@@ -348,6 +389,124 @@ javascript:
       function stateColor(st, idx) {
         var s = (st || '').toString();
         return STATE_COLORS[s] || FALLBACK[idx % FALLBACK.length];
+      }
+
+      function formatNumber(value, digits) {
+        var num = Number(value);
+        if (!isFinite(num)) num = 0;
+        return num.toFixed(digits);
+      }
+
+      function formatDateTime(value) {
+        var d = new Date(value);
+        if (isNaN(d.getTime())) return value;
+        return d.toLocaleString("#{current_locale}");
+      }
+
+      function renderAvailabilitySummary(summaryEl, payload) {
+        if (!summaryEl) return;
+
+        var summary = payload && payload.availability_summary ? payload.availability_summary : null;
+
+        if (!summary) {
+          summaryEl.style.display = 'none';
+          summaryEl.innerHTML = '';
+          return;
+        }
+
+        var totalNodes = Number(summary.total_nodes) || Number(payload.total_nodes) || 0;
+        var maxAvailable = Number(summary.max_available) || 0;
+        var avgAvailable = Number(summary.avg_available) || 0;
+        var avgPercent = Number(summary.avg_available_percent) || 0;
+        var maxPercent = Number(summary.max_available_percent) || 0;
+        var intervals = summary.max_intervals || [];
+
+        var periodText = I18N.summary_labels.no_data;
+
+        if (intervals.length) {
+          var first = intervals[0];
+          periodText = formatDateTime(first.from) + ' — ' + formatDateTime(first.to);
+
+          if (intervals.length > 1) {
+            periodText += ' +' + (intervals.length - 1);
+          }
+        }
+
+        summaryEl.innerHTML =
+          '<div class="availability-summary-card">' +
+            '<div class="summary-title">' + I18N.summary_labels.max_available + '</div>' +
+            '<div class="summary-value">' +
+              formatNumber(maxAvailable, 0) + ' ' + I18N.summary_labels.nodes_from + ' ' + totalNodes +
+            '</div>' +
+            '<div class="summary-note">' + formatNumber(maxPercent, 2) + '%</div>' +
+          '</div>' +
+          '<div class="availability-summary-card">' +
+            '<div class="summary-title">' + I18N.summary_labels.avg_available + '</div>' +
+            '<div class="summary-value">' +
+              formatNumber(avgAvailable, 2) + ' ' + I18N.summary_labels.nodes +
+            '</div>' +
+            '<div class="summary-note">' +
+              I18N.summary_labels.avg_availability + ': ' + formatNumber(avgPercent, 2) + '%' +
+            '</div>' +
+          '</div>' +
+          '<div class="availability-summary-card">' +
+            '<div class="summary-title">' + I18N.summary_labels.max_period + '</div>' +
+            '<div class="summary-value" style="font-size:14px;">' + periodText + '</div>' +
+          '</div>';
+
+        summaryEl.style.display = 'grid';
+      }
+
+      function addAvailabilitySummaryAnnotations(annotations, payload, maxY, minMs, maxMs) {
+        var summary = payload && payload.availability_summary ? payload.availability_summary : null;
+        if (!summary) return annotations;
+
+        var avgAvailable = Number(summary.avg_available) || 0;
+
+        if (avgAvailable > 0) {
+          annotations.avg_available_line = {
+            type: 'line',
+            yMin: avgAvailable,
+            yMax: avgAvailable,
+            borderColor: 'rgba(0, 101, 39, 0.75)',
+            borderWidth: 2,
+            borderDash: [6, 6],
+            label: {
+              display: true,
+              content: I18N.summary_labels.avg_line + ': ' + avgAvailable.toFixed(2),
+              position: 'end'
+            },
+            drawTime: 'afterDatasetsDraw'
+          };
+        }
+
+        var intervals = summary.max_intervals || [];
+
+        intervals.forEach(function(interval, idx) {
+          var fromMs = Date.parse(interval.from);
+          var toMs = Date.parse(interval.to);
+
+          if (isNaN(fromMs) || isNaN(toMs)) return;
+
+          fromMs = Math.max(fromMs, minMs);
+          toMs = Math.min(toMs, maxMs);
+
+          if (toMs <= fromMs) return;
+
+          annotations['max_available_' + idx] = {
+            type: 'box',
+            xMin: new Date(fromMs),
+            xMax: new Date(toMs),
+            yMin: 0,
+            yMax: maxY,
+            backgroundColor: 'rgba(0, 101, 39, 0.06)',
+            borderColor: 'rgba(0, 101, 39, 0.20)',
+            borderWidth: 1,
+            drawTime: 'beforeDatasetsDraw'
+          };
+        });
+
+        return annotations;
       }
 
       function renderPieChart(pieCanvas, pieEmptyEl, payload) {
@@ -497,6 +656,7 @@ javascript:
       var minMs = Date.parse(minX);
       var maxMs = Date.parse(maxX);
       var annotations = buildAnnotations(comments, maxY, minMs, maxMs);
+      annotations = addAvailabilitySummaryAnnotations(annotations, payload, maxY, minMs, maxMs);
 
       if (canvas._chartInstance) canvas._chartInstance.destroy();
 

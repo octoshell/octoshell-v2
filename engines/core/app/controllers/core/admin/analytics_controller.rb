@@ -118,7 +118,15 @@ module Core
                           }
                         end
 
-      pie = build_state_pie_data(from: from, to: to, cluster_id: cluster.id)
+      aggregate = build_state_aggregate_data(
+        from: from,
+        to: to,
+        cluster_id: cluster.id,
+        total_nodes: total_nodes
+      )
+
+      pie = aggregate[:pie]
+      availability_summary = aggregate[:availability_summary]
 
       if snaps.blank?
         return render json: {
@@ -131,7 +139,8 @@ module Core
           series: {},
           points: [],
           comments: comments,
-          pie: pie
+          pie: pie,
+          availability_summary: availability_summary
         }
       end
 
@@ -192,7 +201,7 @@ module Core
       base_counts.each { |st, cnt| cur[st] = cnt.to_i }
 
       if metric != 'states'
-        unavailable_states = %w[down drain drng maint reserved]
+        unavailable_states = availability_unavailable_states
 
         points = snaps.each_with_index.map do |s, idx|
           if idx > 0
@@ -209,12 +218,10 @@ module Core
 
           idle  = cur['idle'].to_i
           alloc = cur['alloc'].to_i
-          unavailable = unavailable_states.sum { |st| cur[st].to_i }
-
           y =
             case metric
             when 'work' then (alloc + idle)
-            when 'up'   then [total_nodes - unavailable, 0].max
+            when 'up'   then available_nodes_count(total_nodes, cur, unavailable_states)
             else idle
             end
 
@@ -229,14 +236,15 @@ module Core
           to: to.iso8601,
           points: points,
           comments: comments,
-          pie: pie
+          pie: pie,
+          availability_summary: availability_summary
         }
       end
       
 
       series = Hash.new { |h, k| h[k] = [] }
 
-      unavailable_states = %w[down drain drng maint]
+      unavailable_states = availability_unavailable_states
 
       snaps.each_with_index do |s, idx|
         if idx > 0
@@ -257,11 +265,9 @@ module Core
           series[st] << { x: x, y: cur[st].to_i }
         end
 
-        available_y = cur['alloc'].to_i + cur['idle'].to_i
+        available_y = available_nodes_count(total_nodes, cur, unavailable_states)
         series['available'] << { x: x, y: available_y }
       end
-
-      states << 'available'
 
       states.select! do |st|
         series[st].any? { |p| p[:y].to_i > 0 }
@@ -271,6 +277,7 @@ module Core
         states << 'available'
       end
 
+      states.uniq!
       series.slice!(*states)
 
       render json: {
@@ -282,7 +289,8 @@ module Core
         states: states,
         series: series,
         comments: comments,
-        pie: pie
+        pie: pie,
+        availability_summary: availability_summary
       }
     end
 
@@ -408,8 +416,37 @@ module Core
       rel.group(*group_columns).distinct.count(:node_id)
     end
 
-    def build_state_pie_data(from:, to:, cluster_id:)
-      return { items: [], total_seconds: 0.0, total_node_hours: 0.0 } if to <= from
+    def availability_unavailable_states
+      %w[down drain drng maint reserved]
+    end
+
+    def available_nodes_count(total_nodes, counts, unavailable_states = availability_unavailable_states)
+      total = total_nodes.to_i
+      total = counts.values.sum(&:to_i) if total <= 0
+
+      unavailable = unavailable_states.sum { |state| counts[state].to_i }
+
+      [[total - unavailable, 0].max, total].min
+    end
+
+    def build_state_aggregate_data(from:, to:, cluster_id:, total_nodes:)
+      empty_pie = {
+        items: [],
+        total_seconds: 0.0,
+        total_node_hours: 0.0
+      }
+
+      empty_summary = {
+        total_nodes: total_nodes.to_i,
+        unavailable_states: availability_unavailable_states,
+        max_available: 0,
+        max_available_percent: 0.0,
+        avg_available: 0.0,
+        avg_available_percent: 0.0,
+        max_intervals: []
+      }
+
+      return { pie: empty_pie, availability_summary: empty_summary } if to <= from
 
       base_counts =
         grouped_distinct_node_counts(
@@ -417,11 +454,18 @@ module Core
           :state
         ).transform_keys(&:to_s)
 
+      total_nodes = total_nodes.to_i
+      total_nodes = base_counts.values.sum(&:to_i) if total_nodes <= 0
+
       enter_raw =
         grouped_distinct_node_counts(
           Core::Analytics::NodeState
             .where(cluster_id: cluster_id)
-            .where(snapshot_id: Core::Analytics::Snapshot.where(cluster_id: cluster_id, captured_at: from..to).select(:id)),
+            .where(
+              snapshot_id: Core::Analytics::Snapshot
+                .where(cluster_id: cluster_id, captured_at: from..to)
+                .select(:id)
+            ),
           :snapshot_id,
           :state
         )
@@ -436,6 +480,7 @@ module Core
       enter_raw.each do |(snapshot_id, state), count|
         captured_at = snaps_by_id[snapshot_id]
         next unless captured_at
+
         enter_by_time[captured_at][state.to_s] += count.to_i
       end
 
@@ -465,6 +510,14 @@ module Core
 
       state_seconds = Hash.new(0.0)
 
+      unavailable_states = availability_unavailable_states
+
+      available_weighted_seconds = 0.0
+      total_duration_seconds = 0.0
+
+      max_available = nil
+      max_intervals = []
+
       change_times = (enter_by_time.keys + leave_by_time.keys + [to])
                       .select { |t| t.present? && t > from && t <= to }
                       .uniq
@@ -479,7 +532,24 @@ module Core
           states.each do |state|
             count = cur[state].to_i
             next if count <= 0
+
             state_seconds[state] += count * duration
+          end
+
+          available = available_nodes_count(total_nodes, cur, unavailable_states)
+
+          available_weighted_seconds += available * duration
+          total_duration_seconds += duration
+
+          if max_available.nil? || available > max_available
+            max_available = available
+            max_intervals = [{ from: prev_time, to: time_point }]
+          elsif available == max_available
+            if max_intervals.last && max_intervals.last[:to] == prev_time
+              max_intervals.last[:to] = time_point
+            else
+              max_intervals << { from: prev_time, to: time_point }
+            end
           end
         end
 
@@ -508,10 +578,40 @@ module Core
         }
       end
 
-      {
+      avg_available =
+        if total_duration_seconds.positive?
+          available_weighted_seconds / total_duration_seconds
+        else
+          0.0
+        end
+
+      max_available ||= 0
+
+      availability_summary = {
+        total_nodes: total_nodes,
+        unavailable_states: unavailable_states,
+        max_available: max_available,
+        max_available_percent: total_nodes.positive? ? ((max_available.to_f / total_nodes) * 100.0).round(2) : 0.0,
+        avg_available: avg_available.round(2),
+        avg_available_percent: total_nodes.positive? ? ((avg_available / total_nodes) * 100.0).round(2) : 0.0,
+        max_intervals: max_intervals.map do |interval|
+          {
+            from: interval[:from].iso8601,
+            to: interval[:to].iso8601,
+            duration_seconds: (interval[:to] - interval[:from]).round(2)
+          }
+        end
+      }
+
+      pie = {
         items: items,
         total_seconds: total_seconds.round(2),
         total_node_hours: (total_seconds / 3600.0).round(2)
+      }
+
+      {
+        pie: pie,
+        availability_summary: availability_summary
       }
     end
 
