@@ -354,7 +354,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_04_232108) do
     t.index ["node_id"], name: "core_analytics_index_node_states_current_on_node_id", where: "(valid_to IS NULL)"
     t.index ["node_id"], name: "index_core_analytics_node_states_on_node_id"
     t.index ["partition_id"], name: "index_core_analytics_node_states_on_partition_id"
-    t.index ["snapshot_id", "node_id"], name: "core_analytics_uniq_node_state_per_snapshot", unique: true
+    t.index ["snapshot_id", "node_id", "partition_id"], name: "core_analytics_uniq_node_partition_per_snapshot", unique: true
     t.index ["snapshot_id"], name: "index_core_analytics_node_states_on_snapshot_id"
   end
 

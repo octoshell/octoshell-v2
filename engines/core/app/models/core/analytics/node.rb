@@ -18,6 +18,11 @@ module Core
                foreign_key: :node_id,
                dependent: :destroy
 
+      has_many :partitions,
+               -> { distinct },
+               through: :node_states,
+               source: :partition
+
       validates :hostname, presence: true, uniqueness: { scope: :cluster_id }
       validates :prefix, presence: true
     end

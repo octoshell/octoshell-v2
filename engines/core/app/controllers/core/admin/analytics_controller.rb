@@ -4,6 +4,17 @@ module Core
     before_action :require_analytics_access
     before_action :octo_authorize!
     octo_use(:project_class, :core, 'Project')
+    EFFECTIVE_STATE_PRIORITY = {
+      'down'     => 100,
+      'drain'    => 90,
+      'drng'     => 80,
+      'maint'    => 70,
+      'reserved' => 60,
+      'alloc'    => 50,
+      'mix'      => 40,
+      'comp'     => 30,
+      'idle'     => 10
+    }.freeze
 
     # before_action :prepare_comments, only: [:index, :create_comment, :sinfo]
     before_action :prepare_comments, only: [:index, :create_comment]
@@ -17,7 +28,7 @@ module Core
       @clusters = Core::Cluster.order(:name_ru).includes(:nodes)
 
       node_states_rel = Core::Analytics::NodeState.current
-      @global_state_counts = grouped_distinct_node_counts(node_states_rel, :state)
+      @global_state_counts = grouped_effective_node_state_counts(node_states_rel)
 
       @cluster_stats = {}
       @clusters.each do |cluster|
@@ -28,7 +39,7 @@ module Core
         }
       end
 
-      states_counts = grouped_distinct_node_counts(node_states_rel, :cluster_id, :state)
+      states_counts = grouped_effective_node_state_counts(node_states_rel, :cluster_id)
       states_counts.each do |(cluster_id, state), count|
         next unless @cluster_stats.key?(cluster_id)
         @cluster_stats[cluster_id][:states][state] = count
@@ -65,15 +76,11 @@ module Core
       @snapshot_stats   = {}
 
       if @latest_snapshots.any?
-        snapshot_ids = @latest_snapshots.map(&:id)
-        snapshot_counts = grouped_distinct_node_counts(
-          Core::Analytics::NodeState.where(snapshot_id: snapshot_ids),
-          :snapshot_id,
-          :state
-        )
-        snapshot_counts.each do |(snap_id, state), count|
-          @snapshot_stats[snap_id] ||= {}
-          @snapshot_stats[snap_id][state] = count
+        @latest_snapshots.each do |snapshot|
+          @snapshot_stats[snapshot.id] = effective_state_counts_at(
+            snapshot.cluster_id,
+            snapshot.captured_at
+          )
         end
       end
 
@@ -144,88 +151,44 @@ module Core
         }
       end
 
-      snap_ids   = snaps.map(&:id)
-      snap_times = snaps.map(&:captured_at)
+      snap_effective_counts = {}
 
-      first_ts = snaps.first.captured_at
-
-      base_scope = Core::Analytics::NodeState.at(first_ts).where(cluster_id: cluster.id)
-
-      base_counts =
-        grouped_distinct_node_counts(base_scope, :state)
-          .transform_keys(&:to_s)
-
-      base_total = base_scope.distinct.count(:node_id)
-      total_nodes = base_total if total_nodes.zero? && base_total.positive?
-
-      enter_raw =
-        grouped_distinct_node_counts(
-          Core::Analytics::NodeState.where(cluster_id: cluster.id, snapshot_id: snap_ids),
-          :snapshot_id,
-          :state
-        )
-
-      enter_by_snap = Hash.new { |h, k| h[k] = Hash.new(0) }
-      enter_raw.each do |(sid, st), cnt|
-        enter_by_snap[sid][st.to_s] = cnt.to_i
-      end
-
-      enter_by_time = Hash.new { |h, k| h[k] = Hash.new(0) }
       snaps.each do |snap|
-        enter_by_snap[snap.id].each do |state, count|
-          enter_by_time[snap.captured_at][state.to_s] += count.to_i
-        end
-      end
-
-      leave_raw =
-        grouped_distinct_node_counts(
-          Core::Analytics::NodeState.where(cluster_id: cluster.id, valid_to: snap_times),
-          :valid_to,
-          :state
+        snap_effective_counts[snap.id] = effective_state_counts_at(
+          cluster.id,
+          snap.captured_at
         )
-
-      leave_by_time = Hash.new { |h, k| h[k] = Hash.new(0) }
-      leave_raw.each do |(t, st), cnt|
-        leave_by_time[t][st.to_s] = cnt.to_i
       end
 
       states =
         (
           Core::Analytics::NodeState::STATES.map(&:to_s) +
-          base_counts.keys +
-          enter_raw.keys.map { |(_, st)| st.to_s } +
-          leave_raw.keys.map { |(_, st)| st.to_s }
+          snap_effective_counts.values.flat_map(&:keys)
         ).uniq
 
-      cur = Hash.new(0)
-      base_counts.each { |st, cnt| cur[st] = cnt.to_i }
+      unavailable_states = availability_unavailable_states
 
       if metric != 'states'
-        unavailable_states = availability_unavailable_states
-
-        points = snaps.each_with_index.map do |s, idx|
-          if idx > 0
-            t = s.captured_at
-
-            leave_by_time[t].each do |st, cnt|
-              cur[st] -= cnt
-            end
-
-            enter_by_snap[s.id].each do |st, cnt|
-              cur[st] += cnt
-            end
+        points = snaps.map do |snap|
+          cur = Hash.new(0)
+          snap_effective_counts[snap.id].each do |state, count|
+            cur[state] = count.to_i
           end
 
           idle  = cur['idle'].to_i
           alloc = cur['alloc'].to_i
+
           y =
             case metric
-            when 'work' then (alloc + idle)
-            when 'up'   then available_nodes_count(total_nodes, cur, unavailable_states)
-            else idle
+            when 'work'
+              alloc + idle
+            when 'up'
+              available_nodes_count(total_nodes, cur, unavailable_states)
+            else
+              idle
             end
 
-          { x: s.captured_at.iso8601, y: y }
+          { x: snap.captured_at.iso8601, y: y }
         end
 
         return render json: {
@@ -240,40 +203,30 @@ module Core
           availability_summary: availability_summary
         }
       end
-      
 
       series = Hash.new { |h, k| h[k] = [] }
 
-      unavailable_states = availability_unavailable_states
-
-      snaps.each_with_index do |s, idx|
-        if idx > 0
-          t = s.captured_at
-
-          leave_by_time[t].each do |st, cnt|
-            cur[st] -= cnt
-          end
-
-          enter_by_snap[s.id].each do |st, cnt|
-            cur[st] += cnt
-          end
+      snaps.each do |snap|
+        cur = Hash.new(0)
+        snap_effective_counts[snap.id].each do |state, count|
+          cur[state] = count.to_i
         end
 
-        x = s.captured_at.iso8601
+        x = snap.captured_at.iso8601
 
-        states.each do |st|
-          series[st] << { x: x, y: cur[st].to_i }
+        states.each do |state|
+          series[state] << { x: x, y: cur[state].to_i }
         end
 
         available_y = available_nodes_count(total_nodes, cur, unavailable_states)
         series['available'] << { x: x, y: available_y }
       end
 
-      states.select! do |st|
-        series[st].any? { |p| p[:y].to_i > 0 }
+      states.select! do |state|
+        series[state].any? { |point| point[:y].to_i > 0 }
       end
 
-      if series['available'].any? { |p| p[:y].to_i > 0 }
+      if series['available'].any? { |point| point[:y].to_i > 0 }
         states << 'available'
       end
 
@@ -414,6 +367,50 @@ module Core
       return rel.distinct.count(:node_id) if group_columns.blank?
 
       rel.group(*group_columns).distinct.count(:node_id)
+    end
+
+    def grouped_effective_node_state_counts(relation, *group_columns)
+      group_columns = group_columns.map(&:to_sym)
+      selected_columns = group_columns + [:node_id, :state]
+
+      best_state_by_node = {}
+
+      relation
+        .where.not(node_id: nil)
+        .pluck(*selected_columns)
+        .each do |row|
+          group_values = row.first(group_columns.length)
+          node_id = row[group_columns.length]
+          state = row[group_columns.length + 1].to_s
+          priority = EFFECTIVE_STATE_PRIORITY.fetch(state, 0)
+
+          node_key = group_values + [node_id]
+          current = best_state_by_node[node_key]
+
+          if current.nil? || priority > current[:priority]
+            best_state_by_node[node_key] = {
+              group_values: group_values,
+              state: state,
+              priority: priority
+            }
+          end
+        end
+
+      counts = Hash.new(0)
+
+      best_state_by_node.each_value do |item|
+        key_values = item[:group_values] + [item[:state]]
+        key = key_values.one? ? key_values.first : key_values
+        counts[key] += 1
+      end
+
+      counts
+    end
+
+    def effective_state_counts_at(cluster_id, time)
+      grouped_effective_node_state_counts(
+        Core::Analytics::NodeState.at(time).where(cluster_id: cluster_id)
+      ).transform_keys(&:to_s)
     end
 
     def availability_unavailable_states

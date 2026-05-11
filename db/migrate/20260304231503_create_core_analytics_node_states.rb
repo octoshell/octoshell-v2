@@ -14,9 +14,9 @@ class CreateCoreAnalyticsNodeStates < ActiveRecord::Migration[5.2]
       t.timestamps null: false
     end
 
-    add_index :core_analytics_node_states, [:snapshot_id, :node_id],
+    add_index :core_analytics_node_states, [:snapshot_id, :node_id, :partition_id],
               unique: true,
-              name: "core_analytics_uniq_node_state_per_snapshot",
+              name: "core_analytics_uniq_node_partition_per_snapshot",
               if_not_exists: true
 
     add_index :core_analytics_node_states, [:node_id, :valid_from],

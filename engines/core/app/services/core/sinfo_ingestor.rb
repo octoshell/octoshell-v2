@@ -9,7 +9,7 @@ module Core
     # :index_core_analytics_nodes_on_cluster_id_and_hostname
     # :index_core_analytics_node_states_on_snapshot_id_and_node_id
     NODE_UNIQUE_BY = %i[cluster_id hostname].freeze
-    NODE_STATE_UNIQUE_BY = %i[snapshot_id node_id].freeze
+    NODE_STATE_UNIQUE_BY = %i[snapshot_id node_id partition_id].freeze
 
     def initialize(raw_text:, source_cmd: "sinfo -a", parser_version: "v1",
                    quiet: false, cluster_id:, **_)
@@ -47,7 +47,7 @@ module Core
             end
           end
 
-          rows = rows.reverse.uniq { |snap_id, node_id, _p, _s, _r| [snap_id, node_id] }.reverse
+          rows = rows.reverse.uniq { |snap_id, node_id, part_id, _s, _r| [snap_id, node_id, part_id] }.reverse
           rows_written = bulk_upsert_node_states(rows)
 
           {
@@ -202,19 +202,15 @@ module Core
       ids_to_close   = []
 
       rows.each do |snap_id, node_id, part_id, state, has_reason|
-        cur = current_states[node_id]
+        cur = current_states[[node_id, part_id]]
 
         if cur.nil?
           rows_to_insert << [snap_id, node_id, part_id, state, has_reason]
+        elsif cur[:state] == state && cur[:has_reason] == has_reason
+          next
         else
-          if cur[:partition_id] == part_id &&
-             cur[:state]        == state &&
-             cur[:has_reason]   == has_reason
-            next
-          else
-            ids_to_close << cur[:id]
-            rows_to_insert << [snap_id, node_id, part_id, state, has_reason]
-          end
+          ids_to_close << cur[:id]
+          rows_to_insert << [snap_id, node_id, part_id, state, has_reason]
         end
       end
 
@@ -232,11 +228,10 @@ module Core
                         .where(cluster_id: @cluster_id, valid_to: nil, node_id: chunk)
                         .pluck(:id, :node_id, :partition_id, :state, :has_reason)
                         .each do |id, node_id, part_id, state, has_reason|
-          map[node_id] = {
-            id:           id,
-            partition_id: part_id,
-            state:        state,
-            has_reason:   has_reason
+          map[[node_id, part_id]] = {
+            id:         id,
+            state:      state,
+            has_reason: has_reason
           }
         end
       end
