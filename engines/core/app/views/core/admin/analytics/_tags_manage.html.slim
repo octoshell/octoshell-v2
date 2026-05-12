@@ -1,0 +1,64 @@
+- tag_groups ||= []
+- tag_usage ||= {}
+
+- active_groups = tag_groups.select(&:is_active).sort_by { |g| [g.sort_order.to_i, g.id.to_i] }
+- custom_group = tag_groups.find { |g| g.key == 'custom' }
+
+.panel.panel-default
+  .panel-heading
+    strong = t('.add_tag.heading')
+  .panel-body
+    = form_tag url_for(controller: '/core/admin/analytics', action: 'create_tag'),
+               method: :post,
+               remote: true,
+               form: { 'data-type': 'script' },
+               style: 'display: flex; flex-wrap: wrap; align-items: center;' do
+
+      div style="margin-right: 15px; margin-bottom: 10px;"
+        = label_tag 'tag[group_id]', t('.add_tag.group_label'), style: 'margin-right: 6px;'
+        - opts = active_groups.map { |g| ["#{g.name} (#{g.key})", g.id] }
+        = select_tag 'tag[group_id]',
+                     options_for_select([[t('.add_tag.custom_group_option'), '']] + opts),
+                     class: 'form-control'
+
+      div style="margin-right: 15px; margin-bottom: 10px;"
+        = label_tag 'tag[label]', t('.add_tag.name_label'), style: 'margin-right: 6px;'
+        = text_field_tag 'tag[label]', '', class: 'form-control', placeholder: t('.add_tag.name_placeholder')
+
+      div style="margin-top: 12px;"
+        = submit_tag t('.add_tag.submit'), class: 'btn btn-primary'
+
+.panel.panel-default style="margin-top: 12px;"
+  .panel-heading
+    strong = t('.custom_tags.heading')
+  .panel-body
+    - custom_tags = custom_group ? custom_group.tags.select(&:is_active).sort_by { |t| [t.sort_order.to_i, t.label.to_s] } : []
+    - if custom_tags.blank?
+      p.text-muted = t('.custom_tags.empty')
+    - else
+      table.table.table-condensed
+        thead
+          tr
+            th = t('.table.tag')
+            th style="width: 120px;" = t('.table.usage')
+            th style="width: 120px;" = t('.table.actions')
+        tbody
+          - custom_tags.each do |tag|
+            - used = tag_usage[tag.id].to_i
+            tr
+              td
+                span.label.label-default = tag.label
+                span.text-muted style="margin-left: 6px;" = "(#{tag.key})"
+              td
+                - if used > 0
+                  span.label.label-info = t('.usage_count', count: used)
+                - else
+                  span.text-muted 0
+              td
+                = button_to t('.buttons.delete'),
+                            url_for(controller: '/core/admin/analytics', action: 'destroy_tag', id: tag.id),
+                            method: :delete,
+                            remote: true,
+                            form: { 'data-type': 'script' },
+                            data: { confirm: (used > 0 ? t('.confirm.delete_used', count: used) : t('.confirm.delete')) },
+                            class: 'btn btn-xs btn-danger'

@@ -8,7 +8,11 @@ if Core.user_class
                         class_name: '::Core::Project',
                         source: :project,
                         inverse_of: :users, dependent: :destroy
-
+    has_many :comments,
+              class_name: 'Core::Comments::Comment',
+              foreign_key: :author_id,
+              inverse_of: :author,
+              dependent: :restrict_with_error
     has_many :account_owners, -> { where(owner: true) },
              class_name: '::Core::Member',
              foreign_key: :user_id

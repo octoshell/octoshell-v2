@@ -1,5 +1,7 @@
 ---
 ru:
+  admin_submenu:
+    analytics: Аналитика
   activerecord:
     aasm:
       core/access:

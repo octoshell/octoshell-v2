@@ -20,6 +20,12 @@ module Core
     add_ability(:manage, :geography, 'superadmins')
     add_controller_ability(:manage, :geography, 'admin/cities', 'admin/countries')
     add_ability(:manage, :notices, 'superadmins')
+
+    add_ability(:manage, :core, 'superadmins')
+
+    add_ability(:manage, :core_analytics, 'superadmins')
+    add_controller_ability(:manage, :core_analytics, 'admin/analytics')
+
     add_routes do
       mount Core::Engine, at: '/core'
     end
@@ -94,6 +100,8 @@ module Core
         add_item_if_may('organization_kinds', t('admin_submenu.organization_kinds'),
                         core.admin_organization_kinds_path, 'core/admin/organization_kinds')
         # organization
+        add_item_if_may('core_analytics', t('core.admin.analytics.admin_submenu.analytics'),
+                        core.admin_analytics_path, 'core/admin/analytics')
 
         add_item_if_may('direction_of_sciences', t('admin_submenu.direction_of_sciences'),
                         core.admin_direction_of_sciences_path, 'core/admin/direction_of_sciences')

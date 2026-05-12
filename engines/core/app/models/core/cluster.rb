@@ -35,6 +35,32 @@ module Core
     has_many :logs, class_name: 'ClusterLog', inverse_of: :cluster, dependent: :destroy
 
     has_many :quotas, class_name: 'ClusterQuota', inverse_of: :cluster, dependent: :destroy
+
+    has_many :nodes,
+             class_name: 'Core::Analytics::Node',
+             foreign_key: :cluster_id,
+             inverse_of: :cluster
+
+    has_many :snapshots,
+             class_name: 'Core::Analytics::Snapshot',
+             foreign_key: :cluster_id,
+             inverse_of: :cluster
+
+    has_many :node_states,
+             class_name: 'Core::Analytics::NodeState',
+             foreign_key: :cluster_id,
+             inverse_of: :cluster
+
+    has_many :partitions,
+             class_name: 'Core::Partition',
+             foreign_key: :cluster_id,
+             inverse_of: :cluster
+
+    has_many :comments,
+             class_name: 'Core::Comments::Comment',
+             foreign_key: :cluster_id,
+             inverse_of: :cluster
+
     accepts_nested_attributes_for :quotas, allow_destroy: true
     validates :host, :admin_login, presence: true
     validates_translated :name, presence: true

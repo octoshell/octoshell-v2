@@ -9,13 +9,247 @@ en:
   time:
     formats:
       default: "%Y.%m.%d %H:%M"
-  '':
-    core:
-      admin:
-        notices:
-          other: 'TRME TRME '
-          per-user: 'TRME TRME '
-          site-wide: 'TRME TRME '
+  core:
+    admin:
+      notices:
+        other: "TRME TRME"
+        per-user: "TRME TRME"
+        site-wide: "TRME TRME"
+
+      analytics:
+        admin_submenu:
+          analytics: "Analytics"
+        
+        index:
+          page_title: "Analytics"
+
+          form:
+            select_cluster: "Select a cluster"
+            update_nodes: "Update node states (sinfo)"
+
+          sinfo_panel:
+            heading: "SINFO: output / errors"
+            error_details: "Error details:"
+            command_output: "Command output:"
+            parse_result: "Parsing/saving result:"
+
+          headings:
+            current_slice: "Node states (current snapshot)"
+            snapshots: "System snapshots"
+            current_node_state: "Current node states"
+
+          buttons:
+            show_more_snapshots: "Show 5 more snapshots"
+
+          labels:
+            total_nodes: "Total nodes: %{count}"
+            nodes_with_reason: "Nodes with reason (has_reason): %{count}"
+
+          messages:
+            no_clusters_data: "There is no node data yet. Click the \"Update node states (sinfo)\" button above."
+            no_current_states_for_system: "There is no data on the current node states for this system."
+            no_nodes_with_reason: "There are no nodes with the has_reason flag in the current state."
+            no_snapshots: "There are no snapshots yet — run SINFO import."
+            no_global_state_data: "There is no data on current node states. Click \"Update node states (sinfo)\" above."
+
+          table:
+            state: "State"
+            nodes: "Nodes"
+            share: "Share"
+            partition: "Queue / partition"
+            total_nodes_by_state: "Total nodes (by states)"
+            snapshot_time: "Snapshot time"
+            system: "System"
+            total: "Total"
+            alloc: "Busy (alloc)"
+            idle: "Idle (idle)"
+            down: "Unavailable (down)"
+            other: "Other"
+
+          states:
+            alloc: "Busy"
+            idle: "Idle"
+            comp: "Completing jobs"
+            drain: "Drained"
+            drng: "Draining"
+            down: "Unavailable"
+            maint: "Maintenance"
+            reserved: "Reserved"
+            mix: "Partially busy"
+
+        availability:
+          chart_title: "Node states chart"
+          pie_title: "Share of node time in different states for the selected period"
+          pie_empty_message: "No data for the pie chart in the selected period."
+          page_title: "Analytics — Availability"
+          analytics_title: "Analytics"
+
+          filters:
+            heading: "Chart parameters"
+            from: "From"
+            to: "To"
+            show: "Show"
+            datetime_placeholder: "YYYY-MM-DD HH:MM"
+
+          legend:
+            comment_intervals: "Semi-transparent areas indicate administrator comment intervals."
+
+          messages:
+            no_clusters: "No clusters."
+
+          states:
+            alloc: "Busy (alloc)"
+            idle: "Idle (idle)"
+            mix: "Partially busy (mix)"
+            comp: "Completing jobs (comp)"
+            drain: "Drained (drain)"
+            drng: "Draining (drng)"
+            down: "Unavailable (down)"
+            maint: "Maintenance (maint)"
+            reserved: "Reserved (reserved)"
+            available: "Available nodes"
+
+          js:
+            node_hours_suffix: "node-hours"
+            severity_labels:
+              info: "Info (comments)"
+              warning: "Warning (comments)"
+              incident: "Incident (comments)"
+            empty_chart_message: "There is no Slurm snapshot data for the selected period. Try expanding the period or first click \"Update node states (sinfo)\" on the Analytics tab."
+            y_axis_title: "Number of nodes"
+            summary_labels:
+              max_available: "Maximum available resources"
+              avg_available: "Average available resources"
+              avg_availability: "Average availability"
+              max_period: "Maximum period"
+              nodes_from: "of"
+              nodes: "nodes"
+              avg_line: "Average available"
+              no_data: "No data"
+
+        tags_manage:
+          add_tag:
+            heading: "Add tag (without saving a comment)"
+            group_label: "Group"
+            custom_group_option: "Custom (custom)"
+            name_label: "Name"
+            name_placeholder: "For example: network / cooling"
+            submit: "Add"
+
+          custom_tags:
+            heading: "Custom tags (can be deleted)"
+            empty: "There are no custom tags."
+
+          table:
+            tag: "Tag"
+            usage: "Used"
+            actions: "Actions"
+
+          buttons:
+            delete: "Delete"
+
+          confirm:
+            delete: "Delete tag?"
+            delete_used:
+              one: "This tag is used in %{count} comment. Delete it?"
+              other: "This tag is used in %{count} comments. Delete it?"
+
+          usage_count:
+            one: "%{count} comment"
+            other: "%{count} comments"
+
+        tabs:
+          analytics: "Analytics"
+          comments: "Administrator comments"
+          availability: "Available nodes over time"
+
+        comments_tab:
+          required_field_title: "Required field"
+
+          severity:
+            info: "Info"
+            warning: "Warning"
+            incident: "Incident"
+
+          logs:
+            no_reason_groups: "Error: no data for reason groups"
+            no_reasons_in_group: "Error: no reasons in group %{group_name}"
+
+          errors:
+            save_error: "Save error:"
+
+          new_comment:
+            heading: "New comment"
+
+          fields:
+            system: "System"
+            select_cluster: "Select a cluster"
+            category: "Category"
+            select_category: "Select a category"
+            select_category_first: "Select a category first"
+            reason: "Reason"
+            select_reason: "Select a reason"
+            title: "Title"
+            description_optional: "Description (optional)"
+            valid_from: "Valid from"
+            valid_to_optional: "Valid until (optional)"
+            severity: "Severity"
+
+          placeholders:
+            title: "Briefly: what happened / what changed"
+            body: "Details: impact, causes, actions, links, etc."
+            datetime: "YYYY-MM-DD HH:MM"
+
+          help:
+            comment_binding: "The comment is linked to the system and, optionally, to specific nodes."
+
+          affected_nodes:
+            heading: "Affected nodes (optional)"
+            help: "You can search by name. Choose nodes only within the selected system."
+            search_placeholder: "Search node: hostname / prefix (for example n4500)"
+            select_system_first: "Select a system first"
+            messages:
+              select_system: "Select a system above — then the node list will appear."
+              no_nodes_in_controller: "There is no node list — add @nodes in the controller."
+              no_nodes_for_system: "No nodes were found for the selected system."
+
+          buttons:
+            show_available_nodes: "Show available nodes"
+            save: "Save"
+            clear: "Clear"
+
+          recent_comments:
+            heading: "Recent comments"
+            empty: "There are no comments."
+
+          filters:
+            all_systems: "All systems"
+            any_severity: "Any severity"
+            active_only: "active only"
+            filter: "Filter"
+
+          table:
+            interval: "Interval"
+            title: "Title"
+            system: "System"
+            nodes: "Nodes"
+            tags: "Tags"
+            author: "Author"
+
+          counts:
+            nodes_count:
+              one: "%{count} item"
+              other: "%{count} items"
+            more_tags:
+              one: "+%{count}"
+              other: "+%{count}"
+
+          fallback:
+            em_dash: "—"
+
+          js:
+            choose_reason: "Select a reason"
+            choose_category_first: "Select a category first"
   "!": "!"
   abilities:
     accesses:

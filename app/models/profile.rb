@@ -10,6 +10,7 @@
 #  about                 :text
 #  receive_info_mails    :boolean          default("true")
 #  receive_special_mails :boolean          default("true")
+#  notify_about_jobs     :boolean          default("false")
 #
 
 class Profile < ApplicationRecord

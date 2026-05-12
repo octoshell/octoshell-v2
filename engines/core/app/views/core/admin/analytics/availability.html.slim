@@ -1,0 +1,780 @@
+- current_locale = I18n.locale.to_s
+
+ruby:
+  js_i18n = {
+    severity_labels: {
+      info: t('.js.severity_labels.info'),
+      warning: t('.js.severity_labels.warning'),
+      incident: t('.js.severity_labels.incident')
+    },
+    state_labels: {
+      alloc: t('.states.alloc'),
+      idle: t('.states.idle'),
+      mix: t('.states.mix'),
+      comp: t('.states.comp'),
+      drain: t('.states.drain'),
+      drng: t('.states.drng'),
+      down: t('.states.down'),
+      maint: t('.states.maint'),
+      reserved: t('.states.reserved'),
+      available: t('.states.available')
+    },
+    empty_chart_message: t('.js.empty_chart_message'),
+    y_axis_title: t('.js.y_axis_title'),
+    pie_empty_message: t('.js.pie_empty_message'),
+    node_hours_suffix: t('.js.node_hours_suffix'),
+    summary_labels: {
+      max_available: t('.js.summary_labels.max_available'),
+      avg_available: t('.js.summary_labels.avg_available'),
+      avg_availability: t('.js.summary_labels.avg_availability'),
+      max_period: t('.js.summary_labels.max_period'),
+      nodes_from: t('.js.summary_labels.nodes_from'),
+      nodes: t('.js.summary_labels.nodes'),
+      avg_line: t('.js.summary_labels.avg_line'),
+      no_data: t('.js.summary_labels.no_data')
+    }
+  }
+
+- content_for :page_title do
+  = t('.page_title')
+
+.div.page-header
+  h1 = t('.analytics_title')
+
+style
+  | .availability-filters { display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; }
+  | .availability-filters .form-group { margin: 0; }
+  | .availability-chart-wrap { height: 320px; position: relative; }
+  | .availability-chart-wrap.availability-empty { height: auto; padding: 8px 0; }
+  | canvas.availability-chart { width:100% !important; height:100% !important; display:block; }
+
+  | .availability-legend span { display:inline-block; padding:4px 8px; border-radius:4px; margin-right:6px; }
+  | .availability-legend .info { background: rgba(91, 192, 222, 0.18); }
+  | .availability-legend .warning { background: rgba(240, 173, 78, 0.18); }
+  | .availability-legend .incident { background: rgba(217, 83, 79, 0.18); }
+
+  | .cluster-toggle .toggle-icon { font-size: 30px; transition: transform 0.2s ease; }
+  | .cluster-toggle:not(.collapsed) .toggle-icon { transform: rotate(90deg); }
+
+  | .availability-pie-wrap {
+  |   max-width: 460px;
+  |   height: 320px;
+  |   margin: 20px auto 0;
+  |   position: relative;
+  | }
+  | .availability-pie-wrap canvas {
+  |   width: 100% !important;
+  |   height: 100% !important;
+  |   display: block !important;
+  | }
+  | .availability-subtitle {
+  |   margin: 18px 0 8px;
+  |   font-weight: 600;
+  | }
+  | .availability-pie-empty {
+  |   text-align: center;
+  |   color: #777;
+  |   margin-top: 15px;
+  | }
+  | .availability-summary {
+  |   display: grid;
+  |   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  |   gap: 10px;
+  |   margin: 12px 0 4px;
+  | }
+  | .availability-summary-card {
+  |   border: 1px solid #ddd;
+  |   border-radius: 6px;
+  |   padding: 10px 12px;
+  |   background: #fafafa;
+  | }
+  | .availability-summary-card .summary-title {
+  |   color: #777;
+  |   font-size: 12px;
+  |   margin-bottom: 4px;
+  | }
+  | .availability-summary-card .summary-value {
+  |   font-size: 20px;
+  |   font-weight: 600;
+  | }
+  | .availability-summary-card .summary-note {
+  |   color: #777;
+  |   font-size: 12px;
+  |   margin-top: 4px;
+  | }
+
+= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js'
+= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js'
+= javascript_include_tag 'https://cdn.jsdelivr.net/npm/date-fns@2.30.0'
+= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js'
+
+= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css'
+= javascript_include_tag 'https://cdn.jsdelivr.net/npm/flatpickr'
+= javascript_include_tag 'https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js'
+
+- active_tab = @active_tab || 'analytics'
+- analytics_active    = (active_tab == 'analytics')
+- availability_active = (active_tab == 'availability')
+- comments_active     = (active_tab == 'comments')
+
+= render 'core/admin/analytics/tabs', active_tab: (@active_tab || 'availability')
+
+hr
+
+.panel.panel-default
+  .panel-heading
+    strong = t('.filters.heading')
+  .panel-body
+    - from_val = params[:from].presence || (@from && @from.strftime('%Y-%m-%d %H:%M'))
+    - to_val   = params[:to].presence   || (@to && @to.strftime('%Y-%m-%d %H:%M'))
+
+    = form_with url: url_for(controller: '/core/admin/analytics', action: :availability),
+                method: :get,
+                local: true,
+                html: { class: 'availability-filters', data: { turbo: false, turbolinks: false } } do
+      .form-group
+        label = t('.filters.from')
+        = text_field_tag :from, from_val, class: 'form-control datetimepicker', autocomplete: 'off', placeholder: t('.filters.datetime_placeholder')
+
+      .form-group
+        label = t('.filters.to')
+        = text_field_tag :to, to_val, class: 'form-control datetimepicker', autocomplete: 'off', placeholder: t('.filters.datetime_placeholder')
+
+      .form-group
+        = submit_tag t('.filters.show'), class: 'btn btn-primary'
+
+    .availability-legend style="margin-top: 12px;"
+      span.info info
+      span.warning warning
+      span.incident incident
+      span.text-muted style="margin-left:10px;"
+        = t('.legend.comment_intervals')
+
+- if (@clusters || []).blank?
+  p.text-muted = t('.messages.no_clusters')
+- else
+  - (@clusters || []).each do |cluster|
+    - collapse_id = "availability_cluster_#{cluster.id}"
+    ruby:
+      cluster_title =
+        if current_locale == 'en' && cluster.respond_to?(:name_en) && cluster.name_en.present?
+          cluster.name_en
+        else
+          cluster.try(:name_ru).presence || cluster.try(:name).presence || cluster.host
+        end
+
+    .panel.panel-info
+      .panel-heading
+        a.cluster-toggle.collapsed data-toggle="collapse" href="##{collapse_id}" role="button" aria-expanded="false" aria-controls=collapse_id style="display:flex; align-items:center; justify-content:space-between; text-decoration:none;"
+          span
+            strong = cluster_title
+            |  (#{cluster.host})
+          span.toggle-icon ▸
+
+      .panel-collapse.collapse.in id=collapse_id
+        .panel-body
+          .availability-subtitle = t('.chart_title')
+          .availability-chart-wrap
+            - data_url = url_for(controller: '/core/admin/analytics',
+                                action: :availability_data,
+                                cluster_id: cluster.id,
+                                from: from_val,
+                                to: to_val,
+                                metric: 'states')
+            canvas.availability-chart id="availability_chart_#{cluster.id}" data-url=data_url data-pie-canvas-id="availability_pie_#{cluster.id}" data-pie-empty-id="availability_pie_empty_#{cluster.id}" data-summary-id="availability_summary_#{cluster.id}"
+          .availability-summary id="availability_summary_#{cluster.id}" style="display:none;"
+          .availability-subtitle = t('.pie_title')
+
+          .availability-pie-wrap
+            canvas.availability-pie id="availability_pie_#{cluster.id}" style="display:block; width:100%; height:100%;"
+            .availability-pie-empty id="availability_pie_empty_#{cluster.id}" style="display:none;"
+              = t('.pie_empty_message')
+
+javascript:
+  (function() {
+    var I18N = #{js_i18n.to_json.html_safe};
+
+    function registerChartPluginsOnce() {
+      if (typeof Chart === 'undefined') return;
+      if (Chart.__octoPluginsRegistered) return;
+
+      var ann = window.ChartAnnotation || window['chartjs-plugin-annotation'];
+      if (ann) Chart.register(ann);
+
+      Chart.__octoPluginsRegistered = true;
+    }
+
+    function sevBg(sev) {
+      if (sev === 'incident') return 'rgba(217, 83, 79, 0.14)';
+      if (sev === 'warning')  return 'rgba(240, 173, 78, 0.14)';
+      return 'rgba(91, 192, 222, 0.10)';
+    }
+
+    function sevBorder(sev) {
+      if (sev === 'incident') return 'rgba(217, 83, 79, 0.55)';
+      if (sev === 'warning')  return 'rgba(240, 173, 78, 0.55)';
+      return 'rgba(91, 192, 222, 0.45)';
+    }
+
+    function sevLabel(sev) {
+      if (sev === 'incident') return I18N.severity_labels.incident;
+      if (sev === 'warning')  return I18N.severity_labels.warning;
+      return I18N.severity_labels.info;
+    }
+
+    function mergeIntervals(list) {
+      if (!list.length) return [];
+      list.sort(function(a, b) { return a.fromMs - b.fromMs; });
+
+      var out = [];
+      var cur = { fromMs: list[0].fromMs, toMs: list[0].toMs };
+
+      for (var i = 1; i < list.length; i++) {
+        var it = list[i];
+        if (it.fromMs <= cur.toMs + 60 * 1000) {
+          cur.toMs = Math.max(cur.toMs, it.toMs);
+        } else {
+          out.push(cur);
+          cur = { fromMs: it.fromMs, toMs: it.toMs };
+        }
+      }
+
+      out.push(cur);
+      return out;
+    }
+
+    function buildAnnotations(comments, maxY, minMs, maxMs) {
+      var groups = { info: [], warning: [], incident: [] };
+
+      comments.forEach(function(c) {
+        var sev = (c.severity || 'info').toString();
+        if (!groups[sev]) sev = 'info';
+
+        var fromMs = Date.parse(c.from);
+        var toMs   = Date.parse(c.to);
+
+        if (isNaN(fromMs) || isNaN(toMs)) return;
+
+        fromMs = Math.max(fromMs, minMs);
+        toMs   = Math.min(toMs, maxMs);
+
+        if (toMs <= fromMs) return;
+
+        groups[sev].push({ fromMs: fromMs, toMs: toMs });
+      });
+
+      var annotations = {};
+      Object.keys(groups).forEach(function(sev) {
+        var merged = mergeIntervals(groups[sev]);
+        merged.forEach(function(it, idx) {
+          var key = sev + '_' + idx;
+          annotations[key] = {
+            type: 'box',
+            xMin: new Date(it.fromMs),
+            xMax: new Date(it.toMs),
+            yMin: 0,
+            yMax: maxY,
+            backgroundColor: sevBg(sev),
+            borderColor: sevBorder(sev),
+            borderWidth: 1,
+            drawTime: 'beforeDatasetsDraw'
+          };
+        });
+      });
+
+      return annotations;
+    }
+
+    function installLegendForComments(chart, hasComments) {
+      if (!hasComments) return;
+
+      var defaultGen = Chart.defaults.plugins.legend.labels.generateLabels;
+
+      chart.options.plugins.legend.labels.generateLabels = function(c) {
+        var labels = defaultGen(c);
+
+        ['info', 'warning', 'incident'].forEach(function(sev) {
+          labels.push({
+            text: sevLabel(sev),
+            fillStyle: sevBg(sev),
+            strokeStyle: sevBorder(sev),
+            lineWidth: 1,
+            hidden: false,
+            _isCommentLayer: true,
+            _sev: sev
+          });
+        });
+
+        return labels;
+      };
+
+      chart.options.plugins.legend.onClick = function(e, legendItem, legend) {
+        var c = legend.chart;
+
+        if (legendItem && legendItem._isCommentLayer) {
+          var sev = legendItem._sev;
+          c.$commentLayerState = c.$commentLayerState || { info: true, warning: true, incident: true };
+          c.$commentLayerState[sev] = !c.$commentLayerState[sev];
+
+          var anns = c.options.plugins.annotation.annotations || {};
+          Object.keys(anns).forEach(function(k) {
+            if (k.indexOf(sev + '_') === 0) {
+              anns[k].display = c.$commentLayerState[sev];
+            }
+          });
+
+          c.update();
+          return;
+        }
+
+        Chart.defaults.plugins.legend.onClick(e, legendItem, legend);
+      };
+    }
+
+    async function renderOne(canvas) {
+      if (!canvas || typeof Chart === 'undefined') return;
+
+      var url = canvas.getAttribute('data-url');
+      if (!url) return;
+
+      var resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      if (!resp.ok) return;
+
+      var payload = await resp.json();
+
+      var pieCanvasId = canvas.getAttribute('data-pie-canvas-id');
+      var pieCanvas = pieCanvasId ? document.getElementById(pieCanvasId) : null;
+
+      var pieEmptyId = canvas.getAttribute('data-pie-empty-id');
+      var pieEmptyEl = pieEmptyId ? document.getElementById(pieEmptyId) : null;
+
+      var summaryId = canvas.getAttribute('data-summary-id');
+      var summaryEl = summaryId ? document.getElementById(summaryId) : null;
+
+      renderAvailabilitySummary(summaryEl, payload);
+
+      var series = payload.series || null;
+      var states = payload.states || (series ? Object.keys(series) : []);
+
+      console.log('[availability_data]', url, {
+        total_nodes: payload.total_nodes,
+        metric: payload.metric,
+        states: states,
+        has_series: !!series,
+        comments_len: (payload.comments || []).length
+      });
+
+      var STATE_LABELS = I18N.state_labels;
+
+      var STATE_COLORS = {
+        alloc: '#1f77b4',
+        idle: '#5dae5d',
+        mix: '#ff7f0e',
+        comp: '#9467bd',
+        drain: '#d62728',
+        drng: '#8c564b',
+        down: '#7f7f7f',
+        maint: '#17becf',
+        reserved: '#bcbd22',
+        available: '#006527'
+      };
+
+      var FALLBACK = ['#1f77b4','#2ca02c','#ff7f0e','#9467bd','#d62728','#8c564b','#7f7f7f','#17becf','#bcbd22','#e377c2'];
+
+      function stateLabel(st) {
+        var s = (st || '').toString();
+        return STATE_LABELS[s] || s;
+      }
+
+      function stateColor(st, idx) {
+        var s = (st || '').toString();
+        return STATE_COLORS[s] || FALLBACK[idx % FALLBACK.length];
+      }
+
+      function formatNumber(value, digits) {
+        var num = Number(value);
+        if (!isFinite(num)) num = 0;
+        return num.toFixed(digits);
+      }
+
+      function formatDateTime(value) {
+        var d = new Date(value);
+        if (isNaN(d.getTime())) return value;
+        return d.toLocaleString("#{current_locale}");
+      }
+
+      function renderAvailabilitySummary(summaryEl, payload) {
+        if (!summaryEl) return;
+
+        var summary = payload && payload.availability_summary ? payload.availability_summary : null;
+
+        if (!summary) {
+          summaryEl.style.display = 'none';
+          summaryEl.innerHTML = '';
+          return;
+        }
+
+        var totalNodes = Number(summary.total_nodes) || Number(payload.total_nodes) || 0;
+        var maxAvailable = Number(summary.max_available) || 0;
+        var avgAvailable = Number(summary.avg_available) || 0;
+        var avgPercent = Number(summary.avg_available_percent) || 0;
+        var maxPercent = Number(summary.max_available_percent) || 0;
+        var intervals = summary.max_intervals || [];
+
+        var periodText = I18N.summary_labels.no_data;
+
+        if (intervals.length) {
+          var first = intervals[0];
+          periodText = formatDateTime(first.from) + ' — ' + formatDateTime(first.to);
+
+          if (intervals.length > 1) {
+            periodText += ' +' + (intervals.length - 1);
+          }
+        }
+
+        summaryEl.innerHTML =
+          '<div class="availability-summary-card">' +
+            '<div class="summary-title">' + I18N.summary_labels.max_available + '</div>' +
+            '<div class="summary-value">' +
+              formatNumber(maxAvailable, 0) + ' ' + I18N.summary_labels.nodes_from + ' ' + totalNodes +
+            '</div>' +
+            '<div class="summary-note">' + formatNumber(maxPercent, 2) + '%</div>' +
+          '</div>' +
+          '<div class="availability-summary-card">' +
+            '<div class="summary-title">' + I18N.summary_labels.avg_available + '</div>' +
+            '<div class="summary-value">' +
+              formatNumber(avgAvailable, 2) + ' ' + I18N.summary_labels.nodes +
+            '</div>' +
+            '<div class="summary-note">' +
+              I18N.summary_labels.avg_availability + ': ' + formatNumber(avgPercent, 2) + '%' +
+            '</div>' +
+          '</div>' +
+          '<div class="availability-summary-card">' +
+            '<div class="summary-title">' + I18N.summary_labels.max_period + '</div>' +
+            '<div class="summary-value" style="font-size:14px;">' + periodText + '</div>' +
+          '</div>';
+
+        summaryEl.style.display = 'grid';
+      }
+
+      function addAvailabilitySummaryAnnotations(annotations, payload, maxY, minMs, maxMs) {
+        var summary = payload && payload.availability_summary ? payload.availability_summary : null;
+        if (!summary) return annotations;
+
+        var avgAvailable = Number(summary.avg_available) || 0;
+
+        if (avgAvailable > 0) {
+          annotations.avg_available_line = {
+            type: 'line',
+            yMin: avgAvailable,
+            yMax: avgAvailable,
+            borderColor: 'rgba(0, 101, 39, 0.75)',
+            borderWidth: 2,
+            borderDash: [6, 6],
+            label: {
+              display: true,
+              content: I18N.summary_labels.avg_line + ': ' + avgAvailable.toFixed(2),
+              position: 'end'
+            },
+            drawTime: 'afterDatasetsDraw'
+          };
+        }
+
+        var intervals = summary.max_intervals || [];
+
+        intervals.forEach(function(interval, idx) {
+          var fromMs = Date.parse(interval.from);
+          var toMs = Date.parse(interval.to);
+
+          if (isNaN(fromMs) || isNaN(toMs)) return;
+
+          fromMs = Math.max(fromMs, minMs);
+          toMs = Math.min(toMs, maxMs);
+
+          if (toMs <= fromMs) return;
+
+          annotations['max_available_' + idx] = {
+            type: 'box',
+            xMin: new Date(fromMs),
+            xMax: new Date(toMs),
+            yMin: 0,
+            yMax: maxY,
+            backgroundColor: 'rgba(0, 101, 39, 0.06)',
+            borderColor: 'rgba(0, 101, 39, 0.20)',
+            borderWidth: 1,
+            drawTime: 'beforeDatasetsDraw'
+          };
+        });
+
+        return annotations;
+      }
+
+      function renderPieChart(pieCanvas, pieEmptyEl, payload) {
+        if (!pieCanvas || typeof Chart === 'undefined') return;
+
+        var pie = payload && payload.pie ? payload.pie : null;
+        var items = (pie && pie.items) ? pie.items : [];
+
+        if (pieCanvas._chartInstance) {
+          pieCanvas._chartInstance.destroy();
+          pieCanvas._chartInstance = null;
+        }
+
+        if (!items.length) {
+          pieCanvas.style.display = 'none';
+          if (pieEmptyEl) pieEmptyEl.style.display = 'block';
+          return;
+        }
+
+        pieCanvas.style.display = 'block';
+        if (pieEmptyEl) pieEmptyEl.style.display = 'none';
+
+        var labels = items.map(function(item) {
+          return stateLabel(item.state);
+        });
+
+        var data = items.map(function(item) {
+          return Number(item.percent) || 0;
+        });
+
+        var ctx = pieCanvas.getContext('2d');
+
+        pieCanvas._chartInstance = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'right',
+                labels: {
+                  boxWidth: 18,
+                  padding: 12,
+                  font: { size: 14 }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    var item = items[context.dataIndex];
+                    return stateLabel(item.state) + ': ' +
+                            (Number(item.percent) || 0).toFixed(2) + '% (' +
+                            (Number(item.node_hours) || 0).toFixed(2) + ' ' + I18N.node_hours_suffix + ')';
+                  }
+                }
+              },
+              title: { display: false }
+            }
+          }
+        });
+      }
+      var datasets = [];
+      var maxPointY = 0;
+
+      if (series && states.length) {
+        states.forEach(function(st, idx) {
+          var pts = (series[st] || []).map(function(p) { return { x: p.x, y: p.y }; });
+          if (!pts.length) return;
+
+          for (var i = 0; i < pts.length; i++) {
+            if (pts[i].y > maxPointY) maxPointY = pts[i].y;
+          }
+
+          var col = stateColor(st, idx);
+
+          datasets.push({
+            label: stateLabel(st),
+            data: pts,
+            showLine: true,
+            tension: 0,
+            borderWidth: 2,
+            pointRadius: 2,
+            pointHoverRadius: 5,
+            pointHitRadius: 10,
+            pointBorderWidth: 1,
+            pointBackgroundColor: col,
+            pointBorderColor: col,
+            borderColor: col,
+            backgroundColor: col
+          });
+        });
+      }
+
+      if (!datasets.length) {
+        if (canvas._chartInstance) {
+          canvas._chartInstance.destroy();
+          canvas._chartInstance = null;
+        }
+
+        var wrap = canvas.parentElement;
+        if (wrap) {
+          wrap.classList.add('availability-empty');
+          canvas.style.display = 'none';
+
+          var msg = wrap.querySelector('.availability-empty-message');
+          if (!msg) {
+            msg = document.createElement('div');
+            msg.className = 'availability-empty-message text-muted';
+            wrap.appendChild(msg);
+          }
+          msg.textContent = I18N.empty_chart_message;
+        }
+        if (pieCanvas) {
+          if (pieCanvas._chartInstance) {
+            pieCanvas._chartInstance.destroy();
+            pieCanvas._chartInstance = null;
+          }
+          pieCanvas.style.display = 'none';
+        }
+
+        if (pieEmptyEl) {
+          pieEmptyEl.style.display = 'block';
+        }
+        return;
+      }
+
+      var wrap2 = canvas.parentElement;
+      if (wrap2) {
+        wrap2.classList.remove('availability-empty');
+        var old = wrap2.querySelector('.availability-empty-message');
+        if (old) old.remove();
+      }
+      canvas.style.display = 'block';
+
+      var comments   = payload.comments || [];
+      var totalNodes = payload.total_nodes || 0;
+
+      var maxY = Math.max(totalNodes, maxPointY, 1);
+      var minX = payload.from;
+      var maxX = payload.to;
+      var minMs = Date.parse(minX);
+      var maxMs = Date.parse(maxX);
+      var annotations = buildAnnotations(comments, maxY, minMs, maxMs);
+      annotations = addAvailabilitySummaryAnnotations(annotations, payload, maxY, minMs, maxMs);
+
+      if (canvas._chartInstance) canvas._chartInstance.destroy();
+
+      var ctx = canvas.getContext('2d');
+
+      var chart = new Chart(ctx, {
+        type: 'line',
+        data: { datasets: datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          scales: {
+            x: {
+              type: 'time',
+              min: minX,
+              max: maxX,
+              time: {
+                unit: 'day',
+                displayFormats: { day: 'dd.MM' },
+                tooltipFormat: 'dd.MM.yyyy HH:mm'
+              },
+              ticks: { autoSkip: true, maxTicksLimit: 12 }
+            },
+            y: {
+              beginAtZero: true,
+              suggestedMax: maxY,
+              title: { display: true, text: I18N.y_axis_title }
+            }
+          },
+          plugins: {
+            legend: { display: true, labels: { boxWidth: 30 } },
+            annotation: { annotations: annotations }
+          }
+        }
+      });
+
+      installLegendForComments(chart, comments.length > 0);
+
+      canvas._chartInstance = chart;
+      chart.update();
+
+      renderPieChart(pieCanvas, pieEmptyEl, payload);
+    }
+
+    function initCharts() {
+      registerChartPluginsOnce();
+
+      document.querySelectorAll('canvas.availability-chart').forEach(function(c) {
+        renderOne(c);
+      });
+
+      document.querySelectorAll('.panel-collapse').forEach(function(el) {
+        el.addEventListener('shown.bs.collapse', function() {
+          var canvas = el.querySelector('canvas.availability-chart');
+          if (!canvas) return;
+
+          if (canvas._chartInstance) {
+            canvas._chartInstance.resize();
+            canvas._chartInstance.update();
+          } else {
+            renderOne(canvas);
+          }
+        });
+      });
+    }
+
+    function initDateTimePickers() {
+      if (typeof flatpickr === 'undefined') return;
+      var els = document.querySelectorAll('.datetimepicker');
+
+      var currentLocale = "#{current_locale}";
+      var fpLocale =
+        (flatpickr.l10ns && flatpickr.l10ns[currentLocale]) ||
+        (flatpickr.l10ns && flatpickr.l10ns.default) ||
+        currentLocale;
+
+      els.forEach(function(el) {
+        if (el._flatpickr) return;
+        flatpickr(el, {
+          enableTime: true,
+          time_24hr: true,
+          allowInput: true,
+          minuteIncrement: 1,
+          dateFormat: "Y-m-d H:i",
+          altInput: true,
+          altFormat: "d.m.Y H:i",
+          locale: fpLocale
+        });
+      });
+    }
+
+    function forceFullReloadOnShow() {
+      var form = document.querySelector('form.availability-filters');
+      if (!form) return;
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var params = new URLSearchParams(new FormData(form));
+
+        params.delete('commit');
+        params.set('_ts', Date.now().toString());
+
+        var action = form.getAttribute('action') || window.location.pathname;
+        var nextUrl = action + '?' + params.toString();
+
+        window.location.assign(nextUrl);
+      });
+    }
+
+    function initAll() {
+      initDateTimePickers();
+      forceFullReloadOnShow();
+      initCharts();
+    }
+
+    document.addEventListener('DOMContentLoaded', initAll);
+    document.addEventListener('turbolinks:load', initAll);
+    document.addEventListener('turbo:load', initAll);
+  })();

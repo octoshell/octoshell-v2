@@ -1,0 +1,442 @@
+- current_locale = I18n.locale.to_s
+
+- content_for :page_title do
+  = t('.page_title')
+
+.div.page-header
+  h1 = t('.page_title')
+
+  = form_with url: url_for(controller: '/core/admin/analytics', action: 'sinfo'),
+              method: :post,
+              local: true,
+              data: { turbo: false, turbolinks: false },
+              html: { style: 'display:flex; gap:10px; align-items:center;' } do
+
+    = select_tag :cluster_id,
+                options_from_collection_for_select(@clusters || [], :id, :name, params[:cluster_id]),
+                include_blank: t('.form.select_cluster'),
+                class: 'form-control',
+                required: true
+
+    = submit_tag t('.form.update_nodes'), class: 'btn btn-primary'
+
+style
+  | .analytics-comments-form .form-group + .form-group {
+  |   margin-top: 15px;
+  | }
+  | .analytics-comments-form .required-asterisk {
+  |   color: #d9534f;
+  |   margin-left: 3px;
+  | }
+  | .cluster-toggle .toggle-icon {
+  |   font-size: 30px;
+  |   transition: transform 0.2s ease;
+  | }
+  |
+  | .cluster-toggle:not(.collapsed) .toggle-icon {
+  |   transform: rotate(90deg);
+  | }
+  | .analytics-comments-form .form-group > label {
+  |   display: block;
+  |   margin-bottom: 5px;
+  | }
+  | .analytics-comments-form .datetime-select-group {
+  |   display: flex;
+  |   flex-wrap: wrap;
+  |   gap: 4px;
+  | }
+  | .analytics-comments-form .datetime-select-group select {
+  |   min-width: 80px;
+  | }
+  | .analytics-comments-form .section-header {
+  |   margin-top: 25px;
+  |   margin-bottom: 10px;
+  | }
+  | .analytics-comments-form h4 {
+  |   margin-top: 15px;
+  | }
+  | .analytics-comments-form .datetimepicker {
+  |   max-width: 260px;
+  | }
+  | .analytics-overview-row { margin-top: 12px; }
+  | .snapshots-table-wrap {
+  |   max-height: 360px;
+  |   overflow: auto;
+  |   border: 1px solid #ddd;
+  |   border-radius: 4px;
+  | }
+  | .snapshots-table-wrap table { margin: 0; }
+  | #snapshots_table { font-size: 12px; }
+  | #snapshots_table th, #snapshots_table td {
+  |   padding: 3px 6px;
+  |   white-space: nowrap;
+  | }
+  | .snapshots-table-wrap thead th {
+  |   position: sticky;
+  |   top: 0;
+  |   background: #fff;
+  |   z-index: 1;
+  | }
+  | .chart-container.overview-pie {
+  |   max-width: 460px;
+  |   height: 320px;
+  |   margin: 0 auto;
+  | }
+  | .chart-container.overview-pie canvas {
+  |   width: 100% !important;
+  |   height: 100% !important;
+  |   display: block;
+  | }
+  | .analytics-overview-title {
+  |   margin: 0 0 12px 0;
+  |   font-size: 18px;
+  |   font-weight: 700;
+  |   line-height: 1.2;
+  | }
+
+- active_tab = params[:active_tab].presence || params[:tab].presence || @active_tab || 'analytics'
+- analytics_active = (active_tab == 'analytics')
+- comments_active  = (active_tab == 'comments')
+
+= render 'core/admin/analytics/tabs', active_tab: active_tab
+
+.tab-content style="margin-top: 20px;"
+  .tab-pane#analytics_tab class=(analytics_active ? 'active' : '')
+
+    - sinfo_log    = @sinfo_log
+    - sinfo_result = @sinfo_result
+    - sinfo_error  = @sinfo_error
+
+    - show_sinfo_panel = flash[:alert].present? || flash[:notice].present? || sinfo_error.present? || sinfo_log.present? || sinfo_result.present?
+
+    ruby:
+      state_i18n = {
+        'alloc'    => t('.states.alloc'),
+        'idle'     => t('.states.idle'),
+        'comp'     => t('.states.comp'),
+        'drain'    => t('.states.drain'),
+        'drng'     => t('.states.drng'),
+        'down'     => t('.states.down'),
+        'maint'    => t('.states.maint'),
+        'reserved' => t('.states.reserved'),
+        'mix'      => t('.states.mix')
+      }
+
+      human_state = ->(st) { "#{state_i18n[st.to_s] || st.to_s} (#{st})" }
+
+    - if show_sinfo_panel
+      .panel.panel-default id="sinfo_log_panel"
+        .panel-heading = t('.sinfo_panel.heading')
+        .panel-body
+          - if flash[:alert].present?
+            .alert.alert-danger = flash[:alert]
+          - if flash[:notice].present?
+            .alert.alert-success = flash[:notice]
+
+          - if sinfo_error.present?
+            p.text-muted = t('.sinfo_panel.error_details')
+            pre style="max-height: 220px; overflow: auto; white-space: pre-wrap;" = sinfo_error
+
+          - if sinfo_log.present?
+            p.text-muted = t('.sinfo_panel.command_output')
+            pre#sinfo_log style="max-height: 360px; overflow: auto; white-space: pre-wrap" = sinfo_log
+
+          - if sinfo_result.present?
+            hr
+            p.text-muted = t('.sinfo_panel.parse_result')
+            pre#sinfo_result style="max-height: 220px; overflow: auto; white-space: pre-wrap" = sinfo_result.to_json
+
+    - if @clusters.blank?
+      .alert.alert-info = t('.messages.no_clusters_data')
+    - else
+      - @clusters.each do |cluster|
+        - stats = @cluster_stats[cluster.id] || {}
+        - collapse_id = "cluster_panel_#{cluster.id}"
+
+        .panel.panel-info
+          .panel-heading
+            a.cluster-toggle.collapsed data-toggle="collapse" href="##{collapse_id}" role="button" aria-expanded="false" aria-controls=collapse_id style="display:flex; align-items:center; justify-content:space-between; text-decoration:none;"
+              span
+                strong = cluster.name
+                |  (#{cluster.host})
+                - if stats[:total_nodes].to_i > 0
+                  span.text-muted style="margin-left: 10px;"
+                    = t('.labels.total_nodes', count: stats[:total_nodes])
+
+              span.toggle-icon ▸
+
+          .panel-collapse.collapse.in id=collapse_id
+            .panel-body
+              - total = stats[:total_nodes].to_f
+              - state_counts = stats[:states] || {}
+              - issues = stats[:issues].to_i
+
+              - if total.zero?
+                p.text-muted = t('.messages.no_current_states_for_system')
+              - else
+                h4 = t('.headings.current_slice')
+                table.table.table-condensed.table-bordered
+                  thead
+                    tr
+                      th = t('.table.state')
+                      th = t('.table.nodes')
+                      th = t('.table.share')
+                  tbody
+                    - Core::Analytics::NodeState::STATES.each do |state|
+                      - count = state_counts[state] || 0
+                      - next if count.zero?
+                      tr
+                        td = human_state.call(state)
+                        td = count
+                        - percent = ((count / total) * 100).round(1)
+                        td = "#{percent} %"
+
+                - if issues > 0
+                  p
+                    span.label.label-danger = t('.labels.nodes_with_reason', count: issues)
+                - else
+                  p.text-muted = t('.messages.no_nodes_with_reason')
+
+              - partitions = @partition_stats[cluster.id] || {}
+              - if partitions.present?
+                hr
+                table.table.table-condensed.table-striped
+                  thead
+                    tr
+                      th = t('.table.partition')
+                      th = t('.table.total_nodes_by_state')
+                      th = t('.table.alloc')
+                      th = t('.table.idle')
+                      th = t('.table.down')
+                      th = t('.table.other')
+                  tbody
+                    - partitions.each_value do |pstats|
+                      - states = pstats[:states] || {}
+                      - total_p = states.values.sum
+                      tr
+                        td = pstats[:name]
+                        td = total_p
+                        td = states['alloc'].to_i
+                        td = states['idle'].to_i
+                        td = states['down'].to_i
+                        - others = total_p - states['alloc'].to_i - states['idle'].to_i - states['down'].to_i
+                        td = others
+
+      .row.analytics-overview-row
+        .col-md-7.col-sm-12
+          h4.analytics-overview-title = t('.headings.snapshots')
+
+          - if @latest_snapshots.blank?
+            p.text-muted = t('.messages.no_snapshots')
+          - else
+            .snapshots-table-wrap
+              table#snapshots_table.table.table-striped.table-condensed.table-bordered
+                thead
+                  tr
+                    th = t('.table.snapshot_time')
+                    th = t('.table.system')
+                    th = t('.table.total')
+                    th = t('.table.alloc')
+                    th = t('.table.idle')
+                    th = t('.table.down')
+                    th = t('.table.other')
+                tbody
+                  - @latest_snapshots.each do |snap|
+                    - stats = @snapshot_stats[snap.id] || {}
+                    - total = stats.values.sum
+                    - alloc = stats['alloc'].to_i
+                    - idle  = stats['idle'].to_i
+                    - down  = stats['down'].to_i
+                    - others = total - alloc - idle - down
+                    tr
+                      td = (defined?(l) ? l(snap.captured_at, format: :short) : snap.captured_at)
+                      td = snap.cluster&.name || snap.cluster&.host || '—'
+                      td = total
+                      td = alloc
+                      td = idle
+                      td = down
+                      td = others
+
+            - if @latest_snapshots.size > 5
+              .text-center style="margin-top: 10px;"
+                button#load_more_snapshots.btn.btn-default type="button"
+                  = t('.buttons.show_more_snapshots')
+
+          javascript:
+            (function() {
+              function setupSnapshotsPagination() {
+                var table = document.getElementById('snapshots_table');
+                if (!table) { return; }
+
+                var rows  = table.querySelectorAll('tbody tr');
+                if (!rows.length) { return; }
+
+                var step    = 5;
+                var visible = 0;
+
+                function updateVisibility() {
+                  for (var i = 0; i < rows.length; i++) {
+                    rows[i].style.display = (i < visible) ? '' : 'none';
+                  }
+
+                  var btn = document.getElementById('load_more_snapshots');
+                  if (!btn) { return; }
+
+                  if (visible >= rows.length) {
+                    btn.style.display = 'none';
+                  } else {
+                    btn.style.display = '';
+                  }
+                }
+
+                visible = Math.min(step, rows.length);
+                updateVisibility();
+
+                var btn = document.getElementById('load_more_snapshots');
+                if (btn) {
+                  btn.addEventListener('click', function() {
+                    visible = Math.min(visible + step, rows.length);
+                    updateVisibility();
+                  });
+                }
+              }
+
+              document.addEventListener('DOMContentLoaded', setupSnapshotsPagination);
+              document.addEventListener('turbolinks:load', setupSnapshotsPagination);
+            })();
+
+        .col-md-5.col-sm-12
+          h4.analytics-overview-title = t('.headings.current_node_state')
+
+          - if @global_state_counts.blank?
+            p.text-muted = t('.messages.no_global_state_data')
+          - else
+            = javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js'
+
+            - keys   = Core::Analytics::NodeState::STATES.select { |st| @global_state_counts[st].to_i > 0 }
+            - labels = keys.map { |st| human_state.call(st) }
+            - data   = keys.map { |st| @global_state_counts[st].to_i }
+
+            .chart-container.overview-pie
+              canvas#states_pie_chart data-labels=labels.to_json data-values=data.to_json style="display:block; width:100%; height:auto;"
+
+            javascript:
+              (function() {
+                function renderStatesPieChart() {
+                  var canvas = document.getElementById('states_pie_chart');
+                  if (!canvas) { return; }
+                  if (typeof Chart === 'undefined') { return; }
+
+                  var labels = JSON.parse(canvas.dataset.labels || '[]');
+                  var data   = JSON.parse(canvas.dataset.values || '[]');
+
+                  if (!labels.length || !data.length) { return; }
+
+                  var ctx = canvas.getContext('2d');
+
+                  new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                      labels: labels,
+                      datasets: [{ data: data }]
+                    },
+                    options: {
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          position: 'right',
+                          labels: {
+                            boxWidth: 18,
+                            padding: 12,
+                            font: { size: 14 }
+                          }
+                        },
+                        title: { display: false }
+                      }
+                    }
+                  });
+                }
+
+                document.addEventListener('DOMContentLoaded', renderStatesPieChart);
+                document.addEventListener('turbolinks:load', renderStatesPieChart);
+              })();
+
+  .tab-pane#comments_tab class=(comments_active ? 'active' : '')
+    = render 'core/admin/analytics/comments_tab', comments_active: comments_active
+
+    javascript:
+      (function() {
+        function initDateTimePickers() {
+          if (typeof flatpickr === 'undefined') return;
+
+          var els = document.querySelectorAll('.datetimepicker');
+          if (!els.length) return;
+
+          var currentLocale = "#{current_locale}";
+          var fpLocale =
+            (flatpickr.l10ns && flatpickr.l10ns[currentLocale]) ||
+            (flatpickr.l10ns && flatpickr.l10ns.default) ||
+            currentLocale;
+
+          els.forEach(function(el) {
+            if (el._flatpickr) return;
+
+            flatpickr(el, {
+              enableTime: true,
+              time_24hr: true,
+              allowInput: true,
+              minuteIncrement: 1,
+              dateFormat: "Y-m-d H:i",
+              altInput: true,
+              altFormat: "d.m.Y H:i",
+              locale: fpLocale
+            });
+          });
+        }
+
+        document.addEventListener('DOMContentLoaded', initDateTimePickers);
+        document.addEventListener('turbolinks:load', initDateTimePickers);
+      })();
+
+javascript:
+  (function() {
+    function init() {
+      var select = document.getElementById('comment_cluster_id');
+      if (select && select.dataset.reloadBound !== '1') {
+        select.dataset.reloadBound = '1';
+
+        select.addEventListener('change', function() {
+          var cid  = (select.value || '').trim();
+          var base = select.dataset.commentsPath || window.location.pathname;
+
+          var next = base;
+          if (cid) {
+            next = base + (base.indexOf('?') >= 0 ? '&' : '?') + 'cluster_id=' + encodeURIComponent(cid);
+          }
+
+          window.location.href = next;
+        });
+      }
+
+      var qEl = document.getElementById('node_search_input');
+      if (qEl && qEl.dataset.searchBound !== '1') {
+        qEl.dataset.searchBound = '1';
+
+        qEl.addEventListener('input', function() {
+          var q = (qEl.value || '').toLowerCase().trim();
+
+          document.querySelectorAll('.node-checkbox').forEach(function(row) {
+            var text = (row.getAttribute('data-node-text') || '');
+            row.style.display = (!q || text.indexOf(q) >= 0) ? '' : 'none';
+          });
+        });
+      }
+    }
+
+    init();
+
+    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('turbolinks:load', init);
+    document.addEventListener('turbo:load', init);
+  })();

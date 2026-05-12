@@ -1,0 +1,420 @@
+- current_locale = I18n.locale.to_s
+
+ruby:
+  severity_labels = {
+    'info' => t('.severity.info'),
+    'warning' => t('.severity.warning'),
+    'incident' => t('.severity.incident')
+  }
+
+  severity_badge = {
+    'info' => 'label-default',
+    'warning' => 'label-warning',
+    'incident' => 'label-danger'
+  }
+
+  js_i18n = {
+    choose_reason: t('.js.choose_reason'),
+    choose_category_first: t('.js.choose_category_first')
+  }
+
+= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css'
+= javascript_include_tag 'https://cdn.jsdelivr.net/npm/flatpickr'
+= javascript_include_tag 'https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js'
+
+.panel.panel-default
+  .panel-heading
+    strong = t('.new_comment.heading')
+  .panel-body
+    - if @comment && @comment.errors.any?
+      .alert.alert-danger
+        strong = t('.errors.save_error')
+        ul style="margin-top: 8px;"
+          - @comment.errors.full_messages.each do |msg|
+            li = msg
+
+    = form_for @comment,
+               as: :comment,
+               url: url_for(controller: '/core/admin/analytics', action: 'create_comment'),
+               html: { class: 'analytics-comments-form' } do |f|
+
+      - selected_cluster_id = (@comment && @comment.cluster_id.present?) ? @comment.cluster_id : (params[:cluster_id].presence || params.dig(:comment, :cluster_id).presence)
+
+      ruby:
+        reason_groups = Core::Comments::Comment::REASON_GROUPS || []
+
+        selected_group_id =
+          ((@comment&.reason_group_id).presence ||
+          params.dig(:comment, :reason_group_id) ||
+          params.dig(:comments_comment, :reason_group_id)).to_s
+
+        selected_reason_id =
+          ((@comment&.reason_id).presence ||
+          params.dig(:comment, :reason_id) ||
+          params.dig(:comments_comment, :reason_id)).to_s
+
+        if reason_groups.blank?
+          logger.error(t('.logs.no_reason_groups'))
+          reason_groups = []
+        end
+
+        reason_options = reason_groups.flat_map do |group|
+          reasons = group[:reasons] || []
+          if reasons.blank?
+            logger.error(t('.logs.no_reasons_in_group', group_name: group[:name]))
+            reasons = []
+          end
+
+          reasons.map do |r|
+            [group[:id].to_s, group[:name].to_s, r[:id].to_s, r[:name].to_s]
+          end
+        end
+
+        reason_options_json = reason_options.to_json
+
+      .row
+        .col-md-4.col-sm-12
+          .form-group
+            = f.label :cluster_id do
+              = t('.fields.system')
+              span.required-asterisk title=t('.required_field_title') *
+
+            = f.collection_select :cluster_id,
+                                  (@clusters || []),
+                                  :id, :name,
+                                  { include_blank: t('.fields.select_cluster'), selected: selected_cluster_id },
+                                  { class: 'form-control',
+                                    id: 'comment_cluster_id' }
+
+        .col-md-4.col-sm-12
+          .form-group
+            = f.label :reason_group_id do
+              = t('.fields.category')
+              span.required-asterisk title=t('.required_field_title') *
+
+            = f.select :reason_group_id,
+                       reason_groups.map { |g| [g[:name], g[:id]] },
+                       { include_blank: t('.fields.select_category'), selected: selected_group_id },
+                       class: 'form-control',
+                       required: true,
+                       id: 'comment_reason_group_id'
+
+        .col-md-4.col-sm-12
+          .form-group style="margin-top: 25px;"
+            = button_tag t('.buttons.show_available_nodes'),
+                        type: 'submit',
+                        class: 'btn btn-primary btn-block',
+                        id: 'reload_nodes_btn',
+                        formmethod: 'get',
+                        formaction: url_for(controller: '/core/admin/analytics', action: 'create_comment'),
+                        formnovalidate: true
+
+      p.help-block style="margin-top: 6px;"
+        = t('.help.comment_binding')
+
+      - selected_group = reason_groups.find { |g| g[:id].to_s == selected_group_id.to_s }
+      - reasons_for_group = selected_group ? selected_group[:reasons] : []
+      - reason_blank = selected_group ? t('.fields.select_reason') : t('.fields.select_category_first')
+
+      .form-group
+        = f.label :reason_id do
+          = t('.fields.reason')
+          span.required-asterisk title=t('.required_field_title') *
+
+        = f.select :reason_id,
+                   options_for_select(reasons_for_group.map { |r| [r[:name], r[:id].to_s] }, selected_reason_id.to_s),
+                   { include_blank: reason_blank },
+                   class: 'form-control',
+                   required: true,
+                   id: 'comment_reason_id',
+                   data: { selected: selected_reason_id, reasons: reason_options_json }
+
+      .form-group
+        = f.label :title do
+          = t('.fields.title')
+          span.required-asterisk title=t('.required_field_title') *
+
+        = f.text_field :title,
+                       class: 'form-control',
+                       placeholder: t('.placeholders.title')
+
+      .form-group
+        = f.label :body, t('.fields.description_optional')
+        = f.text_area :body,
+                      rows: 5,
+                      class: 'form-control',
+                      placeholder: t('.placeholders.body')
+
+      .row
+        .col-md-4.col-sm-6
+          .form-group
+            = f.label :valid_from do
+              = t('.fields.valid_from')
+              span.required-asterisk title=t('.required_field_title') *
+
+            - vf = (@comment && @comment.valid_from.present?) ? @comment.valid_from.strftime('%Y-%m-%d %H:%M') : params.dig(:comment, :valid_from).to_s
+            = f.text_field :valid_from,
+                           value: vf,
+                           class: 'form-control datetimepicker',
+                           autocomplete: 'off',
+                           placeholder: t('.placeholders.datetime')
+
+        .col-md-4.col-sm-6
+          .form-group
+            = f.label :valid_to, t('.fields.valid_to_optional')
+            - vt = (@comment && @comment.valid_to.present?) ? @comment.valid_to.strftime('%Y-%m-%d %H:%M') : params.dig(:comment, :valid_to).to_s
+            = f.text_field :valid_to,
+                           value: vt,
+                           class: 'form-control datetimepicker',
+                           autocomplete: 'off',
+                           placeholder: t('.placeholders.datetime')
+
+        .col-md-4.col-sm-6
+          .form-group
+            = f.label :severity do
+              = t('.fields.severity')
+              span.required-asterisk title=t('.required_field_title') *
+
+            - severity_options = Core::Comments::Comment.severities.keys.map { |k| [severity_labels[k] || k, k] }
+            = f.select :severity,
+                       severity_options,
+                       {},
+                       class: 'form-control'
+
+      .row
+        .col-md-6.col-sm-12
+          .form-group.section-header
+            h4 style="margin-bottom: 8px;" = t('.affected_nodes.heading')
+            p.text-muted style="margin-top: 0;"
+              = t('.affected_nodes.help')
+
+            - selected_cluster_id = (@comment && @comment.cluster_id.present?) ? @comment.cluster_id : (params[:cluster_id].presence || params.dig(:comment, :cluster_id).presence)
+            - all_nodes = (@nodes || [])
+            - nodes = selected_cluster_id.present? ? all_nodes.select { |n| n.cluster_id.to_s == selected_cluster_id.to_s } : []
+
+            .form-group style="margin-bottom: 8px;"
+              = text_field_tag :node_search,
+                               '',
+                               class: 'form-control',
+                               placeholder: (selected_cluster_id.present? ? t('.affected_nodes.search_placeholder') : t('.affected_nodes.select_system_first')),
+                               id: 'node_search_input',
+                               disabled: selected_cluster_id.blank?
+
+            - if selected_cluster_id.blank?
+              p.text-muted = t('.affected_nodes.messages.select_system')
+            - elsif all_nodes.blank?
+              p.text-muted = t('.affected_nodes.messages.no_nodes_in_controller')
+            - elsif nodes.blank?
+              p.text-muted = t('.affected_nodes.messages.no_nodes_for_system')
+            - else
+              .panel.panel-default style="max-height: 260px; overflow: auto; margin-bottom: 0;"
+                .panel-body style="padding: 3px;"
+                  - nodes.sort_by { |n| [n.prefix.to_s, n.hostname.to_s] }.each do |node|
+                    - checked = @comment.respond_to?(:node_ids) ? @comment.node_ids.include?(node.id) : false
+                    - label = "#{node.prefix} / #{node.hostname}"
+                    .checkbox.node-checkbox data-node-text=label.downcase
+                      label
+                        = check_box_tag 'comment[node_ids][]', node.id, checked, id: "comment_node_#{node.id}"
+                        = label
+
+      .form-group style="margin-top: 15px;"
+        = f.submit t('.buttons.save'), class: 'btn btn-primary'
+        = button_tag t('.buttons.clear'), type: 'reset', class: 'btn btn-default', style: 'margin-left: 8px;'
+
+.panel.panel-default style="margin-top: 20px;"
+  .panel-heading
+    strong = t('.recent_comments.heading')
+  .panel-body
+    = form_tag url_for(controller: '/core/admin/analytics', action: :create_comment),
+               method: :get,
+               class: 'form-inline',
+               style: 'margin-bottom: 12px;' do
+      .form-group style="margin-right: 10px;"
+        = select_tag :cluster_id,
+                     options_from_collection_for_select((@clusters || []), :id, :name, params[:cluster_id]),
+                     include_blank: t('.filters.all_systems'),
+                     class: 'form-control'
+
+      .form-group style="margin-right: 10px;"
+        - sev_opts = Core::Comments::Comment.severities.keys.map { |k| [severity_labels[k] || k, k] }
+        = select_tag :severity,
+                     options_for_select([[t('.filters.any_severity'), '']] + sev_opts, params[:severity]),
+                     class: 'form-control'
+
+      .checkbox style="margin-right: 10px;"
+        label
+          = check_box_tag :active_only, '1', params[:active_only].to_s == '1'
+          = " #{t('.filters.active_only')}"
+
+      = submit_tag t('.filters.filter'), class: 'btn btn-default'
+
+    - if @recent_comments.blank?
+      p.text-muted = t('.recent_comments.empty')
+    - else
+      table.table.table-striped.table-condensed
+        thead
+          tr
+            th style="width: 190px;" = t('.table.interval')
+            th = t('.table.title')
+            th style="width: 220px;" = t('.table.system')
+            th style="width: 140px;" = t('.table.nodes')
+            th style="width: 220px;" = t('.table.tags')
+            th style="width: 160px;" = t('.table.author')
+        tbody
+          - @recent_comments.each do |comment|
+            - sev = comment.severity.to_s
+            tr
+              td
+                = (defined?(l) ? l(comment.valid_from, format: :short) : comment.valid_from)
+                - if comment.valid_to.present?
+                  br
+                  span.text-muted
+                    = (defined?(l) ? l(comment.valid_to, format: :short) : comment.valid_to)
+
+              td
+                strong = comment.title
+                span.label class=(severity_badge[sev] || 'label-default') style="margin-left: 6px;"
+                  = (severity_labels[sev] || sev)
+
+                - if comment.body.present?
+                  div.text-muted style="margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 520px;"
+                    = comment.body
+
+              td = comment.cluster&.name || comment.cluster&.host || t('.fallback.em_dash')
+
+              td
+                - if comment.respond_to?(:nodes) && comment.nodes.any?
+                  span.label.label-info = t('.counts.nodes_count', count: comment.nodes.size)
+                - else
+                  span.text-muted = t('.fallback.em_dash')
+
+              td
+                - if comment.respond_to?(:tags) && comment.tags.any?
+                  - comment.tags.take(6).each do |tag|
+                    span.label.label-default style="margin-right: 4px;"
+                      = tag.label
+                  - if comment.tags.size > 6
+                    span.text-muted = t('.counts.more_tags', count: comment.tags.size - 6)
+                - else
+                  span.text-muted = t('.fallback.em_dash')
+
+              - author = comment.author
+              td = author&.try(:name).presence || author&.email || t('.fallback.em_dash')
+
+javascript:
+  (function() {
+    var I18N = #{js_i18n.to_json.html_safe};
+
+    function initDateTimePickers() {
+      if (typeof flatpickr === 'undefined') return;
+
+      var els = document.querySelectorAll('.datetimepicker');
+      if (!els.length) return;
+
+      var currentLocale = "#{current_locale}";
+      var fpLocale =
+        (flatpickr.l10ns && flatpickr.l10ns[currentLocale]) ||
+        (flatpickr.l10ns && flatpickr.l10ns.default) ||
+        currentLocale;
+
+      els.forEach(function(el) {
+        if (el._flatpickr) return;
+
+        flatpickr(el, {
+          enableTime: true,
+          time_24hr: true,
+          allowInput: true,
+          minuteIncrement: 1,
+          dateFormat: "Y-m-d H:i",
+          altInput: true,
+          altFormat: "d.m.Y H:i",
+          locale: fpLocale
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initDateTimePickers);
+    document.addEventListener('turbolinks:load', initDateTimePickers);
+    document.addEventListener('turbo:load', initDateTimePickers);
+  })();
+
+- groups_json = Core::Comments::Comment::REASON_GROUPS.to_json
+script#reason_groups_json type="application/json"
+  = raw(groups_json)
+
+javascript:
+  (function() {
+    var I18N = #{js_i18n.to_json.html_safe};
+
+    function initReasonSelects() {
+      var groupEl  = document.getElementById('comment_reason_group_id');
+      var reasonEl = document.getElementById('comment_reason_id');
+      if (!groupEl || !reasonEl || groupEl.dataset.bound === '1') return;
+      groupEl.dataset.bound = '1';
+
+      var allReasons = JSON.parse(reasonEl.dataset.reasons);
+
+      function fill() {
+        var gid = (groupEl.value || '').trim();
+
+        reasonEl.innerHTML = '';
+
+        var opt0 = document.createElement('option');
+        opt0.value = '';
+        opt0.textContent = gid ? I18N.choose_reason : I18N.choose_category_first;
+        reasonEl.appendChild(opt0);
+
+        var filteredReasons = allReasons.filter(function(r) {
+          return r[0] === gid;
+        });
+
+        filteredReasons.forEach(function(r) {
+          var opt = document.createElement('option');
+          opt.value = r[2];
+          opt.textContent = r[3];
+          reasonEl.appendChild(opt);
+        });
+
+        if (reasonEl.dataset.selected) {
+          reasonEl.value = reasonEl.dataset.selected;
+        }
+      }
+
+      groupEl.addEventListener('change', function() {
+        reasonEl.dataset.selected = '';
+        fill();
+      });
+
+      fill();
+    }
+
+    function init() {
+      var qEl = document.getElementById('node_search_input');
+      if (qEl && qEl.dataset.searchBound !== '1') {
+        qEl.dataset.searchBound = '1';
+
+        qEl.addEventListener('input', function() {
+          var q = (qEl.value || '').toLowerCase().trim();
+
+          document.querySelectorAll('.node-checkbox').forEach(function(row) {
+            var text = (row.getAttribute('data-node-text') || '');
+            row.style.display = (!q || text.indexOf(q) >= 0) ? '' : 'none';
+          });
+        });
+      }
+
+      if (window.jQuery) {
+        window.jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+          var href = window.jQuery(e.target).attr('href');
+          if (href === '#comments_tab') initReasonSelects();
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', initReasonSelects);
+    document.addEventListener('turbolinks:load', init);
+    document.addEventListener('turbolinks:load', initReasonSelects);
+    document.addEventListener('turbo:load', init);
+    document.addEventListener('turbo:load', initReasonSelects);
+  })();

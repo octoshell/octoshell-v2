@@ -3,6 +3,7 @@ Core::Engine.routes.draw do
   resources :bot_links do
     get :generate
   end
+
   namespace :admin do
     resources :accesses do
       collection do
@@ -25,6 +26,7 @@ Core::Engine.routes.draw do
       get :hide
     end
     resources :members, only: :index
+
     resources :projects do
       member do
         get :activate
@@ -82,6 +84,7 @@ Core::Engine.routes.draw do
         delete :destroy
       end
     end
+
     resources :organizations do
       member do
         get :index_for_organization
@@ -117,6 +120,19 @@ Core::Engine.routes.draw do
       end
       get :block, on: :member
       get :reactivate, on: :member
+    end
+
+    resources :analytics, only: [:index] do
+      collection do
+        post :sinfo
+        match :create_comment, via: %i[get post]
+
+        post :create_tag
+        delete 'tags/:id', action: :destroy_tag, as: :destroy_tag
+
+        get :availability
+        get :availability_data
+      end
     end
   end
 

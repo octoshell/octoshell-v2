@@ -1,0 +1,14 @@
+- active = (local_assigns[:active_tab] || 'analytics').to_s
+
+ul.nav.nav-tabs
+  li class=(active == 'analytics' ? 'active' : '')
+    = link_to t('.analytics'),
+              url_for(controller: '/core/admin/analytics', action: :index)
+
+  li class=(active == 'comments' ? 'active' : '')
+    = link_to t('.comments'),
+              url_for(controller: '/core/admin/analytics', action: :create_comment)
+
+  li class=(active == 'availability' ? 'active' : '')
+    = link_to t('.availability'),
+              url_for(controller: '/core/admin/analytics', action: :availability)
