@@ -1,9 +1,7 @@
 module Core
   class Admin::AnalyticsController < Admin::ApplicationController
     # skip_before_action :authorize_admins, only: [:index, :sinfo, :create_comment], raise: false
-    before_action :require_analytics_access
     before_action :octo_authorize!
-    octo_use(:project_class, :core, 'Project')
     EFFECTIVE_STATE_PRIORITY = {
       'down' => 100,
       'drained' => 90,
@@ -629,38 +627,6 @@ module Core
       permitted[:reason_id] = permitted[:reason_id].presence&.to_i
 
       permitted
-    end
-
-    def role?(name)
-      return false unless current_user
-
-      sym  = name.to_sym
-      pred = "#{sym}?".to_sym
-      if current_user.respond_to?(pred)
-        current_user.public_send(pred)
-      elsif current_user.respond_to?(:has_role?)
-        current_user.has_role?(sym)
-      else
-        false
-      end
-    end
-
-    def can_read_reports?
-      return false unless respond_to?(:can?)
-
-      can?(:read, :reports) || can?(:manage, :reports)
-    rescue StandardError
-      false
-    end
-
-    def require_analytics_access
-      allowed = role?(:superadmin) ||
-                role?(:reregistrator) ||
-                role?(:admin) ||
-                role?(:expert) ||
-                can_read_reports?
-
-      redirect_to main_app.admin_users_path, alert: 'Нет доступа к аналитике' unless allowed
     end
 
     def prepare_comments

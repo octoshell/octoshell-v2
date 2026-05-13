@@ -23,8 +23,8 @@ module Core
 
     add_ability(:manage, :core, 'superadmins')
 
-    add_ability(:manage, :core_analytics, 'superadmins')
-    add_controller_ability(:manage, :core_analytics, 'admin/analytics')
+    add_ability(:manage, :node_availability, 'superadmins')
+    add_controller_ability(:manage, :node_availability, 'admin/analytics')
 
     add_routes do
       mount Core::Engine, at: '/core'
