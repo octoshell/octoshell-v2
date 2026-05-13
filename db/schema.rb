@@ -624,10 +624,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_13_185542) do
     t.string "state", null: false
     t.text "reason"
     t.datetime "state_time", null: false
-    t.bigint "snapshot_id"
     t.index ["id"], name: "index_core_node_states_on_id"
     t.index ["node_id"], name: "index_core_node_states_on_node_id"
-    t.index ["snapshot_id"], name: "index_core_node_states_on_snapshot_id"
     t.index ["state_time"], name: "index_core_node_states_on_state_time"
   end
 
@@ -1668,7 +1666,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_13_185542) do
   add_foreign_key "core_node_partitions", "core_nodes", column: "node_id"
   add_foreign_key "core_node_partitions", "core_partitions", column: "partition_id"
   add_foreign_key "core_node_states", "core_nodes", column: "node_id"
-  add_foreign_key "core_node_states", "core_snapshots", column: "snapshot_id"
   add_foreign_key "core_nodes", "core_clusters", column: "cluster_id"
   add_foreign_key "core_resource_users", "core_members", column: "member_id"
   add_foreign_key "core_snapshots", "core_clusters", column: "cluster_id"

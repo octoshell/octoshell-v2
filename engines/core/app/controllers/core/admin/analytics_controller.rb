@@ -30,6 +30,8 @@ module Core
       node_states_rel = Core::NodeState.current
       @global_state_counts = grouped_effective_node_state_counts(node_states_rel)
 
+      # pp @global_state_counts
+      # dwadwawda
       @cluster_stats = {}
       @clusters.each do |cluster|
         @cluster_stats[cluster.id] = {
@@ -40,16 +42,14 @@ module Core
       end
 
       # временно отключено из-за ошибки column "cluster_id" does not exist
-      states_counts = {}
-      # states_counts = grouped_effective_node_state_counts(node_states_rel, :cluster_id)
-      # states_counts.each do |(cluster_id, state), count|
-      #   next unless @cluster_stats.key?(cluster_id)
-      #
-      #   @cluster_stats[cluster_id][:states][state] = count
-      # end
+      states_counts = grouped_effective_node_state_counts(node_states_rel, :cluster_id)
+      states_counts.each do |(cluster_id, state), count|
+        next unless @cluster_stats.key?(cluster_id)
 
+        @cluster_stats[cluster_id][:states][state] = count
+      end
       issues_counts = grouped_distinct_node_counts(
-        node_states_rel.where.not(reason: nil).joins(:node),
+        node_states_rel.where.not(reason: [nil, '']).where.not('LOWER(reason) = ?', 'none').joins(:node),
         'core_nodes.cluster_id'
       )
       issues_counts.each do |cluster_id, count|
@@ -87,7 +87,7 @@ module Core
           )
         end
       end
-
+      pp @snapshot_stats
       @active_tab ||= 'analytics'
     end
 
@@ -378,8 +378,10 @@ module Core
         .each do |row|
           group_values = row.first(group_columns.length)
           node_id = row[group_columns.length]
-          state = row[group_columns.length + 1].to_s
-          priority = EFFECTIVE_STATE_PRIORITY.fetch(state, 0)
+          raw_state = row[group_columns.length + 1].to_s
+          # Remove SLURM suffixes (~, #, *) for consistent grouping
+          base_state = raw_state.gsub(/[~#*]$/, '')
+          priority = EFFECTIVE_STATE_PRIORITY.fetch(base_state, 0)
 
           node_key = group_values + [node_id]
           current = best_state_by_node[node_key]
@@ -388,7 +390,7 @@ module Core
 
           best_state_by_node[node_key] = {
             group_values: group_values,
-            state: state,
+            state: base_state,
             priority: priority
           }
         end

@@ -111,11 +111,11 @@ style
 
     ruby:
       state_i18n = {
-        'alloc'    => t('.states.alloc'),
+        'allocated'    => t('.states.alloc'),
         'idle'     => t('.states.idle'),
-        'comp'     => t('.states.comp'),
-        'drain'    => t('.states.drain'),
-        'drng'     => t('.states.drng'),
+        'completing'     => t('.states.comp'),
+        'drained'    => t('.states.drain'),
+        'draining'     => t('.states.drng'),
         'down'     => t('.states.down'),
         'maint'    => t('.states.maint'),
         'reserved' => t('.states.reserved'),
@@ -244,7 +244,7 @@ style
                   - @latest_snapshots.each do |snap|
                     - stats = @snapshot_stats[snap.id] || {}
                     - total = stats.values.sum
-                    - alloc = stats['alloc'].to_i
+                    - alloc = stats['allocated'].to_i
                     - idle  = stats['idle'].to_i
                     - down  = stats['down'].to_i
                     - others = total - alloc - idle - down

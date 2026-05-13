@@ -19,16 +19,27 @@
 module Core
   class NodeState < ApplicationRecord
     belongs_to :node, class_name: 'Core::Node'
-    belongs_to :snapshot, class_name: 'Core::Snapshot', optional: true
 
-    STATES    = %w[alloc idle comp drain drng down maint reserved mix].freeze
+    STATES    = %w[allocated idle completing drained draining down maint reserved mix].freeze
     SUBSTATES = %w[unknown maintenance pending draining].freeze
 
     validates :state, presence: true, inclusion: { in: STATES }
     validates :substate, allow_nil: true, inclusion: { in: SUBSTATES }
 
-    scope :current, -> { where(snapshot_id: Snapshot.select(:id).order(captured_at: :desc).limit(1)) }
-    scope :at, ->(time) { where(snapshot: Snapshot.where('captured_at <= ?', time).order(captured_at: :desc).limit(1)) }
+    # Returns the latest state for each node (using DISTINCT ON)
+    scope :latest_per_node, lambda {
+      subquery = select('DISTINCT ON (node_id) id').order('node_id, state_time DESC, id DESC')
+      where(id: subquery)
+    }
+
+    # Alias for latest_per_node (current states)
+    scope :current, -> { latest_per_node }
+
+    # Returns the latest state for each node at a given time
+    scope :at, lambda { |time|
+      subquery = select('DISTINCT ON (node_id) id').where('state_time <= ?', time).order('node_id, state_time DESC, id DESC')
+      where(id: subquery)
+    }
 
     def to_s
       reason ? "#{state} (#{reason})" : state

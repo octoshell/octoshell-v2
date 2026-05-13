@@ -13,13 +13,15 @@
 
 module Core
   class Snapshot < ApplicationRecord
-    self.table_name = 'core_snapshots'
-
     belongs_to :cluster, class_name: 'Core::Cluster'
-    has_many :node_states, class_name: 'Core::NodeState', foreign_key: :snapshot_id, dependent: :destroy
 
     validates :cluster, :captured_at, presence: true
 
     scope :latest_first, -> { order(captured_at: :desc) }
+
+    # Returns node states that were actual at the moment of this snapshot
+    def node_states_at
+      Core::NodeState.at(captured_at).joins(:node).where(core_nodes: { cluster_id: cluster_id })
+    end
   end
 end

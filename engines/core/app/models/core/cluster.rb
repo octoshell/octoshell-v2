@@ -46,6 +46,13 @@ module Core
              foreign_key: :cluster_id,
              inverse_of: :cluster
 
+    # Latest node states (one per node) for this cluster
+    has_many :current_node_states,
+             -> { latest_per_node },
+             class_name: 'Core::NodeState',
+             foreign_key: :cluster_id,
+             inverse_of: :cluster
+
     has_many :partitions,
              class_name: 'Core::Partition',
              foreign_key: :cluster_id,
@@ -133,6 +140,10 @@ module Core
 
       return true if parsed_lines.empty?
 
+      # Create a snapshot for this moment
+      capture_time = Time.current
+      snapshots.create!(captured_at: capture_time)
+
       # Collect all unique partition names and node names
       partition_names = parsed_lines.map { |l| l[:partition_name] }.uniq
       all_node_names = parsed_lines.flat_map { |l| expand_node_names(l[:node_names_raw]) }.uniq
@@ -192,7 +203,7 @@ module Core
 
           next unless last_normalized != normalized_state || last_state&.reason != line[:reason]
 
-          node_states_data << { node_id: node.id, state: line[:state], reason: line[:reason], state_time: Time.current }
+          node_states_data << { node_id: node.id, state: line[:state], reason: line[:reason], state_time: capture_time }
         end
       end
 
