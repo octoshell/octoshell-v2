@@ -36,18 +36,13 @@ module Core
 
     has_many :quotas, class_name: 'ClusterQuota', inverse_of: :cluster, dependent: :destroy
 
-    has_many :nodes,
-             class_name: 'Core::Analytics::Node',
-             foreign_key: :cluster_id,
-             inverse_of: :cluster
-
     has_many :snapshots,
-             class_name: 'Core::Analytics::Snapshot',
+             class_name: 'Core::Snapshot',
              foreign_key: :cluster_id,
              inverse_of: :cluster
 
     has_many :node_states,
-             class_name: 'Core::Analytics::NodeState',
+             class_name: 'Core::NodeState',
              foreign_key: :cluster_id,
              inverse_of: :cluster
 

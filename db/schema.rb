@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_23_141733) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_13_185542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -336,50 +336,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_141733) do
     t.index ["project_id"], name: "index_core_accesses_on_project_id"
   end
 
-  create_table "core_analytics_node_states", force: :cascade do |t|
-    t.bigint "cluster_id", null: false
-    t.bigint "snapshot_id", null: false
-    t.bigint "node_id", null: false
-    t.bigint "partition_id", null: false
-    t.string "state", null: false
-    t.string "substate"
-    t.boolean "has_reason", default: false, null: false
-    t.datetime "valid_from", precision: nil, null: false
-    t.datetime "valid_to", precision: nil
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["cluster_id"], name: "index_core_analytics_node_states_on_cluster_id"
-    t.index ["node_id", "valid_from"], name: "core_analytics_index_node_states_on_node_id_and_valid_from"
-    t.index ["node_id", "valid_to"], name: "core_analytics_index_node_states_on_node_id_and_valid_to"
-    t.index ["node_id"], name: "core_analytics_index_node_states_current_on_node_id", where: "(valid_to IS NULL)"
-    t.index ["node_id"], name: "index_core_analytics_node_states_on_node_id"
-    t.index ["partition_id"], name: "index_core_analytics_node_states_on_partition_id"
-    t.index ["snapshot_id", "node_id"], name: "core_analytics_uniq_node_state_per_snapshot", unique: true
-    t.index ["snapshot_id"], name: "index_core_analytics_node_states_on_snapshot_id"
-  end
-
-  create_table "core_analytics_nodes", force: :cascade do |t|
-    t.bigint "cluster_id", null: false
-    t.string "hostname", null: false
-    t.string "prefix", null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["cluster_id", "hostname"], name: "index_core_analytics_nodes_on_cluster_id_and_hostname", unique: true
-    t.index ["cluster_id"], name: "index_core_analytics_nodes_on_cluster_id"
-  end
-
-  create_table "core_analytics_snapshots", force: :cascade do |t|
-    t.bigint "cluster_id", null: false
-    t.datetime "captured_at", precision: nil, null: false
-    t.string "source_cmd", null: false
-    t.string "parser_version", null: false
-    t.text "raw_text", null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["cluster_id", "captured_at"], name: "index_core_analytics_snapshots_on_cluster_id_and_captured_at"
-    t.index ["cluster_id"], name: "index_core_analytics_snapshots_on_cluster_id"
-  end
-
   create_table "core_bot_links", force: :cascade do |t|
     t.bigint "user_id"
     t.string "token"
@@ -668,10 +624,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_141733) do
     t.string "state", null: false
     t.text "reason"
     t.datetime "state_time", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.bigint "snapshot_id"
     t.index ["id"], name: "index_core_node_states_on_id"
     t.index ["node_id"], name: "index_core_node_states_on_node_id"
+    t.index ["snapshot_id"], name: "index_core_node_states_on_snapshot_id"
     t.index ["state_time"], name: "index_core_node_states_on_state_time"
   end
 
@@ -912,6 +868,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_141733) do
     t.integer "member_id"
     t.index ["access_id"], name: "index_core_resource_users_on_access_id"
     t.index ["member_id", "access_id"], name: "index_core_resource_users_on_member_id_and_access_id", unique: true, where: "(member_id IS NOT NULL)"
+  end
+
+  create_table "core_snapshots", force: :cascade do |t|
+    t.bigint "cluster_id", null: false
+    t.datetime "captured_at", null: false
+    t.index ["cluster_id"], name: "index_core_snapshots_on_cluster_id"
   end
 
   create_table "core_sureties", id: :serial, force: :cascade do |t|
@@ -1687,19 +1649,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_141733) do
     t.index ["url"], name: "index_wikiplus_pages_on_url", unique: true
   end
 
-  add_foreign_key "core_analytics_node_states", "core_analytics_nodes", column: "node_id"
-  add_foreign_key "core_analytics_node_states", "core_analytics_snapshots", column: "snapshot_id"
-  add_foreign_key "core_analytics_node_states", "core_clusters", column: "cluster_id"
-  add_foreign_key "core_analytics_node_states", "core_partitions", column: "partition_id"
-  add_foreign_key "core_analytics_nodes", "core_clusters", column: "cluster_id"
-  add_foreign_key "core_analytics_snapshots", "core_clusters", column: "cluster_id"
   add_foreign_key "core_bot_links", "users"
   add_foreign_key "core_comment_tags", "core_comments", column: "comment_id"
   add_foreign_key "core_comment_tags", "core_tags", column: "tag_id"
   add_foreign_key "core_comments", "core_clusters", column: "cluster_id"
   add_foreign_key "core_comments", "users", column: "author_id"
-  add_foreign_key "core_comments_nodes", "core_analytics_nodes", column: "node_id"
   add_foreign_key "core_comments_nodes", "core_comments", column: "comment_id"
+  add_foreign_key "core_comments_nodes", "core_nodes", column: "node_id"
   add_foreign_key "core_job_notification_events", "core_job_notifications"
   add_foreign_key "core_job_notification_events", "core_projects"
   add_foreign_key "core_job_notification_events", "users"
@@ -1712,8 +1668,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_141733) do
   add_foreign_key "core_node_partitions", "core_nodes", column: "node_id"
   add_foreign_key "core_node_partitions", "core_partitions", column: "partition_id"
   add_foreign_key "core_node_states", "core_nodes", column: "node_id"
+  add_foreign_key "core_node_states", "core_snapshots", column: "snapshot_id"
   add_foreign_key "core_nodes", "core_clusters", column: "cluster_id"
   add_foreign_key "core_resource_users", "core_members", column: "member_id"
+  add_foreign_key "core_snapshots", "core_clusters", column: "cluster_id"
   add_foreign_key "core_tags", "core_tag_groups", column: "group_id"
   add_foreign_key "core_user_notification_settings", "users"
   add_foreign_key "support_field_values", "support_topics_fields", column: "topics_field_id"

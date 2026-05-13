@@ -56,5 +56,14 @@ module Core
     def to_s
       name
     end
+
+    # For compatibility with analytics node views
+    def hostname
+      name
+    end
+
+    def prefix
+      ''
+    end
   end
 end

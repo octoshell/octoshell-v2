@@ -10,7 +10,6 @@ module Core
 
       belongs_to :cluster, class_name: 'Core::Cluster'
 
-      
       def system
         cluster
       end
@@ -27,7 +26,7 @@ module Core
 
       has_many :nodes,
                through: :comment_nodes,
-               class_name: 'Core::Analytics::Node',
+               class_name: 'Core::Node',
                source: :node
 
       has_many :comment_tags,
@@ -60,7 +59,7 @@ module Core
       validate :valid_to_not_before_valid_from
 
       scope :recent_first, -> { order(valid_from: :desc, created_at: :desc) }
-      scope :current, ->(moment = Time.current) {
+      scope :current, lambda { |moment = Time.current|
         where('valid_from <= ? AND (valid_to IS NULL OR valid_to >= ?)', moment, moment)
       }
 
@@ -74,7 +73,7 @@ module Core
           { id: 106, name: 'Массовый отказ части вычислительных узлов' },
           { id: 107, name: 'Недоступность/проблемы с узлами логина' },
           { id: 108, name: 'Недоступность/нестабильность системы очередей' }
-        ]},
+        ] },
         { id: 2, name: 'Изменение режима работы СКЦ', reasons: [
           { id: 201, name: 'Выделены ресурсы для больших задач' },
           { id: 202, name: 'Выделены ресурсы для приоритетных проектов' },
@@ -83,7 +82,7 @@ module Core
           { id: 205, name: 'Включен режим бенчмарков / тестирования производительности' },
           { id: 206, name: 'Ресурсы выделены под образовательные нужды (курсы, мастер-классы)' },
           { id: 207, name: 'Тестирование новых настроек системного ПО' }
-        ]},
+        ] },
         { id: 3, name: 'Профилактические и ремонтные работы', reasons: [
           { id: 301, name: 'Обновление системного ПО' },
           { id: 302, name: 'Изменения в настройках файловой системы' },
@@ -94,13 +93,14 @@ module Core
           { id: 307, name: 'Работы с системой охлаждения' },
           { id: 308, name: 'Замена/расширение вычислительных узлов' },
           { id: 309, name: 'Плановые работы в машинном зале' }
-        ]}
+        ] }
       ].freeze
 
       private
 
       def valid_to_not_before_valid_from
         return if valid_to.blank? || valid_from.blank?
+
         errors.add(:valid_to, 'не может быть раньше даты начала действия') if valid_to < valid_from
       end
 
@@ -108,7 +108,7 @@ module Core
         return if reason_group_id.blank? || reason_id.blank?
 
         allowed = Core::Comments::Comment::REASON_GROUPS
-                    .find { |g| g[:id].to_i == reason_group_id.to_i }
+                  .find { |g| g[:id].to_i == reason_group_id.to_i }
         ok = allowed && allowed[:reasons].any? { |r| r[:id].to_i == reason_id.to_i }
 
         errors.add(:reason_id, 'не соответствует выбранной категории') unless ok

@@ -9,7 +9,7 @@ module Core
                  inverse_of: :comment_nodes
 
       belongs_to :node,
-                 class_name: 'Core::Analytics::Node',
+                 class_name: 'Core::Node',
                  foreign_key: :node_id
 
       validates :node_id, uniqueness: { scope: :comment_id }

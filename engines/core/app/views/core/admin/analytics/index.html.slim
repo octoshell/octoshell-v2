@@ -182,7 +182,7 @@ style
                       th = t('.table.nodes')
                       th = t('.table.share')
                   tbody
-                    - Core::Analytics::NodeState::STATES.each do |state|
+                    - Core::NodeState::STATES.each do |state|
                       - count = state_counts[state] || 0
                       - next if count.zero?
                       tr
@@ -313,7 +313,7 @@ style
           - else
             = javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js'
 
-            - keys   = Core::Analytics::NodeState::STATES.select { |st| @global_state_counts[st].to_i > 0 }
+            - keys   = Core::NodeState::STATES.select { |st| @global_state_counts[st].to_i > 0 }
             - labels = keys.map { |st| human_state.call(st) }
             - data   = keys.map { |st| @global_state_counts[st].to_i }
 

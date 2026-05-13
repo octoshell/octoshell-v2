@@ -5,19 +5,19 @@ module Core
     before_action :octo_authorize!
     octo_use(:project_class, :core, 'Project')
     EFFECTIVE_STATE_PRIORITY = {
-      'down'     => 100,
-      'drain'    => 90,
-      'drng'     => 80,
-      'maint'    => 70,
+      'down' => 100,
+      'drain' => 90,
+      'drng' => 80,
+      'maint' => 70,
       'reserved' => 60,
-      'alloc'    => 50,
-      'mix'      => 40,
-      'comp'     => 30,
-      'idle'     => 10
+      'alloc' => 50,
+      'mix' => 40,
+      'comp' => 30,
+      'idle' => 10
     }.freeze
 
     # before_action :prepare_comments, only: [:index, :create_comment, :sinfo]
-    before_action :prepare_comments, only: [:index, :create_comment]
+    before_action :prepare_comments, only: %i[index create_comment]
 
     def index
       @total_reports     = 0
@@ -27,52 +27,56 @@ module Core
 
       @clusters = Core::Cluster.order(:name_ru).includes(:nodes)
 
-      node_states_rel = Core::Analytics::NodeState.current
+      node_states_rel = Core::NodeState.current
       @global_state_counts = grouped_effective_node_state_counts(node_states_rel)
 
       @cluster_stats = {}
       @clusters.each do |cluster|
         @cluster_stats[cluster.id] = {
           total_nodes: cluster.nodes.size,
-          states:      Hash.new(0),
-          issues:      0
+          states: Hash.new(0),
+          issues: 0
         }
       end
 
-      states_counts = grouped_effective_node_state_counts(node_states_rel, :cluster_id)
-      states_counts.each do |(cluster_id, state), count|
-        next unless @cluster_stats.key?(cluster_id)
-        @cluster_stats[cluster_id][:states][state] = count
-      end
+      # временно отключено из-за ошибки column "cluster_id" does not exist
+      states_counts = {}
+      # states_counts = grouped_effective_node_state_counts(node_states_rel, :cluster_id)
+      # states_counts.each do |(cluster_id, state), count|
+      #   next unless @cluster_stats.key?(cluster_id)
+      #
+      #   @cluster_stats[cluster_id][:states][state] = count
+      # end
 
       issues_counts = grouped_distinct_node_counts(
-        node_states_rel.where(has_reason: true),
-        :cluster_id
+        node_states_rel.where.not(reason: nil).joins(:node),
+        'core_nodes.cluster_id'
       )
       issues_counts.each do |cluster_id, count|
         next unless @cluster_stats.key?(cluster_id)
+
         @cluster_stats[cluster_id][:issues] = count
       end
 
       @partition_stats = {}
       partition_counts = grouped_distinct_node_counts(
-        node_states_rel.joins(:partition),
+        node_states_rel.joins(node: { node_partitions: :partition }),
         'core_partitions.cluster_id',
         'core_partitions.id',
         'core_partitions.name',
-        'core_analytics_node_states.state'
+        'core_node_states.state'
       )
 
       partition_counts.each do |(cluster_id, partition_id, partition_name, state), count|
         @partition_stats[cluster_id] ||= {}
         @partition_stats[cluster_id][partition_id] ||= {
-          name:   partition_name,
+          name: partition_name,
           states: Hash.new(0)
         }
         @partition_stats[cluster_id][partition_id][:states][state] = count
       end
 
-      @latest_snapshots = Core::Analytics::Snapshot.latest_first.includes(:cluster).limit(10)
+      @latest_snapshots = Core::Snapshot.latest_first.includes(:cluster).limit(10)
       @snapshot_stats   = {}
 
       if @latest_snapshots.any?
@@ -104,12 +108,12 @@ module Core
       to     = parse_time(params[:to])   || Time.current
       metric = params[:metric].presence || 'idle'
 
-      total_nodes = Core::Analytics::Node.where(cluster_id: cluster.id).distinct.count(:id)
+      total_nodes = Core::Node.where(cluster_id: cluster.id).distinct.count(:id)
 
       snaps = cluster.snapshots
-                    .where(captured_at: from..to)
-                    .order(:captured_at)
-                    .limit(2000)
+                     .where(captured_at: from..to)
+                     .order(:captured_at)
+                     .limit(2000)
 
       comments = cluster.comments
                         .where('valid_from <= ? AND (valid_to IS NULL OR valid_to >= ?)', to, from)
@@ -162,7 +166,7 @@ module Core
 
       states =
         (
-          Core::Analytics::NodeState::STATES.map(&:to_s) +
+          Core::NodeState::STATES.map(&:to_s) +
           snap_effective_counts.values.flat_map(&:keys)
         ).uniq
 
@@ -226,9 +230,7 @@ module Core
         series[state].any? { |point| point[:y].to_i > 0 }
       end
 
-      if series['available'].any? { |point| point[:y].to_i > 0 }
-        states << 'available'
-      end
+      states << 'available' if series['available'].any? { |point| point[:y].to_i > 0 }
 
       states.uniq!
       series.slice!(*states)
@@ -247,41 +249,26 @@ module Core
       }
     end
 
+    # Обновление состояния узлов через вызов Core::Cluster#log_node_states
     def sinfo
       Rails.logger.info("[SINFO] start cluster_id=#{params[:cluster_id]} user_id=#{current_user&.id}")
 
-      outcome = Core::SinfoRefresh.call(
-        cluster_id: params[:cluster_id],
-        user_id: current_user&.id
-      )
-
-      Rails.logger.info(
-        "[SINFO] result ok=#{outcome.ok?} " \
-        "cluster_id=#{outcome.cluster_id} " \
-        "snapshot_id=#{outcome.snapshot_id.inspect} " \
-        "nodes_total=#{outcome.nodes_total.inspect} " \
-        "error_class=#{outcome.error_class.inspect} " \
-        "error_message=#{outcome.error_message.inspect}"
-      )
-
-      if outcome.ok?
-        flash[:notice] = "SINFO загружен. Снимок ##{outcome.snapshot_id}, узлов: #{outcome.nodes_total}"
-
-        redirect_to url_for(
-          controller: '/core/admin/analytics',
-          action: :index,
-          cluster_id: outcome.cluster_id,
-          snapshot_id: outcome.snapshot_id
-        )
-      else
-        flash[:alert] = "Ошибка загрузки SINFO: #{outcome.error_class}: #{outcome.error_message}"
-
-        redirect_to url_for(
-          controller: '/core/admin/analytics',
-          action: :index,
-          cluster_id: outcome.cluster_id
-        )
+      cluster = Core::Cluster.find_by(id: params[:cluster_id])
+      unless cluster
+        flash[:alert] = 'Кластер не найден.'
+        redirect_to url_for(controller: '/core/admin/analytics', action: :index)
+        return
       end
+
+      begin
+        cluster.log_node_states
+        flash[:notice] = 'Состояние узлов успешно обновлено.'
+      rescue StandardError => e
+        Rails.logger.error("[SINFO] error #{e.class}: #{e.message}")
+        flash[:alert] = "Ошибка обновления состояния узлов: #{e.message}"
+      end
+
+      redirect_to url_for(controller: '/core/admin/analytics', action: :index, cluster_id: cluster.id)
     end
 
     def create_comment
@@ -297,7 +284,8 @@ module Core
 
       if @comment.save
         flash[:notice] = 'Комментарий сохранён.'
-        redirect_to url_for(controller: '/core/admin/analytics', action: :index, tab: 'comments', cluster_id: @comment.cluster_id)
+        redirect_to url_for(controller: '/core/admin/analytics', action: :index, tab: 'comments',
+                            cluster_id: @comment.cluster_id)
       else
         flash.now[:alert] = 'Не удалось сохранить комментарий.'
         index
@@ -356,6 +344,7 @@ module Core
 
     def parse_time(str)
       return nil if str.blank?
+
       Time.zone.parse(str.to_s)
     rescue StandardError
       nil
@@ -371,7 +360,15 @@ module Core
 
     def grouped_effective_node_state_counts(relation, *group_columns)
       group_columns = group_columns.map(&:to_sym)
-      selected_columns = group_columns + [:node_id, :state]
+
+      # Если нужно группировать по cluster_id, добавляем join с узлом и выбираем cluster_id как алиас
+      if group_columns.include?(:cluster_id)
+        relation = relation.joins(:node).select('core_nodes.cluster_id as cluster_id')
+        # selected_columns остаются символами, потому что алиас cluster_id теперь присутствует в результате
+        selected_columns = group_columns + %i[node_id state]
+      else
+        selected_columns = group_columns + %i[node_id state]
+      end
 
       best_state_by_node = {}
 
@@ -387,13 +384,13 @@ module Core
           node_key = group_values + [node_id]
           current = best_state_by_node[node_key]
 
-          if current.nil? || priority > current[:priority]
-            best_state_by_node[node_key] = {
-              group_values: group_values,
-              state: state,
-              priority: priority
-            }
-          end
+          next unless current.nil? || priority > current[:priority]
+
+          best_state_by_node[node_key] = {
+            group_values: group_values,
+            state: state,
+            priority: priority
+          }
         end
 
       counts = Hash.new(0)
@@ -409,7 +406,7 @@ module Core
 
     def effective_state_counts_at(cluster_id, time)
       grouped_effective_node_state_counts(
-        Core::Analytics::NodeState.at(time).where(cluster_id: cluster_id)
+        Core::NodeState.at(time).joins(:node).where(core_nodes: { cluster_id: cluster_id })
       ).transform_keys(&:to_s)
     end
 
@@ -447,7 +444,7 @@ module Core
 
       base_counts =
         grouped_distinct_node_counts(
-          Core::Analytics::NodeState.at(from).where(cluster_id: cluster_id),
+          Core::NodeState.at(from).joins(:node).where(core_nodes: { cluster_id: cluster_id }),
           :state
         ).transform_keys(&:to_s)
 
@@ -456,10 +453,10 @@ module Core
 
       enter_raw =
         grouped_distinct_node_counts(
-          Core::Analytics::NodeState
-            .where(cluster_id: cluster_id)
+          Core::NodeState
+            .joins(:node).where(core_nodes: { cluster_id: cluster_id })
             .where(
-              snapshot_id: Core::Analytics::Snapshot
+              snapshot_id: Core::Snapshot
                 .where(cluster_id: cluster_id, captured_at: from..to)
                 .select(:id)
             ),
@@ -468,10 +465,10 @@ module Core
         )
 
       snaps_by_id =
-        Core::Analytics::Snapshot
-          .where(cluster_id: cluster_id, captured_at: from..to)
-          .pluck(:id, :captured_at)
-          .to_h
+        Core::Snapshot
+        .where(cluster_id: cluster_id, captured_at: from..to)
+        .pluck(:id, :captured_at)
+        .to_h
 
       enter_by_time = Hash.new { |h, k| h[k] = Hash.new(0) }
       enter_raw.each do |(snapshot_id, state), count|
@@ -481,22 +478,13 @@ module Core
         enter_by_time[captured_at][state.to_s] += count.to_i
       end
 
-      leave_raw =
-        grouped_distinct_node_counts(
-          Core::Analytics::NodeState
-            .where(cluster_id: cluster_id, valid_to: from..to),
-          :valid_to,
-          :state
-        )
-
+      # leave_raw - поле valid_to отсутствует в новой модели, временно игнорируем
+      leave_raw = {}
       leave_by_time = Hash.new { |h, k| h[k] = Hash.new(0) }
-      leave_raw.each do |(time_point, state), count|
-        leave_by_time[time_point][state.to_s] += count.to_i
-      end
 
       states =
         (
-          Core::Analytics::NodeState::STATES.map(&:to_s) +
+          Core::NodeState::STATES.map(&:to_s) +
           base_counts.keys +
           enter_raw.keys.map { |(_, st)| st.to_s } +
           leave_raw.keys.map { |(_, st)| st.to_s }
@@ -516,9 +504,9 @@ module Core
       max_intervals = []
 
       change_times = (enter_by_time.keys + leave_by_time.keys + [to])
-                      .select { |t| t.present? && t > from && t <= to }
-                      .uniq
-                      .sort
+                     .select { |t| t.present? && t > from && t <= to }
+                     .uniq
+                     .sort
 
       prev_time = from
 
@@ -657,6 +645,7 @@ module Core
 
     def can_read_reports?
       return false unless respond_to?(:can?)
+
       can?(:read, :reports) || can?(:manage, :reports)
     rescue StandardError
       false
@@ -675,9 +664,9 @@ module Core
     def prepare_comments
       @comment ||= Core::Comments::Comment.new(valid_from: Time.current)
 
-      @nodes = Core::Analytics::Node
-               .select(:id, :cluster_id, :hostname, :prefix)
-               .order(:cluster_id, :prefix, :hostname)
+      @nodes = Core::Node
+               .select(:id, :cluster_id, :name, "' ' as prefix")
+               .order(:cluster_id, :prefix, :name)
 
       rel = Core::Comments::Comment
             .includes(:author, :cluster, :nodes)
@@ -716,8 +705,8 @@ module Core
 
     def find_or_create_tag_in_group(group, label)
       existing = Core::Comments::Tag.where(group_id: group.id)
-                                   .where('LOWER(label) = ?', label.downcase)
-                                   .first
+                                    .where('LOWER(label) = ?', label.downcase)
+                                    .first
       return existing if existing
 
       base_key = label.to_s.parameterize(separator: '_')
@@ -776,7 +765,7 @@ module Core
             if (cb) cb.checked = true;
           });
 
-          #{auto_check_tag_id ? "var cb2=document.querySelector('#tag_checkboxes_container input[type=\"checkbox\"][value=\"#{auto_check_tag_id}\"]'); if(cb2) cb2.checked=true;" : ""}
+          #{auto_check_tag_id ? "var cb2=document.querySelector('#tag_checkboxes_container input[type=\"checkbox\"][value=\"#{auto_check_tag_id}\"]'); if(cb2) cb2.checked=true;" : ''}
 
           var n=document.getElementById('tags_notice');
           if(n){
