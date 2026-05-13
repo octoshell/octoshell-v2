@@ -369,10 +369,10 @@ ru:
     admin:
       analytics:
         admin_submenu:
-          analytics: "Аналитика"
+          analytics: "Доступность узлов"
 
         index:
-          page_title: "Аналитика"
+          page_title: "Доступность узлов"
 
           form:
             select_cluster: "Выберите кластер"
@@ -432,8 +432,8 @@ ru:
           chart_title: "График состояний узлов"
           pie_title: "Доля времени узлов в различных состояниях за выбранный период"
           pie_empty_message: "Нет данных для круговой диаграммы за выбранный период."
-          page_title: "Аналитика — Доступность"
-          analytics_title: "Аналитика"
+          page_title: "Доступность узлов — Доступность"
+          analytics_title: "Доступность узлов"
 
           filters:
             heading: "Параметры графиков"

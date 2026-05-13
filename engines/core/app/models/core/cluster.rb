@@ -41,11 +41,6 @@ module Core
              foreign_key: :cluster_id,
              inverse_of: :cluster
 
-    has_many :node_states,
-             class_name: 'Core::NodeState',
-             foreign_key: :cluster_id,
-             inverse_of: :cluster
-
     # Latest node states (one per node) for this cluster
     has_many :current_node_states,
              -> { latest_per_node },

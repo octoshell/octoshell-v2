@@ -6,13 +6,13 @@ module Core
     octo_use(:project_class, :core, 'Project')
     EFFECTIVE_STATE_PRIORITY = {
       'down' => 100,
-      'drain' => 90,
-      'drng' => 80,
+      'drained' => 90,
+      'draining' => 80,
       'maint' => 70,
       'reserved' => 60,
-      'alloc' => 50,
+      'allocated' => 50,
       'mix' => 40,
-      'comp' => 30,
+      'completing' => 30,
       'idle' => 10
     }.freeze
 
@@ -379,8 +379,8 @@ module Core
           group_values = row.first(group_columns.length)
           node_id = row[group_columns.length]
           raw_state = row[group_columns.length + 1].to_s
-          # Remove SLURM suffixes (~, #, *) for consistent grouping
-          base_state = raw_state.gsub(/[~#*]$/, '')
+          # Remove SLURM suffixes (~, #, *, ., $) for consistent grouping
+          base_state = raw_state.gsub(/[~#*.$]$/, '')
           priority = EFFECTIVE_STATE_PRIORITY.fetch(base_state, 0)
 
           node_key = group_values + [node_id]
@@ -444,11 +444,23 @@ module Core
 
       return { pie: empty_pie, availability_summary: empty_summary } if to <= from
 
+      # Normalize state by removing SLURM suffixes (keep 'allocated' as separate state)
+      normalize_state = lambda do |state|
+        return state if state.blank?
+
+        state.to_s.gsub(/[~#*.$]$/, '')
+      end
+
       base_counts =
         grouped_distinct_node_counts(
           Core::NodeState.at(from).joins(:node).where(core_nodes: { cluster_id: cluster_id }),
           :state
         ).transform_keys(&:to_s)
+
+      # Normalize base_counts by merging states with suffixes
+      base_counts = base_counts.each_with_object(Hash.new(0)) do |(state, count), normalized|
+        normalized[normalize_state.call(state)] += count.to_i
+      end
 
       total_nodes = total_nodes.to_i
       total_nodes = base_counts.values.sum(&:to_i) if total_nodes <= 0
@@ -457,27 +469,15 @@ module Core
         grouped_distinct_node_counts(
           Core::NodeState
             .joins(:node).where(core_nodes: { cluster_id: cluster_id })
-            .where(
-              snapshot_id: Core::Snapshot
-                .where(cluster_id: cluster_id, captured_at: from..to)
-                .select(:id)
-            ),
-          :snapshot_id,
+            .where(state_time: from..to),
+          :state_time,
           :state
         )
 
-      snaps_by_id =
-        Core::Snapshot
-        .where(cluster_id: cluster_id, captured_at: from..to)
-        .pluck(:id, :captured_at)
-        .to_h
-
       enter_by_time = Hash.new { |h, k| h[k] = Hash.new(0) }
-      enter_raw.each do |(snapshot_id, state), count|
-        captured_at = snaps_by_id[snapshot_id]
-        next unless captured_at
-
-        enter_by_time[captured_at][state.to_s] += count.to_i
+      enter_raw.each do |(state_time, state), count|
+        normalized = normalize_state.call(state.to_s)
+        enter_by_time[state_time][normalized] += count.to_i
       end
 
       # leave_raw - поле valid_to отсутствует в новой модели, временно игнорируем
@@ -488,8 +488,8 @@ module Core
         (
           Core::NodeState::STATES.map(&:to_s) +
           base_counts.keys +
-          enter_raw.keys.map { |(_, st)| st.to_s } +
-          leave_raw.keys.map { |(_, st)| st.to_s }
+          enter_raw.keys.map { |(_, st)| normalize_state.call(st.to_s) } +
+          leave_raw.keys.map { |(_, st)| normalize_state.call(st.to_s) }
         ).uniq
 
       cur = Hash.new(0)

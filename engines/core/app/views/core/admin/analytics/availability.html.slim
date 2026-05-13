@@ -8,12 +8,12 @@ ruby:
       incident: t('.js.severity_labels.incident')
     },
     state_labels: {
-      alloc: t('.states.alloc'),
+      allocated: t('.states.alloc'),
       idle: t('.states.idle'),
       mix: t('.states.mix'),
-      comp: t('.states.comp'),
-      drain: t('.states.drain'),
-      drng: t('.states.drng'),
+      completing: t('.states.comp'),
+      drained: t('.states.drain'),
+      draining: t('.states.drng'),
       down: t('.states.down'),
       maint: t('.states.maint'),
       reserved: t('.states.reserved'),
@@ -367,12 +367,12 @@ javascript:
       var STATE_LABELS = I18N.state_labels;
 
       var STATE_COLORS = {
-        alloc: '#1f77b4',
+        allocated: '#1f77b4',
         idle: '#5dae5d',
         mix: '#ff7f0e',
-        comp: '#9467bd',
-        drain: '#d62728',
-        drng: '#8c564b',
+        completing: '#9467bd',
+        drained: '#d62728',
+        draining: '#8c564b',
         down: '#7f7f7f',
         maint: '#17becf',
         reserved: '#bcbd22',
