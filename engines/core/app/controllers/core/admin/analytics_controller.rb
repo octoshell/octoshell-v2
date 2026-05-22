@@ -71,7 +71,14 @@ module Core
           name: partition_name,
           states: Hash.new(0)
         }
-        @partition_stats[cluster_id][partition_id][:states][state] = count
+        # Приводим состояние к короткому ключу, ожидаемому вьюхой
+        short_state = case state
+        when 'allocated' then 'alloc'
+        when /^down/ then 'down'
+        when /^idle/ then 'idle'
+        else state
+        end
+        @partition_stats[cluster_id][partition_id][:states][short_state] += count
       end
 
       @latest_snapshots = Core::Snapshot.latest_first.includes(:cluster).limit(10)
@@ -154,7 +161,7 @@ module Core
         when 'work'
           # work = idle + allocated
           idle_series = series['idle'] || []
-          alloc_series = series['alloc'] || []
+          alloc_series = series['allocated'] || []
           # Нужно объединить по времени, но так как времена совпадают, можно просто сложить y
           # Создадим хэш по x для быстрого доступа
           point_map = {}
@@ -437,7 +444,8 @@ module Core
     end
 
     def availability_unavailable_states
-      %w[down drain drng maint reserved]
+      # Все состояния, кроме idle, allocated, completing считаются недоступными
+      %w[down drained draining drain drng maint reserved mix]
     end
 
     def available_nodes_count(total_nodes, counts, unavailable_states = availability_unavailable_states)
