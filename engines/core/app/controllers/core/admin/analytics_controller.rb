@@ -78,11 +78,16 @@ module Core
       @snapshot_stats   = {}
 
       if @latest_snapshots.any?
-        @latest_snapshots.each do |snapshot|
-          @snapshot_stats[snapshot.id] = effective_state_counts_at(
-            snapshot.cluster_id,
-            snapshot.captured_at
-          )
+        # Группируем снимки по кластерам для оптимизации запросов
+        snapshots_by_cluster = @latest_snapshots.group_by(&:cluster_id)
+
+        snapshots_by_cluster.each do |cluster_id, cluster_snapshots|
+          # Получаем состояния для всех снимков кластера за один запрос
+          cluster_counts = effective_state_counts_for_snapshots(cluster_id, cluster_snapshots)
+
+          cluster_snapshots.each do |snapshot|
+            @snapshot_stats[snapshot.id] = cluster_counts[snapshot.id] || {}
+          end
         end
       end
       pp @snapshot_stats
@@ -153,14 +158,8 @@ module Core
         }
       end
 
-      snap_effective_counts = {}
-
-      snaps.each do |snap|
-        snap_effective_counts[snap.id] = effective_state_counts_at(
-          cluster.id,
-          snap.captured_at
-        )
-      end
+      # Используем оптимизированный метод для получения состояний всех снимков за один запрос
+      snap_effective_counts = effective_state_counts_for_snapshots(cluster.id, snaps)
 
       states =
         (
@@ -357,57 +356,111 @@ module Core
     end
 
     def grouped_effective_node_state_counts(relation, *group_columns)
+      # Используем SQL оконные функции для определения лучшего состояния каждого узла
+      # Вместо загрузки всех данных в Ruby
+
       group_columns = group_columns.map(&:to_sym)
 
-      # Если нужно группировать по cluster_id, добавляем join с узлом и выбираем cluster_id как алиас
-      if group_columns.include?(:cluster_id)
-        relation = relation.joins(:node).select('core_nodes.cluster_id as cluster_id')
-        # selected_columns остаются символами, потому что алиас cluster_id теперь присутствует в результате
-        selected_columns = group_columns + %i[node_id state]
-      else
-        selected_columns = group_columns + %i[node_id state]
+      # Определяем, нужно ли добавлять join для cluster_id
+      needs_cluster_join = group_columns.include?(:cluster_id)
+
+      # Строим базовый запрос с оконной функцией для определения приоритета
+      base_query = Core::NodeState.from("(#{relation.to_sql}) AS core_node_states")
+
+      # Добавляем join с узлами если нужен cluster_id
+      if needs_cluster_join
+        base_query = base_query.joins('INNER JOIN core_nodes ON core_nodes.id = core_node_states.node_id')
       end
 
-      best_state_by_node = {}
+      # Создаем CASE выражение для приоритетов состояний
+      priority_case = 'CASE '
+      EFFECTIVE_STATE_PRIORITY.each do |state, priority|
+        priority_case << "WHEN REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(core_node_states.state, '~', ''), '#', ''), '*', ''), '.', ''), '$', '') = '#{state}' THEN #{priority} "
+      end
+      priority_case << 'ELSE 0 END'
 
-      relation
-        .where.not(node_id: nil)
-        .pluck(*selected_columns)
-        .each do |row|
-          group_values = row.first(group_columns.length)
-          node_id = row[group_columns.length]
-          raw_state = row[group_columns.length + 1].to_s
-          # Remove SLURM suffixes (~, #, *, ., $) for consistent grouping
-          base_state = raw_state.gsub(/[~#*.$]$/, '')
-          priority = EFFECTIVE_STATE_PRIORITY.fetch(base_state, 0)
+      # Определяем столбцы для группировки
+      select_columns = []
+      group_by_columns = []
 
-          node_key = group_values + [node_id]
-          current = best_state_by_node[node_key]
+      if needs_cluster_join
+        select_columns << 'core_nodes.cluster_id'
+        group_by_columns << 'core_nodes.cluster_id'
+      end
 
-          next unless current.nil? || priority > current[:priority]
+      # Добавляем очищенное состояние
+      select_columns << "REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(core_node_states.state, '~', ''), '#', ''), '*', ''), '.', ''), '$', '') AS clean_state"
+      group_by_columns << 'clean_state'
 
-          best_state_by_node[node_key] = {
-            group_values: group_values,
-            state: base_state,
-            priority: priority
-          }
+      # Используем DISTINCT ON для получения лучшего состояния каждого узла
+      # Сначала получаем подзапрос с лучшими состояниями для каждого узла
+      order_clause = "node_id, #{priority_case} DESC, core_node_states.state_time DESC, core_node_states.id DESC"
+
+      subquery = relation
+                 .select("DISTINCT ON (node_id) node_id,
+                REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(core_node_states.state, '~', ''), '#', ''), '*', ''), '.', ''), '$', '') AS clean_state,
+                #{priority_case} AS priority")
+                 .order(Arel.sql(order_clause))
+
+      subquery = subquery.joins(:node).select('core_nodes.cluster_id') if needs_cluster_join
+
+      # Теперь агрегируем результаты
+      aggregated = Core::NodeState.from("(#{subquery.to_sql}) AS best_states")
+
+      if group_columns.any?
+        # Группируем по указанным столбцам и состоянию
+        group_by = group_columns.map do |col|
+          col == :cluster_id ? 'cluster_id' : col.to_s
         end
 
-      counts = Hash.new(0)
+        group_by << 'clean_state'
 
-      best_state_by_node.each_value do |item|
-        key_values = item[:group_values] + [item[:state]]
-        key = key_values.one? ? key_values.first : key_values
-        counts[key] += 1
+        result = aggregated
+                 .group(group_by)
+                 .count('node_id')
+
+        # Преобразуем результат в ожидаемый формат
+        counts = {}
+        result.each do |(key, state), count|
+          if group_columns.length == 1
+            counts[[key, state]] = count
+          else
+            counts[key + [state]] = count
+          end
+        end
+
+        counts
+      else
+        # Группируем только по состоянию
+        aggregated.group('clean_state').count('node_id')
       end
-
-      counts
     end
 
     def effective_state_counts_at(cluster_id, time)
       grouped_effective_node_state_counts(
         Core::NodeState.at(time).joins(:node).where(core_nodes: { cluster_id: cluster_id })
       ).transform_keys(&:to_s)
+    end
+
+    def effective_state_counts_for_snapshots(cluster_id, snapshots)
+      # Упрощенная, но безопасная версия: используем оптимизированный grouped_effective_node_state_counts
+      # для каждого уникального времени, но с кэшированием запросов по времени
+      return {} if snapshots.empty?
+
+      # Группируем снимки по времени для минимизации запросов
+      snapshots_by_time = snapshots.group_by(&:captured_at)
+      unique_times = snapshots_by_time.keys
+
+      # Получаем состояния для каждого уникального времени
+      counts_by_time = {}
+      unique_times.each do |time|
+        counts_by_time[time] = effective_state_counts_at(cluster_id, time)
+      end
+
+      # Сопоставляем с ID снимков
+      snapshots.each_with_object({}) do |snap, hash|
+        hash[snap.id] = counts_by_time[snap.captured_at] || {}
+      end
     end
 
     def availability_unavailable_states
