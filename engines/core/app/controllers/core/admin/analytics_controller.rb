@@ -113,11 +113,6 @@ module Core
 
       total_nodes = Core::Node.where(cluster_id: cluster.id).distinct.count(:id)
 
-      snaps = cluster.snapshots
-                     .where(captured_at: from..to)
-                     .order(:captured_at)
-                     .limit(2000)
-
       comments = cluster.comments
                         .where('valid_from <= ? AND (valid_to IS NULL OR valid_to >= ?)', to, from)
                         .order(:valid_from)
@@ -136,60 +131,40 @@ module Core
         from: from,
         to: to,
         cluster_id: cluster.id,
-        total_nodes: total_nodes
+        total_nodes: total_nodes,
+        include_series: true
       )
 
       pie = aggregate[:pie]
       availability_summary = aggregate[:availability_summary]
+      series = aggregate[:series] || {}
+      points = aggregate[:points] || []
 
-      if snaps.blank?
-        return render json: {
-          cluster_id: cluster.id,
-          total_nodes: total_nodes,
-          metric: metric,
-          from: from.iso8601,
-          to: to.iso8601,
-          states: [],
-          series: {},
-          points: [],
-          comments: comments,
-          pie: pie,
-          availability_summary: availability_summary
-        }
-      end
-
-      # Используем оптимизированный метод для получения состояний всех снимков за один запрос
-      snap_effective_counts = effective_state_counts_for_snapshots(cluster.id, snaps)
-
-      states =
-        (
-          Core::NodeState::STATES.map(&:to_s) +
-          snap_effective_counts.values.flat_map(&:keys)
-        ).uniq
+      # Определяем состояния на основе series
+      states = series.keys.select { |k| k != 'available' }
 
       unavailable_states = availability_unavailable_states
 
       if metric != 'states'
-        points = snaps.map do |snap|
-          cur = Hash.new(0)
-          snap_effective_counts[snap.id].each do |state, count|
-            cur[state] = count.to_i
+        # Строим points на основе series
+        points = series['available'] || []
+        case metric
+        when 'idle'
+          points = series['idle'] || []
+        when 'work'
+          # work = idle + allocated
+          idle_series = series['idle'] || []
+          alloc_series = series['alloc'] || []
+          # Нужно объединить по времени, но так как времена совпадают, можно просто сложить y
+          # Создадим хэш по x для быстрого доступа
+          point_map = {}
+          (idle_series + alloc_series).each do |point|
+            point_map[point[:x]] ||= 0
+            point_map[point[:x]] += point[:y]
           end
-
-          idle  = cur['idle'].to_i
-          alloc = cur['alloc'].to_i
-
-          y =
-            case metric
-            when 'work'
-              alloc + idle
-            when 'up'
-              available_nodes_count(total_nodes, cur, unavailable_states)
-            else
-              idle
-            end
-
-          { x: snap.captured_at.iso8601, y: y }
+          points = point_map.map { |x, y| { x: x, y: y } }.sort_by { |p| p[:x] }
+        when 'up'
+          points = series['available'] || []
         end
 
         return render json: {
@@ -205,29 +180,15 @@ module Core
         }
       end
 
-      series = Hash.new { |h, k| h[k] = [] }
-
-      snaps.each do |snap|
-        cur = Hash.new(0)
-        snap_effective_counts[snap.id].each do |state, count|
-          cur[state] = count.to_i
-        end
-
-        x = snap.captured_at.iso8601
-
-        states.each do |state|
-          series[state] << { x: x, y: cur[state].to_i }
-        end
-
-        available_y = available_nodes_count(total_nodes, cur, unavailable_states)
-        series['available'] << { x: x, y: available_y }
-      end
-
+      # metric == 'states'
+      # Фильтруем состояния, у которых есть хотя бы одна ненулевая точка
       states.select! do |state|
-        series[state].any? { |point| point[:y].to_i > 0 }
+        series[state]&.any? { |point| point[:y].to_i > 0 }
       end
 
-      states << 'available' if series['available'].any? { |point| point[:y].to_i > 0 }
+      if series['available']&.any? { |point| point[:y].to_i > 0 }
+        states << 'available' unless states.include?('available')
+      end
 
       states.uniq!
       series.slice!(*states)
@@ -463,6 +424,18 @@ module Core
       end
     end
 
+    def effective_state_counts_at_multiple_times(cluster_id, times)
+      # Возвращает хэш { time => counts } для каждого уникального времени
+      return {} if times.empty?
+
+      unique_times = times.uniq.sort
+      counts_by_time = {}
+      unique_times.each do |time|
+        counts_by_time[time] = effective_state_counts_at(cluster_id, time)
+      end
+      counts_by_time
+    end
+
     def availability_unavailable_states
       %w[down drain drng maint reserved]
     end
@@ -476,7 +449,7 @@ module Core
       [[total - unavailable, 0].max, total].min
     end
 
-    def build_state_aggregate_data(from:, to:, cluster_id:, total_nodes:)
+    def build_state_aggregate_data(from:, to:, cluster_id:, total_nodes:, include_series: false)
       empty_pie = {
         items: [],
         total_seconds: 0.0,
@@ -493,7 +466,12 @@ module Core
         max_intervals: []
       }
 
-      return { pie: empty_pie, availability_summary: empty_summary } if to <= from
+      if to <= from
+        result = { pie: empty_pie, availability_summary: empty_summary }
+        result[:series] = {} if include_series
+        result[:points] = [] if include_series
+        return result
+      end
 
       # Normalize state by removing SLURM suffixes (keep 'allocated' as separate state)
       normalize_state = lambda do |state|
@@ -546,35 +524,56 @@ module Core
       cur = Hash.new(0)
       base_counts.each { |state, count| cur[state] = count.to_i }
 
+      # Инициализация структур для series и points
+      series = {}
+      points = []
+      if include_series
+        series = Hash.new { |h, k| h[k] = [] }
+      end
+
       state_seconds = Hash.new(0.0)
-
       unavailable_states = availability_unavailable_states
-
       available_weighted_seconds = 0.0
       total_duration_seconds = 0.0
-
       max_available = nil
       max_intervals = []
 
-      change_times = (enter_by_time.keys + leave_by_time.keys + [to])
-                     .select { |t| t.present? && t > from && t <= to }
-                     .uniq
-                     .sort
+      # Собираем все уникальные временные точки, где counts могут меняться
+      all_times = ([from] + enter_by_time.keys + [to]).uniq.sort
+      # Получаем точные counts для каждого момента времени
+      counts_by_time = effective_state_counts_at_multiple_times(cluster_id, all_times)
 
+      # Определяем полный список состояний из всех counts
+      all_states = counts_by_time.values.flat_map(&:keys).uniq
+      states = (states + all_states).uniq
+
+      # Итерируем по интервалам между временными точками
       prev_time = from
+      prev_counts = counts_by_time[from] || base_counts
 
-      change_times.each do |time_point|
+      # Проходим по всем временным точкам, начиная со второй
+      all_times.each do |time_point|
+        next if time_point <= from
+        break if time_point > to
+
         duration = time_point - prev_time
-
         if duration.positive?
+          # Накопление state_seconds для каждого состояния
           states.each do |state|
-            count = cur[state].to_i
+            count = prev_counts[state].to_i
             next if count <= 0
-
             state_seconds[state] += count * duration
           end
 
-          available = available_nodes_count(total_nodes, cur, unavailable_states)
+          available = available_nodes_count(total_nodes, prev_counts, unavailable_states)
+
+          if include_series
+            x = prev_time.iso8601
+            states.each do |state|
+              series[state] << { x: x, y: prev_counts[state].to_i }
+            end
+            series['available'] << { x: x, y: available }
+          end
 
           available_weighted_seconds += available * duration
           total_duration_seconds += duration
@@ -591,15 +590,55 @@ module Core
           end
         end
 
-        leave_by_time[time_point].each do |state, count|
-          cur[state] -= count.to_i
-        end
-
-        enter_by_time[time_point].each do |state, count|
-          cur[state] += count.to_i
-        end
-
         prev_time = time_point
+        prev_counts = counts_by_time[time_point] || {}
+      end
+
+      # Добавляем конечный интервал до `to`, если последняя временная точка меньше to
+      if prev_time < to
+        duration = to - prev_time
+        if duration.positive?
+          states.each do |state|
+            count = prev_counts[state].to_i
+            next if count <= 0
+            state_seconds[state] += count * duration
+          end
+
+          available = available_nodes_count(total_nodes, prev_counts, unavailable_states)
+
+          if include_series
+            x = prev_time.iso8601
+            states.each do |state|
+              series[state] << { x: x, y: prev_counts[state].to_i }
+            end
+            series['available'] << { x: x, y: available }
+          end
+
+          available_weighted_seconds += available * duration
+          total_duration_seconds += duration
+
+          if max_available.nil? || available > max_available
+            max_available = available
+            max_intervals = [{ from: prev_time, to: to }]
+          elsif available == max_available
+            if max_intervals.last && max_intervals.last[:to] == prev_time
+              max_intervals.last[:to] = to
+            else
+              max_intervals << { from: prev_time, to: to }
+            end
+          end
+        end
+      end
+
+      # Добавляем конечную точку (to) в series, если include_series
+      if include_series
+        x = to.iso8601
+        final_counts = counts_by_time[to] || prev_counts
+        states.each do |state|
+          series[state] << { x: x, y: final_counts[state].to_i }
+        end
+        available = available_nodes_count(total_nodes, final_counts, unavailable_states)
+        series['available'] << { x: x, y: available }
       end
 
       total_seconds = state_seconds.values.sum
@@ -647,10 +686,13 @@ module Core
         total_node_hours: (total_seconds / 3600.0).round(2)
       }
 
-      {
+      result = {
         pie: pie,
         availability_summary: availability_summary
       }
+      result[:series] = series if include_series
+      result[:points] = points if include_series
+      result
     end
 
     def comment_params
