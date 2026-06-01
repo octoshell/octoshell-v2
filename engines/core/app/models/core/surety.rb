@@ -75,7 +75,7 @@ module Core
     end
 
     def editable_by_author?
-      %i[generated rejected].include? state
+      generated? || rejected?
     end
 
     def prepare_for_approvement
