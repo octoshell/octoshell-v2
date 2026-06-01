@@ -1023,6 +1023,7 @@ en:
         add_scan: Add a scan
         help: 'Supported formats: pdf, png, jpeg, jpg.'
         remove_scan: Remove the scan
+        uneditable_by_author: You can edit only generated or rejected surety 
       new:
         title: Surety creation
       show:

@@ -36,18 +36,19 @@ module Core
       respond_to do |format|
         format.html
         format.rtf do
-          send_data @surety.generate_rtf, filename: "surety_#{@surety.id}.rtf", type: "application/rtf"
+          send_data @surety.generate_rtf, filename: "surety_#{@surety.id}.rtf", type: 'application/rtf'
         end
       end
     end
 
     def edit
       @surety = find_surety(params[:id])
+      decline_uneditable
     end
 
     def update
       @surety = find_surety(params[:id])
-
+      decline_uneditable
       if @surety.update(surety_params)
         redirect_to @surety
       else
@@ -79,9 +80,15 @@ module Core
       current_user.authored_sureties.find(id)
     end
 
+    def decline_uneditable
+      return if @surety.editable_by_author?
+
+      redirect_to @surety, alert: t('core.sureties.edit.uneditable_by_author')
+    end
+
     def surety_params
       params.require(:surety).permit(:boss_full_name, :boss_position, :project_id,
-                                     scans_attributes: [ :image, :id, :_destroy ])
+                                     scans_attributes: %i[image id _destroy])
     end
   end
 end

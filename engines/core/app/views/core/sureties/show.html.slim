@@ -38,11 +38,12 @@ div class="deliver-surety"
       = link_to @surety.document.url do
         span = t(".download_surety_document")
 
-  div class="step clearfix"
-    i class="fa fa-upload"
-    div class="step-content"
-      - link_text = @surety.scans.any? ? t(".edit_scans") : t(".upload_scans")
-      = link_to link_text, edit_surety_path(@surety)
+  - if @surety.editable_by_author? 
+    div class="step clearfix"
+      i class="fa fa-upload"
+      div class="step-content"
+          - link_text = @surety.scans.any? ? t(".edit_scans") : t(".upload_scans")
+          = link_to link_text, edit_surety_path(@surety)
 
 - if @surety.scans.any?
   div class="row"

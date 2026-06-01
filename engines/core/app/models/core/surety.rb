@@ -1,4 +1,3 @@
-# encoding: utf-8
 # == Schema Information
 #
 # Table name: core_sureties
@@ -35,15 +34,15 @@ module Core
     has_many :surety_members, inverse_of: :surety, dependent: :destroy
     has_many :members, class_name: Core.user_class.to_s, through: :surety_members, source: :user
 
-    has_many :scans, class_name: "Core::SuretyScan", dependent: :destroy
+    has_many :scans, class_name: 'Core::SuretyScan', dependent: :destroy
 
     validates :project, presence: true
-    validates :surety_members, length: { minimum: 1, message: I18n.t("errors.choose_at_least") }
+    validates :surety_members, length: { minimum: 1, message: I18n.t('errors.choose_at_least') }
 
-    validates :scans, length: { minimum: 1, message: I18n.t("errors.choose_at_least") },
-              :if => -> {aasm(:state).current_state == :confirmed}
+    validates :scans, length: { minimum: 1, message: I18n.t('errors.choose_at_least') },
+                      if: -> { aasm(:state).current_state == :confirmed }
 
-    accepts_nested_attributes_for :scans, allow_destroy: true, :reject_if => ->(attr){ attr["image"].blank?  }
+    accepts_nested_attributes_for :scans, allow_destroy: true, reject_if: ->(attr) { attr['image'].blank? }
 
     mount_uploader :document, SuretyDocumentUploader
 
@@ -51,43 +50,44 @@ module Core
 
     include AASM
     include ::AASM_Additions
-    aasm(:state, :column => :state) do
-      state :generated, :initial => true
+    aasm(:state, column: :state) do
+      state :generated, initial: true
       state :confirmed
       state :rejected
       state :active
       state :closed
 
       event :confirm, after_commit: :prepare_for_approvement do
-        transitions :from => [:generated, :rejected], :to => :confirmed
+        transitions from: %i[generated rejected], to: :confirmed
       end
 
       event :reject, after_commit: :notify_onwer_about_rejection do
-        transitions :from => :confirmed, :to => :rejected
+        transitions from: :confirmed, to: :rejected
       end
 
       event :activate, after_commit: :activate_project_accounts do
-        transitions :from => [:confirmed, :generated], :to => :active
+        transitions from: %i[confirmed generated], to: :active
       end
 
       event :close, after_commit: :substract_project_accounts do
-        transitions :from => [:generated, :confirmed, :rejected, :active], :to => :closed
+        transitions from: %i[generated confirmed rejected active], to: :closed
       end
+    end
 
-      # inside_transition :on => :confirm, &:prepare_for_approvement
-      # inside_transition :on => :reject, &:notify_onwer_about_rejection
-      # inside_transition :on => :activate, &:activate_project_accounts
-      # inside_transition :on => :close, &:substract_project_accounts
+    def editable_by_author?
+      %i[generated rejected].include? state
     end
 
     def prepare_for_approvement
-      self.save_rft_document
+      save_rft_document
       ::Core::MailerWorker.perform_async(:surety_confirmed, id)
     end
 
     def activate_project_accounts
       ::Core::MailerWorker.perform_async(:surety_accepted, id)
-      ::Core::Member.where(project_id: project_id, user_id: member_ids).where(:project_access_state=>[:unsured, :suspended]).map(&:activate!)
+      ::Core::Member.where(project_id: project_id,
+                           user_id: member_ids).where(project_access_state: %i[unsured
+                                                                               suspended]).map(&:activate!)
       project.synchronize! if project.active?
     end
 
@@ -100,7 +100,7 @@ module Core
     end
 
     def name
-      "#{Surety.model_name.human} #{I18n.t("util.number")}#{id}"
+      "#{Surety.model_name.human} #{I18n.t('util.number')}#{id}"
     end
 
     # def human_state_name
@@ -120,7 +120,7 @@ module Core
     end
 
     def save_rft_document
-      tempfile = Tempfile.new(["surety_#{id}", ".rtf"])
+      tempfile = Tempfile.new(["surety_#{id}", '.rtf'])
       tempfile.write generate_rtf
       tempfile.close
       update(document: tempfile)
@@ -132,13 +132,13 @@ module Core
         employment = author.employments.find_by_organization_id(organization.id)
         if organization_department.present?
           "#{organization.name} (#{organization_department.name})"
-        elsif employment.present? && (fak = employment.positions.find{|p| p.name_ru == "Факультет"}).present?
+        elsif employment.present? && (fak = employment.positions.find { |p| p.name_ru == 'Факультет' }).present?
           "#{organization.name} (#{fak.name} #{fak.value})"
         else
           organization.name
         end
       else
-        "Не указана!"
+        'Не указана!'
       end
     end
   end

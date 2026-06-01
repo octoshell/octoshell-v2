@@ -81,7 +81,7 @@ module Sessions
       end
 
       event :pick, after_commit: :notify_about_pick do
-        transitions from: %i[pending accepted submitted exceeded rejected], to: :assessing
+        transitions from: %i[accepted submitted exceeded rejected], to: :assessing
       end
 
       event :assess, after_commit: :notify_about_assess do
