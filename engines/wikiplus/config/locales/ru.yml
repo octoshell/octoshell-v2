@@ -7,10 +7,14 @@ ru:
         name: Название
         sortid: Приоритет страницы
         url: url
+        groups: Группы
     models:
       wikiplus/page: Страница wiki
   wikiplus:
     not_found_page: Нет такой странички...
+    attributes:
+      groups: Группы
+      groups_hint: 'Оставьте пустым, чтобы показывать всем'
     admin:
       images:
         index:

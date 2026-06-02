@@ -1,13 +1,13 @@
 module Wikiplus
   class Admin::PagesController < Admin::ApplicationController
-    before_action :check_abilities, except: [:index, :show]
+    before_action :check_abilities, except: %i[index show]
 
     def index
       @pages = Page.where(mainpage_id: nil).order(:sortid)
       @list = []
-      @pages.each{|p|
+      @pages.each do |p|
         add_to_list_page p, 1
-      }
+      end
     end
 
     def show
@@ -38,19 +38,20 @@ module Wikiplus
 
     def createsubpage
       @images = Image.all
-      #params[:id] =~ /(\d+)-.*/
+      # params[:id] =~ /(\d+)-.*/
       parent_page = Page.find(params[:id])
-      #logger.warn "parent=#{parent_page} params=#{params.inspect}"
-      new_page = Page.new(mainpage: parent_page, name_ru: params[:name_ru], name_en: params[:name_en], content_ru: params[:content_ru], content_en: params[:content_en], sortid: params[:sortid], url: params[:url])
+      # logger.warn "parent=#{parent_page} params=#{params.inspect}"
+      new_page = Page.new(mainpage: parent_page, name_ru: params[:name_ru], name_en: params[:name_en],
+                          content_ru: params[:content_ru], content_en: params[:content_en], sortid: params[:sortid], url: params[:url])
       if new_page.save
-        #logger.warn "Saved!"
-        @page=new_page
+        # logger.warn "Saved!"
+        @page = new_page
         redirect_to [:admin, @page]
       else
         flash.now[:notice] = "Error: #{new_page.errors.full_messages}"
         logger.warn "Error: #{new_page.errors.full_messages}"
-        #@page=parent_page
-        redirect_to [:admin, :index]
+        # @page=parent_page
+        redirect_to %i[admin index]
       end
     end
 
@@ -61,25 +62,24 @@ module Wikiplus
       prio = 0
       items = params[:relations].split('&')
       logger.warn "items: #{items.inspect}"
-      items.each{|item|
+      items.each do |item|
         prio += 1
         item =~ CH_STR_REGEXP
-        page_id = $1.to_i
-        parent_id = $2=='null' ? nil : $2.to_i
+        page_id = ::Regexp.last_match(1).to_i
+        parent_id = ::Regexp.last_match(2) == 'null' ? nil : ::Regexp.last_match(2).to_i
         begin
           page = Page.find(page_id)
           page.mainpage_id = parent_id
           page.sortid = prio
           page.save!
-        rescue => e
+        rescue StandardError => e
           logger.warn "Error: #{e.message}"
           result ||= ''
           result += "Error: #{e.message}\n"
         end
-      }
-      render plain: (result ||  'ok')
+      end
+      render plain: result || 'ok'
     end
-
 
     def edit
       @images = Image.all
@@ -107,17 +107,18 @@ module Wikiplus
       authorize! :manage, :pages
     end
 
-    def add_to_list_page p, level
-      @list << [p.id,level]
-      if p.subpages.size>0
-        p.subpages.order(:sortid).each{|subpage|
-          add_to_list_page subpage, level+1
-        }
+    def add_to_list_page(p, level)
+      @list << [p.id, level]
+      return unless p.subpages.size > 0
+
+      p.subpages.order(:sortid).each do |subpage|
+        add_to_list_page subpage, level + 1
       end
     end
 
     def page_params
-      params.require(:page).permit(*Page.locale_columns(:name, :content),:sortid, :mainpage_id, :url, :show_all, :image)
+      params.require(:page).permit(*Page.locale_columns(:name, :content), :sortid, :mainpage_id, :url, :show_all,
+                                   :image, group_ids: [])
     end
   end
 end

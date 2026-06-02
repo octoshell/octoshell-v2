@@ -8,10 +8,11 @@ div class="row"
         div id="targetText"
       = f.text_field :mainpage_id, hidden: true
       = text_field_tag 'Parent', @page.mainpage_id ? Wikiplus::Page.find(@page.mainpage_id).name : ''
-      /= f.text_field :sortid 
+      /= f.text_field :sortid
       - Wikiplus::Page.locale_columns(:name).each do |column|
-        = f.text_field column 
+        = f.text_field column
       = f.text_field :url, help: "/pages/<strong>url</strong>".html_safe
+      = f.collection_select :group_ids, Group.all, :id, :name, { label: t('wikiplus.attributes.groups'), include_blank: t('wikiplus.attributes.groups_hint') }, { multiple: true, class: 'form-control' }
       /- index = 1
       - Wikiplus::Page.locale_columns(:content).each do |column|
           = markdown_area f, column, help: t("wikiplus.markdown_help").html_safe, rows: 8, class: "code img_target"

@@ -23,17 +23,27 @@
 module Wikiplus
   class Page < ApplicationRecord
     def test
-      return id
+      id
     end
 
-  	has_many :subpages, class_name: "Page",
-                        foreign_key: "mainpage_id"
+    has_many :subpages, class_name: 'Page',
+                        foreign_key: 'mainpage_id'
 
-    belongs_to :mainpage, class_name: "Page"
+    belongs_to :mainpage, class_name: 'Page'
+
+    has_many :page_groups, class_name: 'Wikiplus::PageGroup', foreign_key: :page_id, dependent: :destroy
+    has_many :groups, through: :page_groups, class_name: '::Group'
 
     translates :name, :content
     validates_translated :content, :name, presence: true
     validates :url, presence: true, uniqueness: true
+
+    scope :visible_for, lambda { |user|
+      left_joins(:page_groups)
+        .where('wikiplus_page_groups.id IS NULL OR wikiplus_page_groups.group_id IN (?)',
+               user.groups.select(:id))
+        .distinct
+    }
 
     def to_param
       "#{id}-#{url}"

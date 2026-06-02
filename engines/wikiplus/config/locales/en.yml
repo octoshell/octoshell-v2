@@ -7,10 +7,14 @@ en:
         name: Name
         sortid: Sort priority
         url: url
+        groups: Groups
     models:
       wikiplus/page: Wiki page
   wikiplus:
     not_found_page: No such page...
+    attributes:
+      groups: Groups
+      groups_hint: 'Leave empty to show to everyone'
     admin:
       images:
         index:
