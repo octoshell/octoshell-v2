@@ -6,8 +6,8 @@ module Core
       @search = Surety.ransack(params[:q])
       @sureties = @search.result(distinct: true).includes({ author: :profile,
                                                             members: :profile,
-                                                            project: [:card, :organization] },
-                                                            :scans)
+                                                            project: %i[card organization] },
+                                                          :scans)
       without_pagination(:sureties)
     end
 
@@ -28,7 +28,7 @@ module Core
       @surety = find_surety(params[:id])
       redirect_to @surety
     rescue ActiveRecord::RecordNotFound
-      redirect_to sureties_path, alert: t("flash.alerts.surety_not_found")
+      redirect_to sureties_path, alert: t('flash.alerts.surety_not_found')
     end
 
     def activate
@@ -91,28 +91,28 @@ module Core
     end
 
     def rtf_template
-      File.open("#{Core::Engine.root}/config/sureties/surety.rtf", "w+") do |f|
+      File.open("#{Core::Engine.root}/config/sureties/surety.rtf", 'w+') do |f|
         f.write params[:template]
       end
-      redirect_to template_admin_sureties_path, notice: t("flash.template_loaded")
+      redirect_to template_admin_sureties_path, notice: t('flash.template_loaded')
     end
 
     def default_rtf
-      File.open("#{Rails.root}/config/sureties/surety.rtf", "w+") do |f|
+      File.open("#{Rails.root}/config/sureties/surety.rtf", 'w+') do |f|
         f.write File.read("#{Core::Engine.root}/config/sureties/surety.rtf.default")
       end
-      redirect_to template_admin_sureties_path, notice: t("flash.template_recreated_from_default")
+      redirect_to template_admin_sureties_path, notice: t('flash.template_recreated_from_default')
     end
 
     def download_rtf_template
-      send_data File.read("#{Core::Engine.root}/config/sureties/surety.rtf"), type: "application/msword"
+      send_data File.read("#{Core::Engine.root}/config/sureties/surety.rtf"), type: 'application/msword'
     end
 
     def load_scan
       @surety = Surety.find(params[:surety_id])
       if @surety.load_scan(params[:file])
         @surety.save
-        redirect_to [:admin, @surety], notice: t("flash.scan_uploaded")
+        redirect_to [:admin, @surety], notice: t('flash.scan_uploaded')
       else
         redirect_to [:admin, @surety, :scan], alert: @surety.errors.full_messages.to_sentence
       end
@@ -120,6 +120,19 @@ module Core
 
     def new_scan
       @surety = Surety.find(params[:surety_id])
+    end
+
+    def edit
+      @surety = find_surety(params[:id])
+    end
+
+    def update
+      @surety = find_surety(params[:id])
+      if @surety.update(surety_params)
+        redirect_to [:admin, @surety], notice: t('flash.surety_updated')
+      else
+        redirect_to [:admin, @surety], alert: @surety.errors.full_messages.to_sentence
+      end
     end
 
     private
@@ -146,9 +159,14 @@ module Core
     end
 
     def setup_default_filter
-      params[:q] ||= { state_in: [], #['confirmed'],
+      params[:q] ||= { state_in: [], # ['confirmed'],
                        project_id_eq: '',
                        scan_ids_exists: '1' }
+    end
+
+    def surety_params
+      params.require(:surety).permit(:boss_full_name, :boss_position, :project_id,
+                                     scans_attributes: %i[image id _destroy])
     end
   end
 end

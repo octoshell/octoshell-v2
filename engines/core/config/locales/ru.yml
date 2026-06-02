@@ -1135,6 +1135,10 @@ ru:
           title: Поручительства
         table:
           no_sureties: Ничего не найдено.
+        edit:
+          add_scan: Добавить скан
+          help: 'Поддерживаются форматы: pdf, png, jpeg, jpg.'
+          remove_scan: Удалить скан
       users:
         index:
           access_state: Статус доступа
@@ -1556,6 +1560,7 @@ ru:
     request_created: Заявка создана
     request_updated: Заявка обновлена
     scan_uploaded: Скан загружен
+    surety_updated: Поручительство обновлено
     template_loaded: Шаблон загружен
     template_recreated_from_default: Шаблон восстановлен
     template_saved: Шаблон сохранён

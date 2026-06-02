@@ -683,6 +683,10 @@ en:
           title: Sureties
         table:
           no_sureties: No sureties have been found.
+        edit:
+          add_scan: Add a scan
+          help: 'Supported formats: pdf, png, jpeg, jpg.'
+          remove_scan: Remove the scan
       users:
         index:
           access_state: Access state
@@ -1077,6 +1081,7 @@ en:
     request_created: The request has been created
     request_updated: The request has been updated
     scan_uploaded: Your scan has been uploaded
+    surety_updated: The surety has been updated
     template_loaded: The template has been loaded
     template_recreated_from_default: The template has been recreated
     template_saved: The template has been saved

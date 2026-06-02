@@ -3,6 +3,7 @@ div class="page-header"
 
 - if can? :manage, :sureties
   div class="well btn-toolbar"
+    = link_to t("actions.edit"), edit_admin_surety_path(@surety), class: "btn btn-primary"
     - if @surety.confirmed?
       div class='row'
         = bootstrap_form_for @surety,url: admin_surety_activate_or_reject_path(@surety),method: :put,layout: :inline do |f|

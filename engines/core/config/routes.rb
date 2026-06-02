@@ -53,7 +53,7 @@ Core::Engine.routes.draw do
       resources :requests, only: %i[new create]
     end
 
-    resources :sureties do
+    resources :sureties, only: %i[index show edit update] do
       collection do
         post :find
         get :template,     action: :edit_template
