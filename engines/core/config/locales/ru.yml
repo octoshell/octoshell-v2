@@ -2,6 +2,7 @@
 ru:
   admin_submenu:
     analytics: Аналитика
+    cluster_stats: Статистика кластеров
   activerecord:
     aasm:
       core/access:
@@ -609,6 +610,53 @@ ru:
           js:
             choose_reason: "Выберите причину"
             choose_category_first: "Сначала выберите категорию"
+      cluster_stats:
+        show:
+          page_title: Статистика кластеров (узлочасы)
+          period_note: 'Задача относится к тому периоду, в котором она была запущена (по времени Start в SLURM).'
+          form:
+            select_cluster: '— Выберите кластер —'
+            start_date: Начало периода
+            end_date: Конец периода
+            group_by: Группировка
+            period_group: Разбивка по периодам
+            submit: Показать
+          group_options:
+            login: По логинам
+            project: По проектам
+            organization: По организациям
+            department: По подразделениям
+            partition: По разделам (partition)
+          period_options:
+            none: Без разбивки
+            month: По месяцам
+            quarter: По кварталам
+          result_title: Результаты
+          total_node_hours: Всего узлочасов
+          total_jobs: Всего задач
+          export_button: Скачать XLSX
+          no_data: Нет данных за выбранный период
+          table:
+            group: Группа
+            node_hours: Узлочасы
+            job_count: Количество задач
+          errors:
+            cluster_not_found: Кластер не найден
+            invalid_date: Некорректная дата
+            start_after_end: Дата начала не может быть позже даты окончания
+            service_error: 'Ошибка при получении статистики: %{message}'
+        export_xlsx:
+          errors:
+            cluster_not_found: Кластер не найден
+            invalid_date: Некорректная дата
+            service_error: 'Ошибка при получении статистики: %{message}'
+          xlsx:
+            sheet_name: Статистика кластера
+            period: Период
+            group: Группа
+            node_hours: Узлочасы
+            job_count: Количество задач
+            total: Итого
       accesses:
         enable_resource_control:
           success: 'Успешно включен контроль ресурсов'

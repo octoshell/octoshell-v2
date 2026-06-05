@@ -24,7 +24,7 @@ module Core
     SUBSTATES = %w[unknown maintenance pending draining].freeze
 
     validates :state, presence: true, inclusion: { in: STATES }
-    validates :substate, allow_nil: true, inclusion: { in: SUBSTATES }
+    # validates :substate, allow_nil: true, inclusion: { in: SUBSTATES }
 
     # Returns the latest state for each node (using DISTINCT ON)
     scope :latest_per_node, lambda {

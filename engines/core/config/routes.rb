@@ -134,6 +134,10 @@ Core::Engine.routes.draw do
         get :availability_data
       end
     end
+
+    resource :cluster_stats, only: [:show], controller: :cluster_stats do
+      get :export_xlsx, on: :collection
+    end
   end
 
   resources :notices do

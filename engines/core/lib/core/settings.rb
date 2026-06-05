@@ -16,7 +16,8 @@ module Core
     add_ability(:manage, :organizations, 'superadmins')
     add_controller_ability(:manage, :organizations, 'admin/organizations', 'admin/organization_kinds')
     add_ability(:manage, :clusters, 'superadmins')
-    add_controller_ability(:manage, :clusters, 'admin/clusters', 'admin/cluster_logs', 'admin/quota_kinds')
+    add_controller_ability(:manage, :clusters, 'admin/clusters', 'admin/cluster_logs', 'admin/quota_kinds',
+                           'admin/cluster_stats')
     add_ability(:manage, :geography, 'superadmins')
     add_controller_ability(:manage, :geography, 'admin/cities', 'admin/countries')
     add_ability(:manage, :notices, 'superadmins')
@@ -102,6 +103,9 @@ module Core
         # organization
         add_item_if_may('core_analytics', t('core.admin.analytics.admin_submenu.analytics'),
                         core.admin_analytics_path, 'core/admin/analytics')
+
+        add_item_if_may('cluster_stats', t('admin_submenu.cluster_stats'),
+                        core.admin_cluster_stats_path, 'core/admin/cluster_stats')
 
         add_item_if_may('direction_of_sciences', t('admin_submenu.direction_of_sciences'),
                         core.admin_direction_of_sciences_path, 'core/admin/direction_of_sciences')

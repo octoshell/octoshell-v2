@@ -1,0 +1,128 @@
+- content_for :page_title do
+  = t('.page_title')
+
+.page-header
+  h1 = t('.page_title')
+
+p.text-muted = t('.period_note')
+
+- options = common_datepicker_options
+= bootstrap_form_tag url: url_for(action: :show), method: :get, layout: :horizontal, data: { turbo: false, turbolinks: false } do |f|
+  .row
+    .col-md-4
+      = f.collection_select :cluster_id, @clusters || [], :id, :name,
+                            { include_blank: t('.form.select_cluster'), selected: @selected_cluster_id },
+                            { class: 'form-control', required: true }
+    .col-md-4
+      = f.text_field :start_date,
+                     options.merge(value: @selected_start_date, label: t('.form.start_date'), required: true)
+    .col-md-4
+      = f.text_field :end_date,
+                     options.merge(value: @selected_end_date, label: t('.form.end_date'), required: true)
+  .row
+    .col-md-6
+      - group_options = [[t('.group_options.login'), 'login'],
+                         [t('.group_options.project'), 'project'],
+                         [t('.group_options.organization'), 'organization'],
+                         [t('.group_options.department'), 'department']]
+      = f.select :group_by,
+                 options_for_select(group_options, @selected_group_by || 'login'),
+                 { label: t('.form.group_by') },
+                 { class: 'form-control' }
+    .col-md-6
+      - period_options = [[t('.period_options.none'), 'none'],
+                          [t('.period_options.month'), 'month'],
+                          [t('.period_options.quarter'), 'quarter']]
+      = f.select :period_group,
+                 options_for_select(period_options, @selected_period_group || 'none'),
+                 { label: t('.form.period_group') },
+                 { class: 'form-control' }
+  .row
+    .col-md-12
+      = f.submit t('.form.submit'), class: 'btn btn-primary'
+      = f.submit t('.export_button'), class: 'btn btn-success', style: 'margin-left: 10px;',
+                 formaction: url_for(action: :export_xlsx), formmethod: :get,
+                 data: { disable_with: false }
+
+- if flash[:alert].present?
+  .alert.alert-danger style="margin-top: 15px;"
+    = flash[:alert]
+
+- if @result.present?
+  - total = @result[:total] || {}
+  - partition_columns = @result[:partition_columns] || []
+
+  .panel.panel-info style="margin-top: 20px;"
+    .panel-heading
+      strong = t('.result_title')
+      span.text-muted style="margin-left: 10px;"
+        = "#{t('.total_node_hours')}: #{number_with_precision(total[:node_hours], precision: 2)} | "
+        = "#{t('.total_jobs')}: #{total[:job_count]}"
+
+    - if @result[:columns].present?
+      - columns = @result[:columns]
+      .panel-body
+        table.table.table-striped.table-condensed.table-bordered
+          thead
+            tr
+              th rowspan="2" = t('.table.group')
+              - columns.each do |col|
+                th style="text-align: center;" colspan="#{1 + partition_columns.size * 2}"
+                  = col
+            tr
+              - columns.each_with_index do |_col, ci|
+                - first_style = ci > 0 ? 'border-left: 2px solid #999 !important;' : ''
+                th style="#{first_style}" = t('.table.node_hours')
+                th = t('.table.job_count')
+                - partition_columns.each do |part|
+                  th colspan="2" style="text-align: center;"
+                    = part
+          tbody
+            - (@result[:rows] || []).each do |row|
+              tr
+                td = row[:key]
+                - columns.each_with_index do |col, ci|
+                  - cell = row.dig(:cells, col) || {}
+                  - cell_total = cell[:total] || {}
+                  - first_style = ci > 0 ? 'border-left: 2px solid #999 !important;' : ''
+                  td style="#{first_style}" = number_with_precision(cell_total[:node_hours], precision: 2)
+                  td = cell_total[:job_count]
+                  - partition_columns.each do |part|
+                    - part_cell = cell.dig(:partitions, part) || {}
+                    td = number_with_precision(part_cell[:node_hours], precision: 2)
+                    td = part_cell[:job_count]
+    - elsif @result[:rows].present?
+      .panel-body
+        table.table.table-striped.table-condensed.table-bordered
+          thead
+            tr
+              th rowspan="2" = t('.table.group')
+              th colspan="2" style="text-align: center;"
+                = t('.table.total')
+              - partition_columns.each do |part|
+                th colspan="2" style="text-align: center;"
+                  = part
+            tr
+              th = t('.table.node_hours')
+              th = t('.table.job_count')
+              - partition_columns.each do
+                th = t('.table.node_hours')
+                th = t('.table.job_count')
+          tbody
+            - @result[:rows].each do |row|
+              tr
+                td = row[:key]
+                - row_total = row[:total] || {}
+                td = number_with_precision(row_total[:node_hours], precision: 2)
+                td = row_total[:job_count]
+                - partition_columns.each do |part|
+                  - part_cell = row.dig(:partitions, part) || {}
+                  td = number_with_precision(part_cell[:node_hours], precision: 2)
+                  td = part_cell[:job_count]
+    - else
+      .panel-body
+        p.text-muted = t('.no_data')
+
+- elsif params[:cluster_id].present?
+  .alert.alert-info style="margin-top: 15px;"
+    = t('.no_data')
