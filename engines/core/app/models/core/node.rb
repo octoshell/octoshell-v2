@@ -37,22 +37,6 @@ module Core
       last_state&.reason
     end
 
-    # Normalizes state: treats 'allocated' and 'idle' as equivalent
-    # @param state [String, nil] state to normalize
-    # @return [String, nil] normalized state
-    def self.normalize_state(state)
-      return state if state.blank?
-
-      # Treat 'allocated' and 'idle' as equivalent
-      # Keep SLURM suffixes (~, #, *) for accurate state tracking
-      %w[allocated].include?(state) ? 'idle' : state
-    end
-
-    # Instance method delegate to class method for backward compatibility
-    def normalize_state(state)
-      self.class.normalize_state(state)
-    end
-
     def to_s
       name
     end

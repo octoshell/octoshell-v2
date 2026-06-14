@@ -113,7 +113,7 @@ module Core
     #          node002 batch down~ Drain reason here
     # Supports node ranges in format: n[54103,54107-54110,54115-54125]
     # Creates nodes if they don't exist
-    # Treats 'allocated' and 'idle' as equivalent states
+    # Treats 'allocated' and 'idle' as distinct states
     # Optimized for performance: uses batch loading and bulk insert
     def log_node_states
       # Actually sinfo -h -o "%N %R %T %E"' happens here
@@ -186,7 +186,7 @@ module Core
 
       parsed_lines.each do |line|
         partition = existing_partitions[line[:partition_name]]
-        normalized_state = Core::Node.normalize_state(line[:state])
+        current_state = line[:state]
 
         expand_node_names(line[:node_names_raw]).each do |node_name|
           node = existing_nodes[node_name]
@@ -194,11 +194,11 @@ module Core
 
           # Check if state changed using cached data
           last_state = last_states_hash[node.id]
-          last_normalized = last_state ? Core::Node.normalize_state(last_state.state) : nil
 
-          next unless last_normalized != normalized_state || last_state&.reason != line[:reason]
+          next unless last_state&.state != current_state || last_state&.reason != line[:reason]
 
-          node_states_data << { node_id: node.id, state: line[:state], reason: line[:reason], state_time: capture_time }
+          node_states_data << { node_id: node.id, state: current_state, reason: line[:reason],
+                                state_time: capture_time }
         end
       end
 
