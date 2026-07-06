@@ -42,6 +42,10 @@ module Core
       assign_login
     end
 
+    after_destroy_commit do
+      project.synchronize!
+    end
+
     include AASM
     include ::AASM_Additions
     aasm(:project_access_state, column: :project_access_state) do
