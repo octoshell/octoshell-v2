@@ -9,8 +9,12 @@
     -User.find(id).full_name_with_email
   = f.collection_select :responsible_id, User.support, :id, :full_name_with_email unless @ticket.new_record?
   /= f.text_field :topic, value: @ticket.topic.name_with_parents,readonly: true
-  = f.collection_select :topic_id, Support::Topic.accessible_by(current_ability, :access).leaf_topics, :id, :name_with_parents
-  = f.hidden_field :previous_topic_id, value: @ticket.topic_id
+  - if @ticket.new_record?
+    = f.collection_select :topic_id, Support::Topic.accessible_by(current_ability, :access).leaf_topics, :id, :name_with_parents, {}, disabled: true
+    = f.hidden_field :topic_id
+  - else
+    = f.collection_select :topic_id, Support::Topic.accessible_by(current_ability, :access).leaf_topics, :id, :name_with_parents
+    = f.hidden_field :previous_topic_id, value: @ticket.topic_id
 
   = f.text_field :subject
   = f.text_field :url

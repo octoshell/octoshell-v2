@@ -214,6 +214,10 @@ en:
         topic: Topic
         user_created_request: User %{full_name} has created the request for techincal
           support.
+      new_ticket_reporter:
+        show_ticket_details: Show request details
+        subject: Administrator created request No%{number} for you in Octoshell
+        topic: Topic
       new_ticket_reply:
         remain: >-
           Do not remove this line! You can add your reply to this request by writing

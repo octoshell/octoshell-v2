@@ -1,4 +1,3 @@
-# coding: utf-8
 module Support
   class Admin::TicketsController < Admin::ApplicationController
     before_action :setup_default_filter, only: :index
@@ -19,8 +18,8 @@ module Support
     def index
       @search = Ticket.ransack(params[:q])
       @tickets = @search.result(distinct: true)
-                        .preload({ reporter: :profile}, { responsible: :profile },
-                                  { field_values: {topics_field: {field: :field_options } }},
+                        .preload({ reporter: :profile }, { responsible: :profile },
+                                 { field_values: { topics_field: { field: :field_options } } },
                                  :topic)
                         .where(topic: [Topic.accessible_by(current_ability, :access)])
       without_pagination(:tickets)
@@ -40,6 +39,7 @@ module Support
 
     def create
       @ticket = Ticket.new(ticket_params)
+      @ticket.created_from_admin = true
       not_authorized_access_to(@ticket)
       init_field_values_form
       @ticket.responsible = current_user
@@ -140,7 +140,7 @@ module Support
     end
 
     def setup_default_filter
-      params[:q] ||= { state_in: ["pending", "answered_by_reporter"]}
+      params[:q] ||= { state_in: %w[pending answered_by_reporter] }
       params[:q][:s] ||= 'updated_at desc'
     end
 
@@ -149,17 +149,16 @@ module Support
       @field_values_form = Support::FieldValuesForm.new(@ticket, second_arg)
     end
 
-
     def ticket_params
       params.require(:ticket).permit(:message, :subject, :topic_id, :url,
                                      :project_id, :cluster_id, :surety_id,
                                      :reporter_id, :responsible_id, :attachment,
                                      tag_ids: [],
                                      subscriber_ids: [],
-                                     field_values_attributes: [ :id,
-                                                                :topics_field_id,
-                                                                :ticket_id,
-                                                                :value ] )
+                                     field_values_attributes: %i[id
+                                                                 topics_field_id
+                                                                 ticket_id
+                                                                 value])
     end
   end
 end

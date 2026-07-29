@@ -222,6 +222,10 @@ ru:
         ticket: Вопрос
         topic: Тема
         user_created_request: Пользователь %{full_name} создал заявку в поддержку.
+      new_ticket_reporter:
+        show_ticket_details: Перейти к заявке
+        subject: Вам написал администратор в Octoshell, создав заявку №%{number}.
+        topic: Тема
       new_ticket_reply:
         remain: >-
           Не удаляйте эту строку! Вы можете добавить ответ к этой заявке, записав

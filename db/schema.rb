@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_02_150959) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_29_152514) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -1429,6 +1429,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_02_150959) do
     t.string "attachment_content_type", limit: 255
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at", precision: nil
+    t.boolean "created_from_admin", default: false
     t.index ["cluster_id"], name: "index_support_tickets_on_cluster_id"
     t.index ["project_id"], name: "index_support_tickets_on_project_id"
     t.index ["reporter_id"], name: "index_support_tickets_on_reporter_id"

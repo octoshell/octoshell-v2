@@ -1,0 +1,9 @@
+= render "header"
+
+h4 #{@ticket.subject}
+h5 style="color: 666;" #{t('.topic')}: #{@ticket.topic.name_with_parents}
+
+p
+  = link_to t('.show_ticket_details'), polymorphic_url(@ticket)
+
+= render "mailer/footer"

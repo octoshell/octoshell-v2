@@ -33,17 +33,14 @@
 
 module Support
   class Ticket < ApplicationRecord
-
-
-
     mount_uploader :attachment, AttachmentUploader
     mount_uploader :export_attachment, TicketAttachmentUploader, mount_on: :attachment_file_name
 
     belongs_to :reporter, class_name: Support.user_class.to_s, foreign_key: :reporter_id
     belongs_to :responsible, class_name: Support.user_class.to_s, foreign_key: :responsible_id
-    belongs_to :project, class_name: "Core::Project"
-    belongs_to :surety, class_name: "Core::Surety"
-    belongs_to :cluster, class_name: "Core::Cluster"
+    belongs_to :project, class_name: 'Core::Project'
+    belongs_to :surety, class_name: 'Core::Surety'
+    belongs_to :cluster, class_name: 'Core::Cluster'
 
     belongs_to :topic
 
@@ -54,13 +51,13 @@ module Support
                             join_table: :support_tickets_tags, dependent: :destroy
 
     has_and_belongs_to_many :subscribers,
-                            class_name: "::User", # TODO: rails bug maybe?
+                            class_name: '::User', # TODO: rails bug maybe?
                             join_table: :support_tickets_subscribers, dependent: :destroy
 
     validates :reporter, :reporter_id, :subject, :message, :topic, presence: true
     validates :attachment, file_size: {
-                             maximum: 100.megabytes.to_i
-                           }
+      maximum: 100.megabytes.to_i
+    }
     validate do
       template.present? && template == message && errors.add(:message, :equal_to_template)
     end
@@ -71,7 +68,7 @@ module Support
     before_create :add_responsible
     after_commit :notify_support, on: :create
 
-    scope :find_by_content, -> (q) do
+    scope :find_by_content, lambda { |q|
       words = q.mb_chars.split
 
       string = "UPPER(support_tickets.message || ' ' ||
@@ -79,20 +76,16 @@ module Support
 
       predicate = words.count.times.map do
         "(position(UPPER(?) in #{string})>0)"
-      end.join(" AND ")
+      end.join(' AND ')
       left_joins(:replies).where(predicate, *words)
-    end
-
-
+    }
 
     after_save do
       field_values.where(value: ['', nil]).destroy_all
     end
 
     def field_values_attributes(params)
-
     end
-
 
     def self.field_values_with_options(*args)
       rel = all
@@ -120,8 +113,6 @@ module Support
       all
     end
 
-
-
     def self.ransackable_scopes(_auth_object = nil)
       %i[find_by_content field_values_with_options contains_all_fields]
     end
@@ -132,52 +123,52 @@ module Support
 
     include AASM
     include ::AASM_Additions
-    aasm(:state, :column => :state) do
-      state :pending, :initial => true
+    aasm(:state, column: :state) do
+      state :pending, initial: true
       state :answered_by_support
       state :answered_by_reporter
       state :resolved
       state :closed
 
       event :attach_support_reply do
-        transitions :from => [:pending, :resolved, :answered_by_support,
-                              :answered_by_reporter],
-                    :to => :answered_by_support
+        transitions from: %i[pending resolved answered_by_support
+                             answered_by_reporter],
+                    to: :answered_by_support
       end
 
       event :attach_reporter_reply do
-        transitions :from => [:pending, :resolved,
-                              :answered_by_support,
-                              :answered_by_reporter],
-                    :to => :answered_by_reporter
+        transitions from: %i[pending resolved
+                             answered_by_support
+                             answered_by_reporter],
+                    to: :answered_by_reporter
       end
 
       event :resolve do
-        transitions :from => [:pending,
-                              :answered_by_reporter,
-                              :answered_by_support],
-                    :to => :resolved
+        transitions from: %i[pending
+                             answered_by_reporter
+                             answered_by_support],
+                    to: :resolved
       end
 
       event :reopen do
-        transitions :from => [:closed, :resolved], :to => :pending
+        transitions from: %i[closed resolved], to: :pending
       end
 
       event :close do
-        transitions :from => [:pending, :resolved,
-                              :answered_by_support,
-                              :answered_by_reporter],
-                    :to => :closed
+        transitions from: %i[pending resolved
+                             answered_by_support
+                             answered_by_reporter],
+                    to: :closed
       end
 
       after_all_transitions :log_status_change
     end
 
     def log_status_change
-      #puts "======> changing from #{aasm(:state).from_state} to #{aasm(:state).to_state} (event: #{aasm(:state).current_event})"
+      # puts "======> changing from #{aasm(:state).from_state} to #{aasm(:state).to_state} (event: #{aasm(:state).current_event})"
     end
 
-    #include ::AASM_Additions
+    # include ::AASM_Additions
     # def state_name
     #   state.to_s
     # end
@@ -204,12 +195,12 @@ module Support
     def accept(user)
       replies.create! do |reply|
         reply.author = user
-        reply.message = I18n.t("actions.ticket_accepted")
+        reply.message = I18n.t('actions.ticket_accepted')
       end
     end
 
     def actual?
-      not closed?
+      !closed?
     end
 
     def topics(for_user = false)
@@ -242,9 +233,9 @@ module Support
     end
 
     def find_next_ticket_from(tickets_list)
-      tickets_list = tickets_list || ""
+      tickets_list ||= ''
       tickets = tickets_list.split(',')
-      ticket_index = tickets.find_index(self.id.to_s)
+      ticket_index = tickets.find_index(id.to_s)
       if ticket_index && (next_ticket_id = tickets[ticket_index.next])
         Ticket.find(next_ticket_id)
       end
@@ -257,12 +248,12 @@ module Support
                    reporter.accounts
                  end
 
-      accounts.map(&:login).join(", ")
+      accounts.map(&:login).join(', ')
     end
 
     def has_blank_fields?
       ![url, attachment, project, cluster].all?(&:present?) ||
-        (!field_values.blank? && field_values.any?{ |fv| fv.value.blank? })
+        (!field_values.blank? && field_values.any? { |fv| fv.value.blank? })
     end
 
     def possible_responsibles
@@ -292,7 +283,7 @@ module Support
       (topic.parents_with_self.map { |t| t.topics_fields.to_a } +
         Support::TopicsField.where(topic_id: nil).joins(:field_values)
                             .where(support_field_values: { ticket_id: id }).to_a)
-      .flatten.uniq(&:field_id)
+        .flatten.uniq(&:field_id)
     end
 
     def old_fields(topic_id)
@@ -316,6 +307,7 @@ module Support
         topic.user_topics.where(required: true).first
       end&.user_topics&.where(required: true)&.first
       return unless responsible
+
       self.responsible = responsible.user
       subscribers << responsible.user unless subscribers.include? responsible
     end
@@ -325,8 +317,8 @@ module Support
     end
 
     def notify_support
-      # TODO notify user if ticket created by admin!
-      Support::MailerWorker.perform_async(:new_ticket, id)
+      Support::MailerWorker.perform_async(:new_ticket, id) unless created_from_admin
+      Support::MailerWorker.perform_async(:new_ticket_reporter, id) if created_from_admin
       true
     end
   end
