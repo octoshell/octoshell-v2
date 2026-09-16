@@ -7,8 +7,9 @@ module Core
       @search = Access.ransack(params[:q] || { queue_accesses_id_exists: true })
       @search.sorts = 'project_id asc' if @search.sorts.empty?
       @accesses = @search.result(distinct: true)
-                         .select('core_accesses.*, core_accesses.project_id')
+                         .select('core_accesses.*, core_accesses.project_id, core_resource_controls.note')
                          .page(params[:page])
+                         .joins(:resource_controls)
                          .includes(:project, :cluster,
                                    { resource_controls: [:resource_control_fields,
                                                          {
