@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_29_152514) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_17_150831) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -633,6 +633,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_29_152514) do
     t.integer "max_running_jobs"
     t.integer "max_submitted_jobs"
     t.integer "resource_control_weight"
+    t.boolean "default", default: false, null: false
     t.index ["cluster_id"], name: "index_core_partitions_on_cluster_id"
   end
 

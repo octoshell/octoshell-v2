@@ -111,6 +111,7 @@ ru:
         name: Наименование
         state: Статус
       core/partition:
+        default: По умолчанию
         name: Название
         resources: Ресурсы
         max_submitted_jobs: Макс. ожидающих заданий

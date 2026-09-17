@@ -2,10 +2,11 @@
 #
 # Table name: core_partitions
 #
+#  cluster_id :integer
+#  default    :boolean          default(FALSE), not null
 #  id         :integer          not null, primary key
 #  name       :string
 #  resources  :string
-#  cluster_id :integer
 #
 # Indexes
 #

@@ -65,7 +65,8 @@ module Core
                                       :available_for_work, :description,
                                       *Core::Cluster.locale_columns(:name),
                                       partitions_attributes: %i[id _destroy resource_control_weight
-                                                                name resources max_submitted_jobs max_running_jobs],
+                                                                name resources max_submitted_jobs max_running_jobs
+                                                                default],
                                       quotas_attributes: %i[id quota_kind_id
                                                             value _destroy])
     end

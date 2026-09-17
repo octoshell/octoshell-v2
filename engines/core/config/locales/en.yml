@@ -165,6 +165,8 @@ en:
       core/organization_kind:
         departments_required: Departments are required
         name: Name
+      core/partition:
+        default: Default
       core/project:
         allowed_members: Project members with clusters access
         card: Project card
