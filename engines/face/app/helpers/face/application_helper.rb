@@ -184,9 +184,9 @@ module Face
       end
     end
 
-    def page_entries_info(collection, options = {})
-      return t 'without_pagination.displaying_all_records' unless collection.arel.ast.cores.any? do |item|
-        item.respond_to?(:top)
+    def page_entries_info(collection, entry_name: nil)
+      if collection.respond_to?(:arel) && collection.arel.ast.limit.nil?
+        return t 'without_pagination.displaying_all_records'
       end
 
       super
