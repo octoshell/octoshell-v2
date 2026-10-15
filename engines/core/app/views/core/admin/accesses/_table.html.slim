@@ -16,16 +16,25 @@
         th  = Core::Access.human_attribute_name(:available_queues)
         th  = t('.resource_control_actions')
 
-      - accesses.each do |access|
-        - resource_controls = access.resource_controls.to_a
-        - rowspan = resource_controls.count
-        - rowspan = rowspan.zero? ? 1 : rowspan
-        tr
-          td rowspan=rowspan = link_to access.id, admin_access_path(access)
-          td rowspan=rowspan = link_to access.project.id_with_title, admin_project_path(access.project)
-          td rowspan=rowspan  style="color: #{access.closed? ? 'red' : 'green' };" = access.cluster.name
-          = render "resource_control", control: resource_controls[0]
-        - if rowspan > 1
-          - resource_controls[1..].each do |resource_control|
-            tr
-              = render 'resource_control', control: resource_control
+      - if flat_resource_controls
+        - flat_resource_controls.each do |control|
+          - access = control.access
+          tr
+            td = link_to access.id, admin_access_path(access)
+            td = link_to access.project.id_with_title, admin_project_path(access.project)
+            td  style="color: #{access.closed? ? 'red' : 'green' };" = access.cluster.name
+            = render 'resource_control', control: control
+      - else
+        - accesses.each do |access|
+          - resource_controls = access.resource_controls.to_a
+          - rowspan = resource_controls.count
+          - rowspan = rowspan.zero? ? 1 : rowspan
+          tr
+            td rowspan=rowspan = link_to access.id, admin_access_path(access)
+            td rowspan=rowspan = link_to access.project.id_with_title, admin_project_path(access.project)
+            td rowspan=rowspan  style="color: #{access.closed? ? 'red' : 'green' };" = access.cluster.name
+            = render "resource_control", control: resource_controls[0]
+          - if rowspan > 1
+            - resource_controls[1..].each do |resource_control|
+              tr
+                = render 'resource_control', control: resource_control

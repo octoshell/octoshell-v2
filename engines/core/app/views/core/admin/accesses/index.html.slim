@@ -22,12 +22,14 @@ p = t('.control_info').html_safe
                                 :partitions, :name, :id, :name,
                             { label: t('.has_partition_in') }, multiple: true
   = f.check_box  :resource_control_partitions_id_exists, {include_hidden: false,  label: t('.has_queue_accesses') }
+  = hidden_field_tag 'q[s]', @search.sorts.map { |sort| "#{sort.name} #{sort.dir}" }.join(', ')
 
   = f.form_group do
     .btn-toolbar
       = f.submit t("actions.find"), class: "btn btn-primary"
       = f.button t('.export_xlsx'), class: "btn btn-success", formaction: export_xlsx_admin_accesses_path, name: nil
 
-= safe_paginate @accesses
-= render "table", accesses: @accesses
-= safe_paginate @accesses
+- table_records = @resource_controls || @accesses
+= safe_paginate table_records
+= render "table", accesses: @accesses, flat_resource_controls: @resource_controls
+= safe_paginate table_records

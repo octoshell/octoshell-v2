@@ -4,19 +4,16 @@ module Core
     before_action :octo_authorize!
     layout 'layouts/core/admin_project'
     def index
-      @search = Access.ransack(params[:q] || { queue_accesses_id_exists: true })
-      @search.sorts = 'project_id asc' if @search.sorts.empty?
-      @accesses = @search.result(distinct: true)
-                         .select('core_accesses.*, core_accesses.project_id, core_resource_controls.note')
-                         .page(params[:page])
-                         .joins(:resource_controls)
-                         .includes(:project, :cluster,
-                                   { resource_controls: [:resource_control_fields,
-                                                         {
-                                                           resource_control_partitions: :partition
-                                                         }] })
+      @search = Access.ransack(search_params)
+      @search.sorts = 'resource_controls_note asc' if @search.sorts.empty?
       @tracked_quota_kinds = Core::QuotaKind.tracked
-      without_pagination :accesses
+      if sorted_by_note?
+        @resource_controls = note_ordered_resource_controls.page(params[:page])
+        without_pagination :resource_controls
+      else
+        @accesses = grouped_accesses.page(params[:page])
+        without_pagination :accesses
+      end
     end
 
     def show
@@ -98,13 +95,8 @@ module Core
       require 'write_xlsx'
       require 'stringio'
 
-      @search = Access.ransack(params[:q] || { queue_accesses_id_exists: true })
-      @search.sorts = 'project_id desc' if @search.sorts.empty?
-      @accesses = @search.result(distinct: true)
-                         .select('core_accesses.*, core_accesses.project_id')
-                         .includes(:project, :cluster,
-                                   { resource_controls: [:resource_control_fields,
-                                                         { resource_control_partitions: :partition }] })
+      @search = Access.ransack(search_params)
+      @search.sorts = 'resource_controls_note asc' if @search.sorts.empty?
       @tracked_quota_kinds = Core::QuotaKind.tracked
 
       buffer = StringIO.new
@@ -154,15 +146,22 @@ module Core
       worksheet.merge_range(0, col, 1, col, Core::Access.human_attribute_name(:available_queues), header_center)
 
       row = 2
-      @accesses.each do |access|
-        resource_controls = access.resource_controls
-        if resource_controls.empty?
-          write_xlsx_row(worksheet, row, access, nil, @tracked_quota_kinds, wrap_format)
+      if sorted_by_note?
+        note_ordered_resource_controls.each do |control|
+          write_xlsx_row(worksheet, row, control.access, control, @tracked_quota_kinds, wrap_format)
           row += 1
-        else
-          resource_controls.each do |control|
-            write_xlsx_row(worksheet, row, access, control, @tracked_quota_kinds, wrap_format)
+        end
+      else
+        grouped_accesses.each do |access|
+          resource_controls = access.resource_controls
+          if resource_controls.empty?
+            write_xlsx_row(worksheet, row, access, nil, @tracked_quota_kinds, wrap_format)
             row += 1
+          else
+            resource_controls.each do |control|
+              write_xlsx_row(worksheet, row, access, control, @tracked_quota_kinds, wrap_format)
+              row += 1
+            end
           end
         end
       end
@@ -176,6 +175,50 @@ module Core
     end
 
     private
+
+    def search_params
+      query = params[:q] ? params[:q].to_unsafe_h : {}
+      return query.merge('resource_control_partitions_id_exists' => true) if note_sorted_query?(query) || filter_not_submitted?(query)
+
+      query
+    end
+
+    def note_sorted_query?(query)
+      Array(query['s']).join(' ').include?('resource_controls_note')
+    end
+
+    def filter_not_submitted?(query)
+      query.keys.none? { |key| key.to_s != 's' }
+    end
+
+    def sorted_by_note?
+      @search.sorts.any? { |sort| sort.name == 'resource_controls_note' }
+    end
+
+    def note_sort_direction
+      sort = @search.sorts.find { |s| s.name == 'resource_controls_note' }
+      sort&.dir.to_s.downcase == 'desc' ? 'DESC' : 'ASC'
+    end
+
+    def note_ordered_resource_controls
+      ResourceControl
+        .where(access_id: @search.result.select('core_accesses.id'))
+        .order(Arel.sql("core_resource_controls.note #{note_sort_direction}"))
+        .includes(access: %i[project cluster],
+                  resource_control_fields: [],
+                  resource_control_partitions: :partition)
+    end
+
+    def grouped_accesses
+      @search.result(distinct: true)
+             .select('core_accesses.*, core_accesses.project_id')
+             .joins(:resource_controls)
+             .includes(:project, :cluster,
+                       { resource_controls: [:resource_control_fields,
+                                             {
+                                               resource_control_partitions: :partition
+                                             }] })
+    end
 
     def write_xlsx_row(worksheet, row, access, control, tracked_quota_kinds, wrap_format = nil)
       worksheet.write(row, 0, access.project.id, wrap_format)
