@@ -1,12 +1,11 @@
 module ApplicationHelper
-  def flash_message(type,msg)
+  def flash_message(type, msg)
     flash[type] ||= []
     flash[type] << msg
   end
 
-  def flash_now_message(type,msg)
-    flash.now[type] ||= []
-    flash.now[type] << msg
+  def flash_now_message(type, msg)
+    flash.now[type] = Array(flash.now[type]) + [msg]
   end
 
   def octo_url_for(*args)
@@ -35,10 +34,10 @@ module ApplicationHelper
     return nil unless octo_config
 
     octo_config.mod.const_get('Interface')
-                   .send(:handle_view, self, helper, *args)
+               .send(:handle_view, self, helper, *args)
 
-     # new(self, *args)
-     #           .try(helper)
+    # new(self, *args)
+    #           .try(helper)
 
     # if args[0].is_a? ActionView::Helpers::FormBuilder
     #   octo_config.mod.const_get('BootstrapFormHelper').new(self, *args)
