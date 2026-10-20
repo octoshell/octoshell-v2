@@ -23,7 +23,7 @@ module Core
     def open_connection
       @connection_to_cluster = @ssh_class.start(@cluster.host,
                                                 @cluster.admin_login,
-                                                key_data: @cluster.private_key)
+                                                **@cluster.ssh_options)
     end
 
     def close_connection

@@ -4,6 +4,7 @@ div class="row"
     - Core::Cluster.locale_columns(:name).each do |column|
       = f.text_field column
     = f.text_field :host
+    = f.number_field :port, min: 1, max: 65_535
     = f.form_group do
       = f.check_box :available_for_work
     = f.text_field :admin_login

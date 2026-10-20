@@ -10,7 +10,7 @@ div class="row" id="spare-clusters"
       - clusters.each do |cluster|
         tr
           td = cluster.name
-          td = cluster.host
+          td = cluster.host_with_port
           td = link_to t(".new_request"),
                        new_project_request_path(@project, cluster_id: cluster.id),
                        class: "btn btn-default btn-sm"

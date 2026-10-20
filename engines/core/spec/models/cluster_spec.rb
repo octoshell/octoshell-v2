@@ -4,6 +4,42 @@ module Core
   RSpec.describe Cluster do
     let(:cluster) { create(:cluster) }
 
+    describe 'port' do
+      it 'defaults to 22' do
+        expect(create(:cluster).port).to eq(22)
+      end
+
+      it 'accepts valid ports' do
+        cluster.port = 2222
+        expect(cluster).to be_valid
+      end
+
+      it 'rejects ports outside the valid range' do
+        cluster.port = 0
+        expect(cluster).not_to be_valid
+        expect(cluster.errors[:port]).to be_present
+      end
+    end
+
+    describe '#ssh_options' do
+      it 'returns the configured port and private key' do
+        cluster.port = 2222
+        expect(cluster.ssh_options).to eq(port: 2222, key_data: cluster.private_key)
+      end
+    end
+
+    describe '#host_with_port' do
+      it 'returns only the host for the default port' do
+        cluster.port = Core::Cluster::DEFAULT_PORT
+        expect(cluster.host_with_port).to eq(cluster.host)
+      end
+
+      it 'returns host and port for a non-default port' do
+        cluster.port = 2222
+        expect(cluster.host_with_port).to eq("#{cluster.host}:2222")
+      end
+    end
+
     describe '#expand_node_names' do
       context 'when node name is a single node without range' do
         it 'returns the node name as is' do

@@ -8,7 +8,7 @@ class Synchronizer
     @project_group = access.project_group_name
     begin
       @connection_to_cluster = Net::SSH.start(@cluster.host,
-                                              @cluster.admin_login, key_data: @cluster.private_key)
+                                              @cluster.admin_login, **@cluster.ssh_options)
     rescue StandardError => e
       access.log "Synchronizer error: #{e.message} (access=#{access})."
       nil

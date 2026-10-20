@@ -26,7 +26,7 @@ module Core
     end
 
     def new
-      @cluster = Cluster.new
+      @cluster = Cluster.new(port: Cluster::DEFAULT_PORT)
     end
 
     def create
@@ -61,7 +61,7 @@ module Core
     private
 
     def cluster_params
-      params.require(:cluster).permit(:name, :host, :admin_login,
+      params.require(:cluster).permit(:name, :host, :port, :admin_login,
                                       :available_for_work, :description,
                                       *Core::Cluster.locale_columns(:name),
                                       partitions_attributes: %i[id _destroy resource_control_weight

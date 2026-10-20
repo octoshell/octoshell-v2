@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_17_150831) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_20_183302) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -375,6 +375,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_17_150831) do
     t.datetime "updated_at", precision: nil
     t.boolean "available_for_work", default: true
     t.string "name_en"
+    t.integer "port", default: 22, null: false
     t.index ["private_key"], name: "index_core_clusters_on_private_key", unique: true
     t.index ["public_key"], name: "index_core_clusters_on_public_key", unique: true
   end

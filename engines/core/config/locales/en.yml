@@ -95,6 +95,7 @@ en:
         description: Description
         host: Host
         name: Name
+        port: SSH port
         state: Status
       core/cluster_log:
         cluster: Cluster

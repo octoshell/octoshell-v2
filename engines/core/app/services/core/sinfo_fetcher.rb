@@ -5,13 +5,14 @@ module Core
   class SinfoFetcher
     DEFAULT_CMD = "bash -lc 'module add slurm && sinfo -a'".freeze
 
-    def initialize(cluster: nil, cluster_id: nil, host: nil, user: nil, auth: {}, cmd: DEFAULT_CMD)
+    def initialize(cluster: nil, cluster_id: nil, host: nil, user: nil, port: nil, auth: {}, cmd: DEFAULT_CMD)
       @cluster =
         cluster ||
         (cluster_id ? Core::Cluster.find(cluster_id) : nil)
 
       @host = host || @cluster&.host
       @user = user || @cluster&.admin_login
+      @port = port || @cluster&.port
       @auth = auth
       @cmd  = cmd
 
@@ -34,6 +35,8 @@ module Core
         keepalive_interval: 15,
         verify_host_key: :never
       }
+
+      ssh_opts[:port] = @port if @port.present?
 
       key_tempfile = nil
 

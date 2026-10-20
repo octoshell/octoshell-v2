@@ -17,7 +17,7 @@ div class="panel panel-default"
         - @clusters.each do |cluster|
           tr
             td class="col-xs-3" = link_to cluster.name, admin_cluster_path(cluster)
-            td class="col-xs-3" = cluster.host
+            td class="col-xs-3" = cluster.host_with_port
             td class="col-xs-3" = cluster.description
             td class="col-xs-3"
               ul

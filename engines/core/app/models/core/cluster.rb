@@ -9,6 +9,7 @@
 #  host               :string(255)      not null
 #  name_en            :string
 #  name_ru            :string(255)      not null
+#  port               :integer          default(22), not null
 #  private_key        :text
 #  public_key         :text
 #  created_at         :datetime
@@ -22,6 +23,8 @@
 
 module Core
   class Cluster < ApplicationRecord
+    DEFAULT_PORT = 22
+
     translates :name
 
     has_many :requests, inverse_of: :cluster, dependent: :destroy
@@ -60,6 +63,11 @@ module Core
 
     accepts_nested_attributes_for :quotas, allow_destroy: true
     validates :host, :admin_login, presence: true
+    validates :port, numericality: {
+      only_integer: true,
+      greater_than: 0,
+      less_than_or_equal_to: 65_535
+    }
     validates_translated :name, presence: true
     scope :finder, lambda { |q|
       where("lower(#{current_locale_column(:name)}) like :q", q: "%#{q.mb_chars.downcase}%").order current_locale_column(:name)
@@ -81,14 +89,26 @@ module Core
       name
     end
 
+    def default_port?
+      port == DEFAULT_PORT
+    end
+
+    def host_with_port
+      default_port? ? host : "#{host}:#{port}"
+    end
+
     def as_json(_options = nil)
       { id: id, text: name }
+    end
+
+    def ssh_options
+      { port: port, key_data: private_key }
     end
 
     def execute(command, ssh = nil)
       return exec!(ssh, command) if ssh
 
-      Net::SSH.start(host, admin_login, key_data: private_key) do |ssh|
+      Net::SSH.start(host, admin_login, **ssh_options) do |ssh|
         exec!(ssh, command)
       end
     end

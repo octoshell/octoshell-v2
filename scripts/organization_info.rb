@@ -2,7 +2,9 @@ begin
   cluster_id = 5
   def login_by_node_hours(year, cluster_options)
     results = {}
-    Net::SSH.start(cluster_options[:host], cluster_options[:user], key_data: cluster_options[:key]) do |ssh|
+    ssh_options = { key_data: cluster_options[:key] }
+    ssh_options[:port] = cluster_options[:port] if cluster_options[:port]
+    Net::SSH.start(cluster_options[:host], cluster_options[:user], **ssh_options) do |ssh|
       output = ssh.exec! "sudo /opt/slurm/15.08.1/bin/sacct -X  --format=User,JobID,NNodes,Elapsed,Start,State --noheader --parsable2 -S #{year}-01-01 -E  #{year + 1}-01-01"
 
       output.each_line do |line|
@@ -64,7 +66,8 @@ begin
                            .to_h
 
   stats = login_by_node_hours(2025,
-                              { host: cluster.host, user: cluster.admin_login, key: cluster.private_key })
+                              { host: cluster.host, port: cluster.port, user: cluster.admin_login,
+                                key: cluster.private_key })
 
   stats.each do |k, v|
     pp [k, v.merge(octo_count: octo_stats[k][:count], octo_node_hours: octo_stats[k][:node_hours])]

@@ -8,7 +8,7 @@ p
   | #{t('.msg_access')}:
   ul
     - @project.accesses.where(:state=>:opened).each do |access|
-      li = "#{access.cluster.name} (#{access.cluster.host}). #{t('.msg_quotas')}: #{access.quota_resources_info}"
+      li = "#{access.cluster.name} (#{access.cluster.host_with_port}). #{t('.msg_quotas')}: #{access.quota_resources_info}"
 p
   | #{t('.msg_project_members_logins')}:
   ul

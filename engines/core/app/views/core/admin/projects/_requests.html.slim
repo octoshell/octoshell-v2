@@ -11,6 +11,6 @@ div class="row" id="requests"
       - requests.each do |request|
         tr class=(request.pending? ? "warning" : "danger")
           td = link_to request.id, [:admin, request]
-          td #{request.cluster.name} (#{request.cluster.host})
+          td #{request.cluster.name} (#{request.cluster.host_with_port})
           td = request.requested_resources_info
           td = l request.created_at.to_date

@@ -15,7 +15,7 @@ table class="table table-striped"
     th = t(".quotas_info")
     th = Core::Cluster.human_attribute_name(:available_for_work)
   tr
-    td = @cluster.host
+    td = @cluster.host_with_port
     td = @cluster.admin_login
     td = @cluster.description
     td

@@ -109,6 +109,7 @@ ru:
         description: Описание
         host: Хост
         name: Наименование
+        port: Порт SSH
         state: Статус
       core/partition:
         default: По умолчанию
