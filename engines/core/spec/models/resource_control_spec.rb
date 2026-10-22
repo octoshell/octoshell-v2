@@ -56,6 +56,65 @@ module Core
         expect(resource_control).to have_received(:enqueue_synchronize)
       end
     end
+
+    describe 'limit changes' do
+      let(:resource_control) { create(:resource_control) }
+      let(:quota_kind) do
+        Core::QuotaKind.find_or_create_by!(api_key: 'node_hours', name_ru: 'Node hours')
+      end
+      let(:field) do
+        resource_control.resource_control_fields.find_by(quota_kind: quota_kind) ||
+          resource_control.resource_control_fields.create!(quota_kind: quota_kind, limit: 1000)
+      end
+
+      it 'unblocks a blocked control when its limit is raised above consumed value' do
+        resource_control.enable!
+        field.update!(cur_value: 1500)
+        resource_control.change_cluster_state!
+        expect(resource_control.reload).to be_blocked
+
+        expect(SshWorker).to receive(:perform_async).with(:synchronize, resource_control.id)
+
+        field.update!(limit: 2000)
+
+        expect(resource_control.reload).to be_active
+      end
+
+      it 'blocks an active control when its limit is lowered below consumed value' do
+        resource_control.enable!
+        field.update!(cur_value: 900)
+        expect(resource_control.reload).to be_active
+
+        field.update!(limit: 500)
+
+        expect(resource_control.reload).to be_blocked
+      end
+
+      it 'keeps a pending control pending when its limit changes' do
+        expect(resource_control).to be_pending
+
+        field.update!(limit: 2000)
+
+        expect(resource_control.reload).to be_pending
+      end
+
+      it 'reconciles state when limit changes through nested access attributes' do
+        resource_control.enable!
+        field.update!(cur_value: 1500)
+        resource_control.change_cluster_state!
+        expect(resource_control.reload).to be_blocked
+
+        resource_control.access.update!(
+          resource_controls_attributes: [{
+            id: resource_control.id,
+            resource_control_fields_attributes: [{ id: field.id, limit: 2000 }]
+          }]
+        )
+
+        expect(resource_control.reload).to be_active
+      end
+    end
+
     describe '#node_hours_from_jobs' do
       let(:resource_control) { create(:resource_control) }
       let(:project) { resource_control.access.project }
@@ -233,10 +292,52 @@ module Core
       end
 
       it 'sends emails to all recipients' do
+        access.resource_controls.first.enable!
+
         expect { ResourceControl.send_resource_usage_emails }
           .to send_email(to: user.email)
           .and send_email(to: 'external@example.com')
           .and send_email(to: controller.email)
+      end
+
+      it 'shows only active or blocked controls in user emails' do
+        pending_control = access.resource_controls.first
+        active_control = access.resource_controls.second
+        active_control.enable!
+        disabled_control = access.resource_controls.third
+        disabled_control.disable!
+
+        ActionMailer::Base.deliveries.clear
+        ResourceControl.send_resource_usage_emails_for_users
+
+        email = ActionMailer::Base.deliveries.find { |message| Array(message.to).include?(user.email) }
+        expect(email).to be_present
+        expect(email.body.to_s).to include(active_control.human_state_name)
+        expect(email.body.to_s).not_to include(pending_control.human_state_name)
+        expect(email.body.to_s).not_to include(disabled_control.human_state_name)
+      end
+
+      it 'does not send user emails when access has no reportable controls' do
+        ActionMailer::Base.deliveries.clear
+
+        ResourceControl.send_resource_usage_emails_for_users
+
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+
+      it 'excludes disabled controls from admin emails' do
+        active_control = access.resource_controls.second
+        active_control.enable!
+        disabled_control = access.resource_controls.first
+        disabled_control.disable!
+
+        ActionMailer::Base.deliveries.clear
+        ResourceControl.send_resource_usage_emails_for_admins
+
+        email = ActionMailer::Base.deliveries.find { |message| Array(message.to).include?(controller.email) }
+        expect(email).to be_present
+        expect(email.body.to_s).to include(active_control.human_state_name)
+        expect(email.body.to_s).not_to include(disabled_control.human_state_name)
       end
     end
   end

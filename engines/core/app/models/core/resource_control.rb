@@ -177,7 +177,7 @@ module Core
 
     # Notify all resource users (both with member and with email)
     def self.send_resource_usage_emails_for_users
-      ResourceUser.find_each do |ru|
+      ResourceUser.where(access_id: calculated.select(:access_id)).find_each do |ru|
         MailerWorker.perform_async(:resource_usage, [ru.id, ru.access_id])
       end
     end

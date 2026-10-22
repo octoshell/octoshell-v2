@@ -85,10 +85,14 @@ module Core
 
     def send_emails_for_access
       @access = Access.find(params[:id])
-      @access.resource_users.each do |ru|
-        MailerWorker.perform_async(:resource_usage, [ru.id, ru.access_id])
+      if @access.resource_controls.calculated.exists?
+        @access.resource_users.each do |ru|
+          MailerWorker.perform_async(:resource_usage, [ru.id, ru.access_id])
+        end
+        redirect_to admin_access_path(@access), flash: { info: t('.success') }
+      else
+        redirect_to admin_access_path(@access), flash: { warning: t('.no_reportable_controls') }
       end
-      redirect_to admin_access_path(@access), flash: { info: t('.success') }
     end
 
     def export_xlsx

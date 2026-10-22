@@ -101,6 +101,10 @@ module Core
       @resource_user = Core::ResourceUser.find(resource_user_id)
       @user = @resource_user.member.user if @resource_user&.member
       @access = Core::Access.find(access_id)
+      @resource_controls = @access.resource_controls.calculated.includes(
+        resource_control_partitions: :partition,
+        resource_control_fields: :quota_kind
+      )
       mail to: @resource_user.user_or_plain_email, subject: t('.subject')
     end
 
