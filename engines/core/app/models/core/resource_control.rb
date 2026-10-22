@@ -31,7 +31,7 @@ module Core
       state :blocked
       state :disabled
 
-      event :enable do
+      event :enable, after_commit: :enqueue_synchronize do
         transitions from: %i[pending disabled], to: :blocked, guard: :exceeded?
         transitions from: %i[pending disabled], to: :active, guard: -> { !exceeded? }
         before do
@@ -39,7 +39,7 @@ module Core
         end
       end
 
-      event :change_cluster_state do
+      event :change_cluster_state, after_commit: :enqueue_synchronize do
         transitions from: %i[active], to: :blocked, guard: :exceeded?
         transitions from: %i[blocked], to: :active, guard: -> { !exceeded? }
         before do
@@ -47,14 +47,12 @@ module Core
         end
       end
 
-      event :disable do
+      event :disable, after_commit: :enqueue_synchronize do
         transitions from: %i[pending blocked active], to: :disabled
         before do
           self.synced_with_cluster = false
         end
       end
-
-      after_all_transitions :enqueue_synchronize
     end
 
     def fix_sync_timestamp
@@ -79,6 +77,10 @@ module Core
 
     def enqueue_synchronize
       SshWorker.perform_async(:synchronize, id)
+    end
+
+    def reconcile_state!
+      change_cluster_state! if may_change_cluster_state?
     end
 
     def self.synchronize(id)
@@ -119,7 +121,7 @@ module Core
                                      .first
       node_hours = node_hours_from_jobs(jobs)
       field&.update!(cur_value: node_hours)
-      change_cluster_state! if may_change_cluster_state?
+      reconcile_state!
     end
 
     # Instance method to compute node‑hours for this control from a list of jobs.

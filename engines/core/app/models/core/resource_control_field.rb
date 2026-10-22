@@ -4,6 +4,7 @@ module Core
     belongs_to :quota_kind
     validates :resource_control, :quota_kind, :limit, presence: true
     validates :resource_control_id, uniqueness: { scope: :quota_kind_id }
+    after_commit :reconcile_resource_control_state, if: :saved_change_to_limit?
 
     def cur_value_human
       (cur_value || 0).round(2).to_f
@@ -21,6 +22,12 @@ module Core
 
     def exceeded?
       !cur_value.nil? && cur_value >= limit
+    end
+
+    private
+
+    def reconcile_resource_control_state
+      resource_control&.reconcile_state!
     end
   end
 end
