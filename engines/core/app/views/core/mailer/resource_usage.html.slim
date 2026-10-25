@@ -24,8 +24,7 @@ table
     th = t('.partitions')
 
 
-  - @access.resource_controls.includes(resource_control_partitions: :partition,
-                                       resource_control_fields: :quota_kind).each do |control|
+  - @resource_controls.each do |control|
     tr
       td = control.human_state_name
       td = control.started_at
