@@ -9,7 +9,7 @@ module Core
     end
 
     before_destroy do
-      throw(:abort) unless resource_control.pending?
+      throw(:abort) unless resource_control.pending? || destroyed_by_association.present?
     end
 
     after_initialize do |record|

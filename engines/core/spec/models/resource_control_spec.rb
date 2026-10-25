@@ -115,6 +115,25 @@ module Core
       end
     end
 
+    describe 'destroying a control' do
+      it 'destroys a disabled and synced control with its partitions' do
+        resource_control = create(:resource_control)
+        resource_control.disable!
+        resource_control.update!(synced_with_cluster: true)
+
+        expect { resource_control.destroy! }.not_to raise_error
+        expect(ResourceControlPartition.where(resource_control_id: resource_control.id)).to be_empty
+      end
+
+      it 'does not allow destroying a partition of a non-pending control directly' do
+        resource_control = create(:resource_control)
+        resource_control.enable!
+        partition = resource_control.resource_control_partitions.first
+
+        expect { partition.destroy! }.to raise_error(ActiveRecord::RecordNotDestroyed)
+      end
+    end
+
     describe '#node_hours_from_jobs' do
       let(:resource_control) { create(:resource_control) }
       let(:project) { resource_control.access.project }
