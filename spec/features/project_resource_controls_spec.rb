@@ -67,6 +67,8 @@ feature 'Project resource controls', js: false do
     within('#resource-controls') do
       expect(page).to have_content('Статистика использования ресурсов')
       expect(page).to have_content('Обновление информации о потраченных ресурсах происходит раз в день.')
+      expect(page).to have_content('Настройка уведомлений')
+      expect(page).to have_field("notification_intervals[#{access.id}]", with: '7')
       expect(page).to have_content('Активен')
       expect(page).to have_content('Заблокирован')
       expect(page).to have_content('Отслеживание начато с')
@@ -81,12 +83,18 @@ feature 'Project resource controls', js: false do
       expect(page).not_to have_content(cluster.partitions.third.name)
     end
 
+    fill_in "notification_intervals[#{access.id}]", with: 3
+    click_button 'Сохранить интервалы'
+
+    expect(access.reload.notification_interval_days).to eq(3)
+
     sign_out
     sign_in(create(:admin))
     visit core.admin_project_path(project)
 
     within('#resource-controls') do
       expect(page).to have_content('Статистика использования ресурсов')
+      expect(page).not_to have_button('Сохранить интервалы')
     end
   end
 end

@@ -91,6 +91,8 @@ ru:
         cluster_id: Кластер
         created_at: Выдан
         deny_unlisted_partitions: Запретить доступ к неуказанным разделам
+        last_notification_at: Последняя отправка статистики
+        notification_interval_days: Интервал отправки статистики, дней
         project: Проект
         project_id: Проект
         state: Статус
@@ -686,6 +688,9 @@ ru:
           destroy_resource_user: 'Удалить пользователя из рассылки'
           how_to_add: Добавьте либо зарегистрированного в Octoshell пользователя
                       в рассылку через левое поле, либо введите email справа
+          notification_interval_help: >-
+            Как часто отправлять письма со статистикой использования ресурсов
+            контактным лицам проекта. Минимум 1 день.
           uncontrolled_queue_accesses: 'Доступы в очереди без автоматического контроля ресурсов'
         index:
           control_info: >-
@@ -1455,8 +1460,12 @@ ru:
       resource_controls:
         consumed: Потрачено
         consumed_value: "%{kind}: %{value}"
+        intervals_updated: Интервалы отправки статистики обновлены
         no_consumption: "—"
+        notification_interval_label: "%{cluster}: интервал отправки, дней"
+        notification_settings: Настройка уведомлений
         queues: Очереди
+        save_intervals: Сохранить интервалы
         started_at: Отслеживание начато с
         status: Состояние
         title: Статистика использования ресурсов

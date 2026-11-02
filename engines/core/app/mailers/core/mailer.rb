@@ -105,7 +105,9 @@ module Core
         resource_control_partitions: :partition,
         resource_control_fields: :quota_kind
       )
-      mail to: @resource_user.user_or_plain_email, subject: t('.subject')
+      message = mail to: @resource_user.user_or_plain_email, subject: t('.subject')
+      @access.mark_resource_usage_notified!
+      message
     end
 
     def admin_resource_usage(user_id)

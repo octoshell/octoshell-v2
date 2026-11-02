@@ -4,6 +4,9 @@
   /= f.collection_check_boxes :member_ids, @access.project.members,
   /                           :id, :full_name, label: t('.notify_about_resources')
   = f.check_box :deny_unlisted_partitions, help: t('.deny_unlisted_partitions_help')
+  = f.number_field :notification_interval_days,
+                   min: 1,
+                   help: t('.notification_interval_help')
   h4 = Core::ResourceControl.model_name.human
   p = t('.how_to_add')
   = f.fields_for :resource_users, layout: :horizontal do |ff|

@@ -57,6 +57,25 @@ module Core
       end
     end
 
+    def update_resource_usage_intervals
+      @project = current_user.owned_projects.find(params[:id])
+      access_ids = @project.accesses.pluck(:id).map(&:to_s)
+      intervals = (params[:notification_intervals]&.permit(*access_ids) || {}).to_h
+
+      invalid_access = nil
+      @project.accesses.where(id: intervals.keys).find_each do |access|
+        next if access.update(notification_interval_days: intervals[access.id.to_s])
+
+        invalid_access ||= access
+      end
+
+      if invalid_access
+        redirect_to @project, alert: invalid_access.errors.full_messages.to_sentence
+      else
+        redirect_to @project, notice: t('core.projects.resource_controls.intervals_updated')
+      end
+    end
+
     %i[suspend reactivate cancel resurrect finish].each do |name|
       define_method(name) do
         @project = current_user.owned_projects.find(params[:id])

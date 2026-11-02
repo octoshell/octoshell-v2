@@ -2,14 +2,16 @@
 #
 # Table name: core_accesses
 #
-#  id                       :integer          not null, primary key
-#  deny_unlisted_partitions :boolean          default(FALSE), not null
-#  project_group_name       :string(255)
-#  state                    :string(255)
-#  created_at               :datetime
-#  updated_at               :datetime
-#  cluster_id               :integer          not null
-#  project_id               :integer          not null
+#  id                        :integer          not null, primary key
+#  deny_unlisted_partitions  :boolean          default(FALSE), not null
+#  last_notification_at      :datetime
+#  notification_interval_days :integer          default(7), not null
+#  project_group_name        :string(255)
+#  state                     :string(255)
+#  created_at                :datetime
+#  updated_at                :datetime
+#  cluster_id                :integer          not null
+#  project_id                :integer          not null
 #
 # Indexes
 #
@@ -29,6 +31,8 @@ module Core
     has_many :fields, class_name: 'AccessField', inverse_of: :access, dependent: :destroy
     accepts_nested_attributes_for :fields
     validates :project, :cluster, presence: true
+    validates :notification_interval_days,
+              numericality: { only_integer: true, greater_than_or_equal_to: 1 }
     has_many :resource_controls, inverse_of: :access
     has_many :resource_users, inverse_of: :access
     has_many :resource_control_partitions, through: :resource_controls
@@ -51,8 +55,19 @@ module Core
       end
     end
 
+    scope :due_for_resource_usage_notification, lambda {
+      where(<<~SQL.squish)
+        last_notification_at IS NULL OR
+        last_notification_at + make_interval(days => notification_interval_days) - INTERVAL '2 hours' <= CURRENT_TIMESTAMP
+      SQL
+    }
+
     def quota_resources_info
       fields.map(&:to_s).join(' | ')
+    end
+
+    def mark_resource_usage_notified!
+      update_column(:last_notification_at, Time.current)
     end
 
     def log(message)

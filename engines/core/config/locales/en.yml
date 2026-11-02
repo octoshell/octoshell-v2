@@ -87,6 +87,8 @@ en:
         cluster_id: Cluster
         created_at: Granted at
         deny_unlisted_partitions: Deny access to unlisted partitions
+        last_notification_at: Last resource usage notification
+        notification_interval_days: Resource usage interval, days
         project: Project
         project_id: Project
         state: State
@@ -337,6 +339,9 @@ en:
             When enabled, all cluster partitions not listed in resource controls
             are blocked. When disabled, access is restored to partitions marked
             as default.
+          notification_interval_help: >-
+            How often to send resource usage statistics to the project contacts.
+            Minimum 1 day.
         show:
           deny_unlisted_partitions_disabled: Disabled
           deny_unlisted_partitions_enabled: Enabled
@@ -950,8 +955,12 @@ en:
       resource_controls:
         consumed: Consumed
         consumed_value: "%{kind}: %{value}"
+        intervals_updated: Resource usage notification intervals have been updated
         no_consumption: "—"
+        notification_interval_label: "%{cluster}: notification interval, days"
+        notification_settings: Notification settings
         queues: Queues
+        save_intervals: Save intervals
         started_at: Tracking started at
         status: State
         title: Resource usage statistics

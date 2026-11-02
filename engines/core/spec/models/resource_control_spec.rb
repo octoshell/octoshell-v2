@@ -359,6 +359,41 @@ module Core
         expect(email.body.to_s).to include(active_control.human_state_name)
         expect(email.body.to_s).not_to include(disabled_control.human_state_name)
       end
+
+      it 'sends user emails only when the access interval is due' do
+        access.resource_controls.first.enable!
+        ActionMailer::Base.deliveries.clear
+
+        ResourceControl.send_resource_usage_emails_for_users
+
+        expect(ActionMailer::Base.deliveries).not_to be_empty
+        expect(access.reload.last_notification_at).to be_present
+
+        ActionMailer::Base.deliveries.clear
+        ResourceControl.send_resource_usage_emails_for_users
+
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+
+      it 'sends user emails again after the access interval passes' do
+        access.resource_controls.first.enable!
+        access.update_columns(last_notification_at: 8.days.ago)
+        ActionMailer::Base.deliveries.clear
+
+        ResourceControl.send_resource_usage_emails_for_users
+
+        expect(ActionMailer::Base.deliveries).not_to be_empty
+      end
+
+      it 'does not mark the access as notified without recipients' do
+        access.resource_controls.first.enable!
+        access.resource_users.destroy_all
+        access.update_columns(last_notification_at: nil)
+
+        ResourceControl.send_resource_usage_emails_for_users
+
+        expect(access.reload.last_notification_at).to be_nil
+      end
     end
   end
 end

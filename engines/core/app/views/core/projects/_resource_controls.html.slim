@@ -1,5 +1,5 @@
-- controls_present = accesses.any? { |access| access.resource_controls.any? { |control| control.active? || control.blocked? } }
-- if controls_present
+- eligible_accesses = accesses.select { |access| access.resource_controls.any? { |control| control.active? || control.blocked? } }
+- if eligible_accesses.any?
   div class="panel panel-default" id="resource-controls"
     div class="panel-heading"
       h4 = t('core.projects.resource_controls.title')
@@ -12,7 +12,7 @@
         th = t('core.projects.resource_controls.started_at')
         th = t('core.projects.resource_controls.queues')
         th = t('core.projects.resource_controls.consumed')
-      - accesses.each do |access|
+      - eligible_accesses.each do |access|
         - controls = access.resource_controls.select { |control| control.active? || control.blocked? }
         - controls.each do |control|
           tr
@@ -27,3 +27,15 @@
                           kind: field.quota_kind, value: field.stat)
               - else
                 = t('core.projects.resource_controls.no_consumption')
+    - if @user_can_manage_project
+      div class="panel-body"
+        h4 = t('core.projects.resource_controls.notification_settings')
+        = bootstrap_form_tag url: update_resource_usage_intervals_project_path(@project),
+                             method: :put, layout: :horizontal do |f|
+          - eligible_accesses.each do |access|
+            = f.number_field "notification_intervals[#{access.id}]",
+                             value: access.notification_interval_days,
+                             min: 1,
+                             label: t('core.projects.resource_controls.notification_interval_label',
+                                      cluster: access.cluster.name)
+          = f.submit t('core.projects.resource_controls.save_intervals')

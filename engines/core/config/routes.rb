@@ -166,6 +166,7 @@ Core::Engine.routes.draw do
       delete :delete_invitation
       post :resend_invitations
       put :drop_member
+      put :update_resource_usage_intervals
     end
 
     post :sureties

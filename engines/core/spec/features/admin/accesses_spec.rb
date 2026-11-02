@@ -44,6 +44,7 @@ feature 'Admin manages accesses', js: false do
       expect(page).to have_css('h4', text: 'Контроли ресурсов', match: :first)
       expect(page).to have_css('p', text: 'Добавьте либо зарегистрированного в Octoshell пользователя')
       expect(page).to have_css('input[name="access[deny_unlisted_partitions]"]')
+      expect(page).to have_field('access[notification_interval_days]', with: '7')
 
       # Check presence of fields for resource_users
       expect(page).to have_css('select[name*="[member_id]"]')
@@ -67,6 +68,14 @@ feature 'Admin manages accesses', js: false do
     click_button 'Сохранить'
 
     expect(@access.reload.deny_unlisted_partitions).to be true
+  end
+
+  scenario 'Admin updates the resource usage notification interval' do
+    visit core.edit_admin_access_path(@access)
+    fill_in 'access[notification_interval_days]', with: 3
+    click_button 'Сохранить'
+
+    expect(@access.reload.notification_interval_days).to eq(3)
   end
 
   scenario 'Admin sees whether access to unlisted partitions is denied' do
