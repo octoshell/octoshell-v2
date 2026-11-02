@@ -90,6 +90,19 @@ module Core
       where('CAST(id AS varchar) LIKE ? OR title ILIKE ?', pattern, pattern)
     }
 
+    scope :with_access_resource_controls, lambda {
+      preload(
+        accesses: [
+          :cluster,
+          { fields: :quota_kind },
+          { resource_controls: [
+            { resource_control_fields: :quota_kind },
+            { resource_control_partitions: :partition }
+          ] }
+        ]
+      )
+    }
+
     def members_for_new_surety
       members.joins(:user).where(project_access_state: :engaged,
                                  users: { access_state: 'active' })

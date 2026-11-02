@@ -20,7 +20,7 @@ module Core
     end
 
     def show
-      @project = current_user.projects.find(params[:id])
+      @project = current_user.projects.with_access_resource_controls.find(params[:id])
       @user_can_manage_project = (@project.owner.id == current_user.id) # TODO: d'uh... workaround maymay...
       filter_blocked_users if current_user.closed? && !@user_can_manage_project
     end

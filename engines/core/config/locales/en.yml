@@ -53,6 +53,16 @@ en:
             active: Confirmed
             closed: Closed
             pending: Pending
+      core/resourcecontrol:
+        status:
+          events:
+            enable: Enable
+            disable: Disable
+          states:
+            pending: Formed
+            active: Active
+            disabled: Disabled by admin
+            blocked: Blocked
       core/surety:
         state:
           events:
@@ -937,6 +947,15 @@ en:
       accesses:
         quota_resources_info: Available resources
         title: Access to the MSU SCC resources
+      resource_controls:
+        consumed: Consumed
+        consumed_value: "%{kind}: %{value}"
+        no_consumption: "—"
+        queues: Queues
+        started_at: Tracking started at
+        status: State
+        title: Resource usage statistics
+        update_note: Information about consumed resources is updated once a day.
       edit:
         title: Edit project profile
       form:

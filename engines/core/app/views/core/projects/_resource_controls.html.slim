@@ -1,0 +1,29 @@
+- controls_present = accesses.any? { |access| access.resource_controls.any? { |control| control.active? || control.blocked? } }
+- if controls_present
+  div class="panel panel-default" id="resource-controls"
+    div class="panel-heading"
+      h4 = t('core.projects.resource_controls.title')
+    div class="panel-body"
+      p class="help-block" = t('core.projects.resource_controls.update_note')
+    table class="table"
+      tr
+        th = Core::Cluster.model_name.human
+        th = t('core.projects.resource_controls.status')
+        th = t('core.projects.resource_controls.started_at')
+        th = t('core.projects.resource_controls.queues')
+        th = t('core.projects.resource_controls.consumed')
+      - accesses.each do |access|
+        - controls = access.resource_controls.select { |control| control.active? || control.blocked? }
+        - controls.each do |control|
+          tr
+            td = access.cluster.name
+            td style="color: #{resource_control_color(control)};" = control.human_state_name
+            td = l control.started_at
+            td = control.resource_control_partitions.map(&:to_s).join(', ')
+            td
+              - if control.resource_control_fields.any?
+                - control.resource_control_fields.each do |field|
+                  div = t('core.projects.resource_controls.consumed_value',
+                          kind: field.quota_kind, value: field.stat)
+              - else
+                = t('core.projects.resource_controls.no_consumption')

@@ -1452,6 +1452,15 @@ ru:
         new_resource_control: Новый контроль ресурсов
         quota_resources_info: Выделено ресурсов
         title: Доступ к ресурсам СКЦ МГУ
+      resource_controls:
+        consumed: Потрачено
+        consumed_value: "%{kind}: %{value}"
+        no_consumption: "—"
+        queues: Очереди
+        started_at: Отслеживание начато с
+        status: Состояние
+        title: Статистика использования ресурсов
+        update_note: Обновление информации о потраченных ресурсах происходит раз в день.
       edit:
         title: Редактирование профиля проекта
       form:

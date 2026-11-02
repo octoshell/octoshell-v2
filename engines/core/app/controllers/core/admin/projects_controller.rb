@@ -65,7 +65,7 @@ module Core
     end
 
     def show
-      @project = Project.find(params[:id])
+      @project = Project.with_access_resource_controls.find(params[:id])
       respond_to do |format|
         format.html
         format.json { render json: @project }

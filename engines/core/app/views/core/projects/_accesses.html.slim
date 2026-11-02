@@ -16,3 +16,4 @@ div class="row" id="accesses"
           td = access.quota_resources_info
           td = l access.created_at.to_date
           td = l access.updated_at.to_date
+  = render "core/projects/resource_controls", accesses: accesses
