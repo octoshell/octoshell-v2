@@ -30,7 +30,7 @@ module Core
       @access = Access.find(params[:id])
       @access.assign_attributes access_params
       if @access.save
-        @access.resource_controls.each(&:enqueue_synchronize)
+        @access.enqueue_resource_controls_synchronize
         redirect_to admin_access_path(@access), flash: { info: t('.success') }
       else
         render_edit
@@ -64,7 +64,8 @@ module Core
     end
 
     def sync_resource_controls
-      Core::ResourceControl.all.each(&:enqueue_synchronize)
+      Core::Access.where(id: Core::ResourceControl.select(:access_id))
+                  .find_each(&:enqueue_resource_controls_synchronize)
       redirect_to admin_accesses_path
     end
 

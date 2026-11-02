@@ -10,14 +10,14 @@ module Core
         end
         @user = @project.owner
         expect(@user.accounts.map(&:project_access_state)).to eq ['allowed']
-        $tried = false
-        Core::Project.define_method(:synchronize!) do
-          $tried = true
+        tried = false
+        allow_any_instance_of(Core::Project).to receive(:synchronize!) do
+          tried = true
         end
         @user.block!
         @user.reload
         expect(@user.accounts.map(&:project_access_state)).to eq ['suspended']
-        expect($tried).to eq true
+        expect(tried).to eq true
       end
     end
   end

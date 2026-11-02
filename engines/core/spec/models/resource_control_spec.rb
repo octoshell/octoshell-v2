@@ -3,7 +3,7 @@ module Core
   describe ResourceControl do
     before(:each) do
       # Mock all SSH and cluster synchronization to avoid external connections
-      allow(SshWorker).to receive(:perform_async).and_return(nil)
+      allow(AccessSynchronizer).to receive(:perform_async).and_return(nil)
       allow_any_instance_of(Core::ResourceControl).to receive(:synchronize).and_return(nil)
     end
 
@@ -73,7 +73,8 @@ module Core
         resource_control.change_cluster_state!
         expect(resource_control.reload).to be_blocked
 
-        expect(SshWorker).to receive(:perform_async).with(:synchronize, resource_control.id)
+        expect(AccessSynchronizer).to receive(:perform_async)
+          .with(resource_control.access_id, :resource_controls)
 
         field.update!(limit: 2000)
 

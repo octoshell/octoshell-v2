@@ -4,7 +4,7 @@ feature 'Admin manages accesses', js: false do
   background do
     # Mock SSH and sync to avoid connection errors
     allow_any_instance_of(Core::ResourceControlPartition).to receive(:sync_with_cluster).and_return(nil)
-    allow(Core::SshWorker).to receive(:perform_async).and_return(nil)
+    allow(AccessSynchronizer).to receive(:perform_async).and_return(nil)
     # Create admin user
     @admin = create(:admin, email: 'admin@octoshell.ru', password: '123456')
     # Create cluster and project for access

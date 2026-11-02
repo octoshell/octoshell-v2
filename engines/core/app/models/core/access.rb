@@ -19,6 +19,9 @@
 
 module Core
   class Access < ApplicationRecord
+    SYNC_LOCK_WAIT_SECONDS = 30
+    SYNC_LOCK_EXPIRE_SECONDS = 30.minutes.to_i
+
     belongs_to :project
     belongs_to :cluster
 
@@ -71,7 +74,34 @@ module Core
     # синхронизовать участников проекта
 
     def synchronize!
-      Synchronizer.new(self).run!
+      with_sync_lock do
+        Synchronizer.new(self).run!
+      end
+    end
+
+    def synchronize_resource_controls!
+      with_sync_lock do
+        Synchronizer.new(self).run_resource_controls!
+      end
+    end
+
+    def enqueue_resource_controls_synchronize
+      ::AccessSynchronizer.perform_async(id, :resource_controls)
+    end
+
+    private
+
+    def with_sync_lock
+      RedisMutex.with_lock(sync_lock_key,
+                           block: SYNC_LOCK_WAIT_SECONDS,
+                           expire: SYNC_LOCK_EXPIRE_SECONDS) do
+        reload
+        yield
+      end
+    end
+
+    def sync_lock_key
+      "core:access_sync:#{id}"
     end
   end
 end

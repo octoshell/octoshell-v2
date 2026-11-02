@@ -4,6 +4,8 @@ class ProjectSynchronizer
 
   def perform(project_id)
     project = Core::Project.find(project_id)
-    project.accesses.each(&:synchronize!)
+    project.accesses.find_each do |access|
+      AccessSynchronizer.perform_async(access.id)
+    end
   end
 end

@@ -59,7 +59,7 @@ module Core
       update!(last_sync_at: DateTime.current, synced_with_cluster: true)
     end
 
-    def synchronize(connection = nil)
+    def synchronize(connection)
       if active?
         resource_control_partitions.each do |r_p|
           r_p.activate(connection)
@@ -76,7 +76,7 @@ module Core
     end
 
     def enqueue_synchronize
-      SshWorker.perform_async(:synchronize, id)
+      ::AccessSynchronizer.perform_async(access_id, :resource_controls)
     end
 
     def reconcile_state!
@@ -84,7 +84,8 @@ module Core
     end
 
     def self.synchronize(id)
-      find(id).synchronize
+      access_id = where(id: id).pick(:access_id)
+      ::AccessSynchronizer.perform_async(access_id, :resource_controls) if access_id
     end
 
     def self.calculated

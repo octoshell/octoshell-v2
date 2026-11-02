@@ -30,9 +30,21 @@ class Synchronizer
     sync_project_members
     sync_quotas if cluster.quotas.any?
 
-    connection_to_cluster.close if connection_to_cluster
     cluster.log("--- END SYNC for project #{project.id}", project)
     access.touch
+  ensure
+    close_connection
+  end
+
+  def run_resource_controls!
+    cluster.log("--- START RESOURCE CONTROLS SYNC for project #{project.id}", project)
+    raise 'No connection to cluster' unless connection_to_cluster
+
+    sync_resource_controls
+    cluster.log("--- END RESOURCE CONTROLS SYNC for project #{project.id}", project)
+    access.touch
+  ensure
+    close_connection
   end
 
   def run_on_cluster(command, log_result = true)
@@ -111,7 +123,7 @@ class Synchronizer
       member_state_on_cluster = check_member_state_on_cluster(removed_member)
       block_member(removed_member) if member_state_on_cluster == 'active'
     end
-    access.resource_controls.each { |r| r.synchronize(connection_to_cluster) }
+    sync_resource_controls
   end
 
   def activate_member(member, state)
@@ -197,5 +209,17 @@ class Synchronizer
   def sync_quotas
     # TODO: write qoutas check scripts
     # cluster.log("\t checking quotas....\n")
+  end
+
+  private
+
+  def sync_resource_controls
+    access.resource_controls.order(:id).each do |resource_control|
+      resource_control.synchronize(connection_to_cluster)
+    end
+  end
+
+  def close_connection
+    connection_to_cluster&.close
   end
 end
