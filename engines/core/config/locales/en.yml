@@ -76,6 +76,7 @@ en:
         cluster: Cluster
         cluster_id: Cluster
         created_at: Granted at
+        deny_unlisted_partitions: Deny access to unlisted partitions
         project: Project
         project_id: Project
         state: State
@@ -320,6 +321,15 @@ en:
   choose_value: Choose a value
   core:
     admin:
+      accesses:
+        form:
+          deny_unlisted_partitions_help: >-
+            When enabled, all cluster partitions not listed in resource controls
+            are blocked. When disabled, access is restored to partitions marked
+            as default.
+        show:
+          deny_unlisted_partitions_disabled: Disabled
+          deny_unlisted_partitions_enabled: Enabled
       cities:
         destroy:
           org_exist: You can not delete city with an existing organization in it

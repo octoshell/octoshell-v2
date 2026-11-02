@@ -217,6 +217,32 @@ class Synchronizer
     access.resource_controls.order(:id).each do |resource_control|
       resource_control.synchronize(connection_to_cluster)
     end
+    sync_unlisted_partitions
+  end
+
+  def sync_unlisted_partitions
+    if access.deny_unlisted_partitions?
+      deny_unlisted_partitions
+    else
+      restore_default_partitions
+    end
+  end
+
+  def deny_unlisted_partitions
+    cluster.log("\t Denying access to unlisted partitions", project)
+    access.unlisted_partitions.find_each do |partition|
+      access.sync_partition_access(partition, 0, 0, connection_to_cluster)
+    end
+  end
+
+  def restore_default_partitions
+    cluster.log("\t Restoring default access to unlisted partitions", project)
+    access.unlisted_partitions.where(default: true).find_each do |partition|
+      access.sync_partition_access(partition,
+                                   partition.max_submitted_jobs,
+                                   partition.max_running_jobs,
+                                   connection_to_cluster)
+    end
   end
 
   def close_connection

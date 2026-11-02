@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_10_20_183302) do
+ActiveRecord::Schema[8.0].define(version: 2026_11_02_174326) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -324,6 +324,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_10_20_183302) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.string "project_group_name", limit: 255
+    t.boolean "deny_unlisted_partitions", default: false, null: false
     t.index ["cluster_id"], name: "index_core_accesses_on_cluster_id"
     t.index ["project_id", "cluster_id"], name: "index_core_accesses_on_project_id_and_cluster_id", unique: true
     t.index ["project_id"], name: "index_core_accesses_on_project_id"

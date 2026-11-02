@@ -2,13 +2,14 @@
 #
 # Table name: core_accesses
 #
-#  id                 :integer          not null, primary key
-#  project_group_name :string(255)
-#  state              :string(255)
-#  created_at         :datetime
-#  updated_at         :datetime
-#  cluster_id         :integer          not null
-#  project_id         :integer          not null
+#  id                       :integer          not null, primary key
+#  deny_unlisted_partitions :boolean          default(FALSE), not null
+#  project_group_name       :string(255)
+#  state                    :string(255)
+#  created_at               :datetime
+#  updated_at               :datetime
+#  cluster_id               :integer          not null
+#  project_id               :integer          not null
 #
 # Indexes
 #
@@ -89,7 +90,42 @@ module Core
       ::AccessSynchronizer.perform_async(id, :resource_controls)
     end
 
+    def listed_partition_ids
+      resource_control_partitions.reorder(nil)
+                                 .distinct
+                                 .pluck('core_resource_control_partitions.partition_id')
+    end
+
+    def unlisted_partitions
+      ids = listed_partition_ids
+      ids.empty? ? cluster.partitions : cluster.partitions.where.not(id: ids)
+    end
+
+    def sync_partition_access(partition, max_submitted_jobs, max_running_jobs, connection)
+      cluster.log("\t Synchronizing queue accesses in #{partition.name}", project)
+      command = partition_access_command(partition, max_submitted_jobs, max_running_jobs)
+      cluster.log(command, project)
+
+      log_partition_access_result(cluster.execute(command, connection))
+      cluster.log("\t Synchronization of queue accesses finished in #{partition.name}", project)
+    end
+
     private
+
+    def log_partition_access_result(results)
+      cluster.log(results[2], project) if results[2].present?
+    end
+
+    def partition_access_command(partition, max_submitted_jobs, max_running_jobs)
+      "\t sudo /usr/octo/add_assoc.sh -p #{partition.name} \
+                                -u #{project_logins.join(',')} \
+                                -a #{project_group_name} \
+                                -s #{max_submitted_jobs} -j #{max_running_jobs}".squeeze(' ')
+    end
+
+    def project_logins
+      project.members.map(&:login) | project.removed_members.map(&:login)
+    end
 
     def with_sync_lock
       RedisMutex.with_lock(sync_lock_key,

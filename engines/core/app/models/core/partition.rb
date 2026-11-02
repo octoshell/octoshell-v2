@@ -18,5 +18,7 @@ module Core
     belongs_to :cluster
     has_many :node_partitions, class_name: 'Core::NodePartition', dependent: :destroy
     has_many :nodes, through: :node_partitions
+
+    validates :max_submitted_jobs, :max_running_jobs, presence: true, if: :default?
   end
 end

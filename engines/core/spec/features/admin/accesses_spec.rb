@@ -43,6 +43,7 @@ feature 'Admin manages accesses', js: false do
       # There are two identical titles on page, so we skip ambiguous check
       expect(page).to have_css('h4', text: 'Контроли ресурсов', match: :first)
       expect(page).to have_css('p', text: 'Добавьте либо зарегистрированного в Octoshell пользователя')
+      expect(page).to have_css('input[name="access[deny_unlisted_partitions]"]')
 
       # Check presence of fields for resource_users
       expect(page).to have_css('select[name*="[member_id]"]')
@@ -57,6 +58,30 @@ feature 'Admin manages accesses', js: false do
 
       # Check uncontrolled_queue_accesses section (removed as it may not be present)
       # expect(page).to have_content('Доступы в очереди без автоматического контроля ресурсов')
+    end
+  end
+
+  scenario 'Admin enables denying access to unlisted partitions' do
+    visit core.edit_admin_access_path(@access)
+    check 'access_deny_unlisted_partitions'
+    click_button 'Сохранить'
+
+    expect(@access.reload.deny_unlisted_partitions).to be true
+  end
+
+  scenario 'Admin sees whether access to unlisted partitions is denied' do
+    visit core.admin_access_path(@access)
+
+    within('.panel-body') do
+      expect(page).to have_content('Запретить доступ к неуказанным разделам')
+      expect(page).to have_content('Выключено')
+    end
+
+    @access.update!(deny_unlisted_partitions: true)
+    visit core.admin_access_path(@access)
+
+    within('.panel-body') do
+      expect(page).to have_content('Включено')
     end
   end
 

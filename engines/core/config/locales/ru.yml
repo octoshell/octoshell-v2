@@ -90,6 +90,7 @@ ru:
         cluster: Кластер
         cluster_id: Кластер
         created_at: Выдан
+        deny_unlisted_partitions: Запретить доступ к неуказанным разделам
         project: Проект
         project_id: Проект
         state: Статус
@@ -678,6 +679,10 @@ ru:
         form:
           add_resource_control: Добавить контроль
           add_resource_user: Добавить пользователя в рассылку
+          deny_unlisted_partitions_help: >-
+            При включении блокируются все разделы кластера, не указанные в контролях
+            ресурсов. При выключении доступ возвращается к разделам, отмеченным как
+            «По умолчанию».
           destroy_resource_user: 'Удалить пользователя из рассылки'
           how_to_add: Добавьте либо зарегистрированного в Octoshell пользователя
                       в рассылку через левое поле, либо введите email справа
@@ -736,6 +741,8 @@ ru:
           success: 'Письма отправлены контактным лицам доступа'
           no_reportable_controls: 'Нет активных или заблокированных контролей ресурсов для отправки'
         show:
+          deny_unlisted_partitions_disabled: Выключено
+          deny_unlisted_partitions_enabled: Включено
           edit: 'Редактировать контроли ресурсов'
           notify_about_resources: Рассылать статистику ресурсов пользователям
           send_emails_for_access: 'Отправить статистику контактным лицам'

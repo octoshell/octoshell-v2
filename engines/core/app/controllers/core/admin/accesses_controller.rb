@@ -256,7 +256,7 @@ module Core
       partition_attributes = %i[id _destroy
                                 partition_id max_running_jobs
                                 max_submitted_jobs]
-      params.require(:access).permit({
+      params.require(:access).permit(:deny_unlisted_partitions, {
                                        resource_users_attributes: %i[id member_id email _destroy],
                                        resource_controls_attributes: [:id, :started_at, :status, :_destroy, :note,
                                                                       { resource_control_fields_attributes: %i[id quota_kind_id limit],

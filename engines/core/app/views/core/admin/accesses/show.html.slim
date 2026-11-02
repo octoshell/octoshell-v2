@@ -11,6 +11,8 @@ div class="panel-body"
   p = link_to @access.project.title, admin_project_path(@access.project)
   h4 = Core::Cluster.model_name.human
   p = @access.cluster.name
+  h4 = Core::Access.human_attribute_name(:deny_unlisted_partitions)
+  p = @access.deny_unlisted_partitions? ? t('.deny_unlisted_partitions_enabled') : t('.deny_unlisted_partitions_disabled')
   h4 = t('.notify_about_resources')
   - @access.resource_users.includes(member: :user).each do |r|
       - if r.user
