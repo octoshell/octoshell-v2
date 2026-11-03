@@ -22,6 +22,7 @@ p = t('.control_info').html_safe
                                 :partitions, :name, :id, :name,
                             { label: t('.has_partition_in') }, multiple: true
   = f.check_box  :resource_control_partitions_id_exists, {include_hidden: false,  label: t('.has_queue_accesses') }
+  = hidden_field_tag :access_filters_submitted, '1'
   = hidden_field_tag 'q[s]', @search.sorts.map { |sort| "#{sort.name} #{sort.dir}" }.join(', ')
 
   = f.form_group do

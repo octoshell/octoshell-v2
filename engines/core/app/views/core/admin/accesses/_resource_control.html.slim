@@ -24,3 +24,13 @@
       = link_to t('.destroy'),
                 destroy_resource_control_admin_access_path(control),
                 class: "btn btn-danger btn-sm", method: :delete
+- else
+  td
+  td
+  td
+  td
+  td
+  - @tracked_quota_kinds.each do
+    td
+  td
+  td

@@ -4,8 +4,7 @@ module Core
     before_action :octo_authorize!
     layout 'layouts/core/admin_project'
     def index
-      @search = Access.ransack(search_params)
-      @search.sorts = 'resource_controls_note asc' if @search.sorts.empty?
+      prepare_search
       @tracked_quota_kinds = Core::QuotaKind.tracked
       if sorted_by_note?
         @resource_controls = note_ordered_resource_controls.page(params[:page])
@@ -100,8 +99,7 @@ module Core
       require 'write_xlsx'
       require 'stringio'
 
-      @search = Access.ransack(search_params)
-      @search.sorts = 'resource_controls_note asc' if @search.sorts.empty?
+      prepare_search
       @tracked_quota_kinds = Core::QuotaKind.tracked
 
       buffer = StringIO.new
@@ -183,9 +181,31 @@ module Core
 
     def search_params
       query = params[:q] ? params[:q].to_unsafe_h : {}
+      return query if filters_submitted?
+
       return query.merge('resource_control_partitions_id_exists' => true) if note_sorted_query?(query) || filter_not_submitted?(query)
 
       query
+    end
+
+    def filters_submitted?
+      params[:access_filters_submitted].present?
+    end
+
+    def queue_filter_disabled?
+      return false unless filters_submitted?
+
+      query = params[:q] ? params[:q].to_unsafe_h : {}
+      query['resource_control_partitions_id_exists'].blank?
+    end
+
+    def prepare_search
+      @search = Access.ransack(search_params)
+      @search.sorts = 'resource_controls_note asc' if @search.sorts.empty?
+      return unless queue_filter_disabled? && sorted_by_note?
+
+      @search.sorts.clear
+      @search.sorts = 'project_id desc'
     end
 
     def note_sorted_query?(query)
@@ -217,7 +237,7 @@ module Core
     def grouped_accesses
       @search.result(distinct: true)
              .select('core_accesses.*, core_accesses.project_id')
-             .joins(:resource_controls)
+             .left_joins(:resource_controls)
              .includes(:project, :cluster,
                        { resource_controls: [:resource_control_fields,
                                              {

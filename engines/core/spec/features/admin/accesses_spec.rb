@@ -94,6 +94,22 @@ feature 'Admin manages accesses', js: false do
     end
   end
 
+  scenario 'Admin can uncheck the defined queue filter' do
+    project_without_queue = create(:project, title: 'Project Without Queue', state: 'active')
+    Core::Access.create!(project: project_without_queue, cluster: @cluster)
+
+    visit core.admin_accesses_path
+
+    expect(page).to have_checked_field('q[resource_control_partitions_id_exists]')
+    expect(page.body).not_to include('Project Without Queue')
+
+    uncheck 'q[resource_control_partitions_id_exists]'
+    click_button 'Найти'
+
+    expect(page).to have_unchecked_field('q[resource_control_partitions_id_exists]')
+    expect(page.body).to include('Project Without Queue')
+  end
+
   scenario 'Admin visits accesses index page and sees action buttons' do
     visit core.admin_accesses_path
 
