@@ -36,7 +36,7 @@ module Octoshell
       config.factory_bot.definition_file_paths +=
         Dir.glob('engines/*/spec/factories')
     end
-    config.secrets = config_for(:secrets)
+    config.secrets = config_for(:secrets) || ActiveSupport::OrderedOptions.new
 
     # Configuration for the application, engines, and railties goes here.
     #

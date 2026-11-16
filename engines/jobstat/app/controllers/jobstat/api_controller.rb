@@ -3,8 +3,8 @@ module Jobstat
     include AbnormalJobChecker
     before_action :parse_request
     skip_before_action :verify_authenticity_token
-    if Rails.env.production? || Rails.configuration.secrets[:jobstat]
-      settings = Rails.configuration.secrets[:jobstat]
+    settings = Rails.configuration.secrets&.[](:jobstat)
+    if Rails.env.production? || settings
       raise 'Provide password for Jobstat API Conntroller' unless settings
 
       http_basic_authenticate_with name: settings[:user],
