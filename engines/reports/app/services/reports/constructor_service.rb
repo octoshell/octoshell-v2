@@ -108,13 +108,10 @@ module Reports
     def initialize(hash, type = 'csv')
       hash = deep_copy(hash)
       @type = type
-      # @custom_join_strings = []
-      # @custom_join_aliases = []
-      @activerecord_class = eval(hash['class_name'])
+      @activerecord_class = hash['class_name'].constantize
       @attr_array = AttrArray.new(self)
+      @joins_handler = JoinsHandler.new(self, hash['association'], hash['attributes'] || {})
       if hash['attributes']
-        @joins_handler = JoinsHandler.new(self, hash['association'],
-                                          hash['attributes'])
         process_attributes(hash['attributes'])
         put_select
         put_order
@@ -131,16 +128,17 @@ module Reports
 
       if @type == 'array'
         @per = hash['per'].to_i
-        @pages = (count.to_f / @per).ceil
+        @per = 1 if @per < 1
+        @pages = [(count.to_f / @per).ceil, 1].max
         page = (hash['page'] || 1).to_i
-        @page = page > @pages ? @pages : page
+        @page = page.clamp(1, @pages)
       end
     end
 
 
     def count
-      base_relation.select('count(*) OVER() AS count_all')
-                   .to_a.first.attributes['count_all'].to_i
+      row = base_relation.select('count(*) OVER() AS count_all').to_a.first
+      row ? row.attributes['count_all'].to_i : 0
     end
 
     def base_relation
@@ -166,8 +164,10 @@ module Reports
     end
 
     def to_2d_array
-      a = to_a
-      [head(a.first)] + lightweight_to_a
+      rows = to_a
+      return [] if rows.empty?
+
+      [head(rows.first)] + rows.map(&:values)
     end
 
     def find_human_alias(key)

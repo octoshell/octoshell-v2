@@ -32,11 +32,7 @@ module Reports
       @custom_join_strings = []
 
       put_assocation(assocation_hash)
-      @join_dependency = ActiveRecord::Associations::JoinDependency.new(
-        constructor.activerecord_class,
-        @left_join,
-        []
-      )
+      build_join_dependency(constructor.activerecord_class)
       scan_all_joins
     end
 
@@ -49,8 +45,9 @@ module Reports
     end
 
     def put_custom_joins(hash)
-      hash.each do |key, value|
-        next unless value['alias']
+      hash.keys.each do |key|
+        value = hash[key]
+        next unless value.is_a?(Hash) && value['alias']
 
         hash.delete(key)
         put_custom_join(value)
@@ -86,37 +83,44 @@ module Reports
       end
     end
 
-    def db_prefix_by_path(path)
-      # puts find(@join_dependency.send(:join_root), @left_join, path).inspect.yellow
-      # puts @join_dependency.send(:join_root).inspect.yellow
-      # puts @join_dependency.inspect.blue
-
-      table = find(@join_dependency.send(:join_root), @left_join, path).instance_variable_get("@tables").first
-      table.is_a?(Arel::Nodes::TableAlias) ? table.instance_variable_get("@right") : table.instance_variable_get("@name")
+    def build_join_dependency(activerecord_class)
+      @join_dependency = ActiveRecord::Associations::JoinDependency.new(
+        activerecord_class,
+        activerecord_class.arel_table,
+        @left_join,
+        Arel::Nodes::OuterJoin
+      )
+      @alias_tracker = ActiveRecord::Associations::AliasTracker.create(
+        activerecord_class.connection_pool,
+        activerecord_class.table_name,
+        []
+      )
+      @join_dependency.join_constraints([], @alias_tracker, [])
     end
 
-    def handle_rewrite(key, value, arr)
-      new_arr = arr + [key.to_s]
-      @human_to_db[new_arr.join('.')] = db_prefix_by_path(new_arr)
-      if value == {}
-        return
-      end
-      value.each do |k, v|
-        handle_rewrite(k, v, new_arr)
+    def db_prefix_by_path(path)
+      human_path = Array(path).join('.')
+      @human_to_db.fetch(human_path) do
+        raise ArgumentError, "Can't resolve a table for '#{human_path}': association is not joined"
       end
     end
 
     def scan_all_joins
       @human_to_db = {}
-      @left_join.each do |key, value|
-        handle_rewrite(key, value, [])
+      walk_join_root(@join_dependency.send(:join_root), [])
+    end
+
+    def walk_join_root(node, path)
+      node.children.each do |child|
+        child_path = path + [child.reflection.name.to_s]
+        @human_to_db[child_path.join('.')] = child.table.name
+        walk_join_root(child, child_path)
       end
     end
 
 
     def gsub(str, human, db)
-
-      (' ' + str).gsub(/(?<=[^\.])#{human}(?=\.)/, db)
+      (' ' + str).gsub(/(?<=[^\.])#{Regexp.escape(human)}(?=\.)/, db)
     end
 
     def gsub_one_string!(str)
@@ -133,37 +137,13 @@ module Reports
     def gsub_all!
       @human_to_db.sort_by do |key, _value|
         - key.count('.')
-      end.map do |a|
-        yield(a) if block_given?
-        # key = a.first
-        # value = a.second
-        # @having = gsub(@having, key, value) if @having
-        # @where = gsub(@where, key, value) if @where
+      end.each do |key, value|
+        yield([key, value]) if block_given?
         @custom_join_strings = @custom_join_strings.map do |str|
-                                gsub(str, key, value)
-                               end
+          gsub(str, key, value)
+        end
       end
     end
-
-    def find(root, hash, path)
-
-      puts root.inspect
-      puts hash.inspect
-      puts path.inspect
-      puts '!!!!!'
-      return root if Array(path).empty?
-      puts root.children.inspect.blue
-      keys = hash.keys
-
-      cur_assoc = path[0]
-      index = keys.map(&:to_s).index(cur_assoc)
-      raise "error" unless index
-      puts index.inspect.blue
-      puts '-------'
-      find(root.children[index], hash[cur_assoc.to_sym], path[1..-1])
-    end
-
-
 
   end
 end

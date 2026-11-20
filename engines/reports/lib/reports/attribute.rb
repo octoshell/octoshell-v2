@@ -13,7 +13,9 @@ module Reports
     end
 
     def db_alias
-      [@aggregate&.downcase, @db_prefix, @column].compact.join('_')
+      return @alias if complex?
+
+      [@aggregate&.downcase, "#{@db_prefix}.#{@column}"].compact.join('_')
     end
 
     def db_source
@@ -37,9 +39,9 @@ module Reports
 
     def to_select
       if complex?
-        [gsub_one_string!(@value), @alias].join(' AS ')
+        "#{gsub_one_string!(@value)} AS \"#{@alias}\""
       else
-        "#{db_source} AS #{db_alias}"
+        "#{db_source} AS \"#{db_alias}\""
       end
     end
 
@@ -57,12 +59,9 @@ module Reports
       raise "error" if val.count == 2
 
       if complex?
-        # [gsub_one_string!(@value), @alias].join(' AS ')
-        "#{@alias} #{val.first}"
-
+        "\"#{@alias}\" #{val.first}"
       else
         "#{db_source} #{val.first}"
-        # order = a[:order]
       end
     end
 

@@ -3,39 +3,40 @@ module Reports
   describe ConstructorService do
 
     it '#class_info' do
-      ConstructorService.class_info(['Core::Project']).inspect
+      associations, associations_types, attributes, attributes_types =
+        ConstructorService.class_info(['Core::Project'])
+
+      expect(associations).to include(:organization, :kind)
+      expect(associations_types).to include('organization|Organization|belongs_to')
+      expect(attributes).to include('title')
+      expect(attributes_types).to include('title|string')
     end
 
-    it "usual select" do
-      # puts User.all.to_a.map(&:email).inspect
+    it 'usual select' do
       create(:city, title_ru: 'Воронеж')
       hash = {
                 "class_name"=>"Core::City",
                 "attributes"=>{"0"=>{"value"=>"core_cities.title_ru", "label"=>"core_cities.title_ru|string"}}
               }
-      expect(ConstructorService.new(hash).to_a).to eq [{"core_cities.title_ru"=>"Москва"}, {"core_cities.title_ru"=>"Воронеж"}]
+      expect(ConstructorService.new(hash).to_a).to match_array [{"core_cities.title_ru"=>"Москва"},
+                                                                {"core_cities.title_ru"=>"Воронеж"}]
     end
 
-    it "usual select" do
-      # puts User.all.to_a.map(&:email).inspect
-      # create(:city, title_ru: 'Воронеж')
+    it "select with an aliased expression" do
       hash = {
                 "class_name"=>"Core::City",
                 "attributes"=>{"0"=>{"value"=>"core_cities.title_ru", "label"=>"core_cities.title_ru|string"},
                                "1"=>{"value"=>"UPPER(core_cities.title_ru)", "alias" => "u"}}
               }
       expect(ConstructorService.new(hash).to_a).to eq [{"core_cities.title_ru"=>"Москва", "u" => "МОСКВА"}]
-
-      # expect(ConstructorService.new(hash).to_a).to eq [{"core_cities.title_ru"=>"Москва"}, {"core_cities.title_ru"=>"Воронеж"}]
     end
-
 
     it "order by query" do
       create(:city, title_ru: 'Воронеж')
       hash = {"class_name"=>"Core::City", "attributes"=>{"0"=>{"value"=>"core_cities.title_ru",
         "label"=>"core_cities.title_ru|string", "order"=>"ASC"}}}
-      puts ConstructorService.new(hash).to_sql
-      expect(ConstructorService.new(hash).to_a).to eq [{"core_cities.title_ru"=>"Воронеж"}, {"core_cities.title_ru"=>"Москва"}]
+      expect(ConstructorService.new(hash).to_a).to eq [{"core_cities.title_ru"=>"Воронеж"},
+                                                       {"core_cities.title_ru"=>"Москва"}]
     end
 
     it 'selects count' do
@@ -43,8 +44,7 @@ module Reports
       hash = {"class_name"=>"Core::City", "attributes"=>{"0"=>{"value"=>"core_cities.id",
           "label"=>"core_cities.id|integer", "aggregate"=>"COUNT"}}}
 
-      expect(ConstructorService.new(hash).to_a).to eq [{"count_core_cities.id"=>'2'}]
-
+      expect(ConstructorService.new(hash).to_a).to eq [{"count_core_cities.id"=>2}]
     end
 
     it '#to_csv' do
@@ -52,10 +52,9 @@ module Reports
       hash = {"class_name"=>"Core::City", "attributes"=>{"0"=>{"value"=>"core_cities.id",
           "label"=>"core_cities.id|integer", "aggregate"=>"COUNT"}}}
 
-      puts ConstructorService.new(hash).to_csv.inspect
-
+      csv = CSV.parse(ConstructorService.new(hash).to_csv)
+      expect(csv).to eq [["count_core_cities.id"], ["2"]]
     end
-
 
     it "group by select" do
       country = create(:country, title_en: 'Germany')
@@ -65,24 +64,10 @@ module Reports
          "label"=>"country_id|integer", "order"=>"GROUP"}, "1"=>{"value"=>
            "core_cities.id", "label"=>"id|integer", "aggregate"=>"COUNT"}}}
       expect(ConstructorService.new(hash).to_a).to match_array [{"core_cities.country_id"=>country.id, "count_core_cities.id"=>2},
-        {"core_cities.country_id"=>'1', "count_core_cities.id"=>'1'}]
+        {"core_cities.country_id"=>1, "count_core_cities.id"=>1}]
     end
 
-    # it ".convert_left_to_inner" do
-    #   hash =  {"accesses"=>{"join_type"=>"left", "project"=>{"join_type"=>"left",
-    #           "card"=>{"join_type"=>"inner"}}, "fields"=>{"join_type"=>"left"}}}
-    #
-    #   ConstructorService.convert_left_to_inner(hash)
-    #
-    #   expect(hash).to eq("accesses"=>{"join_type"=>"inner", "project"=>{"join_type"=>"inner",
-    #           "card"=>{"join_type"=>"inner"}}, "fields"=>{"join_type"=>"left"}})
-    # end
-
     it "queries with joins" do
-      # country = create(:country, title_en: 'Germany')
-      # create(:city, title_en: 'Hamburg', country: country)
-      # create(:city, title_en: 'Frankfurt', country: country)
-
       hash = {"class_name"=>"Core::City", "attributes"=>{"0"=>{
         "value"=>"core_cities.title_ru", "label"=>"core_cities.title_ru|string"}, "1"=>{
           "value"=>"organizations.projects.title",
@@ -90,10 +75,11 @@ module Reports
           "association"=>{"organizations"=>{"join_type"=>"inner",
             "projects"=>{"join_type"=>"left"}}}}
 
-      puts ConstructorService.new(hash).to_a
-            # expect(ConstructorService.new(hash).to_a).to eq [{"country_id"=>country.id, "count_id"=>2},
-            #   {"country_id"=>1, "count_id"=>1}]
-
+      sql = ConstructorService.new(hash).to_sql
+      expect(sql).to include('INNER JOIN "core_organizations"')
+      expect(sql).to include('LEFT OUTER JOIN "core_projects"')
+      expect(sql).to include('core_projects.title AS "core_projects.title"')
+      expect(ConstructorService.new(hash).to_a).to be_an(Array)
     end
 
     it "group by with assocations" do
@@ -109,17 +95,16 @@ module Reports
               "label"=>"core_organizations.name|string", "order"=>["GROUP"]},
               "1"=>{"value"=>"departments.id", "label"=>"departments.id|integer", "aggregate"=>"COUNT"}},
               "association"=>{"list"=>"departments", "departments"=>{"join_type"=>"inner"}}}
-      # puts ConstructorService.new(hash).to_sql
       constructor = ConstructorService.new(hash)
-      # ActiveRecord::Base.logger = Logger.new(STDOUT) if defined?(ActiveRecord::Base)
-      puts constructor.count.inspect.blue
-      puts ConstructorService.new(hash).to_a
+
+      expect(constructor.count).to eq 2
+      expect(constructor.to_a).to match_array [
+        {"core_organizations.name"=>"org1", "count_departments.id"=>2},
+        {"core_organizations.name"=>"org2", "count_departments.id"=>3}
+      ]
     end
 
-
-
     it "performs custom inner join with base table" do
-
       org1 = create(:organization, name: 'org1')
       org2 = create(:organization, name: 'org2')
 
@@ -130,51 +115,58 @@ module Reports
                   "alias"=>"c_core_organization_kinds", "join_type"=>"inner",
                   "on"=>"core_organizations.kind_id= c_core_organization_kinds.id"}}}
 
-      puts Core::OrganizationKind.all.to_a.inspect
-      puts ConstructorService.new(params).to_sql.inspect.blue
-      puts ConstructorService.new(params).to_a.inspect
-      # ConstructorService.new(params).to_a.inspect
-
-
+      expect(ConstructorService.new(params).to_a).to contain_exactly(
+        {"core_organizations.name"=>"org1", "c_core_organization_kinds.name_ru"=>org1.kind.name_ru},
+        {"core_organizations.name"=>"org2", "c_core_organization_kinds.name_ru"=>org2.kind.name_ru}
+      )
     end
 
     it "rewrites having for db" do
       org1 = create(:organization, name: 'org1')
-      org2 = create(:organization, name: 'org2')
+      create(:organization, name: 'org2')
       kind_name_ru = org1.kind.name_ru
       params = {"class_name"=>"Core::Organization", "attributes"=>{"0"=>{"value"=>"kind.name_ru",
              "label"=>"kind.name_ru|string"}, "1"=>{"value"=>"core_organizations.name", "label"=>"core_organizations.name|string"}},
              "association"=>{"list"=>"kind", "kind"=>{"join_type"=>"inner"}},
              "where"=>"kind.name_ru = '#{kind_name_ru}'", "per"=>"20"}
-      puts ConstructorService.new(params).to_a.inspect
+      result = ConstructorService.new(params).to_a
+
+      expect(result).to include({"kind.name_ru"=>kind_name_ru, "core_organizations.name"=>"org1"})
+      expect(result.map { |row| row["kind.name_ru"] }).to all(eq(kind_name_ru))
     end
 
     it "rewrites on for db" do
-      # org1 = create(:organization, name: 'org1')
-      # org2 = create(:organization, name: 'org2')
-      # kind_name_ru = org1.kind.name_ru
+      create(:cluster)
       params = {"class_name"=>"Core::Cluster", "attributes"=>{"0"=>{"value"=>"core_clusters.admin_login",
         "label"=>"core_clusters.admin_login|string"}}, "association"=>
         {"custom-join-1557265646481"=>{"join_table"=>"Core::Cluster",
           "alias"=>"c_core_clusters", "join_type"=>"inner",
           "on"=>"core_clusters.id=c_core_clusters.id"}}, "per"=>"20"}
-      puts ConstructorService.new(params).to_a.inspect
+
+      expect(ConstructorService.new(params).to_a).to eq [{"core_clusters.admin_login"=>"root"}]
     end
+
     it "rewrites for db" do
       params = {"class_name"=>"Core::Project", "attributes"=>{"0"=>{"value"=>"organization.departments.name",
         "label"=>"organization.departments.name|string"}}, "association"=>{"list"=>
           "organization", "organization"=>{"join_type"=>"inner",
         "list"=>"departments", "departments"=>{"join_type"=>"inner"}}}, "per"=>"20"}
-      puts ConstructorService.new(params).to_a.inspect
 
+      sql = ConstructorService.new(params).to_sql
+      expect(sql).to include('INNER JOIN "core_organizations"')
+      expect(sql).to include('INNER JOIN "core_organization_departments"')
+      expect(sql).to include('core_organization_departments.name AS')
+      expect(ConstructorService.new(params).to_a).to be_an(Array)
     end
+
     it "rewrites for db2" do
+      org = create(:organization)
       params = {"class_name"=>"Core::Organization", "attributes"=>{"0"=>{"value"=>
         "city.title_en", "label"=>"city.title_en|string"}},
         "association"=>{"list"=>"kind", "city"=>{"join_type"=>"inner"},
         "kind"=>{"join_type"=>"inner"}}, "per"=>"20"}
-      puts ConstructorService.new(params).to_a.inspect
 
+      expect(ConstructorService.new(params).to_a).to include({"city.title_en"=>org.city.title_en})
     end
 
     it "gets users who use gpu" do
@@ -189,14 +181,13 @@ module Reports
               "field"=>{"join_type"=>"inner"}}, "session"=>{"join_type"=>"inner"}}},
               "where"=>"surveys.values.field.name_en LIKE '%GPU%' AND surveys.values.value IS NOT NULL", "per"=>"20"}
 
-      puts ConstructorService.new(params).to_a.inspect
-
+      constructor = ConstructorService.new(params)
+      expect(constructor.to_sql).to include('INNER JOIN "sessions_user_surveys"')
+      expect(constructor.to_sql).to include('INNER JOIN "sessions_survey_values"')
+      expect(constructor.to_sql).to include('INNER JOIN "sessions_survey_fields"')
+      expect(constructor.to_sql).to include('INNER JOIN "sessions_sessions"')
+      expect(constructor.to_a).to be_an(Array)
     end
-
-
-
-
-
 
   end
 end
