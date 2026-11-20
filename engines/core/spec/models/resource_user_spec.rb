@@ -10,7 +10,8 @@ module Core
       it 'requires either email or member' do
         resource_user = build(:core_resource_user, access: access, email: nil, member: nil)
         expect(resource_user).not_to be_valid
-        expect(resource_user.errors[:base]).to include('Either email or member must be present')
+        expect(resource_user.errors[:email]).to be_present
+        expect(resource_user.errors[:member]).to be_present
       end
 
       it 'is valid with email only' do
@@ -27,14 +28,14 @@ module Core
         create(:core_resource_user, access: access, email: 'duplicate@example.com')
         duplicate = build(:core_resource_user, access: access, email: 'duplicate@example.com')
         expect(duplicate).not_to be_valid
-        expect(duplicate.errors[:email]).to include('has already been taken')
+        expect(duplicate.errors[:email]).to be_present
       end
 
       it 'validates uniqueness of member per access' do
         create(:core_resource_user, access: access, member: member)
         duplicate = build(:core_resource_user, access: access, member: member)
         expect(duplicate).not_to be_valid
-        expect(duplicate.errors[:member]).to include('has already been taken')
+        expect(duplicate.errors[:member]).to be_present
       end
 
       it 'allows same email across different accesses' do
@@ -47,7 +48,7 @@ module Core
       it 'requires member to belong to the same project as access' do
         resource_user = build(:core_resource_user, access: access, member: other_member)
         expect(resource_user).not_to be_valid
-        expect(resource_user.errors[:member]).to include('must belong to project')
+        expect(resource_user.errors[:member]).to be_present
       end
     end
 

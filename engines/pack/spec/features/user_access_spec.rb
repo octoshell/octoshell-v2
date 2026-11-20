@@ -23,7 +23,7 @@ module Pack
     scenario 'request access with end_lic' do
       visit pack.versions_path
       page.find("tbody[package_id='#{@package.id}'] button").click
-      select2 'alpaca1', "Проект #{@project.title}"
+      select2 "Проект #{@project.title}", css: '#alpaca1 + .select2-container'
       to_date = (Date.today + 7).to_s
       sleep(1)
       fill_in 'alpaca23', with: to_date
@@ -36,7 +36,7 @@ module Pack
     scenario 'request access without end_lic' do
       visit pack.versions_path
       page.find("tbody[package_id='#{@package.id}'] button").click
-      select2 'alpaca1', "Проект #{@project.title}"
+      select2 "Проект #{@project.title}", css: '#alpaca1 + .select2-container'
       choose 'Без даты окончания'
       click_button 'Сохранить'
       expect(page).to have_content('Заявка успешно отправлена')

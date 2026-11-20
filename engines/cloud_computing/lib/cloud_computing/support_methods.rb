@@ -11,7 +11,7 @@ module CloudComputing
       access = CloudComputing::Access.create!(for: project,
                                               user: project.owner,
                                               allowed_by: User.superadmins.first)
-      template = CloudComputing::TemplateKind.virtual_machine.first.items.first
+      template = CloudComputing::TemplateKind.virtual_machine_cloud_class.templates.first
 
       CloudComputing::SupportMethods.add_positions(access, template)
 
@@ -29,7 +29,7 @@ module CloudComputing
 
       cpu = virtual_kind.resource_kinds.create!(name_ru: 'Центральные процессоры',
         name_en: 'CPU', measurement_en: '', measurement_ru: '',
-        identity: 'CPU', content_type: 'positive_integer')
+        identity: 'CPU', content_type: 'decimal')
 
 
       hard = virtual_kind.resource_kinds.create!(name_ru: 'Жёсткий диск',
@@ -99,9 +99,9 @@ module CloudComputing
         # holder.virtual_machine.resource_items.create!(resource: resource,
         #                                               value: resource.value)
         value = if resource.resource_kind.positive_integer?
-                  resource.value.to_i + 1
+                  [resource.value.to_i + 1, resource.max.to_i].min
                 elsif resource.resource_kind.decimal?
-                  resource.value.to_f + 1
+                  [resource.value.to_f + 1, resource.max.to_f].min
                 else
                   '1'
                 end

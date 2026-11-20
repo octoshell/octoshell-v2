@@ -23,7 +23,16 @@ module Core
     STATES    = %w[allocated idle completing drained draining down maint reserved mix].freeze
     SUBSTATES = %w[unknown maintenance pending draining].freeze
 
-    validates :state, presence: true, inclusion: { in: STATES }
+    # Slurm appends flags to the base state (e.g. idle~, down*, allocated#).
+    BASE_STATE_PATTERN = /\A([a-z]+)[~#*.$%@^!]*\z/
+
+    validates :state, presence: true
+    validate :state_must_be_known
+
+    # Returns the state without Slurm suffix flags
+    def base_state
+      BASE_STATE_PATTERN.match(state.to_s)&.[](1)
+    end
     # validates :substate, allow_nil: true, inclusion: { in: SUBSTATES }
 
     # Returns the latest state for each node (using DISTINCT ON)
@@ -43,6 +52,15 @@ module Core
 
     def to_s
       reason ? "#{state} (#{reason})" : state
+    end
+
+    private
+
+    def state_must_be_known
+      return if state.blank?
+      return if STATES.include?(base_state)
+
+      errors.add(:state, :inclusion, value: state)
     end
   end
 end

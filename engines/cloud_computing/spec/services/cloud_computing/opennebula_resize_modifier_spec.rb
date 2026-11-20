@@ -69,7 +69,7 @@ module CloudComputing
       r_m.instance_variable_set('@results', [true, 'data'])
       expect(generic_resources.keys).to match_array(%w[CPU MEMORY])
       expect(r_m.send(:to_change?)).to eq true
-      expect { r_m.send(:remove_access_resource_item) }.to change { ResourceItem.count }.by(-1)
+      expect { r_m.send(:remove_access_resource_items) }.to change { ResourceItem.count }.by(-1)
 
     end
 

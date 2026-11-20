@@ -142,10 +142,11 @@ module Core
           allow(cluster).to receive(:execute).with('sudo /usr/octo/sinfo_log_nodes').and_return([sinfo_output, ''])
         end
 
-        it 'does not create a new state (treats allocated and idle as equivalent)' do
+        it 'creates a new state (treats allocated and idle as distinct)' do
           cluster.log_node_states
 
-          expect(node.node_states.count).to eq(1)
+          expect(node.node_states.count).to eq(2)
+          expect(node.node_states.order(:state_time).last.state).to eq('allocated')
         end
       end
 

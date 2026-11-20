@@ -24,7 +24,7 @@ module Core
 
     # Returns the last state of the node
     def last_state
-      node_states.order(created_at: :desc).first
+      node_states.order(state_time: :desc, id: :desc).first
     end
 
     # Returns the current state of the node

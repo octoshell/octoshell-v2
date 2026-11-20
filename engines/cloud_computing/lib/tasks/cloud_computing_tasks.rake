@@ -21,7 +21,7 @@ namespace :cloud_computing do
 
       cpu = virtual_kind.resource_kinds.create!(name_ru: 'Центральные процессоры',
         name_en: 'CPU', measurement_en: '', measurement_ru: '',
-        identity: 'CPU', content_type: 'positive_integer')
+        identity: 'CPU', content_type: 'decimal')
 
 
       hard = virtual_kind.resource_kinds.create!(name_ru: 'Жёсткий диск',

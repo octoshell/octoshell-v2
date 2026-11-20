@@ -6,7 +6,7 @@ module CloudComputing
       @project = create(:project)
       @project2 = create(:project)
 
-      @template = CloudComputing::TemplateKind.virtual_machine.first.items.first
+      @template = CloudComputing::TemplateKind.virtual_machine_cloud_class.templates.first
       @request = CloudComputing::Request.create!(for: @project, created_by: @project.owner)
       @access = CloudComputing::Access.create!(for: @project2,
         user: @project2.owner, allowed_by: create(:admin))
@@ -20,15 +20,14 @@ module CloudComputing
       it 'copies from request' do
         access = CloudComputing::Access.new(for: @project,
                                             user: @project.owner,
-                                            allowed_by: create(:admin),
-                                            request: @request)
-        access.copy_from_request
+                                            allowed_by: create(:admin))
+        access.copy_from_request(@request)
         access.save!
-        access_resource_ids = access.positions
+        access_resource_ids = access.items
                                     .map(&:resource_items)
                                     .flatten.map(&:resource_id)
 
-        request_resource_ids = @request.positions
+        request_resource_ids = @request.items
                                        .map(&:resource_items)
                                        .flatten.map(&:resource_id)
 
@@ -37,12 +36,11 @@ module CloudComputing
       end
     end
 
-    describe '#pend!' do
-      it 'pends' do
-        @access.pend!
-        puts @access.positions&.first&.virtual_machines&.first&.api_logs.inspect
-        puts @access.positions.first.api_logs.first.log.inspect
-
+    describe '#approve!' do
+      it 'approves access' do
+        allow(@access).to receive(:instantiate_vm)
+        @access.approve!
+        expect(@access).to be_approved
       end
     end
 
